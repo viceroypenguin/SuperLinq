@@ -14,7 +14,7 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
-	public static IEnumerable<object> Flatten(this IEnumerable source) =>
+	public static IEnumerable<object?> Flatten(this IEnumerable source) =>
 		Flatten(source, obj => obj is not string);
 
 	/// <summary>
@@ -39,7 +39,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException">
 	/// <paramref name="predicate"/> is <c>null</c>.</exception>
 
-	public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
+	public static IEnumerable<object?> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
 	{
 		if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
@@ -68,12 +68,12 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException">
 	/// <paramref name="selector"/> is <c>null</c>.</exception>
 
-	public static IEnumerable<object> Flatten(this IEnumerable source, Func<object?, IEnumerable?> selector)
+	public static IEnumerable<object?> Flatten(this IEnumerable source, Func<object?, IEnumerable?> selector)
 	{
 		if (source == null) throw new ArgumentNullException(nameof(source));
 		if (selector == null) throw new ArgumentNullException(nameof(selector));
 
-		return _(); IEnumerable<object> _()
+		return _(); IEnumerable<object?> _()
 		{
 			var e = source.GetEnumerator();
 			var stack = new Stack<IEnumerator>();

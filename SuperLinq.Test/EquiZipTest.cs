@@ -30,7 +30,7 @@ public class EquiZipTest
 	[Test]
 	public void ZipWithEqualLengthSequencesFailStrategy()
 	{
-		var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5, 6 }, Tuple.Create);
+		var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5, 6 }, ValueTuple.Create);
 		Assert.That(zipped, Is.Not.Null);
 		zipped.AssertSequenceEqual((1, 4), (2, 5), (3, 6));
 	}
@@ -38,7 +38,7 @@ public class EquiZipTest
 	[Test]
 	public void ZipWithFirstSequenceShorterThanSecondFailStrategy()
 	{
-		var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, Tuple.Create);
+		var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, ValueTuple.Create);
 		Assert.That(zipped, Is.Not.Null);
 		Assert.Throws<InvalidOperationException>(() =>
 			zipped.Consume());
@@ -47,7 +47,7 @@ public class EquiZipTest
 	[Test]
 	public void ZipWithFirstSequnceLongerThanSecondFailStrategy()
 	{
-		var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, Tuple.Create);
+		var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, ValueTuple.Create);
 		Assert.That(zipped, Is.Not.Null);
 		Assert.Throws<InvalidOperationException>(() =>
 			zipped.Consume());
@@ -80,6 +80,6 @@ public class EquiZipTest
 		using var s1 = TestingSequence.Of(1, 2);
 
 		Assert.Throws<InvalidOperationException>(() =>
-			s1.EquiZip(new BreakingSequence<int>(), Tuple.Create).Consume());
+			s1.EquiZip(new BreakingSequence<int>(), ValueTuple.Create).Consume());
 	}
 }

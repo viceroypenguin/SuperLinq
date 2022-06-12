@@ -122,7 +122,7 @@ public class CartesianTests
 						.ToArray();
 
 		// verify that the expected number of results is correct
-		Assert.AreEqual(sequenceA.Count() * sequenceB.Count(), result.Count());
+		Assert.AreEqual(sequenceA.Count() * sequenceB.Count(), result.Length);
 
 		// ensure that all "cells" were visited by the cartesian product
 		foreach (var coord in result)

@@ -7,6 +7,7 @@ using NUnit.Framework.Interfaces;
 using SuperLinq.Experimental;
 
 namespace SuperLinq.Test;
+using static FuncModule;
 
 [TestFixture]
 public class AggregateTest

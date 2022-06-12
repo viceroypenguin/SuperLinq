@@ -95,14 +95,13 @@ public class NullArgumentTest
 
 		var nullableParameters = new[]
 		{
-				nameof(SuperEnumerable.Assert) + ".errorSelector",
-				nameof(SuperEnumerable.From) + ".function",
-				nameof(SuperEnumerable.From) + ".function1",
-				nameof(SuperEnumerable.From) + ".function2",
-				nameof(SuperEnumerable.From) + ".function3",
-				nameof(SuperEnumerable.ToDataTable) + ".expressions",
-				nameof(SuperEnumerable.Trace) + ".format"
-			};
+			nameof(SuperEnumerable.From) + ".function",
+			nameof(SuperEnumerable.From) + ".function1",
+			nameof(SuperEnumerable.From) + ".function2",
+			nameof(SuperEnumerable.From) + ".function3",
+			nameof(SuperEnumerable.ToDataTable) + ".expressions",
+			nameof(SuperEnumerable.Trace) + ".format"
+		};
 
 		var type = parameter.ParameterType.GetTypeInfo();
 		type = type.IsGenericType ? type.GetGenericTypeDefinition().GetTypeInfo() : type;
