@@ -6,6 +6,6 @@
 
     <AnalysisLevel>latest-recommended</AnalysisLevel>
 
-    <TargetFrameworks>net48;netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
   </PropertyGroup>
 </Project>

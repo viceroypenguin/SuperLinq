@@ -1,26 +1,6 @@
-#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2009 Konrad Rudolph. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+﻿namespace SuperLinq;
 
-namespace SuperLinq;
-
-using System;
-using System.Collections.Generic;
-
-static partial class MoreEnumerable
+public static partial class SuperEnumerable
 {
 	/// <summary>
 	/// Performs a pre-scan (exclusive prefix sum) on a sequence of elements.
@@ -31,7 +11,7 @@ static partial class MoreEnumerable
 	/// element is a special case, it is set to the identity). More
 	/// generally, the pre-scan allows any commutative binary operation,
 	/// not just a sum.
-	/// The inclusive version of PreScan is <see cref="MoreEnumerable.Scan{TSource}"/>.
+	/// The inclusive version of PreScan is <see cref="SuperEnumerable.Scan{TSource}"/>.
 	/// This operator uses deferred execution and streams its result.
 	/// </remarks>
 	/// <example>

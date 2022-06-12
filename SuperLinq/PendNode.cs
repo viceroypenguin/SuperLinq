@@ -1,31 +1,11 @@
-#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2017 Atif Aziz. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+﻿using System.Collections;
 
 namespace SuperLinq;
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
 
 /// <summary>
 /// Prepend-Append node is a single linked-list of the discriminated union
 /// of an item to prepend, an item to append and the source.
 /// </summary>
-
 abstract class PendNode<T> : IEnumerable<T>
 {
 	public static PendNode<T> WithSource(IEnumerable<T> source) => new Source(source);
@@ -91,7 +71,7 @@ abstract class PendNode<T> : IEnumerable<T>
 							case 1: concat2 = item.Value; break;
 							case 2: concat3 = item.Value; break;
 							case 3: concat4 = item.Value; break;
-							default: throw new IndexOutOfRangeException();
+							default: throw new InvalidOperationException("Should not be able to reach this code.");
 						}
 						continue;
 					}

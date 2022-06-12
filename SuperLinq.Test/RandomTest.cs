@@ -1,28 +1,9 @@
-#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2010 Leopold Bushkin. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+﻿using NUnit.Framework;
 
 namespace SuperLinq.Test;
 
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-
 /// <summary>
-/// Tests of the various overloads of <see cref="MoreEnumerable"/>.Random()
+/// Tests of the various overloads of <see cref="SuperEnumerable"/>.Random()
 /// </summary>
 [TestFixture]
 public class RandomTest
@@ -39,7 +20,7 @@ public class RandomTest
 		Assert.Less(maxValue, 0);
 
 		AssertThrowsArgument.OutOfRangeException("maxValue", () =>
-			MoreEnumerable.Random(maxValue));
+			SuperEnumerable.Random(maxValue));
 	}
 
 	/// <summary>
@@ -55,7 +36,7 @@ public class RandomTest
 		Assert.Greater(minValue, maxValue);
 
 		AssertThrowsArgument.OutOfRangeException("minValue", () =>
-			MoreEnumerable.Random(minValue, maxValue));
+			SuperEnumerable.Random(minValue, maxValue));
 	}
 
 	/// <summary>
@@ -64,8 +45,8 @@ public class RandomTest
 	[Test]
 	public void TestRandomDouble()
 	{
-		var resultA = MoreEnumerable.RandomDouble().Take(RandomTrials);
-		var resultB = MoreEnumerable.RandomDouble(new Random()).Take(RandomTrials);
+		var resultA = SuperEnumerable.RandomDouble().Take(RandomTrials);
+		var resultB = SuperEnumerable.RandomDouble(new Random()).Take(RandomTrials);
 
 		// NOTE: Unclear what should actually be verified here... some additional thought needed.
 		Assert.AreEqual(RandomTrials, resultA.Count());
@@ -81,8 +62,8 @@ public class RandomTest
 	public void TestRandomMaxConstraint()
 	{
 		const int max = 100;
-		var resultA = MoreEnumerable.Random(max).Take(RandomTrials);
-		var resultB = MoreEnumerable.Random(new Random(), max).Take(RandomTrials);
+		var resultA = SuperEnumerable.Random(max).Take(RandomTrials);
+		var resultB = SuperEnumerable.Random(new Random(), max).Take(RandomTrials);
 
 		Assert.AreEqual(RandomTrials, resultA.Count());
 		Assert.AreEqual(RandomTrials, resultB.Count());
@@ -98,8 +79,8 @@ public class RandomTest
 	{
 		const int min = 0;
 		const int max = 100;
-		var resultA = MoreEnumerable.Random(min, max).Take(RandomTrials);
-		var resultB = MoreEnumerable.Random(new Random(), min, max).Take(RandomTrials);
+		var resultA = SuperEnumerable.Random(min, max).Take(RandomTrials);
+		var resultB = SuperEnumerable.Random(new Random(), min, max).Take(RandomTrials);
 
 		Assert.AreEqual(RandomTrials, resultA.Count());
 		Assert.AreEqual(RandomTrials, resultB.Count());
@@ -123,7 +104,7 @@ public class RandomTest
 		for (var i = 0; i < RandomTrials; i++)
 			valuesA.Add(randA.Next());
 
-		var randomSeq = MoreEnumerable.Random(randB);
+		var randomSeq = SuperEnumerable.Random(randB);
 		var valuesB = randomSeq.Take(RandomTrials);
 
 		Assert.That(valuesA, Is.EqualTo(valuesB));

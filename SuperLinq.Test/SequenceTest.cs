@@ -1,24 +1,6 @@
-#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+﻿using NUnit.Framework;
 
 namespace SuperLinq.Test;
-
-using System;
-using NUnit.Framework;
 
 [TestFixture]
 public class SequenceTest
@@ -30,7 +12,7 @@ public class SequenceTest
 	[TestCase(27, 172)]
 	public void SequenceWithAscendingRange(int start, int stop)
 	{
-		var result = MoreEnumerable.Sequence(start, stop);
+		var result = SuperEnumerable.Sequence(start, stop);
 		var expectations = Enumerable.Range(start, stop - start + 1);
 
 		Assert.That(result, Is.EqualTo(expectations));
@@ -43,7 +25,7 @@ public class SequenceTest
 	[TestCase(172, 27)]
 	public void SequenceWithDescendingRange(int start, int stop)
 	{
-		var result = MoreEnumerable.Sequence(start, stop);
+		var result = SuperEnumerable.Sequence(start, stop);
 		var expectations = Enumerable.Range(stop, start - stop + 1).Reverse();
 
 		Assert.That(result, Is.EqualTo(expectations));
@@ -56,7 +38,7 @@ public class SequenceTest
 	[TestCase(27, 172, 9)]
 	public void SequenceWithAscendingRangeAscendingStep(int start, int stop, int step)
 	{
-		var result = MoreEnumerable.Sequence(start, stop, step);
+		var result = SuperEnumerable.Sequence(start, stop, step);
 		var expectations = Enumerable.Range(start, stop - start + 1).TakeEvery(step);
 
 		Assert.That(result, Is.EqualTo(expectations));
@@ -69,7 +51,7 @@ public class SequenceTest
 	[TestCase(27, 172, -9)]
 	public void SequenceWithAscendingRangeDescendigStep(int start, int stop, int step)
 	{
-		var result = MoreEnumerable.Sequence(start, stop, step);
+		var result = SuperEnumerable.Sequence(start, stop, step);
 
 		Assert.That(result, Is.Empty);
 	}
@@ -81,7 +63,7 @@ public class SequenceTest
 	[TestCase(172, 27, 9)]
 	public void SequenceWithDescendingRangeAscendingStep(int start, int stop, int step)
 	{
-		var result = MoreEnumerable.Sequence(start, stop, step);
+		var result = SuperEnumerable.Sequence(start, stop, step);
 
 		Assert.That(result, Is.Empty);
 	}
@@ -93,7 +75,7 @@ public class SequenceTest
 	[TestCase(172, 27, -9)]
 	public void SequenceWithDescendingRangeDescendigStep(int start, int stop, int step)
 	{
-		var result = MoreEnumerable.Sequence(start, stop, step);
+		var result = SuperEnumerable.Sequence(start, stop, step);
 		var expectations = Enumerable.Range(stop, start - stop + 1).Reverse().TakeEvery(Math.Abs(step));
 
 		Assert.That(result, Is.EqualTo(expectations));
@@ -110,8 +92,8 @@ public class SequenceTest
 	[TestCase(int.MinValue, int.MinValue, null)]
 	public void SequenceWithStartEqualsStop(int start, int stop, int? step)
 	{
-		var result = step.HasValue ? MoreEnumerable.Sequence(start, stop, step.Value)
-								   : MoreEnumerable.Sequence(start, stop);
+		var result = step.HasValue ? SuperEnumerable.Sequence(start, stop, step.Value)
+								   : SuperEnumerable.Sequence(start, stop);
 
 		Assert.That(start, Is.EqualTo(result.Single()));
 	}
@@ -122,7 +104,7 @@ public class SequenceTest
 	[TestCase(int.MinValue, int.MaxValue, int.MaxValue, 3)]
 	public void SequenceEdgeCases(int start, int stop, int step, int count)
 	{
-		var result = MoreEnumerable.Sequence(start, stop, step);
+		var result = SuperEnumerable.Sequence(start, stop, step);
 
 		Assert.AreEqual(result.Count(), count);
 	}
@@ -132,7 +114,7 @@ public class SequenceTest
 	[TestCase(int.MinValue, int.MaxValue)]
 	public void SequenceWithStepZero(int start, int stop)
 	{
-		var result = MoreEnumerable.Sequence(start, stop, 0);
+		var result = SuperEnumerable.Sequence(start, stop, 0);
 
 		Assert.IsTrue(result.Take(100).All(x => x == start));
 	}

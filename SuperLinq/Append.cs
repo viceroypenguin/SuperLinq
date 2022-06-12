@@ -17,10 +17,7 @@
 
 namespace SuperLinq;
 
-using System;
-using System.Collections.Generic;
-
-static partial class MoreEnumerable
+public static partial class SuperEnumerable
 {
 	/// <summary>
 	/// Returns a sequence consisting of the head elements and the given tail element.

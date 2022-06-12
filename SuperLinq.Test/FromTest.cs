@@ -1,25 +1,6 @@
-#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2017 Felipe Sateler. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+﻿using NUnit.Framework;
 
 namespace SuperLinq.Test;
-
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
 
 class FromTest
 {
@@ -27,10 +8,10 @@ class FromTest
 	public void TestFromIsLazy()
 	{
 		var breakingFunc = BreakingFunc.Of<int>();
-		MoreEnumerable.From(breakingFunc);
-		MoreEnumerable.From(breakingFunc, breakingFunc);
-		MoreEnumerable.From(breakingFunc, breakingFunc, breakingFunc);
-		MoreEnumerable.From(breakingFunc, breakingFunc, breakingFunc, breakingFunc);
+		SuperEnumerable.From(breakingFunc);
+		SuperEnumerable.From(breakingFunc, breakingFunc);
+		SuperEnumerable.From(breakingFunc, breakingFunc, breakingFunc);
+		SuperEnumerable.From(breakingFunc, breakingFunc, breakingFunc, breakingFunc);
 	}
 
 	[TestCase(1)]
@@ -46,10 +27,10 @@ class FromTest
 
 		switch (numArgs)
 		{
-			case 1: MoreEnumerable.From(F1).AssertSequenceEqual(F1()); break;
-			case 2: MoreEnumerable.From(F1, F2).AssertSequenceEqual(F1(), F2()); break;
-			case 3: MoreEnumerable.From(F1, F2, F3).AssertSequenceEqual(F1(), F2(), F3()); break;
-			case 4: MoreEnumerable.From(F1, F2, F3, F4).AssertSequenceEqual(F1(), F2(), F3(), F4()); break;
+			case 1: SuperEnumerable.From(F1).AssertSequenceEqual(F1()); break;
+			case 2: SuperEnumerable.From(F1, F2).AssertSequenceEqual(F1(), F2()); break;
+			case 3: SuperEnumerable.From(F1, F2, F3).AssertSequenceEqual(F1(), F2(), F3()); break;
+			case 4: SuperEnumerable.From(F1, F2, F3, F4).AssertSequenceEqual(F1(), F2(), F3(), F4()); break;
 			default: throw new ArgumentOutOfRangeException(nameof(numArgs));
 		}
 	}
@@ -69,10 +50,10 @@ class FromTest
 		IEnumerable<int> results;
 		switch (numArgs)
 		{
-			case 1: results = MoreEnumerable.From(F1); break;
-			case 2: results = MoreEnumerable.From(F1, F2); break;
-			case 3: results = MoreEnumerable.From(F1, F2, F3); break;
-			case 4: results = MoreEnumerable.From(F1, F2, F3, F4); break;
+			case 1: results = SuperEnumerable.From(F1); break;
+			case 2: results = SuperEnumerable.From(F1, F2); break;
+			case 3: results = SuperEnumerable.From(F1, F2, F3); break;
+			case 4: results = SuperEnumerable.From(F1, F2, F3, F4); break;
 			default: throw new ArgumentOutOfRangeException(nameof(numArgs));
 		}
 

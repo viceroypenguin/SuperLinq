@@ -1,27 +1,6 @@
-﻿#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2016 Atif Aziz. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+﻿namespace SuperLinq;
 
-namespace SuperLinq;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-static partial class MoreEnumerable
+public static partial class SuperEnumerable
 {
 	/// <summary>
 	/// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey})"/>,
@@ -43,7 +22,7 @@ static partial class MoreEnumerable
 	}
 
 	/// <summary>
-	/// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
+	/// Combines <see cref="SuperEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
 	/// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource}, int)"/>
 	/// in a single operation.
 	/// An additional parameter specifies the direction of the sort
@@ -88,7 +67,7 @@ static partial class MoreEnumerable
 	}
 
 	/// <summary>
-	/// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
+	/// Combines <see cref="SuperEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
 	/// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource}, int)"/>
 	/// in a single operation.
 	/// Additional parameters specify how the elements compare to each other and
@@ -137,7 +116,7 @@ static partial class MoreEnumerable
 	}
 
 	/// <summary>
-	/// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
+	/// Combines <see cref="SuperEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
 	/// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource}, int)"/> in a single operation.
 	/// An additional parameter specifies the direction of the sort
 	/// </summary>
@@ -188,7 +167,7 @@ static partial class MoreEnumerable
 	}
 
 	/// <summary>
-	/// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
+	/// Combines <see cref="SuperEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
 	/// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource}, int)"/> in a single operation.
 	/// Additional parameters specify how the elements compare to each other and
 	/// the direction of the sort.

@@ -1,28 +1,7 @@
-#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+﻿using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 
 namespace SuperLinq.Test;
-
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-using NUnit.Framework.Interfaces;
-using Tuple = System.ValueTuple;
-
 [TestFixture]
 public class ZipLongestTest
 {
@@ -48,7 +27,7 @@ public class ZipLongestTest
 	{
 		using var ts1 = TestingSequence.Of(first);
 		using var ts2 = TestingSequence.Of(second);
-		return ts1.ZipLongest(ts2, Tuple.Create).ToArray();
+		return ts1.ZipLongest(ts2, ValueTuple.Create).ToArray();
 	}
 
 	[Test]
@@ -62,8 +41,8 @@ public class ZipLongestTest
 	public void ZipLongestDisposeSequencesEagerly()
 	{
 		var shorter = TestingSequence.Of(1, 2, 3);
-		var longer = MoreEnumerable.Generate(1, x => x + 1);
-		var zipped = shorter.ZipLongest(longer, Tuple.Create);
+		var longer = SuperEnumerable.Generate(1, x => x + 1);
+		var zipped = shorter.ZipLongest(longer, ValueTuple.Create);
 
 		var count = 0;
 		foreach (var _ in zipped.Take(10))
@@ -79,6 +58,6 @@ public class ZipLongestTest
 		using var s1 = TestingSequence.Of(1, 2);
 
 		Assert.Throws<InvalidOperationException>(() =>
-			s1.ZipLongest(new BreakingSequence<int>(), Tuple.Create).Consume());
+			s1.ZipLongest(new BreakingSequence<int>(), ValueTuple.Create).Consume());
 	}
 }

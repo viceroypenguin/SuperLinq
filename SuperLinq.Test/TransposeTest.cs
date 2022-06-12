@@ -1,25 +1,6 @@
-#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2018 Leandro F. Vieira (leandromoh). All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+﻿using NUnit.Framework;
 
 namespace SuperLinq.Test;
-
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
 
 [TestFixture]
 public class TransposeTest
@@ -100,10 +81,10 @@ public class TransposeTest
 	[Test]
 	public void TransposeWithAllRowsAsInfiniteSequences()
 	{
-		var matrix = MoreEnumerable.Generate(1, x => x + 1)
+		var matrix = SuperEnumerable.Generate(1, x => x + 1)
 								   .Where(IsPrime)
 								   .Take(3)
-								   .Select(x => MoreEnumerable.Generate(x, n => n * x));
+								   .Select(x => SuperEnumerable.Generate(x, n => n * x));
 
 		var result = matrix.Transpose().Take(5);
 
@@ -122,11 +103,11 @@ public class TransposeTest
 	[Test]
 	public void TransposeWithSomeRowsAsInfiniteSequences()
 	{
-		var matrix = MoreEnumerable.Generate(1, x => x + 1)
+		var matrix = SuperEnumerable.Generate(1, x => x + 1)
 								   .Where(IsPrime)
 								   .Take(3)
-								   .Select((x, i) => i == 1 ? MoreEnumerable.Generate(x, n => n * x).Take(2)
-															: MoreEnumerable.Generate(x, n => n * x));
+								   .Select((x, i) => i == 1 ? SuperEnumerable.Generate(x, n => n * x).Take(2)
+															: SuperEnumerable.Generate(x, n => n * x));
 
 		var result = matrix.Transpose().Take(5);
 
@@ -165,9 +146,9 @@ public class TransposeTest
 	{
 		var matrix = new[]
 		{
-				MoreEnumerable.From(() => 10, () => 11),
-				MoreEnumerable.From(() => 20, () => 22),
-				MoreEnumerable.From(() => 30, () => throw new TestException(), () => 31),
+				SuperEnumerable.From(() => 10, () => 11),
+				SuperEnumerable.From(() => 20, () => 22),
+				SuperEnumerable.From(() => 30, () => throw new TestException(), () => 31),
 			};
 
 		var result = matrix.Transpose();
@@ -182,7 +163,7 @@ public class TransposeTest
 	public void TransposeWithErroneousRowDisposesRowIterators()
 	{
 		using var row1 = TestingSequence.Of(10, 11);
-		using var row2 = MoreEnumerable.From(() => 20,
+		using var row2 = SuperEnumerable.From(() => 20,
 											 () => throw new TestException())
 									   .AsTestingSequence();
 		using var row3 = TestingSequence.Of(30, 32);

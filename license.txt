@@ -1,3 +1,14 @@
+Portions © 2008 Jonathan Skeet.
+Portions © 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph.
+Portions © 2010 Johannes Rudolph, Leopold Bushkin.
+Portions © 2015 Felipe Sateler, “sholland”.
+Portions © 2016 Andreas Gullberg Larsen, Leandro F. Vieira (leandromoh).
+Portions © 2017 Jonas Nyrup (jnyrup).
+Portions © 2022 Turning Code, LLC.
+Portions © 2008-2022 various other contributors
+
+Portions © Microsoft. All rights reserved.
+
 
                                  Apache License
                            Version 2.0, January 2004

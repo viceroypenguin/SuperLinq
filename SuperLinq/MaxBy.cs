@@ -1,34 +1,13 @@
-﻿#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq;
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 /// <summary>
 /// Exposes the enumerator, which supports iteration over a sequence of
 /// some extremum property (maximum or minimum) of a specified type.
 /// </summary>
 /// <typeparam name="T">The type of objects to enumerate.</typeparam>
-
 public interface IExtremaEnumerable<out T> : IEnumerable<T>
 {
 	/// <summary>
@@ -56,7 +35,7 @@ public interface IExtremaEnumerable<out T> : IEnumerable<T>
 	IEnumerable<T> TakeLast(int count);
 }
 
-static partial class MoreEnumerable
+public static partial class SuperEnumerable
 {
 	/// <summary>
 	/// Returns the first element of a sequence.

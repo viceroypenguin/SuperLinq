@@ -1,36 +1,13 @@
-﻿#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2016 Atif Aziz. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+﻿using System.Collections;
+using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Runtime.ExceptionServices;
 
 namespace SuperLinq.Experimental;
-
-using System;
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.ExceptionServices;
-using System.Threading;
-using System.Threading.Tasks;
 
 /// <summary>
 /// Represents options for a query whose results evaluate asynchronously.
 /// </summary>
-
 public sealed class AwaitQueryOptions
 {
 	/// <summary>
@@ -728,26 +705,6 @@ static partial class ExperimentalEnumerable
 			Comparer<(T1, T2, T3)>.Create((x, y) => Comparer<T3>.Default.Compare(x.Item3, y.Item3));
 	}
 
-	static class CompletedTask
-	{
-#if NET451 || NETSTANDARD1_0
-
-            public static readonly Task Instance;
-
-            static CompletedTask()
-            {
-                var tcs = new TaskCompletionSource<Unit>();
-                tcs.SetResult(default);
-                Instance = tcs.Task;
-            }
-
-#else
-
-		public static readonly Task Instance = Task.CompletedTask;
-
-#endif
-	}
-
 	sealed class ConcurrencyGate
 	{
 		public static readonly ConcurrencyGate Unbounded = new ConcurrencyGate();
@@ -766,7 +723,7 @@ static partial class ExperimentalEnumerable
 			if (_semaphore == null)
 			{
 				token.ThrowIfCancellationRequested();
-				return CompletedTask.Instance;
+				return Task.CompletedTask;
 			}
 
 			return _semaphore.WaitAsync(token);

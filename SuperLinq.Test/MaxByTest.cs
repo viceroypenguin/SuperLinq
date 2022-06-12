@@ -1,24 +1,6 @@
-#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+﻿using NUnit.Framework;
 
 namespace SuperLinq.Test;
-
-using System;
-using NUnit.Framework;
 
 [TestFixture]
 public class MaxByTest
@@ -68,7 +50,7 @@ public class MaxByTest
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
 			var maxima = strings.MaxBy(s => s.Length);
-			Assert.That(MoreEnumerable.First(maxima), Is.EqualTo("hello"));
+			Assert.That(SuperEnumerable.First(maxima), Is.EqualTo("hello"));
 		}
 
 		[Test]
@@ -76,7 +58,7 @@ public class MaxByTest
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
 			var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
-			Assert.That(MoreEnumerable.First(maxima), Is.EqualTo("ax"));
+			Assert.That(SuperEnumerable.First(maxima), Is.EqualTo("ax"));
 		}
 
 		[Test]
@@ -84,7 +66,7 @@ public class MaxByTest
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
 			Assert.Throws<InvalidOperationException>(() =>
-				MoreEnumerable.First(strings.MaxBy(s => s.Length)));
+				SuperEnumerable.First(strings.MaxBy(s => s.Length)));
 		}
 
 		[Test]
@@ -92,7 +74,7 @@ public class MaxByTest
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
 			Assert.Throws<InvalidOperationException>(() =>
-				MoreEnumerable.First(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
+				SuperEnumerable.First(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
 		}
 	}
 
@@ -103,7 +85,7 @@ public class MaxByTest
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
 			var maxima = strings.MaxBy(s => s.Length);
-			Assert.That(MoreEnumerable.FirstOrDefault(maxima), Is.EqualTo("hello"));
+			Assert.That(SuperEnumerable.FirstOrDefault(maxima), Is.EqualTo("hello"));
 		}
 
 		[Test]
@@ -111,7 +93,7 @@ public class MaxByTest
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
 			var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
-			Assert.That(MoreEnumerable.FirstOrDefault(maxima), Is.EqualTo("ax"));
+			Assert.That(SuperEnumerable.FirstOrDefault(maxima), Is.EqualTo("ax"));
 		}
 
 		[Test]
@@ -119,7 +101,7 @@ public class MaxByTest
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
 			var maxima = strings.MaxBy(s => s.Length);
-			Assert.That(MoreEnumerable.FirstOrDefault(maxima), Is.Null);
+			Assert.That(SuperEnumerable.FirstOrDefault(maxima), Is.Null);
 		}
 
 		[Test]
@@ -127,7 +109,7 @@ public class MaxByTest
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
 			var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
-			Assert.That(MoreEnumerable.FirstOrDefault(maxima), Is.Null);
+			Assert.That(SuperEnumerable.FirstOrDefault(maxima), Is.Null);
 		}
 	}
 
@@ -138,7 +120,7 @@ public class MaxByTest
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
 			var maxima = strings.MaxBy(s => s.Length);
-			Assert.That(MoreEnumerable.Last(maxima), Is.EqualTo("world"));
+			Assert.That(SuperEnumerable.Last(maxima), Is.EqualTo("world"));
 		}
 
 		[Test]
@@ -146,7 +128,7 @@ public class MaxByTest
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
 			var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
-			Assert.That(MoreEnumerable.Last(maxima), Is.EqualTo("az"));
+			Assert.That(SuperEnumerable.Last(maxima), Is.EqualTo("az"));
 		}
 
 		[Test]
@@ -154,7 +136,7 @@ public class MaxByTest
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
 			Assert.Throws<InvalidOperationException>(() =>
-				MoreEnumerable.Last(strings.MaxBy(s => s.Length)));
+				SuperEnumerable.Last(strings.MaxBy(s => s.Length)));
 		}
 
 		[Test]
@@ -162,7 +144,7 @@ public class MaxByTest
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
 			Assert.Throws<InvalidOperationException>(() =>
-				MoreEnumerable.Last(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
+				SuperEnumerable.Last(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
 		}
 	}
 
@@ -173,7 +155,7 @@ public class MaxByTest
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
 			var maxima = strings.MaxBy(s => s.Length);
-			Assert.That(MoreEnumerable.LastOrDefault(maxima), Is.EqualTo("world"));
+			Assert.That(SuperEnumerable.LastOrDefault(maxima), Is.EqualTo("world"));
 		}
 
 		[Test]
@@ -181,7 +163,7 @@ public class MaxByTest
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
 			var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
-			Assert.That(MoreEnumerable.LastOrDefault(maxima), Is.EqualTo("az"));
+			Assert.That(SuperEnumerable.LastOrDefault(maxima), Is.EqualTo("az"));
 		}
 
 		[Test]
@@ -189,7 +171,7 @@ public class MaxByTest
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
 			var maxima = strings.MaxBy(s => s.Length);
-			Assert.That(MoreEnumerable.LastOrDefault(maxima), Is.Null);
+			Assert.That(SuperEnumerable.LastOrDefault(maxima), Is.Null);
 		}
 
 		[Test]
@@ -197,7 +179,7 @@ public class MaxByTest
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
 			var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
-			Assert.That(MoreEnumerable.LastOrDefault(maxima), Is.Null);
+			Assert.That(SuperEnumerable.LastOrDefault(maxima), Is.Null);
 		}
 	}
 

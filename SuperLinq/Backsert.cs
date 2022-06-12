@@ -17,11 +17,7 @@
 
 namespace SuperLinq;
 
-using System;
-using System.Linq;
-using System.Collections.Generic;
-
-static partial class MoreEnumerable
+public static partial class SuperEnumerable
 {
 	/// <summary>
 	/// Inserts the elements of a sequence into another sequence at a

@@ -46,7 +46,6 @@
 
   <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp2.1' And '$(TargetFramework)' != 'net451'">
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
-    <Compile Include="Async\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,9 +65,7 @@
       <Compile Include="Comparable.cs" />
       <Compile Include="Comparer.cs" />
       <Compile Include="CurrentThreadCultureScope.cs" />
-      <Compile Include="Enumerable.cs" />
       <Compile Include="EqualityComparer.cs" />
-      <Compile Include="FuncModule.cs" />
       <Compile Include="KeyValuePair.cs" />
       <Compile Include="Program.cs" />
       <Compile Include="ReadOnlyCollection.cs" />

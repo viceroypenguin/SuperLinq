@@ -17,11 +17,7 @@
 
 namespace SuperLinq;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-static partial class MoreEnumerable
+public static partial class SuperEnumerable
 {
 	/// <summary>
 	/// Applies a right-associative accumulator function over a sequence.

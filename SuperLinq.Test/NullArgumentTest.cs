@@ -1,31 +1,11 @@
-#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2015 Julian Lettner. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
-
-namespace SuperLinq.Test;
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+
+namespace SuperLinq.Test;
 
 [TestFixture]
 public class NullArgumentTest
@@ -59,14 +39,14 @@ public class NullArgumentTest
 			var stackTrace = new StackTrace(ane, false);
 			var stackFrame = stackTrace.GetFrames().First();
 			var actualType = stackFrame.GetMethod().DeclaringType;
-			Assert.That(actualType, Is.SameAs(typeof(MoreEnumerable)));
+			Assert.That(actualType, Is.SameAs(typeof(SuperEnumerable)));
 		});
 
 	static IEnumerable<ITestCaseData> GetCanBeNullTestCases() =>
 		GetTestCases(canBeNull: true, testCaseFactory: (method, args, _) => () => method.Invoke(null, args));
 
 	static IEnumerable<ITestCaseData> GetTestCases(bool canBeNull, Func<MethodInfo, object[], string, Action> testCaseFactory) =>
-		from m in typeof(MoreEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+		from m in typeof(SuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
 		from t in CreateTestCases(m, canBeNull, testCaseFactory)
 		select t;
 
@@ -115,13 +95,13 @@ public class NullArgumentTest
 
 		var nullableParameters = new[]
 		{
-				nameof(MoreEnumerable.Assert) + ".errorSelector",
-				nameof(MoreEnumerable.From) + ".function",
-				nameof(MoreEnumerable.From) + ".function1",
-				nameof(MoreEnumerable.From) + ".function2",
-				nameof(MoreEnumerable.From) + ".function3",
-				nameof(MoreEnumerable.ToDataTable) + ".expressions",
-				nameof(MoreEnumerable.Trace) + ".format"
+				nameof(SuperEnumerable.Assert) + ".errorSelector",
+				nameof(SuperEnumerable.From) + ".function",
+				nameof(SuperEnumerable.From) + ".function1",
+				nameof(SuperEnumerable.From) + ".function2",
+				nameof(SuperEnumerable.From) + ".function3",
+				nameof(SuperEnumerable.ToDataTable) + ".expressions",
+				nameof(SuperEnumerable.Trace) + ".format"
 			};
 
 		var type = parameter.ParameterType.GetTypeInfo();

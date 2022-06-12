@@ -1,28 +1,8 @@
-#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
+﻿using System.Collections;
 
 namespace SuperLinq;
 
-using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-
-static partial class MoreEnumerable
+public static partial class SuperEnumerable
 {
 	/// <summary>
 	/// Flattens a sequence containing arbitrarily-nested sequences.
@@ -35,7 +15,7 @@ static partial class MoreEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
 	public static IEnumerable<object> Flatten(this IEnumerable source) =>
-		Flatten(source, obj => !(obj is string));
+		Flatten(source, obj => obj is not string);
 
 	/// <summary>
 	/// Flattens a sequence containing arbitrarily-nested sequences. An
@@ -88,7 +68,7 @@ static partial class MoreEnumerable
 	/// <exception cref="ArgumentNullException">
 	/// <paramref name="selector"/> is <c>null</c>.</exception>
 
-	public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, IEnumerable?> selector)
+	public static IEnumerable<object> Flatten(this IEnumerable source, Func<object?, IEnumerable?> selector)
 	{
 		if (source == null) throw new ArgumentNullException(nameof(source));
 		if (selector == null) throw new ArgumentNullException(nameof(selector));
