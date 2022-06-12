@@ -5,7 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
 
     <AnalysisLevel>latest-recommended</AnalysisLevel>
+	</PropertyGroup>
 
-    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Meziantou.Analyzer" Version="1.0.702" PrivateAssets="All" />
+	</ItemGroup>
 </Project>
