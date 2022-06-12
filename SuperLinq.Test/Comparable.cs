@@ -15,14 +15,13 @@
 // limitations under the License.
 #endregion
 
-namespace SuperLinq.Test
-{
-    using System;
-    using System.Collections.Generic;
+namespace SuperLinq.Test;
 
-    static class Comparable<T> where T : IComparable<T>
-    {
-        public static readonly IComparer<T> DescendingOrderComparer =
-            Comparer<T>.Create((x, y) => -Math.Sign(x.CompareTo(y)));
-    }
+using System;
+using System.Collections.Generic;
+
+static class Comparable<T> where T : IComparable<T>
+{
+	public static readonly IComparer<T> DescendingOrderComparer =
+		Comparer<T>.Create((x, y) => -Math.Sign(x.CompareTo(y)));
 }

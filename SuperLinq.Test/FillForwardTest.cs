@@ -15,33 +15,33 @@
 // limitations under the License.
 #endregion
 
-namespace SuperLinq.Test
+namespace SuperLinq.Test;
+
+using System.Text.RegularExpressions;
+using NUnit.Framework;
+
+[TestFixture]
+public class FillForwardTest
 {
-    using System.Text.RegularExpressions;
-    using NUnit.Framework;
+	[Test]
+	public void FillForwardIsLazy()
+	{
+		new BreakingSequence<object>().FillForward();
+	}
 
-    [TestFixture]
-    public class FillForwardTest
-    {
-        [Test]
-        public void FillForwardIsLazy()
-        {
-            new BreakingSequence<object>().FillForward();
-        }
+	[Test]
+	public void FillForward()
+	{
+		int? na = null;
+		var input = new[] { na, na, 1, 2, na, na, na, 3, 4, na, na };
+		var result = input.FillForward();
+		Assert.That(result, Is.EqualTo(new[] { na, na, 1, 2, 2, 2, 2, 3, 4, 4, 4 }));
+	}
 
-        [Test]
-        public void FillForward()
-        {
-            int? na = null;
-            var input = new[] { na, na, 1, 2, na, na, na, 3, 4, na, na };
-            var result = input.FillForward();
-            Assert.That(result, Is.EqualTo(new[] { na, na, 1, 2, 2, 2, 2, 3, 4, 4, 4 }));
-        }
-
-        [Test]
-        public void FillForwardWithFillSelector()
-        {
-            const string table = @"
+	[Test]
+	public void FillForwardWithFillSelector()
+	{
+		const string table = @"
                 Europe UK          London      123
                 -      -           Manchester  234
                 -      -           Glasgow     345
@@ -53,34 +53,33 @@ namespace SuperLinq.Test
                 -      Kenya       Nairobi     901
             ";
 
-            var data =
-                from line in table.Split('\n')
-                select line.Trim() into line
-                where !string.IsNullOrEmpty(line)
-                select Regex.Split(line, "\x20+").Fold((cont, ctry, city, val) => new
-                {
-                    Continent = cont,
-                    Country   = ctry,
-                    City      = city,
-                    Value     = int.Parse(val),
-                });
+		var data =
+			from line in table.Split('\n')
+			select line.Trim() into line
+			where !string.IsNullOrEmpty(line)
+			select Regex.Split(line, "\x20+").Fold((cont, ctry, city, val) => new
+			{
+				Continent = cont,
+				Country = ctry,
+				City = city,
+				Value = int.Parse(val),
+			});
 
-            data = data.FillForward(e => e.Continent == "-", (e, f) => new { f.Continent, e.Country, e.City, e.Value })
-                       .FillForward(e => e.Country   == "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value });
+		data = data.FillForward(e => e.Continent == "-", (e, f) => new { f.Continent, e.Country, e.City, e.Value })
+				   .FillForward(e => e.Country == "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value });
 
 
-            Assert.That(data, Is.EqualTo(new[]
-            {
-                new { Continent = "Europe", Country = "UK",      City = "London",     Value = 123 },
-                new { Continent = "Europe", Country = "UK",      City = "Manchester", Value = 234 },
-                new { Continent = "Europe", Country = "UK",      City = "Glasgow",    Value = 345 },
-                new { Continent = "Europe", Country = "Germany", City = "Munich",     Value = 456 },
-                new { Continent = "Europe", Country = "Germany", City = "Frankfurt",  Value = 567 },
-                new { Continent = "Europe", Country = "Germany", City = "Stuttgart",  Value = 678 },
-                new { Continent = "Africa", Country = "Egypt",   City = "Cairo",      Value = 789 },
-                new { Continent = "Africa", Country = "Egypt",   City = "Alexandria", Value = 890 },
-                new { Continent = "Africa", Country = "Kenya",   City = "Nairobi",    Value = 901 },
-            }));
-        }
-    }
+		Assert.That(data, Is.EqualTo(new[]
+		{
+				new { Continent = "Europe", Country = "UK",      City = "London",     Value = 123 },
+				new { Continent = "Europe", Country = "UK",      City = "Manchester", Value = 234 },
+				new { Continent = "Europe", Country = "UK",      City = "Glasgow",    Value = 345 },
+				new { Continent = "Europe", Country = "Germany", City = "Munich",     Value = 456 },
+				new { Continent = "Europe", Country = "Germany", City = "Frankfurt",  Value = 567 },
+				new { Continent = "Europe", Country = "Germany", City = "Stuttgart",  Value = 678 },
+				new { Continent = "Africa", Country = "Egypt",   City = "Cairo",      Value = 789 },
+				new { Continent = "Africa", Country = "Egypt",   City = "Alexandria", Value = 890 },
+				new { Continent = "Africa", Country = "Kenya",   City = "Nairobi",    Value = 901 },
+			}));
+	}
 }

@@ -15,17 +15,16 @@
 // limitations under the License.
 #endregion
 
-namespace SuperLinq.Test
-{
-    using System;
-    using System.Reflection;
-    using NUnit.Common;
-    using NUnitLite;
+namespace SuperLinq.Test;
 
-    static class Program
-    {
-        static int Main(string[] args) =>
-            new AutoRun(typeof(Program).GetTypeInfo().Assembly)
-                .Execute(args, new ExtendedTextWrapper(Console.Out), Console.In);
-    }
+using System;
+using System.Reflection;
+using NUnit.Common;
+using NUnitLite;
+
+static class Program
+{
+	static int Main(string[] args) =>
+		new AutoRun(typeof(Program).GetTypeInfo().Assembly)
+			.Execute(args, new ExtendedTextWrapper(Console.Out), Console.In);
 }

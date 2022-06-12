@@ -15,122 +15,121 @@
 // limitations under the License.
 #endregion
 
-namespace SuperLinq
+namespace SuperLinq;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+static partial class MoreEnumerable
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+	/// <summary>
+	/// Applies a right-associative accumulator function over a sequence.
+	/// This operator is the right-associative version of the
+	/// <see cref="Enumerable.Aggregate{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the elements of source.</typeparam>
+	/// <param name="source">Source sequence.</param>
+	/// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
+	/// <returns>The final accumulator value.</returns>
+	/// <example>
+	/// <code><![CDATA[
+	/// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => string.Format("({0}/{1})", a, b));
+	/// ]]></code>
+	/// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/5))))"</c>.
+	/// </example>
+	/// <remarks>
+	/// This operator executes immediately.
+	/// </remarks>
 
-    static partial class MoreEnumerable
-    {
-        /// <summary>
-        /// Applies a right-associative accumulator function over a sequence.
-        /// This operator is the right-associative version of the
-        /// <see cref="Enumerable.Aggregate{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">Source sequence.</param>
-        /// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
-        /// <returns>The final accumulator value.</returns>
-        /// <example>
-        /// <code><![CDATA[
-        /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => string.Format("({0}/{1})", a, b));
-        /// ]]></code>
-        /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/5))))"</c>.
-        /// </example>
-        /// <remarks>
-        /// This operator executes immediately.
-        /// </remarks>
+	public static TSource AggregateRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
+	{
+		if (source == null) throw new ArgumentNullException(nameof(source));
+		if (func == null) throw new ArgumentNullException(nameof(func));
 
-        public static TSource AggregateRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (func == null) throw new ArgumentNullException(nameof(func));
+		var list = source.ToListLike();
 
-            var list = source.ToListLike();
+		if (list.Count == 0)
+			throw new InvalidOperationException("Sequence contains no elements.");
 
-            if (list.Count == 0)
-                throw new InvalidOperationException("Sequence contains no elements.");
+		return AggregateRightImpl(list, list[list.Count - 1], func, list.Count - 1);
+	}
 
-            return AggregateRightImpl(list, list[list.Count - 1], func, list.Count - 1);
-        }
+	/// <summary>
+	/// Applies a right-associative accumulator function over a sequence.
+	/// The specified seed value is used as the initial accumulator value.
+	/// This operator is the right-associative version of the
+	/// <see cref="Enumerable.Aggregate{TSource, TAccumulate}(IEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the elements of source.</typeparam>
+	/// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
+	/// <param name="source">Source sequence.</param>
+	/// <param name="seed">The initial accumulator value.</param>
+	/// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
+	/// <returns>The final accumulator value.</returns>
+	/// <example>
+	/// <code><![CDATA[
+	/// var numbers = Enumerable.Range(1, 5);
+	/// string result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b));
+	/// ]]></code>
+	/// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/(5/6)))))"</c>.
+	/// </example>
+	/// <remarks>
+	/// This operator executes immediately.
+	/// </remarks>
 
-        /// <summary>
-        /// Applies a right-associative accumulator function over a sequence.
-        /// The specified seed value is used as the initial accumulator value.
-        /// This operator is the right-associative version of the
-        /// <see cref="Enumerable.Aggregate{TSource, TAccumulate}(IEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
-        /// <param name="source">Source sequence.</param>
-        /// <param name="seed">The initial accumulator value.</param>
-        /// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
-        /// <returns>The final accumulator value.</returns>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = Enumerable.Range(1, 5);
-        /// string result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b));
-        /// ]]></code>
-        /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/(5/6)))))"</c>.
-        /// </example>
-        /// <remarks>
-        /// This operator executes immediately.
-        /// </remarks>
+	public static TAccumulate AggregateRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
+	{
+		if (source == null) throw new ArgumentNullException(nameof(source));
+		if (func == null) throw new ArgumentNullException(nameof(func));
 
-        public static TAccumulate AggregateRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (func == null) throw new ArgumentNullException(nameof(func));
+		var list = source.ToListLike();
 
-            var list = source.ToListLike();
+		return AggregateRightImpl(list, seed, func, list.Count);
+	}
 
-            return AggregateRightImpl(list, seed, func, list.Count);
-        }
+	/// <summary>
+	/// Applies a right-associative accumulator function over a sequence.
+	/// The specified seed value is used as the initial accumulator value,
+	/// and the specified function is used to select the result value.
+	/// This operator is the right-associative version of the
+	/// <see cref="Enumerable.Aggregate{TSource, TAccumulate, TResult}(IEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate}, Func{TAccumulate, TResult})"/> LINQ operator.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the elements of source.</typeparam>
+	/// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
+	/// <typeparam name="TResult">The type of the resulting value.</typeparam>
+	/// <param name="source">Source sequence.</param>
+	/// <param name="seed">The initial accumulator value.</param>
+	/// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
+	/// <param name="resultSelector">A function to transform the final accumulator value into the result value.</param>
+	/// <returns>The transformed final accumulator value.</returns>
+	/// <example>
+	/// <code><![CDATA[
+	/// var numbers = Enumerable.Range(1, 5);
+	/// int result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b), str => str.Length);
+	/// ]]></code>
+	/// The <c>result</c> variable will contain <c>21</c>.
+	/// </example>
+	/// <remarks>
+	/// This operator executes immediately.
+	/// </remarks>
 
-        /// <summary>
-        /// Applies a right-associative accumulator function over a sequence.
-        /// The specified seed value is used as the initial accumulator value,
-        /// and the specified function is used to select the result value.
-        /// This operator is the right-associative version of the
-        /// <see cref="Enumerable.Aggregate{TSource, TAccumulate, TResult}(IEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate}, Func{TAccumulate, TResult})"/> LINQ operator.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
-        /// <typeparam name="TResult">The type of the resulting value.</typeparam>
-        /// <param name="source">Source sequence.</param>
-        /// <param name="seed">The initial accumulator value.</param>
-        /// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
-        /// <param name="resultSelector">A function to transform the final accumulator value into the result value.</param>
-        /// <returns>The transformed final accumulator value.</returns>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = Enumerable.Range(1, 5);
-        /// int result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b), str => str.Length);
-        /// ]]></code>
-        /// The <c>result</c> variable will contain <c>21</c>.
-        /// </example>
-        /// <remarks>
-        /// This operator executes immediately.
-        /// </remarks>
+	public static TResult AggregateRight<TSource, TAccumulate, TResult>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func, Func<TAccumulate, TResult> resultSelector)
+	{
+		if (source == null) throw new ArgumentNullException(nameof(source));
+		if (func == null) throw new ArgumentNullException(nameof(func));
+		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-        public static TResult AggregateRight<TSource, TAccumulate, TResult>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func, Func<TAccumulate, TResult> resultSelector)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (func == null) throw new ArgumentNullException(nameof(func));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		return resultSelector(source.AggregateRight(seed, func));
+	}
 
-            return resultSelector(source.AggregateRight(seed, func));
-        }
+	static TResult AggregateRightImpl<TSource, TResult>(IListLike<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
+	{
+		while (i-- > 0)
+		{
+			accumulator = func(list[i], accumulator);
+		}
 
-        static TResult AggregateRightImpl<TSource, TResult>(IListLike<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
-        {
-            while (i-- > 0)
-            {
-                accumulator = func(list[i], accumulator);
-            }
-
-            return accumulator;
-        }
-    }
+		return accumulator;
+	}
 }

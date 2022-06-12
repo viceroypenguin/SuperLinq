@@ -15,13 +15,12 @@
 // limitations under the License.
 #endregion
 
-namespace SuperLinq
-{
-    using System;
-    using Delegate = Delegating.Delegate;
+namespace SuperLinq;
 
-    static class Disposable
-    {
-        public static readonly IDisposable Nop = Delegate.Disposable(delegate { });
-    }
+using System;
+using Delegate = Delegating.Delegate;
+
+static class Disposable
+{
+	public static readonly IDisposable Nop = Delegate.Disposable(delegate { });
 }

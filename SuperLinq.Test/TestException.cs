@@ -15,11 +15,10 @@
 // limitations under the License.
 #endregion
 
-namespace SuperLinq.Test
-{
-    /// <summary>
-    /// Reserved for use within tests.
-    /// </summary>
+namespace SuperLinq.Test;
 
-    sealed class TestException : System.Exception {}
-}
+/// <summary>
+/// Reserved for use within tests.
+/// </summary>
+
+sealed class TestException : System.Exception { }

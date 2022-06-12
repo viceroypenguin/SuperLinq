@@ -15,55 +15,54 @@
 // limitations under the License.
 #endregion
 
-namespace SuperLinq.Test
+namespace SuperLinq.Test;
+
+using System;
+using NUnit.Framework;
+
+[TestFixture]
+public class AssertTest
 {
-    using System;
-    using NUnit.Framework;
+	[Test]
+	public void AssertIsLazy()
+	{
+		new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>());
+		new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, Exception>());
+	}
 
-    [TestFixture]
-    public class AssertTest
-    {
-        [Test]
-        public void AssertIsLazy()
-        {
-            new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>());
-            new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, Exception>());
-        }
+	[Test]
+	public void AssertSequenceWithValidAllElements()
+	{
+		var source = new[] { 2, 4, 6, 8 };
+		source.Assert(n => n % 2 == 0).AssertSequenceEqual(source);
+	}
 
-        [Test]
-        public void AssertSequenceWithValidAllElements()
-        {
-            var source = new[] {2, 4, 6, 8};
-            source.Assert(n => n % 2 == 0).AssertSequenceEqual(source);
-        }
+	[Test]
+	public void AssertSequenceWithValidSomeInvalidElements()
+	{
+		Assert.Throws<InvalidOperationException>(() =>
+			new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0).Consume());
+	}
 
-        [Test]
-        public void AssertSequenceWithValidSomeInvalidElements()
-        {
-            Assert.Throws<InvalidOperationException>(() =>
-                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0).Consume());
-        }
+	[Test]
+	public void AssertSequenceWithInvalidElementsAndCustomErrorReturningNull()
+	{
+		Assert.Throws<InvalidOperationException>(() =>
+			new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, _ => null).Consume());
+	}
 
-        [Test]
-        public void AssertSequenceWithInvalidElementsAndCustomErrorReturningNull()
-        {
-            Assert.Throws<InvalidOperationException>(() =>
-                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, _ => null).Consume());
-        }
+	[Test]
+	public void AssertSequenceWithInvalidElementsAndCustomError()
+	{
+		var e =
+			Assert.Throws<ValueException>(() =>
+				new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, n => new ValueException(n)).Consume());
+		Assert.AreEqual(7, e.Value);
+	}
 
-        [Test]
-        public void AssertSequenceWithInvalidElementsAndCustomError()
-        {
-            var e =
-                Assert.Throws<ValueException>(() =>
-                    new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, n => new ValueException(n)).Consume());
-            Assert.AreEqual(7, e.Value);
-        }
-
-        class ValueException : Exception
-        {
-            public object Value { get; }
-            public ValueException(object value) { Value = value; }
-        }
-    }
+	class ValueException : Exception
+	{
+		public object Value { get; }
+		public ValueException(object value) { Value = value; }
+	}
 }

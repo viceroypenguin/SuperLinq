@@ -15,21 +15,20 @@
 // limitations under the License.
 #endregion
 
-namespace SuperLinq
-{
-    /// <summary>
-    /// Enumeration that defines values representing valid ordering directions for a sequence.
-    /// </summary>
+namespace SuperLinq;
 
-    public enum OrderByDirection
-    {
-        /// <summary>
-        /// Elements are ordered by increasing value
-        /// </summary>
-        Ascending = 0,
-        /// <summary>
-        /// Elements are ordered by decreasing value
-        /// </summary>
-        Descending = 1,
-    }
+/// <summary>
+/// Enumeration that defines values representing valid ordering directions for a sequence.
+/// </summary>
+
+public enum OrderByDirection
+{
+	/// <summary>
+	/// Elements are ordered by increasing value
+	/// </summary>
+	Ascending = 0,
+	/// <summary>
+	/// Elements are ordered by decreasing value
+	/// </summary>
+	Descending = 1,
 }

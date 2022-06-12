@@ -15,47 +15,46 @@
 // limitations under the License.
 #endregion
 
-namespace SuperLinq
+namespace SuperLinq;
+
+using System;
+using System.Collections.Generic;
+
+/// <summary>
+/// Provides a set of static methods for querying objects that
+/// implement <see cref="IEnumerable{T}" />.
+/// </summary>
+
+public static partial class MoreEnumerable
 {
-    using System;
-    using System.Collections.Generic;
+	internal static int? TryGetCollectionCount<T>(this IEnumerable<T> source) =>
+		source switch
+		{
+			null => throw new ArgumentNullException(nameof(source)),
+			ICollection<T> collection => collection.Count,
+			IReadOnlyCollection<T> collection => collection.Count,
+			_ => null
+		};
 
-    /// <summary>
-    /// Provides a set of static methods for querying objects that
-    /// implement <see cref="IEnumerable{T}" />.
-    /// </summary>
+	static int CountUpTo<T>(this IEnumerable<T> source, int max)
+	{
+		if (source == null) throw new ArgumentNullException(nameof(source));
+		if (max < 0) throw new ArgumentOutOfRangeException(nameof(max), "The maximum count argument cannot be negative.");
 
-    public static partial class MoreEnumerable
-    {
-        internal static int? TryGetCollectionCount<T>(this IEnumerable<T> source) =>
-            source switch
-            {
-                null => throw new ArgumentNullException(nameof(source)),
-                ICollection<T> collection => collection.Count,
-                IReadOnlyCollection<T> collection => collection.Count,
-                _ => null
-            };
+		var count = 0;
 
-        static int CountUpTo<T>(this IEnumerable<T> source, int max)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (max < 0) throw new ArgumentOutOfRangeException(nameof(max), "The maximum count argument cannot be negative.");
+		using (var e = source.GetEnumerator())
+		{
+			while (count < max && e.MoveNext())
+			{
+				count++;
+			}
+		}
 
-            var count = 0;
+		return count;
+	}
 
-            using (var e = source.GetEnumerator())
-            {
-                while (count < max && e.MoveNext())
-                {
-                    count++;
-                }
-            }
+	// See https://github.com/atifaziz/Optuple
 
-            return count;
-        }
-
-        // See https://github.com/atifaziz/Optuple
-
-        static (bool HasValue, T Value) Some<T>(T value) => (true, value);
-    }
+	static (bool HasValue, T Value) Some<T>(T value) => (true, value);
 }

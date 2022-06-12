@@ -15,24 +15,23 @@
 // limitations under the License.
 #endregion
 
-namespace SuperLinq.Test
+namespace SuperLinq.Test;
+
+using System;
+
+abstract class Scope<T> : IDisposable
 {
-    using System;
+	readonly T _old;
 
-    abstract class Scope<T> : IDisposable
-    {
-        readonly T _old;
+	protected Scope(T current)
+	{
+		_old = current;
+	}
 
-        protected Scope(T current)
-        {
-            _old = current;
-        }
+	public virtual void Dispose()
+	{
+		Restore(_old);
+	}
 
-        public virtual void Dispose()
-        {
-            Restore(_old);
-        }
-
-        protected abstract void Restore(T old);
-    }
+	protected abstract void Restore(T old);
 }

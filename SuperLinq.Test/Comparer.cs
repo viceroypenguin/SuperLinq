@@ -15,31 +15,30 @@
 // limitations under the License.
 #endregion
 
-namespace SuperLinq.Test
+namespace SuperLinq.Test;
+
+using System;
+using System.Collections.Generic;
+
+sealed class Comparer
 {
-    using System;
-    using System.Collections.Generic;
+	/// <summary>
+	/// Creates an <see cref="IComparer{T}"/> given a
+	/// <see cref="Func{T,T,Int32}"/>.
+	/// </summary>
 
-    sealed class Comparer
-    {
-        /// <summary>
-        /// Creates an <see cref="IComparer{T}"/> given a
-        /// <see cref="Func{T,T,Int32}"/>.
-        /// </summary>
+	public static IComparer<T> Create<T>(Func<T, T, int> compare) =>
+		new DelegatingComparer<T>(compare);
 
-        public static IComparer<T> Create<T>(Func<T, T, int> compare) =>
-            new DelegatingComparer<T>(compare);
+	sealed class DelegatingComparer<T> : IComparer<T>
+	{
+		readonly Func<T, T, int> _comparer;
 
-        sealed class DelegatingComparer<T> : IComparer<T>
-        {
-            readonly Func<T, T, int> _comparer;
+		public DelegatingComparer(Func<T, T, int> comparer)
+		{
+			_comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+		}
 
-            public DelegatingComparer(Func<T, T, int> comparer)
-            {
-                _comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
-            }
-
-            public int Compare(T x, T y) => _comparer(x, y);
-        }
-    }
+		public int Compare(T x, T y) => _comparer(x, y);
+	}
 }

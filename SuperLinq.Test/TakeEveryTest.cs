@@ -15,58 +15,57 @@
 // limitations under the License.
 #endregion
 
-namespace SuperLinq.Test
+namespace SuperLinq.Test;
+
+using NUnit.Framework;
+
+[TestFixture]
+public class TakeEveryTest
 {
-    using NUnit.Framework;
+	[Test]
+	public void TakeEveryNegativeSkip()
+	{
+		AssertThrowsArgument.OutOfRangeException("step", () =>
+			new object[0].TakeEvery(-1));
+	}
 
-    [TestFixture]
-    public class TakeEveryTest
-    {
-        [Test]
-        public void TakeEveryNegativeSkip()
-        {
-            AssertThrowsArgument.OutOfRangeException("step",() =>
-                new object[0].TakeEvery(-1));
-        }
+	[Test]
+	public void TakeEveryOutOfRangeZeroStep()
+	{
+		AssertThrowsArgument.OutOfRangeException("step", () =>
+			new object[0].TakeEvery(0));
+	}
 
-        [Test]
-        public void TakeEveryOutOfRangeZeroStep()
-        {
-            AssertThrowsArgument.OutOfRangeException("step", () =>
-                new object[0].TakeEvery(0));
-        }
+	[Test]
+	public void TakeEveryEmptySequence()
+	{
+		Assert.That(new object[0].TakeEvery(1), Is.Empty);
+	}
 
-        [Test]
-        public void TakeEveryEmptySequence()
-        {
-            Assert.That(new object[0].TakeEvery(1), Is.Empty);
-        }
+	[Test]
+	public void TakeEveryNonEmptySequence()
+	{
+		var result = new[] { 1, 2, 3, 4, 5 }.TakeEvery(1);
+		result.AssertSequenceEqual(1, 2, 3, 4, 5);
+	}
 
-        [Test]
-        public void TakeEveryNonEmptySequence()
-        {
-            var result = new[] { 1, 2, 3, 4, 5 }.TakeEvery(1);
-            result.AssertSequenceEqual(1, 2, 3, 4, 5);
-        }
+	[Test]
+	public void TakeEveryOtherOnNonEmptySequence()
+	{
+		var result = new[] { 1, 2, 3, 4, 5 }.TakeEvery(2);
+		result.AssertSequenceEqual(1, 3, 5);
+	}
 
-        [Test]
-        public void TakeEveryOtherOnNonEmptySequence()
-        {
-            var result = new[] { 1, 2, 3, 4, 5 }.TakeEvery(2);
-            result.AssertSequenceEqual(1, 3, 5);
-        }
+	[Test]
+	public void TakeEveryThirdOnNonEmptySequence()
+	{
+		var result = new[] { 1, 2, 3, 4, 5 }.TakeEvery(3);
+		result.AssertSequenceEqual(1, 4);
+	}
 
-        [Test]
-        public void TakeEveryThirdOnNonEmptySequence()
-        {
-            var result = new[] { 1, 2, 3, 4, 5 }.TakeEvery(3);
-            result.AssertSequenceEqual(1, 4);
-        }
-
-        [Test]
-        public void TakeEveryIsLazy()
-        {
-            new BreakingSequence<object>().TakeEvery(1);
-        }
-    }
+	[Test]
+	public void TakeEveryIsLazy()
+	{
+		new BreakingSequence<object>().TakeEvery(1);
+	}
 }

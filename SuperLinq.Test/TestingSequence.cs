@@ -15,75 +15,74 @@
 // limitations under the License.
 #endregion
 
-namespace SuperLinq.Test
+namespace SuperLinq.Test;
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using NUnit.Framework;
+
+static class TestingSequence
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using NUnit.Framework;
+	internal static TestingSequence<T> Of<T>(params T[] elements) =>
+		new TestingSequence<T>(elements);
 
-    static class TestingSequence
-    {
-        internal static TestingSequence<T> Of<T>(params T[] elements) =>
-            new TestingSequence<T>(elements);
+	internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source) =>
+		source != null
+		? new TestingSequence<T>(source)
+		: throw new ArgumentNullException(nameof(source));
+}
 
-        internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source) =>
-            source != null
-            ? new TestingSequence<T>(source)
-            : throw new ArgumentNullException(nameof(source));
-    }
+/// <summary>
+/// Sequence that asserts whether its iterator has been disposed
+/// when it is disposed itself and also whether GetEnumerator() is
+/// called exactly once or not.
+/// </summary>
+sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
+{
+	bool? _disposed;
+	IEnumerable<T> _sequence;
 
-    /// <summary>
-    /// Sequence that asserts whether its iterator has been disposed
-    /// when it is disposed itself and also whether GetEnumerator() is
-    /// called exactly once or not.
-    /// </summary>
-    sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
-    {
-        bool? _disposed;
-        IEnumerable<T> _sequence;
+	internal TestingSequence(IEnumerable<T> sequence) =>
+		_sequence = sequence;
 
-        internal TestingSequence(IEnumerable<T> sequence) =>
-            _sequence = sequence;
+	public int MoveNextCallCount { get; private set; }
 
-        public int MoveNextCallCount { get; private set; }
+	void IDisposable.Dispose() =>
+		AssertDisposed();
 
-        void IDisposable.Dispose() =>
-            AssertDisposed();
+	/// <summary>
+	/// Checks that the iterator was disposed, and then resets.
+	/// </summary>
+	void AssertDisposed()
+	{
+		if (_disposed == null)
+			return;
+		Assert.IsTrue(_disposed, "Expected sequence to be disposed.");
+		_disposed = null;
+	}
 
-        /// <summary>
-        /// Checks that the iterator was disposed, and then resets.
-        /// </summary>
-        void AssertDisposed()
-        {
-            if (_disposed == null)
-                return;
-            Assert.IsTrue(_disposed, "Expected sequence to be disposed.");
-            _disposed = null;
-        }
+	public IEnumerator<T> GetEnumerator()
+	{
+		Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
+		var enumerator = _sequence.GetEnumerator().AsWatchable();
+		_disposed = false;
+		enumerator.Disposed += delegate
+		{
+			Assert.That(_disposed, Is.False, "LINQ operators should not dispose a sequence more than once.");
+			_disposed = true;
+		};
+		var ended = false;
+		enumerator.MoveNextCalled += (_, moved) =>
+		{
+			Assert.That(ended, Is.False, "LINQ operators should not continue iterating a sequence that has terminated.");
+			ended = !moved;
+			MoveNextCallCount++;
+		};
+		_sequence = null;
+		return enumerator;
+	}
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
-            var enumerator = _sequence.GetEnumerator().AsWatchable();
-            _disposed = false;
-            enumerator.Disposed += delegate
-            {
-                Assert.That(_disposed, Is.False, "LINQ operators should not dispose a sequence more than once.");
-                _disposed = true;
-            };
-            var ended = false;
-            enumerator.MoveNextCalled += (_, moved) =>
-            {
-                Assert.That(ended, Is.False, "LINQ operators should not continue iterating a sequence that has terminated.");
-                ended = !moved;
-                MoveNextCallCount++;
-            };
-            _sequence = null;
-            return enumerator;
-        }
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-    }
 }
