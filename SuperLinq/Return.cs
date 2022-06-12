@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // SuperLinq - Extensions to LINQ to Objects
 // Copyright (c) 2019 Mitch Bodmer. All rights reserved.
 //
@@ -43,7 +43,7 @@ partial class MoreEnumerable
 
 		public T this[int index]
 		{
-			get => index == 0 ? _item : throw new ArgumentOutOfRangeException();
+			get => index == 0 ? _item : throw new ArgumentOutOfRangeException(nameof(index), "Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')");
 			set => throw ReadOnlyException();
 		}
 

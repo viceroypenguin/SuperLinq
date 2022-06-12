@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // SuperLinq - Extensions to LINQ to Objects
 // Copyright (c) 2017 Atif Aziz. All rights reserved.
 //
@@ -35,8 +35,10 @@ static partial class MoreEnumerable
 	/// mapped to their keys.
 	/// </returns>
 
-	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source) =>
-		source.ToDictionary(null);
+	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+		this IEnumerable<KeyValuePair<TKey, TValue>> source)
+		where TKey : notnull =>
+		source.ToDictionary(comparer: default);
 
 	/// <summary>
 	/// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
@@ -52,8 +54,10 @@ static partial class MoreEnumerable
 	/// mapped to their keys.
 	/// </returns>
 
-	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
+	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+		this IEnumerable<KeyValuePair<TKey, TValue>> source,
 		IEqualityComparer<TKey>? comparer)
+		where TKey : notnull
 	{
 		if (source == null) throw new ArgumentNullException(nameof(source));
 		return source.ToDictionary(e => e.Key, e => e.Value, comparer);
@@ -72,8 +76,10 @@ static partial class MoreEnumerable
 	/// mapped to their keys.
 	/// </returns>
 
-	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source) =>
-		source.ToDictionary(null);
+	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+		this IEnumerable<(TKey Key, TValue Value)> source)
+		where TKey : notnull =>
+		source.ToDictionary(comparer: default);
 
 	/// <summary>
 	/// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
@@ -89,8 +95,10 @@ static partial class MoreEnumerable
 	/// mapped to their keys.
 	/// </returns>
 
-	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
+	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+		this IEnumerable<(TKey Key, TValue Value)> source,
 		IEqualityComparer<TKey>? comparer)
+		where TKey : notnull
 	{
 		if (source == null) throw new ArgumentNullException(nameof(source));
 		return source.ToDictionary(e => e.Key, e => e.Value, comparer);

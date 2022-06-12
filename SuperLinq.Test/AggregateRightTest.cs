@@ -29,7 +29,7 @@ public class AggregateRightTest
 	public void AggregateRightWithEmptySequence()
 	{
 		Assert.Throws<InvalidOperationException>(
-			() => new int[0].AggregateRight((a, b) => a + b));
+			() => Array.Empty<int>().AggregateRight((a, b) => a + b));
 	}
 
 	[Test]
@@ -61,7 +61,7 @@ public class AggregateRightTest
 	[TestCase(true)]
 	public void AggregateRightSeedWithEmptySequence(object defaultValue)
 	{
-		Assert.That(new int[0].AggregateRight(defaultValue, (a, b) => b), Is.EqualTo(defaultValue));
+		Assert.That(Array.Empty<int>().AggregateRight(defaultValue, (a, b) => b), Is.EqualTo(defaultValue));
 	}
 
 	[Test]
@@ -69,7 +69,7 @@ public class AggregateRightTest
 	{
 		const int value = 1;
 
-		var result = new int[0].AggregateRight(value, BreakingFunc.Of<int, int, int>());
+		var result = Array.Empty<int>().AggregateRight(value, BreakingFunc.Of<int, int, int>());
 
 		Assert.That(result, Is.EqualTo(value));
 	}
@@ -90,7 +90,7 @@ public class AggregateRightTest
 	[TestCase(true)]
 	public void AggregateRightResultorWithEmptySequence(object defaultValue)
 	{
-		Assert.That(new int[0].AggregateRight(defaultValue, (a, b) => b, a => a == defaultValue), Is.EqualTo(true));
+		Assert.That(Array.Empty<int>().AggregateRight(defaultValue, (a, b) => b, a => a == defaultValue), Is.EqualTo(true));
 	}
 
 	[Test]

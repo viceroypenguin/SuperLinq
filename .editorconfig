@@ -200,6 +200,7 @@ csharp_prefer_braces = true:silent
 csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = true
 
+dotnet_diagnostic.CS0105.severity = error               # CS0105: Using directive is unnecessary.
 dotnet_diagnostic.CS1573.severity = error               # CS1573: Missing XML comment for parameter
 dotnet_diagnostic.CS1591.severity = error               # CS1591: Missing XML comment for publicly visible type or member
 

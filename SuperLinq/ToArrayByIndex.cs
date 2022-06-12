@@ -128,14 +128,14 @@ static partial class MoreEnumerable
 		{
 			var i = indexSelector(e);
 			if (i < 0)
-				throw new IndexOutOfRangeException();
+				throw new InvalidOperationException("'indexSelector' returned an invalid index for the current object.");
 			lastIndex = Math.Max(i, lastIndex);
 			Indexed().Add(new KeyValuePair<int, T>(i, e));
 		}
 
 		var length = lastIndex + 1;
 		return length == 0
-			 ? new TResult[0]
+			 ? Array.Empty<TResult>()
 			 : Indexed().ToArrayByIndex(length, e => e.Key, e => resultSelector(e.Value, e.Key));
 	}
 
@@ -243,7 +243,7 @@ static partial class MoreEnumerable
 		{
 			var i = indexSelector(e);
 			if (i < 0 || i > array.Length)
-				throw new IndexOutOfRangeException();
+				throw new InvalidOperationException("'indexSelector' returned an invalid index for the current object.");
 			array[i] = resultSelector(e, i);
 		}
 		return array;

@@ -64,7 +64,7 @@ public class FullGroupJoinTest
 	[TestCase(TupleResult)]
 	public void FullGroupJoinsEmptyLeft(OverloadCase overloadCase)
 	{
-		var listA = new int[] { };
+		var listA = Array.Empty<int>();
 		var listB = new[] { 2, 3 };
 
 		var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
@@ -83,7 +83,7 @@ public class FullGroupJoinTest
 	public void FullGroupJoinsEmptyRight(OverloadCase overloadCase)
 	{
 		var listA = new[] { 2, 3 };
-		var listB = new int[] { };
+		var listB = Array.Empty<int>();
 
 		var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 

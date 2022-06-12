@@ -87,7 +87,7 @@ public class TransposeTest
 		{
 				new[] { 10, 11 },
 				new[] { 20 },
-				new int[0],
+				Array.Empty<int>(),
 				new[] { 30, 31, 32 }
 			};
 
@@ -149,7 +149,7 @@ public class TransposeTest
 		{
 				new[] { 10, 11 },
 				new[] { 20 },
-				new int[0],
+				Array.Empty<int>(),
 				new[] { 30, 31, 32 }
 			};
 

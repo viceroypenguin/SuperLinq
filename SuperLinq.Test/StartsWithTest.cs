@@ -52,13 +52,13 @@ public class StartsWithTest
 	[Test]
 	public void StartsWithReturnsTrueIfBothEmpty()
 	{
-		Assert.True(new int[0].StartsWith(new int[0]));
+		Assert.True(Array.Empty<int>().StartsWith(Array.Empty<int>()));
 	}
 
 	[Test]
 	public void StartsWithReturnsFalseIfOnlyFirstIsEmpty()
 	{
-		Assert.False(new int[0].StartsWith(new[] { 1, 2, 3 }));
+		Assert.False(Array.Empty<int>().StartsWith(new[] { 1, 2, 3 }));
 	}
 
 	[TestCase("", "", ExpectedResult = true)]

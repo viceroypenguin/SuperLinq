@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // SuperLinq - Extensions to LINQ to Objects
 // Copyright (c) 2016 Felipe Sateler. All rights reserved.
 //

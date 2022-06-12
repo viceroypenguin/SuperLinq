@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // SuperLinq - Extensions to LINQ to Objects
 // Copyright (c) 2010 Johannes Rudolph. All rights reserved.
 //
@@ -159,7 +159,7 @@ static partial class MoreEnumerable
 			throw new ArgumentException("One of the supplied expressions is not allowed.", nameof(expressions), e);
 		}
 
-		MemberInfo GetAccessedMember(LambdaExpression lambda)
+		static MemberInfo GetAccessedMember(LambdaExpression lambda)
 		{
 			var body = lambda.Body;
 
@@ -170,7 +170,7 @@ static partial class MoreEnumerable
 			// Check if the member expression is valid and is a "first level"
 			// member access e.g. not a.b.c
 			return body is MemberExpression memberExpression
-				   && memberExpression.Expression.NodeType == ExpressionType.Parameter
+				   && memberExpression.Expression?.NodeType == ExpressionType.Parameter
 				 ? memberExpression.Member
 				 : throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
 		}

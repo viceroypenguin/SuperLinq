@@ -55,7 +55,6 @@
       <None Remove="TestResult.xml" />
       <Compile Include="..\SuperLinq\Disposable.cs" Link="Disposable.cs" />
       <Compile Include="..\SuperLinq\Reactive\Subject.cs" Link="Subject.cs" />
-      <Compile Include="AssertThrowsArgument.cs" />
       <Compile Include="BreakingCollection.cs" />
       <Compile Include="BreakingAction.cs" />
       <Compile Include="BreakingFunc.cs" />

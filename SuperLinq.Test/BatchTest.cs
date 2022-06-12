@@ -27,14 +27,14 @@ public class BatchTest
 	public void BatchZeroSize()
 	{
 		AssertThrowsArgument.OutOfRangeException("size", () =>
-			new object[0].Batch(0));
+			Array.Empty<object>().Batch(0));
 	}
 
 	[Test]
 	public void BatchNegativeSize()
 	{
 		AssertThrowsArgument.OutOfRangeException("size", () =>
-			new object[0].Batch(-1));
+			Array.Empty<object>().Batch(-1));
 	}
 
 	[Test]

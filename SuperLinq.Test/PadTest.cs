@@ -19,7 +19,6 @@
 
 namespace SuperLinq.Test;
 
-using System.Collections.Generic;
 using NUnit.Framework;
 
 [TestFixture]
@@ -29,7 +28,7 @@ public class PadTest
 	public void PadNegativeWidth()
 	{
 		AssertThrowsArgument.Exception("width", () =>
-			new object[0].Pad(-1));
+			Array.Empty<object>().Pad(-1));
 	}
 
 	[Test]

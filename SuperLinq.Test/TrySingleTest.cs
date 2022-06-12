@@ -34,7 +34,7 @@ public class TrySingleTest
 	[TestCase(SourceKind.BreakingReadOnlyCollection)]
 	public void TrySingleWithEmptySource(SourceKind kind)
 	{
-		var source = new int?[0].ToSourceKind(kind);
+		var source = Array.Empty<int?>().ToSourceKind(kind);
 
 		var (cardinality, value) = source.TrySingle("zero", "one", "many");
 

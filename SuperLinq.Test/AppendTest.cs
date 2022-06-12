@@ -36,7 +36,7 @@ public class AppendTest
 	[Test]
 	public void AppendWithEmptyHeadSequence()
 	{
-		string[] head = { };
+		string[] head = Array.Empty<string>();
 		var tail = "first";
 		var whole = head.Append(tail);
 		whole.AssertSequenceEqual("first");

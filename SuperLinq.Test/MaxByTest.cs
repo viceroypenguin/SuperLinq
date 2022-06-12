@@ -46,7 +46,7 @@ public class MaxByTest
 	[Test]
 	public void MaxByEmptySequence()
 	{
-		Assert.That(new string[0].MaxBy(x => x.Length), Is.Empty);
+		Assert.That(Array.Empty<string>().MaxBy(x => x.Length), Is.Empty);
 	}
 
 	[Test]

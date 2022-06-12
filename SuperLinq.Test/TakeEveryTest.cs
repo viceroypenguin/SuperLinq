@@ -26,20 +26,20 @@ public class TakeEveryTest
 	public void TakeEveryNegativeSkip()
 	{
 		AssertThrowsArgument.OutOfRangeException("step", () =>
-			new object[0].TakeEvery(-1));
+			Array.Empty<object>().TakeEvery(-1));
 	}
 
 	[Test]
 	public void TakeEveryOutOfRangeZeroStep()
 	{
 		AssertThrowsArgument.OutOfRangeException("step", () =>
-			new object[0].TakeEvery(0));
+			Array.Empty<object>().TakeEvery(0));
 	}
 
 	[Test]
 	public void TakeEveryEmptySequence()
 	{
-		Assert.That(new object[0].TakeEvery(1), Is.Empty);
+		Assert.That(Array.Empty<object>().TakeEvery(1), Is.Empty);
 	}
 
 	[Test]

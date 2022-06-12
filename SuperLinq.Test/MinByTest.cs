@@ -46,7 +46,7 @@ public class MinByTest
 	[Test]
 	public void MinByEmptySequence()
 	{
-		Assert.That(new string[0].MinBy(x => x.Length), Is.Empty);
+		Assert.That(Array.Empty<string>().MinBy(x => x.Length), Is.Empty);
 	}
 
 	[Test]

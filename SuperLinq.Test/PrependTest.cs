@@ -36,7 +36,7 @@ public class PrependTest
 	[Test]
 	public void PrependWithEmptyTailSequence()
 	{
-		string[] tail = { };
+		string[] tail = Array.Empty<string>();
 		var head = "first";
 		var whole = tail.Prepend(head);
 		whole.AssertSequenceEqual("first");

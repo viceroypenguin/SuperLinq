@@ -52,13 +52,13 @@ public class EndsWithTest
 	[Test]
 	public void EndsWithReturnsTrueIfBothEmpty()
 	{
-		Assert.True(new int[0].EndsWith(new int[0]));
+		Assert.True(Array.Empty<int>().EndsWith(Array.Empty<int>()));
 	}
 
 	[Test]
 	public void EndsWithReturnsFalseIfOnlyFirstIsEmpty()
 	{
-		Assert.False(new int[0].EndsWith(new[] { 1, 2, 3 }));
+		Assert.False(Array.Empty<int>().EndsWith(new[] { 1, 2, 3 }));
 	}
 
 	[TestCase("", "", ExpectedResult = true)]

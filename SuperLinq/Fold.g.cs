@@ -41,7 +41,17 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, TResult> folder)
         {
-            return FoldImpl(source, 1, folder1: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 1)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 1, Actual: {elements.Count})");
+
+			return folder(
+				elements[0]
+			);
         }
 
         /// <summary>
@@ -63,7 +73,18 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, TResult> folder)
         {
-            return FoldImpl(source, 2, folder2: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 2)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 2, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1]
+			);
         }
 
         /// <summary>
@@ -85,7 +106,19 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 3, folder3: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 3)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 3, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2]
+			);
         }
 
         /// <summary>
@@ -107,7 +140,20 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 4, folder4: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 4)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 4, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2],
+				elements[3]
+			);
         }
 
         /// <summary>
@@ -129,7 +175,21 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 5, folder5: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 5)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 5, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2],
+				elements[3],
+				elements[4]
+			);
         }
 
         /// <summary>
@@ -151,7 +211,22 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 6, folder6: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 6)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 6, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2],
+				elements[3],
+				elements[4],
+				elements[5]
+			);
         }
 
         /// <summary>
@@ -173,7 +248,23 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 7, folder7: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 7)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 7, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2],
+				elements[3],
+				elements[4],
+				elements[5],
+				elements[6]
+			);
         }
 
         /// <summary>
@@ -195,7 +286,24 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 8, folder8: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 8)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 8, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2],
+				elements[3],
+				elements[4],
+				elements[5],
+				elements[6],
+				elements[7]
+			);
         }
 
         /// <summary>
@@ -217,7 +325,25 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 9, folder9: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 9)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 9, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2],
+				elements[3],
+				elements[4],
+				elements[5],
+				elements[6],
+				elements[7],
+				elements[8]
+			);
         }
 
         /// <summary>
@@ -239,7 +365,26 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 10, folder10: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 10)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 10, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2],
+				elements[3],
+				elements[4],
+				elements[5],
+				elements[6],
+				elements[7],
+				elements[8],
+				elements[9]
+			);
         }
 
         /// <summary>
@@ -261,7 +406,27 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 11, folder11: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 11)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 11, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2],
+				elements[3],
+				elements[4],
+				elements[5],
+				elements[6],
+				elements[7],
+				elements[8],
+				elements[9],
+				elements[10]
+			);
         }
 
         /// <summary>
@@ -283,7 +448,28 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 12, folder12: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 12)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 12, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2],
+				elements[3],
+				elements[4],
+				elements[5],
+				elements[6],
+				elements[7],
+				elements[8],
+				elements[9],
+				elements[10],
+				elements[11]
+			);
         }
 
         /// <summary>
@@ -305,7 +491,29 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 13, folder13: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 13)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 13, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2],
+				elements[3],
+				elements[4],
+				elements[5],
+				elements[6],
+				elements[7],
+				elements[8],
+				elements[9],
+				elements[10],
+				elements[11],
+				elements[12]
+			);
         }
 
         /// <summary>
@@ -327,7 +535,30 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 14, folder14: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 14)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 14, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2],
+				elements[3],
+				elements[4],
+				elements[5],
+				elements[6],
+				elements[7],
+				elements[8],
+				elements[9],
+				elements[10],
+				elements[11],
+				elements[12],
+				elements[13]
+			);
         }
 
         /// <summary>
@@ -349,7 +580,31 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 15, folder15: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 15)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 15, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2],
+				elements[3],
+				elements[4],
+				elements[5],
+				elements[6],
+				elements[7],
+				elements[8],
+				elements[9],
+				elements[10],
+				elements[11],
+				elements[12],
+				elements[13],
+				elements[14]
+			);
         }
 
         /// <summary>
@@ -371,7 +626,32 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 16, folder16: folder);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != 16)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: 16, Actual: {elements.Count})");
+
+			return folder(
+				elements[0],
+				elements[1],
+				elements[2],
+				elements[3],
+				elements[4],
+				elements[5],
+				elements[6],
+				elements[7],
+				elements[8],
+				elements[9],
+				elements[10],
+				elements[11],
+				elements[12],
+				elements[13],
+				elements[14],
+				elements[15]
+			);
         }
 
     }

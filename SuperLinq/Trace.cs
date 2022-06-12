@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // SuperLinq - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
 //
@@ -64,8 +64,8 @@ static partial class MoreEnumerable
 
 		return TraceImpl(source,
 			string.IsNullOrEmpty(format)
-			? (Func<TSource, string>)(x => x == null ? string.Empty : x.ToString())
-			: (x => string.Format(format, x)));
+			? (x => x?.ToString() ?? string.Empty)
+			: (x => string.Format(provider: default, format, x)));
 	}
 
 	/// <summary>

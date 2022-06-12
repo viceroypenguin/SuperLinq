@@ -27,9 +27,9 @@ public class ScanRightTest
 	[Test]
 	public void ScanRightWithEmptySequence()
 	{
-		var result = new int[0].ScanRight((a, b) => a + b);
+		var result = Array.Empty<int>().ScanRight((a, b) => a + b);
 
-		Assert.That(result, Is.EqualTo(new int[0]));
+		Assert.That(result, Is.EqualTo(Array.Empty<int>()));
 	}
 
 	[Test]
@@ -84,7 +84,7 @@ public class ScanRightTest
 	[TestCase(true)]
 	public void ScanRightSeedWithEmptySequence(object defaultValue)
 	{
-		Assert.That(new int[0].ScanRight(defaultValue, (a, b) => b), Is.EqualTo(new[] { defaultValue }));
+		Assert.That(Array.Empty<int>().ScanRight(defaultValue, (a, b) => b), Is.EqualTo(new[] { defaultValue }));
 	}
 
 	[Test]
@@ -92,7 +92,7 @@ public class ScanRightTest
 	{
 		const int value = 1;
 
-		var result = new int[0].ScanRight(value, BreakingFunc.Of<int, int, int>());
+		var result = Array.Empty<int>().ScanRight(value, BreakingFunc.Of<int, int, int>());
 
 		Assert.That(result, Is.EqualTo(new[] { value }));
 	}

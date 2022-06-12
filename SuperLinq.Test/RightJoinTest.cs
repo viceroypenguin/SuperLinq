@@ -142,7 +142,7 @@ public class RightJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = new (int, string)[0];
+		var xs = Array.Empty<(int, string)>();
 		var ys = new[] { foo, bar, baz };
 
 		var missing = default((int, string));
@@ -168,7 +168,7 @@ public class RightJoinTest
 		var baz = (3, "baz");
 
 		var xs = new[] { foo, bar, baz };
-		var ys = new (int, string)[0];
+		var ys = Array.Empty<(int, string)>();
 
 		var missing = default((int, string));
 

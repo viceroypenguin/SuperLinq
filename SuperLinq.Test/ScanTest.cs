@@ -26,7 +26,7 @@ public class ScanTest
 	[Test]
 	public void ScanEmpty()
 	{
-		Assert.That(new int[0].Scan(SampleData.Plus), Is.Empty);
+		Assert.That(Array.Empty<int>().Scan(SampleData.Plus), Is.Empty);
 	}
 
 	[Test]
@@ -55,7 +55,7 @@ public class ScanTest
 	[Test]
 	public void SeededScanEmpty()
 	{
-		Assert.AreEqual(-1, new int[0].Scan(-1, SampleData.Plus).Single());
+		Assert.AreEqual(-1, Array.Empty<int>().Scan(-1, SampleData.Plus).Single());
 	}
 
 	[Test]

@@ -61,7 +61,19 @@ namespace SuperLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<<#= e.Ts #>, TResult> folder)
         {
-            return FoldImpl(source, <#= e.CountArg #>, <#= e.FolderArgs #>);
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+			var elements = source.ToList();
+			if (elements.Count != <#= e.CountArg #>)
+				throw new InvalidOperationException(
+					$"Sequence contained an incorrect number of elements. (Expected: <#= e.CountArg #>, Actual: {elements.Count})");
+
+			return folder(
+<#			for (int i = 0; i < e.Count; i++) { #>
+				elements[<#= i #>]<#= i == e.Count - 1 ? "" : "," #>
+<#			} #>
+			);
         }
 
 <#      } #>

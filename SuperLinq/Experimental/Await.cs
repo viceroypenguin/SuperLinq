@@ -525,9 +525,10 @@ static partial class ExperimentalEnumerable
 						catch (OperationCanceledException e) when (e.CancellationToken == consumerCancellationTokenSource.Token)
 						{
 							var (error1, error2) = lastCriticalErrors;
-							throw new Exception("One or more critical errors have occurred.",
-								error2 != null ? new AggregateException(error1, error2)
-											   : new AggregateException(error1));
+							var exception = error2 != null
+								? new AggregateException(error1!, error2)
+								: new AggregateException(error1!);
+							throw exception;
 						}
 
 						var (kind, result, error) = notice.Current;

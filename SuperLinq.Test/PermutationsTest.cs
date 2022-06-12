@@ -32,7 +32,7 @@ public class PermutationsTest
 	[Test]
 	public void TestCardinalityZeroPermutation()
 	{
-		var emptySet = new int[] { };
+		var emptySet = Array.Empty<int>();
 		var permutations = emptySet.Permutations();
 
 		// should contain a single result: the empty set itself

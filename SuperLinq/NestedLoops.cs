@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // SuperLinq - Extensions to LINQ to Objects
 // Copyright (c) 2010 Leopold Bushkin. All rights reserved.
 //
@@ -36,18 +36,9 @@ public static partial class MoreEnumerable
 
 	static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
 	{
-		if (action == null) throw new ArgumentNullException(nameof(action));
-		if (loopCounts == null) throw new ArgumentNullException(nameof(loopCounts));
+		var count = loopCounts.Aggregate((acc, x) => acc * x);
 
-		return _(); IEnumerable<Action> _()
-		{
-			var count = loopCounts.Assert(n => n >= 0,
-										  n => new InvalidOperationException("Invalid loop count (must be greater than or equal to zero)."))
-								  .DefaultIfEmpty()
-								  .Aggregate((acc, x) => acc * x);
-
-			for (var i = 0; i < count; i++)
-				yield return action;
-		}
+		for (var i = 0; i < count; i++)
+			yield return action;
 	}
 }

@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // SuperLinq - Extensions to LINQ to Objects
 // Copyright (c) 2010 Leopold Bushkin. All rights reserved.
 //
@@ -30,10 +30,10 @@ public static partial class MoreEnumerable
 	/// <param name="source">The sequence whose items will be ranked</param>
 	/// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
-	public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source)
-	{
-		return source.RankBy(x => x);
-	}
+	public static IEnumerable<int> Rank<TSource>(
+		this IEnumerable<TSource> source)
+		where TSource : notnull =>
+		source.RankBy(x => x);
 
 	/// <summary>
 	/// Rank each item in the sequence using a caller-supplied comparer.
@@ -43,10 +43,10 @@ public static partial class MoreEnumerable
 	/// <param name="comparer">A object that defines comparison semantics for the elements in the sequence</param>
 	/// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
-	public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
-	{
-		return source.RankBy(x => x, comparer);
-	}
+	public static IEnumerable<int> Rank<TSource>(
+		this IEnumerable<TSource> source, IComparer<TSource> comparer)
+		where TSource : notnull =>
+		source.RankBy(x => x, comparer);
 
 	/// <summary>
 	/// Ranks each item in the sequence in descending ordering by a specified key using a default comparer
@@ -57,10 +57,11 @@ public static partial class MoreEnumerable
 	/// <param name="keySelector">A key selector function which returns the value by which to rank items in the sequence</param>
 	/// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
-	public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
-	{
-		return RankBy(source, keySelector, null);
-	}
+	public static IEnumerable<int> RankBy<TSource, TKey>(
+		this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+		where TSource : notnull
+		where TKey : notnull =>
+		RankBy(source, keySelector, comparer: null);
 
 	/// <summary>
 	/// Ranks each item in a sequence using a specified key and a caller-supplied comparer
@@ -72,7 +73,12 @@ public static partial class MoreEnumerable
 	/// <param name="comparer">An object that defines the comparison semantics for keys used to rank items</param>
 	/// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
-	public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer)
+	public static IEnumerable<int> RankBy<TSource, TKey>(
+		this IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IComparer<TKey>? comparer)
+		where TSource : notnull
+		where TKey : notnull
 	{
 		if (source == null) throw new ArgumentNullException(nameof(source));
 		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));

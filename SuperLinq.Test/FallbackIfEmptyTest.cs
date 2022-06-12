@@ -55,7 +55,7 @@ public class FallbackIfEmptyTest
 	[TestCase(SourceKind.BreakingReadOnlyCollection)]
 	public void FallbackIfEmptyPreservesFallbackCollectionIfPossible(SourceKind sourceKind)
 	{
-		var source = new int[0].ToSourceKind(sourceKind);
+		var source = Array.Empty<int>().ToSourceKind(sourceKind);
 		var fallback = new[] { 1 };
 		Assert.AreSame(source.FallbackIfEmpty(fallback), fallback);
 		Assert.AreSame(source.FallbackIfEmpty(fallback.AsEnumerable()), fallback);

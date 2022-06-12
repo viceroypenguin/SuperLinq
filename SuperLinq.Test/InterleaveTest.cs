@@ -155,7 +155,7 @@ public class InterleaveTests
 	{
 		var sequenceA = new[] { 1, 5, 8, 11, 14, 16, };
 		var sequenceB = new[] { 2, 6, 9, 12, };
-		var sequenceC = new int[] { };
+		var sequenceC = Array.Empty<int>();
 		var sequenceD = new[] { 3 };
 		var sequenceE = new[] { 4, 7, 10, 13, 15, 17, };
 		var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD, sequenceE);
