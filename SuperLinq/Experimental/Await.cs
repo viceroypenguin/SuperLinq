@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-#if !NO_ASYNC
-
 namespace SuperLinq.Experimental
 {
     using System;
@@ -28,7 +26,6 @@ namespace SuperLinq.Experimental
     using System.Runtime.ExceptionServices;
     using System.Threading;
     using System.Threading.Tasks;
-    using Unit = System.ValueTuple;
 
     /// <summary>
     /// Represents options for a query whose results evaluate asynchronously.
@@ -778,5 +775,3 @@ namespace SuperLinq.Experimental
         }
     }
 }
-
-#endif // !NO_ASYNC

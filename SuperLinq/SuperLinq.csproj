@@ -1,160 +1,170 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\bld\Copyright.props" />
-
   <PropertyGroup>
-    <Title>SuperLinq</Title>
-    <Description>
-        This project enhances LINQ to Objects with the following methods:
+    <AssemblyName>SuperLinq</AssemblyName>
+    <RootNamespace>SuperLinq</RootNamespace>
+  </PropertyGroup>
 
-        - Acquire
-        - Aggregate (some EXPERIMENTAL)
-        - AggregateRight
-        - Append
-        - Assert
-        - AssertCount
-        - AtLeast
-        - AtMost
-        - Await (EXPERIMENTAL)
-        - AwaitCompletion (EXPERIMENTAL)
-        - Backsert
-        - Batch
-        - Cartesian
-        - Choose
-        - CountBetween
-        - CompareCount
-        - CountBy
-        - CountDown
-        - Consume
-        - DistinctBy
-        - EndsWith
-        - EquiZip
-        - Evaluate
-        - Exactly
-        - ExceptBy
-        - Exclude
-        - FallbackIfEmpty
-        - FillBackward
-        - FillForward
-        - Flatten
-        - Fold
-        - ForEach
-        - From
-        - FullGroupJoin
-        - FullJoin
-        - Generate
-        - GenerateByIndex
-        - GroupAdjacent
-        - Index
-        - IndexBy
-        - Insert
-        - Interleave
-        - Lag
-        - Lead
-        - LeftJoin
-        - MaxBy
-        - Memoize (EXPERIMENTAL)
-        - MinBy
-        - Move
-        - OrderBy
-        - OrderedMerge
-        - Pad
-        - PadStart
-        - Pairwise
-        - PartialSort
-        - PartialSortBy
-        - Partition
-        - Permutations
-        - Pipe
-        - Prepend
-        - PreScan
-        - Random
-        - RandomDouble
-        - RandomSubset
-        - Rank
-        - RankBy
-        - Repeat
-        - Return
-        - RightJoin
-        - RunLengthEncode
-        - Scan
-        - ScanBy
-        - ScanRight
-        - Segment
-        - Sequence
-        - Shuffle
-        - SkipLast
-        - SkipUntil
-        - Slice
-        - SortedMerge
-        - Split
-        - StartsWith
-        - Subsets
-        - TagFirstLast
-        - TakeEvery
-        - TakeLast
-        - TakeUntil
-        - ThenBy
-        - ToArrayByIndex
-        - ToDataTable
-        - ToDelimitedString
-        - ToDictionary
-        - ToHashSet
-        - ToLookup
-        - Trace
-        - Transpose
-        - TraverseBreadthFirst
-        - TraverseDepthFirst
-        - TrySingle (EXPERIMENTAL)
-        - Unfold
-        - Window
-        - WindowLeft
-        - WindowRight
-        - ZipLongest
-        - ZipShortest
-    </Description>
-    <Description>$([System.Text.RegularExpressions.Regex]::Replace($(Description), `\s+`, ` `).Trim().Replace(` - `, `, `).Replace(`:,`, `:`))</Description>
-    <Copyright>$([System.Text.RegularExpressions.Regex]::Replace($(Copyright), `\s+`, ` `).Trim())</Copyright>
-    <AssemblyTitle>SuperLinq</AssemblyTitle>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>3.3.2</VersionPrefix>
+  <PropertyGroup Label="Nuget">
+    <Title>SuperLinq</Title>
+    
     <Authors>SuperLinq Developers</Authors>
-    <TargetFrameworks>net451;netstandard1.0;netstandard2.0</TargetFrameworks>
-    <Nullable>enable</Nullable>
+    <PackageTags>linq;extensions</PackageTags>
+
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryUrl>https://github.com/viceroypenguin/SuperLinq</RepositoryUrl>
+
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\SuperLinq.xml</DocumentationFile>
+
     <!-- Parallel build is disabled to avoid file locking issues during T4 code generation.
          See also: https://github.com/dotnet/msbuild/issues/2781 -->
     <BuildInParallel>false</BuildInParallel>
-    <DebugType>portable</DebugType>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>SuperLinq</AssemblyName>
-    <OutputType>Library</OutputType>
-    <SignAssembly>true</SignAssembly>
-    <PackageId>SuperLinq</PackageId>
-    <PackageTags>linq;extensions</PackageTags>
-    <PackageLicenseFile>COPYING.txt</PackageLicenseFile>
-    <PackageOutputPath>..\dist</PackageOutputPath>
-    <IncludeSymbols>true</IncludeSymbols>
-    <IncludeSource>true</IncludeSource>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    <Using Remove="System.Net.Http" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <Description>
+      This project enhances LINQ to Objects with the following methods:
+
+      - Acquire
+      - Aggregate (some EXPERIMENTAL)
+      - AggregateRight
+      - Append
+      - Assert
+      - AssertCount
+      - AtLeast
+      - AtMost
+      - Await (EXPERIMENTAL)
+      - AwaitCompletion (EXPERIMENTAL)
+      - Backsert
+      - Batch
+      - Cartesian
+      - Choose
+      - CountBetween
+      - CompareCount
+      - CountBy
+      - CountDown
+      - Consume
+      - DistinctBy
+      - EndsWith
+      - EquiZip
+      - Evaluate
+      - Exactly
+      - ExceptBy
+      - Exclude
+      - FallbackIfEmpty
+      - FillBackward
+      - FillForward
+      - Flatten
+      - Fold
+      - ForEach
+      - From
+      - FullGroupJoin
+      - FullJoin
+      - Generate
+      - GenerateByIndex
+      - GroupAdjacent
+      - Index
+      - IndexBy
+      - Insert
+      - Interleave
+      - Lag
+      - Lead
+      - LeftJoin
+      - MaxBy
+      - Memoize (EXPERIMENTAL)
+      - MinBy
+      - Move
+      - OrderBy
+      - OrderedMerge
+      - Pad
+      - PadStart
+      - Pairwise
+      - PartialSort
+      - PartialSortBy
+      - Partition
+      - Permutations
+      - Pipe
+      - Prepend
+      - PreScan
+      - Random
+      - RandomDouble
+      - RandomSubset
+      - Rank
+      - RankBy
+      - Repeat
+      - Return
+      - RightJoin
+      - RunLengthEncode
+      - Scan
+      - ScanBy
+      - ScanRight
+      - Segment
+      - Sequence
+      - Shuffle
+      - SkipLast
+      - SkipUntil
+      - Slice
+      - SortedMerge
+      - Split
+      - StartsWith
+      - Subsets
+      - TagFirstLast
+      - TakeEvery
+      - TakeLast
+      - TakeUntil
+      - ThenBy
+      - ToArrayByIndex
+      - ToDataTable
+      - ToDelimitedString
+      - ToDictionary
+      - ToHashSet
+      - ToLookup
+      - Trace
+      - Transpose
+      - TraverseBreadthFirst
+      - TraverseDepthFirst
+      - TrySingle (EXPERIMENTAL)
+      - Unfold
+      - Window
+      - WindowLeft
+      - WindowRight
+      - ZipLongest
+      - ZipShortest
+    </Description>
+    <Description>$([System.Text.RegularExpressions.Regex]::Replace($(Description), `\s+`, ` `).Trim().Replace(` - `, `, `).Replace(`:,`, `:`))</Description>
+
+    <Copyright>
+      Portions © 2008 Jonathan Skeet.
+      Portions © 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph.
+      Portions © 2010 Johannes Rudolph, Leopold Bushkin.
+      Portions © 2015 Felipe Sateler, “sholland”.
+      Portions © 2016 Andreas Gullberg Larsen, Leandro F. Vieira (leandromoh).
+      Portions © 2017 Jonas Nyrup (jnyrup).
+      Portions © Microsoft. All rights reserved.
+      Portions © 2022 Turning Code, LLC
+    </Copyright>
+    <Copyright>$([System.Text.RegularExpressions.Regex]::Replace($(Copyright), `\s+`, ` `).Trim())</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Nullable" Version="1.3.0">
       <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
-    <None Include="*.g.tt" />
     <None Update="Aggregate.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Aggregate.g.cs</LastGenOutput>
@@ -175,30 +185,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ToDelimitedString.g.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System" />
-  </ItemGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'net451' ">
-    <DefineConstants>$(DefineConstants);SuperLinq</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
-    <DefineConstants>$(DefineConstants);SuperLinq;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM;NO_ASYNC</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
-    <Compile Remove="ToDataTable.cs" />
-    <Compile Remove="Extensions.ToDataTable.g.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'net451'">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -226,26 +212,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Fold.g.tt</DependentUpon>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Fold16.g.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Fold16.g.tt</DependentUpon>
-    </Compile>
     <Compile Update="ToDelimitedString.g.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ToDelimitedString.g.tt</DependentUpon>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Nullable" Version="1.3.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <Target Name="_CollectTextTemplates">
@@ -267,14 +238,10 @@
     <Exec Command="dotnet t4 $(TextTemplate)" />
   </Target>
 
-  <Target Name="TransformTextTemplates"
-          DependsOnTargets="_CollectTextTemplates">
-    <MSBuild Projects="$(MSBuildProjectFile)"
-             Targets="_TransformTextTemplate"
-             Properties="TextTemplate=%(TextTemplate.Identity);TextTemplateOutput=%(TextTemplate.LastGenOutput)"  />
+  <Target Name="TransformTextTemplates" DependsOnTargets="_CollectTextTemplates">
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="_TransformTextTemplate" Properties="TextTemplate=%(TextTemplate.Identity);TextTemplateOutput=%(TextTemplate.LastGenOutput)" />
   </Target>
 
-  <Target Name="_TransformTextTemplates"
-          AfterTargets="BeforeBuild" DependsOnTargets="TransformTextTemplates" />
+  <Target Name="_TransformTextTemplates" AfterTargets="BeforeBuild" DependsOnTargets="TransformTextTemplates" />
 
 </Project>

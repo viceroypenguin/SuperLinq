@@ -93,10 +93,7 @@ namespace SuperLinq
         static IEnumerable<TSource> TraceImpl<TSource>(IEnumerable<TSource> source, Func<TSource, string> formatter)
         {
             return source
-#if !NO_TRACING
-                .Pipe(x => System.Diagnostics.Trace.WriteLine(formatter(x)))
-#endif
-                ;
+                .Pipe(x => System.Diagnostics.Trace.WriteLine(formatter(x)));
         }
     }
 }

@@ -1,6 +1,11 @@
 <Project>
   <PropertyGroup>
-    <LangVersion>9</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <LangVersion>10</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+
+    <TargetFrameworks>net48;netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
   </PropertyGroup>
 </Project>

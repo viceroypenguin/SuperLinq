@@ -18,17 +18,13 @@
 namespace SuperLinq
 {
     using System;
-#if !NO_EXCEPTION_SERIALIZATION
     using System.Runtime.Serialization;
-#endif
 
     /// <summary>
     /// The exception that is thrown for a sequence that fails a condition.
     /// </summary>
 
-#if !NO_EXCEPTION_SERIALIZATION
-    [ Serializable ]
-#endif
+    [Serializable]
     public class SequenceException : Exception
     {
         const string DefaultMessage = "Error in sequence.";
@@ -60,7 +56,6 @@ namespace SuperLinq
         public SequenceException(string? message, Exception? innerException) :
             base(string.IsNullOrEmpty(message) ? DefaultMessage : message, innerException) { }
 
-#if !NO_EXCEPTION_SERIALIZATION
         /// <summary>
         /// Initializes a new instance of the <see cref="SequenceException"/> class
         /// with serialized data.
@@ -70,6 +65,5 @@ namespace SuperLinq
 
         protected SequenceException(SerializationInfo info, StreamingContext context) :
             base(info, context) {}
-#endif
     }
 }

@@ -22,8 +22,6 @@ namespace SuperLinq
 
     static partial class MoreEnumerable
     {
-        #if SuperLinq
-
         static readonly Func<int, int, Exception> DefaultErrorSelector = OnAssertCountFailure;
 
         /// <summary>
@@ -78,8 +76,6 @@ namespace SuperLinq
                         : "Sequence contains too many elements when exactly {0} were expected.";
             return new SequenceException(string.Format(message, count.ToString("N0")));
         }
-
-        #endif
 
         static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source,
             int count, Func<int, int, Exception> errorSelector)

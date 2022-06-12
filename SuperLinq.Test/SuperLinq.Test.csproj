@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <AssemblyTitle>SuperLinq.Test</AssemblyTitle>
-    <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp2.1;net451</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>SuperLinq.Test</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -17,6 +16,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SuperLinq\SuperLinq.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Remove="System.Net.Http" />
   </ItemGroup>
 
   <ItemGroup>

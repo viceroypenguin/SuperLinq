@@ -304,9 +304,7 @@ namespace SuperLinq
                 new Grouping<TKey, TElement>(key, members);
         }
 
-        #if !NO_SERIALIZATION_ATTRIBUTES
         [Serializable]
-        #endif
         sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>
         {
             readonly IEnumerable<TElement> _members;
