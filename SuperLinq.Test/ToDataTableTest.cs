@@ -46,15 +46,6 @@ public class ToDataTableTest
 	}
 
 	[Test]
-	public void ToDataTableNullMemberExpressionMethod()
-	{
-		Expression<Func<TestObject, object>> expression = null;
-
-		AssertThrowsArgument.Exception("expressions", () =>
-			_testObjects.ToDataTable<TestObject>(expression));
-	}
-
-	[Test]
 	public void ToDataTableTableWithWrongColumnNames()
 	{
 		var dt = new DataTable();

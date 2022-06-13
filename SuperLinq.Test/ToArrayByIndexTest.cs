@@ -50,10 +50,10 @@ public class ToArrayByIndexTest
 	{
 		var input = new[] { 42 };
 
-		Assert.Throws<IndexOutOfRangeException>(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 			input.ToArrayByIndex(_ => -1));
 
-		Assert.Throws<IndexOutOfRangeException>(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 			input.ToArrayByIndex(_ => -1, BreakingFunc.Of<int, object>()));
 	}
 
@@ -62,10 +62,10 @@ public class ToArrayByIndexTest
 	public void ToArrayByIndexWithLengthWithBadIndexSelectorThrows(int length, int badIndex)
 	{
 		var input = new[] { 42 };
-		Assert.Throws<IndexOutOfRangeException>(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 			input.ToArrayByIndex(length, _ => badIndex));
 
-		Assert.Throws<IndexOutOfRangeException>(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 			input.ToArrayByIndex(10, _ => -1, BreakingFunc.Of<int, object>()));
 	}
 

@@ -54,7 +54,7 @@ public static partial class SuperEnumerable
 
 	public static DataTable ToDataTable<T>(this IEnumerable<T> source)
 	{
-		return ToDataTable(source, new DataTable());
+		return ToDataTable(source, new DataTable(), Array.Empty<Expression<Func<T, object>>>());
 	}
 
 	/// <summary>
@@ -77,10 +77,7 @@ public static partial class SuperEnumerable
 	{
 		if (source == null) throw new ArgumentNullException(nameof(source));
 		if (table == null) throw new ArgumentNullException(nameof(table));
-
-		// TODO disallow null for "expressions" in next major update
-
-		expressions ??= Array.Empty<Expression<Func<T, object>>>();
+		if (expressions == null) throw new ArgumentNullException(nameof(expressions));
 
 		var members = PrepareMemberInfos(expressions).ToArray();
 		members = BuildOrBindSchema(table, members);

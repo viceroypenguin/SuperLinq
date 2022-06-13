@@ -222,7 +222,7 @@ public static partial class SuperEnumerable
 		foreach (var e in source)
 		{
 			var i = indexSelector(e);
-			if (i < 0 || i > array.Length)
+			if (i < 0 || i >= array.Length)
 				throw new InvalidOperationException("'indexSelector' returned an invalid index for the current object.");
 			array[i] = resultSelector(e, i);
 		}

@@ -15,7 +15,7 @@ public static partial class SuperEnumerable
 
 	static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
 	{
-		var count = loopCounts.Aggregate((acc, x) => acc * x);
+		var count = loopCounts.DefaultIfEmpty().Aggregate((acc, x) => acc * x);
 
 		for (var i = 0; i < count; i++)
 			yield return action;
