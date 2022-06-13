@@ -11,7 +11,6 @@
 		<OutputTypeEx>library</OutputTypeEx>
 		<StartupObject>SuperLinq.Test.Program</StartupObject>
 		<WarningsNotAsErrors>618</WarningsNotAsErrors>
-		<TargetFrameworks>net48;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -40,21 +39,15 @@
 		<PackageReference Include="NUnit" Version="3.13.3" />
 		<PackageReference Include="NUnitLite" Version="3.13.3" />
 		<PackageReference Include="System.Reactive" Version="5.0.0" />
-		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
 		<PackageReference Include="System.Linq.Async" Version="6.0.1" />
 	</ItemGroup>
 
-
 	<ItemGroup>
 		<None Remove="TestResult.xml" />
 		<Compile Include="..\SuperLinq\Disposable.cs" Link="Disposable.cs" />
 		<Compile Include="..\SuperLinq\Reactive\Subject.cs" Link="Subject.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
 	</ItemGroup>
 
 </Project>

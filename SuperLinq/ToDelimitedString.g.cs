@@ -2,7 +2,7 @@ using System.Text;
 
 namespace SuperLinq;
 
-partial class SuperEnumerable
+public static partial class SuperEnumerable
 {
     /// <summary>
     /// Creates a delimited string from a sequence of values and

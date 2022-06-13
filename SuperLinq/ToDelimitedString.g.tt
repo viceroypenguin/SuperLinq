@@ -11,7 +11,7 @@ using System.Text;
 
 namespace SuperLinq;
 
-partial class MoreEnumerable
+public static partial class SuperEnumerable
 {
 <#  var cscp = new CSharpCodeProvider();
     var types =

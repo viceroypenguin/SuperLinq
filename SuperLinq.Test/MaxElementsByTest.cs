@@ -3,44 +3,44 @@
 namespace SuperLinq.Test;
 
 [TestFixture]
-public class MaxByTest
+public class MaxElementsByTest
 {
 	[Test]
-	public void MaxByIsLazy()
+	public void MaxElementsByIsLazy()
 	{
-		new BreakingSequence<int>().MaxBy(BreakingFunc.Of<int, int>());
+		new BreakingSequence<int>().MaxElementsBy(BreakingFunc.Of<int, int>());
 	}
 
 	[Test]
-	public void MaxByReturnsMaxima()
+	public void MaxElementsByReturnsMaxima()
 	{
 		Assert.AreEqual(new[] { "hello", "world" },
-						SampleData.Strings.MaxBy(x => x.Length));
+						SampleData.Strings.MaxElementsBy(x => x.Length));
 	}
 
 	[Test]
-	public void MaxByNullComparer()
+	public void MaxElementsByNullComparer()
 	{
-		Assert.AreEqual(SampleData.Strings.MaxBy(x => x.Length),
-						SampleData.Strings.MaxBy(x => x.Length, null));
+		Assert.AreEqual(SampleData.Strings.MaxElementsBy(x => x.Length),
+						SampleData.Strings.MaxElementsBy(x => x.Length, null));
 	}
 
 	[Test]
-	public void MaxByEmptySequence()
+	public void MaxElementsByEmptySequence()
 	{
-		Assert.That(Array.Empty<string>().MaxBy(x => x.Length), Is.Empty);
+		Assert.That(Array.Empty<string>().MaxElementsBy(x => x.Length), Is.Empty);
 	}
 
 	[Test]
-	public void MaxByWithNaturalComparer()
+	public void MaxElementsByWithNaturalComparer()
 	{
-		Assert.AreEqual(new[] { "az" }, SampleData.Strings.MaxBy(x => x[1]));
+		Assert.AreEqual(new[] { "az" }, SampleData.Strings.MaxElementsBy(x => x[1]));
 	}
 
 	[Test]
-	public void MaxByWithComparer()
+	public void MaxElementsByWithComparer()
 	{
-		Assert.AreEqual(new[] { "aa" }, SampleData.Strings.MaxBy(x => x[1], Comparable<char>.DescendingOrderComparer));
+		Assert.AreEqual(new[] { "aa" }, SampleData.Strings.MaxElementsBy(x => x[1], Comparable<char>.DescendingOrderComparer));
 	}
 
 	public class First
@@ -49,16 +49,16 @@ public class MaxByTest
 		public void ReturnsMaximum()
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
-			var maxima = strings.MaxBy(s => s.Length);
-			Assert.That(SuperEnumerable.First(maxima), Is.EqualTo("hello"));
+			var maxima = strings.MaxElementsBy(s => s.Length);
+			Assert.That(maxima.First(), Is.EqualTo("hello"));
 		}
 
 		[Test]
 		public void WithComparerReturnsMaximum()
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
-			var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
-			Assert.That(SuperEnumerable.First(maxima), Is.EqualTo("ax"));
+			var maxima = strings.MaxElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+			Assert.That(maxima.First(), Is.EqualTo("ax"));
 		}
 
 		[Test]
@@ -66,7 +66,7 @@ public class MaxByTest
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
 			Assert.Throws<InvalidOperationException>(() =>
-				SuperEnumerable.First(strings.MaxBy(s => s.Length)));
+				strings.MaxElementsBy(s => s.Length).First());
 		}
 
 		[Test]
@@ -74,7 +74,7 @@ public class MaxByTest
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
 			Assert.Throws<InvalidOperationException>(() =>
-				SuperEnumerable.First(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
+				strings.MaxElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer).First());
 		}
 	}
 
@@ -84,32 +84,32 @@ public class MaxByTest
 		public void ReturnsMaximum()
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
-			var maxima = strings.MaxBy(s => s.Length);
-			Assert.That(SuperEnumerable.FirstOrDefault(maxima), Is.EqualTo("hello"));
+			var maxima = strings.MaxElementsBy(s => s.Length);
+			Assert.That(maxima.FirstOrDefault(), Is.EqualTo("hello"));
 		}
 
 		[Test]
 		public void WithComparerReturnsMaximum()
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
-			var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
-			Assert.That(SuperEnumerable.FirstOrDefault(maxima), Is.EqualTo("ax"));
+			var maxima = strings.MaxElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+			Assert.That(maxima.FirstOrDefault(), Is.EqualTo("ax"));
 		}
 
 		[Test]
 		public void WithEmptySourceReturnsDefault()
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
-			var maxima = strings.MaxBy(s => s.Length);
-			Assert.That(SuperEnumerable.FirstOrDefault(maxima), Is.Null);
+			var maxima = strings.MaxElementsBy(s => s.Length);
+			Assert.That(maxima.FirstOrDefault(), Is.Null);
 		}
 
 		[Test]
 		public void WithEmptySourceWithComparerReturnsDefault()
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
-			var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
-			Assert.That(SuperEnumerable.FirstOrDefault(maxima), Is.Null);
+			var maxima = strings.MaxElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+			Assert.That(maxima.FirstOrDefault(), Is.Null);
 		}
 	}
 
@@ -119,16 +119,16 @@ public class MaxByTest
 		public void ReturnsMaximum()
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
-			var maxima = strings.MaxBy(s => s.Length);
-			Assert.That(SuperEnumerable.Last(maxima), Is.EqualTo("world"));
+			var maxima = strings.MaxElementsBy(s => s.Length);
+			Assert.That(maxima.Last(), Is.EqualTo("world"));
 		}
 
 		[Test]
 		public void WithComparerReturnsMaximumPerComparer()
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
-			var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
-			Assert.That(SuperEnumerable.Last(maxima), Is.EqualTo("az"));
+			var maxima = strings.MaxElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+			Assert.That(maxima.Last(), Is.EqualTo("az"));
 		}
 
 		[Test]
@@ -136,7 +136,7 @@ public class MaxByTest
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
 			Assert.Throws<InvalidOperationException>(() =>
-				SuperEnumerable.Last(strings.MaxBy(s => s.Length)));
+				strings.MaxElementsBy(s => s.Length).Last());
 		}
 
 		[Test]
@@ -144,7 +144,7 @@ public class MaxByTest
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
 			Assert.Throws<InvalidOperationException>(() =>
-				SuperEnumerable.Last(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
+				strings.MaxElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer).Last());
 		}
 	}
 
@@ -154,32 +154,32 @@ public class MaxByTest
 		public void ReturnsMaximum()
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
-			var maxima = strings.MaxBy(s => s.Length);
-			Assert.That(SuperEnumerable.LastOrDefault(maxima), Is.EqualTo("world"));
+			var maxima = strings.MaxElementsBy(s => s.Length);
+			Assert.That(maxima.LastOrDefault(), Is.EqualTo("world"));
 		}
 
 		[Test]
 		public void WithComparerReturnsMaximumPerComparer()
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
-			var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
-			Assert.That(SuperEnumerable.LastOrDefault(maxima), Is.EqualTo("az"));
+			var maxima = strings.MaxElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+			Assert.That(maxima.LastOrDefault(), Is.EqualTo("az"));
 		}
 
 		[Test]
 		public void WithEmptySourceReturnsDefault()
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
-			var maxima = strings.MaxBy(s => s.Length);
-			Assert.That(SuperEnumerable.LastOrDefault(maxima), Is.Null);
+			var maxima = strings.MaxElementsBy(s => s.Length);
+			Assert.That(maxima.LastOrDefault(), Is.Null);
 		}
 
 		[Test]
 		public void WithEmptySourceWithComparerReturnsDefault()
 		{
 			using var strings = Enumerable.Empty<string>().AsTestingSequence();
-			var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
-			Assert.That(SuperEnumerable.LastOrDefault(maxima), Is.Null);
+			var maxima = strings.MaxElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+			Assert.That(maxima.LastOrDefault(), Is.Null);
 		}
 	}
 
@@ -192,7 +192,7 @@ public class MaxByTest
 		public string[] ReturnsMaxima(int count)
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
-			return strings.MaxBy(s => s.Length).Take(count).ToArray();
+			return strings.MaxElementsBy(s => s.Length).Take(count).ToArray();
 		}
 
 		[TestCase(0, 0, ExpectedResult = new string[0])]
@@ -206,7 +206,7 @@ public class MaxByTest
 		public string[] WithComparerReturnsMaximaPerComparer(int count, int index)
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
-			return strings.MaxBy(s => s[index], Comparable<char>.DescendingOrderComparer)
+			return strings.MaxElementsBy(s => s[index], Comparable<char>.DescendingOrderComparer)
 						  .Take(count)
 						  .ToArray();
 		}
@@ -221,7 +221,7 @@ public class MaxByTest
 		public string[] TakeLastReturnsMaxima(int count)
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
-			return strings.MaxBy(s => s.Length).TakeLast(count).ToArray();
+			return strings.MaxElementsBy(s => s.Length).TakeLast(count).ToArray();
 		}
 
 		[TestCase(0, 0, ExpectedResult = new string[0])]
@@ -235,7 +235,7 @@ public class MaxByTest
 		public string[] WithComparerReturnsMaximaPerComparer(int count, int index)
 		{
 			using var strings = SampleData.Strings.AsTestingSequence();
-			return strings.MaxBy(s => s[index], Comparable<char>.DescendingOrderComparer)
+			return strings.MaxElementsBy(s => s[index], Comparable<char>.DescendingOrderComparer)
 						  .TakeLast(count)
 						  .ToArray();
 		}

@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+﻿using System.Runtime.CompilerServices;
+
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -18,11 +20,18 @@ public static partial class SuperEnumerable
 	/// <returns>The sequence of minimal elements, according to the projection.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
 
-	public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Obsolete("MinBy() conflicts with new .NET Core method. Use MinElementsBy() instead.")]
+#if NET6_0_OR_GREATER
+	public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(
+		IEnumerable<TSource> source,
 		Func<TSource, TKey> selector)
-	{
-		return source.MinBy(selector, null);
-	}
+#else
+	public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(
+		this IEnumerable<TSource> source,
+		Func<TSource, TKey> selector)
+#endif
+		=> MinElementsBy(source, selector);
 
 	/// <summary>
 	/// Returns the minimal elements of the given sequence, based on
@@ -41,13 +50,17 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
 	/// or <paramref name="comparer"/> is null</exception>
 
-	public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[Obsolete("MinBy() conflicts with new .NET Core method. Use MinElementsBy() instead.")]
+#if NET6_0_OR_GREATER
+	public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(
+		IEnumerable<TSource> source,
 		Func<TSource, TKey> selector, IComparer<TKey>? comparer)
-	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (selector == null) throw new ArgumentNullException(nameof(selector));
-
-		comparer ??= Comparer<TKey>.Default;
-		return new ExtremaEnumerable<TSource, TKey>(source, selector, (x, y) => -Math.Sign(comparer.Compare(x, y)));
-	}
+#else
+	public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(
+		this IEnumerable<TSource> source,
+		Func<TSource, TKey> selector,
+		IComparer<TKey>? comparer)
+#endif
+		=> MinElementsBy(source, selector, comparer);
 }

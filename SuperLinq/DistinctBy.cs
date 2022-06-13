@@ -17,11 +17,18 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">Projection for determining "distinctness"</param>
 	/// <returns>A sequence consisting of distinct elements from the source sequence,
 	/// comparing them by the specified key projection.</returns>
-
-	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
+#if NET6_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(
+		IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector)
+#else
+	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(
+		this IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector)
+#endif
 	{
-		return source.DistinctBy(keySelector, null);
+		return DistinctBy(source, keySelector, comparer: default);
 	}
 
 	/// <summary>
@@ -41,9 +48,16 @@ public static partial class SuperEnumerable
 	/// If null, the default equality comparer for <c>TSource</c> is used.</param>
 	/// <returns>A sequence consisting of distinct elements from the source sequence,
 	/// comparing them by the specified key projection.</returns>
-
-	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
+#if NET6_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(
+		IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+#else
+	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(
+		this IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+#endif
 	{
 		if (source == null) throw new ArgumentNullException(nameof(source));
 		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));

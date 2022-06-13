@@ -2,6 +2,8 @@
 
 namespace SuperLinq.Test;
 
+#pragma warning disable CS0618
+
 [TestFixture]
 public class DistinctByTest
 {
@@ -9,21 +11,21 @@ public class DistinctByTest
 	public void DistinctBy()
 	{
 		string[] source = { "first", "second", "third", "fourth", "fifth" };
-		var distinct = source.DistinctBy(word => word.Length);
+		var distinct = SuperEnumerable.DistinctBy(source, word => word.Length);
 		distinct.AssertSequenceEqual("first", "second");
 	}
 
 	[Test]
 	public void DistinctByIsLazy()
 	{
-		new BreakingSequence<string>().DistinctBy(BreakingFunc.Of<string, int>());
+		SuperEnumerable.DistinctBy(new BreakingSequence<string>(), BreakingFunc.Of<string, int>());
 	}
 
 	[Test]
 	public void DistinctByWithComparer()
 	{
 		string[] source = { "first", "FIRST", "second", "second", "third" };
-		var distinct = source.DistinctBy(word => word, StringComparer.OrdinalIgnoreCase);
+		var distinct = SuperEnumerable.DistinctBy(source, word => word, StringComparer.OrdinalIgnoreCase);
 		distinct.AssertSequenceEqual("first", "second", "third");
 	}
 
@@ -31,14 +33,13 @@ public class DistinctByTest
 	public void DistinctByNullComparer()
 	{
 		string[] source = { "first", "second", "third", "fourth", "fifth" };
-		var distinct = source.DistinctBy(word => word.Length, null);
+		var distinct = SuperEnumerable.DistinctBy(source, word => word.Length, comparer: null);
 		distinct.AssertSequenceEqual("first", "second");
 	}
 
 	[Test]
 	public void DistinctByIsLazyWithComparer()
 	{
-		new BreakingSequence<string>()
-			.DistinctBy(BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
+		SuperEnumerable.DistinctBy(new BreakingSequence<string>(), BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
 	}
 }

@@ -20,12 +20,12 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">The mapping from source element to key.</param>
 	/// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
 	/// any element in <paramref name="second"/>.</returns>
-
-	public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
+	public static IEnumerable<TSource> ExceptBy<TSource, TKey>(
+		this IEnumerable<TSource> first,
 		IEnumerable<TSource> second,
 		Func<TSource, TKey> keySelector)
 	{
-		return ExceptBy(first, second, keySelector, null);
+		return ExceptBy(first, second, keySelector, keyComparer: default);
 	}
 
 	/// <summary>
@@ -48,8 +48,8 @@ public static partial class SuperEnumerable
 	/// If null, the default equality comparer for <c>TSource</c> is used.</param>
 	/// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
 	/// any element in <paramref name="second"/>.</returns>
-
-	public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
+	public static IEnumerable<TSource> ExceptBy<TSource, TKey>(
+		this IEnumerable<TSource> first,
 		IEnumerable<TSource> second,
 		Func<TSource, TKey> keySelector,
 		IEqualityComparer<TKey>? keyComparer)
@@ -60,8 +60,7 @@ public static partial class SuperEnumerable
 
 		return _(); IEnumerable<TSource> _()
 		{
-			// TODO Use ToHashSet
-			var keys = new HashSet<TKey>(second.Select(keySelector), keyComparer);
+			var keys = second.Select(keySelector).ToHashSet(keyComparer);
 			foreach (var element in first)
 			{
 				var key = keySelector(element);
