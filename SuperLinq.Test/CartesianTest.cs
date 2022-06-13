@@ -108,12 +108,12 @@ public class CartesianTests
 
 		var expectedSet = new[]
 		{
-				Enumerable.Repeat(false, 5).ToArray(),
-				Enumerable.Repeat(false, 5).ToArray(),
-				Enumerable.Repeat(false, 5).ToArray(),
-				Enumerable.Repeat(false, 5).ToArray(),
-				Enumerable.Repeat(false, 5).ToArray()
-			};
+			Enumerable.Repeat(element: false, 5).ToArray(),
+			Enumerable.Repeat(element: false, 5).ToArray(),
+			Enumerable.Repeat(element: false, 5).ToArray(),
+			Enumerable.Repeat(element: false, 5).ToArray(),
+			Enumerable.Repeat(element: false, 5).ToArray(),
+		};
 
 		using var tsA = sequenceA.AsTestingSequence();
 		using var tsB = sequenceB.AsTestingSequence();
@@ -137,7 +137,7 @@ public class CartesianTests
 	[Test]
 	public void TestEmptyCartesianEvaluation()
 	{
-		using var sequence = Enumerable.Range(0, 5).AsTestingSequence();
+		var sequence = Enumerable.Range(0, 5);
 
 		var resultA = sequence.Cartesian(Enumerable.Empty<int>(), (a, b) => new { A = a, B = b });
 		var resultB = Enumerable.Empty<int>().Cartesian(sequence, (a, b) => new { A = a, B = b });
