@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 using Experimental;
 
@@ -42,14 +42,11 @@ public static partial class SuperEnumerable
 
         return _(); IEnumerable<TResult> _()
         {
-            IEnumerable<T2> secondMemo;
+            using var secondMemo = second.Memoize();
 
-            using ((secondMemo = second.Memoize()) as IDisposable)
-            {
-                foreach (var item1 in first)
-                foreach (var item2 in secondMemo)
-                    yield return resultSelector(item1, item2);
-            }
+            foreach (var item1 in first)
+            foreach (var item2 in secondMemo)
+                yield return resultSelector(item1, item2);
         }
     }
 
@@ -96,17 +93,13 @@ public static partial class SuperEnumerable
 
         return _(); IEnumerable<TResult> _()
         {
-            IEnumerable<T2> secondMemo;
-            IEnumerable<T3> thirdMemo;
+            using var secondMemo = second.Memoize();
+            using var thirdMemo = third.Memoize();
 
-            using ((secondMemo = second.Memoize()) as IDisposable)
-            using ((thirdMemo = third.Memoize()) as IDisposable)
-            {
-                foreach (var item1 in first)
-                foreach (var item2 in secondMemo)
-                foreach (var item3 in thirdMemo)
-                    yield return resultSelector(item1, item2, item3);
-            }
+            foreach (var item1 in first)
+            foreach (var item2 in secondMemo)
+            foreach (var item3 in thirdMemo)
+                yield return resultSelector(item1, item2, item3);
         }
     }
 
@@ -158,20 +151,15 @@ public static partial class SuperEnumerable
 
         return _(); IEnumerable<TResult> _()
         {
-            IEnumerable<T2> secondMemo;
-            IEnumerable<T3> thirdMemo;
-            IEnumerable<T4> fourthMemo;
+            using var secondMemo = second.Memoize();
+            using var thirdMemo = third.Memoize();
+            using var fourthMemo = fourth.Memoize();
 
-            using ((secondMemo = second.Memoize()) as IDisposable)
-            using ((thirdMemo = third.Memoize()) as IDisposable)
-            using ((fourthMemo = fourth.Memoize()) as IDisposable)
-            {
-                foreach (var item1 in first)
-                foreach (var item2 in secondMemo)
-                foreach (var item3 in thirdMemo)
-                foreach (var item4 in fourthMemo)
-                    yield return resultSelector(item1, item2, item3, item4);
-            }
+            foreach (var item1 in first)
+            foreach (var item2 in secondMemo)
+            foreach (var item3 in thirdMemo)
+            foreach (var item4 in fourthMemo)
+                yield return resultSelector(item1, item2, item3, item4);
         }
     }
 
@@ -228,23 +216,17 @@ public static partial class SuperEnumerable
 
         return _(); IEnumerable<TResult> _()
         {
-            IEnumerable<T2> secondMemo;
-            IEnumerable<T3> thirdMemo;
-            IEnumerable<T4> fourthMemo;
-            IEnumerable<T5> fifthMemo;
+            using var secondMemo = second.Memoize();
+            using var thirdMemo = third.Memoize();
+            using var fourthMemo = fourth.Memoize();
+            using var fifthMemo = fifth.Memoize();
 
-            using ((secondMemo = second.Memoize()) as IDisposable)
-            using ((thirdMemo = third.Memoize()) as IDisposable)
-            using ((fourthMemo = fourth.Memoize()) as IDisposable)
-            using ((fifthMemo = fifth.Memoize()) as IDisposable)
-            {
-                foreach (var item1 in first)
-                foreach (var item2 in secondMemo)
-                foreach (var item3 in thirdMemo)
-                foreach (var item4 in fourthMemo)
-                foreach (var item5 in fifthMemo)
-                    yield return resultSelector(item1, item2, item3, item4, item5);
-            }
+            foreach (var item1 in first)
+            foreach (var item2 in secondMemo)
+            foreach (var item3 in thirdMemo)
+            foreach (var item4 in fourthMemo)
+            foreach (var item5 in fifthMemo)
+                yield return resultSelector(item1, item2, item3, item4, item5);
         }
     }
 
@@ -306,26 +288,19 @@ public static partial class SuperEnumerable
 
         return _(); IEnumerable<TResult> _()
         {
-            IEnumerable<T2> secondMemo;
-            IEnumerable<T3> thirdMemo;
-            IEnumerable<T4> fourthMemo;
-            IEnumerable<T5> fifthMemo;
-            IEnumerable<T6> sixthMemo;
+            using var secondMemo = second.Memoize();
+            using var thirdMemo = third.Memoize();
+            using var fourthMemo = fourth.Memoize();
+            using var fifthMemo = fifth.Memoize();
+            using var sixthMemo = sixth.Memoize();
 
-            using ((secondMemo = second.Memoize()) as IDisposable)
-            using ((thirdMemo = third.Memoize()) as IDisposable)
-            using ((fourthMemo = fourth.Memoize()) as IDisposable)
-            using ((fifthMemo = fifth.Memoize()) as IDisposable)
-            using ((sixthMemo = sixth.Memoize()) as IDisposable)
-            {
-                foreach (var item1 in first)
-                foreach (var item2 in secondMemo)
-                foreach (var item3 in thirdMemo)
-                foreach (var item4 in fourthMemo)
-                foreach (var item5 in fifthMemo)
-                foreach (var item6 in sixthMemo)
-                    yield return resultSelector(item1, item2, item3, item4, item5, item6);
-            }
+            foreach (var item1 in first)
+            foreach (var item2 in secondMemo)
+            foreach (var item3 in thirdMemo)
+            foreach (var item4 in fourthMemo)
+            foreach (var item5 in fifthMemo)
+            foreach (var item6 in sixthMemo)
+                yield return resultSelector(item1, item2, item3, item4, item5, item6);
         }
     }
 
@@ -392,29 +367,21 @@ public static partial class SuperEnumerable
 
         return _(); IEnumerable<TResult> _()
         {
-            IEnumerable<T2> secondMemo;
-            IEnumerable<T3> thirdMemo;
-            IEnumerable<T4> fourthMemo;
-            IEnumerable<T5> fifthMemo;
-            IEnumerable<T6> sixthMemo;
-            IEnumerable<T7> seventhMemo;
+            using var secondMemo = second.Memoize();
+            using var thirdMemo = third.Memoize();
+            using var fourthMemo = fourth.Memoize();
+            using var fifthMemo = fifth.Memoize();
+            using var sixthMemo = sixth.Memoize();
+            using var seventhMemo = seventh.Memoize();
 
-            using ((secondMemo = second.Memoize()) as IDisposable)
-            using ((thirdMemo = third.Memoize()) as IDisposable)
-            using ((fourthMemo = fourth.Memoize()) as IDisposable)
-            using ((fifthMemo = fifth.Memoize()) as IDisposable)
-            using ((sixthMemo = sixth.Memoize()) as IDisposable)
-            using ((seventhMemo = seventh.Memoize()) as IDisposable)
-            {
-                foreach (var item1 in first)
-                foreach (var item2 in secondMemo)
-                foreach (var item3 in thirdMemo)
-                foreach (var item4 in fourthMemo)
-                foreach (var item5 in fifthMemo)
-                foreach (var item6 in sixthMemo)
-                foreach (var item7 in seventhMemo)
-                    yield return resultSelector(item1, item2, item3, item4, item5, item6, item7);
-            }
+            foreach (var item1 in first)
+            foreach (var item2 in secondMemo)
+            foreach (var item3 in thirdMemo)
+            foreach (var item4 in fourthMemo)
+            foreach (var item5 in fifthMemo)
+            foreach (var item6 in sixthMemo)
+            foreach (var item7 in seventhMemo)
+                yield return resultSelector(item1, item2, item3, item4, item5, item6, item7);
         }
     }
 
@@ -486,32 +453,23 @@ public static partial class SuperEnumerable
 
         return _(); IEnumerable<TResult> _()
         {
-            IEnumerable<T2> secondMemo;
-            IEnumerable<T3> thirdMemo;
-            IEnumerable<T4> fourthMemo;
-            IEnumerable<T5> fifthMemo;
-            IEnumerable<T6> sixthMemo;
-            IEnumerable<T7> seventhMemo;
-            IEnumerable<T8> eighthMemo;
+            using var secondMemo = second.Memoize();
+            using var thirdMemo = third.Memoize();
+            using var fourthMemo = fourth.Memoize();
+            using var fifthMemo = fifth.Memoize();
+            using var sixthMemo = sixth.Memoize();
+            using var seventhMemo = seventh.Memoize();
+            using var eighthMemo = eighth.Memoize();
 
-            using ((secondMemo = second.Memoize()) as IDisposable)
-            using ((thirdMemo = third.Memoize()) as IDisposable)
-            using ((fourthMemo = fourth.Memoize()) as IDisposable)
-            using ((fifthMemo = fifth.Memoize()) as IDisposable)
-            using ((sixthMemo = sixth.Memoize()) as IDisposable)
-            using ((seventhMemo = seventh.Memoize()) as IDisposable)
-            using ((eighthMemo = eighth.Memoize()) as IDisposable)
-            {
-                foreach (var item1 in first)
-                foreach (var item2 in secondMemo)
-                foreach (var item3 in thirdMemo)
-                foreach (var item4 in fourthMemo)
-                foreach (var item5 in fifthMemo)
-                foreach (var item6 in sixthMemo)
-                foreach (var item7 in seventhMemo)
-                foreach (var item8 in eighthMemo)
-                    yield return resultSelector(item1, item2, item3, item4, item5, item6, item7, item8);
-            }
+            foreach (var item1 in first)
+            foreach (var item2 in secondMemo)
+            foreach (var item3 in thirdMemo)
+            foreach (var item4 in fourthMemo)
+            foreach (var item5 in fifthMemo)
+            foreach (var item6 in sixthMemo)
+            foreach (var item7 in seventhMemo)
+            foreach (var item8 in eighthMemo)
+                yield return resultSelector(item1, item2, item3, item4, item5, item6, item7, item8);
         }
     }
 }
