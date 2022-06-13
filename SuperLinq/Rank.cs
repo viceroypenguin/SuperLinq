@@ -71,8 +71,8 @@ public static partial class SuperEnumerable
 			var rankDictionary = source.Distinct()
 									   .OrderByDescending(keySelector, comparer)
 									   .Index(1)
-									   .ToDictionary(item => item.Value,
-													 item => item.Key);
+									   .ToDictionary(item => item.item,
+													 item => item.index);
 
 			// The following loop should not be be converted to a query to
 			// keep this RankBy lazy.

@@ -21,9 +21,9 @@ public class IndexTest
 		const string three = "three";
 		var result = new[] { one, two, three }.Index();
 		result.AssertSequenceEqual(
-			KeyValuePair.Create(0, one),
-			KeyValuePair.Create(1, two),
-			KeyValuePair.Create(2, three));
+			(0, one),
+			(1, two),
+			(2, three));
 	}
 
 	[Test]
@@ -34,8 +34,8 @@ public class IndexTest
 		const string three = "three";
 		var result = new[] { one, two, three }.Index(10);
 		result.AssertSequenceEqual(
-			KeyValuePair.Create(10, one),
-			KeyValuePair.Create(11, two),
-			KeyValuePair.Create(12, three));
+			(10, one),
+			(11, two),
+			(12, three));
 	}
 }

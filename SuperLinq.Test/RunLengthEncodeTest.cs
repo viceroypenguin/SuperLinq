@@ -39,12 +39,12 @@ public class RunLengthEncodeTests
 		var sequence = new[] { "a", "A", "a", "b", "b", "B", "B" };
 
 		var result = sequence.RunLengthEncode(StringComparer.InvariantCultureIgnoreCase)
-							 .Select(kvp => KeyValuePair.Create(kvp.Key.ToLowerInvariant(), kvp.Value));
+							 .Select(kvp => (kvp.value.ToLowerInvariant(), kvp.count));
 		var expectedResult = new[]
 		{
-				KeyValuePair.Create("a", 3),
-				KeyValuePair.Create("b", 4)
-			};
+			("a", 3),
+			("b", 4)
+		};
 
 		Assert.That(result, Is.EqualTo(expectedResult));
 	}
@@ -56,7 +56,7 @@ public class RunLengthEncodeTests
 	public void TestRunLengthEncodeResults()
 	{
 		var sequence = new[] { 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6 };
-		var expectedResult = Enumerable.Range(1, 6).Select(x => KeyValuePair.Create(x, x));
+		var expectedResult = Enumerable.Range(1, 6).Select(x => (x, x));
 		var result = sequence.RunLengthEncode();
 
 		Assert.That(result, Is.EqualTo(expectedResult));
@@ -70,7 +70,7 @@ public class RunLengthEncodeTests
 	{
 		var sequence = Enumerable.Range(1, 10);
 		var result = sequence.RunLengthEncode();
-		var expectedResult = sequence.Select(x => KeyValuePair.Create(x, 1));
+		var expectedResult = sequence.Select(x => (x, 1));
 
 		Assert.That(result, Is.EqualTo(expectedResult));
 	}
@@ -86,7 +86,7 @@ public class RunLengthEncodeTests
 		const int repeatCount = 10;
 		var sequence = Enumerable.Repeat(value, repeatCount);
 		var result = sequence.RunLengthEncode();
-		var expectedResult = new[] { KeyValuePair.Create(value, repeatCount) };
+		var expectedResult = new[] { (value, repeatCount) };
 
 		Assert.That(result, Is.EqualTo(expectedResult));
 	}

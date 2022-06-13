@@ -12,14 +12,14 @@ public class IndexByTest
 		var result = source.IndexBy(x => x.First());
 
 		result.AssertSequenceEqual(
-			KeyValuePair.Create(0, "ana"),
-			KeyValuePair.Create(0, "beatriz"),
-			KeyValuePair.Create(0, "carla"),
-			KeyValuePair.Create(1, "bob"),
-			KeyValuePair.Create(0, "davi"),
-			KeyValuePair.Create(1, "adriano"),
-			KeyValuePair.Create(2, "angelo"),
-			KeyValuePair.Create(1, "carlos"));
+			(0, "ana"),
+			(0, "beatriz"),
+			(0, "carla"),
+			(1, "bob"),
+			(0, "davi"),
+			(1, "adriano"),
+			(2, "angelo"),
+			(1, "carlos"));
 	}
 
 	[Test]
@@ -27,13 +27,7 @@ public class IndexByTest
 	{
 		var result = "jaffer".IndexBy(c => c);
 
-		result.AssertSequenceEqual(
-			KeyValuePair.Create(0, 'j'),
-			KeyValuePair.Create(0, 'a'),
-			KeyValuePair.Create(0, 'f'),
-			KeyValuePair.Create(1, 'f'),
-			KeyValuePair.Create(0, 'e'),
-			KeyValuePair.Create(0, 'r'));
+		result.AssertSequenceEqual((0, 'j'), (0, 'a'), (0, 'f'), (1, 'f'), (0, 'e'), (0, 'r'));
 	}
 
 	[Test]
@@ -42,13 +36,7 @@ public class IndexByTest
 		var source = new[] { "a", "B", "c", "A", "b", "A" };
 		var result = source.IndexBy(c => c, StringComparer.OrdinalIgnoreCase);
 
-		result.AssertSequenceEqual(
-		   KeyValuePair.Create(0, "a"),
-		   KeyValuePair.Create(0, "B"),
-		   KeyValuePair.Create(0, "c"),
-		   KeyValuePair.Create(1, "A"),
-		   KeyValuePair.Create(1, "b"),
-		   KeyValuePair.Create(2, "A"));
+		result.AssertSequenceEqual((0, "a"), (0, "B"), (0, "c"), (1, "A"), (1, "b"), (2, "A"));
 	}
 
 	[Test]
@@ -64,17 +52,7 @@ public class IndexByTest
 		var result = source.IndexBy(c => c);
 
 		const string @null = null; // type inference happiness
-		result.AssertSequenceEqual(
-			KeyValuePair.Create(0, "foo"),
-			KeyValuePair.Create(0, @null),
-			KeyValuePair.Create(0, "bar"),
-			KeyValuePair.Create(0, "baz"),
-			KeyValuePair.Create(1, @null),
-			KeyValuePair.Create(2, @null),
-			KeyValuePair.Create(1, "baz"),
-			KeyValuePair.Create(1, "bar"),
-			KeyValuePair.Create(3, @null),
-			KeyValuePair.Create(1, "foo"));
+		result.AssertSequenceEqual((0, "foo"), (0, @null), (0, "bar"), (0, "baz"), (1, @null), (2, @null), (1, "baz"), (1, "bar"), (3, @null), (1, "foo"));
 	}
 
 	[Test]
@@ -92,11 +70,11 @@ public class IndexByTest
 		var result = source.IndexBy(x => x.First());
 
 		result.Take(5).AssertSequenceEqual(
-			KeyValuePair.Create(0, "ana"),
-			KeyValuePair.Create(0, "beatriz"),
-			KeyValuePair.Create(0, "carla"),
-			KeyValuePair.Create(1, "bob"),
-			KeyValuePair.Create(0, "davi"));
+			(0, "ana"),
+			(0, "beatriz"),
+			(0, "carla"),
+			(1, "bob"),
+			(0, "davi"));
 
 		Assert.Throws<TestException>(() =>
 			result.ElementAt(5));

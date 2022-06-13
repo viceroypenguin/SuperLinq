@@ -35,15 +35,7 @@ public class ScanByTest
 					key => (Element: default(string), Key: key, State: key - 1),
 					(state, key, item) => (item, char.ToUpperInvariant(key), state.State + 1));
 
-		result.AssertSequenceEqual(
-		   KeyValuePair.Create('a', ("ana", 'A', 97)),
-		   KeyValuePair.Create('b', ("beatriz", 'B', 98)),
-		   KeyValuePair.Create('c', ("carla", 'C', 99)),
-		   KeyValuePair.Create('b', ("bob", 'B', 99)),
-		   KeyValuePair.Create('d', ("davi", 'D', 100)),
-		   KeyValuePair.Create('a', ("adriano", 'A', 98)),
-		   KeyValuePair.Create('a', ("angelo", 'A', 99)),
-		   KeyValuePair.Create('c', ("carlos", 'C', 100)));
+		result.AssertSequenceEqual(('a', ("ana", 'A', 97)), ('b', ("beatriz", 'B', 98)), ('c', ("carla", 'C', 99)), ('b', ("bob", 'B', 99)), ('d', ("davi", 'D', 100)), ('a', ("adriano", 'A', 98)), ('a', ("angelo", 'A', 99)), ('c', ("carlos", 'C', 100)));
 	}
 
 	[Test]
@@ -51,13 +43,7 @@ public class ScanByTest
 	{
 		var result = "jaffer".ScanBy(c => c, k => -1, (i, k, e) => i + 1);
 
-		result.AssertSequenceEqual(
-			KeyValuePair.Create('j', 0),
-			KeyValuePair.Create('a', 0),
-			KeyValuePair.Create('f', 0),
-			KeyValuePair.Create('f', 1),
-			KeyValuePair.Create('e', 0),
-			KeyValuePair.Create('r', 0));
+		result.AssertSequenceEqual(('j', 0), ('a', 0), ('f', 0), ('f', 1), ('e', 0), ('r', 0));
 	}
 
 	[Test]
@@ -69,13 +55,7 @@ public class ScanByTest
 								   (i, k, e) => i + 1,
 								   StringComparer.OrdinalIgnoreCase);
 
-		result.AssertSequenceEqual(
-		   KeyValuePair.Create("a", 0),
-		   KeyValuePair.Create("B", 0),
-		   KeyValuePair.Create("c", 0),
-		   KeyValuePair.Create("A", 1),
-		   KeyValuePair.Create("b", 1),
-		   KeyValuePair.Create("A", 2));
+		result.AssertSequenceEqual(("a", 0), ("B", 0), ("c", 0), ("A", 1), ("b", 1), ("A", 2));
 	}
 
 	[Test]
@@ -84,17 +64,7 @@ public class ScanByTest
 		var source = new[] { "foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo" };
 		var result = source.ScanBy(c => c, k => -1, (i, k, e) => i + 1);
 
-		result.AssertSequenceEqual(
-			KeyValuePair.Create("foo", 0),
-			KeyValuePair.Create((string)null, 0),
-			KeyValuePair.Create("bar", 0),
-			KeyValuePair.Create("baz", 0),
-			KeyValuePair.Create((string)null, 1),
-			KeyValuePair.Create((string)null, 2),
-			KeyValuePair.Create("baz", 1),
-			KeyValuePair.Create("bar", 1),
-			KeyValuePair.Create((string)null, 3),
-			KeyValuePair.Create("foo", 1));
+		result.AssertSequenceEqual(("foo", 0), ((string)null, 0), ("bar", 0), ("baz", 0), ((string)null, 1), ((string)null, 2), ("baz", 1), ("bar", 1), ((string)null, 3), ("foo", 1));
 	}
 
 	[Test]
@@ -104,12 +74,7 @@ public class ScanByTest
 		var source = new[] { "foo", null, "bar", null, "baz" };
 		var result = source.ScanBy(c => c, k => nil, (i, k, e) => nil);
 
-		result.AssertSequenceEqual(
-			KeyValuePair.Create("foo", nil),
-			KeyValuePair.Create((string)null, nil),
-			KeyValuePair.Create("bar", nil),
-			KeyValuePair.Create((string)null, nil),
-			KeyValuePair.Create("baz", nil));
+		result.AssertSequenceEqual(("foo", nil), ((string)null, nil), ("bar", nil), ((string)null, nil), ("baz", nil));
 	}
 
 	[Test]
@@ -127,11 +92,11 @@ public class ScanByTest
 		var result = source.ScanBy(c => c.First(), k => -1, (i, k, e) => i + 1);
 
 		result.Take(5).AssertSequenceEqual(
-			KeyValuePair.Create('a', 0),
-			KeyValuePair.Create('b', 0),
-			KeyValuePair.Create('c', 0),
-			KeyValuePair.Create('b', 1),
-			KeyValuePair.Create('d', 0));
+			('a', 0),
+			('b', 0),
+			('c', 0),
+			('b', 1),
+			('d', 0));
 
 		Assert.Throws<TestException>(() =>
 			result.ElementAt(5));

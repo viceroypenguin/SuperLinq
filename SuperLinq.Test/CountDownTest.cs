@@ -109,8 +109,8 @@ public class CountDownTest
 			// so check that as each result becomes available, the
 			// source hasn't been "pulled" on more.
 
-			Assert.That(moves, Is.EqualTo(e.Key));
-			yield return e.Value;
+			Assert.That(moves, Is.EqualTo(e.index));
+			yield return e.item;
 		}
 
 		Assert.That(disposed, Is.True);

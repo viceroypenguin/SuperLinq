@@ -40,6 +40,6 @@ partial class SuperEnumerable
 		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
 		return source.Index() // count-up
-					 .CountDown(1, (e, cd) => resultSelector(e.Value, e.Key == 0, cd == 0));
+					 .CountDown(1, (e, cd) => resultSelector(e.item, e.index == 0, cd == 0));
 	}
 }

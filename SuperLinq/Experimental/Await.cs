@@ -437,8 +437,8 @@ static partial class ExperimentalEnumerable
 						try
 						{
 							await enumerator.StartAsync(
-								e => evaluator(e.Value, cancellationToken),
-								(e, r) => PostNotice(Notice.Result, (e.Key, e.Value, r), default),
+								e => evaluator(e.item, cancellationToken),
+								(e, r) => PostNotice(Notice.Result, (e.index, e.item, r), default),
 								() => PostNotice(Notice.End, default, default),
 								maxConcurrency, cancellationToken);
 						}

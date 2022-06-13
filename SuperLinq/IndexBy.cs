@@ -50,5 +50,5 @@ public static partial class SuperEnumerable
 			Func<TSource, TKey> keySelector,
 			IEqualityComparer<TKey>? comparer) =>
 		from e in source.ScanBy(keySelector, k => (Index: -1, Item: default(TSource)), (s, k, e) => (s.Index + 1, e), comparer)
-		select (e.Value.Index, e.Value.Item);
+		select (e.state.Index, e.state.Item);
 }

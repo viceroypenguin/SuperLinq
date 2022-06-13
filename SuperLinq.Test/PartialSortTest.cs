@@ -81,8 +81,8 @@ public class PartialSortTests
 			foobars.Index()
 				   .Zip(sorted, (expected, actual) => new
 				   {
-					   Index = expected.Key,
-					   Pass = ReferenceEquals(expected.Value, actual)
+					   Index = expected.index,
+					   Pass = ReferenceEquals(expected.item, actual)
 				   })
 				   .FirstOrDefault(e => !e.Pass)?.Index;
 

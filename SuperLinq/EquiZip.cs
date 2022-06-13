@@ -160,28 +160,28 @@ public static partial class SuperEnumerable
 
 		return ZipImpl(s1, s2, s3, s4, resultSelector, limit, enumerators =>
 		{
-			var i = enumerators.Index().First(x => x.Value == null).Key;
+			var i = enumerators.Index().First(x => x.item == null).index;
 			return new InvalidOperationException(OrdinalNumbers[i] + " sequence too short.");
 		});
 	}
 
 	static readonly string[] OrdinalNumbers =
 	{
-			"First",
-			"Second",
-			"Third",
-			"Fourth",
-            // "Fifth",
-            // "Sixth",
-            // "Seventh",
-            // "Eighth",
-            // "Ninth",
-            // "Tenth",
-            // "Eleventh",
-            // "Twelfth",
-            // "Thirteenth",
-            // "Fourteenth",
-            // "Fifteenth",
-            // "Sixteenth",
-        };
+		"First",
+		"Second",
+		"Third",
+		"Fourth",
+        // "Fifth",
+        // "Sixth",
+        // "Seventh",
+        // "Eighth",
+        // "Ninth",
+        // "Tenth",
+        // "Eleventh",
+        // "Twelfth",
+        // "Thirteenth",
+        // "Fourteenth",
+        // "Fifteenth",
+        // "Sixteenth",
+    };
 }

@@ -87,8 +87,8 @@ public class WindowLeftTest
 		Assert.That(result.Length, Is.EqualTo(count));
 
 		// each window should contain single item consistent of element at that offset
-		foreach (var window in result.Index())
-			Assert.That(sequence.ElementAt(window.Key), Is.EqualTo(window.Value.Single()));
+		foreach (var (index, item) in result.Index())
+			Assert.That(sequence[index], Is.EqualTo(item.Single()));
 	}
 
 	[Test]

@@ -11,12 +11,12 @@ public class CountByTest
 		var result = new[] { 1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2 }.CountBy(c => c);
 
 		result.AssertSequenceEqual(
-			KeyValuePair.Create(1, 4),
-			KeyValuePair.Create(2, 3),
-			KeyValuePair.Create(3, 2),
-			KeyValuePair.Create(4, 1),
-			KeyValuePair.Create(5, 1),
-			KeyValuePair.Create(6, 1));
+			(1, 4),
+			(2, 3),
+			(3, 2),
+			(4, 1),
+			(5, 1),
+			(6, 1));
 	}
 
 	[Test]
@@ -25,11 +25,11 @@ public class CountByTest
 		var result = "jaffer".CountBy(c => c);
 
 		result.AssertSequenceEqual(
-			KeyValuePair.Create('j', 1),
-			KeyValuePair.Create('a', 1),
-			KeyValuePair.Create('f', 2),
-			KeyValuePair.Create('e', 1),
-			KeyValuePair.Create('r', 1));
+			('j', 1),
+			('a', 1),
+			('f', 2),
+			('e', 1),
+			('r', 1));
 	}
 
 	[Test]
@@ -38,8 +38,8 @@ public class CountByTest
 		var result = Enumerable.Range(1, 100).CountBy(c => c % 2);
 
 		result.AssertSequenceEqual(
-			KeyValuePair.Create(1, 50),
-			KeyValuePair.Create(0, 50));
+			(1, 50),
+			(0, 50));
 	}
 
 	[Test]
@@ -48,9 +48,9 @@ public class CountByTest
 		var result = new[] { "a", "B", "c", "A", "b", "A" }.CountBy(c => c, StringComparer.OrdinalIgnoreCase);
 
 		result.AssertSequenceEqual(
-			KeyValuePair.Create("a", 3),
-			KeyValuePair.Create("B", 2),
-			KeyValuePair.Create("c", 1));
+			("a", 3),
+			("B", 2),
+			("c", 1));
 	}
 
 	[Test]
@@ -58,7 +58,7 @@ public class CountByTest
 	{
 		var randomSequence = SuperEnumerable.Random(0, 100).Take(100).ToArray();
 
-		var countByKeys = randomSequence.CountBy(x => x).Select(x => x.Key);
+		var countByKeys = randomSequence.CountBy(x => x).Select(x => x.key);
 		var groupByKeys = randomSequence.GroupBy(x => x).Select(x => x.Key);
 
 		countByKeys.AssertSequenceEqual(groupByKeys);
@@ -75,14 +75,14 @@ public class CountByTest
 	{
 		var ss = new[]
 		{
-				"foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo"
-			};
+			"foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo"
+		};
 		var result = ss.CountBy(s => s);
 
 		result.AssertSequenceEqual(
-			KeyValuePair.Create("foo", 2),
-			KeyValuePair.Create((string)null, 4),
-			KeyValuePair.Create("bar", 2),
-			KeyValuePair.Create("baz", 2));
+			("foo", 2),
+			(default, 4),
+			("bar", 2),
+			("baz", 2));
 	}
 }
