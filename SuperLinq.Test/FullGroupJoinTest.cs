@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using static SuperLinq.Test.FullGroupJoinTest.OverloadCase;
+using static Test.FullGroupJoinTest.OverloadCase;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 [TestFixture]
 public class FullGroupJoinTest

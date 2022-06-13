@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using NUnit.Framework;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 [TestFixture]
 public class CountDownTest

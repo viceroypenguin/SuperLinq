@@ -38,9 +38,6 @@
 			- Acquire
 			- Aggregate (some EXPERIMENTAL)
 			- AggregateRight
-			- Append
-			- Assert
-			- AssertCount
 			- AtLeast
 			- AtMost
 			- Await (EXPERIMENTAL)
@@ -66,7 +63,6 @@
 			- FillForward
 			- Flatten
 			- Fold
-			- ForEach
 			- From
 			- FullGroupJoin
 			- FullJoin
@@ -80,9 +76,8 @@
 			- Lag
 			- Lead
 			- LeftJoin
-			- MaxBy
-			- Memoize (EXPERIMENTAL)
-			- MinBy
+			- MaxElementsBy
+			- MinElementsBy
 			- Move
 			- OrderBy
 			- OrderedMerge
@@ -94,24 +89,20 @@
 			- Partition
 			- Permutations
 			- Pipe
-			- Prepend
 			- PreScan
 			- Random
 			- RandomDouble
 			- RandomSubset
 			- Rank
 			- RankBy
-			- Repeat
 			- Return
 			- RightJoin
 			- RunLengthEncode
-			- Scan
 			- ScanBy
 			- ScanRight
 			- Segment
 			- Sequence
 			- Shuffle
-			- SkipLast
 			- SkipUntil
 			- Slice
 			- SortedMerge
@@ -120,14 +111,12 @@
 			- Subsets
 			- TagFirstLast
 			- TakeEvery
-			- TakeLast
 			- TakeUntil
 			- ThenBy
 			- ToArrayByIndex
 			- ToDataTable
 			- ToDelimitedString
 			- ToDictionary
-			- ToHashSet
 			- ToLookup
 			- Trace
 			- Transpose
@@ -158,8 +147,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-		<PackageReference Include="Nullable" Version="1.3.0" PrivateAssets="All" />
 		<PackageReference Include="MinVer" Version="4.0.0" PrivateAssets="All" />
+		<PackageReference Include="Nullable" Version="1.3.0" PrivateAssets="All" />
+		<PackageReference Include="System.Interactive" Version="6.0.1" />
 	</ItemGroup>
 
 	<PropertyGroup Label="MinVer">
@@ -167,7 +157,7 @@
 		<MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
 		<MinVerTagPrefix>v</MinVerTagPrefix>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
 		<None Include="..\readme.md" Pack="true" PackagePath="\" />
 	</ItemGroup>

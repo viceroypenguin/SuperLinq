@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 class FromTest
 {

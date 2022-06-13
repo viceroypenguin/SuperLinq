@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using static SuperLinq.Test.FullJoinTest.Side;
+using static Test.FullJoinTest.Side;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 [TestFixture]
 public class FullJoinTest

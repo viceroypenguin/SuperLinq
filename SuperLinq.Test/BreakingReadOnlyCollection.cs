@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Test;
+﻿namespace Test;
 
 class BreakingReadOnlyCollection<T> : BreakingSequence<T>, IReadOnlyCollection<T>
 {

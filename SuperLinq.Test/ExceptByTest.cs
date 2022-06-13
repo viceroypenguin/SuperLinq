@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 [TestFixture]
 public class ExceptByTest
@@ -10,7 +10,7 @@ public class ExceptByTest
 	{
 		string[] first = { "aaa", "bb", "c", "dddd" };
 		string[] second = { "xx", "y" };
-		var result = first.ExceptBy(second, x => x.Length);
+		var result = first.ExceptByItems(second, x => x.Length);
 		result.AssertSequenceEqual("aaa", "dddd");
 	}
 
@@ -18,7 +18,7 @@ public class ExceptByTest
 	public void ExceptByIsLazy()
 	{
 		var bs = new BreakingSequence<string>();
-		bs.ExceptBy(bs, BreakingFunc.Of<string, int>());
+		bs.ExceptByItems(bs, BreakingFunc.Of<string, int>());
 	}
 
 	[Test]
@@ -26,7 +26,7 @@ public class ExceptByTest
 	{
 		string[] first = { "aaa", "bb", "c", "a", "b", "c", "dddd" };
 		string[] second = { "xx" };
-		var result = first.ExceptBy(second, x => x.Length);
+		var result = first.ExceptByItems(second, x => x.Length);
 		result.AssertSequenceEqual("aaa", "c", "dddd");
 	}
 
@@ -35,7 +35,7 @@ public class ExceptByTest
 	{
 		string[] first = { "first", "second", "third", "fourth" };
 		string[] second = { "FIRST", "thiRD", "FIFTH" };
-		var result = first.ExceptBy(second, word => word, StringComparer.OrdinalIgnoreCase);
+		var result = first.ExceptByItems(second, word => word, StringComparer.OrdinalIgnoreCase);
 		result.AssertSequenceEqual("second", "fourth");
 	}
 
@@ -44,7 +44,7 @@ public class ExceptByTest
 	{
 		string[] first = { "aaa", "bb", "c", "dddd" };
 		string[] second = { "xx", "y" };
-		var result = first.ExceptBy(second, x => x.Length, null);
+		var result = first.ExceptByItems(second, x => x.Length, keyComparer: null);
 		result.AssertSequenceEqual("aaa", "dddd");
 	}
 
@@ -52,6 +52,6 @@ public class ExceptByTest
 	public void ExceptByIsLazyWithComparer()
 	{
 		var bs = new BreakingSequence<string>();
-		bs.ExceptBy(bs, BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
+		bs.ExceptByItems(bs, BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
 	}
 }

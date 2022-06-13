@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using static SuperLinq.Test.LeftJoinTest.Side;
+using static Test.LeftJoinTest.Side;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 [TestFixture]
 public class LeftJoinTest

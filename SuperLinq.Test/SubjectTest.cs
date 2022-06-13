@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using SuperLinq.Reactive;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 [TestFixture]
 public class SubjectTest

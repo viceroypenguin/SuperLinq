@@ -150,10 +150,14 @@ This method has 3 overloads.
 Determines whether or not the number of elements in the sequence is equals
 to the given integer.
 
-### ExceptBy (Side-by-side with .NET 6.0 `ExceptBy()`, due to differing signatures)
+### ExceptByItems (formerly ExceptBy)
 
 Returns the set of elements in the first sequence which aren't in the second
 sequence, according to a given key selector.
+
+NB: Renamed from `ExceptBy`, due to conflict w/ .NET 6 operator. This method
+does have slightly different behavior from the .NET 6 operator, so it is still
+active even in .NET 6.
 
 This method has 2 overloads.
 
@@ -193,12 +197,6 @@ This method has 3 overloads.
 Returns the result of applying a function to a sequence with 1 to 16 elements.
 
 This method has 16 overloads.
-
-### ForEach
-
-Immediately executes the given action on each element in the source sequence.
-
-This method has 2 overloads.
 
 ### From
 
@@ -423,12 +421,6 @@ count.
 
 This method has 2 overloads.
 
-### Scan
-
-Peforms a scan (inclusive prefix sum) on a sequence of elements.
-
-This method has 2 overloads.
-
 ### ScanBy
 
 Applies an accumulator function over sequence element keys, returning the keys
@@ -642,12 +634,6 @@ This method has 2 overloads.
 Awaits completion of all asynchronous evaluations irrespective of whether they
 succeed or fail. An additional argument specifies a function that projects the
 final result given the source item and completed task.
-
-### Memoize
-
-Creates a sequence that lazily caches the source as it is iterated for the
-first time, reusing the cache thereafter for future re-iterations. If the
-source is already cached or buffered then it is returned verbatim.
 
 ### TrySingle
 

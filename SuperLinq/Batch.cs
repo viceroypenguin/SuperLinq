@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // SuperLinq - Extensions to LINQ to Objects
 // Copyright (c) 2009 Atif Aziz. All rights reserved.
 //
@@ -20,132 +20,39 @@ namespace SuperLinq;
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Batches the source sequence into sized buckets.
+	/// Split the elements of a sequence into chunks of size at most <paramref name="size"/>.
 	/// </summary>
-	/// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="size">Size of buckets.</param>
-	/// <returns>A sequence of equally sized buckets containing elements of the source collection.</returns>
-	/// <remarks>
-	/// <para>
-	/// This operator uses deferred execution and streams its results
-	/// (buckets are streamed but their content buffered).</para>
-	/// <para>
-	/// When more than one bucket is streamed, all buckets except the last
-	/// is guaranteed to have <paramref name="size"/> elements. The last
-	/// bucket may be smaller depending on the remaining elements in the
-	/// <paramref name="source"/> sequence.</para>
-	/// <para>
-	/// Each bucket is pre-allocated to <paramref name="size"/> elements.
-	/// If <paramref name="size"/> is set to a very large value, e.g.
-	/// <see cref="int.MaxValue"/> to effectively disable batching by just
-	/// hoping for a single bucket, then it can lead to memory exhaustion
-	/// (<see cref="OutOfMemoryException"/>).
-	/// </para>
-	/// </remarks>
-
-	public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
-	{
-		return Batch(source, size, x => x);
-	}
+	/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+	/// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to chunk.</param>
+	/// <param name="size">The maximum size of each chunk.</param>
+	/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements the input sequence split into chunks of size size.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="size"/> is below 1.</exception>
+	public static IEnumerable<IList<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size) =>
+#if NET6_0_OR_GREATER
+		source.Chunk(size);
+#else
+		source.Buffer(size);
+#endif
 
 	/// <summary>
-	/// Batches the source sequence into sized buckets and applies a projection to each bucket.
+	/// Split the elements of a sequence into chunks of size at most <paramref name="size"/>
+	/// and applies a projection to each chunk.
 	/// </summary>
-	/// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
-	/// <typeparam name="TResult">Type of result returned by <paramref name="resultSelector"/>.</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="size">Size of buckets.</param>
-	/// <param name="resultSelector">The projection to apply to each bucket.</param>
-	/// <returns>A sequence of projections on equally sized buckets containing elements of the source collection.</returns>
-	/// <para>
-	/// This operator uses deferred execution and streams its results
-	/// (buckets are streamed but their content buffered).</para>
-	/// <para>
-	/// <para>
-	/// When more than one bucket is streamed, all buckets except the last
-	/// is guaranteed to have <paramref name="size"/> elements. The last
-	/// bucket may be smaller depending on the remaining elements in the
-	/// <paramref name="source"/> sequence.</para>
-	/// Each bucket is pre-allocated to <paramref name="size"/> elements.
-	/// If <paramref name="size"/> is set to a very large value, e.g.
-	/// <see cref="int.MaxValue"/> to effectively disable batching by just
-	/// hoping for a single bucket, then it can lead to memory exhaustion
-	/// (<see cref="OutOfMemoryException"/>).
-	/// </para>
-
-	public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
-		Func<IEnumerable<TSource>, TResult> resultSelector)
+	/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+	/// <typeparam name="TResult">The type of the value returned by <paramref name="resultSelector"/>.</typeparam>
+	/// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to chunk.</param>
+	/// <param name="size">The maximum size of each chunk.</param>
+	/// <param name="resultSelector">The projection that .</param>
+	/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements the input sequence split into chunks of size size.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="size"/> is below 1.</exception>
+	public static IEnumerable<TResult> Batch<TSource, TResult>(
+		this IEnumerable<TSource> source, int size,
+		Func<IList<TSource>, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-
-		switch (source)
-		{
-			case ICollection<TSource> { Count: 0 }:
-			{
-				return Enumerable.Empty<TResult>();
-			}
-			case ICollection<TSource> collection when collection.Count <= size:
-			{
-				return _(); IEnumerable<TResult> _()
-				{
-					var bucket = new TSource[collection.Count];
-					collection.CopyTo(bucket, 0);
-					yield return resultSelector(bucket);
-				}
-			}
-			case IReadOnlyCollection<TSource> { Count: 0 }:
-			{
-				return Enumerable.Empty<TResult>();
-			}
-			case IReadOnlyList<TSource> list when list.Count <= size:
-			{
-				return _(); IEnumerable<TResult> _()
-				{
-					var bucket = new TSource[list.Count];
-					for (var i = 0; i < list.Count; i++)
-						bucket[i] = list[i];
-					yield return resultSelector(bucket);
-				}
-			}
-			case IReadOnlyCollection<TSource> collection when collection.Count <= size:
-			{
-				return Batch(collection.Count);
-			}
-			default:
-			{
-				return Batch(size);
-			}
-
-			IEnumerable<TResult> Batch(int size)
-			{
-				TSource[]? bucket = null;
-				var count = 0;
-
-				foreach (var item in source)
-				{
-					bucket ??= new TSource[size];
-					bucket[count++] = item;
-
-					// The bucket is fully buffered before it's yielded
-					if (count != size)
-						continue;
-
-					yield return resultSelector(bucket);
-
-					bucket = null;
-					count = 0;
-				}
-
-				// Return the last bucket with all remaining elements
-				if (bucket != null && count > 0)
-				{
-					Array.Resize(ref bucket, count);
-					yield return resultSelector(bucket);
-				}
-			}
-		}
+		return source.Batch(size).Select(resultSelector);
 	}
 }

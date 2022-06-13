@@ -20,13 +20,11 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">The mapping from source element to key.</param>
 	/// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
 	/// any element in <paramref name="second"/>.</returns>
-	public static IEnumerable<TSource> ExceptBy<TSource, TKey>(
+	public static IEnumerable<TSource> ExceptByItems<TSource, TKey>(
 		this IEnumerable<TSource> first,
 		IEnumerable<TSource> second,
 		Func<TSource, TKey> keySelector)
-	{
-		return ExceptBy(first, second, keySelector, keyComparer: default);
-	}
+		=> ExceptByItems(first, second, keySelector, keyComparer: default);
 
 	/// <summary>
 	/// Returns the set of elements in the first sequence which aren't
@@ -48,7 +46,7 @@ public static partial class SuperEnumerable
 	/// If null, the default equality comparer for <c>TSource</c> is used.</param>
 	/// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
 	/// any element in <paramref name="second"/>.</returns>
-	public static IEnumerable<TSource> ExceptBy<TSource, TKey>(
+	public static IEnumerable<TSource> ExceptByItems<TSource, TKey>(
 		this IEnumerable<TSource> first,
 		IEnumerable<TSource> second,
 		Func<TSource, TKey> keySelector,

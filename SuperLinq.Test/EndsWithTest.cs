@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using NUnit.Framework;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 [TestFixture]
 public class EndsWithTest

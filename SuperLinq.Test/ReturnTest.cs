@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 class ReturnTest
 {

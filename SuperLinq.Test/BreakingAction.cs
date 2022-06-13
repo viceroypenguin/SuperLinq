@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Test;
+﻿namespace Test;
 
 /// <summary>
 /// Actions which throw NotImplementedException if they're ever called.

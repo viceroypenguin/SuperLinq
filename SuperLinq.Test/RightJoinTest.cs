@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using static SuperLinq.Test.RightJoinTest.Side;
+using static Test.RightJoinTest.Side;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 [TestFixture]
 public class RightJoinTest

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Test;
+﻿namespace Test;
 
 sealed class Comparer
 {

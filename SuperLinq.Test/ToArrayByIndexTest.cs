@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 [TestFixture]
 public class ToArrayByIndexTest

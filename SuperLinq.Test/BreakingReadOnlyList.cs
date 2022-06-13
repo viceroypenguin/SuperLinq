@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 /// <summary>
 /// This class implement <see cref="IReadOnlyList{T}"/> but specifically prohibits enumeration using GetEnumerator().

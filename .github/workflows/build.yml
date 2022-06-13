@@ -25,9 +25,6 @@ jobs:
     - name: Build
       run: dotnet build -c Release --no-restore
     - name: Test
-      env:
-        PLAID__CLIENTID: ${{ secrets.PLAIDCLIENTID }}
-        PLAID__SECRET: ${{ secrets.PLAIDSECRET }}
       run: dotnet test -c Release --no-build --verbosity normal
       if: github.repository == 'viceroypenguin/SuperLinq'
     - name: Package

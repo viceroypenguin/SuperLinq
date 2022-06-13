@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 /// <summary>
 /// Tests of the Subset() family of extension methods.

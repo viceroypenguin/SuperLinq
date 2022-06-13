@@ -3,7 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using SuperLinq.Experimental;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 [TestFixture]
 public class TrySingleTest

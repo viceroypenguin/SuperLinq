@@ -5,7 +5,7 @@ using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 [TestFixture]
 public class NullArgumentTest
@@ -192,10 +192,10 @@ public class NullArgumentTest
 		}
 
 		public class AwaitQuery<T> : Enumerable<T>,
-									 Experimental.IAwaitQuery<T>
+									 SuperLinq.Experimental.IAwaitQuery<T>
 		{
-			public Experimental.AwaitQueryOptions Options => Experimental.AwaitQueryOptions.Default;
-			public Experimental.IAwaitQuery<T> WithOptions(Experimental.AwaitQueryOptions options) => this;
+			public SuperLinq.Experimental.AwaitQueryOptions Options => SuperLinq.Experimental.AwaitQueryOptions.Default;
+			public SuperLinq.Experimental.IAwaitQuery<T> WithOptions(SuperLinq.Experimental.AwaitQueryOptions options) => this;
 		}
 
 		public class Comparer<T> : IComparer<T>

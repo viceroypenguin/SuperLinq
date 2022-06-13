@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 /// <summary>
 /// Tests of the various overloads of <see cref="SuperEnumerable"/>.Random()

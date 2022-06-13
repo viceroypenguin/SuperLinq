@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 /// <summary>
 /// Tests that verify the behavior of the RandomSubset() operator

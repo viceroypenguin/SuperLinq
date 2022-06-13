@@ -2,7 +2,7 @@
 using NUnit.Common;
 using NUnitLite;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 static class Program
 {

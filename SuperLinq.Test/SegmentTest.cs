@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework.Interfaces;
 using NUnit.Framework;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 /// <summary>
 /// Verify the behavior of the Segment operator

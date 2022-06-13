@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 /// <summary>
 /// Enumerable sequence which throws InvalidOperationException as soon as its

@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 sealed class CurrentThreadCultureScope : Scope<CultureInfo>
 {

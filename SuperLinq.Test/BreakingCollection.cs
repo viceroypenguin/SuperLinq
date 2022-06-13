@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Test;
+﻿namespace Test;
 
 class BreakingCollection<T> : BreakingSequence<T>, ICollection<T>
 {

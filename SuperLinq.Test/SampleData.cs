@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 /// <summary>
 /// Data and functions to use throughout tests.

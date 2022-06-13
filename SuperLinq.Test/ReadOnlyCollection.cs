@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 static class ReadOnlyCollection
 {

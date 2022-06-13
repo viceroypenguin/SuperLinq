@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Test;
+﻿namespace Test;
 
 static class Comparable<T> where T : IComparable<T>
 {

@@ -2,7 +2,7 @@
 using System.Globalization;
 using NUnit.Framework;
 
-namespace SuperLinq.Test;
+namespace Test;
 
 [TestFixture]
 public class TraceTest
