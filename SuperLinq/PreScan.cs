@@ -11,7 +11,7 @@ public static partial class SuperEnumerable
 	/// element is a special case, it is set to the identity). More
 	/// generally, the pre-scan allows any commutative binary operation,
 	/// not just a sum.
-	/// The inclusive version of PreScan is <see cref="SuperEnumerable.Scan{TSource}"/>.
+	/// The inclusive version of PreScan is <see cref="EnumerableEx.Scan{TSource}"/>.
 	/// This operator uses deferred execution and streams its result.
 	/// </remarks>
 	/// <example>
