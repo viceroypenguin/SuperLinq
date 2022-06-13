@@ -17,11 +17,11 @@ public static partial class SuperEnumerable
 	/// The index is the key and the element is the value of the pair.
 	/// </returns>
 
-	public static IEnumerable<KeyValuePair<int, TSource>>
+	public static IEnumerable<(int index, TSource item)>
 		IndexBy<TSource, TKey>(
 			this IEnumerable<TSource> source,
 			Func<TSource, TKey> keySelector) =>
-		source.IndexBy(keySelector, null);
+		source.IndexBy(keySelector, comparer: null);
 
 	/// <summary>
 	/// Applies a key-generating function to each element of a sequence and
@@ -44,11 +44,11 @@ public static partial class SuperEnumerable
 	/// The index is the key and the element is the value of the pair.
 	/// </returns>
 
-	public static IEnumerable<KeyValuePair<int, TSource>>
+	public static IEnumerable<(int index, TSource item)>
 		IndexBy<TSource, TKey>(
 			this IEnumerable<TSource> source,
 			Func<TSource, TKey> keySelector,
 			IEqualityComparer<TKey>? comparer) =>
 		from e in source.ScanBy(keySelector, k => (Index: -1, Item: default(TSource)), (s, k, e) => (s.Index + 1, e), comparer)
-		select new KeyValuePair<int, TSource>(e.Value.Index, e.Value.Item);
+		select (e.Value.Index, e.Value.Item);
 }

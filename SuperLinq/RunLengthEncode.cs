@@ -4,35 +4,35 @@ public static partial class SuperEnumerable
 {
 	/// <summary>
 	/// Run-length encodes a sequence by converting consecutive instances of the same element into
-	/// a <c>KeyValuePair{T,int}</c> representing the item and its occurrence count.
+	/// a tuple representing the item and its occurrence count.
 	/// </summary>
 	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
 	/// <param name="sequence">The sequence to run length encode</param>
-	/// <returns>A sequence of <c>KeyValuePair{T,int}</c> where the key is the element and the value is the occurrence count</returns>
+	/// <returns>A sequence of tuples containing the element and the occurrence count</returns>
 
-	public static IEnumerable<KeyValuePair<T, int>> RunLengthEncode<T>(this IEnumerable<T> sequence)
+	public static IEnumerable<(T value, int count)> RunLengthEncode<T>(this IEnumerable<T> sequence)
 	{
-		return RunLengthEncode(sequence, null);
+		return RunLengthEncode(sequence, comparer: null);
 	}
 
 	/// <summary>
 	/// Run-length encodes a sequence by converting consecutive instances of the same element into
-	/// a <c>KeyValuePair{T,int}</c> representing the item and its occurrence count. This overload
+	/// a tuple representing the item and its occurrence count. This overload
 	/// uses a custom equality comparer to identify equivalent items.
 	/// </summary>
 	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
 	/// <param name="sequence">The sequence to run length encode</param>
 	/// <param name="comparer">The comparer used to identify equivalent items</param>
-	/// <returns>A sequence of <c>KeyValuePair{T,int}</c> where they key is the element and the value is the occurrence count</returns>
+	/// <returns>A sequence of tuples containing the element and the occurrence count</returns>
 
-	public static IEnumerable<KeyValuePair<T, int>> RunLengthEncode<T>(this IEnumerable<T> sequence, IEqualityComparer<T>? comparer)
+	public static IEnumerable<(T value, int count)> RunLengthEncode<T>(this IEnumerable<T> sequence, IEqualityComparer<T>? comparer)
 	{
 		if (sequence == null)
 			throw new ArgumentNullException(nameof(sequence));
 
 		return _(comparer ?? EqualityComparer<T>.Default);
 
-		IEnumerable<KeyValuePair<T, int>> _(IEqualityComparer<T> comparer)
+		IEnumerable<(T value, int count)> _(IEqualityComparer<T> comparer)
 		{
 			// This implementation could also have been written using a foreach loop,
 			// but it proved to be easier to deal with edge certain cases that occur
@@ -53,13 +53,13 @@ public static partial class SuperEnumerable
 					}
 					else
 					{
-						yield return new KeyValuePair<T, int>(prevItem, runCount);
+						yield return (prevItem, runCount);
 						prevItem = iter.Current;
 						runCount = 1;
 					}
 				}
 
-				yield return new KeyValuePair<T, int>(prevItem, runCount);
+				yield return (prevItem, runCount);
 			}
 		}
 	}

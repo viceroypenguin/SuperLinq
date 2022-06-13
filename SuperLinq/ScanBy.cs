@@ -21,7 +21,7 @@ public static partial class SuperEnumerable
 	/// A sequence of keys paired with intermediate accumulator states.
 	/// </returns>
 
-	public static IEnumerable<KeyValuePair<TKey, TState>> ScanBy<TSource, TKey, TState>(
+	public static IEnumerable<(TKey key, TState state)> ScanBy<TSource, TKey, TState>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
 		Func<TKey, TState> seedSelector,
@@ -53,7 +53,7 @@ public static partial class SuperEnumerable
 	/// A sequence of keys paired with intermediate accumulator states.
 	/// </returns>
 
-	public static IEnumerable<KeyValuePair<TKey, TState>> ScanBy<TSource, TKey, TState>(
+	public static IEnumerable<(TKey key, TState state)> ScanBy<TSource, TKey, TState>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
 		Func<TKey, TState> seedSelector,
@@ -67,7 +67,7 @@ public static partial class SuperEnumerable
 
 		return _(comparer ?? EqualityComparer<TKey>.Default);
 
-		IEnumerable<KeyValuePair<TKey, TState>> _(IEqualityComparer<TKey> comparer)
+		IEnumerable<(TKey key, TState state)> _(IEqualityComparer<TKey> comparer)
 		{
 			var stateByKey = new Collections.Dictionary<TKey, TState>(comparer);
 
@@ -89,7 +89,7 @@ public static partial class SuperEnumerable
 
 				stateByKey[key] = state;
 
-				yield return new KeyValuePair<TKey, TState>(key, state);
+				yield return (key, state);
 
 				prev = (true, key, state);
 			}

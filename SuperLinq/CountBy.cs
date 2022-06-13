@@ -12,9 +12,9 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
 	/// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
 
-	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+	public static IEnumerable<(TKey key, int count)> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 	{
-		return source.CountBy(keySelector, null);
+		return source.CountBy(keySelector, comparer: null);
 	}
 
 	/// <summary>
@@ -30,12 +30,12 @@ public static partial class SuperEnumerable
 	/// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
 	/// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
 
-	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+	public static IEnumerable<(TKey key, int count)> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
 	{
 		if (source == null) throw new ArgumentNullException(nameof(source));
 		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
-		return _(); IEnumerable<KeyValuePair<TKey, int>> _()
+		return _(); IEnumerable<(TKey key, int count)> _()
 		{
 			List<TKey> keys;
 			List<int> counts;
@@ -54,7 +54,7 @@ public static partial class SuperEnumerable
 			Loop(comparer ?? EqualityComparer<TKey>.Default);
 
 			for (var i = 0; i < keys.Count; i++)
-				yield return new KeyValuePair<TKey, int>(keys[i], counts[i]);
+				yield return (keys[i], counts[i]);
 
 			void Loop(IEqualityComparer<TKey> cmp)
 			{

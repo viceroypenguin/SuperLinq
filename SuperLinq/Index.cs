@@ -3,36 +3,37 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Returns a sequence of <see cref="KeyValuePair{TKey,TValue}"/>
-	/// where the key is the zero-based index of the value in the source
+	/// Returns a sequence of tuples where the `key` is 
+	/// the zero-based index of the `value` in the source
 	/// sequence.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
 	/// <param name="source">The source sequence.</param>
-	/// <returns>A sequence of <see cref="KeyValuePair{TKey,TValue}"/>.</returns>
+	/// <returns>A sequence of tuples.</returns>
 	/// <remarks>This operator uses deferred execution and streams its
 	/// results.</remarks>
 
-	public static IEnumerable<KeyValuePair<int, TSource>> Index<TSource>(this IEnumerable<TSource> source)
+	public static IEnumerable<(int index, TSource item)> Index<TSource>(this IEnumerable<TSource> source)
 	{
 		return source.Index(0);
 	}
 
 	/// <summary>
-	/// Returns a sequence of <see cref="KeyValuePair{TKey,TValue}"/>
-	/// where the key is the index of the value in the source sequence.
-	/// An additional parameter specifies the starting index.
+	/// Returns a sequence of tuples where the `key` is 
+	/// the zero-based index of the `value` in the source
+	/// sequence. An additional parameter specifies the 
+	/// starting index.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
 	/// <param name="source">The source sequence.</param>
 	/// <param name="startIndex"></param>
-	/// <returns>A sequence of <see cref="KeyValuePair{TKey,TValue}"/>.</returns>
+	/// <returns>A sequence of tuples.</returns>
 	/// <remarks>This operator uses deferred execution and streams its
 	/// results.</remarks>
 
-	public static IEnumerable<KeyValuePair<int, TSource>> Index<TSource>(this IEnumerable<TSource> source, int startIndex)
+	public static IEnumerable<(int index, TSource item)> Index<TSource>(this IEnumerable<TSource> source, int startIndex)
 	{
 		if (source == null) throw new ArgumentNullException(nameof(source));
-		return source.Select((item, index) => new KeyValuePair<int, TSource>(startIndex + index, item));
+		return source.Select((item, index) => (startIndex + index, item));
 	}
 }
