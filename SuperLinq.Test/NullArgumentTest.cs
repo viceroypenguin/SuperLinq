@@ -36,10 +36,6 @@ public class NullArgumentTest
 			Assert.That(e, Is.InstanceOf<ArgumentNullException>());
 			var ane = (ArgumentNullException)e;
 			Assert.That(ane.ParamName, Is.EqualTo(paramName));
-			var stackTrace = new StackTrace(ane, false);
-			var stackFrame = stackTrace.GetFrames().First();
-			var actualType = stackFrame.GetMethod().DeclaringType;
-			Assert.That(actualType, Is.SameAs(typeof(SuperEnumerable)));
 		});
 
 	static IEnumerable<ITestCaseData> GetCanBeNullTestCases() =>
