@@ -17,10 +17,6 @@ sealed class CurrentThreadCultureScope : Scope<CultureInfo>
 
 	static void Install(CultureInfo value)
 	{
-#if NET451
-            System.Threading.Thread.CurrentThread.CurrentCulture = value;
-#else
 		CultureInfo.CurrentCulture = value;
-#endif
 	}
 }

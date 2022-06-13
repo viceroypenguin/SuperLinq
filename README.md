@@ -1,93 +1,27 @@
-# MoreLINQ
+# SuperLinq
 
 LINQ to Objects is missing a few desirable features.
 
 This project enhances LINQ to Objects with extra methods, in a manner which
 keeps to the spirit of LINQ.
 
-MoreLINQ is available for download and installation as
-[NuGet packages](https://www.nuget.org/packages/morelinq/).
-
-Documentation for the stable and beta releases can be found at
-[morelinq.github.io](https://morelinq.github.io/).
-
+SuperLinq is available for download and installation as
+[NuGet packages](https://www.nuget.org/packages/superlinq/).
 
 ## Usage
 
 MoreLINQ can be used in one of two ways. The simplest is to just import the
 `MoreLinq` namespace and all extension methods become instantly available for
 you to use on the types they extend (typically some instantiation of
-`IEnumerable<T>`). In some very rare instances, however, doing so can cause
-conflicts with other libraries you may be using that incidentally also extend
-the same type with an identically named method and signature. This happened
-with MoreLINQ, for example, when Microsoft .NET Framework 4.0 introduced
-[`Zip`][netzip] and [MoreLINQ already had one][zip]. Starting with version 3.0
-of MoreLINQ, you can reduce the potential for present (or even future)
-conflicts by individually importing just the extension methods you need using
-the [static imports feature introduced in C# 6][using-static]:
-
-```c#
-using static MoreLinq.Extensions.LagExtension;
-using static MoreLinq.Extensions.LeadExtension;
-```
-
-In the example above, only the [`Lag`][lag] and [`Lead`][lead] extension
-methods will be available in scope.
+`IEnumerable<T>`).
 
 Apart from extension methods, MoreLINQ also offers regular static method
 that *generate* (instead of operating on) sequences, like `Unfold`,
-`Random`, `Sequence` and others. If you want to use these while statically
-importing other individual extension methods, you can do so via aliasing:
+`Random`, `Sequence` and others. 
 
-```c#
-using static MoreLinq.Extensions.LagExtension;
-using static MoreLinq.Extensions.LeadExtension;
-using MoreEnumerable = MoreLinq.MoreEnumerable;
-```
+## .NET Versions
 
-In the example above, [`Lag`][lag] and [`Lead`][lead] will be available as
-extension methods as well as all the regular static methods on
-`MoreEnumerable` but _without_ any of the extension methods offered by
-`MoreEnumerable`.
-
-
-[lag]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lag.htm
-[lead]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lead.htm
-[using-static]: https://docs.microsoft.com/en-us/dotnet/articles/csharp/whats-new/csharp-6#using-static
-[netzip]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.zip#System_Linq_Enumerable_Zip__3_System_Collections_Generic_IEnumerable___0__System_Collections_Generic_IEnumerable___1__System_Func___0___1___2__
-[zip]: https://morelinq.github.io/1.x/ref/api/html/M_MoreLinq_MoreEnumerable_Zip__3.htm
-[unfold]: https://morelinq.github.io/2.3/ref/api/html/M_MoreLinq_MoreEnumerable_Unfold__3.htm
-[random]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Random.htm
-[sequence]: https://morelinq.github.io/2.2/ref/api/html/Overload_MoreLinq_MoreEnumerable_Sequence.htm
-
-
-## Building
-
-To build MoreLINQ from sources, you will need:
-
-- [.NET Core 2.0 with SDK 2.1][dotnet-2.0-sdk-2.1]
-- [Mono][mono] 5.0 if building on other platforms than Windows
-
-Then run either `build.cmd` if building on Windows or `build.sh` if
-building on macOS or a Linux distribution supported by .NET Core.
-
-Some code in the project is generated using [T4][t4] templates. To regenerate
-the code from modified templates, run `MoreLinq\tt.cmd` (Windows) or
-`MoreLinq/tt.sh` depending on your platform.
-
-Building the documentation is supported on Windows only and requires
-[Sandcastle Help File Builder (SHFB)][shfb]. Executing `builddocs.cmd`
-generates the documentation in the `docs/api` directory. It can be browsed
-locally using any HTTP server of static files, like
-[http-server][http-server].
-
-
-[mono]: https://www.mono-project.com/
-[dotnet-2.0-sdk-2.1]: https://github.com/dotnet/core/blob/main/release-notes/download-archives/2.1.2-sdk-download.md
-[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2017.12.30.2
-[http-server]: https://www.npmjs.com/package/http-server
-[t4]: https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates
-
+Base library is supported on .NET Core 3.1 and .NET 5.0+.
 
 ## Operators
 
@@ -109,23 +43,6 @@ Applies a right-associative accumulator function over a sequence.
 This operator is the right-associative version of the Aggregate LINQ operator.
 
 This method has 3 overloads.
-
-### Append
-
-Returns a sequence consisting of the head element and the given tail elements.
-
-### Assert
-
-Asserts that all elements of a sequence meet a given condition otherwise
-throws an exception.
-
-This method has 2 overloads.
-
-### AssertCount
-
-Asserts that a source sequence contains a given count of elements.
-
-This method has 2 overloads.
 
 ### AtLeast
 
@@ -170,13 +87,6 @@ second.
 Compares two sequences and returns an integer that indicates whether the
 first sequence has fewer, the same or more elements than the second sequence.
 
-### ~~Concat~~
-
-Returns a sequence consisting of the head element and the given tail elements.
-
-This method is obsolete and will be removed in a future version. Use `Append`
-instead.
-
 ### Consume
 
 Completely consumes the given sequence. This method uses immediate execution,
@@ -201,7 +111,7 @@ Provides a countdown counter for a given count of elements at the tail of the
 sequence where zero always represents the last element, one represents the
 second-last element, two represents the third-last element and so on.
 
-### DistinctBy
+### DistinctBy (Hidden in .NET 6 in favor of the Framework version)
 
 Returns all distinct elements of the given source, where "distinctness" is
 determined via a projection and the default equality comparer for the
@@ -313,11 +223,6 @@ selector function.
 
 This method has 6 overloads.
 
-### ~~Incremental~~
-
-`Incremental` was redundant with `Pairwise` and so deprecated since version
-[2.1][v2.1]. It was eventually removed in version [3.0][v3.0].
-
 ### Index
 
 Returns a sequence of where the key is the zero-based index of the value in
@@ -326,7 +231,6 @@ the source sequence.
 This method has 2 overloads.
 
 ### IndexBy
-
 
 Applies a key-generating function to each element of a sequence and returns
 a sequence that contains the elements of the original sequence as well its
@@ -364,14 +268,14 @@ Performs a left outer join between two sequences.
 
 This method has 4 overloads.
 
-### MaxBy
+### MaxElementsBy
 
 Returns the maxima (maximal elements) of the given sequence, based on the
 given projection.
 
 This method has 2 overloads.
 
-### MinBy
+### MinElementsBy
 
 Returns the minima (minimal elements) of the given sequence, based on the
 given projection.
@@ -445,10 +349,6 @@ sequence
 ### Pipe
 
 Executes the given action on each element in the source sequence and yields it
-
-### Prepend
-
-Prepends a single value to a sequence
 
 ### PreScan
 
@@ -551,10 +451,6 @@ Returns a sequence of elements in random order from the original sequence.
 
 This method has 2 overloads.
 
-### SkipLast
-
-Bypasses a specified number of elements at the end of the sequence.
-
 ### SkipUntil
 
 Skips items from the input sequence until the given predicate returns true
@@ -601,10 +497,6 @@ the first and/or last of the sequence
 
 Returns every N-th element of a source sequence
 
-### TakeLast
-
-Returns a specified number of contiguous elements from the end of a sequence
-
 ### TakeUntil
 
 Returns items from the input sequence until the given predicate returns true
@@ -645,14 +537,6 @@ Creates a [dictionary][dict] from a sequence of [key-value pair][kvp] elements
 or tuples of 2.
 
 This method has 4 overloads.
-
-### ToHashSet
-
-Returns a [hash-set][hashset] of the source items using the default equality
-comparer for the type.
-
-This method has 2 overloads.
-
 ### ToLookup
 
 Creates a [lookup][lookup] from a sequence of [key-value pair][kvp] elements
@@ -690,14 +574,6 @@ its value, and the next state in the recursive call.
 
 Processes a sequence into a series of subsequences representing a windowed
 subset of the original
-
-### ~~Windowed~~
-
-Processes a sequence into a series of subsequences representing a windowed
-subset of the original
-
-This method is obsolete and will be removed in a future version. Use `Window`
-instead.
 
 ### WindowLeft
 
@@ -771,10 +647,6 @@ that indicates the cardinality of the result sequence.
 This method has 2 overloads.
 
 
-[#122]: https://github.com/morelinq/MoreLINQ/issues/122
 [dict]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.Dictionary-2
-[hashset]: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.hashset-1
 [kvp]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.KeyValuePair-2
 [lookup]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.lookup-2
-[v2.1]: https://github.com/morelinq/MoreLINQ/releases/tag/v2.1.0
-[v3.0]: https://github.com/morelinq/MoreLINQ/releases/tag/v3.0.0
