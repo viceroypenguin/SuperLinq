@@ -10,14 +10,25 @@ SuperLinq is available for download and installation as
 
 ## Usage
 
-MoreLINQ can be used in one of two ways. The simplest is to just import the
+SuperLinq can be used in one of two ways. The simplest is to just import the
 `MoreLinq` namespace and all extension methods become instantly available for
 you to use on the types they extend (typically some instantiation of
 `IEnumerable<T>`).
 
-Apart from extension methods, MoreLINQ also offers regular static method
+Apart from extension methods, SuperLinq also offers regular static method
 that *generate* (instead of operating on) sequences, like `Unfold`,
 `Random`, `Sequence` and others. 
+
+## Migration from MoreLINQ
+
+In most case, migration should be easy:
+
+1. Remove the nuget reference to MoreLINQ and add a reference to SuperLinq. 
+2. Replace any `using MoreLinq;` with `using SuperLinq;`
+3. Remove any `using MoreLinq.Extensions.*`
+
+This is because SuperLinq has been updated to be side-by-side compatible
+with .NET Core 3.1 and .NET 5.0/6.0. 
 
 ## .NET Versions
 
@@ -139,7 +150,7 @@ This method has 3 overloads.
 Determines whether or not the number of elements in the sequence is equals
 to the given integer.
 
-### ExceptBy
+### ExceptBy (Side-by-side with .NET 6.0 `ExceptBy()`, due to differing signatures)
 
 Returns the set of elements in the first sequence which aren't in the second
 sequence, according to a given key selector.
