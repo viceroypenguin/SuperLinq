@@ -11,7 +11,7 @@ SuperLinq is available for download and installation as
 ## Usage
 
 SuperLinq can be used in one of two ways. The simplest is to just import the
-`MoreLinq` namespace and all extension methods become instantly available for
+`SuperLinq` namespace and all extension methods become instantly available for
 you to use on the types they extend (typically some instantiation of
 `IEnumerable<T>`).
 
