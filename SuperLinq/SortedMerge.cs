@@ -30,7 +30,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, params IEnumerable<TSource>[] otherSequences)
 	{
-		return SortedMerge(source, direction, null, otherSequences);
+		return SortedMerge(source, direction, comparer: null, otherSequences);
 	}
 
 	/// <summary>
@@ -44,7 +44,9 @@ public static partial class SuperEnumerable
 	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
 	/// <returns>A merged, order-preserving sequence containing al of the elements of the original sequences</returns>
 
+#pragma warning disable MA0051 // Method is too long, due to comments
 	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource>? comparer, params IEnumerable<TSource>[] otherSequences)
+#pragma warning restore MA0051
 	{
 		if (source == null) throw new ArgumentNullException(nameof(source));
 		if (otherSequences == null) throw new ArgumentNullException(nameof(otherSequences));
