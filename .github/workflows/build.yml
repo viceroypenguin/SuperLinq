@@ -28,7 +28,7 @@ jobs:
       run: dotnet test -c Release --no-build --verbosity normal
       if: github.repository == 'viceroypenguin/SuperLinq'
     - name: Package
-      run: dotnet pack SuperLinq/SuperLinq.csproj -c Release --no-build -o nupkgs
+      run: dotnet pack Source/SuperLinq/SuperLinq.csproj -c Release --no-build -o nupkgs
       if: startsWith(github.ref, 'refs/tags/')
     - name: Push to Nuget
       run: dotnet nuget push "./nupkgs/*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGETPUBLISHKEY }}

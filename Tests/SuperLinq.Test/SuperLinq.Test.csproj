@@ -20,7 +20,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\SuperLinq\SuperLinq.csproj" />
+		<ProjectReference Include="..\..\Source\SuperLinq\SuperLinq.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
