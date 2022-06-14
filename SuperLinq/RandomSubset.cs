@@ -43,9 +43,11 @@ public static partial class SuperEnumerable
 		return RandomSubsetImpl(source, rand, seq => (seq.ToArray(), subsetSize));
 	}
 
-	static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, Func<IEnumerable<T>, (T[], int)> seeder)
+#pragma warning disable MA0050 // arguments validated in both callers
+	private static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, Func<IEnumerable<T>, (T[], int)> seeder)
+#pragma warning restore MA0050
 	{
-		// The simplest and most efficient way to return a random subet is to perform
+		// The simplest and most efficient way to return a random subset is to perform
 		// an in-place, partial Fisher-Yates shuffle of the sequence. While we could do
 		// a full shuffle, it would be wasteful in the cases where subsetSize is shorter
 		// than the length of the sequence.
@@ -55,8 +57,10 @@ public static partial class SuperEnumerable
 
 		if (array.Length < subsetSize)
 		{
+#pragma warning disable MA0015 // Specify the parameter name in ArgumentException
 			throw new ArgumentOutOfRangeException(nameof(subsetSize),
 				"Subset size must be less than or equal to the source length.");
+#pragma warning restore MA0015
 		}
 
 		var m = 0;                // keeps track of count items shuffled
@@ -67,9 +71,7 @@ public static partial class SuperEnumerable
 		while (m < subsetSize)
 		{
 			var k = g - rand.Next(w);
-			var tmp = array[k];
-			array[k] = array[m];
-			array[m] = tmp;
+			(array[m], array[k]) = (array[k], array[m]);
 			++m;
 			--w;
 		}

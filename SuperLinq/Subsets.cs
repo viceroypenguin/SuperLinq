@@ -26,7 +26,9 @@ public static partial class SuperEnumerable
 	{
 		if (sequence == null) throw new ArgumentNullException(nameof(sequence));
 
-		return _(); IEnumerable<IList<T>> _()
+		return _(sequence);
+
+		static IEnumerable<IList<T>> _(IEnumerable<T> sequence)
 		{
 			var sequenceAsList = sequence.ToList();
 			var sequenceLength = sequenceAsList.Count;
@@ -105,18 +107,16 @@ public static partial class SuperEnumerable
 
 		class SubsetEnumerator : IEnumerator<IList<T>>
 		{
-			readonly IList<T> _set;   // the original set of elements
-			readonly T[] _subset;     // the current subset to return
-			readonly int[] _indices;  // indices into the original set
+			private readonly IList<T> _set;   // the original set of elements
+			private readonly T[] _subset;     // the current subset to return
+			private readonly int[] _indices;  // indices into the original set
+			private readonly int _subsetSize; // size of the subset being produced
 
-			// TODO: It would be desirable to give these index members clearer names
-			bool _continue;  // termination indicator, set when all subsets have been produced
+			private bool _continue;  // termination indicator, set when all subsets have been produced
 
-			int _m;            // previous swap index (upper index)
-			int _m2;           // current swap index (lower index)
-			int _k;            // size of the subset being produced
-			int _n;            // size of the original set (sequence)
-			int _z;            // count of items excluded from the subet
+			private int _prevIndex;  // previous swap index (upper index)
+			private int _curIndex;   // current swap index (lower index)
+			private int _seqSize;    // size of the original set (sequence)
 
 			public SubsetEnumerator(IList<T> set, int subsetSize)
 			{
@@ -126,6 +126,7 @@ public static partial class SuperEnumerable
 
 				// initialize set arrays...
 				_set = set;
+				_subsetSize = subsetSize;
 				_subset = new T[subsetSize];
 				_indices = new int[subsetSize];
 				// initialize index counters...
@@ -134,11 +135,9 @@ public static partial class SuperEnumerable
 
 			public void Reset()
 			{
-				_m = _subset.Length;
-				_m2 = -1;
-				_k = _subset.Length;
-				_n = _set.Count;
-				_z = _n - _k + 1;
+				_prevIndex = _subset.Length;
+				_curIndex = -1;
+				_seqSize = _set.Count;
 				_continue = _subset.Length > 0;
 			}
 
@@ -151,27 +150,27 @@ public static partial class SuperEnumerable
 				if (!_continue)
 					return false;
 
-				if (_m2 == -1)
+				if (_curIndex == -1)
 				{
-					_m2 = 0;
-					_m = _k;
+					_curIndex = 0;
+					_prevIndex = _subsetSize;
 				}
 				else
 				{
-					if (_m2 < _n - _m)
+					if (_curIndex < _seqSize - _prevIndex)
 					{
-						_m = 0;
+						_prevIndex = 0;
 					}
-					_m++;
-					_m2 = _indices[_k - _m];
+					_prevIndex++;
+					_curIndex = _indices[_subsetSize - _prevIndex];
 				}
 
-				for (var j = 1; j <= _m; j++)
-					_indices[_k + j - _m - 1] = _m2 + j;
+				for (var j = 1; j <= _prevIndex; j++)
+					_indices[_subsetSize + j - _prevIndex - 1] = _curIndex + j;
 
 				ExtractSubset();
 
-				_continue = (_indices[0] != _z);
+				_continue = _indices[0] != _seqSize - _subsetSize + 1;
 				return true;
 			}
 
@@ -179,22 +178,21 @@ public static partial class SuperEnumerable
 
 			void ExtractSubset()
 			{
-				for (var i = 0; i < _k; i++)
+				for (var i = 0; i < _subsetSize; i++)
 					_subset[i] = _set[_indices[i] - 1];
 			}
 		}
 
-		readonly IEnumerable<T> _sequence;
-		readonly int _subsetSize;
+		private readonly IEnumerable<T> _sequence;
+		private readonly int _subsetSize;
 
 		public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
 		{
-			if (sequence == null)
-				throw new ArgumentNullException(nameof(sequence));
+			_sequence = sequence ?? throw new ArgumentNullException(nameof(sequence));
+
 			if (subsetSize < 0)
 				throw new ArgumentOutOfRangeException(nameof(subsetSize), "{subsetSize} must be between 0 and set.Count()");
 			_subsetSize = subsetSize;
-			_sequence = sequence;
 		}
 
 		/// <summary>
@@ -204,11 +202,9 @@ public static partial class SuperEnumerable
 		/// </summary>
 		/// <returns>an <see cref="IEnumerator"/> that enumerates all k-sized subsets</returns>
 
-		public IEnumerator<IList<T>> GetEnumerator()
-		{
-			return new SubsetEnumerator(_sequence.ToList(), _subsetSize);
-		}
+		public IEnumerator<IList<T>> GetEnumerator() =>
+			new SubsetEnumerator(_sequence.ToList(), _subsetSize);
 
-		IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }
