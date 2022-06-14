@@ -56,31 +56,41 @@ public class PartialSortByTests
 		new BreakingSequence<object>().PartialSortBy(1, BreakingFunc.Of<object, object>());
 	}
 
-	[Test, Ignore("TODO")]
+	[Test]
 	public void PartialSortByIsStable()
 	{
-		// Force creation of same strings to avoid reference equality at
-		// start via interned literals.
+		var list = new[]
+		{
+			(key: 5, text: "1"),
+			(key: 5, text: "2"),
+			(key: 4, text: "3"),
+			(key: 4, text: "4"),
+			(key: 3, text: "5"),
+			(key: 3, text: "6"),
+			(key: 2, text: "7"),
+			(key: 2, text: "8"),
+			(key: 1, text: "9"),
+			(key: 1, text: "10"),
+		};
 
-		var foobar = "foobar".ToCharArray();
-		var foobars = Enumerable.Repeat(foobar, 10)
-								.Select(chars => new string(chars))
-								.ToArray();
+		var stableSort = new[]
+		{
+			(key: 1, text: "9"),
+			(key: 1, text: "10"),
+			(key: 2, text: "7"),
+			(key: 2, text: "8"),
+			(key: 3, text: "5"),
+			(key: 3, text: "6"),
+			(key: 4, text: "3"),
+			(key: 4, text: "4"),
+			(key: 5, text: "1"),
+			(key: 5, text: "2"),
+		};
 
-		var sorted = foobars.PartialSort(5);
-
-		// Pair expected and actuals by index and then check
-		// reference equality, finding the first mismatch.
-
-		var mismatchIndex =
-			foobars.Index()
-				   .Zip(sorted, (expected, actual) => new
-				   {
-					   Index = expected.index,
-					   Pass = ReferenceEquals(expected.item, actual)
-				   })
-				   .FirstOrDefault(e => !e.Pass)?.Index;
-
-		Assert.That(mismatchIndex, Is.Null, "Mismatch index");
+		for (var i = 1; i <= 10; i++)
+		{
+			var sorted = list.PartialSortBy(i, x => x.key);
+			Assert.True(sorted.SequenceEqual(stableSort.Take(i)));
+		}
 	}
 }

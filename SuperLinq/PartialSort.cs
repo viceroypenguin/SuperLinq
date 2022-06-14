@@ -18,7 +18,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source, int count)
 	{
-		return source.PartialSort(count, null);
+		return source.PartialSort(count, comparer: null);
 	}
 
 	/// <summary>
@@ -37,10 +37,10 @@ public static partial class SuperEnumerable
 	/// This operator uses deferred execution and streams it results.
 	/// </remarks>
 
-	public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source,
-		int count, OrderByDirection direction)
+	public static IEnumerable<T> PartialSort<T>(
+		this IEnumerable<T> source, int count, OrderByDirection direction)
 	{
-		return source.PartialSort(count, null, direction);
+		return source.PartialSort(count, comparer: null, direction);
 	}
 
 	/// <summary>
@@ -59,11 +59,11 @@ public static partial class SuperEnumerable
 	/// This operator uses deferred execution and streams it results.
 	/// </remarks>
 
-	public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source,
+	public static IEnumerable<T> PartialSort<T>(
+		this IEnumerable<T> source,
 		int count, IComparer<T>? comparer)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		return PartialSortByImpl<T, T>(source, count, null, null, comparer);
+		return PartialSort(source, count, comparer, OrderByDirection.Ascending);
 	}
 
 	/// <summary>
@@ -84,13 +84,15 @@ public static partial class SuperEnumerable
 	/// This operator uses deferred execution and streams it results.
 	/// </remarks>
 
-	public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source,
-		int count, IComparer<T>? comparer, OrderByDirection direction)
+	public static IEnumerable<T> PartialSort<T>(
+		this IEnumerable<T> source, int count,
+		IComparer<T>? comparer, OrderByDirection direction)
 	{
+		if (source == null) throw new ArgumentNullException(nameof(source));
 		comparer ??= Comparer<T>.Default;
 		if (direction == OrderByDirection.Descending)
 			comparer = new ReverseComparer<T>(comparer);
-		return source.PartialSort(count, comparer);
+		return PartialSortByImpl<T, T>(source, count, keySelector: null, keyComparer: null, comparer);
 	}
 
 	/// <summary>
@@ -112,7 +114,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source, int count,
 		Func<TSource, TKey> keySelector)
 	{
-		return source.PartialSortBy(count, keySelector, null);
+		return source.PartialSortBy(count, keySelector, comparer: null);
 	}
 
 	/// <summary>
@@ -136,7 +138,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source, int count,
 		Func<TSource, TKey> keySelector, OrderByDirection direction)
 	{
-		return source.PartialSortBy(count, keySelector, null, direction);
+		return source.PartialSortBy(count, keySelector, comparer: null, direction);
 	}
 
 	/// <summary>
@@ -161,9 +163,7 @@ public static partial class SuperEnumerable
 		Func<TSource, TKey> keySelector,
 		IComparer<TKey>? comparer)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-		return PartialSortByImpl(source, count, keySelector, comparer, null);
+		return PartialSortBy(source, count, keySelector, comparer, OrderByDirection.Ascending);
 	}
 
 	/// <summary>
@@ -191,10 +191,13 @@ public static partial class SuperEnumerable
 		IComparer<TKey>? comparer,
 		OrderByDirection direction)
 	{
+		if (source == null) throw new ArgumentNullException(nameof(source));
+		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+
 		comparer ??= Comparer<TKey>.Default;
 		if (direction == OrderByDirection.Descending)
 			comparer = new ReverseComparer<TKey>(comparer);
-		return source.PartialSortBy(count, keySelector, comparer);
+		return PartialSortByImpl(source, count, keySelector, keyComparer: comparer, comparer: null);
 	}
 
 	static IEnumerable<TSource> PartialSortByImpl<TSource, TKey>(
@@ -203,23 +206,40 @@ public static partial class SuperEnumerable
 		IComparer<TKey>? keyComparer,
 		IComparer<TSource>? comparer)
 	{
-		var keys = keySelector != null ? new List<TKey>(count) : null;
 		var top = new List<TSource>(count);
 
-		static int? Insert<T>(List<T> list, T item, IComparer<T>? comparer, int count)
+		static int? Insert<T>(List<T> list, T item, IComparer<T> comparer, int count)
 		{
 			var i = list.BinarySearch(item, comparer);
+			// find the place to insert
 			if (i < 0 && (i = ~i) >= count)
 				return null;
+			// move forward until we get to next larger
+			while (i < list.Count && comparer.Compare(item, list[i]) == 0)
+				i++;
+			// is the list full?
 			if (list.Count == count)
+			{
+				// if our insert location is at the end of the list
+				if (i == list.Count
+					// and we're _not larger_ than the last item
+					&& comparer.Compare(item, list[^1]) <= 0)
+				{
+					// then don't affect the list
+					return null;
+				}
+				// remove last item
 				list.RemoveAt(count - 1);
+			}
+
 			list.Insert(i, item);
 			return i;
 		}
 
-		// since keys is static for the loop, only evaluate once
-		if (keys != null)
+		if (keyComparer != null)
 		{
+			var keys = new List<TKey>(count);
+
 			foreach (var item in source)
 			{
 				var key = keySelector!(item);
@@ -231,10 +251,14 @@ public static partial class SuperEnumerable
 				}
 			}
 		}
-		else
+		else if (comparer != null)
 		{
 			foreach (var item in source)
 				_ = Insert(top, item, comparer, count);
+		}
+		else
+		{
+			throw new NotSupportedException("Should not be able to reach here.");
 		}
 
 		foreach (var item in top)
