@@ -42,11 +42,8 @@ public static partial class SuperEnumerable
 	/// <param name="direction">The ordering that all sequences must already exhibit</param>
 	/// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
 	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
-	/// <returns>A merged, order-preserving sequence containing al of the elements of the original sequences</returns>
-
-#pragma warning disable MA0051 // Method is too long, due to comments
+	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
 	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource>? comparer, params IEnumerable<TSource>[] otherSequences)
-#pragma warning restore MA0051
 	{
 		if (source == null) throw new ArgumentNullException(nameof(source));
 		if (otherSequences == null) throw new ArgumentNullException(nameof(otherSequences));

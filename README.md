@@ -130,6 +130,12 @@ projected type.
 
 This method has 2 overloads.
 
+### ElementAt (pre-.NET 6)
+
+Returns the element at a specified index in a sequence.
+
+Backport from official sources to .net core 3.1 and .net 5.
+
 ### EndsWith
 
 Determines whether the end of the first sequence is equivalent to the second
@@ -495,6 +501,13 @@ This method has 2 overloads.
 Returns a sequence resulting from applying a function to each element in the
 source sequence with additional parameters indicating whether the element is
 the first and/or last of the sequence
+
+### Take (pre-.NET 6)
+
+Returns a specified range of contiguous elements from a sequence using the
+range operator.
+
+Backport from official sources to .net core 3.1 and .net 5.
 
 ### TakeEvery
 

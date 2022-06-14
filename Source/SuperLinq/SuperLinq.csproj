@@ -52,6 +52,7 @@
 			- CountDown
 			- Consume
 			- DistinctBy
+			- ElementAt (pre-.NET 6.0)
 			- EndsWith
 			- EquiZip
 			- Evaluate
@@ -110,6 +111,7 @@
 			- StartsWith
 			- Subsets
 			- TagFirstLast
+			- Take (pre-.NET 6.0)
 			- TakeEvery
 			- TakeUntil
 			- ThenBy
@@ -159,7 +161,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\readme.md" Pack="true" PackagePath="\" />
+		<None Include="..\..\readme.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>

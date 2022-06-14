@@ -169,6 +169,7 @@ csharp_style_inlined_variable_declaration = true:warning
 csharp_style_throw_expression = true:warning
 csharp_style_conditional_delegate_call = true:warning
 csharp_style_prefer_switch_expression = true:warning
+csharp_prefer_simple_using_statement = true:suggestion
 csharp_style_namespace_declarations = file_scoped:error
 
 # Space preferences
@@ -197,8 +198,8 @@ csharp_space_between_square_brackets = false
 
 # Blocks are allowed
 csharp_prefer_braces = true:silent
-csharp_preserve_single_line_blocks = true
-csharp_preserve_single_line_statements = true
+csharp_preserve_single_line_blocks = true:silent
+csharp_preserve_single_line_statements = true:silent
 
 dotnet_diagnostic.CS0105.severity = error               # CS0105: Using directive is unnecessary.
 dotnet_diagnostic.CS1573.severity = error               # CS1573: Missing XML comment for parameter
@@ -212,5 +213,7 @@ dotnet_diagnostic.CS8603.severity = error               # CS8603: Possible null 
 dotnet_diagnostic.CS8604.severity = error               # CS8604: Possible null reference argument
 dotnet_diagnostic.CS8618.severity = error               # CS8618: Non-nullable field is uninitialized. Consider declaring as nullable.
 
-dotnet_diagnostic.MA0016.severity = none				# MA0016: Prefer returning collection abstraction instead of implementation
+dotnet_diagnostic.MA0016.severity = none				        # MA0016: Prefer returning collection abstraction instead of implementation
 dotnet_diagnostic.MA0048.severity = none                # MA0048: File name must match type name
+dotnet_diagnostic.MA0051.severity = none								# MA0051: Method is too long
+dotnet_diagnostic.MA0071.severity = silent							# MA0071: Avoid using redundant else
