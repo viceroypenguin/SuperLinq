@@ -206,7 +206,7 @@ public static partial class SuperEnumerable
 		var keys = keySelector != null ? new List<TKey>(count) : null;
 		var top = new List<TSource>(count);
 
-		int? Insert<T>(List<T> list, T item, IComparer<T>? comparer)
+		static int? Insert<T>(List<T> list, T item, IComparer<T>? comparer, int count)
 		{
 			var i = list.BinarySearch(item, comparer);
 			if (i < 0 && (i = ~i) >= count)
@@ -217,27 +217,25 @@ public static partial class SuperEnumerable
 			return i;
 		}
 
-		foreach (var item in source)
+		// since keys is static for the loop, only evaluate once
+		if (keys != null)
 		{
-			if (keys != null)
+			foreach (var item in source)
 			{
 				var key = keySelector!(item);
-				if (Insert(keys, key, keyComparer) is { } i)
+				if (Insert(keys, key, keyComparer, count) is { } i)
 				{
 					if (top.Count == count)
 						top.RemoveAt(count - 1);
 					top.Insert(i, item);
 				}
 			}
-			else
-			{
-				_ = Insert(top, item, comparer);
-			}
-
-			// TODO Stable sorting
 		}
-
-		// ReSharper disable once LoopCanBeConvertedToQuery
+		else
+		{
+			foreach (var item in source)
+				_ = Insert(top, item, comparer, count);
+		}
 
 		foreach (var item in top)
 			yield return item;
