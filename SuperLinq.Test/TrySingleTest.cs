@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
-using SuperLinq.Experimental;
 
 namespace Test;
 
@@ -62,7 +61,7 @@ public class TrySingleTest
 		public IEnumerator<T> GetEnumerator()
 		{
 			yield return _element;
-			throw new Exception($"{nameof(ExperimentalEnumerable.TrySingle)} should not have attempted to consume a second element.");
+			throw new Exception($"{nameof(SuperEnumerable.TrySingle)} should not have attempted to consume a second element.");
 		}
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -109,7 +108,7 @@ public class TrySingleTest
 		{
 			yield return 1;
 			yield return 2;
-			throw new Exception(nameof(ExperimentalEnumerable.TrySingle) + " should not have attempted to consume a third element.");
+			throw new Exception(nameof(SuperEnumerable.TrySingle) + " should not have attempted to consume a third element.");
 		}
 
 		var (cardinality, value) = TestSequence().TrySingle("zero", "one", "many");

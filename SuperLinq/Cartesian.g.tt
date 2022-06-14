@@ -6,8 +6,6 @@
 <#@ import namespace="System.Linq" #>
 namespace SuperLinq;
 
-using Experimental;
-
 public static partial class SuperEnumerable
 {<#
     var overloads =

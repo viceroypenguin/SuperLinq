@@ -1,6 +1,6 @@
-﻿namespace SuperLinq.Experimental;
+﻿namespace SuperLinq;
 
-partial class ExperimentalEnumerable
+public static partial class SuperEnumerable
 {
 	/// <summary>
 	/// Returns a tuple with the cardinality of the sequence and the

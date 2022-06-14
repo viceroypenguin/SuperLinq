@@ -1,7 +1,5 @@
 namespace SuperLinq;
 
-using Experimental;
-
 public static partial class SuperEnumerable
 {
     /// <summary>
