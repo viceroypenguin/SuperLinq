@@ -4,7 +4,6 @@ using System.Reactive.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
-using SuperLinq.Experimental;
 
 namespace Test;
 using static FuncModule;
@@ -129,68 +128,5 @@ public class AggregateTest
 								   new { Num = 8, Str = "8" },
 								   new { Num = 9, Str = "9" },
 								   new { Num = 10, Str = "10" });
-	}
-
-	[Test]
-	public void SevenUniqueAccumulatorComprehensions()
-	{
-		var result =
-			Enumerable
-				.Range(1, 10)
-				.Shuffle()
-				.Select(n => new { Num = n, Str = n.ToString(CultureInfo.InvariantCulture) })
-				.Aggregate(
-					s => s.Sum(e => e.Num),
-					s => s.Select(e => e.Num).Where(n => n % 2 == 0).Sum(),
-					s => s.Count(),
-					s => s.Min(e => e.Num),
-					s => s.Max(e => e.Num),
-					s => s.Select(e => e.Str.Length).Distinct().ToArray(),
-					s => s.ToArray(),
-					(sum, esum, count, min, max, lengths, items) => new
-					{
-						Sum = sum,
-						EvenSum = esum,
-						Count = count,
-						Average = (double)sum / count,
-						Min = min,
-						Max = max,
-						UniqueLengths = lengths,
-						Items = items,
-					}
-				);
-
-		Assert.That(result.Sum, Is.EqualTo(55));
-		Assert.That(result.EvenSum, Is.EqualTo(30));
-		Assert.That(result.Count, Is.EqualTo(10));
-		Assert.That(result.Average, Is.EqualTo(5.5));
-		Assert.That(result.Min, Is.EqualTo(1));
-		Assert.That(result.Max, Is.EqualTo(10));
-		result.UniqueLengths.OrderBy(n => n).AssertSequenceEqual(1, 2);
-		result.Items
-			  .OrderBy(e => e.Num)
-			  .AssertSequenceEqual(new { Num = 1, Str = "1" },
-								   new { Num = 2, Str = "2" },
-								   new { Num = 3, Str = "3" },
-								   new { Num = 4, Str = "4" },
-								   new { Num = 5, Str = "5" },
-								   new { Num = 6, Str = "6" },
-								   new { Num = 7, Str = "7" },
-								   new { Num = 8, Str = "8" },
-								   new { Num = 9, Str = "9" },
-								   new { Num = 10, Str = "10" });
-	}
-
-	[Test(Description = "https://github.com/morelinq/MoreLINQ/issues/616")]
-	public void Issue616()
-	{
-		var (first, last) =
-			Enumerable.Range(1, 10)
-					  .Aggregate(ds => ds.FirstAsync(),
-								 ds => ds.LastAsync(),
-								 ValueTuple.Create);
-
-		Assert.That(first, Is.EqualTo(1));
-		Assert.That(last, Is.EqualTo(10));
 	}
 }

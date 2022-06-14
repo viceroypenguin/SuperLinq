@@ -48,8 +48,6 @@
 
 	<ItemGroup>
 		<None Remove="TestResult.xml" />
-		<Compile Include="..\SuperLinq\Disposable.cs" Link="Disposable.cs" />
-		<Compile Include="..\SuperLinq\Reactive\Subject.cs" Link="Subject.cs" />
 	</ItemGroup>
 
 </Project>

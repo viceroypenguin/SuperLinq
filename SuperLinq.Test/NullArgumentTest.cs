@@ -187,13 +187,6 @@ public class NullArgumentTest
 			}
 		}
 
-		public class AwaitQuery<T> : Enumerable<T>,
-									 SuperLinq.Experimental.IAwaitQuery<T>
-		{
-			public SuperLinq.Experimental.AwaitQueryOptions Options => SuperLinq.Experimental.AwaitQueryOptions.Default;
-			public SuperLinq.Experimental.IAwaitQuery<T> WithOptions(SuperLinq.Experimental.AwaitQueryOptions options) => this;
-		}
-
 		public class Comparer<T> : IComparer<T>
 		{
 			public int Compare(T x, T y) => -1;
