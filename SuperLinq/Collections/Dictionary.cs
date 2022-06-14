@@ -11,12 +11,14 @@ namespace SuperLinq.Collections;
 
 sealed class Dictionary<TKey, TValue>
 {
-	readonly System.Collections.Generic.Dictionary<TKey, TValue> _dict;
-	(bool, TValue) _null;
+#pragma warning disable CS8714 // listen, we promise we're not going to stick a null in this dictionary...
+	private readonly System.Collections.Generic.Dictionary<TKey, TValue> _dict;
+#pragma warning restore CS8714
+	private (bool, TValue) _null;
 
 	public Dictionary(IEqualityComparer<TKey> comparer)
 	{
-		_dict = new System.Collections.Generic.Dictionary<TKey, TValue>(comparer);
+		_dict = new(comparer);
 		_null = default;
 	}
 

@@ -35,11 +35,10 @@ public static partial class SuperEnumerable
 		if (source == null) throw new ArgumentNullException(nameof(source));
 		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
-		return _(); IEnumerable<(TKey key, int count)> _()
-		{
-			List<TKey> keys;
-			List<int> counts;
+		return _(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 
+		static IEnumerable<(TKey key, int count)> _(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+		{
 			// Avoid the temptation to inline the Loop method, which
 			// exists solely to separate the scope & lifetimes of the
 			// locals needed for the actual looping of the source &
@@ -51,44 +50,37 @@ public static partial class SuperEnumerable
 			// background, see:
 			// http://blog.stephencleary.com/2010/02/q-should-i-set-variables-to-null-to.html
 
-			Loop(comparer ?? EqualityComparer<TKey>.Default);
+			var (keys, counts) = Loop(source, keySelector, comparer);
 
 			for (var i = 0; i < keys.Count; i++)
 				yield return (keys[i], counts[i]);
+		}
 
-			void Loop(IEqualityComparer<TKey> cmp)
+		static (List<TKey>, List<int>) Loop(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> cmp)
+		{
+			var dic = new Collections.Dictionary<TKey, int>(cmp);
+
+			var keys = new List<TKey>();
+			var counts = new List<int>();
+
+			foreach (var item in source)
 			{
-				var dic = new Collections.Dictionary<TKey, int>(cmp);
+				var key = keySelector(item);
 
-				keys = new List<TKey>();
-				counts = new List<int>();
-				(bool, TKey) prevKey = default;
-				var index = 0;
-
-				foreach (var item in source)
+				if (dic.TryGetValue(key, out var index))
 				{
-					var key = keySelector(item);
-
-					if (// key same as the previous? then re-use the index
-						prevKey is (true, { } pk)
-							&& cmp.GetHashCode(pk) == cmp.GetHashCode(key)
-							&& cmp.Equals(pk, key)
-						// otherwise try & find index of the key
-						|| dic.TryGetValue(key, out index))
-					{
-						counts[index]++;
-					}
-					else
-					{
-						index = keys.Count;
-						dic[key] = index;
-						keys.Add(key);
-						counts.Add(1);
-					}
-
-					prevKey = (true, key);
+					counts[index]++;
+				}
+				else
+				{
+					index = keys.Count;
+					dic[key] = index;
+					keys.Add(key);
+					counts.Add(1);
 				}
 			}
+
+			return (keys, counts);
 		}
 	}
 }

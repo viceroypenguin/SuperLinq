@@ -65,9 +65,11 @@ public static partial class SuperEnumerable
 		if (seedSelector == null) throw new ArgumentNullException(nameof(seedSelector));
 		if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
 
-		return _(comparer ?? EqualityComparer<TKey>.Default);
+		comparer ??= EqualityComparer<TKey>.Default;
 
-		IEnumerable<(TKey key, TState state)> _(IEqualityComparer<TKey> comparer)
+		return _();
+
+		IEnumerable<(TKey key, TState state)> _()
 		{
 			var stateByKey = new Collections.Dictionary<TKey, TState>(comparer);
 
@@ -79,10 +81,9 @@ public static partial class SuperEnumerable
 
 				var state = // key same as the previous? then re-use the state
 							prev is (true, { } pk, { } ps)
-							&& comparer.GetHashCode(pk) == comparer.GetHashCode(key)
 							&& comparer.Equals(pk, key) ? ps
 						  : // otherwise try & find state of the key
-							stateByKey.TryGetValue(key, out var ns) ? ns
+							stateByKey.TryGetValue(key, out ps) ? ps
 						  : seedSelector(key);
 
 				state = accumulator(state, key, item);
