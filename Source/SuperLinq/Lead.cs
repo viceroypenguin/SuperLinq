@@ -46,7 +46,9 @@ public static partial class SuperEnumerable
 		resultSelector.ThrowIfNull();
 		offset.ThrowIfLessThan(1);
 
-		return _(); IEnumerable<TResult> _()
+		return _(source, offset, defaultLeadValue, resultSelector);
+
+		static IEnumerable<TResult> _(IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
 		{
 			var leadQueue = new Queue<TSource>(offset);
 			using var iter = source.GetEnumerator();

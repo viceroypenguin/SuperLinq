@@ -38,10 +38,10 @@ public static partial class SuperEnumerable
 			return source;
 
 		return toIndex < fromIndex
-			 ? _(toIndex, fromIndex - toIndex, count)
-			 : _(fromIndex, count, toIndex - fromIndex);
+			 ? _(source, toIndex, fromIndex - toIndex, count)
+			 : _(source, fromIndex, count, toIndex - fromIndex);
 
-		IEnumerable<T> _(int bufferStartIndex, int bufferSize, int bufferYieldIndex)
+		static IEnumerable<T> _(IEnumerable<T> source, int bufferStartIndex, int bufferSize, int bufferYieldIndex)
 		{
 			bool hasMore = true;
 			bool MoveNext(IEnumerator<T> e) => hasMore && (hasMore = e.MoveNext());

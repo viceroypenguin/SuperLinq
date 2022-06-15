@@ -45,7 +45,9 @@ public static partial class SuperEnumerable
 		resultSelector.ThrowIfNull();
 		offset.ThrowIfLessThan(1);
 
-		return _(); IEnumerable<TResult> _()
+		return _(source, offset, defaultLagValue, resultSelector);
+
+		static IEnumerable<TResult> _(IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
 		{
 			using var iter = source.GetEnumerator();
 

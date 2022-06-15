@@ -61,7 +61,9 @@ public static partial class SuperEnumerable
 		if (index == 0)
 			return first.Concat(second);
 
-		return _(); IEnumerable<T> _()
+		return _(first, second, index);
+
+		static IEnumerable<T> _(IEnumerable<T> first, IEnumerable<T> second, int index)
 		{
 			using var e = first.CountDown(index, ValueTuple.Create).GetEnumerator();
 
