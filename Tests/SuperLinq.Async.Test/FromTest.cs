@@ -5,7 +5,7 @@ public class FromTest
 	[Fact]
 	public void TestFromIsLazy()
 	{
-		var breakingFunc = BreakingAsyncFunc.Of<int>();
+		var breakingFunc = AsyncBreakingFunc.Of<int>();
 		AsyncSuperEnumerable.From(breakingFunc);
 		AsyncSuperEnumerable.From(breakingFunc, breakingFunc);
 		AsyncSuperEnumerable.From(breakingFunc, breakingFunc, breakingFunc);

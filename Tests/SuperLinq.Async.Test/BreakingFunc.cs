@@ -3,7 +3,7 @@
 /// <summary>
 /// Functions which throw NotImplementedException if they're ever called.
 /// </summary>
-static class BreakingAsyncFunc
+static class AsyncBreakingFunc
 {
 	internal static Func<Task<TResult>> Of<TResult>() =>
 		() => throw new NotSupportedException();

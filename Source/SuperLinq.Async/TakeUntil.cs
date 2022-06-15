@@ -1,6 +1,8 @@
-﻿namespace SuperLinq;
+﻿using System.Runtime.CompilerServices;
 
-public static partial class SuperEnumerable
+namespace SuperLinq.Async;
+
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Returns items from the input sequence until the given predicate returns true
@@ -32,16 +34,16 @@ public static partial class SuperEnumerable
 	/// <returns>Items from the source sequence, until the predicate returns true when applied to the item.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="predicate"/> is null</exception>
 
-	public static IEnumerable<TSource> TakeUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+	public static IAsyncEnumerable<TSource> TakeUntil<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate)
 	{
 		source.ThrowIfNull();
 		predicate.ThrowIfNull();
 
 		return _(source, predicate);
-		
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, Func<TSource, bool> predicate)
+
+		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			foreach (var item in source)
+			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
 				yield return item;
 				if (predicate(item))
