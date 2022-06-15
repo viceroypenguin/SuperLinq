@@ -10,7 +10,7 @@ public class PadStartTest
 	[Test]
 	public void PadStartWithNegativeWidth()
 	{
-		AssertThrowsArgument.Exception("width", () => Array.Empty<int>().PadStart(-1));
+		AssertThrowsArgument.OutOfRangeException("width", () => Array.Empty<int>().PadStart(-1));
 	}
 
 	[Test]
@@ -45,7 +45,7 @@ public class PadStartTest
 	[Test]
 	public void PadStartWithPaddingWithNegativeWidth()
 	{
-		AssertThrowsArgument.Exception("width", () => Array.Empty<int>().PadStart(-1, 1));
+		AssertThrowsArgument.OutOfRangeException("width", () => Array.Empty<int>().PadStart(-1, 1));
 	}
 
 	[Test]
@@ -80,7 +80,7 @@ public class PadStartTest
 	[Test]
 	public void PadStartWithSelectorWithNegativeWidth()
 	{
-		AssertThrowsArgument.Exception("width", () => Array.Empty<int>().PadStart(-1, x => x));
+		AssertThrowsArgument.OutOfRangeException("width", () => Array.Empty<int>().PadStart(-1, x => x));
 	}
 
 	[Test]

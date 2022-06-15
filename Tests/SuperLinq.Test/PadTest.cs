@@ -8,7 +8,7 @@ public class PadTest
 	[Test]
 	public void PadNegativeWidth()
 	{
-		AssertThrowsArgument.Exception("width", () =>
+		AssertThrowsArgument.OutOfRangeException("width", () =>
 			Array.Empty<object>().Pad(-1));
 	}
 
