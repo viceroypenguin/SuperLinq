@@ -24,7 +24,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Using Remove="System.Net.Http" />
 		<Using Include="SuperLinq" />
 	</ItemGroup>
 

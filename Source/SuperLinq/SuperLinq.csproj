@@ -27,21 +27,14 @@
 		<BuildInParallel>false</BuildInParallel>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<Using Remove="System.Net.Http" />
-	</ItemGroup>
-
 	<PropertyGroup>
 		<Description>
 			This project enhances LINQ to Objects with the following methods:
 
 			- Acquire
-			- Aggregate (some EXPERIMENTAL)
 			- AggregateRight
 			- AtLeast
 			- AtMost
-			- Await (EXPERIMENTAL)
-			- AwaitCompletion (EXPERIMENTAL)
 			- Backsert
 			- Batch
 			- Cartesian
@@ -149,6 +142,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Include="readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
 		<PackageReference Include="MinVer" Version="4.0.0" PrivateAssets="All" />
 		<PackageReference Include="Nullable" Version="1.3.0" PrivateAssets="All" />
@@ -160,10 +157,6 @@
 		<MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
 		<MinVerTagPrefix>v</MinVerTagPrefix>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<None Include="..\..\readme.md" Pack="true" PackagePath="\" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<None Update="Aggregate.g.tt">

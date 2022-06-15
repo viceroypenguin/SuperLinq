@@ -16,7 +16,10 @@ partial class SuperEnumerable
 
 	public static IEnumerable<T> From<T>(Func<T> function)
 	{
-		return _(); IEnumerable<T> _()
+		function.ThrowIfNull();
+		return _(function);
+
+		static IEnumerable<T> _(Func<T> function)
 		{
 			yield return function();
 		}
@@ -37,7 +40,11 @@ partial class SuperEnumerable
 
 	public static IEnumerable<T> From<T>(Func<T> function1, Func<T> function2)
 	{
-		return _(); IEnumerable<T> _()
+		function1.ThrowIfNull();
+		function2.ThrowIfNull();
+		return _(function1, function2);
+
+		static IEnumerable<T> _(Func<T> function1, Func<T> function2)
 		{
 			yield return function1();
 			yield return function2();
@@ -60,7 +67,12 @@ partial class SuperEnumerable
 
 	public static IEnumerable<T> From<T>(Func<T> function1, Func<T> function2, Func<T> function3)
 	{
-		return _(); IEnumerable<T> _()
+		function1.ThrowIfNull();
+		function2.ThrowIfNull();
+		function3.ThrowIfNull();
+		return _(function1, function2, function3);
+
+		static IEnumerable<T> _(Func<T> function1, Func<T> function2, Func<T> function3)
 		{
 			yield return function1();
 			yield return function2();
@@ -81,9 +93,6 @@ partial class SuperEnumerable
 	/// <returns>A sequence with the values resulting from invoking all of the <paramref name="functions"/>.</returns>
 	/// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <c>null</c>.</exception>
 
-	public static IEnumerable<T> From<T>(params Func<T>[] functions)
-	{
-		functions.ThrowIfNull();
-		return Evaluate(functions);
-	}
+	public static IEnumerable<T> From<T>(params Func<T>[] functions) =>
+		functions.Evaluate();
 }
