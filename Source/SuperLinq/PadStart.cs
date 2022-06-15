@@ -98,7 +98,7 @@ public static partial class SuperEnumerable
 		int width, T? padding, Func<int, T>? paddingSelector)
 	{
 		return
-			source.TryGetCollectionCount() is { } collectionCount
+			source.TryGetCollectionCount(out var collectionCount)
 			? collectionCount >= width
 			  ? source
 			  : Enumerable.Range(0, width - collectionCount)

@@ -39,7 +39,7 @@ public static partial class SuperEnumerable
 
 		return source.TryAsListLike() is { } listLike
 			   ? IterateList(listLike)
-			   : source.TryGetCollectionCount() is { } collectionCount
+			   : source.TryGetCollectionCount(out var collectionCount)
 				 ? IterateCollection(collectionCount)
 				 : IterateSequence();
 

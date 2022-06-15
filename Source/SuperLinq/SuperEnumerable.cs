@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+﻿using System.Diagnostics.Contracts;
+
+namespace SuperLinq;
 
 /// <summary>
 /// Provides a set of static methods for querying objects that
@@ -6,6 +8,7 @@
 /// </summary>
 public static partial class SuperEnumerable
 {
+	[Pure]
 	internal static int? TryGetCollectionCount<T>(this IEnumerable<T> source) =>
 		source switch
 		{
@@ -15,6 +18,24 @@ public static partial class SuperEnumerable
 			_ => null
 		};
 
+	[Pure]
+	internal static bool TryGetCollectionCount<T>(this IEnumerable<T> source, out int count)
+	{
+		source.ThrowIfNull();
+		switch (source)
+		{
+			case ICollection<T> collection:
+				count = collection.Count;
+				return true;
+			case IReadOnlyCollection<T> collection:
+				count = collection.Count;
+				return true;
+			default:
+				count = default;
+				return false;
+		}
+	}
+
 	static int CountUpTo<T>(this IEnumerable<T> source, int max)
 	{
 		source.ThrowIfNull();
@@ -22,13 +43,9 @@ public static partial class SuperEnumerable
 
 		var count = 0;
 
-		using (var e = source.GetEnumerator())
-		{
-			while (count < max && e.MoveNext())
-			{
-				count++;
-			}
-		}
+		using var e = source.GetEnumerator();
+		while (count < max && e.MoveNext())
+			count++;
 
 		return count;
 	}

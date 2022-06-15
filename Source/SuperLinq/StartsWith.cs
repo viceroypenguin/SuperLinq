@@ -52,8 +52,8 @@ public static partial class SuperEnumerable
 		first.ThrowIfNull();
 		second.ThrowIfNull();
 
-		if (first.TryGetCollectionCount() is { } firstCount &&
-			second.TryGetCollectionCount() is { } secondCount &&
+		if (first.TryGetCollectionCount(out var firstCount) &&
+			second.TryGetCollectionCount(out var secondCount) &&
 			secondCount > firstCount)
 		{
 			return false;

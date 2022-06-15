@@ -143,7 +143,7 @@ public static partial class SuperEnumerable
 		int? count, T? fallback1, T? fallback2, T? fallback3, T? fallback4,
 		IEnumerable<T>? fallback)
 	{
-		return source.TryGetCollectionCount() is { } collectionCount
+		return source.TryGetCollectionCount(out var collectionCount)
 			 ? collectionCount == 0 ? Fallback() : source
 			 : _();
 

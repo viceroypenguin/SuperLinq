@@ -60,9 +60,9 @@ public static partial class SuperEnumerable
 			return Enumerable.ElementAt(source, index.Value);
 		}
 
-		if (source is ICollection<TSource> c)
+		if (source.TryGetCollectionCount(out var count))
 		{
-			return Enumerable.ElementAt(source, c.Count - index.Value);
+			return Enumerable.ElementAt(source, count - index.Value);
 		}
 
 		TryGetElementFromEnd(source, index.Value, out var element);

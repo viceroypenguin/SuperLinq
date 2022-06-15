@@ -53,8 +53,8 @@ public static partial class SuperEnumerable
 		comparer ??= EqualityComparer<T>.Default;
 
 		List<T> secondList;
-		return second.TryGetCollectionCount() is { } secondCount
-			   ? first.TryGetCollectionCount() is { } firstCount && secondCount > firstCount
+		return second.TryGetCollectionCount(out var secondCount)
+			   ? first.TryGetCollectionCount(out var firstCount) && secondCount > firstCount
 				 ? false
 				 : Impl(second, secondCount)
 			   : Impl(secondList = second.ToList(), secondList.Count);

@@ -73,10 +73,8 @@ public static partial class SuperEnumerable
 		// Enumerable counts can change over time, so it is very
 		// important that this check happens at enumeration time;
 		// do not move it outside of the iterator method.
-		if (source is ICollection<TSource> c)
+		if (source.TryGetCollectionCount(out var count))
 		{
-			var count = c.Count;
-
 			startIndex = CalculateStartIndex(isStartIndexFromEnd, startIndex, count);
 			endIndex = CalculateEndIndex(isEndIndexFromEnd, endIndex, count);
 
@@ -95,8 +93,6 @@ public static partial class SuperEnumerable
 
 		if (isStartIndexFromEnd)
 		{
-			var count = 0;
-
 			// TakeLast compat: enumerator should be disposed before yielding the first element.
 			using (var e = source.GetEnumerator())
 			{
@@ -142,7 +138,6 @@ public static partial class SuperEnumerable
 			// SkipLast compat: the enumerator should be disposed at the end of the enumeration.
 			using var e = source.GetEnumerator();
 
-			var count = 0;
 			while (count < startIndex && e.MoveNext())
 			{
 				++count;

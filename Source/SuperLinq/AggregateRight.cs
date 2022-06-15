@@ -48,7 +48,7 @@ public static partial class SuperEnumerable
 		if (list.Count == 0)
 			throw new InvalidOperationException("Sequence contains no elements.");
 
-		return AggregateRightImpl(list, list[list.Count - 1], func, list.Count - 1);
+		return AggregateRightImpl(list, list[^1], func, list.Count - 1);
 	}
 
 	/// <summary>

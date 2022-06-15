@@ -186,10 +186,13 @@ public static partial class SuperEnumerable
 
 		public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
 		{
-			_sequence = sequence ?? throw new ArgumentNullException(nameof(sequence));
+			sequence.ThrowIfNull();
+			_sequence = sequence;
 
-			if (subsetSize < 0)
-				throw new ArgumentOutOfRangeException(nameof(subsetSize), "{subsetSize} must be between 0 and set.Count()");
+			subsetSize.ThrowIfLessThan(0);
+			if (sequence.TryGetCollectionCount(out var cnt))
+				subsetSize.ThrowIfGreaterThan(cnt - 1);
+
 			_subsetSize = subsetSize;
 		}
 
