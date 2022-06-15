@@ -26,7 +26,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		return FallbackIfEmptyImpl(source, 1, fallback, default, default, default, null);
 	}
 
@@ -47,7 +47,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		return FallbackIfEmptyImpl(source, 2, fallback1, fallback2, default, default, null);
 	}
 
@@ -70,7 +70,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2, T fallback3)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		return FallbackIfEmptyImpl(source, 3, fallback1, fallback2, fallback3, default, null);
 	}
 
@@ -95,7 +95,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2, T fallback3, T fallback4)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		return FallbackIfEmptyImpl(source, 4, fallback1, fallback2, fallback3, fallback4, null);
 	}
 
@@ -114,8 +114,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, params T[] fallback)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (fallback == null) throw new ArgumentNullException(nameof(fallback));
+		source.ThrowIfNull();
+		fallback.ThrowIfNull();
 		return source.FallbackIfEmpty((IEnumerable<T>)fallback);
 	}
 
@@ -134,8 +134,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, IEnumerable<T> fallback)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (fallback == null) throw new ArgumentNullException(nameof(fallback));
+		source.ThrowIfNull();
+		fallback.ThrowIfNull();
 		return FallbackIfEmptyImpl(source, null, default, default, default, default, fallback);
 	}
 

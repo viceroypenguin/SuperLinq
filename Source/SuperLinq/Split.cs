@@ -157,9 +157,9 @@ public static partial class SuperEnumerable
 		TSource separator, IEqualityComparer<TSource>? comparer, int count,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		resultSelector.ThrowIfNull();
 
 		comparer ??= EqualityComparer<TSource>.Default;
 		return Split(source, item => comparer.Equals(item, separator), count, resultSelector);
@@ -241,10 +241,10 @@ public static partial class SuperEnumerable
 		Func<TSource, bool> separatorFunc, int count,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (separatorFunc == null) throw new ArgumentNullException(nameof(separatorFunc));
+		source.ThrowIfNull();
+		separatorFunc.ThrowIfNull();
 		if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		resultSelector.ThrowIfNull();
 
 		return _(); IEnumerable<TResult> _()
 		{

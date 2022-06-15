@@ -21,7 +21,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TResult> GenerateByIndex<TResult>(Func<int, TResult> generator)
 	{
-		if (generator == null) throw new ArgumentNullException(nameof(generator));
+		generator.ThrowIfNull();
 
 		return SuperEnumerable.Sequence(0, int.MaxValue)
 							 .Select(generator);

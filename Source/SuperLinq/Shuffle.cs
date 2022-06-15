@@ -46,8 +46,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rand)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (rand == null) throw new ArgumentNullException(nameof(rand));
+		source.ThrowIfNull();
+		rand.ThrowIfNull();
 
 		return RandomSubsetImpl(source, rand, seq =>
 		{

@@ -21,7 +21,7 @@ public static partial class SuperEnumerable
 	public static TSource[] Acquire<TSource>(this IEnumerable<TSource> source)
 		where TSource : IDisposable
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 
 		var disposables = new List<TSource>();
 		try

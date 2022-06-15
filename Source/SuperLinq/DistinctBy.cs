@@ -59,8 +59,8 @@ public static partial class SuperEnumerable
 		Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
 #endif
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+		source.ThrowIfNull();
+		keySelector.ThrowIfNull();
 
 		return _(); IEnumerable<TSource> _()
 		{

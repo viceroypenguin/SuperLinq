@@ -59,8 +59,8 @@ public static partial class SuperEnumerable
 		where TSource : notnull
 		where TKey : notnull
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+		source.ThrowIfNull();
+		keySelector.ThrowIfNull();
 
 		return _(comparer ?? Comparer<TKey>.Default);
 

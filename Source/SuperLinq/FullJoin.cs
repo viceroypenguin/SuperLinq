@@ -43,7 +43,7 @@ public static partial class SuperEnumerable
 		Func<TSource, TResult> secondSelector,
 		Func<TSource, TSource, TResult> bothSelector)
 	{
-		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+		keySelector.ThrowIfNull();
 		return first.FullJoin(second, keySelector,
 							  firstSelector, secondSelector, bothSelector,
 							  null);
@@ -94,7 +94,7 @@ public static partial class SuperEnumerable
 		Func<TSource, TSource, TResult> bothSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+		keySelector.ThrowIfNull();
 		return first.FullJoin(second,
 							  keySelector, keySelector,
 							  firstSelector, secondSelector, bothSelector,
@@ -199,13 +199,13 @@ public static partial class SuperEnumerable
 		Func<TFirst, TSecond, TResult> bothSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		if (first == null) throw new ArgumentNullException(nameof(first));
-		if (second == null) throw new ArgumentNullException(nameof(second));
-		if (firstKeySelector == null) throw new ArgumentNullException(nameof(firstKeySelector));
-		if (secondKeySelector == null) throw new ArgumentNullException(nameof(secondKeySelector));
-		if (firstSelector == null) throw new ArgumentNullException(nameof(firstSelector));
-		if (secondSelector == null) throw new ArgumentNullException(nameof(secondSelector));
-		if (bothSelector == null) throw new ArgumentNullException(nameof(bothSelector));
+		first.ThrowIfNull();
+		second.ThrowIfNull();
+		firstKeySelector.ThrowIfNull();
+		secondKeySelector.ThrowIfNull();
+		firstSelector.ThrowIfNull();
+		secondSelector.ThrowIfNull();
+		bothSelector.ThrowIfNull();
 
 		return _(); IEnumerable<TResult> _()
 		{

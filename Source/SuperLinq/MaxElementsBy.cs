@@ -52,7 +52,7 @@ public static partial class SuperEnumerable
 
 	public static T First<T>(this IExtremaEnumerable<T> source)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		return source.Take(1).AsEnumerable().First();
 	}
 
@@ -71,7 +71,7 @@ public static partial class SuperEnumerable
 	[return: MaybeNull]
 	public static T FirstOrDefault<T>(this IExtremaEnumerable<T> source)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		return source.Take(1).AsEnumerable().FirstOrDefault();
 	}
 
@@ -89,7 +89,7 @@ public static partial class SuperEnumerable
 
 	public static T Last<T>(this IExtremaEnumerable<T> source)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		return source.TakeLast(1).AsEnumerable().Last();
 	}
 
@@ -108,7 +108,7 @@ public static partial class SuperEnumerable
 	[return: MaybeNull]
 	public static T LastOrDefault<T>(this IExtremaEnumerable<T> source)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		return source.TakeLast(1).AsEnumerable().LastOrDefault();
 	}
 
@@ -127,7 +127,7 @@ public static partial class SuperEnumerable
 
 	public static T Single<T>(this IExtremaEnumerable<T> source)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		return source.Take(2).AsEnumerable().Single();
 	}
 
@@ -147,7 +147,7 @@ public static partial class SuperEnumerable
 	[return: MaybeNull]
 	public static T SingleOrDefault<T>(this IExtremaEnumerable<T> source)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		return source.Take(2).AsEnumerable().SingleOrDefault();
 	}
 
@@ -193,8 +193,8 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> selector, IComparer<TKey>? comparer)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (selector == null) throw new ArgumentNullException(nameof(selector));
+		source.ThrowIfNull();
+		selector.ThrowIfNull();
 
 		comparer ??= Comparer<TKey>.Default;
 		return new ExtremaEnumerable<TSource, TKey>(source, selector, (x, y) => comparer.Compare(x, y));

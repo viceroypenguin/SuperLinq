@@ -24,8 +24,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<bool> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Boolean);
     }
 
@@ -54,8 +54,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<byte> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Byte);
     }
 
@@ -84,8 +84,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<char> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Char);
     }
 
@@ -114,8 +114,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<decimal> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Decimal);
     }
 
@@ -144,8 +144,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<double> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Double);
     }
 
@@ -174,8 +174,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<float> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Single);
     }
 
@@ -204,8 +204,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<int> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int32);
     }
 
@@ -234,8 +234,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<long> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int64);
     }
 
@@ -264,8 +264,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<sbyte> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.SByte);
     }
 
@@ -294,8 +294,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<short> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int16);
     }
 
@@ -324,8 +324,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<string> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.String);
     }
 
@@ -354,8 +354,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<uint> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt32);
     }
 
@@ -384,8 +384,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<ulong> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt64);
     }
 
@@ -414,8 +414,8 @@ public static partial class SuperEnumerable
     /// </remarks>
     public static string ToDelimitedString(this IEnumerable<ushort> source, string delimiter)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+        source.ThrowIfNull();
+        delimiter.ThrowIfNull();
         return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt16);
     }
 

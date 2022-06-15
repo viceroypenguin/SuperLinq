@@ -41,8 +41,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<<#= e.Ts #>, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != <#= e.CountArg #>)

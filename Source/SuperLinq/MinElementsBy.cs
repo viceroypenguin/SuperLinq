@@ -43,8 +43,8 @@ public static partial class SuperEnumerable
 	public static IExtremaEnumerable<TSource> MinElementsBy<TSource, TKey>(this IEnumerable<TSource> source,
 		Func<TSource, TKey> selector, IComparer<TKey>? comparer)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (selector == null) throw new ArgumentNullException(nameof(selector));
+		source.ThrowIfNull();
+		selector.ThrowIfNull();
 
 		comparer ??= Comparer<TKey>.Default;
 		return new ExtremaEnumerable<TSource, TKey>(source, selector, (x, y) => -Math.Sign(comparer.Compare(x, y)));

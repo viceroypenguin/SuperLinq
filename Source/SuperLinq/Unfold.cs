@@ -36,10 +36,10 @@ public static partial class SuperEnumerable
 		Func<T, TState> stateSelector,
 		Func<T, TResult> resultSelector)
 	{
-		if (generator == null) throw new ArgumentNullException(nameof(generator));
-		if (predicate == null) throw new ArgumentNullException(nameof(predicate));
-		if (stateSelector == null) throw new ArgumentNullException(nameof(stateSelector));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		generator.ThrowIfNull();
+		predicate.ThrowIfNull();
+		stateSelector.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		return _(); IEnumerable<TResult> _()
 		{

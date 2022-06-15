@@ -26,8 +26,8 @@ public static partial class SuperEnumerable
 
 	public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source, string delimiter)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+		source.ThrowIfNull();
+		delimiter.ThrowIfNull();
 		return ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e));
 	}
 

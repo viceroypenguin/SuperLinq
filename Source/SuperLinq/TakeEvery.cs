@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TSource> TakeEvery<TSource>(this IEnumerable<TSource> source, int step)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		if (step <= 0) throw new ArgumentOutOfRangeException(nameof(step));
 		return source.Where((e, i) => i % step == 0);
 	}

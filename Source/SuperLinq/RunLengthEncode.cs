@@ -27,8 +27,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<(T value, int count)> RunLengthEncode<T>(this IEnumerable<T> sequence, IEqualityComparer<T>? comparer)
 	{
-		if (sequence == null)
-			throw new ArgumentNullException(nameof(sequence));
+		sequence.ThrowIfNull();
 
 		return _(comparer ?? EqualityComparer<T>.Default);
 

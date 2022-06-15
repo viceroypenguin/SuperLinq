@@ -179,7 +179,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
 	{
-		if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+		sequence.ThrowIfNull();
 
 		return _(); IEnumerable<IList<T>> _()
 		{

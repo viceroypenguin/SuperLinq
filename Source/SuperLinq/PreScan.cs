@@ -36,8 +36,8 @@ public static partial class SuperEnumerable
 		Func<TSource, TSource, TSource> transformation,
 		TSource identity)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (transformation == null) throw new ArgumentNullException(nameof(transformation));
+		source.ThrowIfNull();
+		transformation.ThrowIfNull();
 
 		return _(); IEnumerable<TSource> _()
 		{

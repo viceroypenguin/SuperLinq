@@ -30,10 +30,10 @@ public static partial class SuperEnumerable
         TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
         Func<TAccumulate1, TAccumulate2, TResult> resultSelector)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-        if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        source.ThrowIfNull();
+        accumulator1.ThrowIfNull();
+        accumulator2.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         var a1 = seed1;
         var a2 = seed2;
@@ -78,11 +78,11 @@ public static partial class SuperEnumerable
         TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
         Func<TAccumulate1, TAccumulate2, TAccumulate3, TResult> resultSelector)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-        if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-        if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        source.ThrowIfNull();
+        accumulator1.ThrowIfNull();
+        accumulator2.ThrowIfNull();
+        accumulator3.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         var a1 = seed1;
         var a2 = seed2;
@@ -133,12 +133,12 @@ public static partial class SuperEnumerable
         TAccumulate4 seed4, Func<TAccumulate4, T, TAccumulate4> accumulator4,
         Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TResult> resultSelector)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-        if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-        if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-        if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        source.ThrowIfNull();
+        accumulator1.ThrowIfNull();
+        accumulator2.ThrowIfNull();
+        accumulator3.ThrowIfNull();
+        accumulator4.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         var a1 = seed1;
         var a2 = seed2;
@@ -195,13 +195,13 @@ public static partial class SuperEnumerable
         TAccumulate5 seed5, Func<TAccumulate5, T, TAccumulate5> accumulator5,
         Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TResult> resultSelector)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-        if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-        if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-        if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-        if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        source.ThrowIfNull();
+        accumulator1.ThrowIfNull();
+        accumulator2.ThrowIfNull();
+        accumulator3.ThrowIfNull();
+        accumulator4.ThrowIfNull();
+        accumulator5.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         var a1 = seed1;
         var a2 = seed2;
@@ -264,14 +264,14 @@ public static partial class SuperEnumerable
         TAccumulate6 seed6, Func<TAccumulate6, T, TAccumulate6> accumulator6,
         Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TResult> resultSelector)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-        if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-        if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-        if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-        if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
-        if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        source.ThrowIfNull();
+        accumulator1.ThrowIfNull();
+        accumulator2.ThrowIfNull();
+        accumulator3.ThrowIfNull();
+        accumulator4.ThrowIfNull();
+        accumulator5.ThrowIfNull();
+        accumulator6.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         var a1 = seed1;
         var a2 = seed2;
@@ -340,15 +340,15 @@ public static partial class SuperEnumerable
         TAccumulate7 seed7, Func<TAccumulate7, T, TAccumulate7> accumulator7,
         Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TResult> resultSelector)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-        if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-        if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-        if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-        if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
-        if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
-        if (accumulator7 == null) throw new ArgumentNullException(nameof(accumulator7));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        source.ThrowIfNull();
+        accumulator1.ThrowIfNull();
+        accumulator2.ThrowIfNull();
+        accumulator3.ThrowIfNull();
+        accumulator4.ThrowIfNull();
+        accumulator5.ThrowIfNull();
+        accumulator6.ThrowIfNull();
+        accumulator7.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         var a1 = seed1;
         var a2 = seed2;
@@ -423,16 +423,16 @@ public static partial class SuperEnumerable
         TAccumulate8 seed8, Func<TAccumulate8, T, TAccumulate8> accumulator8,
         Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TAccumulate8, TResult> resultSelector)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
-        if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-        if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-        if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-        if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-        if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
-        if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
-        if (accumulator7 == null) throw new ArgumentNullException(nameof(accumulator7));
-        if (accumulator8 == null) throw new ArgumentNullException(nameof(accumulator8));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        source.ThrowIfNull();
+        accumulator1.ThrowIfNull();
+        accumulator2.ThrowIfNull();
+        accumulator3.ThrowIfNull();
+        accumulator4.ThrowIfNull();
+        accumulator5.ThrowIfNull();
+        accumulator6.ThrowIfNull();
+        accumulator7.ThrowIfNull();
+        accumulator8.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         var a1 = seed1;
         var a2 = seed2;

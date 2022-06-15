@@ -42,8 +42,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		source.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 		if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
 		return _(); IEnumerable<TResult> _()

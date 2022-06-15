@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
 	{
-		if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+		sequence.ThrowIfNull();
 
 		return _(sequence);
 

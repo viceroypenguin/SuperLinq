@@ -77,8 +77,8 @@ public static partial class SuperEnumerable
 		TCardinality zero, TCardinality one, TCardinality many,
 		Func<TCardinality, T?, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		source.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		switch (source.TryGetCollectionCount())
 		{

@@ -76,11 +76,11 @@ public static partial class SuperEnumerable
 <#  } #>
         Func<<#= string.Join(", ", from x in o.Arguments select "TAccumulate" + x.Number) #>, TResult> resultSelector)
     {
-        if (source == null) throw new ArgumentNullException(nameof(source));
+        source.ThrowIfNull();
 <#  foreach (var arg in o.Arguments) { #>
-        if (accumulator<#= arg.Number #> == null) throw new ArgumentNullException(nameof(accumulator<#= arg.Number #>));
+        accumulator<#= arg.Number #>.ThrowIfNull();
 <#  } #>
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        resultSelector.ThrowIfNull();
 
 <#  foreach (var arg in o.Arguments) { #>
         var a<#= arg.Number #> = seed<#= arg.Number #>;

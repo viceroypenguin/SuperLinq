@@ -27,8 +27,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TSource> ScanRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (func == null) throw new ArgumentNullException(nameof(func));
+		source.ThrowIfNull();
+		func.ThrowIfNull();
 
 		return ScanRightImpl(source, func,
 							 list => list.Count > 0
@@ -61,8 +61,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (func == null) throw new ArgumentNullException(nameof(func));
+		source.ThrowIfNull();
+		func.ThrowIfNull();
 
 		return ScanRightImpl(source, func, list => (seed, list.Count));
 	}

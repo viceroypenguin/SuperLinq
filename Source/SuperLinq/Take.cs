@@ -18,10 +18,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, Range range)
 	{
-		if (source == null)
-		{
-			throw new ArgumentNullException(nameof(source));
-		}
+		source.ThrowIfNull();
 
 		var start = range.Start;
 		var end = range.End;

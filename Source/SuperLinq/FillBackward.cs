@@ -45,8 +45,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> FillBackward<T>(this IEnumerable<T> source, Func<T, bool> predicate)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+		source.ThrowIfNull();
+		predicate.ThrowIfNull();
 
 		return FillBackwardImpl(source, predicate, null);
 	}
@@ -78,9 +78,9 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> FillBackward<T>(this IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (predicate == null) throw new ArgumentNullException(nameof(predicate));
-		if (fillSelector == null) throw new ArgumentNullException(nameof(fillSelector));
+		source.ThrowIfNull();
+		predicate.ThrowIfNull();
+		fillSelector.ThrowIfNull();
 
 		return FillBackwardImpl(source, predicate, fillSelector);
 	}

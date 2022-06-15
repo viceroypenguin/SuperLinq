@@ -58,8 +58,8 @@ public static partial class SuperEnumerable
 	public static TResult Partition<T, TResult>(this IEnumerable<T> source,
 		Func<T, bool> predicate, Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+		source.ThrowIfNull();
+		predicate.ThrowIfNull();
 		return source.GroupBy(predicate).Partition(resultSelector);
 	}
 
@@ -81,7 +81,7 @@ public static partial class SuperEnumerable
 	public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool, T>> source,
 		Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
 	{
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		resultSelector.ThrowIfNull();
 		return source.Partition(true, false, (t, f, _) => resultSelector(t, f));
 	}
 
@@ -104,7 +104,7 @@ public static partial class SuperEnumerable
 	public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool?, T>> source,
 		Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
 	{
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		resultSelector.ThrowIfNull();
 		return source.Partition(true, false, null, (t, f, n, _) => resultSelector(t, f, n));
 	}
 
@@ -157,7 +157,7 @@ public static partial class SuperEnumerable
 		TKey key, IEqualityComparer<TKey>? comparer,
 		Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
 	{
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		resultSelector.ThrowIfNull();
 		return PartitionImpl(source, 1, key, default!, default!, comparer,
 							 (a, b, c, rest) => resultSelector(a, rest));
 	}
@@ -215,7 +215,7 @@ public static partial class SuperEnumerable
 		TKey key1, TKey key2, IEqualityComparer<TKey>? comparer,
 		Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
 	{
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		resultSelector.ThrowIfNull();
 		return PartitionImpl(source, 2, key1, key2, default!, comparer,
 							 (a, b, c, rest) => resultSelector(a, b, rest));
 	}
@@ -282,8 +282,8 @@ public static partial class SuperEnumerable
 	{
 		Debug.Assert(count > 0 && count <= 3);
 
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		source.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		comparer ??= EqualityComparer<TKey>.Default;
 

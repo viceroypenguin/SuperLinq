@@ -36,8 +36,8 @@ partial class SuperEnumerable
 
 	public static IEnumerable<TResult> TagFirstLast<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		source.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		return source.Index() // count-up
 					 .CountDown(1, (e, cd) => resultSelector(e.item, e.index == 0, cd == 0));

@@ -45,8 +45,8 @@ public static partial class SuperEnumerable
 	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
 	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource>? comparer, params IEnumerable<TSource>[] otherSequences)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (otherSequences == null) throw new ArgumentNullException(nameof(otherSequences));
+		source.ThrowIfNull();
+		otherSequences.ThrowIfNull();
 
 		if (otherSequences.Length == 0)
 			return source; // optimization for when otherSequences is empty

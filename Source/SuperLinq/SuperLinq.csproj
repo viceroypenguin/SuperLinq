@@ -141,8 +141,9 @@
 			Portions © 2015 Felipe Sateler, “sholland”.
 			Portions © 2016 Andreas Gullberg Larsen, Leandro F. Vieira (leandromoh).
 			Portions © 2017 Jonas Nyrup (jnyrup).
-			Portions © Microsoft. All rights reserved.
 			Portions © 2022 Turning Code, LLC
+			Portions © 2022 Amichai Mantinband
+			Portions © Microsoft. All rights reserved.
 		</Copyright>
 		<Copyright>$([System.Text.RegularExpressions.Regex]::Replace($(Copyright), `\s+`, ` `).Trim())</Copyright>
 	</PropertyGroup>

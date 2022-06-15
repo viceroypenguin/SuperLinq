@@ -38,7 +38,7 @@ public static partial class SuperEnumerable
 		IEqualityComparer<TKey>? comparer)
 		where TKey : notnull
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		return source.ToDictionary(e => e.Key, e => e.Value, comparer);
 	}
 
@@ -79,7 +79,7 @@ public static partial class SuperEnumerable
 		IEqualityComparer<TKey>? comparer)
 		where TKey : notnull
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		return source.ToDictionary(e => e.Key, e => e.Value, comparer);
 	}
 }

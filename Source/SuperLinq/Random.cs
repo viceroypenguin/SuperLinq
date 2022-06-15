@@ -38,7 +38,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<int> Random(Random rand)
 	{
-		if (rand == null) throw new ArgumentNullException(nameof(rand));
+		rand.ThrowIfNull();
 
 		return RandomImpl(rand, r => r.Next());
 	}
@@ -83,7 +83,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<int> Random(Random rand, int maxValue)
 	{
-		if (rand == null) throw new ArgumentNullException(nameof(rand));
+		rand.ThrowIfNull();
 		if (maxValue < 0) throw new ArgumentOutOfRangeException(nameof(maxValue));
 
 		return RandomImpl(rand, r => r.Next(maxValue));
@@ -129,7 +129,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<int> Random(Random rand, int minValue, int maxValue)
 	{
-		if (rand == null) throw new ArgumentNullException(nameof(rand));
+		rand.ThrowIfNull();
 
 		if (minValue > maxValue)
 		{
@@ -175,7 +175,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<double> RandomDouble(Random rand)
 	{
-		if (rand == null) throw new ArgumentNullException(nameof(rand));
+		rand.ThrowIfNull();
 
 		return RandomImpl(rand, r => r.NextDouble());
 	}

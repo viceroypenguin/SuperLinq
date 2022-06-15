@@ -52,7 +52,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source, int size,
 		Func<IList<TSource>, TResult> resultSelector)
 	{
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		resultSelector.ThrowIfNull();
 		return source.Batch(size).Select(resultSelector);
 	}
 }

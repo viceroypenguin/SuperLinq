@@ -32,8 +32,8 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> Choose<T, TResult>(this IEnumerable<T> source,
 		Func<T, (bool, TResult)> chooser)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (chooser == null) throw new ArgumentNullException(nameof(chooser));
+		source.ThrowIfNull();
+		chooser.ThrowIfNull();
 
 		return _(); IEnumerable<TResult> _()
 		{

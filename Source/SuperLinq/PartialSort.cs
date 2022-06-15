@@ -88,7 +88,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<T> source, int count,
 		IComparer<T>? comparer, OrderByDirection direction)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		comparer ??= Comparer<T>.Default;
 		if (direction == OrderByDirection.Descending)
 			comparer = new ReverseComparer<T>(comparer);
@@ -191,8 +191,8 @@ public static partial class SuperEnumerable
 		IComparer<TKey>? comparer,
 		OrderByDirection direction)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+		source.ThrowIfNull();
+		keySelector.ThrowIfNull();
 
 		comparer ??= Comparer<TKey>.Default;
 		if (direction == OrderByDirection.Descending)

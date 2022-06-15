@@ -21,8 +21,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 1)
@@ -53,8 +53,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 2)
@@ -86,8 +86,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 3)
@@ -120,8 +120,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 4)
@@ -155,8 +155,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 5)
@@ -191,8 +191,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 6)
@@ -228,8 +228,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 7)
@@ -266,8 +266,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 8)
@@ -305,8 +305,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 9)
@@ -345,8 +345,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 10)
@@ -386,8 +386,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 11)
@@ -428,8 +428,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 12)
@@ -471,8 +471,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 13)
@@ -515,8 +515,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 14)
@@ -560,8 +560,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 15)
@@ -606,8 +606,8 @@ public static partial class SuperEnumerable
 
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (folder == null) throw new ArgumentNullException(nameof(folder));
+		source.ThrowIfNull();
+		folder.ThrowIfNull();
 
 		var elements = source.ToList();
 		if (elements.Count != 16)

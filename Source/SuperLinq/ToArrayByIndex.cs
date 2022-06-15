@@ -61,7 +61,7 @@ public static partial class SuperEnumerable
 	public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
 		Func<T, int> indexSelector, Func<T, TResult> resultSelector)
 	{
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		resultSelector.ThrowIfNull();
 		return source.ToArrayByIndex(indexSelector, (e, _) => resultSelector(e));
 	}
 
@@ -96,9 +96,9 @@ public static partial class SuperEnumerable
 	public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
 		Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (indexSelector == null) throw new ArgumentNullException(nameof(indexSelector));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		source.ThrowIfNull();
+		indexSelector.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		var lastIndex = -1;
 		var indexed = (List<KeyValuePair<int, T>>?)null;
@@ -178,7 +178,7 @@ public static partial class SuperEnumerable
 	public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
 		Func<T, int> indexSelector, Func<T, TResult> resultSelector)
 	{
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		resultSelector.ThrowIfNull();
 		return source.ToArrayByIndex(length, indexSelector, (e, _) => resultSelector(e));
 	}
 
@@ -213,10 +213,10 @@ public static partial class SuperEnumerable
 	public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
 		Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
-		if (indexSelector == null) throw new ArgumentNullException(nameof(indexSelector));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		indexSelector.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		var array = new TResult[length];
 		foreach (var e in source)

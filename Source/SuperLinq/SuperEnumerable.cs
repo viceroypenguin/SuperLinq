@@ -17,7 +17,7 @@ public static partial class SuperEnumerable
 
 	static int CountUpTo<T>(this IEnumerable<T> source, int max)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		if (max < 0) throw new ArgumentOutOfRangeException(nameof(max), "The maximum count argument cannot be negative.");
 
 		var count = 0;

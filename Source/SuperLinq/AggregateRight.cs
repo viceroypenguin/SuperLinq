@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // SuperLinq - Extensions to LINQ to Objects
 // Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
 //
@@ -40,8 +40,8 @@ public static partial class SuperEnumerable
 
 	public static TSource AggregateRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (func == null) throw new ArgumentNullException(nameof(func));
+		source.ThrowIfNull();
+		func.ThrowIfNull();
 
 		var list = source.ToListLike();
 
@@ -76,8 +76,8 @@ public static partial class SuperEnumerable
 
 	public static TAccumulate AggregateRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (func == null) throw new ArgumentNullException(nameof(func));
+		source.ThrowIfNull();
+		func.ThrowIfNull();
 
 		var list = source.ToListLike();
 
@@ -112,9 +112,9 @@ public static partial class SuperEnumerable
 
 	public static TResult AggregateRight<TSource, TAccumulate, TResult>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func, Func<TAccumulate, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (func == null) throw new ArgumentNullException(nameof(func));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		source.ThrowIfNull();
+		func.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		return resultSelector(source.AggregateRight(seed, func));
 	}

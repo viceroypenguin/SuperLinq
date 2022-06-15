@@ -23,7 +23,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TResult> Generate<TResult>(TResult initial, Func<TResult, TResult> generator)
 	{
-		if (generator == null) throw new ArgumentNullException(nameof(generator));
+		generator.ThrowIfNull();
 
 		return _(); IEnumerable<TResult> _()
 		{

@@ -20,7 +20,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> Slice<T>(this IEnumerable<T> sequence, int startIndex, int count)
 	{
-		if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+		sequence.ThrowIfNull();
 		if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
 		if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 

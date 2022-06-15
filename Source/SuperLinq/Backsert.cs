@@ -54,8 +54,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> Backsert<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
 	{
-		if (first == null) throw new ArgumentNullException(nameof(first));
-		if (second == null) throw new ArgumentNullException(nameof(second));
+		first.ThrowIfNull();
+		second.ThrowIfNull();
 		if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative.");
 
 		if (index == 0)

@@ -83,7 +83,7 @@ partial class SuperEnumerable
 
 	public static IEnumerable<T> From<T>(params Func<T>[] functions)
 	{
-		if (functions == null) throw new ArgumentNullException(nameof(functions));
+		functions.ThrowIfNull();
 		return Evaluate(functions);
 	}
 }

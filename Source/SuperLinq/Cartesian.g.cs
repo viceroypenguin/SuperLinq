@@ -34,9 +34,9 @@ public static partial class SuperEnumerable
         IEnumerable<T2> second,
         Func<T1, T2, TResult> resultSelector)
     {
-        if (first == null) throw new ArgumentNullException(nameof(first));
-        if (second == null) throw new ArgumentNullException(nameof(second));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        first.ThrowIfNull();
+        second.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         return _(); IEnumerable<TResult> _()
         {
@@ -84,10 +84,10 @@ public static partial class SuperEnumerable
         IEnumerable<T3> third,
         Func<T1, T2, T3, TResult> resultSelector)
     {
-        if (first == null) throw new ArgumentNullException(nameof(first));
-        if (second == null) throw new ArgumentNullException(nameof(second));
-        if (third == null) throw new ArgumentNullException(nameof(third));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        first.ThrowIfNull();
+        second.ThrowIfNull();
+        third.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         return _(); IEnumerable<TResult> _()
         {
@@ -141,11 +141,11 @@ public static partial class SuperEnumerable
         IEnumerable<T4> fourth,
         Func<T1, T2, T3, T4, TResult> resultSelector)
     {
-        if (first == null) throw new ArgumentNullException(nameof(first));
-        if (second == null) throw new ArgumentNullException(nameof(second));
-        if (third == null) throw new ArgumentNullException(nameof(third));
-        if (fourth == null) throw new ArgumentNullException(nameof(fourth));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        first.ThrowIfNull();
+        second.ThrowIfNull();
+        third.ThrowIfNull();
+        fourth.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         return _(); IEnumerable<TResult> _()
         {
@@ -205,12 +205,12 @@ public static partial class SuperEnumerable
         IEnumerable<T5> fifth,
         Func<T1, T2, T3, T4, T5, TResult> resultSelector)
     {
-        if (first == null) throw new ArgumentNullException(nameof(first));
-        if (second == null) throw new ArgumentNullException(nameof(second));
-        if (third == null) throw new ArgumentNullException(nameof(third));
-        if (fourth == null) throw new ArgumentNullException(nameof(fourth));
-        if (fifth == null) throw new ArgumentNullException(nameof(fifth));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        first.ThrowIfNull();
+        second.ThrowIfNull();
+        third.ThrowIfNull();
+        fourth.ThrowIfNull();
+        fifth.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         return _(); IEnumerable<TResult> _()
         {
@@ -276,13 +276,13 @@ public static partial class SuperEnumerable
         IEnumerable<T6> sixth,
         Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
     {
-        if (first == null) throw new ArgumentNullException(nameof(first));
-        if (second == null) throw new ArgumentNullException(nameof(second));
-        if (third == null) throw new ArgumentNullException(nameof(third));
-        if (fourth == null) throw new ArgumentNullException(nameof(fourth));
-        if (fifth == null) throw new ArgumentNullException(nameof(fifth));
-        if (sixth == null) throw new ArgumentNullException(nameof(sixth));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        first.ThrowIfNull();
+        second.ThrowIfNull();
+        third.ThrowIfNull();
+        fourth.ThrowIfNull();
+        fifth.ThrowIfNull();
+        sixth.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         return _(); IEnumerable<TResult> _()
         {
@@ -354,14 +354,14 @@ public static partial class SuperEnumerable
         IEnumerable<T7> seventh,
         Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector)
     {
-        if (first == null) throw new ArgumentNullException(nameof(first));
-        if (second == null) throw new ArgumentNullException(nameof(second));
-        if (third == null) throw new ArgumentNullException(nameof(third));
-        if (fourth == null) throw new ArgumentNullException(nameof(fourth));
-        if (fifth == null) throw new ArgumentNullException(nameof(fifth));
-        if (sixth == null) throw new ArgumentNullException(nameof(sixth));
-        if (seventh == null) throw new ArgumentNullException(nameof(seventh));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        first.ThrowIfNull();
+        second.ThrowIfNull();
+        third.ThrowIfNull();
+        fourth.ThrowIfNull();
+        fifth.ThrowIfNull();
+        sixth.ThrowIfNull();
+        seventh.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         return _(); IEnumerable<TResult> _()
         {
@@ -439,15 +439,15 @@ public static partial class SuperEnumerable
         IEnumerable<T8> eighth,
         Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector)
     {
-        if (first == null) throw new ArgumentNullException(nameof(first));
-        if (second == null) throw new ArgumentNullException(nameof(second));
-        if (third == null) throw new ArgumentNullException(nameof(third));
-        if (fourth == null) throw new ArgumentNullException(nameof(fourth));
-        if (fifth == null) throw new ArgumentNullException(nameof(fifth));
-        if (sixth == null) throw new ArgumentNullException(nameof(sixth));
-        if (seventh == null) throw new ArgumentNullException(nameof(seventh));
-        if (eighth == null) throw new ArgumentNullException(nameof(eighth));
-        if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+        first.ThrowIfNull();
+        second.ThrowIfNull();
+        third.ThrowIfNull();
+        fourth.ThrowIfNull();
+        fifth.ThrowIfNull();
+        sixth.ThrowIfNull();
+        seventh.ThrowIfNull();
+        eighth.ThrowIfNull();
+        resultSelector.ThrowIfNull();
 
         return _(); IEnumerable<TResult> _()
         {

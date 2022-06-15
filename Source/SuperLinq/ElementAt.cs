@@ -21,10 +21,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static TSource ElementAt<TSource>(this IEnumerable<TSource> source, Index index)
 	{
-		if (source == null)
-		{
-			throw new ArgumentNullException(nameof(source));
-		}
+		source.ThrowIfNull();
 
 		if (!index.IsFromEnd)
 		{
@@ -56,10 +53,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static TSource? ElementAtOrDefault<TSource>(this IEnumerable<TSource> source, Index index)
 	{
-		if (source == null)
-		{
-			throw new ArgumentNullException(nameof(source));
-		}
+		source.ThrowIfNull();
 
 		if (!index.IsFromEnd)
 		{

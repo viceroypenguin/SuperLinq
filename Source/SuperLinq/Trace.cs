@@ -40,7 +40,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, string? format)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 
 		return TraceImpl(source,
 			string.IsNullOrEmpty(format)
@@ -65,8 +65,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, Func<TSource, string> formatter)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (formatter == null) throw new ArgumentNullException(nameof(formatter));
+		source.ThrowIfNull();
+		formatter.ThrowIfNull();
 		return TraceImpl(source, formatter);
 	}
 

@@ -34,8 +34,8 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> CountDown<T, TResult>(this IEnumerable<T> source,
 		int count, Func<T, int?, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		source.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		return source.TryAsListLike() is { } listLike
 			   ? IterateList(listLike)

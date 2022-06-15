@@ -24,8 +24,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> Interleave<T>(this IEnumerable<T> sequence, params IEnumerable<T>[] otherSequences)
 	{
-		if (sequence == null) throw new ArgumentNullException(nameof(sequence));
-		if (otherSequences == null) throw new ArgumentNullException(nameof(otherSequences));
+		sequence.ThrowIfNull();
+		otherSequences.ThrowIfNull();
 		if (otherSequences.Any(s => s == null))
 			throw new ArgumentNullException(nameof(otherSequences), "One or more sequences passed to Interleave was null.");
 

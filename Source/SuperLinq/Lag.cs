@@ -18,8 +18,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (resultSelector is null) throw new ArgumentNullException(nameof(resultSelector));
+		source.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		return source.Select(Some)
 					 .Lag(offset, default, (curr, lag) => resultSelector(curr.Value, lag is (true, var some) ? some : default));
@@ -41,8 +41,9 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		source.ThrowIfNull();
+		resultSelector.ThrowIfNull();
+
 		// NOTE: Theoretically, we could assume that negative (or zero-offset) lags could be
 		//       re-written as: sequence.Lead( -lagBy, resultSelector ). However, I'm not sure
 		//       that it's an intuitive - or even desirable - behavior. So it's being omitted.

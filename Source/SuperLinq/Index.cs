@@ -33,7 +33,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<(int index, TSource item)> Index<TSource>(this IEnumerable<TSource> source, int startIndex)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		source.ThrowIfNull();
 		return source.Select((item, index) => (startIndex + index, item));
 	}
 }

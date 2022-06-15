@@ -64,8 +64,8 @@ public static partial class SuperEnumerable
 		Func<TSource, TKey> keySelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+		source.ThrowIfNull();
+		keySelector.ThrowIfNull();
 
 		return GroupAdjacent(source, keySelector, e => e, comparer);
 	}
@@ -141,9 +141,9 @@ public static partial class SuperEnumerable
 		Func<TSource, TElement> elementSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-		if (elementSelector == null) throw new ArgumentNullException(nameof(elementSelector));
+		source.ThrowIfNull();
+		keySelector.ThrowIfNull();
+		elementSelector.ThrowIfNull();
 
 		return GroupAdjacentImpl(source, keySelector, elementSelector, CreateGroupAdjacentGrouping,
 								 comparer ?? EqualityComparer<TKey>.Default);
@@ -181,9 +181,9 @@ public static partial class SuperEnumerable
 		Func<TSource, TKey> keySelector,
 		Func<TKey, IEnumerable<TSource>, TResult> resultSelector)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		source.ThrowIfNull();
+		keySelector.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		// This should be removed once the target framework is bumped to something that supports covariance
 		TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
@@ -227,9 +227,9 @@ public static partial class SuperEnumerable
 		Func<TKey, IEnumerable<TSource>, TResult> resultSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		source.ThrowIfNull();
+		keySelector.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		// This should be removed once the target framework is bumped to something that supports covariance
 		TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);

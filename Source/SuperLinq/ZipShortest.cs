@@ -40,9 +40,9 @@ public static partial class SuperEnumerable
 		IEnumerable<TSecond> second,
 		Func<TFirst, TSecond, TResult> resultSelector)
 	{
-		if (first == null) throw new ArgumentNullException(nameof(first));
-		if (second == null) throw new ArgumentNullException(nameof(second));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		first.ThrowIfNull();
+		second.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b));
 	}
@@ -90,10 +90,10 @@ public static partial class SuperEnumerable
 		IEnumerable<T3> third,
 		Func<T1, T2, T3, TResult> resultSelector)
 	{
-		if (first == null) throw new ArgumentNullException(nameof(first));
-		if (second == null) throw new ArgumentNullException(nameof(second));
-		if (third == null) throw new ArgumentNullException(nameof(third));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		first.ThrowIfNull();
+		second.ThrowIfNull();
+		third.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		return ZipImpl<T1, T2, T3, object, TResult>(first, second, third, null, (a, b, c, _) => resultSelector(a, b, c));
 	}
@@ -145,11 +145,11 @@ public static partial class SuperEnumerable
 		IEnumerable<T4> fourth,
 		Func<T1, T2, T3, T4, TResult> resultSelector)
 	{
-		if (first == null) throw new ArgumentNullException(nameof(first));
-		if (second == null) throw new ArgumentNullException(nameof(second));
-		if (third == null) throw new ArgumentNullException(nameof(third));
-		if (fourth == null) throw new ArgumentNullException(nameof(fourth));
-		if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+		first.ThrowIfNull();
+		second.ThrowIfNull();
+		third.ThrowIfNull();
+		fourth.ThrowIfNull();
+		resultSelector.ThrowIfNull();
 
 		return ZipImpl(first, second, third, fourth, resultSelector);
 	}

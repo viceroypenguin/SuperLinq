@@ -24,9 +24,9 @@ internal class Lookup<TKey, TElement> : IEnumerable<IGrouping<TKey, TElement>>, 
 
 	internal static Lookup<TKey, TElement> Create<TSource>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
-		if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-		if (elementSelector == null) throw new ArgumentNullException(nameof(elementSelector));
+		source.ThrowIfNull();
+		keySelector.ThrowIfNull();
+		elementSelector.ThrowIfNull();
 		Lookup<TKey, TElement> lookup = new Lookup<TKey, TElement>(comparer);
 		foreach (TSource item in source)
 		{
