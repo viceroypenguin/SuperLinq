@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // SuperLinq - Extensions to LINQ to Objects
 // Copyright (c) 2018 Leandro F. Vieira (leandromoh). All rights reserved.
 //
@@ -56,7 +56,7 @@ public static partial class SuperEnumerable
 	{
 		first.ThrowIfNull();
 		second.ThrowIfNull();
-		if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative.");
+		index.ThrowIfLessThan(0);
 
 		if (index == 0)
 			return first.Concat(second);
@@ -69,7 +69,7 @@ public static partial class SuperEnumerable
 			{
 				var (_, countdown) = e.Current;
 				if (countdown is { } n && n != index - 1)
-					throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.");
+					index.ThrowOutOfRange("Insertion index is greater than the length of the first sequence.");
 
 				do
 				{

@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 
 	public static bool AtLeast<T>(this IEnumerable<T> source, int count)
 	{
-		if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
+		count.ThrowIfLessThan(0);
 
 		return QuantityIterator(source, count, count, int.MaxValue);
 	}
@@ -51,7 +51,7 @@ public static partial class SuperEnumerable
 
 	public static bool AtMost<T>(this IEnumerable<T> source, int count)
 	{
-		if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
+		count.ThrowIfLessThan(0);
 
 		return QuantityIterator(source, count + 1, 0, count);
 	}
@@ -77,7 +77,7 @@ public static partial class SuperEnumerable
 
 	public static bool Exactly<T>(this IEnumerable<T> source, int count)
 	{
-		if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
+		count.ThrowIfLessThan(0);
 
 		return QuantityIterator(source, count + 1, count, count);
 	}
@@ -106,8 +106,8 @@ public static partial class SuperEnumerable
 
 	public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
 	{
-		if (min < 0) throw new ArgumentOutOfRangeException(nameof(min), "Minimum count cannot be negative.");
-		if (max < min) throw new ArgumentOutOfRangeException(nameof(max), "Maximum count must be greater than or equal to the minimum count.");
+		min.ThrowIfLessThan(0);
+		max.ThrowIfLessThan(min);
 
 		return QuantityIterator(source, max + 1, min, max);
 	}

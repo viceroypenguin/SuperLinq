@@ -38,7 +38,7 @@ public static partial class SuperEnumerable
 	{
 		rand.ThrowIfNull();
 		source.ThrowIfNull();
-		if (subsetSize < 0) throw new ArgumentOutOfRangeException(nameof(subsetSize));
+		subsetSize.ThrowIfLessThan(0);
 
 		return RandomSubsetImpl(source, rand, seq => (seq.ToArray(), subsetSize));
 	}
@@ -57,10 +57,7 @@ public static partial class SuperEnumerable
 
 		if (array.Length < subsetSize)
 		{
-#pragma warning disable MA0015 // Specify the parameter name in ArgumentException
-			throw new ArgumentOutOfRangeException(nameof(subsetSize),
-				"Subset size must be less than or equal to the source length.");
-#pragma warning restore MA0015
+			subsetSize.ThrowOutOfRange("Subset size must be less than or equal to the source length.");
 		}
 
 		var m = 0;                // keeps track of count items shuffled

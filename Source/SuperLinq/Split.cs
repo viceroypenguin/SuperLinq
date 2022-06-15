@@ -158,7 +158,7 @@ public static partial class SuperEnumerable
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
 		source.ThrowIfNull();
-		if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
+		count.ThrowIfLessThan(1);
 		resultSelector.ThrowIfNull();
 
 		comparer ??= EqualityComparer<TSource>.Default;
@@ -243,7 +243,7 @@ public static partial class SuperEnumerable
 	{
 		source.ThrowIfNull();
 		separatorFunc.ThrowIfNull();
-		if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
+		count.ThrowIfLessThan(1);
 		resultSelector.ThrowIfNull();
 
 		return _(); IEnumerable<TResult> _()

@@ -17,7 +17,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<IList<TSource>> Window<TSource>(this IEnumerable<TSource> source, int size)
 	{
 		source.ThrowIfNull();
-		if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
+		size.ThrowIfLessThan(1);
 
 		return _(); IEnumerable<IList<TSource>> _()
 		{

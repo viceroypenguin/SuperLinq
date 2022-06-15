@@ -59,7 +59,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
 	{
 		source.ThrowIfNull();
-		if (width < 0) throw new ArgumentException(null, nameof(width));
+		width.ThrowIfLessThan(0);
 		return PadImpl(source, width, padding, null);
 	}
 
@@ -91,7 +91,7 @@ public static partial class SuperEnumerable
 	{
 		source.ThrowIfNull();
 		paddingSelector.ThrowIfNull();
-		if (width < 0) throw new ArgumentException(null, nameof(width));
+		width.ThrowIfLessThan(0);
 		return PadImpl(source, width, default, paddingSelector);
 	}
 

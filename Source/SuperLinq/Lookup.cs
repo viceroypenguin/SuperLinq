@@ -249,7 +249,7 @@ internal class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IList<TElem
 	{
 		get
 		{
-			if (index < 0 || index >= count) throw new ArgumentOutOfRangeException(nameof(index));
+			index.ThrowIfNotInRange(0, count - 1);
 			return elements[index];
 		}
 		set

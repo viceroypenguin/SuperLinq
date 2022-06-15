@@ -35,7 +35,7 @@ public static partial class SuperEnumerable
 
 		if (!TryGetElementFromEnd(source, index.Value, out var element))
 		{
-			throw new ArgumentOutOfRangeException(nameof(index));
+			index.ThrowOutOfRange();
 		}
 
 		return element;

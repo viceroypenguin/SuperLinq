@@ -33,7 +33,7 @@ public static partial class SuperEnumerable
 	{
 		first.ThrowIfNull();
 		second.ThrowIfNull();
-		if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative.");
+		index.ThrowIfLessThan(0);
 
 		return _(); IEnumerable<T> _()
 		{
@@ -45,7 +45,7 @@ public static partial class SuperEnumerable
 				yield return iter.Current;
 
 			if (i < index)
-				throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.");
+				index.ThrowOutOfRange("Insertion index is greater than the length of the first sequence.");
 
 			foreach (var item in second)
 				yield return item;

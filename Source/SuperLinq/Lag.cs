@@ -43,11 +43,7 @@ public static partial class SuperEnumerable
 	{
 		source.ThrowIfNull();
 		resultSelector.ThrowIfNull();
-
-		// NOTE: Theoretically, we could assume that negative (or zero-offset) lags could be
-		//       re-written as: sequence.Lead( -lagBy, resultSelector ). However, I'm not sure
-		//       that it's an intuitive - or even desirable - behavior. So it's being omitted.
-		if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
+		offset.ThrowIfLessThan(1);
 
 		return _(); IEnumerable<TResult> _()
 		{

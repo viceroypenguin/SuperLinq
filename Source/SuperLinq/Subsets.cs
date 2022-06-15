@@ -72,10 +72,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence, int subsetSize)
 	{
-		if (sequence == null)
-			throw new ArgumentNullException(nameof(sequence));
-		if (subsetSize < 0)
-			throw new ArgumentOutOfRangeException(nameof(subsetSize), "Subset size must be >= 0");
+		sequence.ThrowIfNull();
+		subsetSize.ThrowIfLessThan(0);
 
 		// NOTE: Theres an interesting trade-off that we have to make in this operator.
 		// Ideally, we would throw an exception here if the {subsetSize} parameter is
@@ -122,7 +120,7 @@ public static partial class SuperEnumerable
 			{
 				// precondition: subsetSize <= set.Count
 				if (subsetSize > set.Count)
-					throw new ArgumentOutOfRangeException(nameof(subsetSize), "Subset size must be <= sequence.Count()");
+					subsetSize.ThrowOutOfRange("Subset size must be <= sequence.Count()");
 
 				// initialize set arrays...
 				_set = set;

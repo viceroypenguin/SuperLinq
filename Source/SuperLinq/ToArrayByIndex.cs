@@ -214,7 +214,7 @@ public static partial class SuperEnumerable
 		Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
 	{
 		source.ThrowIfNull();
-		if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+		length.ThrowIfLessThan(0);
 		indexSelector.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
