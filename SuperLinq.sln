@@ -26,7 +26,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Async.Test", "Tes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generators", "Generators", "{7805222E-6CD5-41FE-9945-0D9FD7DFA24C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Generator", "Generators\Regenerator\SuperLinq.Generator.csproj", "{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Generator", "Generators\SuperLinq.Generator\SuperLinq.Generator.csproj", "{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
