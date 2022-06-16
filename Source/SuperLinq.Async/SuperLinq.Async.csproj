@@ -21,10 +21,6 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-
-		<!-- Parallel build is disabled to avoid file locking issues during T4 code generation.
-         See also: https://github.com/dotnet/msbuild/issues/2781 -->
-		<BuildInParallel>false</BuildInParallel>
 	</PropertyGroup>
 
 	<PropertyGroup>
