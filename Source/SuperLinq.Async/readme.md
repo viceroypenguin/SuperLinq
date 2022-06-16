@@ -37,6 +37,10 @@ each function in the source sequence of functions.
 
 This method has 4 overloads.
 
+### Insert
+
+Inserts the elements of a sequence into another sequence at a specified index.
+
 ### SkipUntil
 
 Skips items from the input sequence until the given predicate returns true

@@ -1,6 +1,8 @@
-﻿namespace SuperLinq;
+﻿using System.Runtime.CompilerServices;
 
-public static partial class SuperEnumerable
+namespace SuperLinq.Async;
+
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Inserts the elements of a sequence into another sequence at a
@@ -29,7 +31,7 @@ public static partial class SuperEnumerable
 	/// <paramref name="first"/> entirely.
 	/// </exception>
 
-	public static IEnumerable<T> Insert<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
+	public static IAsyncEnumerable<T> Insert<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, int index)
 	{
 		first.ThrowIfNull();
 		second.ThrowIfNull();
@@ -37,22 +39,22 @@ public static partial class SuperEnumerable
 
 		return _(first, second, index);
 
-		static IEnumerable<T> _(IEnumerable<T> first, IEnumerable<T> second, int index)
+		static async IAsyncEnumerable<T> _(IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, int index, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var i = -1;
 
-			using var iter = first.GetEnumerator();
+			var iter = first.GetConfiguredAsyncEnumerator(false, cancellationToken);
 
-			while (++i < index && iter.MoveNext())
+			while (++i < index && await iter.MoveNextAsync())
 				yield return iter.Current;
 
 			if (i < index)
 				index.ThrowOutOfRange("Insertion index is greater than the length of the first sequence.");
 
-			foreach (var item in second)
+			await foreach (var item in second.WithCancellation(cancellationToken).ConfigureAwait(false))
 				yield return item;
 
-			while (iter.MoveNext())
+			while (await iter.MoveNextAsync())
 				yield return iter.Current;
 		}
 	}

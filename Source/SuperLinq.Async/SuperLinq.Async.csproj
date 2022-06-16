@@ -33,6 +33,7 @@
 			
 			- Consume
 			- From
+			- Insert
 			- SkipUntil
 			- TakeUntil
 		</Description>
