@@ -11,5 +11,7 @@ public class Generator : IIncrementalGenerator
 			"Aggregate.g.cs", Aggregate.Generate()));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
 			"Cartesian.g.cs", Cartesian.Generate()));
+		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
+			"Fold.g.cs", Fold.Generate()));
 	}
 }
