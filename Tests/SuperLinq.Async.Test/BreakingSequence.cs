@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace Test.Async;
+﻿namespace Test.Async;
 
 /// <summary>
 /// Enumerable sequence which throws InvalidOperationException as soon as its
