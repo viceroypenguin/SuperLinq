@@ -163,22 +163,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Update="ToDelimitedString.g.tt">
-			<Generator>TextTemplatingFileGenerator</Generator>
-			<LastGenOutput>ToDelimitedString.g.cs</LastGenOutput>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
 		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Update="ToDelimitedString.g.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>ToDelimitedString.g.tt</DependentUpon>
-		</Compile>
 	</ItemGroup>
 
 	<Target Name="_CollectTextTemplates">

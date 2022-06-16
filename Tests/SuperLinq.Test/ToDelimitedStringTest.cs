@@ -22,7 +22,6 @@ public class ToDelimitedStringTest
 	[Test]
 	public void ToDelimitedStringWithNonEmptySequenceContainingNullsAtStart()
 	{
-		// See: https://github.com/SuperLinq/SuperLinq/issues/43
 		var result = new object[] { null, null, "foo" }.ToDelimitedString(",");
 		Assert.That(result, Is.EqualTo(",,foo"));
 	}

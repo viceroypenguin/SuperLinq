@@ -13,5 +13,7 @@ public class Generator : IIncrementalGenerator
 			"Cartesian.g.cs", Cartesian.Generate()));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
 			"Fold.g.cs", Fold.Generate()));
+		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
+			"ToDelimitedString.g.cs", ToDelimitedString.Generate()));
 	}
 }
