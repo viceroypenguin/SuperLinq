@@ -37,6 +37,11 @@ each function in the source sequence of functions.
 
 This method has 4 overloads.
 
+### SkipUntil
+
+Skips items from the input sequence until the given predicate returns true
+when applied to the current source item; that item will be the last skipped
+
 ### TakeUntil
 
 Returns items from the input sequence until the given predicate returns true

@@ -1,6 +1,8 @@
-﻿namespace SuperLinq;
+﻿using System.Runtime.CompilerServices;
 
-public static partial class SuperEnumerable
+namespace SuperLinq.Async;
+
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Skips items from the input sequence until the given predicate returns true
@@ -32,25 +34,25 @@ public static partial class SuperEnumerable
 	/// <returns>Items from the source sequence after the predicate first returns true when applied to the item.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="predicate"/> is null</exception>
 
-	public static IEnumerable<TSource> SkipUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+	public static IAsyncEnumerable<TSource> SkipUntil<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate)
 	{
 		source.ThrowIfNull();
 		predicate.ThrowIfNull();
 
 		return _(source, predicate);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, Func<TSource, bool> predicate)
+		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			using var enumerator = source.GetEnumerator();
+			await using var enumerator = source.GetConfiguredAsyncEnumerator(continueOnCapturedContext: false, cancellationToken);
 
 			do
 			{
-				if (!enumerator.MoveNext())
+				if (!await enumerator.MoveNextAsync())
 					yield break;
 			}
 			while (!predicate(enumerator.Current));
 
-			while (enumerator.MoveNext())
+			while (await enumerator.MoveNextAsync())
 				yield return enumerator.Current;
 		}
 	}
