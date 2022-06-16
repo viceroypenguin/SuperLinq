@@ -152,6 +152,10 @@
 		<PackageReference Include="System.Interactive" Version="6.0.1" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\..\Generators\Regenerator\SuperLinq.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
 	<PropertyGroup Label="MinVer">
 		<MinVerAutoIncrement>minor</MinVerAutoIncrement>
 		<MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
@@ -159,10 +163,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Update="Aggregate.g.tt">
-			<Generator>TextTemplatingFileGenerator</Generator>
-			<LastGenOutput>Aggregate.g.cs</LastGenOutput>
-		</None>
 		<None Update="Cartesian.g.tt">
 			<Generator>TextTemplatingFileGenerator</Generator>
 			<LastGenOutput>Cartesian.g.cs</LastGenOutput>
@@ -182,11 +182,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Aggregate.g.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Aggregate.g.tt</DependentUpon>
-		</Compile>
 		<Compile Update="Cartesian.g.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>

@@ -1,0 +1,5 @@
+[*.cs]
+
+dotnet_diagnostic.MA0028.severity = none			# MA0028: Optimize StringBuilder usage
+dotnet_diagnostic.MA0076.severity = none			# MA0076: Do not use implicit culture-sensitive ToString in interpolated strings
+dotnet_diagnostic.MA0101.severity = none			# MA0101: String contains an implicit end of line character

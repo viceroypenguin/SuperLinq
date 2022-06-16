@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{835F8FFA-471F-4322-B721-A897F27872FA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{835F8FFA-471F-4322-B721-A897F27872FA}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.github\workflows\build.yml = .github\workflows\build.yml
@@ -20,9 +20,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq", "Source\SuperLi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Test", "Tests\SuperLinq.Test\SuperLinq.Test.csproj", "{674D18D8-CCE1-4102-AF6E-E6F993813422}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLinq.Async", "Source\SuperLinq.Async\SuperLinq.Async.csproj", "{84058331-3025-438D-8A68-B55EE859C70D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Async", "Source\SuperLinq.Async\SuperLinq.Async.csproj", "{84058331-3025-438D-8A68-B55EE859C70D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLinq.Async.Test", "Tests\SuperLinq.Async.Test\SuperLinq.Async.Test.csproj", "{1A4F94C6-2143-486B-B787-271506C327FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Async.Test", "Tests\SuperLinq.Async.Test\SuperLinq.Async.Test.csproj", "{1A4F94C6-2143-486B-B787-271506C327FC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generators", "Generators", "{7805222E-6CD5-41FE-9945-0D9FD7DFA24C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Generator", "Generators\Regenerator\SuperLinq.Generator.csproj", "{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +50,10 @@ Global
 		{1A4F94C6-2143-486B-B787-271506C327FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A4F94C6-2143-486B-B787-271506C327FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A4F94C6-2143-486B-B787-271506C327FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +63,7 @@ Global
 		{674D18D8-CCE1-4102-AF6E-E6F993813422} = {99F4CCA1-C24D-4C5C-85B9-79CC6A30FAD2}
 		{84058331-3025-438D-8A68-B55EE859C70D} = {8392DDDC-9D3E-4A41-A93C-1EF1503D71F9}
 		{1A4F94C6-2143-486B-B787-271506C327FC} = {99F4CCA1-C24D-4C5C-85B9-79CC6A30FAD2}
+		{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE} = {7805222E-6CD5-41FE-9945-0D9FD7DFA24C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A8EBCB0-B3EB-4D85-AD02-D349122C1D8E}
