@@ -163,10 +163,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Update="Cartesian.g.tt">
-			<Generator>TextTemplatingFileGenerator</Generator>
-			<LastGenOutput>Cartesian.g.cs</LastGenOutput>
-		</None>
 		<None Update="Fold.g.tt">
 			<Generator>TextTemplatingFileGenerator</Generator>
 			<LastGenOutput>Fold.g.cs</LastGenOutput>
@@ -182,11 +178,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Cartesian.g.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Cartesian.g.tt</DependentUpon>
-		</Compile>
 		<Compile Update="Fold.g.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>

@@ -9,5 +9,7 @@ public class Generator : IIncrementalGenerator
 	{
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
 			"Aggregate.g.cs", Aggregate.Generate()));
+		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
+			"Cartesian.g.cs", Cartesian.Generate()));
 	}
 }
