@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using NUnit.Framework;
 
 namespace Test;
 
@@ -38,13 +37,13 @@ sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
 	{
 		if (_disposed == null)
 			return;
-		Assert.IsTrue(_disposed, "Expected sequence to be disposed.");
+		Assert.True(_disposed, "Expected sequence to be disposed.");
 		_disposed = null;
 	}
 
 	public IEnumerator<T> GetEnumerator()
 	{
-		Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
+		Assert.NotNull(_sequence);
 		var enumerator = _sequence.GetEnumerator().AsWatchable();
 		enumerator.MoveNextCalled += (_, moved) =>
 		{

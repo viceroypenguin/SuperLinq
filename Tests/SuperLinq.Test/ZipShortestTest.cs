@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class ZipShortestTest
 {
-	[Test]
+	[Fact]
 	public void BothSequencesDisposedWithUnequalLengthsAndLongerFirst()
 	{
 		using var longer = TestingSequence.Of(1, 2, 3);
@@ -14,7 +11,7 @@ public class ZipShortestTest
 		longer.ZipShortest(shorter, (x, y) => x + y).Consume();
 	}
 
-	[Test]
+	[Fact]
 	public void BothSequencesDisposedWithUnequalLengthsAndShorterFirst()
 	{
 		using var longer = TestingSequence.Of(1, 2, 3);
@@ -23,38 +20,38 @@ public class ZipShortestTest
 		shorter.ZipShortest(longer, (x, y) => x + y).Consume();
 	}
 
-	[Test]
+	[Fact]
 	public void ZipShortestWithEqualLengthSequences()
 	{
 		var zipped = new[] { 1, 2, 3 }.ZipShortest(new[] { 4, 5, 6 }, ValueTuple.Create);
-		Assert.That(zipped, Is.Not.Null);
+		Assert.NotNull(zipped);
 		zipped.AssertSequenceEqual((1, 4), (2, 5), (3, 6));
 	}
 
-	[Test]
+	[Fact]
 	public void ZipShortestWithFirstSequenceShorterThanSecond()
 	{
 		var zipped = new[] { 1, 2 }.ZipShortest(new[] { 4, 5, 6 }, ValueTuple.Create);
-		Assert.That(zipped, Is.Not.Null);
+		Assert.NotNull(zipped);
 		zipped.AssertSequenceEqual((1, 4), (2, 5));
 	}
 
-	[Test]
+	[Fact]
 	public void ZipShortestWithFirstSequnceLongerThanSecond()
 	{
 		var zipped = new[] { 1, 2, 3 }.ZipShortest(new[] { 4, 5 }, ValueTuple.Create);
-		Assert.That(zipped, Is.Not.Null);
+		Assert.NotNull(zipped);
 		zipped.AssertSequenceEqual((1, 4), (2, 5));
 	}
 
-	[Test]
+	[Fact]
 	public void ZipShortestIsLazy()
 	{
 		var bs = new BreakingSequence<int>();
 		bs.ZipShortest(bs, BreakingFunc.Of<int, int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void MoveNextIsNotCalledUnnecessarilyWhenFirstIsShorter()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -65,11 +62,11 @@ public class ZipShortestTest
 
 		var zipped = s1.ZipShortest(s2, ValueTuple.Create);
 
-		Assert.That(zipped, Is.Not.Null);
+		Assert.NotNull(zipped);
 		zipped.AssertSequenceEqual((1, 4), (2, 5));
 	}
 
-	[Test]
+	[Fact]
 	public void ZipShortestNotIterateUnnecessaryElements()
 	{
 		using var s1 = SuperEnumerable.From(() => 4,
@@ -81,11 +78,11 @@ public class ZipShortestTest
 
 		var zipped = s1.ZipShortest(s2, ValueTuple.Create);
 
-		Assert.That(zipped, Is.Not.Null);
+		Assert.NotNull(zipped);
 		zipped.AssertSequenceEqual((4, 1), (5, 2));
 	}
 
-	[Test]
+	[Fact]
 	public void ZipShortestDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		using var s1 = TestingSequence.Of(1, 2);

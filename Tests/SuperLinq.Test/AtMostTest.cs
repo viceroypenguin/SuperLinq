@@ -1,66 +1,63 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class AtMostTest
 {
-	[Test]
+	[Fact]
 	public void AtMostWithNegativeCount()
 	{
-		AssertThrowsArgument.OutOfRangeException("count",
-			() => new[] { 1 }.AtMost(-1));
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
+			new[] { 1 }.AtMost(-1));
 	}
 
-	[Test]
+	[Fact]
 	public void AtMostWithEmptySequenceHasAtMostZeroElements()
 	{
-		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-			Assert.IsTrue(xs.AtMost(0));
+		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionInlineDatas())
+			Assert.True(xs.AtMost(0));
 	}
 
-	[Test]
+	[Fact]
 	public void AtMostWithEmptySequenceHasAtMostOneElement()
 	{
-		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-			Assert.IsTrue(xs.AtMost(1));
+		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionInlineDatas())
+			Assert.True(xs.AtMost(1));
 	}
 
-	[Test]
+	[Fact]
 	public void AtMostWithSingleElementHasAtMostZeroElements()
 	{
-		foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-			Assert.IsFalse(xs.AtMost(0));
+		foreach (var xs in new[] { 1 }.ArrangeCollectionInlineDatas())
+			Assert.False(xs.AtMost(0));
 	}
 
-	[Test]
+	[Fact]
 	public void AtMostWithSingleElementHasAtMostOneElement()
 	{
-		foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-			Assert.IsTrue(xs.AtMost(1));
+		foreach (var xs in new[] { 1 }.ArrangeCollectionInlineDatas())
+			Assert.True(xs.AtMost(1));
 	}
 
-	[Test]
+	[Fact]
 	public void AtMostWithSingleElementHasAtMostManyElements()
 	{
-		foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-			Assert.IsTrue(xs.AtMost(2));
+		foreach (var xs in new[] { 1 }.ArrangeCollectionInlineDatas())
+			Assert.True(xs.AtMost(2));
 	}
 
-	[Test]
+	[Fact]
 	public void AtMostWithManyElementsHasAtMostOneElements()
 	{
-		foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-			Assert.IsFalse(xs.AtMost(1));
+		foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionInlineDatas())
+			Assert.False(xs.AtMost(1));
 	}
 
-	[Test]
+	[Fact]
 	public void AtMostDoesNotIterateUnnecessaryElements()
 	{
 		var source = SuperEnumerable.From(() => 1,
 										 () => 2,
 										 () => 3,
 										 () => throw new TestException());
-		Assert.IsFalse(source.AtMost(2));
+		Assert.False(source.AtMost(2));
 	}
 }

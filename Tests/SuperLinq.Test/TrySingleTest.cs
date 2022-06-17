@@ -1,53 +1,53 @@
 ﻿using System.Collections;
-using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 
 namespace Test;
 
-[TestFixture]
 public class TrySingleTest
 {
-	[TestCase(SourceKind.Sequence)]
-	[TestCase(SourceKind.BreakingList)]
-	[TestCase(SourceKind.BreakingReadOnlyList)]
-	[TestCase(SourceKind.BreakingCollection)]
-	[TestCase(SourceKind.BreakingReadOnlyCollection)]
+	[Theory]
+	[InlineData(SourceKind.Sequence)]
+	[InlineData(SourceKind.BreakingList)]
+	[InlineData(SourceKind.BreakingReadOnlyList)]
+	[InlineData(SourceKind.BreakingCollection)]
+	[InlineData(SourceKind.BreakingReadOnlyCollection)]
 	public void TrySingleWithEmptySource(SourceKind kind)
 	{
 		var source = Array.Empty<int?>().ToSourceKind(kind);
 
 		var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
-		Assert.That(cardinality, Is.EqualTo("zero"));
-		Assert.That(value, Is.Null);
+		Assert.Equal("zero", cardinality);
+		Assert.Null(value);
 	}
 
-	[TestCase(SourceKind.Sequence)]
-	[TestCase(SourceKind.BreakingList)]
-	[TestCase(SourceKind.BreakingReadOnlyList)]
+	[Theory]
+	[InlineData(SourceKind.Sequence)]
+	[InlineData(SourceKind.BreakingList)]
+	[InlineData(SourceKind.BreakingReadOnlyList)]
 	public void TrySingleWithSingleton(SourceKind kind)
 	{
 		var source = new int?[] { 10 }.ToSourceKind(kind);
 
 		var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
-		Assert.That(cardinality, Is.EqualTo("one"));
-		Assert.That(value, Is.EqualTo(10));
+		Assert.Equal("one", cardinality);
+		Assert.Equal(10, value);
 	}
 
-	[TestCaseSource(nameof(SingletonCollectionTestCases))]
+	[Theory, MemberData(nameof(SingletonCollectionInlineDatas))]
 	public void TrySingleWithSingletonCollection<T>(IEnumerable<T> source, T result)
 	{
 		var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
-		Assert.That(cardinality, Is.EqualTo("one"));
-		Assert.That(value, Is.EqualTo(result));
+		Assert.Equal("one", cardinality);
+		Assert.Equal(result, value);
 	}
 
-	static readonly ITestCaseData[] SingletonCollectionTestCases =
-	{
-			new TestCaseData(new BreakingSingleElementCollection<int>(10), 10),
-			new TestCaseData(new BreakingSingleElementReadOnlyCollection<int>(20), 20)
+	public static IEnumerable<object[]> SingletonCollectionInlineDatas { get; } =
+		new[]
+		{
+			new object[] { new BreakingSingleElementCollection<int>(10), 10, },
+			new object[] { new BreakingSingleElementReadOnlyCollection<int>(20), 20, },
 		};
 
 	class BreakingSingleElementCollectionBase<T> : IEnumerable<T>
@@ -56,7 +56,7 @@ public class TrySingleTest
 
 		protected BreakingSingleElementCollectionBase(T element) => _element = element;
 
-		public int Count => 1;
+		public int Count { get; } = 1;
 
 		public IEnumerator<T> GetEnumerator()
 		{
@@ -86,22 +86,23 @@ public class TrySingleTest
 		public BreakingSingleElementReadOnlyCollection(T element) : base(element) { }
 	}
 
-	[TestCase(SourceKind.Sequence)]
-	[TestCase(SourceKind.BreakingList)]
-	[TestCase(SourceKind.BreakingReadOnlyList)]
-	[TestCase(SourceKind.BreakingCollection)]
-	[TestCase(SourceKind.BreakingReadOnlyCollection)]
+	[Theory]
+	[InlineData(SourceKind.Sequence)]
+	[InlineData(SourceKind.BreakingList)]
+	[InlineData(SourceKind.BreakingReadOnlyList)]
+	[InlineData(SourceKind.BreakingCollection)]
+	[InlineData(SourceKind.BreakingReadOnlyCollection)]
 	public void TrySingleWithMoreThanOne(SourceKind kind)
 	{
 		var source = new int?[] { 10, 20 }.ToSourceKind(kind);
 
 		var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
-		Assert.That(cardinality, Is.EqualTo("many"));
-		Assert.That(value, Is.Null);
+		Assert.Equal("many", cardinality);
+		Assert.Null(value);
 	}
 
-	[Test]
+	[Fact]
 	public void TrySingleDoesNotConsumeMoreThanTwoElementsFromTheSequence()
 	{
 		static IEnumerable<int> TestSequence()
@@ -113,17 +114,18 @@ public class TrySingleTest
 
 		var (cardinality, value) = TestSequence().TrySingle("zero", "one", "many");
 
-		Assert.That(cardinality, Is.EqualTo("many"));
-		Assert.That(value, Is.EqualTo(0));
+		Assert.Equal("many", cardinality);
+		Assert.Equal(0, value);
 	}
 
-	[TestCase(0, "zero")]
-	[TestCase(1, "one")]
-	[TestCase(2, "many")]
+	[Theory]
+	[InlineData(0, "zero")]
+	[InlineData(1, "one")]
+	[InlineData(2, "many")]
 	public void TrySingleEnumeratesOnceOnlyAndDisposes(int numberOfElements, string expectedCardinality)
 	{
 		using var seq = Enumerable.Range(1, numberOfElements).AsTestingSequence();
 		var (cardinality, _) = seq.TrySingle("zero", "one", "many");
-		Assert.That(cardinality, Is.EqualTo(expectedCardinality));
+		Assert.Equal(expectedCardinality, cardinality);
 	}
 }

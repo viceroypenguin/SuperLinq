@@ -1,27 +1,25 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class PairwiseTest
 {
-	[Test]
+	[Fact]
 	public void PairwiseIsLazy()
 	{
 		new BreakingSequence<object>().Pairwise(BreakingFunc.Of<object, object, int>());
 	}
 
-	[TestCase(0)]
-	[TestCase(1)]
+	[Theory]
+	[InlineData(0)]
+	[InlineData(1)]
 	public void PairwiseWithSequenceShorterThanTwo(int count)
 	{
 		var source = Enumerable.Range(0, count);
 		var result = source.Pairwise(BreakingFunc.Of<int, int, int>());
 
-		Assert.That(result, Is.Empty);
+		Assert.Empty(result);
 	}
 
-	[Test]
+	[Fact]
 	public void PairwiseWideSourceSequence()
 	{
 		var result = new[] { "a", "b", "c", "d" }.Pairwise((x, y) => x + y);

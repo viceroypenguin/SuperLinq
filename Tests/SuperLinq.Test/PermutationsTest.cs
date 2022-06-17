@@ -1,60 +1,57 @@
-﻿using NUnit.Framework;
-
-namespace Test;
+﻿namespace Test;
 
 /// <summary>
 /// Tests that verify the behavior of the Permutations() operator.
 /// </summary>
-[TestFixture]
 public class PermutationsTest
 {
 	/// <summary>
 	/// Verify that the permutation of the empty set is the empty set.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCardinalityZeroPermutation()
 	{
 		var emptySet = Array.Empty<int>();
 		var permutations = emptySet.Permutations();
 
 		// should contain a single result: the empty set itself
-		Assert.That(permutations.Single(), Is.EqualTo(emptySet));
+		Assert.Equal(emptySet, permutations.Single());
 	}
 
 	/// <summary>
 	/// Verify that there is one permutation of a set of one item
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCardinalityOnePermutation()
 	{
 		var set = new[] { 42 };
 		var permutations = set.Permutations();
 
 		// should contain a single result: the set itself
-		Assert.That(permutations.Single(), Is.EqualTo(set));
+		Assert.Equal(set, permutations.Single());
 	}
 
 	/// <summary>
 	/// Verify that there are two permutations of a set of two items
 	/// and confirm that the permutations are correct.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCardinalityTwoPermutation()
 	{
 		var set = new[] { 42, 37 };
 		var permutations = set.Permutations();
 
 		// should contain two results: the set itself and its reverse
-		Assert.IsTrue(permutations.Count() == 2);
-		Assert.That(permutations.First(), Is.EqualTo(set));
-		Assert.That(permutations.Last(), Is.EqualTo(set.Reverse()));
+		Assert.True(permutations.Count() == 2);
+		Assert.Equal(set, permutations.First());
+		Assert.Equal(set.Reverse(), permutations.Last());
 	}
 
 	/// <summary>
 	/// Verify that there are six (3!) permutations of a set of three items
 	/// and confirm the permutations are correct.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCardinalityThreePermutation()
 	{
 		var set = new[] { 42, 11, 100 };
@@ -71,15 +68,15 @@ public class PermutationsTest
 										   };
 
 		// should contain six permutations (as defined above)
-		Assert.AreEqual(expectedPermutations.Length, permutations.Count());
-		Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
+		Assert.Equal(expectedPermutations.Length, permutations.Count());
+		Assert.True(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
 	}
 
 	/// <summary>
 	/// Verify there are 24 (4!) permutations of a set of four items
 	/// and confirm the permutations are correct.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCardinalityFourPermutation()
 	{
 		var set = new[] { 42, 11, 100, 89 };
@@ -114,15 +111,15 @@ public class PermutationsTest
 										   };
 
 		// should contain six permutations (as defined above)
-		Assert.AreEqual(expectedPermutations.Length, permutations.Count());
-		Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
+		Assert.Equal(expectedPermutations.Length, permutations.Count());
+		Assert.True(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
 	}
 
 	/// <summary>
 	/// Verify that the number of expected permutations of sets of size 5 through 10
 	/// are equal to the factorial of the set size.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestHigherCardinalityPermutations()
 	{
 		// NOTE: Testing higher cardinality permutations by exhaustive comparison becomes tedious
@@ -141,7 +138,7 @@ public class PermutationsTest
 		{
 			var permutedSet = set.Permutations();
 			var permutationCount = permutedSet.Count();
-			Assert.AreEqual(Combinatorics.Factorial(set.Count()), permutationCount);
+			Assert.Equal(Combinatorics.Factorial(set.Count()), permutationCount);
 		}
 	}
 
@@ -149,7 +146,7 @@ public class PermutationsTest
 	/// Verify that the Permutations() extension does not begin evaluation until the
 	/// resulting sequence is iterated.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestPermutationsIsLazy()
 	{
 		new BreakingSequence<int>().Permutations();
@@ -159,7 +156,7 @@ public class PermutationsTest
 	/// Verify that each permutation produced is a new object, this ensures that callers
 	/// can request permutations and cache or store them without them being overwritten.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestPermutationsAreIndependent()
 	{
 		var set = new[] { 10, 20, 30, 40, };
@@ -167,14 +164,14 @@ public class PermutationsTest
 
 		var listPermutations = new List<IList<int>>();
 		listPermutations.AddRange(permutedSets);
-		Assert.IsNotEmpty(listPermutations);
+		Assert.NotEmpty(listPermutations);
 
 		for (var i = 0; i < listPermutations.Count; i++)
 		{
 			for (var j = 1; j < listPermutations.Count; j++)
 			{
 				if (j == i) continue;
-				Assert.AreNotSame(listPermutations[i], listPermutations[j]);
+				Assert.NotEqual(listPermutations[i], listPermutations[j]);
 			}
 		}
 	}

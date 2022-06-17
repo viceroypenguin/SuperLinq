@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class ExceptByTest
 {
-	[Test]
+	[Fact]
 	public void SimpleExceptBy()
 	{
 		string[] first = { "aaa", "bb", "c", "dddd" };
@@ -14,14 +11,14 @@ public class ExceptByTest
 		result.AssertSequenceEqual("aaa", "dddd");
 	}
 
-	[Test]
+	[Fact]
 	public void ExceptByIsLazy()
 	{
 		var bs = new BreakingSequence<string>();
 		bs.ExceptByItems(bs, BreakingFunc.Of<string, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void ExceptByDoesNotRepeatSourceElementsWithDuplicateKeys()
 	{
 		string[] first = { "aaa", "bb", "c", "a", "b", "c", "dddd" };
@@ -30,7 +27,7 @@ public class ExceptByTest
 		result.AssertSequenceEqual("aaa", "c", "dddd");
 	}
 
-	[Test]
+	[Fact]
 	public void ExceptByWithComparer()
 	{
 		string[] first = { "first", "second", "third", "fourth" };
@@ -39,7 +36,7 @@ public class ExceptByTest
 		result.AssertSequenceEqual("second", "fourth");
 	}
 
-	[Test]
+	[Fact]
 	public void ExceptByNullComparer()
 	{
 		string[] first = { "aaa", "bb", "c", "dddd" };
@@ -48,7 +45,7 @@ public class ExceptByTest
 		result.AssertSequenceEqual("aaa", "dddd");
 	}
 
-	[Test]
+	[Fact]
 	public void ExceptByIsLazyWithComparer()
 	{
 		var bs = new BreakingSequence<string>();

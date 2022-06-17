@@ -1,17 +1,14 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class TransposeTest
 {
-	[Test]
+	[Fact]
 	public void TransposeIsLazy()
 	{
 		new BreakingSequence<BreakingSequence<int>>().Transpose();
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeWithOneNullRow()
 	{
 		using var seq1 = TestingSequence.Of(10, 11);
@@ -23,7 +20,7 @@ public class TransposeTest
 			matrix.Transpose().FirstOrDefault());
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeWithRowsOfSameLength()
 	{
 		var expectations = new[]
@@ -42,7 +39,7 @@ public class TransposeTest
 		AssertMatrix(expectations, matrix.Transpose());
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeWithRowsOfDifferentLengths()
 	{
 		var expectations = new[]
@@ -61,7 +58,7 @@ public class TransposeTest
 		AssertMatrix(expectations, matrix.Transpose());
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeMaintainsCornerElements()
 	{
 		var matrix = new[]
@@ -74,11 +71,11 @@ public class TransposeTest
 
 		var traspose = matrix.Transpose();
 
-		Assert.That(matrix.Last().Last(), Is.EqualTo(traspose.Last().Last()));
-		Assert.That(matrix.First().First(), Is.EqualTo(traspose.First().First()));
+		Assert.Equal(traspose.Last().Last(), matrix.Last().Last());
+		Assert.Equal(traspose.First().First(), matrix.First().First());
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeWithAllRowsAsInfiniteSequences()
 	{
 		var matrix = SuperEnumerable.Generate(1, x => x + 1)
@@ -100,7 +97,7 @@ public class TransposeTest
 		AssertMatrix(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeWithSomeRowsAsInfiniteSequences()
 	{
 		var matrix = SuperEnumerable.Generate(1, x => x + 1)
@@ -123,7 +120,7 @@ public class TransposeTest
 		AssertMatrix(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeColumnTraversalOrderIsIrrelevant()
 	{
 		var matrix = new[]
@@ -141,7 +138,7 @@ public class TransposeTest
 		transpose[2].AssertSequenceEqual(32);
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeConsumesRowsLazily()
 	{
 		var matrix = new[]
@@ -159,7 +156,7 @@ public class TransposeTest
 			result.ElementAt(1));
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeWithErroneousRowDisposesRowIterators()
 	{
 		using var row1 = TestingSequence.Of(10, 11);
@@ -196,7 +193,7 @@ public class TransposeTest
 		var resultList = result.ToList();
 		var expectationList = expectation.ToList();
 
-		Assert.AreEqual(expectationList.Count, resultList.Count);
+		Assert.Equal(expectationList.Count, resultList.Count);
 
 		expectationList.Zip(resultList, ValueTuple.Create)
 					   .ForEach(t => t.Item1.AssertSequenceEqual(t.Item2));

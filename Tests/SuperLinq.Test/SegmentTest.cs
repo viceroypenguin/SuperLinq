@@ -1,18 +1,14 @@
-﻿using NUnit.Framework.Interfaces;
-using NUnit.Framework;
-
-namespace Test;
+﻿namespace Test;
 
 /// <summary>
 /// Verify the behavior of the Segment operator
 /// </summary>
-[TestFixture]
 public class SegmentTests
 {
 	/// <summary>
 	/// Verify that the Segment operator behaves in a lazy manner
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSegmentIsLazy()
 	{
 		new BreakingSequence<int>().Segment(BreakingFunc.Of<int, bool>());
@@ -23,31 +19,31 @@ public class SegmentTests
 	/// <summary>
 	/// Verify that segmenting a sequence into a single sequence results in the original sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestIdentitySegment()
 	{
 		const int count = 5;
 		var sequence = Enumerable.Range(1, count);
 		var result = sequence.Segment(x => false);
 
-		Assert.That(result.Single(), Is.EqualTo(sequence));
+		Assert.Equal(sequence, result.Single());
 	}
 
 	/// <summary>
 	/// Verify that segmenting an empty sequence results in an empty sequence of segments.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestEmptySequence()
 	{
 		var sequence = Enumerable.Repeat(-1, 0);
 		var result = sequence.Segment(x => true);
-		Assert.That(result, Is.Empty);
+		Assert.Empty(result);
 	}
 
 	/// <summary>
 	/// Verify that the segments returned can be enumerated more than once.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSegmentIsIdempotent()
 	{
 		const int value = -1;
@@ -58,8 +54,8 @@ public class SegmentTests
 		{
 			for (var i = 0; i < 2; i++)
 			{
-				Assert.IsTrue(segment.Any());
-				Assert.AreEqual(value, segment.Single());
+				Assert.True(segment.Any());
+				Assert.Equal(value, segment.Single());
 			}
 		}
 	}
@@ -68,7 +64,7 @@ public class SegmentTests
 	/// Verify that the first segment is never empty. By definition, segmentation
 	/// begins with the second element in the source sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestFirstSegmentNeverEmpty()
 	{
 		var sequence = Enumerable.Repeat(-1, 10);
@@ -76,15 +72,15 @@ public class SegmentTests
 		var resultB = sequence.Segment((x, index) => true);
 		var resultC = sequence.Segment((x, prevX, index) => true);
 
-		Assert.IsTrue(resultA.First().Any());
-		Assert.IsTrue(resultB.First().Any());
-		Assert.IsTrue(resultC.First().Any());
+		Assert.True(resultA.First().Any());
+		Assert.True(resultB.First().Any());
+		Assert.True(resultC.First().Any());
 	}
 
 	/// <summary>
 	/// Verify invariant that segmentation begins with second element of source sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSegmentationStartsWithSecondItem()
 	{
 		var sequence = new[] { 0 };
@@ -92,15 +88,15 @@ public class SegmentTests
 		var resultB = sequence.Segment(BreakingFunc.Of<int, int, bool>());
 		var resultC = sequence.Segment(BreakingFunc.Of<int, int, int, bool>());
 
-		Assert.IsTrue(resultA.Any());
-		Assert.IsTrue(resultB.Any());
-		Assert.IsTrue(resultC.Any());
+		Assert.True(resultA.Any());
+		Assert.True(resultB.Any());
+		Assert.True(resultC.Any());
 	}
 
 	/// <summary>
 	/// Verify we can segment a source sequence by it's zero-based index
 	/// </summary>
-	[Test]
+	[Fact]
 	public void VerifyCanSegmentByIndex()
 	{
 		const int count = 100;
@@ -109,49 +105,51 @@ public class SegmentTests
 		var sequence = Enumerable.Repeat(1, count);
 		var result = sequence.Segment((x, i) => i % segmentSize == 0);
 
-		Assert.AreEqual(count / segmentSize, result.Count());
+		Assert.Equal(count / segmentSize, result.Count());
 		foreach (var segment in result)
 		{
-			Assert.AreEqual(segmentSize, segment.Count());
+			Assert.Equal(segmentSize, segment.Count());
 		}
 	}
 
 	/// <summary>
 	/// Verify that we can segment a source sequence by the change in adjacent items
 	/// </summary>
-	[Test]
+	[Fact]
 	public void VerifyCanSegmentByPrevious()
 	{
-		const int repCount = 5;
 		var sequence = Enumerable.Range(1, 3)
-								 .SelectMany(x => Enumerable.Repeat(x, repCount));
+								 .SelectMany(x => Enumerable.Repeat(x, 5));
 		var result = sequence.Segment((curr, prev, i) => curr != prev);
 
-		Assert.AreEqual(sequence.Distinct().Count(), result.Count());
-		Assert.IsTrue(result.All(s => s.Count() == repCount));
+		Assert.Equal(sequence.Distinct().Count(), result.Count());
+		Assert.True(result.All(s => s.Count() == 5));
 	}
 
 	static IEnumerable<T> Seq<T>(params T[] values) => values;
 
-	public static readonly IEnumerable<ITestCaseData> TestData =
+	public static readonly IEnumerable<object[]> TestData =
 		from e in new[]
 		{
-                // input sequence is empty
-                new { Source = Seq<int>(),            Expected = Seq<IEnumerable<int>>()         },
-                // input sequence contains only new segment start
-                new { Source = Seq(0, 3, 6),          Expected = Seq(Seq(0), Seq(3), Seq(6))     },
-                // input sequence do not contains new segment start
-                new { Source = Seq(1, 2, 4, 5),       Expected = Seq(Seq(1, 2, 4, 5))            },
-                // input sequence start with a segment start
-                new { Source = Seq(0, 1, 2, 3, 4, 5), Expected = Seq(Seq(0, 1, 2), Seq(3, 4, 5)) },
-                // input sequence do not start with a segment start
-                new { Source = Seq(1, 2, 3, 4, 5),    Expected = Seq(Seq(1, 2), Seq(3, 4, 5))    }
+            // input sequence is empty
+            new { Source = Seq<int>(),            Expected = Seq<IEnumerable<int>>()         },
+            // input sequence contains only new segment start
+            new { Source = Seq(0, 3, 6),          Expected = Seq(Seq(0), Seq(3), Seq(6))     },
+            // input sequence do not contains new segment start
+            new { Source = Seq(1, 2, 4, 5),       Expected = Seq(Seq(1, 2, 4, 5))            },
+            // input sequence start with a segment start
+            new { Source = Seq(0, 1, 2, 3, 4, 5), Expected = Seq(Seq(0, 1, 2), Seq(3, 4, 5)) },
+            // input sequence do not start with a segment start
+            new { Source = Seq(1, 2, 3, 4, 5),    Expected = Seq(Seq(1, 2), Seq(3, 4, 5))    },
 		}
-		select new TestCaseData(e.Source).Returns(e.Expected);
+		select new object[] { e.Source, e.Expected, };
 
-	[Test, TestCaseSource(nameof(TestData))]
-	public IEnumerable<IEnumerable<int>> TestSegment(IEnumerable<int> source)
+	[Theory]
+	[MemberData(nameof(TestData))]
+	public void TestSegment(IEnumerable<int> source, IEnumerable<IEnumerable<int>> expected)
 	{
-		return source.AsTestingSequence().Segment(v => v % 3 == 0);
+		source.AsTestingSequence().Segment(v => v % 3 == 0)
+			.Zip(expected)
+			.ForEach(x => Assert.Equal(x.Second, x.First));
 	}
 }

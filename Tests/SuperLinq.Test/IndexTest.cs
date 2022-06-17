@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class IndexTest
 {
-	[Test]
+	[Fact]
 	public void IndexIsLazy()
 	{
 		var bs = new BreakingSequence<object>();
@@ -13,7 +10,7 @@ public class IndexTest
 		bs.Index(0);
 	}
 
-	[Test]
+	[Fact]
 	public void IndexSequence()
 	{
 		const string one = "one";
@@ -26,7 +23,7 @@ public class IndexTest
 			(2, three));
 	}
 
-	[Test]
+	[Fact]
 	public void IndexSequenceStartIndex()
 	{
 		const string one = "one";

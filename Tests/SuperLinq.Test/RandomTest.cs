@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
-
-namespace Test;
+﻿namespace Test;
 
 /// <summary>
 /// Tests of the various overloads of <see cref="SuperEnumerable"/>.Random()
 /// </summary>
-[TestFixture]
 public class RandomTest
 {
 	const int RandomTrials = 10000;
@@ -13,68 +10,60 @@ public class RandomTest
 	/// <summary>
 	/// Verify that passing a negative maximum value yields an exception
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestNegativeMaxValueException()
 	{
-		const int maxValue = -10;
-		Assert.Less(maxValue, 0);
-
-		AssertThrowsArgument.OutOfRangeException("maxValue", () =>
-			SuperEnumerable.Random(maxValue));
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
+			SuperEnumerable.Random(-10));
 	}
 
 	/// <summary>
 	/// Verify that passing lower bound that is greater than the upper bound results
 	/// in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestMinValueGreaterThanMaxValueException()
 	{
-		const int minValue = 100;
-		const int maxValue = 10;
-
-		Assert.Greater(minValue, maxValue);
-
-		AssertThrowsArgument.OutOfRangeException("minValue", () =>
-			SuperEnumerable.Random(minValue, maxValue));
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
+			SuperEnumerable.Random(100, 10));
 	}
 
 	/// <summary>
 	/// Verify that we can produce a valid sequence or random doubles between 0.0 and 1.0
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomDouble()
 	{
 		var resultA = SuperEnumerable.RandomDouble().Take(RandomTrials);
 		var resultB = SuperEnumerable.RandomDouble(new Random()).Take(RandomTrials);
 
 		// NOTE: Unclear what should actually be verified here... some additional thought needed.
-		Assert.AreEqual(RandomTrials, resultA.Count());
-		Assert.AreEqual(RandomTrials, resultB.Count());
-		Assert.IsTrue(resultA.All(x => x >= 0.0 && x < 1.0));
-		Assert.IsTrue(resultB.All(x => x >= 0.0 && x < 1.0));
+		Assert.Equal(RandomTrials, resultA.Count());
+		Assert.Equal(RandomTrials, resultB.Count());
+		Assert.True(resultA.All(x => x >= 0.0 && x < 1.0));
+		Assert.True(resultB.All(x => x >= 0.0 && x < 1.0));
 	}
 
 	/// <summary>
 	/// Verify that the max constraint is preserved by the sequence generator.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomMaxConstraint()
 	{
 		const int max = 100;
 		var resultA = SuperEnumerable.Random(max).Take(RandomTrials);
 		var resultB = SuperEnumerable.Random(new Random(), max).Take(RandomTrials);
 
-		Assert.AreEqual(RandomTrials, resultA.Count());
-		Assert.AreEqual(RandomTrials, resultB.Count());
-		Assert.IsTrue(resultA.All(x => x < max));
-		Assert.IsTrue(resultB.All(x => x < max));
+		Assert.Equal(RandomTrials, resultA.Count());
+		Assert.Equal(RandomTrials, resultB.Count());
+		Assert.True(resultA.All(x => x < max));
+		Assert.True(resultB.All(x => x < max));
 	}
 
 	/// <summary>
 	/// Verify that the min/max constraints are preserved by the sequence generator.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomMinMaxConstraint()
 	{
 		const int min = 0;
@@ -82,17 +71,17 @@ public class RandomTest
 		var resultA = SuperEnumerable.Random(min, max).Take(RandomTrials);
 		var resultB = SuperEnumerable.Random(new Random(), min, max).Take(RandomTrials);
 
-		Assert.AreEqual(RandomTrials, resultA.Count());
-		Assert.AreEqual(RandomTrials, resultB.Count());
-		Assert.IsTrue(resultA.All(x => x >= min && x < max));
-		Assert.IsTrue(resultB.All(x => x >= min && x < max));
+		Assert.Equal(RandomTrials, resultA.Count());
+		Assert.Equal(RandomTrials, resultB.Count());
+		Assert.True(resultA.All(x => x >= min && x < max));
+		Assert.True(resultB.All(x => x >= min && x < max));
 	}
 
 	/// <summary>
 	/// Evaluate that using a random sequence (with a given generator)
 	/// is equivalent to a for loop accessing the same random generator.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomEquivalence()
 	{
 		const int seed = 12345;
@@ -107,6 +96,6 @@ public class RandomTest
 		var randomSeq = SuperEnumerable.Random(randB);
 		var valuesB = randomSeq.Take(RandomTrials);
 
-		Assert.That(valuesA, Is.EqualTo(valuesB));
+		Assert.Equal(valuesB, valuesA);
 	}
 }

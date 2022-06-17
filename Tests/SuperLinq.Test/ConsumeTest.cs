@@ -1,16 +1,13 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class ConsumeTest
 {
-	[Test]
+	[Fact]
 	public void ConsumeReallyConsumes()
 	{
 		var counter = 0;
 		var sequence = Enumerable.Range(0, 10).Pipe(x => counter++);
 		sequence.Consume();
-		Assert.AreEqual(10, counter);
+		Assert.Equal(10, counter);
 	}
 }

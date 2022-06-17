@@ -1,52 +1,49 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class ExactlyTest
 {
-	[Test]
+	[Fact]
 	public void ExactlyWithNegativeCount()
 	{
-		AssertThrowsArgument.OutOfRangeException("count", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new[] { 1 }.Exactly(-1));
 	}
 
-	[Test]
+	[Fact]
 	public void ExactlyWithEmptySequenceHasExactlyZeroElements()
 	{
-		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-			Assert.IsTrue(xs.Exactly(0));
+		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionInlineDatas())
+			Assert.True(xs.Exactly(0));
 	}
 
-	[Test]
+	[Fact]
 	public void ExactlyWithEmptySequenceHasExactlyOneElement()
 	{
-		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-			Assert.IsFalse(xs.Exactly(1));
+		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionInlineDatas())
+			Assert.False(xs.Exactly(1));
 	}
 
-	[Test]
+	[Fact]
 	public void ExactlyWithSingleElementHasExactlyOneElements()
 	{
-		foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-			Assert.IsTrue(xs.Exactly(1));
+		foreach (var xs in new[] { 1 }.ArrangeCollectionInlineDatas())
+			Assert.True(xs.Exactly(1));
 	}
 
-	[Test]
+	[Fact]
 	public void ExactlyWithManyElementHasExactlyOneElement()
 	{
-		foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-			Assert.IsFalse(xs.Exactly(1));
+		foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionInlineDatas())
+			Assert.False(xs.Exactly(1));
 	}
 
-	[Test]
+	[Fact]
 	public void ExactlyDoesNotIterateUnnecessaryElements()
 	{
 		var source = SuperEnumerable.From(() => 1,
 										 () => 2,
 										 () => 3,
 										 () => throw new TestException());
-		Assert.IsFalse(source.Exactly(2));
+		Assert.False(source.Exactly(2));
 	}
 }

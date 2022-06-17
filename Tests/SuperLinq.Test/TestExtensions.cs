@@ -1,7 +1,4 @@
-﻿using NUnit.Framework;
-using NUnit.Framework.Constraints;
-
-namespace Test;
+﻿namespace Test;
 
 public enum SourceKind
 {
@@ -19,7 +16,7 @@ static partial class TestExtensions
 	/// </summary>
 
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
-		Assert.That(actual, Is.EqualTo(expected));
+		Assert.Equal(expected, actual);
 
 	/// <summary>
 	/// Make testing even easier - a params array makes for readable tests :)
@@ -27,20 +24,7 @@ static partial class TestExtensions
 	/// </summary>
 
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
-		Assert.That(actual, Is.EqualTo(expected));
-
-	internal static void AssertSequence<T>(this IEnumerable<T> actual, params IResolveConstraint[] expectations)
-	{
-		var i = 0;
-		foreach (var item in actual)
-		{
-			Assert.That(i, Is.LessThan(expectations.Length), "Actual sequence has more items than expected.");
-			var expectation = expectations[i];
-			Assert.That(item, expectation, "Unexpected element in sequence at index " + i);
-			i++;
-		}
-		Assert.That(i, Is.EqualTo(expectations.Length), "Actual sequence has fewer items than expected.");
-	}
+		Assert.Equal(expected, actual);
 
 	internal static IEnumerable<string> GenerateSplits(this string str, params char[] separators)
 	{
@@ -48,7 +32,7 @@ static partial class TestExtensions
 			yield return split;
 	}
 
-	internal static IEnumerable<IEnumerable<T>> ArrangeCollectionTestCases<T>(this IEnumerable<T> input)
+	internal static IEnumerable<IEnumerable<T>> ArrangeCollectionInlineDatas<T>(this IEnumerable<T> input)
 	{
 		yield return input.ToSourceKind(SourceKind.Sequence);
 		yield return input.ToSourceKind(SourceKind.BreakingReadOnlyCollection);

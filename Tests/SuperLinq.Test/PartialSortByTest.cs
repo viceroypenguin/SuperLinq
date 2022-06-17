@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class PartialSortByTests
 {
-	[Test]
+	[Fact]
 	public void PartialSortBy()
 	{
 		var ns = SuperEnumerable.RandomDouble().Take(10).ToArray();
@@ -18,7 +15,7 @@ public class PartialSortByTests
 		sorted.Select(e => e.Value).AssertSequenceEqual(ns.Take(count));
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortWithOrder()
 	{
 		var ns = SuperEnumerable.RandomDouble().Take(10).ToArray();
@@ -37,7 +34,7 @@ public class PartialSortByTests
 		sorted.Select(e => e.Value).AssertSequenceEqual(ns.Reverse().Take(count));
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortWithComparer()
 	{
 		var alphabet = Enumerable.Range(0, 26)
@@ -50,13 +47,13 @@ public class PartialSortByTests
 		sorted.Select(e => e.Key[0]).AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortByIsLazy()
 	{
 		new BreakingSequence<object>().PartialSortBy(1, BreakingFunc.Of<object, object>());
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortByIsStable()
 	{
 		var list = new[]

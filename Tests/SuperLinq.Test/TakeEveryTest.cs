@@ -1,52 +1,49 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class TakeEveryTest
 {
-	[Test]
+	[Fact]
 	public void TakeEveryNegativeSkip()
 	{
-		AssertThrowsArgument.OutOfRangeException("step", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Array.Empty<object>().TakeEvery(-1));
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryOutOfRangeZeroStep()
 	{
-		AssertThrowsArgument.OutOfRangeException("step", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Array.Empty<object>().TakeEvery(0));
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryEmptySequence()
 	{
-		Assert.That(Array.Empty<object>().TakeEvery(1), Is.Empty);
+		Assert.Empty(Array.Empty<object>().TakeEvery(1));
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryNonEmptySequence()
 	{
 		var result = new[] { 1, 2, 3, 4, 5 }.TakeEvery(1);
 		result.AssertSequenceEqual(1, 2, 3, 4, 5);
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryOtherOnNonEmptySequence()
 	{
 		var result = new[] { 1, 2, 3, 4, 5 }.TakeEvery(2);
 		result.AssertSequenceEqual(1, 3, 5);
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryThirdOnNonEmptySequence()
 	{
 		var result = new[] { 1, 2, 3, 4, 5 }.TakeEvery(3);
 		result.AssertSequenceEqual(1, 4);
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryIsLazy()
 	{
 		new BreakingSequence<object>().TakeEvery(1);

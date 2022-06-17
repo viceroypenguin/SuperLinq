@@ -1,28 +1,25 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class ScanRightTest
 {
 	// ScanRight(source, func)
 
-	[Test]
+	[Fact]
 	public void ScanRightWithEmptySequence()
 	{
 		var result = Array.Empty<int>().ScanRight((a, b) => a + b);
 
-		Assert.That(result, Is.EqualTo(Array.Empty<int>()));
+		Assert.Equal(Array.Empty<int>(), result);
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightFuncIsNotInvokedOnSingleElementSequence()
 	{
 		const int value = 1;
 
 		var result = new[] { value }.ScanRight(BreakingFunc.Of<int, int, int>());
 
-		Assert.That(result, Is.EqualTo(new[] { value }));
+		Assert.Equal(new[] { value }, result);
 	}
 
 	//
@@ -39,9 +36,10 @@ public class ScanRightTest
 	//
 	// https://github.com/SuperLinq/SuperLinq/pull/476#discussion_r185191063
 	//
-	// [TestCase(SourceKind.BreakingList)]
-	// [TestCase(SourceKind.BreakingReadOnlyList)]
-	[TestCase(SourceKind.Sequence)]
+	// [InlineData(SourceKind.BreakingList)]
+	// [InlineData(SourceKind.BreakingReadOnlyList)]
+	[Theory]
+	[InlineData(SourceKind.Sequence)]
 	public void ScanRight(SourceKind sourceKind)
 	{
 		var result = Enumerable.Range(1, 5)
@@ -51,10 +49,10 @@ public class ScanRightTest
 
 		var expectations = new[] { "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" };
 
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightIsLazy()
 	{
 		new BreakingSequence<int>().ScanRight(BreakingFunc.Of<int, int, int>());
@@ -62,25 +60,26 @@ public class ScanRightTest
 
 	// ScanRight(source, seed, func)
 
-	[TestCase(5)]
-	[TestCase("c")]
-	[TestCase(true)]
+	[Theory]
+	[InlineData(5)]
+	[InlineData("c")]
+	[InlineData(true)]
 	public void ScanRightSeedWithEmptySequence(object defaultValue)
 	{
-		Assert.That(Array.Empty<int>().ScanRight(defaultValue, (a, b) => b), Is.EqualTo(new[] { defaultValue }));
+		Assert.Equal(new[] { defaultValue }, Array.Empty<int>().ScanRight(defaultValue, (a, b) => b));
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightSeedFuncIsNotInvokedOnEmptySequence()
 	{
 		const int value = 1;
 
 		var result = Array.Empty<int>().ScanRight(value, BreakingFunc.Of<int, int, int>());
 
-		Assert.That(result, Is.EqualTo(new[] { value }));
+		Assert.Equal(new[] { value }, result);
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightSeed()
 	{
 		var result = Enumerable.Range(1, 4)
@@ -88,10 +87,10 @@ public class ScanRightTest
 
 		var expectations = new[] { "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" };
 
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightSeedIsLazy()
 	{
 		new BreakingSequence<int>().ScanRight(string.Empty, BreakingFunc.Of<int, string, string>());

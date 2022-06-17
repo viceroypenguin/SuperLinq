@@ -1,9 +1,6 @@
-﻿using NUnit.Framework;
-using NUnit.Framework.Interfaces;
+﻿namespace Test;
 
-namespace Test;
-
-class ReturnTest
+public class ReturnTest
 {
 	static class SomeSingleton
 	{
@@ -19,55 +16,55 @@ class ReturnTest
 		public static IList<object> List => (IList<object>)Sequence;
 	}
 
-	[Test]
+	[Fact]
 	public void TestResultingSequenceContainsSingle()
 	{
-		Assert.That(SomeSingleton.Sequence.Count(), Is.EqualTo(1));
+		Assert.Single(SomeSingleton.Sequence);
 	}
 
-	[Test]
+	[Fact]
 	public void TestResultingSequenceContainsTheItemProvided()
 	{
-		Assert.That(SomeSingleton.Sequence, Has.Member(SomeSingleton.Item));
+		Assert.Contains(SomeSingleton.Item, SomeSingleton.Sequence);
 	}
 
-	[Test]
+	[Fact]
 	public void TestResultingListHasCountOne()
 	{
-		Assert.That(SomeSingleton.List.Count, Is.EqualTo(1));
+		Assert.Equal(1, SomeSingleton.List.Count);
 	}
 
-	[Test]
+	[Fact]
 	public void TestContainsReturnsTrueWhenTheResultingSequenceContainsTheItemProvided()
 	{
-		Assert.That(SomeSingleton.Sequence.Contains(SomeSingleton.Item), Is.True);
+		Assert.Contains(SomeSingleton.Item, SomeSingleton.Sequence);
 	}
 
-	[Test]
+	[Fact]
 	public void TestContainsDoesNotThrowWhenTheItemContainedIsNull()
 	{
-		Assert.That(() => SomeSingleton.Sequence.Contains(null), Throws.Nothing);
+		_ = SomeSingleton.Sequence.Contains(value: null);
 	}
 
-	[Test]
+	[Fact]
 	public void TestContainsDoesNotThrowWhenTheItemProvidedIsNull()
 	{
-		Assert.That(() => NullSingleton.Sequence.Contains(new object()), Throws.Nothing);
+		_ = NullSingleton.Sequence.Contains(new object());
 	}
 
-	[Test]
+	[Fact]
 	public void TestIndexOfDoesNotThrowWhenTheItemProvidedIsNull()
 	{
-		Assert.That(() => NullSingleton.List.IndexOf(new object()), Throws.Nothing);
+		NullSingleton.List.IndexOf(new object());
 	}
 
-	[Test]
+	[Fact]
 	public void TestIndexOfDoesNotThrowWhenTheItemContainedIsNull()
 	{
-		Assert.That(() => SomeSingleton.List.IndexOf(null), Throws.Nothing);
+		_ = SomeSingleton.List.IndexOf(item: null);
 	}
 
-	[Test]
+	[Fact]
 	public void TestCopyToSetsTheValueAtTheIndexToTheItemContained()
 	{
 		var first = new object();
@@ -75,69 +72,68 @@ class ReturnTest
 
 		var array = new[]
 		{
-				first,
-				new object(),
-				third
-			};
+			first,
+			new object(),
+			third,
+		};
 
 		SomeSingleton.List.CopyTo(array, 1);
 
-		Assert.That(array[0], Is.EqualTo(first));
-		Assert.That(array[1], Is.EqualTo(SomeSingleton.Item));
-		Assert.That(array[2], Is.EqualTo(third));
+		Assert.Equal(first, array[0]);
+		Assert.Equal(SomeSingleton.Item, array[1]);
+		Assert.Equal(third, array[2]);
 	}
 
-	[Test]
+	[Fact]
 	public void TestResultingCollectionIsReadOnly()
 	{
-		Assert.That(SomeSingleton.Collection.IsReadOnly, Is.True);
+		Assert.True(SomeSingleton.Collection.IsReadOnly);
 	}
 
-	[Test]
+	[Fact]
 	public void TestResultingCollectionHasCountOne()
 	{
-		Assert.That(SomeSingleton.Collection.Count, Is.EqualTo(1));
+		Assert.Equal(1, SomeSingleton.Collection.Count);
 	}
 
-	[Test]
+	[Fact]
 	public void TestIndexZeroContainsTheItemProvided()
 	{
-		Assert.That(SomeSingleton.List[0], Is.EqualTo(SomeSingleton.Item));
+		Assert.Equal(SomeSingleton.Item, SomeSingleton.List[0]);
 	}
 
-	[Test]
+	[Fact]
 	public void TestIndexOfTheItemProvidedIsZero()
 	{
-		Assert.That(SomeSingleton.List.IndexOf(SomeSingleton.Item), Is.EqualTo(0));
+		Assert.Equal(0, SomeSingleton.List.IndexOf(SomeSingleton.Item));
 	}
 
-	[Test]
+	[Fact]
 	public void TestIndexOfAnItemNotContainedIsNegativeOne()
 	{
-		Assert.That(SomeSingleton.List.IndexOf(new object()), Is.EqualTo(-1));
+		Assert.Equal(-1, SomeSingleton.List.IndexOf(new object()));
 	}
 
-	static IEnumerable<ITestCaseData> UnsupportedActions(string testName) =>
-		from ma in new (string MethodName, Action Action)[]
+	public static IEnumerable<object[]> UnsupportedActions() =>
+		new[]
 		{
-				("Add"     , () => SomeSingleton.List.Add(new object())),
-				("Clear"   , () => SomeSingleton.Collection.Clear()),
-				("Remove"  , () => SomeSingleton.Collection.Remove(SomeSingleton.Item)),
-				("RemoveAt", () => SomeSingleton.List.RemoveAt(0)),
-				("Insert"  , () => SomeSingleton.List.Insert(0, new object())),
-				("Index"   , () => SomeSingleton.List[0] = new object()),
-		}
-		select new TestCaseData(ma.Action).SetName($"{testName}({ma.MethodName})");
+			new Action[] { () => SomeSingleton.List.Add(new object()), },
+			new Action[] { () => SomeSingleton.Collection.Clear(), },
+			new Action[] { () => SomeSingleton.Collection.Remove(SomeSingleton.Item), },
+			new Action[] { () => SomeSingleton.List.RemoveAt(0), },
+			new Action[] { () => SomeSingleton.List.Insert(0, new object()), },
+			new Action[] { () => SomeSingleton.List[0] = new object(), },
+		};
 
-	[TestCaseSource(nameof(UnsupportedActions), new object[] { nameof(TestUnsupportedMethodShouldThrow) })]
+	[Theory, MemberData(nameof(UnsupportedActions))]
 	public void TestUnsupportedMethodShouldThrow(Action unsupportedAction)
 	{
-		Assert.That(() => unsupportedAction(), Throws.InstanceOf<NotSupportedException>());
+		Assert.Throws<NotSupportedException>(unsupportedAction);
 	}
 
-	[Test]
+	[Fact]
 	public void TestIndexingPastZeroShouldThrow()
 	{
-		Assert.That(() => SomeSingleton.List[1], Throws.InstanceOf<ArgumentOutOfRangeException>());
+		Assert.Throws<ArgumentOutOfRangeException>(() => SomeSingleton.List[1]);
 	}
 }

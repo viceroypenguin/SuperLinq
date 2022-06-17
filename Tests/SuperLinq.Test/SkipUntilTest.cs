@@ -1,39 +1,35 @@
-﻿using NUnit.Framework;
-using NUnit.Framework.Interfaces;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class SkipUntilTest
 {
-	[Test]
+	[Fact]
 	public void SkipUntilPredicateNeverFalse()
 	{
 		var sequence = Enumerable.Range(0, 5).SkipUntil(x => x != 100);
 		sequence.AssertSequenceEqual(1, 2, 3, 4);
 	}
 
-	[Test]
+	[Fact]
 	public void SkipUntilPredicateNeverTrue()
 	{
 		var sequence = Enumerable.Range(0, 5).SkipUntil(x => x == 100);
-		Assert.That(sequence, Is.Empty);
+		Assert.Empty(sequence);
 	}
 
-	[Test]
+	[Fact]
 	public void SkipUntilPredicateBecomesTrueHalfWay()
 	{
 		var sequence = Enumerable.Range(0, 5).SkipUntil(x => x == 2);
 		sequence.AssertSequenceEqual(3, 4);
 	}
 
-	[Test]
+	[Fact]
 	public void SkipUntilEvaluatesSourceLazily()
 	{
 		new BreakingSequence<string>().SkipUntil(x => x.Length == 0);
 	}
 
-	[Test]
+	[Fact]
 	public void SkipUntilEvaluatesPredicateLazily()
 	{
 		// Predicate would explode at x == 0, but we never need to evaluate it as we've
@@ -42,23 +38,22 @@ public class SkipUntilTest
 		sequence.AssertSequenceEqual(0, 1, 2);
 	}
 
-	public static readonly IEnumerable<ITestCaseData> TestData =
-		from e in new[]
+	public static readonly IEnumerable<object[]> TestData =
+		new[]
 		{
-			new { Source = Array.Empty<int>(), Min = 0, Expected = Array.Empty<int>()     }, // empty sequence
-            new { Source = new[] { 0       } , Min = 0, Expected = Array.Empty<int>()     }, // one-item sequence, predicate succeed
-            new { Source = new[] { 0       } , Min = 1, Expected = Array.Empty<int>()     }, // one-item sequence, predicate don't succeed
-            new { Source = new[] { 1, 2, 3 } , Min = 0, Expected = new[] { 2, 3 } }, // predicate succeed on first item
-            new { Source = new[] { 1, 2, 3 } , Min = 1, Expected = new[] { 2, 3 } },
-			new { Source = new[] { 1, 2, 3 } , Min = 2, Expected = new[] { 3    } },
-			new { Source = new[] { 1, 2, 3 } , Min = 3, Expected = Array.Empty<int>()     }, // predicate succeed on last item
-            new { Source = new[] { 1, 2, 3 } , Min = 4, Expected = Array.Empty<int>()     }, // predicate never succeed
-		}
-		select new TestCaseData(e.Source, e.Min).Returns(e.Expected);
+			new object[] { Array.Empty<int>(), 0, Array.Empty<int>() }, // empty sequence
+            new object[] { new[] { 0       } , 0, Array.Empty<int>() }, // one-item sequence, predicate succeed
+            new object[] { new[] { 0       } , 1, Array.Empty<int>() }, // one-item sequence, predicate don't succeed
+            new object[] { new[] { 1, 2, 3 } , 0, new[] { 2, 3 }     }, // predicate succeed on first item
+            new object[] { new[] { 1, 2, 3 } , 1, new[] { 2, 3 }     },
+			new object[] { new[] { 1, 2, 3 } , 2, new[] { 3    }     },
+			new object[] { new[] { 1, 2, 3 } , 3, Array.Empty<int>() }, // predicate succeed on last item
+            new object[] { new[] { 1, 2, 3 } , 4, Array.Empty<int>() }, // predicate never succeed
+		};
 
-	[Test, TestCaseSource(nameof(TestData))]
-	public int[] TestSkipUntil(int[] source, int min)
+	[Theory, MemberData(nameof(TestData))]
+	public void TestSkipUntil(int[] source, int min, int[] expected)
 	{
-		return source.AsTestingSequence().SkipUntil(v => v >= min).ToArray();
+		Assert.Equal(expected, source.AsTestingSequence().SkipUntil(v => v >= min).ToArray());
 	}
 }

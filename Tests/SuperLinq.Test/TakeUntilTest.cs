@@ -1,38 +1,35 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class TakeUntilTest
 {
-	[Test]
+	[Fact]
 	public void TakeUntilPredicateNeverFalse()
 	{
 		var sequence = Enumerable.Range(0, 5).TakeUntil(x => x != 100);
 		sequence.AssertSequenceEqual(0);
 	}
 
-	[Test]
+	[Fact]
 	public void TakeUntilPredicateNeverTrue()
 	{
 		var sequence = Enumerable.Range(0, 5).TakeUntil(x => x == 100);
 		sequence.AssertSequenceEqual(0, 1, 2, 3, 4);
 	}
 
-	[Test]
+	[Fact]
 	public void TakeUntilPredicateBecomesTrueHalfWay()
 	{
 		var sequence = Enumerable.Range(0, 5).TakeUntil(x => x == 2);
 		sequence.AssertSequenceEqual(0, 1, 2);
 	}
 
-	[Test]
+	[Fact]
 	public void TakeUntilEvaluatesSourceLazily()
 	{
 		new BreakingSequence<string>().TakeUntil(x => x.Length == 0);
 	}
 
-	[Test]
+	[Fact]
 	public void TakeUntilEvaluatesPredicateLazily()
 	{
 		// Predicate would explode at x == 0, but we never need to evaluate it due to the Take call.

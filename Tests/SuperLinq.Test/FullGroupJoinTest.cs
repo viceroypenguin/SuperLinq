@@ -1,14 +1,12 @@
-﻿using NUnit.Framework;
-using static Test.FullGroupJoinTest.OverloadCase;
+﻿using static Test.FullGroupJoinTest.OverloadCase;
 
 namespace Test;
 
-[TestFixture]
 public class FullGroupJoinTest
 {
 	public enum OverloadCase { CustomResult, TupleResult }
 
-	[Test]
+	[Fact]
 	public void FullGroupIsLazy()
 	{
 		var bs = new BreakingSequence<int>();
@@ -18,8 +16,9 @@ public class FullGroupJoinTest
 		bs.FullGroupJoin(bs, bf, bf, bfg);
 	}
 
-	[TestCase(CustomResult)]
-	[TestCase(TupleResult)]
+	[Theory]
+	[InlineData(CustomResult)]
+	[InlineData(TupleResult)]
 	public void FullGroupJoinsResults(OverloadCase overloadCase)
 	{
 		var listA = new[] { 1, 2 };
@@ -27,20 +26,21 @@ public class FullGroupJoinTest
 
 		var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
-		Assert.AreEqual(3, result.Keys.Count);
+		Assert.Equal(3, result.Keys.Count);
 
-		Assert.IsEmpty(result[1].Second);
+		Assert.Empty(result[1].Second);
 		result[1].First.AssertSequenceEqual(1);
 
-		Assert.IsEmpty(result[3].First);
+		Assert.Empty(result[3].First);
 		result[3].Second.AssertSequenceEqual(3);
 
 		result[2].First.AssertSequenceEqual(2);
 		result[2].Second.AssertSequenceEqual(2);
 	}
 
-	[TestCase(CustomResult)]
-	[TestCase(TupleResult)]
+	[Theory]
+	[InlineData(CustomResult)]
+	[InlineData(TupleResult)]
 	public void FullGroupJoinsEmptyLeft(OverloadCase overloadCase)
 	{
 		var listA = Array.Empty<int>();
@@ -48,17 +48,18 @@ public class FullGroupJoinTest
 
 		var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
-		Assert.AreEqual(2, result.Keys.Count);
+		Assert.Equal(2, result.Keys.Count);
 
-		Assert.IsEmpty(result[2].First);
-		Assert.AreEqual(2, result[2].Second.Single());
+		Assert.Empty(result[2].First);
+		Assert.Equal(2, result[2].Second.Single());
 
-		Assert.IsEmpty(result[3].First);
-		Assert.AreEqual(3, result[3].Second.Single());
+		Assert.Empty(result[3].First);
+		Assert.Equal(3, result[3].Second.Single());
 	}
 
-	[TestCase(CustomResult)]
-	[TestCase(TupleResult)]
+	[Theory]
+	[InlineData(CustomResult)]
+	[InlineData(TupleResult)]
 	public void FullGroupJoinsEmptyRight(OverloadCase overloadCase)
 	{
 		var listA = new[] { 2, 3 };
@@ -66,17 +67,18 @@ public class FullGroupJoinTest
 
 		var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
-		Assert.AreEqual(2, result.Keys.Count);
+		Assert.Equal(2, result.Keys.Count);
 
-		Assert.AreEqual(2, result[2].First.Single());
-		Assert.IsEmpty(result[2].Second);
+		Assert.Equal(2, result[2].First.Single());
+		Assert.Empty(result[2].Second);
 
-		Assert.AreEqual(3, result[3].First.Single());
-		Assert.IsEmpty(result[3].Second);
+		Assert.Equal(3, result[3].First.Single());
+		Assert.Empty(result[3].Second);
 	}
 
-	[TestCase(CustomResult)]
-	[TestCase(TupleResult)]
+	[Theory]
+	[InlineData(CustomResult)]
+	[InlineData(TupleResult)]
 	public void FullGroupPreservesOrder(OverloadCase overloadCase)
 	{
 		var listA = new[]
@@ -114,14 +116,11 @@ public class FullGroupJoinTest
 
 	static IEnumerable<(int Key, IEnumerable<T> First, IEnumerable<T> Second)> FullGroupJoin<T>(OverloadCase overloadCase, IEnumerable<T> listA, IEnumerable<T> listB, Func<T, int> getKey)
 	{
-		switch (overloadCase)
+		return overloadCase switch
 		{
-			case CustomResult:
-				return listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create, comparer: null);
-			case TupleResult:
-				return listA.FullGroupJoin(listB, getKey, getKey);
-			default:
-				throw new ArgumentOutOfRangeException(nameof(overloadCase));
-		}
+			CustomResult => listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create, comparer: null),
+			TupleResult => listA.FullGroupJoin(listB, getKey, getKey),
+			_ => throw new ArgumentOutOfRangeException(nameof(overloadCase)),
+		};
 	}
 }

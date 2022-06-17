@@ -1,57 +1,59 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using NUnit.Framework;
 
 namespace Test;
 
-[TestFixture]
 public class StartsWithTest
 {
-	[TestCase(new[] { 1, 2, 3 }, new[] { 1, 2 }, ExpectedResult = true)]
-	[TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, ExpectedResult = true)]
-	[TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3, 4 }, ExpectedResult = false)]
-	public bool StartsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second)
+	[Theory]
+	[InlineData(new[] { 1, 2, 3 }, new[] { 1, 2 }, true)]
+	[InlineData(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, true)]
+	[InlineData(new[] { 1, 2, 3 }, new[] { 1, 2, 3, 4 }, false)]
+	public void StartsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second, bool expected)
 	{
-		return first.StartsWith(second);
+		Assert.Equal(expected, first.StartsWith(second));
 	}
 
-	[TestCase(new[] { '1', '2', '3' }, new[] { '1', '2' }, ExpectedResult = true)]
-	[TestCase(new[] { '1', '2', '3' }, new[] { '1', '2', '3' }, ExpectedResult = true)]
-	[TestCase(new[] { '1', '2', '3' }, new[] { '1', '2', '3', '4' }, ExpectedResult = false)]
-	public bool StartsWithWithChars(IEnumerable<char> first, IEnumerable<char> second)
+	[Theory]
+	[InlineData(new[] { '1', '2', '3' }, new[] { '1', '2' }, true)]
+	[InlineData(new[] { '1', '2', '3' }, new[] { '1', '2', '3' }, true)]
+	[InlineData(new[] { '1', '2', '3' }, new[] { '1', '2', '3', '4' }, false)]
+	public void StartsWithWithChars(IEnumerable<char> first, IEnumerable<char> second, bool expected)
 	{
-		return first.StartsWith(second);
+		Assert.Equal(expected, first.StartsWith(second));
 	}
 
-	[TestCase("123", "12", ExpectedResult = true)]
-	[TestCase("123", "123", ExpectedResult = true)]
-	[TestCase("123", "1234", ExpectedResult = false)]
-	public bool StartsWithWithStrings(string first, string second)
+	[Theory]
+	[InlineData("123", "12", true)]
+	[InlineData("123", "123", true)]
+	[InlineData("123", "1234", false)]
+	public void StartsWithWithStrings(string first, string second, bool expected)
 	{
 		// Conflict with String.StartsWith(), which has precedence in this case
-		return SuperEnumerable.StartsWith(first, second);
+		Assert.Equal(expected, SuperEnumerable.StartsWith(first, second));
 	}
 
-	[Test]
+	[Fact]
 	public void StartsWithReturnsTrueIfBothEmpty()
 	{
 		Assert.True(Array.Empty<int>().StartsWith(Array.Empty<int>()));
 	}
 
-	[Test]
+	[Fact]
 	public void StartsWithReturnsFalseIfOnlyFirstIsEmpty()
 	{
 		Assert.False(Array.Empty<int>().StartsWith(new[] { 1, 2, 3 }));
 	}
 
-	[TestCase("", "", ExpectedResult = true)]
-	[TestCase("1", "", ExpectedResult = true)]
-	public bool StartsWithReturnsTrueIfSecondIsEmpty(string first, string second)
+	[Theory]
+	[InlineData("", "", true)]
+	[InlineData("1", "", true)]
+	public void StartsWithReturnsTrueIfSecondIsEmpty(string first, string second, bool expected)
 	{
 		// Conflict with String.StartsWith(), which has precedence in this case
-		return SuperEnumerable.StartsWith(first, second);
+		Assert.Equal(expected, SuperEnumerable.StartsWith(first, second));
 	}
 
-	[Test]
+	[Fact]
 	public void StartsWithDisposesBothSequenceEnumerators()
 	{
 		using var first = TestingSequence.Of(1, 2, 3);
@@ -60,8 +62,7 @@ public class StartsWithTest
 		first.StartsWith(second);
 	}
 
-	[Test]
-	[SuppressMessage("ReSharper", "RedundantArgumentDefaultValue")]
+	[Fact]
 	public void StartsWithUsesSpecifiedEqualityComparerOrDefault()
 	{
 		var first = new[] { 1, 2, 3 };
@@ -73,8 +74,9 @@ public class StartsWithTest
 		Assert.True(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
 	}
 
-	[TestCase(SourceKind.BreakingCollection)]
-	[TestCase(SourceKind.BreakingReadOnlyCollection)]
+	[Theory]
+	[InlineData(SourceKind.BreakingCollection)]
+	[InlineData(SourceKind.BreakingReadOnlyCollection)]
 	public void StartsWithUsesCollectionsCountToAvoidUnnecessaryIteration(SourceKind sourceKind)
 	{
 		var first = new[] { 1, 2 }.ToSourceKind(sourceKind);

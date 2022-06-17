@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class GroupAdjacentTest
 {
-	[Test]
+	[Fact]
 	public void GroupAdjacentIsLazy()
 	{
 		var bs = new BreakingSequence<object>();
@@ -21,7 +18,7 @@ public class GroupAdjacentTest
 		bs.GroupAdjacent(bf, bfg, EqualityComparer<int>.Default);
 	}
 
-	[Test]
+	[Fact]
 	public void GroupAdjacentSourceSequence()
 	{
 		const string one = "one";
@@ -50,7 +47,7 @@ public class GroupAdjacentTest
 		reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void GroupAdjacentSourceSequenceComparer()
 	{
 		var source = new[] { "foo", "FOO", "Foo", "bar", "BAR", "Bar" };
@@ -63,7 +60,7 @@ public class GroupAdjacentTest
 		reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void GroupAdjacentSourceSequenceElementSelector()
 	{
 		var source = new[]
@@ -92,7 +89,7 @@ public class GroupAdjacentTest
 		reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void GroupAdjacentSourceSequenceElementSelectorComparer()
 	{
 		var source = new[]
@@ -121,7 +118,7 @@ public class GroupAdjacentTest
 		reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void GroupAdjacentSourceSequenceResultSelector()
 	{
 		var source = new[]
@@ -150,7 +147,7 @@ public class GroupAdjacentTest
 		reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void GroupAdjacentSourceSequenceResultSelectorComparer()
 	{
 		var source = new[]
@@ -179,7 +176,7 @@ public class GroupAdjacentTest
 		reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void GroupAdjacentSourceSequenceWithSomeNullKeys()
 	{
 		var groupings =
@@ -207,15 +204,15 @@ public class GroupAdjacentTest
 		TKey key, params TElement[] elements)
 	{
 		var grouping = reader.Read();
-		Assert.That(grouping, Is.Not.Null);
-		Assert.That(grouping.Key, Is.EqualTo(key));
+		Assert.NotNull(grouping);
+		Assert.Equal(key, grouping.Key);
 		grouping.AssertSequenceEqual(elements);
 	}
 
 	static void AssertResult<TElement>(SequenceReader<TElement> reader, TElement element)
 	{
 		var result = reader.Read();
-		Assert.That(result, Is.Not.Null);
-		Assert.AreEqual(element, result);
+		Assert.NotNull(result);
+		Assert.Equal(element, result);
 	}
 }

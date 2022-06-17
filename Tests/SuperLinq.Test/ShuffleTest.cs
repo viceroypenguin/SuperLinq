@@ -1,37 +1,34 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class ShuffleTest
 {
 	static Random seed = new Random(12345);
 
-	[Test]
+	[Fact]
 	public void ShuffleIsLazy()
 	{
 		new BreakingSequence<int>().Shuffle();
 	}
 
-	[Test]
+	[Fact]
 	public void Shuffle()
 	{
 		var source = Enumerable.Range(1, 100);
 		var result = source.Shuffle();
 
-		Assert.That(result.OrderBy(x => x), Is.EqualTo(source));
+		Assert.Equal(source, result.OrderBy(x => x));
 	}
 
-	[Test]
+	[Fact]
 	public void ShuffleWithEmptySequence()
 	{
 		var source = Enumerable.Empty<int>();
 		var result = source.Shuffle();
 
-		Assert.That(result, Is.Empty);
+		Assert.Empty(result);
 	}
 
-	[Test]
+	[Fact]
 	public void ShuffleIsIdempotent()
 	{
 		var sequence = Enumerable.Range(1, 100).ToArray();
@@ -41,35 +38,35 @@ public class ShuffleTest
 		sequence.Shuffle().Consume();
 
 		// verify the original sequence is untouched
-		Assert.That(sequence, Is.EqualTo(sequenceClone));
+		Assert.Equal(sequenceClone, sequence);
 	}
 
-	[Test]
+	[Fact]
 	public void ShuffleSeedIsLazy()
 	{
 		new BreakingSequence<int>().Shuffle(seed);
 	}
 
-	[Test]
+	[Fact]
 	public void ShuffleSeed()
 	{
 		var source = Enumerable.Range(1, 100);
 		var result = source.Shuffle(seed);
 
-		Assert.That(result, Is.Not.EqualTo(source));
-		Assert.That(result.OrderBy(x => x), Is.EqualTo(source));
+		Assert.NotEqual(source, result);
+		Assert.Equal(source, result.OrderBy(x => x));
 	}
 
-	[Test]
+	[Fact]
 	public void ShuffleSeedWithEmptySequence()
 	{
 		var source = Enumerable.Empty<int>();
 		var result = source.Shuffle(seed);
 
-		Assert.That(result, Is.Empty);
+		Assert.Empty(result);
 	}
 
-	[Test]
+	[Fact]
 	public void ShuffleSeedIsIdempotent()
 	{
 		var sequence = Enumerable.Range(1, 100).ToArray();
@@ -79,6 +76,6 @@ public class ShuffleTest
 		sequence.Shuffle(seed).Consume();
 
 		// verify the original sequence is untouched
-		Assert.That(sequence, Is.EqualTo(sequenceClone));
+		Assert.Equal(sequenceClone, sequence);
 	}
 }

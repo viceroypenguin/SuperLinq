@@ -1,11 +1,8 @@
 ﻿using System.Collections;
 using System.Data;
-using System.Linq.Expressions;
-using NUnit.Framework;
 
 namespace Test;
 
-[TestFixture]
 public class ToDataTableTest
 {
 	class TestObject
@@ -45,90 +42,90 @@ public class ToDataTableTest
 								 .ToArray();
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableTableWithWrongColumnNames()
 	{
 		var dt = new DataTable();
 		dt.Columns.Add("Test");
 
-		AssertThrowsArgument.Exception("table", () =>
+		Assert.Throws<ArgumentException>(() =>
 			_testObjects.ToDataTable(dt));
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableTableWithWrongColumnDataType()
 	{
 		var dt = new DataTable();
 		dt.Columns.Add("AString", typeof(int));
 
-		AssertThrowsArgument.Exception("table", () =>
+		Assert.Throws<ArgumentException>(() =>
 			_testObjects.ToDataTable(dt, t => t.AString));
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableMemberExpressionMethod()
 	{
-		AssertThrowsArgument.Exception("lambda", () =>
+		Assert.Throws<ArgumentException>(() =>
 			_testObjects.ToDataTable(t => t.ToString()));
 	}
 
 
-	[Test]
+	[Fact]
 	public void ToDataTableMemberExpressionNonMember()
 	{
-		AssertThrowsArgument.Exception("lambda", () =>
+		Assert.Throws<ArgumentException>(() =>
 			_testObjects.ToDataTable(t => t.ToString().Length));
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableMemberExpressionIndexer()
 	{
-		AssertThrowsArgument.Exception("lambda", () =>
+		Assert.Throws<ArgumentException>(() =>
 			_testObjects.ToDataTable(t => t[0]));
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableSchemaInDeclarationOrder()
 	{
 		var dt = _testObjects.ToDataTable();
 
 		// Assert properties first, then fields, then in declaration order
 
-		Assert.AreEqual("AString", dt.Columns[0].Caption);
-		Assert.AreEqual(typeof(string), dt.Columns[0].DataType);
+		Assert.Equal("AString", dt.Columns[0].Caption);
+		Assert.Equal(typeof(string), dt.Columns[0].DataType);
 
-		Assert.AreEqual("ANullableDecimal", dt.Columns[1].Caption);
-		Assert.AreEqual(typeof(decimal), dt.Columns[1].DataType);
+		Assert.Equal("ANullableDecimal", dt.Columns[1].Caption);
+		Assert.Equal(typeof(decimal), dt.Columns[1].DataType);
 
-		Assert.AreEqual("KeyField", dt.Columns[2].Caption);
-		Assert.AreEqual(typeof(int), dt.Columns[2].DataType);
+		Assert.Equal("KeyField", dt.Columns[2].Caption);
+		Assert.Equal(typeof(int), dt.Columns[2].DataType);
 
-		Assert.AreEqual("ANullableGuidField", dt.Columns[3].Caption);
-		Assert.AreEqual(typeof(Guid), dt.Columns[3].DataType);
-		Assert.IsTrue(dt.Columns[3].AllowDBNull);
+		Assert.Equal("ANullableGuidField", dt.Columns[3].Caption);
+		Assert.Equal(typeof(Guid), dt.Columns[3].DataType);
+		Assert.True(dt.Columns[3].AllowDBNull);
 
-		Assert.AreEqual(4, dt.Columns.Count);
+		Assert.Equal(4, dt.Columns.Count);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableContainsAllElements()
 	{
 		var dt = _testObjects.ToDataTable();
-		Assert.AreEqual(_testObjects.Count, dt.Rows.Count);
+		Assert.Equal(_testObjects.Count, dt.Rows.Count);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableWithExpression()
 	{
 		var dt = _testObjects.ToDataTable(t => t.AString);
 
-		Assert.AreEqual("AString", dt.Columns[0].Caption);
-		Assert.AreEqual(typeof(string), dt.Columns[0].DataType);
+		Assert.Equal("AString", dt.Columns[0].Caption);
+		Assert.Equal(typeof(string), dt.Columns[0].DataType);
 
-		Assert.AreEqual(1, dt.Columns.Count);
+		Assert.Single(dt.Columns);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableWithSchema()
 	{
 		var dt = new DataTable();
@@ -146,33 +143,32 @@ public class ToDataTableTest
 			.ToDataTable(dt, e => e.Name, e => e.Value);
 
 		var rows = dt.Rows.Cast<DataRow>().ToArray();
-		Assert.That(rows.Length, Is.EqualTo(vars.Length));
-		Assert.That(rows.Select(r => r["Name"]).ToArray(), Is.EqualTo(vars.Select(e => e.Key).ToArray()));
-		Assert.That(rows.Select(r => r["Value"]).ToArray(), Is.EqualTo(vars.Select(e => e.Value).ToArray()));
+		Assert.Equal(vars.Length, rows.Length);
+		Assert.Equal(vars.Select(e => e.Key).ToArray(), rows.Select(r => r["Name"]).ToArray());
+		Assert.Equal(vars.Select(e => e.Value).ToArray(), rows.Select(r => r["Value"]).ToArray());
 	}
 
 	struct Point
 	{
-		public static Point Empty = new Point();
 		public bool IsEmpty => X == 0 && Y == 0;
 		public int X { get; }
 		public int Y { get; }
 		public Point(int x, int y) : this() { X = x; Y = y; }
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableIgnoresStaticMembers()
 	{
 		var points = new[] { new Point(12, 34) }.ToDataTable();
 
-		Assert.AreEqual(3, points.Columns.Count);
+		Assert.Equal(3, points.Columns.Count);
 		DataColumn x, y, empty;
 		Assert.NotNull(x = points.Columns["X"]);
 		Assert.NotNull(y = points.Columns["Y"]);
 		Assert.NotNull(empty = points.Columns["IsEmpty"]);
 		var row = points.Rows.Cast<DataRow>().Single();
-		Assert.AreEqual(12, row[x]);
-		Assert.AreEqual(34, row[y]);
-		Assert.AreEqual(false, row[empty]);
+		Assert.Equal(12, row[x]);
+		Assert.Equal(34, row[y]);
+		Assert.Equal(false, row[empty]);
 	}
 }

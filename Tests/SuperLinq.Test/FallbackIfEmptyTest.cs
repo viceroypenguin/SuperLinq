@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class FallbackIfEmptyTest
 {
-	[Test]
+	[Fact]
 	public void FallbackIfEmptyWithEmptySequence()
 	{
 		var source = Enumerable.Empty<int>().Select(x => x);
@@ -19,28 +16,28 @@ public class FallbackIfEmptyTest
 		// ReSharper restore PossibleMultipleEnumeration
 	}
 
-	[TestCase(SourceKind.BreakingCollection)]
-	[TestCase(SourceKind.BreakingReadOnlyCollection)]
+	[Theory]
+	[InlineData(SourceKind.BreakingCollection)]
+	[InlineData(SourceKind.BreakingReadOnlyCollection)]
 	public void FallbackIfEmptyPreservesSourceCollectionIfPossible(SourceKind sourceKind)
 	{
 		var source = new[] { 1 }.ToSourceKind(sourceKind);
-		// ReSharper disable PossibleMultipleEnumeration
-		Assert.AreSame(source.FallbackIfEmpty(12), source);
-		Assert.AreSame(source.FallbackIfEmpty(12, 23), source);
-		Assert.AreSame(source.FallbackIfEmpty(12, 23, 34), source);
-		Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45), source);
-		Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56), source);
-		Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56, 67), source);
-		// ReSharper restore PossibleMultipleEnumeration
+		Assert.StrictEqual(source, source.FallbackIfEmpty(12));
+		Assert.StrictEqual(source, source.FallbackIfEmpty(12, 23));
+		Assert.StrictEqual(source, source.FallbackIfEmpty(12, 23, 34));
+		Assert.StrictEqual(source, source.FallbackIfEmpty(12, 23, 34, 45));
+		Assert.StrictEqual(source, source.FallbackIfEmpty(12, 23, 34, 45, 56));
+		Assert.StrictEqual(source, source.FallbackIfEmpty(12, 23, 34, 45, 56, 67));
 	}
 
-	[TestCase(SourceKind.BreakingCollection)]
-	[TestCase(SourceKind.BreakingReadOnlyCollection)]
+	[Theory]
+	[InlineData(SourceKind.BreakingCollection)]
+	[InlineData(SourceKind.BreakingReadOnlyCollection)]
 	public void FallbackIfEmptyPreservesFallbackCollectionIfPossible(SourceKind sourceKind)
 	{
 		var source = Array.Empty<int>().ToSourceKind(sourceKind);
 		var fallback = new[] { 1 };
-		Assert.AreSame(source.FallbackIfEmpty(fallback), fallback);
-		Assert.AreSame(source.FallbackIfEmpty(fallback.AsEnumerable()), fallback);
+		Assert.Equal(fallback, source.FallbackIfEmpty(fallback));
+		Assert.Equal(fallback, source.FallbackIfEmpty(fallback.AsEnumerable()));
 	}
 }

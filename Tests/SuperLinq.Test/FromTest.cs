@@ -1,10 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-class FromTest
+public class FromTest
 {
-	[Test]
+	[Fact]
 	public void TestFromIsLazy()
 	{
 		var breakingFunc = BreakingFunc.Of<int>();
@@ -14,10 +12,11 @@ class FromTest
 		SuperEnumerable.From(breakingFunc, breakingFunc, breakingFunc, breakingFunc);
 	}
 
-	[TestCase(1)]
-	[TestCase(2)]
-	[TestCase(3)]
-	[TestCase(4)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(2)]
+	[InlineData(3)]
+	[InlineData(4)]
 	public void TestFromInvokesMethods(int numArgs)
 	{
 		int F1() => -2;
@@ -35,10 +34,11 @@ class FromTest
 		}
 	}
 
-	[TestCase(1)]
-	[TestCase(2)]
-	[TestCase(3)]
-	[TestCase(4)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(2)]
+	[InlineData(3)]
+	[InlineData(4)]
 	public void TestFromInvokesMethodsMultipleTimes(int numArgs)
 	{
 		var evals = new[] { 0, 0, 0, 0 };

@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class GenerateTest
 {
-	[Test]
+	[Fact]
 	public void GenerateTerminatesWhenCheckReturnsFalse()
 	{
 		var result = SuperEnumerable.Generate(1, n => n + 2).TakeWhile(n => n < 10);
@@ -13,7 +10,7 @@ public class GenerateTest
 		result.AssertSequenceEqual(1, 3, 5, 7, 9);
 	}
 
-	[Test]
+	[Fact]
 	public void GenerateProcessesNonNumerics()
 	{
 		var result = SuperEnumerable.Generate("", s => s + 'a').TakeWhile(s => s.Length < 5);
@@ -21,13 +18,13 @@ public class GenerateTest
 		result.AssertSequenceEqual("", "a", "aa", "aaa", "aaaa");
 	}
 
-	[Test]
+	[Fact]
 	public void GenerateIsLazy()
 	{
 		SuperEnumerable.Generate(0, BreakingFunc.Of<int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void GenerateFuncIsNotInvokedUnnecessarily()
 	{
 		SuperEnumerable.Generate(0, BreakingFunc.Of<int, int>())
@@ -35,13 +32,13 @@ public class GenerateTest
 					  .Consume();
 	}
 
-	[Test]
+	[Fact]
 	public void GenerateByIndexIsLazy()
 	{
 		SuperEnumerable.GenerateByIndex(BreakingFunc.Of<int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void GenerateByIndex()
 	{
 		var sequence = SuperEnumerable.GenerateByIndex(x => x.ToString()).Take(3);

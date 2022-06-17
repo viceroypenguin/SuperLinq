@@ -1,16 +1,14 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-class EvaluateTest
+public class EvaluateTest
 {
-	[Test]
+	[Fact]
 	public void TestEvaluateIsLazy()
 	{
 		new BreakingSequence<Func<int>>().Evaluate();
 	}
 
-	[Test]
+	[Fact]
 	public void TestEvaluateInvokesMethods()
 	{
 		var factories = new Func<int>[]
@@ -25,7 +23,7 @@ class EvaluateTest
 		results.AssertSequenceEqual(-2, 4, int.MaxValue, int.MinValue);
 	}
 
-	[Test]
+	[Fact]
 	public void TestEvaluateInvokesMethodsMultipleTimes()
 	{
 		var evals = 0;
@@ -39,6 +37,6 @@ class EvaluateTest
 		results.Consume();
 		results.Consume();
 
-		Assert.That(evals, Is.EqualTo(3));
+		Assert.Equal(3, evals);
 	}
 }

@@ -1,23 +1,20 @@
-﻿using NUnit.Framework;
-
-namespace Test;
+﻿namespace Test;
 
 /// <summary>
 /// Verify the behavior of the Window operator
 /// </summary>
-[TestFixture]
 public class WindowTests
 {
 	/// <summary>
 	/// Verify that Window behaves in a lazy manner
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestWindowIsLazy()
 	{
 		new BreakingSequence<int>().Window(1);
 	}
 
-	[Test]
+	[Fact]
 	public void WindowModifiedBeforeMoveNextDoesNotAffectNextWindow()
 	{
 		var sequence = Enumerable.Range(0, 3);
@@ -29,10 +26,10 @@ public class WindowTests
 		e.MoveNext();
 		var window2 = e.Current;
 
-		Assert.That(window2[0], Is.EqualTo(1));
+		Assert.Equal(1, window2[0]);
 	}
 
-	[Test]
+	[Fact]
 	public void WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
 	{
 		var sequence = Enumerable.Range(0, 3);
@@ -44,10 +41,10 @@ public class WindowTests
 		window1[1] = -1;
 		var window2 = e.Current;
 
-		Assert.That(window2[0], Is.EqualTo(1));
+		Assert.Equal(1, window2[0]);
 	}
 
-	[Test]
+	[Fact]
 	public void WindowModifiedDoesNotAffectPreviousWindow()
 	{
 		var sequence = Enumerable.Range(0, 3);
@@ -59,18 +56,18 @@ public class WindowTests
 		var window2 = e.Current;
 		window2[0] = -1;
 
-		Assert.That(window1[1], Is.EqualTo(1));
+		Assert.Equal(1, window1[1]);
 	}
 
 	/// <summary>
 	/// Verify that a negative window size results in an exception
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestWindowNegativeWindowSizeException()
 	{
 		var sequence = Enumerable.Repeat(1, 10);
 
-		AssertThrowsArgument.OutOfRangeException("size", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			sequence.Window(-5));
 	}
 
@@ -78,20 +75,20 @@ public class WindowTests
 	/// Verify that a sliding window of an any size over an empty sequence
 	/// is an empty sequence
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestWindowEmptySequence()
 	{
 		var sequence = Enumerable.Empty<int>();
 		var result = sequence.Window(5);
 
-		Assert.That(result, Is.Empty);
+		Assert.Empty(result);
 	}
 
 	/// <summary>
 	/// Verify that decomposing a sequence into windows of a single item
 	/// degenerates to the original sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestWindowOfSingleElement()
 	{
 		const int count = 100;
@@ -99,18 +96,18 @@ public class WindowTests
 		var result = sequence.Window(1);
 
 		// number of windows should be equal to the source sequence length
-		Assert.AreEqual(count, result.Count());
+		Assert.Equal(count, result.Count());
 		// each window should contain single item consistent of element at that offset
 		var index = -1;
 		foreach (var window in result)
-			Assert.AreEqual(sequence.ElementAt(++index), window.Single());
+			Assert.Equal(sequence.ElementAt(++index), window.Single());
 	}
 
 	/// <summary>
 	/// Verify that asking for a window large than the source sequence results
 	/// in a empty sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestWindowLargerThanSequence()
 	{
 		const int count = 100;
@@ -119,14 +116,14 @@ public class WindowTests
 
 		// there should only be one window whose contents is the same
 		// as the source sequence
-		Assert.That(result, Is.Empty);
+		Assert.Empty(result);
 	}
 
 	/// <summary>
 	/// Verify that asking for a window smaller than the source sequence results
 	/// in N sequences, where N = (source.Count() - windowSize) + 1.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestWindowSmallerThanSequence()
 	{
 		const int count = 100;
@@ -135,18 +132,18 @@ public class WindowTests
 		var result = sequence.Window(windowSize);
 
 		// ensure that the number of windows is correct
-		Assert.AreEqual(count - windowSize + 1, result.Count());
+		Assert.Equal(count - windowSize + 1, result.Count());
 		// ensure each window contains the correct set of items
 		var index = -1;
 		foreach (var window in result)
-			Assert.That(window, Is.EqualTo(sequence.Skip(++index).Take(windowSize)));
+			Assert.Equal(sequence.Skip(++index).Take(windowSize), window);
 	}
 
 	/// <summary>
 	/// Verify that later windows do not modify any of the previous ones.
 	/// </summary>
 
-	[Test]
+	[Fact]
 	public void TestWindowWindowsImmutability()
 	{
 		using var windows = Enumerable.Range(1, 5).Window(2).AsTestingSequence();

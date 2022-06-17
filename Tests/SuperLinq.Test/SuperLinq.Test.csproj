@@ -4,14 +4,7 @@
 		<AssemblyTitle>SuperLinq.Test</AssemblyTitle>
 		<AssemblyName>SuperLinq.Test</AssemblyName>
 		<RootNamespace>Test</RootNamespace>
-		<DebugType>portable</DebugType>
-		<OutputType>Exe</OutputType>
-		<GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
 		<IsPackable>false</IsPackable>
-		<ApplicationIcon />
-		<OutputTypeEx>library</OutputTypeEx>
-		<StartupObject>Test.Program</StartupObject>
-		<WarningsNotAsErrors>618</WarningsNotAsErrors>
 	</PropertyGroup>
 
 	<PropertyGroup>

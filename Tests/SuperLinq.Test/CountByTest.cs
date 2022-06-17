@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class CountByTest
 {
-	[Test]
+	[Fact]
 	public void CountBySimpleTest()
 	{
 		var result = new[] { 1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2 }.CountBy(c => c);
@@ -19,7 +16,7 @@ public class CountByTest
 			(6, 1));
 	}
 
-	[Test]
+	[Fact]
 	public void CountByWithSecondOccurenceImmediatelyAfterFirst()
 	{
 		var result = "jaffer".CountBy(c => c);
@@ -32,7 +29,7 @@ public class CountByTest
 			('r', 1));
 	}
 
-	[Test]
+	[Fact]
 	public void CountByEvenOddTest()
 	{
 		var result = Enumerable.Range(1, 100).CountBy(c => c % 2);
@@ -42,7 +39,7 @@ public class CountByTest
 			(0, 50));
 	}
 
-	[Test]
+	[Fact]
 	public void CountByWithEqualityComparer()
 	{
 		var result = new[] { "a", "B", "c", "A", "b", "A" }.CountBy(c => c, StringComparer.OrdinalIgnoreCase);
@@ -53,7 +50,7 @@ public class CountByTest
 			("c", 1));
 	}
 
-	[Test]
+	[Fact]
 	public void CountByHasKeysOrderedLikeGroupBy()
 	{
 		var randomSequence = SuperEnumerable.Random(0, 100).Take(100).ToArray();
@@ -64,13 +61,13 @@ public class CountByTest
 		countByKeys.AssertSequenceEqual(groupByKeys);
 	}
 
-	[Test]
+	[Fact]
 	public void CountByIsLazy()
 	{
 		new BreakingSequence<string>().CountBy(BreakingFunc.Of<string, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void CountByWithSomeNullKeys()
 	{
 		var ss = new[]

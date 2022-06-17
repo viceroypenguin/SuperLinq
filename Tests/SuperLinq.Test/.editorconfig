@@ -3,9 +3,16 @@
 dotnet_diagnostic.CA1305.severity = none				# CA1305: Specify IFormatProvider
 dotnet_diagnostic.CA2201.severity = none				# CA2201: Do not raise reserved exception types
 
+dotnet_diagnostic.IDE0022.severity = none				# IDE0022: Use expression body for methods
+
 dotnet_diagnostic.MA0006.severity = none				# MA0006: Use String.Equals instead of equality operator
+dotnet_diagnostic.MA0008.severity = none				# MA0008: Add StructLayoutAttribute
 dotnet_diagnostic.MA0009.severity = none				# MA0009: Add regex evaluation timeout
 dotnet_diagnostic.MA0011.severity = none				# MA0011: IFormatProvider is missing
 dotnet_diagnostic.MA0016.severity = none				# MA0016: Prefer returning collection abstraction instead of implementation
 dotnet_diagnostic.MA0025.severity = none				# MA0025: Implement the functionality instead of throwing NotImplementedException
+dotnet_diagnostic.MA0046.severity = none				# MA0046: Use EventHandler<T> to declare events
 dotnet_diagnostic.MA0048.severity = none                # MA0048: File name must match type name
+
+dotnet_diagnostic.xUnit1008.severity = error			# xUnit1008: Test data attribute should only be used on a Theory
+dotnet_diagnostic.xUnit1013.severity = error			# xUnit1013: Public method should be marked as test

@@ -261,10 +261,11 @@ public static partial class SuperEnumerable
 		firstSelector.ThrowIfNull();
 		bothSelector.ThrowIfNull();
 		secondSelector.ThrowIfNull();
+		comparer ??= Comparer<TKey>.Default;
 
-		return _(comparer ?? Comparer<TKey>.Default);
+		return _();
 
-		IEnumerable<TResult> _(IComparer<TKey> comparer)
+		IEnumerable<TResult> _()
 		{
 			using var e1 = first.GetEnumerator();
 			using var e2 = second.GetEnumerator();

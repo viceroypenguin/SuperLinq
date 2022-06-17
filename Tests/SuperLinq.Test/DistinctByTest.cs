@@ -1,13 +1,10 @@
-﻿using NUnit.Framework;
-
-namespace Test;
+﻿namespace Test;
 
 #pragma warning disable CS0618
 
-[TestFixture]
 public class DistinctByTest
 {
-	[Test]
+	[Fact]
 	public void DistinctBy()
 	{
 		string[] source = { "first", "second", "third", "fourth", "fifth" };
@@ -15,13 +12,13 @@ public class DistinctByTest
 		distinct.AssertSequenceEqual("first", "second");
 	}
 
-	[Test]
+	[Fact]
 	public void DistinctByIsLazy()
 	{
 		SuperEnumerable.DistinctBy(new BreakingSequence<string>(), BreakingFunc.Of<string, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void DistinctByWithComparer()
 	{
 		string[] source = { "first", "FIRST", "second", "second", "third" };
@@ -29,7 +26,7 @@ public class DistinctByTest
 		distinct.AssertSequenceEqual("first", "second", "third");
 	}
 
-	[Test]
+	[Fact]
 	public void DistinctByNullComparer()
 	{
 		string[] source = { "first", "second", "third", "fourth", "fifth" };
@@ -37,7 +34,7 @@ public class DistinctByTest
 		distinct.AssertSequenceEqual("first", "second");
 	}
 
-	[Test]
+	[Fact]
 	public void DistinctByIsLazyWithComparer()
 	{
 		SuperEnumerable.DistinctBy(new BreakingSequence<string>(), BreakingFunc.Of<string, string>(), StringComparer.Ordinal);

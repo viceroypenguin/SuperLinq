@@ -1,25 +1,22 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class SplitTest
 {
-	[Test]
+	[Fact]
 	public void SplitWithSeparatorAndResultTransformation()
 	{
 		var result = "the quick brown fox".ToCharArray().Split(' ', chars => new string(chars.ToArray()));
 		result.AssertSequenceEqual("the", "quick", "brown", "fox");
 	}
 
-	[Test]
+	[Fact]
 	public void SplitUptoMaxCount()
 	{
 		var result = "the quick brown fox".ToCharArray().Split(' ', 2, chars => new string(chars.ToArray()));
 		result.AssertSequenceEqual("the", "quick", "brown fox");
 	}
 
-	[Test]
+	[Fact]
 	public void SplitWithSeparatorSelector()
 	{
 		var result = new int?[] { 1, 2, null, 3, null, 4, 5, 6 }.Split(n => n == null);
@@ -31,7 +28,7 @@ public class SplitTest
 		reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void SplitWithSeparatorSelectorUptoMaxCount()
 	{
 		var result = new int?[] { 1, 2, null, 3, null, 4, 5, 6 }.Split(n => n == null, 1);

@@ -1,14 +1,12 @@
 ﻿using System.Collections;
-using NUnit.Framework;
 
 namespace Test;
 
-[TestFixture]
 public class FlattenTest
 {
 	// Flatten(this IEnumerable source)
 
-	[Test]
+	[Fact]
 	public void Flatten()
 	{
 		var source = new object[]
@@ -56,10 +54,10 @@ public class FlattenTest
 				10
 		};
 
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenCast()
 	{
 		var source = new object[]
@@ -85,10 +83,10 @@ public class FlattenTest
 		var result = source.Flatten().Cast<int>();
 		var expectations = Enumerable.Range(1, 20);
 
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenIsLazy()
 	{
 		new BreakingSequence<int>().Flatten();
@@ -96,7 +94,7 @@ public class FlattenTest
 
 	// Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
 
-	[Test]
+	[Fact]
 	public void FlattenPredicate()
 	{
 		var source = new object[]
@@ -139,10 +137,10 @@ public class FlattenTest
 				7,
 		};
 
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenPredicateAlwaysFalse()
 	{
 		var source = new object[]
@@ -161,10 +159,10 @@ public class FlattenTest
 
 		var result = source.Flatten(_ => false);
 
-		Assert.That(result, Is.EqualTo(source));
+		Assert.Equal(source, result);
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenPredicateAlwaysTrue()
 	{
 		var source = new object[]
@@ -196,16 +194,16 @@ public class FlattenTest
 				6
 		};
 
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenPredicateIsLazy()
 	{
 		new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, bool>());
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenFullIteratedDisposesInnerSequences()
 	{
 		var expectations = new object[]
@@ -223,10 +221,10 @@ public class FlattenTest
 		using var inner3 = TestingSequence.Of<object>(6, inner2, 7);
 		using var source = TestingSequence.Of<object>(inner1, inner3);
 
-		Assert.That(source.Flatten(), Is.EqualTo(expectations));
+		Assert.Equal(expectations, source.Flatten());
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenInterruptedIterationDisposesInnerSequences()
 	{
 		using var inner1 = TestingSequence.Of(4, 5);
@@ -241,7 +239,7 @@ public class FlattenTest
 			source.Flatten().Consume());
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenEvaluatesInnerSequencesLazily()
 	{
 		var source = new object[]
@@ -269,7 +267,7 @@ public class FlattenTest
 		var result = source.Flatten().Cast<int>();
 		var expectations = Enumerable.Range(1, 10);
 
-		Assert.That(result.Take(10), Is.EqualTo(expectations));
+		Assert.Equal(expectations, result.Take(10));
 
 		Assert.Throws<TestException>(() =>
 			source.Flatten().ElementAt(11));
@@ -277,13 +275,13 @@ public class FlattenTest
 
 	// Flatten(this IEnumerable source, Func<object, IEnumerable> selector)
 
-	[Test]
+	[Fact]
 	public void FlattenSelectorIsLazy()
 	{
 		new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, IEnumerable>());
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenSelector()
 	{
 		var source = new[]
@@ -326,10 +324,10 @@ public class FlattenTest
 
 		var expectations = new object[] { "series1", 1, 2, 3, 4, "series2", 5, 6 };
 
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenSelectorFilteringOnlyIntegers()
 	{
 		var source = new object[]
@@ -365,10 +363,10 @@ public class FlattenTest
 
 		var expectations = new object[] { 1, 2, 3, 4 };
 
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenSelectorWithTree()
 	{
 		var source = new Tree<int>
@@ -390,22 +388,18 @@ public class FlattenTest
 
 		var result = new[] { source }.Flatten(obj =>
 		{
-			switch (obj)
+			return obj switch
 			{
-				case int:
-					return null;
-				case Tree<int> tree:
-					return new object[] { tree.Left, tree.Value, tree.Right };
-				case IEnumerable inner:
-					return inner;
-				default:
-					return Enumerable.Empty<object>();
-			}
+				int => null,
+				Tree<int> tree => new object[] { tree.Left, tree.Value, tree.Right },
+				IEnumerable inner => inner,
+				_ => Enumerable.Empty<object>(),
+			};
 		});
 
-		var expectations = Enumerable.Range(1, 7);
+		var expectations = Enumerable.Range(1, 7).Cast<object?>();
 
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
 	class Series

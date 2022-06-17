@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class IndexByTest
 {
-	[Test]
+	[Fact]
 	public void IndexBySimpleTest()
 	{
 		var source = new[] { "ana", "beatriz", "carla", "bob", "davi", "adriano", "angelo", "carlos" };
@@ -22,7 +19,7 @@ public class IndexByTest
 			(1, "carlos"));
 	}
 
-	[Test]
+	[Fact]
 	public void IndexByWithSecondOccurenceImmediatelyAfterFirst()
 	{
 		var result = "jaffer".IndexBy(c => c);
@@ -30,7 +27,7 @@ public class IndexByTest
 		result.AssertSequenceEqual((0, 'j'), (0, 'a'), (0, 'f'), (1, 'f'), (0, 'e'), (0, 'r'));
 	}
 
-	[Test]
+	[Fact]
 	public void IndexByWithEqualityComparer()
 	{
 		var source = new[] { "a", "B", "c", "A", "b", "A" };
@@ -39,13 +36,13 @@ public class IndexByTest
 		result.AssertSequenceEqual((0, "a"), (0, "B"), (0, "c"), (1, "A"), (1, "b"), (2, "A"));
 	}
 
-	[Test]
+	[Fact]
 	public void IndexByIsLazy()
 	{
 		new BreakingSequence<string>().IndexBy(BreakingFunc.Of<string, char>());
 	}
 
-	[Test]
+	[Fact]
 	public void IndexByWithSomeNullKeys()
 	{
 		var source = new[] { "foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo" };
@@ -55,7 +52,7 @@ public class IndexByTest
 		result.AssertSequenceEqual((0, "foo"), (0, @null), (0, "bar"), (0, "baz"), (1, @null), (2, @null), (1, "baz"), (1, "bar"), (3, @null), (1, "foo"));
 	}
 
-	[Test]
+	[Fact]
 	public void IndexBytDoesNotIterateUnnecessaryElements()
 	{
 		var source = SuperEnumerable.From(() => "ana",

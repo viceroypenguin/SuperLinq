@@ -1,27 +1,25 @@
 ﻿using System.Text.RegularExpressions;
-using NUnit.Framework;
 
 namespace Test;
 
-[TestFixture]
 public class FillForwardTest
 {
-	[Test]
+	[Fact]
 	public void FillForwardIsLazy()
 	{
 		new BreakingSequence<object>().FillForward();
 	}
 
-	[Test]
+	[Fact]
 	public void FillForward()
 	{
 		int? na = null;
 		var input = new[] { na, na, 1, 2, na, na, na, 3, 4, na, na };
 		var result = input.FillForward();
-		Assert.That(result, Is.EqualTo(new[] { na, na, 1, 2, 2, 2, 2, 3, 4, 4, 4 }));
+		Assert.Equal(new[] { na, na, 1, 2, 2, 2, 2, 3, 4, 4, 4 }, result);
 	}
 
-	[Test]
+	[Fact]
 	public void FillForwardWithFillSelector()
 	{
 		const string table = @"
@@ -52,17 +50,19 @@ public class FillForwardTest
 				   .FillForward(e => e.Country == "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value });
 
 
-		Assert.That(data, Is.EqualTo(new[]
+		var expected = new[]
 		{
-				new { Continent = "Europe", Country = "UK",      City = "London",     Value = 123 },
-				new { Continent = "Europe", Country = "UK",      City = "Manchester", Value = 234 },
-				new { Continent = "Europe", Country = "UK",      City = "Glasgow",    Value = 345 },
-				new { Continent = "Europe", Country = "Germany", City = "Munich",     Value = 456 },
-				new { Continent = "Europe", Country = "Germany", City = "Frankfurt",  Value = 567 },
-				new { Continent = "Europe", Country = "Germany", City = "Stuttgart",  Value = 678 },
-				new { Continent = "Africa", Country = "Egypt",   City = "Cairo",      Value = 789 },
-				new { Continent = "Africa", Country = "Egypt",   City = "Alexandria", Value = 890 },
-				new { Continent = "Africa", Country = "Kenya",   City = "Nairobi",    Value = 901 },
-			}));
+			new { Continent = "Europe", Country = "UK",      City = "London",     Value = 123 },
+			new { Continent = "Europe", Country = "UK",      City = "Manchester", Value = 234 },
+			new { Continent = "Europe", Country = "UK",      City = "Glasgow",    Value = 345 },
+			new { Continent = "Europe", Country = "Germany", City = "Munich",     Value = 456 },
+			new { Continent = "Europe", Country = "Germany", City = "Frankfurt",  Value = 567 },
+			new { Continent = "Europe", Country = "Germany", City = "Stuttgart",  Value = 678 },
+			new { Continent = "Africa", Country = "Egypt",   City = "Cairo",      Value = 789 },
+			new { Continent = "Africa", Country = "Egypt",   City = "Alexandria", Value = 890 },
+			new { Continent = "Africa", Country = "Kenya",   City = "Nairobi",    Value = 901 },
+		};
+
+		Assert.Equal(expected, data);
 	}
 }

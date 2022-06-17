@@ -1,64 +1,58 @@
-﻿using NUnit.Framework;
-using static Test.LeftJoinTest.Side;
+﻿using static Test.LeftJoinTest.Side;
 
 namespace Test;
 
-[TestFixture]
 public class LeftJoinTest
 {
 	public enum Side { Left, Both }
 
-	[Test]
+	[Fact]
 	public void LeftJoinWithHomogeneousSequencesIsLazy()
 	{
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		Assert.DoesNotThrow(() =>
-			xs.LeftJoin(ys, e => e,
-				BreakingFunc.Of<int, object>(),
-				BreakingFunc.Of<int, int, object>()));
+		xs.LeftJoin(ys, e => e,
+			BreakingFunc.Of<int, object>(),
+			BreakingFunc.Of<int, int, object>());
 	}
 
-	[Test]
+	[Fact]
 	public void LeftJoinWithHomogeneousSequencesWithComparerIsLazy()
 	{
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		Assert.DoesNotThrow(() =>
-			xs.LeftJoin(ys, e => e,
-				BreakingFunc.Of<int, object>(),
-				BreakingFunc.Of<int, int, object>(),
-				comparer: null));
+		xs.LeftJoin(ys, e => e,
+			BreakingFunc.Of<int, object>(),
+			BreakingFunc.Of<int, int, object>(),
+			comparer: null);
 	}
 
-	[Test]
+	[Fact]
 	public void LeftJoinIsLazy()
 	{
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		Assert.DoesNotThrow(() =>
-			xs.LeftJoin(ys, x => x, y => y.GetHashCode(),
-				BreakingFunc.Of<int, object>(),
-				BreakingFunc.Of<int, object, object>()));
+		xs.LeftJoin(ys, x => x, y => y.GetHashCode(),
+			BreakingFunc.Of<int, object>(),
+			BreakingFunc.Of<int, object, object>());
 	}
 
-	[Test]
+	[Fact]
 	public void LeftJoinWithComparerIsLazy()
 	{
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		Assert.DoesNotThrow(() =>
-			xs.LeftJoin(ys, x => x, y => y.GetHashCode(),
-				BreakingFunc.Of<int, object>(),
-				BreakingFunc.Of<int, object, object>(),
-				comparer: null));
+		xs.LeftJoin(ys, x => x, y => y.GetHashCode(),
+			BreakingFunc.Of<int, object>(),
+			BreakingFunc.Of<int, object, object>(),
+			comparer: null);
 	}
 
-	[Test]
+	[Fact]
 	public void LeftJoinResults()
 	{
 		var foo = (1, "foo");
@@ -87,7 +81,7 @@ public class LeftJoinTest
 			(Left, qux, missing));
 	}
 
-	[Test]
+	[Fact]
 	public void LeftJoinWithComparerResults()
 	{
 		var foo = ("one", "foo");
@@ -117,7 +111,7 @@ public class LeftJoinTest
 			(Left, qux, missing));
 	}
 
-	[Test]
+	[Fact]
 	public void LeftJoinEmptyLeft()
 	{
 		var foo = (1, "foo");
@@ -136,10 +130,10 @@ public class LeftJoinTest
 						x => (Left, x, missing),
 						(x, y) => (Both, x, y));
 
-		Assert.That(result, Is.Empty);
+		Assert.Empty(result);
 	}
 
-	[Test]
+	[Fact]
 	public void LeftJoinEmptyRight()
 	{
 		var foo = (1, "foo");

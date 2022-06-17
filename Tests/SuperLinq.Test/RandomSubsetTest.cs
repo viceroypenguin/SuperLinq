@@ -1,17 +1,14 @@
-﻿using NUnit.Framework;
-
-namespace Test;
+﻿namespace Test;
 
 /// <summary>
 /// Tests that verify the behavior of the RandomSubset() operator
 /// </summary>
-[TestFixture]
 public class RandomSubsetTest
 {
 	/// <summary>
 	/// Verify that RandomSubset() behaves in a lazy manner.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetIsLazy()
 	{
 		new BreakingSequence<int>().RandomSubset(10);
@@ -21,39 +18,39 @@ public class RandomSubsetTest
 	/// <summary>
 	/// Verify that involving RandomSubsets with a subset size less than 0 results in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetNegativeSubsetSize()
 	{
-		AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Enumerable.Range(1, 10).RandomSubset(-5));
 	}
 
 	/// <summary>
 	/// Verify that involving RandomSubsets with a subset size less than 0 results in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetNegativeSubsetSize2()
 	{
-		AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Enumerable.Range(1, 10).RandomSubset(-1, new Random()));
 	}
 
 	/// <summary>
 	/// Verify that the 0-size random subset of the empty set is the empty set.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetOfEmptySequence()
 	{
 		var sequence = Enumerable.Empty<int>();
 		var result = sequence.RandomSubset(0); // we can only get subsets <= sequence.Count()
 
-		Assert.AreEqual(0, result.Count());
+		Assert.Empty(result);
 	}
 
 	/// <summary>
 	/// Verify that RandomSubset can produce a random subset of equal length to the original sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetSameLengthAsSequence()
 	{
 		const int count = 100;
@@ -62,14 +59,14 @@ public class RandomSubsetTest
 		var resultB = sequence.RandomSubset(count, new Random(12345));
 
 		// ensure random subset is always a complete reordering of original sequence
-		Assert.AreEqual(count, resultA.Distinct().Count());
-		Assert.AreEqual(count, resultB.Distinct().Count());
+		Assert.Equal(count, resultA.Distinct().Count());
+		Assert.Equal(count, resultB.Distinct().Count());
 	}
 
 	/// <summary>
 	/// Verify that RandomSubset can produce a random subset shorter than the original sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetShorterThanSequence()
 	{
 		const int count = 100;
@@ -79,22 +76,22 @@ public class RandomSubsetTest
 		var resultB = sequence.RandomSubset(subsetSize, new Random(12345));
 
 		// ensure random subset is always a distinct subset of original sequence
-		Assert.AreEqual(subsetSize, resultA.Distinct().Count());
-		Assert.AreEqual(subsetSize, resultB.Distinct().Count());
+		Assert.Equal(subsetSize, resultA.Distinct().Count());
+		Assert.Equal(subsetSize, resultB.Distinct().Count());
 	}
 
 	/// <summary>
 	/// Verify that attempting to fetch a random subset longer than the original sequence
 	/// results in an exception. Only thrown when the resulting random sequence is enumerated.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetLongerThanSequence()
 	{
 		const int count = 100;
 		const int subsetSize = count + 5;
 		var sequence = Enumerable.Range(1, count);
 
-		AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 		{
 			sequence.RandomSubset(subsetSize).Consume();
 		});
@@ -104,14 +101,14 @@ public class RandomSubsetTest
 	/// Verify that attempting to fetch a random subset longer than the original sequence
 	/// results in an exception. Only thrown when the resulting random sequence is enumerated.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetLongerThanSequence2()
 	{
 		const int count = 100;
 		const int subsetSize = count + 5;
 		var sequence = Enumerable.Range(1, count);
 
-		AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 		{
 			sequence.RandomSubset(subsetSize, new Random(1234)).Consume();
 		});
@@ -139,8 +136,7 @@ public class RandomSubsetTest
 	///   approaching unity (1.0). Which, given that the original sequence was monotonic, implies
 	///   there cannot be a selection bias in the returned subsets - quod erat demonstrandum (QED).
 	/// </remarks>
-	[Test]
-	[Explicit]
+	[Fact(Skip = "Explicit")]
 	public void TestRandomSubsetIsUnbiased()
 	{
 		const int count = 20;
@@ -167,10 +163,10 @@ public class RandomSubsetTest
 
 		// ensure that wth increasing trial size the a RSD% continually decreases
 		for (var j = 0; j < rsdResults.Length - 1; j++)
-			Assert.Less(rsdResults[j + 1], rsdResults[j]);
+			Assert.True(rsdResults[j + 1] < rsdResults[j]);
 
 		// ensure that the RSD% for the 5M trial size is < 1.0    (this is somewhat arbitrary)
-		Assert.Less(rsdResults.Last(), 1.0);
+		Assert.True(rsdResults[^1] < 1.0);
 
 		// for sanity, we output the RSD% values as a cross-check, the expected result should be
 		// that the RSD% rapidly decreases and eventually drops below 1.0
@@ -186,7 +182,7 @@ public class RandomSubsetTest
 	/// This attempts to verify that the original sequence remains unaltered after a random
 	/// subset is returned and enumerated.
 	/// </remarks>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetIsIdempotent()
 	{
 		const int count = 100;
@@ -201,13 +197,13 @@ public class RandomSubsetTest
 		resultB.Consume();
 
 		// verify the original sequence is untouched
-		Assert.That(sequence, Is.EqualTo(sequenceClone));
+		Assert.Equal(sequenceClone, sequence);
 	}
 
 	/// <summary>
 	/// Verify that RandomSubset produces subset where all elements belongs to original sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetReturnsOriginalSequenceElements()
 	{
 		const int count = 100;
@@ -215,10 +211,10 @@ public class RandomSubsetTest
 		var result = sequence.RandomSubset(count, new Random(12345));
 
 		// we do not test overload without seed because it can return original sequence
-		Assert.That(sequence, Is.Not.EqualTo(result));
+		Assert.NotEqual(result, sequence);
 
 		// ensure random subset returns exactly the same elements of original sequence
-		Assert.That(sequence, Is.EqualTo(result.OrderBy(x => x)));
+		Assert.Equal(result.OrderBy(x => x), sequence);
 	}
 
 	static double RelativeStandardDeviation(IEnumerable<double> values)

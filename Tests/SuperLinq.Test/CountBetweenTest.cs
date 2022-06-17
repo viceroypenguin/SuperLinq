@@ -1,50 +1,48 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class CountBetweenTest
 {
-	[Test]
+	[Fact]
 	public void CountBetweenWithNegativeMin()
 	{
-		AssertThrowsArgument.OutOfRangeException("min", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new[] { 1 }.CountBetween(-1, 0));
 	}
 
-	[Test]
+	[Fact]
 	public void CountBetweenWithNegativeMax()
 	{
-		AssertThrowsArgument.OutOfRangeException("max", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 		   new[] { 1 }.CountBetween(0, -1));
 	}
 
-	[Test]
+	[Fact]
 	public void CountBetweenWithMaxLesserThanMin()
 	{
-		AssertThrowsArgument.OutOfRangeException("max", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new[] { 1 }.CountBetween(1, 0));
 	}
 
-	[Test]
+	[Fact]
 	public void CountBetweenWithMaxEqualsMin()
 	{
-		foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-			Assert.IsTrue(xs.CountBetween(1, 1));
+		foreach (var xs in new[] { 1 }.ArrangeCollectionInlineDatas())
+			Assert.True(xs.CountBetween(1, 1));
 	}
 
-	[TestCase(1, 2, 4, false)]
-	[TestCase(2, 2, 4, true)]
-	[TestCase(3, 2, 4, true)]
-	[TestCase(4, 2, 4, true)]
-	[TestCase(5, 2, 4, false)]
+	[Theory]
+	[InlineData(1, 2, 4, false)]
+	[InlineData(2, 2, 4, true)]
+	[InlineData(3, 2, 4, true)]
+	[InlineData(4, 2, 4, true)]
+	[InlineData(5, 2, 4, false)]
 	public void CountBetweenRangeTests(int count, int min, int max, bool expecting)
 	{
-		foreach (var xs in Enumerable.Range(1, count).ArrangeCollectionTestCases())
-			Assert.That(xs.CountBetween(min, max), Is.EqualTo(expecting));
+		foreach (var xs in Enumerable.Range(1, count).ArrangeCollectionInlineDatas())
+			Assert.Equal(expecting, xs.CountBetween(min, max));
 	}
 
-	[Test]
+	[Fact]
 	public void CountBetweenDoesNotIterateUnnecessaryElements()
 	{
 		var source = SuperEnumerable.From(() => 1,

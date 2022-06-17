@@ -1,24 +1,21 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class PadTest
 {
-	[Test]
+	[Fact]
 	public void PadNegativeWidth()
 	{
-		AssertThrowsArgument.OutOfRangeException("width", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Array.Empty<object>().Pad(-1));
 	}
 
-	[Test]
+	[Fact]
 	public void PadIsLazy()
 	{
 		new BreakingSequence<object>().Pad(0);
 	}
 
-	[Test]
+	[Fact]
 	public void PadWithFillerIsLazy()
 	{
 		new BreakingSequence<object>().Pad(0, new object());
@@ -26,35 +23,35 @@ public class PadTest
 
 	public class ValueTypeElements
 	{
-		[Test]
+		[Fact]
 		public void PadWideSourceSequence()
 		{
 			var result = new[] { 123, 456, 789 }.Pad(2);
 			result.AssertSequenceEqual(123, 456, 789);
 		}
 
-		[Test]
+		[Fact]
 		public void PadEqualSourceSequence()
 		{
 			var result = new[] { 123, 456, 789 }.Pad(3);
 			result.AssertSequenceEqual(123, 456, 789);
 		}
 
-		[Test]
+		[Fact]
 		public void PadNarrowSourceSequenceWithDefaultPadding()
 		{
 			var result = new[] { 123, 456, 789 }.Pad(5);
 			result.AssertSequenceEqual(123, 456, 789, 0, 0);
 		}
 
-		[Test]
+		[Fact]
 		public void PadNarrowSourceSequenceWithNonDefaultPadding()
 		{
 			var result = new[] { 123, 456, 789 }.Pad(5, -1);
 			result.AssertSequenceEqual(123, 456, 789, -1, -1);
 		}
 
-		[Test]
+		[Fact]
 		public void PadNarrowSourceSequenceWithDynamicPadding()
 		{
 			var result = "hello".ToCharArray().Pad(15, i => i % 2 == 0 ? '+' : '-');
@@ -64,28 +61,28 @@ public class PadTest
 
 	public class ReferenceTypeElements
 	{
-		[Test]
+		[Fact]
 		public void PadWideSourceSequence()
 		{
 			var result = new[] { "foo", "bar", "baz" }.Pad(2);
 			result.AssertSequenceEqual("foo", "bar", "baz");
 		}
 
-		[Test]
+		[Fact]
 		public void PadEqualSourceSequence()
 		{
 			var result = new[] { "foo", "bar", "baz" }.Pad(3);
 			result.AssertSequenceEqual("foo", "bar", "baz");
 		}
 
-		[Test]
+		[Fact]
 		public void PadNarrowSourceSequenceWithDefaultPadding()
 		{
 			var result = new[] { "foo", "bar", "baz" }.Pad(5);
 			result.AssertSequenceEqual("foo", "bar", "baz", null, null);
 		}
 
-		[Test]
+		[Fact]
 		public void PadNarrowSourceSequenceWithNonDefaultPadding()
 		{
 			var result = new[] { "foo", "bar", "baz" }.Pad(5, string.Empty);

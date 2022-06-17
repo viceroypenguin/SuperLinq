@@ -1,17 +1,14 @@
-﻿using NUnit.Framework;
-
-namespace Test;
+﻿namespace Test;
 
 /// <summary>
 /// Verify the behavior of the Lead operator.
 /// </summary>
-[TestFixture]
 public class LeadTests
 {
 	/// <summary>
 	/// Verify that Lead() behaves in a lazy manner.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadIsLazy()
 	{
 		new BreakingSequence<int>().Lead(5, BreakingFunc.Of<int, int, int>());
@@ -21,27 +18,27 @@ public class LeadTests
 	/// <summary>
 	/// Verify that attempting to lead by a negative offset will result in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadNegativeOffset()
 	{
-		AssertThrowsArgument.OutOfRangeException("offset", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Enumerable.Range(1, 100).Lead(-5, (val, leadVal) => val + leadVal));
 	}
 
 	/// <summary>
 	/// Verify that attempting to lead by a zero offset will result in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadZeroOffset()
 	{
-		AssertThrowsArgument.OutOfRangeException("offset", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Enumerable.Range(1, 100).Lead(0, (val, leadVal) => val + leadVal));
 	}
 
 	/// <summary>
 	/// Verify that lead can accept and propagate a default value passed to it.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadExplicitDefaultValue()
 	{
 		const int count = 100;
@@ -50,14 +47,14 @@ public class LeadTests
 		var sequence = Enumerable.Range(1, count);
 		var result = sequence.Lead(leadBy, leadDefault, (val, leadVal) => leadVal);
 
-		Assert.AreEqual(count, result.Count());
-		Assert.That(result.Skip(count - leadBy), Is.EqualTo(Enumerable.Repeat(leadDefault, leadBy)));
+		Assert.Equal(count, result.Count());
+		Assert.Equal(Enumerable.Repeat(leadDefault, leadBy), result.Skip(count - leadBy));
 	}
 
 	/// <summary>
 	/// Verify that Lead() willuse default(T) if a specific default value is not supplied for the lead value.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadImplicitDefaultValue()
 	{
 		const int count = 100;
@@ -65,15 +62,15 @@ public class LeadTests
 		var sequence = Enumerable.Range(1, count);
 		var result = sequence.Lead(leadBy, (val, leadVal) => leadVal);
 
-		Assert.AreEqual(count, result.Count());
-		Assert.That(result.Skip(count - leadBy), Is.EqualTo(Enumerable.Repeat(default(int), leadBy)));
+		Assert.Equal(count, result.Count());
+		Assert.Equal(Enumerable.Repeat(default(int), leadBy), result.Skip(count - leadBy));
 	}
 
 	/// <summary>
 	/// Verify that if the lead offset is greater than the length of the sequence
 	/// Lead() still yield all of the elements of the source sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadOffsetGreaterThanSequenceLength()
 	{
 		const int count = 100;
@@ -81,30 +78,30 @@ public class LeadTests
 		var sequence = Enumerable.Range(1, count);
 		var result = sequence.Lead(count + 1, leadDefault, (val, leadVal) => new { A = val, B = leadVal });
 
-		Assert.AreEqual(count, result.Count());
-		Assert.That(result, Is.EqualTo(sequence.Select(x => new { A = x, B = leadDefault })));
+		Assert.Equal(count, result.Count());
+		Assert.Equal(sequence.Select(x => new { A = x, B = leadDefault }), result);
 	}
 
 	/// <summary>
 	/// Verify that Lead() actually yields the correct pair of values from the sequence
 	/// when the lead offset is 1.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadPassesCorrectValueOffsetBy1()
 	{
 		const int count = 100;
 		var sequence = Enumerable.Range(1, count);
 		var result = sequence.Lead(1, count + 1, (val, leadVal) => new { A = val, B = leadVal });
 
-		Assert.AreEqual(count, result.Count());
-		Assert.IsTrue(result.All(x => x.B == (x.A + 1)));
+		Assert.Equal(count, result.Count());
+		Assert.True(result.All(x => x.B == (x.A + 1)));
 	}
 
 	/// <summary>
 	/// Verify that Lead() yields the correct pair of values from the sequence
 	/// when the lead offset is greater than 1.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadPassesCorrectValueOffsetBy2()
 	{
 		const int count = 100;
@@ -112,12 +109,12 @@ public class LeadTests
 		var sequence = Enumerable.Range(1, count);
 		var result = sequence.Lead(2, leadDefault, (val, leadVal) => new { A = val, B = leadVal });
 
-		Assert.AreEqual(count, result.Count());
-		Assert.IsTrue(result.Take(count - 2).All(x => x.B == (x.A + 2)));
-		Assert.IsTrue(result.Skip(count - 2).All(x => x.B == leadDefault && (x.A == count || x.A == count - 1)));
+		Assert.Equal(count, result.Count());
+		Assert.True(result.Take(count - 2).All(x => x.B == (x.A + 2)));
+		Assert.True(result.Skip(count - 2).All(x => x.B == leadDefault && (x.A == count || x.A == count - 1)));
 	}
 
-	[Test]
+	[Fact]
 	public void TestLagWithNullableReferences()
 	{
 		var words = new[] { "foo", "bar", "baz", "qux" };
@@ -129,7 +126,7 @@ public class LeadTests
 			new { A = "qux", B = (string?)null });
 	}
 
-	[Test]
+	[Fact]
 	public void TestLagWithNonNullableReferences()
 	{
 		var words = new[] { "foo", "bar", "baz", "qux" };

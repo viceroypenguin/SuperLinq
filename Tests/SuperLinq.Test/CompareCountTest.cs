@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class CompareCountTest
 {
-	static readonly IEnumerable<TestCaseData> CompareCountData =
+	public static IEnumerable<object[]> CompareCountData { get; } =
 		from e in new[]
 		{
 				new { Count1 = 0, Count2 = 0, Comparison =  0 },
@@ -17,19 +14,21 @@ public class CompareCountTest
 					  Enumerable.Range(1, e.Count1),
 					  Enumerable.Range(1, e.Count2),
 					  (xs, ys) => new { First = xs, Second = ys })
-		select new TestCaseData(s.First.Data, s.Second.Data)
-				.Returns(e.Comparison)
-				.SetName($"{{m}}({s.First.Kind}[{e.Count1}], {s.Second.Kind}[{e.Count2}]) = {e.Comparison}");
+		select new object[] { s.First.Data, s.Second.Data, e.Comparison, };
 
-	[TestCaseSource(nameof(CompareCountData))]
-	public int CompareCount(IEnumerable<int> xs, IEnumerable<int> ys) =>
-		xs.CompareCount(ys);
+	[Theory, MemberData(nameof(CompareCountData))]
+	public void CompareCount(IEnumerable<int> xs, IEnumerable<int> ys, int expected)
+	{
+		Assert.Equal(expected, xs.CompareCount(ys));
+	}
 
-	[TestCase(0, 0, 0, 1)]
-	[TestCase(0, 1, -1, 1)]
-	[TestCase(1, 0, 1, 1)]
-	[TestCase(1, 1, 0, 2)]
-	public void CompareCountWithCollectionAndSequence(int collectionCount,
+	[Theory]
+	[InlineData(0, 0, 0, 1)]
+	[InlineData(0, 1, -1, 1)]
+	[InlineData(1, 0, 1, 1)]
+	[InlineData(1, 1, 0, 2)]
+	public void CompareCountWithCollectionAndSequence(
+		int collectionCount,
 		int sequenceCount,
 		int expectedCompareCount,
 		int expectedMoveNextCallCount)
@@ -38,15 +37,17 @@ public class CompareCountTest
 
 		using var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence();
 
-		Assert.AreEqual(expectedCompareCount, collection.CompareCount(seq));
-		Assert.AreEqual(expectedMoveNextCallCount, seq.MoveNextCallCount);
+		Assert.Equal(expectedCompareCount, collection.CompareCount(seq));
+		Assert.Equal(expectedMoveNextCallCount, seq.MoveNextCallCount);
 	}
 
-	[TestCase(0, 0, 0, 1)]
-	[TestCase(0, 1, -1, 1)]
-	[TestCase(1, 0, 1, 1)]
-	[TestCase(1, 1, 0, 2)]
-	public void CompareCountWithSequenceAndCollection(int sequenceCount,
+	[Theory]
+	[InlineData(0, 0, 0, 1)]
+	[InlineData(0, 1, -1, 1)]
+	[InlineData(1, 0, 1, 1)]
+	[InlineData(1, 1, 0, 2)]
+	public void CompareCountWithSequenceAndCollection(
+		int sequenceCount,
 		int collectionCount,
 		int expectedCompareCount,
 		int expectedMoveNextCallCount)
@@ -55,15 +56,17 @@ public class CompareCountTest
 
 		using var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence();
 
-		Assert.AreEqual(expectedCompareCount, seq.CompareCount(collection));
-		Assert.AreEqual(expectedMoveNextCallCount, seq.MoveNextCallCount);
+		Assert.Equal(expectedCompareCount, seq.CompareCount(collection));
+		Assert.Equal(expectedMoveNextCallCount, seq.MoveNextCallCount);
 	}
 
-	[TestCase(0, 0, 0, 1)]
-	[TestCase(0, 1, -1, 1)]
-	[TestCase(1, 0, 1, 1)]
-	[TestCase(1, 1, 0, 2)]
-	public void CompareCountWithSequenceAndSequence(int sequenceCount1,
+	[Theory]
+	[InlineData(0, 0, 0, 1)]
+	[InlineData(0, 1, -1, 1)]
+	[InlineData(1, 0, 1, 1)]
+	[InlineData(1, 1, 0, 2)]
+	public void CompareCountWithSequenceAndSequence(
+		int sequenceCount1,
 		int sequenceCount2,
 		int expectedCompareCount,
 		int expectedMoveNextCallCount)
@@ -71,41 +74,41 @@ public class CompareCountTest
 		using var seq1 = Enumerable.Range(0, sequenceCount1).AsTestingSequence();
 		using var seq2 = Enumerable.Range(0, sequenceCount2).AsTestingSequence();
 
-		Assert.AreEqual(expectedCompareCount, seq1.CompareCount(seq2));
-		Assert.AreEqual(expectedMoveNextCallCount, seq1.MoveNextCallCount);
-		Assert.AreEqual(expectedMoveNextCallCount, seq2.MoveNextCallCount);
+		Assert.Equal(expectedCompareCount, seq1.CompareCount(seq2));
+		Assert.Equal(expectedMoveNextCallCount, seq1.MoveNextCallCount);
+		Assert.Equal(expectedMoveNextCallCount, seq2.MoveNextCallCount);
 	}
 
-	[Test]
+	[Fact]
 	public void CompareCountDisposesSequenceEnumerators()
 	{
 		using var seq1 = TestingSequence.Of<int>();
 		using var seq2 = TestingSequence.Of<int>();
 
-		Assert.AreEqual(0, seq1.CompareCount(seq2));
+		Assert.Equal(0, seq1.CompareCount(seq2));
 	}
 
-	[Test]
+	[Fact]
 	public void CompareCountDisposesFirstEnumerator()
 	{
 		var collection = new BreakingCollection<int>(0);
 
 		using var seq = TestingSequence.Of<int>();
 
-		Assert.AreEqual(0, seq.CompareCount(collection));
+		Assert.Equal(0, seq.CompareCount(collection));
 	}
 
-	[Test]
+	[Fact]
 	public void CompareCountDisposesSecondEnumerator()
 	{
 		var collection = new BreakingCollection<int>(0);
 
 		using var seq = TestingSequence.Of<int>();
 
-		Assert.AreEqual(0, collection.CompareCount(seq));
+		Assert.Equal(0, collection.CompareCount(seq));
 	}
 
-	[Test]
+	[Fact]
 	public void CompareCountDoesNotIterateUnnecessaryElements()
 	{
 		var seq1 = SuperEnumerable.From(() => 1,
@@ -116,8 +119,8 @@ public class CompareCountTest
 
 		var seq2 = Enumerable.Range(1, 3);
 
-		Assert.AreEqual(1, seq1.CompareCount(seq2));
-		Assert.AreEqual(-1, seq2.CompareCount(seq1));
+		Assert.Equal(1, seq1.CompareCount(seq2));
+		Assert.Equal(-1, seq2.CompareCount(seq1));
 	}
 
 	enum SequenceKind

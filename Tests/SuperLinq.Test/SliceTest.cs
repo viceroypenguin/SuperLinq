@@ -1,17 +1,14 @@
-﻿using NUnit.Framework;
-
-namespace Test;
+﻿namespace Test;
 
 /// <summary>
 /// Verify the behavior of the Slice operator
 /// </summary>
-[TestFixture]
 public class SliceTests
 {
 	/// <summary>
 	/// Verify that Slice evaluates in a lazy manner.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSliceIsLazy()
 	{
 		new BreakingSequence<int>().Slice(10, 10);
@@ -22,7 +19,7 @@ public class SliceTests
 	/// NOTE: Since there are two different implementations of Slice() - one optimized that's
 	///       for lists and one that operates on any <c>IEnumerable{T}</c>, this test examines both.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSliceIdentity()
 	{
 		const int count = 100;
@@ -32,8 +29,8 @@ public class SliceTests
 		var resultA = sequenceA.Slice(0, count);
 		var resultB = sequenceB.Slice(0, count);
 
-		Assert.That(resultA, Is.EqualTo(sequenceA));
-		Assert.That(resultB, Is.EqualTo(sequenceB));
+		Assert.Equal(sequenceA, resultA);
+		Assert.Equal(sequenceB, resultB);
 	}
 
 	/// <summary>
@@ -41,7 +38,7 @@ public class SliceTests
 	/// NOTE: Since there are two different implementations of Slice() - one optimized that's
 	///       for lists and one that operates on any <c>IEnumerable{T}</c>, this test examines both.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSliceFirstItem()
 	{
 		const int count = 10;
@@ -50,8 +47,8 @@ public class SliceTests
 		var resultA = sequenceA.Slice(0, 1);
 		var resultB = sequenceB.Slice(0, 1);
 
-		Assert.That(resultA, Is.EqualTo(sequenceA.Take(1)));
-		Assert.That(resultB, Is.EqualTo(sequenceB.Take(1)));
+		Assert.Equal(sequenceA.Take(1), resultA);
+		Assert.Equal(sequenceB.Take(1), resultB);
 	}
 
 	/// <summary>
@@ -59,7 +56,7 @@ public class SliceTests
 	/// NOTE: Since there are two different implementations of Slice() - one optimized that's
 	///       for lists and one that operates on any <c>IEnumerable{T}</c>, this test examines both.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSliceLastItem()
 	{
 		const int count = 10;
@@ -68,8 +65,8 @@ public class SliceTests
 		var resultA = sequenceA.Slice(count - 1, 1);
 		var resultB = sequenceB.Slice(count - 1, 1);
 
-		Assert.That(resultA, Is.EqualTo(sequenceA.Skip(9).Take(1)));
-		Assert.That(resultB, Is.EqualTo(sequenceB.Skip(9).Take(1)));
+		Assert.Equal(sequenceA.Skip(9).Take(1), resultA);
+		Assert.Equal(sequenceB.Skip(9).Take(1), resultB);
 	}
 
 	/// <summary>
@@ -78,7 +75,7 @@ public class SliceTests
 	/// NOTE: Since there are two different implementations of Slice() - one optimized that's
 	///       for lists and one that operates on any <c>IEnumerable{T}</c>, this test examines both.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSliceSmallerThanSequence()
 	{
 		const int count = 10;
@@ -87,8 +84,8 @@ public class SliceTests
 		var resultA = sequenceA.Slice(4, 5);
 		var resultB = sequenceB.Slice(4, 5);
 
-		Assert.That(resultA, Is.EqualTo(sequenceA.Skip(4).Take(5)));
-		Assert.That(resultB, Is.EqualTo(sequenceB.Skip(4).Take(5)));
+		Assert.Equal(sequenceA.Skip(4).Take(5), resultA);
+		Assert.Equal(sequenceB.Skip(4).Take(5), resultB);
 	}
 
 	/// <summary>
@@ -97,7 +94,7 @@ public class SliceTests
 	/// NOTE: Since there are two different implementations of Slice() - one optimized that's
 	///       for lists and one that operates on any <c>IEnumerable{T}</c>, this test examines both.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSliceLongerThanSequence()
 	{
 		const int count = 100;
@@ -106,16 +103,17 @@ public class SliceTests
 		var resultA = sequenceA.Slice(count / 2, count);
 		var resultB = sequenceB.Slice(count / 2, count);
 
-		Assert.That(resultA, Is.EqualTo(sequenceA.Skip(count / 2).Take(count)));
-		Assert.That(resultB, Is.EqualTo(sequenceB.Skip(count / 2).Take(count)));
+		Assert.Equal(sequenceA.Skip(count / 2).Take(count), resultA);
+		Assert.Equal(sequenceB.Skip(count / 2).Take(count), resultB);
 	}
 
 	/// <summary>
 	/// Verify that slice is optimized for <see cref="IList{T}"/> and <see cref="IReadOnlyList{T}"/> implementations and does not
 	/// unnecessarily traverse items outside of the slice region.
 	/// </summary>
-	[TestCase(SourceKind.BreakingList)]
-	[TestCase(SourceKind.BreakingReadOnlyList)]
+	[Theory]
+	[InlineData(SourceKind.BreakingList)]
+	[InlineData(SourceKind.BreakingReadOnlyList)]
 	public void TestSliceOptimization(SourceKind sourceKind)
 	{
 		const int sliceStart = 4;
@@ -124,7 +122,7 @@ public class SliceTests
 
 		var result = sequence.Slice(sliceStart, sliceCount);
 
-		Assert.AreEqual(sliceCount, result.Count());
-		CollectionAssert.AreEqual(Enumerable.Range(5, sliceCount), result);
+		Assert.Equal(sliceCount, result.Count());
+		Assert.Equal(Enumerable.Range(5, sliceCount), result);
 	}
 }

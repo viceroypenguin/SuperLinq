@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class AcquireTest
 {
-	[Test]
+	[Fact]
 	public void AcquireAll()
 	{
 		Disposable a = null;
@@ -18,16 +15,16 @@ public class AcquireTest
 
 		var disposables = allocators.Acquire();
 
-		Assert.That(disposables.Length, Is.EqualTo(3));
+		Assert.Equal(3, disposables.Length);
 
 		foreach (var disposable in disposables.ZipShortest(new[] { a, b, c }, (act, exp) => new { Actual = act, Expected = exp }))
 		{
-			Assert.That(disposable.Actual, Is.SameAs(disposable.Expected));
-			Assert.That(disposable.Actual.Disposed, Is.False);
+			Assert.Equal(disposable.Expected, disposable.Actual);
+			Assert.False(disposable.Actual.Disposed);
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void AcquireSome()
 	{
 		Disposable a = null;
@@ -41,11 +38,11 @@ public class AcquireTest
 
 		Assert.Throws<TestException>(() => allocators.Acquire());
 
-		Assert.That(a, Is.Not.Null);
-		Assert.That(a.Disposed, Is.True);
-		Assert.That(b, Is.Not.Null);
-		Assert.That(b.Disposed, Is.True);
-		Assert.That(c, Is.Null);
+		Assert.NotNull(a);
+		Assert.True(a.Disposed);
+		Assert.NotNull(b);
+		Assert.True(b.Disposed);
+		Assert.Null(c);
 	}
 
 	class Disposable : IDisposable

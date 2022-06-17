@@ -1,17 +1,14 @@
-﻿using NUnit.Framework;
-
-namespace Test;
+﻿namespace Test;
 
 /// <summary>
 /// Tests of the Subset() family of extension methods.
 /// </summary>
-[TestFixture]
 public class SubsetTest
 {
 	/// <summary>
 	/// Verify that Subsets() behaves in a lazy manner.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSubsetsIsLazy()
 	{
 		new BreakingSequence<int>().Subsets();
@@ -21,27 +18,27 @@ public class SubsetTest
 	/// <summary>
 	/// Verify that negative subset sizes result in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestNegativeSubsetSize()
 	{
 		const int count = 10;
 		var sequence = Enumerable.Range(1, count);
 
-		AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			sequence.Subsets(-5));
 	}
 
 	/// <summary>
 	/// Verify that requesting subsets larger than the original sequence length result in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSubsetLargerThanSequence()
 	{
 		const int count = 10;
 		var sequence = Enumerable.Range(1, count);
 		var result = sequence.Subsets(count + 5);
 
-		AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 		{
 			result.Consume(); // this particular exception is deferred until sequence evaluation
 		});
@@ -50,19 +47,19 @@ public class SubsetTest
 	/// <summary>
 	/// Verify that the only subset of an empty sequence is the empty sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestEmptySequenceSubsets()
 	{
 		var sequence = Enumerable.Repeat(0, 0);
 		var result = sequence.Subsets();
 
-		Assert.That(result.Single(), Is.EqualTo(sequence));
+		Assert.Equal(sequence, result.Single());
 	}
 
 	/// <summary>
 	/// Verify that subsets are returned in increasing size, starting with the empty set.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSubsetsInIncreasingOrder()
 	{
 		const int count = 10;
@@ -72,7 +69,7 @@ public class SubsetTest
 		var prevSubset = Enumerable.Empty<int>();
 		foreach (var subset in result)
 		{
-			Assert.GreaterOrEqual(subset.Count, prevSubset.Count());
+			Assert.True(subset.Count >= prevSubset.Count());
 			prevSubset = subset;
 		}
 	}
@@ -80,7 +77,7 @@ public class SubsetTest
 	/// <summary>
 	/// Verify that the number of subsets returned is correct, but don't verify the subset contents.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestAllSubsetsExpectedCount()
 	{
 		const int count = 20;
@@ -89,13 +86,13 @@ public class SubsetTest
 
 		var expectedCount = Math.Pow(2, count);
 
-		Assert.AreEqual(expectedCount, result.Count());
+		Assert.Equal(expectedCount, result.Count());
 	}
 
 	/// <summary>
 	/// Verify that the complete subset results for a known set are correct.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestAllSubsetsExpectedResults()
 	{
 		var sequence = Enumerable.Range(1, 4);
@@ -112,13 +109,13 @@ public class SubsetTest
 
 		var index = 0;
 		foreach (var subset in result)
-			Assert.That(subset, Is.EqualTo(expectedSubsets[index++]));
+			Assert.Equal(expectedSubsets[index++], subset);
 	}
 
 	/// <summary>
 	/// Verify that the number of subsets for a given subset-size is correct.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestKSubsetExpectedCount()
 	{
 		const int count = 20;
@@ -129,13 +126,13 @@ public class SubsetTest
 		// number of subsets of a given size is defined by the binomial coefficient: c! / ((c-s)!*s!)
 		var expectedSubsetCount = Combinatorics.Binomial(count, subsetSize);
 
-		Assert.AreEqual(expectedSubsetCount, result.Count());
+		Assert.Equal(expectedSubsetCount, result.Count());
 	}
 
 	/// <summary>
 	/// Verify that k-subsets of a given set are in the correct order and contain the correct elements.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestKSubsetExpectedResult()
 	{
 		var sequence = Enumerable.Range(1, 6);
@@ -162,6 +159,6 @@ public class SubsetTest
 
 		var index = 0;
 		foreach (var subset in result)
-			Assert.That(subset, Is.EqualTo(expectedSubsets[index++]));
+			Assert.Equal(expectedSubsets[index++], subset);
 	}
 }

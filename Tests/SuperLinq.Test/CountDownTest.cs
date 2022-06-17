@@ -1,19 +1,17 @@
 ﻿using System.Collections;
-using NUnit.Framework;
 
 namespace Test;
 
-[TestFixture]
 public class CountDownTest
 {
-	[Test]
+	[Fact]
 	public void IsLazy()
 	{
 		new BreakingSequence<object>()
 			.CountDown(42, BreakingFunc.Of<object, int?, object>());
 	}
 
-	[Test]
+	[Fact]
 	public void WithNegativeCount()
 	{
 		const int count = 10;
@@ -36,55 +34,50 @@ public class CountDownTest
 		yield return selector(xs, 7, new int?[] { 4, 3, 2, 1, 0 });
 	}
 
-	static readonly IEnumerable<TestCaseData> SequenceData =
+	public static IEnumerable<object[]> SequenceData { get; } =
 		from e in GetData((xs, count, countdown) => new
 		{
 			Source = xs,
 			Count = count,
-			Countdown = countdown
+			Countdown = countdown,
 		})
-		select new TestCaseData(e.Source, e.Count)
-			.Returns(e.Source.Zip(e.Countdown, ValueTuple.Create))
-			.SetName($"{nameof(WithSequence)}({{ {string.Join(", ", e.Source)} }}, {e.Count})");
+		select new object[] { e.Source, e.Count, e.Source.Zip(e.Countdown, ValueTuple.Create), };
 
-	[TestCaseSource(nameof(SequenceData))]
-	public IEnumerable<(int, int?)> WithSequence(int[] xs, int count)
+	[Theory, MemberData(nameof(SequenceData))]
+	public void WithSequence(int[] xs, int count, IEnumerable<(int, int?)> expected)
 	{
 		using var ts = xs.Select(x => x).AsTestingSequence();
-		foreach (var e in ts.CountDown(count, ValueTuple.Create))
-			yield return e;
+		Assert.Equal(expected, ts.CountDown(count, ValueTuple.Create));
 	}
 
-	static readonly IEnumerable<TestCaseData> ListData =
+	public static IEnumerable<object[]> ListData { get; } =
 		from e in GetData((xs, count, countdown) => new
 		{
 			Source = xs,
 			Count = count,
-			Countdown = countdown
+			Countdown = countdown,
 		})
 		from kind in new[] { SourceKind.BreakingList, SourceKind.BreakingReadOnlyList }
-		select new TestCaseData(e.Source.ToSourceKind(kind), e.Count)
-			.Returns(e.Source.Zip(e.Countdown, ValueTuple.Create))
-			.SetName($"{nameof(WithList)}({kind} {{ {string.Join(", ", e.Source)} }}, {e.Count})");
+		select new object[] { e.Source.ToSourceKind(kind), e.Count, e.Source.Zip(e.Countdown, ValueTuple.Create), };
 
-	[TestCaseSource(nameof(ListData))]
-	public IEnumerable<(int, int?)> WithList(IEnumerable<int> xs, int count) =>
-		xs.CountDown(count, ValueTuple.Create);
+	[Theory, MemberData(nameof(ListData))]
+	public void WithList(IEnumerable<int> xs, int count, IEnumerable<(int, int?)> expected)
+	{
+		Assert.Equal(expected, xs.CountDown(count, ValueTuple.Create));
+	}
 
-	static readonly IEnumerable<TestCaseData> CollectionData =
+	public static IEnumerable<object[]> CollectionData { get; } =
 		from e in GetData((xs, count, countdown) => new
 		{
 			Source = xs,
 			Count = count,
-			Countdown = countdown
+			Countdown = countdown,
 		})
 		from isReadOnly in new[] { true, false }
-		select new TestCaseData(e.Source, isReadOnly, e.Count)
-			.Returns(e.Source.Zip(e.Countdown, ValueTuple.Create))
-			.SetName($"{nameof(WithCollection)}({{ {string.Join(", ", e.Source)} }}, {isReadOnly}, {e.Count})");
+		select new object[] { e.Source, isReadOnly, e.Count, e.Source.Zip(e.Countdown, ValueTuple.Create), };
 
-	[TestCaseSource(nameof(CollectionData))]
-	public IEnumerable<(int, int?)> WithCollection(int[] xs, bool isReadOnly, int count)
+	[Theory, MemberData(nameof(CollectionData))]
+	public void WithCollection(int[] xs, bool isReadOnly, int count, IEnumerable<(int, int?)> expected)
 	{
 		var moves = 0;
 		var disposed = false;
@@ -103,17 +96,19 @@ public class CountDownTest
 			   ? TestCollection.CreateReadOnly(xs, Watch)
 			   : TestCollection.Create(xs, Watch).AsEnumerable();
 
-		foreach (var e in ts.CountDown(count, ValueTuple.Create).Index(1))
-		{
-			// For a collection, CountDown doesn't do any buffering
-			// so check that as each result becomes available, the
-			// source hasn't been "pulled" on more.
+		var result =
+			ts.CountDown(count, ValueTuple.Create).Index(1)
+				.Do(e =>
+				{
+					// For a collection, CountDown doesn't do any buffering
+					// so check that as each result becomes available, the
+					// source hasn't been "pulled" on more.
+					Assert.Equal(e.index, moves);
+				})
+				.Select(x => x.item);
+		Assert.Equal(expected, result);
 
-			Assert.That(moves, Is.EqualTo(e.index));
-			yield return e.item;
-		}
-
-		Assert.That(disposed, Is.True);
+		Assert.True(disposed);
 	}
 
 	static class TestCollection

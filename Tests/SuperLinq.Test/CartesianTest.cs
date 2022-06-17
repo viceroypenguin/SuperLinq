@@ -1,17 +1,14 @@
-﻿using NUnit.Framework;
-
-namespace Test;
+﻿namespace Test;
 
 /// <summary>
 /// Verify the behavior of the Cartesian operator
 /// </summary>
-[TestFixture]
 public class CartesianTests
 {
 	/// <summary>
 	/// Verify that the Cartesian product is evaluated in a lazy fashion on demand.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCartesianIsLazy()
 	{
 		new BreakingSequence<string>()
@@ -22,7 +19,7 @@ public class CartesianTests
 	/// <summary>
 	/// Verify that the Cartesian product of two empty sequences is an empty sequence
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCartesianOfEmptySequences()
 	{
 		using var sequenceA = Enumerable.Empty<int>().AsTestingSequence();
@@ -30,13 +27,13 @@ public class CartesianTests
 
 		var result = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
 
-		Assert.That(result, Is.Empty);
+		Assert.Empty(result);
 	}
 
 	/// <summary>
 	/// Verify that the Cartesian product of an empty and non-empty sequence is an empty sequence
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCartesianOfEmptyAndNonEmpty()
 	{
 		var sequenceA = Enumerable.Empty<int>();
@@ -46,21 +43,21 @@ public class CartesianTests
 		using (var tsB = sequenceB.AsTestingSequence())
 		{
 			var result = tsA.Cartesian(tsB, (a, b) => a + b);
-			Assert.That(result, Is.EqualTo(sequenceA));
+			Assert.Equal(sequenceA, result);
 		}
 
 		using (var tsA = sequenceA.AsTestingSequence())
 		using (var tsB = sequenceB.AsTestingSequence())
 		{
 			var result = tsB.Cartesian(tsA, (a, b) => a + b);
-			Assert.That(result, Is.EqualTo(sequenceA));
+			Assert.Equal(sequenceA, result);
 		}
 	}
 
 	/// <summary>
 	/// Verify that the number of elements in a Cartesian product is the product of the number of elements of each sequence
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCartesianProductCount()
 	{
 		const int countA = 100;
@@ -71,36 +68,36 @@ public class CartesianTests
 
 		var result = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
 
-		Assert.AreEqual(expectedCount, result.Count());
+		Assert.Equal(expectedCount, result.Count());
 	}
 
 	/// <summary>
 	/// Verify that the number of elements in a Cartesian product is the product of the number of elements of each sequence,
 	/// even when there are more than two sequences
 	/// </summary>
-	[Test]
-	public void TestCartesianProductCount_Multidimensional()
+	[Fact]
+	public void TestCartesianProductCountMultidimensional()
 	{
-		const int countA = 10;
-		const int countB = 9;
-		const int countC = 8;
-		const int countD = 7;
+		const int CountA = 10;
+		const int CountB = 9;
+		const int CountC = 8;
+		const int CountD = 7;
 
-		using var sequenceA = Enumerable.Range(1, countA).AsTestingSequence();
-		using var sequenceB = Enumerable.Range(1, countB).AsTestingSequence();
-		using var sequenceC = Enumerable.Range(1, countC).AsTestingSequence();
-		using var sequenceD = Enumerable.Range(1, countD).AsTestingSequence();
+		using var sequenceA = Enumerable.Range(1, CountA).AsTestingSequence();
+		using var sequenceB = Enumerable.Range(1, CountB).AsTestingSequence();
+		using var sequenceC = Enumerable.Range(1, CountC).AsTestingSequence();
+		using var sequenceD = Enumerable.Range(1, CountD).AsTestingSequence();
 
 		var result = sequenceA.Cartesian(sequenceB, sequenceC, sequenceD, (a, b, c, d) => a + b + c + d);
 
-		const int expectedCount = countA * countB * countC * countD;
-		Assert.AreEqual(expectedCount, result.Count());
+		const int ExpectedCount = CountA * CountB * CountC * CountD;
+		Assert.Equal(ExpectedCount, result.Count());
 	}
 
 	/// <summary>
 	/// Verify that each combination is produced in the Cartesian product
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCartesianProductCombinations()
 	{
 		var sequenceA = Enumerable.Range(0, 5);
@@ -122,19 +119,19 @@ public class CartesianTests
 						.ToArray();
 
 		// verify that the expected number of results is correct
-		Assert.AreEqual(sequenceA.Count() * sequenceB.Count(), result.Length);
+		Assert.Equal(sequenceA.Count() * sequenceB.Count(), result.Length);
 
 		// ensure that all "cells" were visited by the cartesian product
 		foreach (var coord in result)
 			expectedSet[coord.A][coord.B] = true;
-		Assert.IsTrue(expectedSet.SelectMany(x => x).All(z => z));
+		Assert.True(expectedSet.SelectMany(x => x).All(z => z));
 	}
 
 	/// <summary>
 	/// Verify that if either sequence passed to Cartesian is empty, the result
 	/// is an empty sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestEmptyCartesianEvaluation()
 	{
 		var sequence = Enumerable.Range(0, 5);
@@ -143,8 +140,8 @@ public class CartesianTests
 		var resultB = Enumerable.Empty<int>().Cartesian(sequence, (a, b) => new { A = a, B = b });
 		var resultC = Enumerable.Empty<int>().Cartesian(Enumerable.Empty<int>(), (a, b) => new { A = a, B = b });
 
-		Assert.AreEqual(0, resultA.Count());
-		Assert.AreEqual(0, resultB.Count());
-		Assert.AreEqual(0, resultC.Count());
+		Assert.Empty(resultA);
+		Assert.Empty(resultB);
+		Assert.Empty(resultC);
 	}
 }

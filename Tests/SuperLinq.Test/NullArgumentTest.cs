@@ -2,24 +2,21 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
-using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 
 namespace Test;
 
-[TestFixture]
 public class NullArgumentTest
 {
-	[Test, TestCaseSource(nameof(GetNotNullTestCases))]
-	public void NotNull(Action testCase) =>
-		testCase();
+	[Theory, MemberData(nameof(GetNotNullInlineDatas))]
+	public void NotNull(Action InlineData) =>
+		InlineData();
 
-	[Test, TestCaseSource(nameof(GetCanBeNullTestCases))]
-	public void CanBeNull(Action testCase) =>
-		testCase();
+	[Theory, MemberData(nameof(GetCanBeNullInlineDatas))]
+	public void CanBeNull(Action InlineData) =>
+		InlineData();
 
-	static IEnumerable<ITestCaseData> GetNotNullTestCases() =>
-		GetTestCases(canBeNull: false, testCaseFactory: (method, args, paramName) => () =>
+	public static IEnumerable<object[]> GetNotNullInlineDatas() =>
+		GetInlineDatas(canBeNull: false, InlineDataFactory: (method, args, paramName) => () =>
 		{
 			Exception e = null;
 
@@ -32,31 +29,31 @@ public class NullArgumentTest
 				e = tie.InnerException;
 			}
 
-			Assert.That(e, Is.Not.Null, $"No exception was thrown when {nameof(ArgumentNullException)} was expected.");
-			Assert.That(e, Is.InstanceOf<ArgumentNullException>());
+			Assert.NotNull(e);
+			Assert.IsAssignableFrom<ArgumentNullException>(e);
 			var ane = (ArgumentNullException)e;
-			Assert.That(ane.ParamName, Is.EqualTo(paramName));
+			Assert.Equal(paramName, ane.ParamName);
 		});
 
-	static IEnumerable<ITestCaseData> GetCanBeNullTestCases() =>
-		GetTestCases(canBeNull: true, testCaseFactory: (method, args, _) => () => method.Invoke(null, args));
+	public static IEnumerable<object[]> GetCanBeNullInlineDatas() =>
+		GetInlineDatas(canBeNull: true, InlineDataFactory: (method, args, _) => () => method.Invoke(null, args));
 
-	static IEnumerable<ITestCaseData> GetTestCases(bool canBeNull, Func<MethodInfo, object[], string, Action> testCaseFactory) =>
+	static IEnumerable<object[]> GetInlineDatas(bool canBeNull, Func<MethodInfo, object[], string, Action> InlineDataFactory) =>
 		from m in typeof(SuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-		from t in CreateTestCases(m, canBeNull, testCaseFactory)
+		from t in CreateInlineDatas(m, canBeNull, InlineDataFactory)
 		select t;
 
-	static IEnumerable<ITestCaseData> CreateTestCases(MethodInfo methodDefinition, bool canBeNull, Func<MethodInfo, object[], string, Action> testCaseFactory)
+	static IEnumerable<object[]> CreateInlineDatas(MethodInfo methodDefinition, bool canBeNull, Func<MethodInfo, object[], string, Action> InlineDataFactory)
 	{
 		var method = InstantiateMethod(methodDefinition);
 		var parameters = method.GetParameters().ToList();
 
 		return from param in parameters
-			   where IsReferenceType(param) && CanBeNull(param) == canBeNull
+			   where IsReferenceType(param) && ParameterCanBeNull(param) == canBeNull
 			   let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
-			   let testCase = testCaseFactory(method, arguments, param.Name)
+			   let InlineData = InlineDataFactory(method, arguments, param.Name)
 			   let testName = GetTestName(methodDefinition, param)
-			   select (ITestCaseData)new TestCaseData(testCase).SetName(testName);
+			   select new object[] { InlineData };
 	}
 
 	static string GetTestName(MethodInfo definition, ParameterInfo parameter) =>
@@ -83,7 +80,7 @@ public class NullArgumentTest
 	static bool IsReferenceType(ParameterInfo parameter) =>
 		!parameter.ParameterType.GetTypeInfo().IsValueType;
 
-	static bool CanBeNull(ParameterInfo parameter)
+	static bool ParameterCanBeNull(ParameterInfo parameter)
 	{
 		var nullableTypes =
 			from t in new[] { typeof(IEqualityComparer<>), typeof(IComparer<>) }
@@ -98,7 +95,7 @@ public class NullArgumentTest
 		type = type.IsGenericType ? type.GetGenericTypeDefinition().GetTypeInfo() : type;
 		var param = parameter.Member.Name + "." + parameter.Name;
 
-		return nullableTypes.Contains(type) || nullableParameters.Contains(param);
+		return nullableTypes.Contains(type) || nullableParameters.Contains(param, StringComparer.OrdinalIgnoreCase);
 	}
 
 	static object CreateInstance(Type type)

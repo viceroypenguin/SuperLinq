@@ -1,17 +1,13 @@
 ﻿using System.Globalization;
 using System.Linq.Expressions;
-using System.Reactive.Linq;
 using System.Reflection;
-using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 
 namespace Test;
 using static FuncModule;
 
-[TestFixture]
 public class AggregateTest
 {
-	public static IEnumerable<ITestCaseData> AccumulatorsTestSource(string name, int count) =>
+	public static IEnumerable<object[]> AccumulatorsTestSource() =>
 
 		/* Generates an invocation as follows for 2 accumulators:
 
@@ -22,7 +18,7 @@ public class AggregateTest
 								 (sum1, sum2) => new[] { sum1, sum2 });
 		*/
 
-		from source in new[] { Enumerable.Range(1, count).Shuffle() }
+		from source in new[] { Enumerable.Range(1, 10).Shuffle() }
 		let sum = source.Sum()
 		from m in typeof(SuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static)
 		where m.Name == nameof(SuperEnumerable.Aggregate)
@@ -59,7 +55,6 @@ public class AggregateTest
 		let accumulator = Func((int s, int n) => s + n)
 		select new
 		{
-			Name = $"{name}({m.AccumulatorCount})",
 			Method = m.Instantiation,
 			Args =
 				Enumerable.Repeat(m.Source, 1)
@@ -73,13 +68,15 @@ public class AggregateTest
 						  .ToArray(),
 		}
 		into t
-		select new TestCaseData(t.Method, t.Args).SetName(t.Name).Returns(t.Expectation);
+		select new object[] { t.Method, t.Args, t.Expectation, };
 
-	[TestCaseSource(nameof(AccumulatorsTestSource), new object[] { nameof(Accumulators), 10 })]
-	public object Accumulators(MethodInfo method, object[] args) =>
-		method.Invoke(null, args);
+	[Theory, MemberData(nameof(AccumulatorsTestSource))]
+	public void Accumulators(MethodInfo method, object[] args, object expected)
+	{
+		Assert.Equal(expected, method.Invoke(null, args));
+	}
 
-	[Test]
+	[Fact]
 	public void SevenUniqueAccumulators()
 	{
 		var result =
@@ -108,12 +105,12 @@ public class AggregateTest
 					}
 				);
 
-		Assert.That(result.Sum, Is.EqualTo(55));
-		Assert.That(result.EvenSum, Is.EqualTo(30));
-		Assert.That(result.Count, Is.EqualTo(10));
-		Assert.That(result.Average, Is.EqualTo(5.5));
-		Assert.That(result.Min, Is.EqualTo(1));
-		Assert.That(result.Max, Is.EqualTo(10));
+		Assert.Equal(55, result.Sum);
+		Assert.Equal(30, result.EvenSum);
+		Assert.Equal(10, result.Count);
+		Assert.Equal(5.5, result.Average);
+		Assert.Equal(1, result.Min);
+		Assert.Equal(10, result.Max);
 		result.UniqueLengths.OrderBy(n => n).AssertSequenceEqual(1, 2);
 		result.Items
 			  .Select(e => new { e.Num, e.Str })

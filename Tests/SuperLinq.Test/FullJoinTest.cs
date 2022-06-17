@@ -1,68 +1,62 @@
-﻿using NUnit.Framework;
-using static Test.FullJoinTest.Side;
+﻿using static Test.FullJoinTest.Side;
 
 namespace Test;
 
-[TestFixture]
 public class FullJoinTest
 {
 	public enum Side { Left, Right, Both }
 
-	[Test]
+	[Fact]
 	public void FullJoinWithHomogeneousSequencesIsLazy()
 	{
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		Assert.DoesNotThrow(() =>
-			xs.FullJoin(ys, e => e,
-				BreakingFunc.Of<int, object>(),
-				BreakingFunc.Of<int, object>(),
-				BreakingFunc.Of<int, int, object>()));
+		xs.FullJoin(ys, e => e,
+			BreakingFunc.Of<int, object>(),
+			BreakingFunc.Of<int, object>(),
+			BreakingFunc.Of<int, int, object>());
 	}
 
-	[Test]
+	[Fact]
 	public void FullJoinWithHomogeneousSequencesWithComparerIsLazy()
 	{
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		Assert.DoesNotThrow(() =>
-			xs.FullJoin(ys, e => e,
-				BreakingFunc.Of<int, object>(),
-				BreakingFunc.Of<int, object>(),
-				BreakingFunc.Of<int, int, object>(),
-				comparer: null));
+		xs.FullJoin(ys, e => e,
+			BreakingFunc.Of<int, object>(),
+			BreakingFunc.Of<int, object>(),
+			BreakingFunc.Of<int, int, object>(),
+			comparer: null);
 	}
 
-	[Test]
+	[Fact]
 	public void FullJoinIsLazy()
 	{
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		Assert.DoesNotThrow(() =>
-			xs.FullJoin(ys, x => x, y => y.GetHashCode(),
-				BreakingFunc.Of<int, object>(),
-				BreakingFunc.Of<object, object>(),
-				BreakingFunc.Of<int, object, object>()));
+		xs.FullJoin(ys, x => x, y => y.GetHashCode(),
+			BreakingFunc.Of<int, object>(),
+			BreakingFunc.Of<object, object>(),
+			BreakingFunc.Of<int, object, object>());
 	}
 
-	[Test]
+	[Fact]
 	public void FullJoinWithComparerIsLazy()
 	{
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		Assert.DoesNotThrow(() =>
-			xs.FullJoin(ys, x => x, y => y.GetHashCode(),
-				BreakingFunc.Of<int, object>(),
-				BreakingFunc.Of<object, object>(),
-				BreakingFunc.Of<int, object, object>(),
-				comparer: null));
+		xs.FullJoin(ys, x => x, y => y.GetHashCode(),
+			BreakingFunc.Of<int, object>(),
+			BreakingFunc.Of<object, object>(),
+			BreakingFunc.Of<int, object, object>(),
+			comparer: null);
 	}
 
-	[Test]
+	[Fact]
 	public void FullJoinResults()
 	{
 		var foo = (1, "foo");
@@ -97,7 +91,7 @@ public class FullJoinTest
 			(Right, missing, quuz));
 	}
 
-	[Test]
+	[Fact]
 	public void FullJoinWithComparerResults()
 	{
 		var foo = ("one", "foo");
@@ -133,7 +127,7 @@ public class FullJoinTest
 			(Right, missing, quuz));
 	}
 
-	[Test]
+	[Fact]
 	public void FullJoinEmptyLeft()
 	{
 		var foo = (1, "foo");
@@ -159,7 +153,7 @@ public class FullJoinTest
 			(Right, missing, baz));
 	}
 
-	[Test]
+	[Fact]
 	public void FullJoinEmptyRight()
 	{
 		var foo = (1, "foo");

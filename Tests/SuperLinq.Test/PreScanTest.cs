@@ -1,25 +1,22 @@
-﻿using NUnit.Framework;
-
-namespace Test;
-[TestFixture]
+﻿namespace Test;
 public class PreScanTest
 {
-	[Test]
+	[Fact]
 	public void PreScanIsLazy()
 	{
 		new BreakingSequence<int>().PreScan(BreakingFunc.Of<int, int, int>(), 0);
 	}
 
-	[Test]
+	[Fact]
 	public void PreScanWithEmptySequence()
 	{
 		var source = Enumerable.Empty<int>();
 		var result = source.PreScan(BreakingFunc.Of<int, int, int>(), 0);
 
-		Assert.That(result, Is.Empty);
+		Assert.Empty(result);
 	}
 
-	[Test]
+	[Fact]
 	public void PreScanWithSingleElement()
 	{
 		var source = new[] { 111 };
@@ -27,14 +24,14 @@ public class PreScanTest
 		result.AssertSequenceEqual(999);
 	}
 
-	[Test]
+	[Fact]
 	public void PreScanSum()
 	{
 		var result = SampleData.Values.PreScan(SampleData.Plus, 0);
 		result.AssertSequenceEqual(0, 1, 3, 6, 10, 15, 21, 28, 36, 45);
 	}
 
-	[Test]
+	[Fact]
 	public void PreScanMul()
 	{
 		var seq = new[] { 1, 2, 3 };
@@ -42,7 +39,7 @@ public class PreScanTest
 		result.AssertSequenceEqual(1, 1, 2);
 	}
 
-	[Test]
+	[Fact]
 	public void PreScanFuncIsNotInvokedUnnecessarily()
 	{
 		var count = 0;

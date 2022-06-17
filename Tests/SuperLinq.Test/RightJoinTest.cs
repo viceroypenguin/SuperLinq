@@ -1,64 +1,58 @@
-﻿using NUnit.Framework;
-using static Test.RightJoinTest.Side;
+﻿using static Test.RightJoinTest.Side;
 
 namespace Test;
 
-[TestFixture]
 public class RightJoinTest
 {
 	public enum Side { Right, Both }
 
-	[Test]
+	[Fact]
 	public void RightJoinWithHomogeneousSequencesIsLazy()
 	{
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		Assert.DoesNotThrow(() =>
-			xs.RightJoin(ys, e => e,
-				BreakingFunc.Of<int, object>(),
-				BreakingFunc.Of<int, int, object>()));
+		xs.RightJoin(ys, e => e,
+			BreakingFunc.Of<int, object>(),
+			BreakingFunc.Of<int, int, object>());
 	}
 
-	[Test]
+	[Fact]
 	public void RightJoinWithHomogeneousSequencesWithComparerIsLazy()
 	{
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		Assert.DoesNotThrow(() =>
-			xs.RightJoin(ys, e => e,
-				BreakingFunc.Of<int, object>(),
-				BreakingFunc.Of<int, int, object>(),
-				comparer: null));
+		xs.RightJoin(ys, e => e,
+			BreakingFunc.Of<int, object>(),
+			BreakingFunc.Of<int, int, object>(),
+			comparer: null);
 	}
 
-	[Test]
+	[Fact]
 	public void RightJoinIsLazy()
 	{
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		Assert.DoesNotThrow(() =>
-			xs.RightJoin(ys, x => x.GetHashCode(), y => y,
-				BreakingFunc.Of<object, object>(),
-				BreakingFunc.Of<int, object, object>()));
+		xs.RightJoin(ys, x => x.GetHashCode(), y => y,
+			BreakingFunc.Of<object, object>(),
+			BreakingFunc.Of<int, object, object>());
 	}
 
-	[Test]
+	[Fact]
 	public void RightJoinWithComparerIsLazy()
 	{
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		Assert.DoesNotThrow(() =>
-			xs.RightJoin(ys, x => x.GetHashCode(), y => y,
-				BreakingFunc.Of<object, object>(),
-				BreakingFunc.Of<int, object, object>(),
-				comparer: null));
+		xs.RightJoin(ys, x => x.GetHashCode(), y => y,
+			BreakingFunc.Of<object, object>(),
+			BreakingFunc.Of<int, object, object>(),
+			comparer: null);
 	}
 
-	[Test]
+	[Fact]
 	public void RightJoinResults()
 	{
 		var foo = (1, "foo");
@@ -87,7 +81,7 @@ public class RightJoinTest
 			(Right, missing, qux));
 	}
 
-	[Test]
+	[Fact]
 	public void RightJoinWithComparerResults()
 	{
 		var foo = ("one", "foo");
@@ -117,7 +111,7 @@ public class RightJoinTest
 			(Right, missing, qux));
 	}
 
-	[Test]
+	[Fact]
 	public void RightJoinEmptyLeft()
 	{
 		var foo = (1, "foo");
@@ -142,7 +136,7 @@ public class RightJoinTest
 			(Right, missing, baz));
 	}
 
-	[Test]
+	[Fact]
 	public void RightJoinEmptyRight()
 	{
 		var foo = (1, "foo");
@@ -161,6 +155,6 @@ public class RightJoinTest
 						y => (Right, missing, y),
 						(x, y) => (Both, x, y));
 
-		Assert.That(result, Is.Empty);
+		Assert.Empty(result);
 	}
 }

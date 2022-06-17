@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class ScanByTest
 {
-	[Test]
+	[Fact]
 	public void ScanByIsLazy()
 	{
 		new BreakingSequence<string>().ScanBy(
@@ -14,7 +11,7 @@ public class ScanByTest
 			BreakingFunc.Of<char, int, string, char>());
 	}
 
-	[Test]
+	[Fact]
 	public void ScanBy()
 	{
 		var source = new[]
@@ -38,7 +35,7 @@ public class ScanByTest
 		result.AssertSequenceEqual(('a', ("ana", 'A', 97)), ('b', ("beatriz", 'B', 98)), ('c', ("carla", 'C', 99)), ('b', ("bob", 'B', 99)), ('d', ("davi", 'D', 100)), ('a', ("adriano", 'A', 98)), ('a', ("angelo", 'A', 99)), ('c', ("carlos", 'C', 100)));
 	}
 
-	[Test]
+	[Fact]
 	public void ScanByWithSecondOccurenceImmediatelyAfterFirst()
 	{
 		var result = "jaffer".ScanBy(c => c, k => -1, (i, k, e) => i + 1);
@@ -46,7 +43,7 @@ public class ScanByTest
 		result.AssertSequenceEqual(('j', 0), ('a', 0), ('f', 0), ('f', 1), ('e', 0), ('r', 0));
 	}
 
-	[Test]
+	[Fact]
 	public void ScanByWithEqualityComparer()
 	{
 		var source = new[] { "a", "B", "c", "A", "b", "A" };
@@ -58,7 +55,7 @@ public class ScanByTest
 		result.AssertSequenceEqual(("a", 0), ("B", 0), ("c", 0), ("A", 1), ("b", 1), ("A", 2));
 	}
 
-	[Test]
+	[Fact]
 	public void ScanByWithSomeNullKeys()
 	{
 		var source = new[] { "foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo" };
@@ -67,7 +64,7 @@ public class ScanByTest
 		result.AssertSequenceEqual(("foo", 0), ((string)null, 0), ("bar", 0), ("baz", 0), ((string)null, 1), ((string)null, 2), ("baz", 1), ("bar", 1), ((string)null, 3), ("foo", 1));
 	}
 
-	[Test]
+	[Fact]
 	public void ScanByWithNullSeed()
 	{
 		var nil = (object)null;
@@ -77,7 +74,7 @@ public class ScanByTest
 		result.AssertSequenceEqual(("foo", nil), ((string)null, nil), ("bar", nil), ((string)null, nil), ("baz", nil));
 	}
 
-	[Test]
+	[Fact]
 	public void ScanByDoesNotIterateUnnecessaryElements()
 	{
 		var source = SuperEnumerable.From(() => "ana",

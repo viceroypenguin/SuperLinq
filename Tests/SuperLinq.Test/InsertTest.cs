@@ -1,20 +1,18 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class InsertTest
 {
-	[Test]
+	[Fact]
 	public void InsertWithNegativeIndex()
 	{
-		AssertThrowsArgument.OutOfRangeException("index", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			 Enumerable.Range(1, 10).Insert(new[] { 97, 98, 99 }, -1));
 	}
 
-	[TestCase(7)]
-	[TestCase(8)]
-	[TestCase(9)]
+	[Theory]
+	[InlineData(7)]
+	[InlineData(8)]
+	[InlineData(9)]
 	public void InsertWithIndexGreaterThanSourceLengthMaterialized(int count)
 	{
 		var seq1 = Enumerable.Range(0, count).ToList();
@@ -25,14 +23,15 @@ public class InsertTest
 
 		var result = test1.Insert(test2, count + 1);
 
-		AssertThrowsArgument.OutOfRangeException("index", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			result.ForEach((e, index) =>
-				Assert.That(e, Is.EqualTo(seq1[index]))));
+				Assert.Equal(seq1[index], e)));
 	}
 
-	[TestCase(7)]
-	[TestCase(8)]
-	[TestCase(9)]
+	[Theory]
+	[InlineData(7)]
+	[InlineData(8)]
+	[InlineData(9)]
 	public void InsertWithIndexGreaterThanSourceLengthLazy(int count)
 	{
 		var seq1 = Enumerable.Range(0, count);
@@ -43,13 +42,14 @@ public class InsertTest
 
 		var result = test1.Insert(test2, count + 1).Take(count);
 
-		Assert.That(seq1, Is.EqualTo(result));
+		Assert.Equal(result, seq1);
 	}
 
-	[TestCase(3, 0)]
-	[TestCase(3, 1)]
-	[TestCase(3, 2)]
-	[TestCase(3, 3)]
+	[Theory]
+	[InlineData(3, 0)]
+	[InlineData(3, 1)]
+	[InlineData(3, 2)]
+	[InlineData(3, 3)]
 	public void Insert(int count, int index)
 	{
 		var seq1 = Enumerable.Range(1, count);
@@ -61,10 +61,10 @@ public class InsertTest
 		var result = test1.Insert(test2, index);
 
 		var expectations = seq1.Take(index).Concat(seq2).Concat(seq1.Skip(index));
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void InsertIsLazy()
 	{
 		new BreakingSequence<int>().Insert(new BreakingSequence<int>(), 0);

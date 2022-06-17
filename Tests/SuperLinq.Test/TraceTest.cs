@@ -1,27 +1,25 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
-using NUnit.Framework;
 
 namespace Test;
 
-[TestFixture]
 public class TraceTest
 {
-	[Test]
+	[Fact]
 	public void TraceSequence()
 	{
 		var trace = Lines(CaptureTrace(() => "the quick brown fox".Split().Trace().Consume()));
 		trace.AssertSequenceEqual("the", "quick", "brown", "fox");
 	}
 
-	[Test]
+	[Fact]
 	public void TraceSequenceWithSomeNullElements()
 	{
 		var trace = Lines(CaptureTrace(() => new int?[] { 1, null, 2, null, 3 }.Trace().Consume()));
 		trace.AssertSequenceEqual("1", string.Empty, "2", string.Empty, "3");
 	}
 
-	[Test]
+	[Fact]
 	public void TraceSequenceWithSomeNullReferences()
 	{
 		var trace = Lines(CaptureTrace(() => new[] { "the", null, "quick", null, "brown", null, "fox" }.Trace().Consume()));
@@ -29,7 +27,7 @@ public class TraceTest
 		trace.AssertSequenceEqual("the", string.Empty, "quick", string.Empty, "brown", string.Empty, "fox");
 	}
 
-	[Test]
+	[Fact]
 	public void TraceSequenceWithFormatting()
 	{
 		var trace = Lines(CaptureTrace(delegate
@@ -41,7 +39,7 @@ public class TraceTest
 		trace.AssertSequenceEqual("1,234", "5,678");
 	}
 
-	[Test]
+	[Fact]
 	public void TraceSequenceWithFormatter()
 	{
 		var trace = Lines(CaptureTrace(delegate

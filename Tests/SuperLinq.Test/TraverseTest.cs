@@ -1,23 +1,20 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class TraverseTest
 {
-	[Test]
+	[Fact]
 	public void TraverseDepthFirstFNullGenerator()
 	{
 		SuperEnumerable.TraverseDepthFirst(new object(), o => new BreakingSequence<object>());
 	}
 
-	[Test]
+	[Fact]
 	public void TraverseBreadthFirstIsStreaming()
 	{
 		SuperEnumerable.TraverseBreadthFirst(new object(), o => new BreakingSequence<object>());
 	}
 
-	[Test]
+	[Fact]
 	public void TraverseDepthFirstPreservesChildrenOrder()
 	{
 		var res = SuperEnumerable.TraverseDepthFirst(0, i => i == 0 ? Enumerable.Range(1, 10) : Enumerable.Empty<int>());
@@ -25,7 +22,7 @@ public class TraverseTest
 	}
 
 
-	[Test]
+	[Fact]
 	public void TraverseBreadthFirstPreservesChildrenOrder()
 	{
 		var res = SuperEnumerable.TraverseBreadthFirst(0, i => i == 0 ? Enumerable.Range(1, 10) : Enumerable.Empty<int>());
@@ -50,7 +47,7 @@ public class TraverseTest
 			new Tree<T>(value, children);
 	}
 
-	[Test]
+	[Fact]
 	public void TraverseBreadthFirstTraversesBreadthFirst()
 	{
 		var tree = Tree.New(1,
@@ -63,7 +60,7 @@ public class TraverseTest
 		res.AssertSequenceEqual(1, 2, 5, 3, 6);
 	}
 
-	[Test]
+	[Fact]
 	public void TraverseDepthFirstTraversesDepthFirst()
 	{
 		var tree = Tree.New(1,

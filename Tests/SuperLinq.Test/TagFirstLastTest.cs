@@ -1,17 +1,14 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class TagFirstLastTest
 {
-	[Test]
+	[Fact]
 	public void TagFirstLastIsLazy()
 	{
 		new BreakingSequence<object>().TagFirstLast(BreakingFunc.Of<object, bool, bool, object>());
 	}
 
-	[Test]
+	[Fact]
 	public void TagFirstLastWithSourceSequenceOfOne()
 	{
 		var source = new[] { 123 };
@@ -19,7 +16,7 @@ public class TagFirstLastTest
 			  .AssertSequenceEqual(new { Item = 123, IsFirst = true, IsLast = true });
 	}
 
-	[Test]
+	[Fact]
 	public void TagFirstLastWithSourceSequenceOfTwo()
 	{
 		var source = new[] { 123, 456 };
@@ -28,7 +25,7 @@ public class TagFirstLastTest
 								   new { Item = 456, IsFirst = false, IsLast = true });
 	}
 
-	[Test]
+	[Fact]
 	public void TagFirstLastWithSourceSequenceOfThree()
 	{
 		var source = new[] { 123, 456, 789 };

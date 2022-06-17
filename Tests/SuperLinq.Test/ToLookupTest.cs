@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class ToLookupTest
 {
-	[Test]
+	[Fact]
 	public void ToLookupWithKeyValuePairs()
 	{
 		var pairs = new[]
@@ -20,13 +17,13 @@ public class ToLookupTest
 
 		var dict = pairs.ToLookup();
 
-		Assert.That(dict.Count, Is.EqualTo(3));
-		Assert.That(dict["foo"], Is.EqualTo(new[] { 1, 2 }));
-		Assert.That(dict["bar"], Is.EqualTo(new[] { 3 }));
-		Assert.That(dict["baz"], Is.EqualTo(new[] { 4, 5, 6 }));
+		Assert.Equal(3, dict.Count);
+		Assert.Equal(new[] { 1, 2 }, dict["foo"]);
+		Assert.Equal(new[] { 3 }, dict["bar"]);
+		Assert.Equal(new[] { 4, 5, 6 }, dict["baz"]);
 	}
 
-	[Test]
+	[Fact]
 	public void ToLookupWithCouples()
 	{
 		var pairs = new[]
@@ -41,13 +38,13 @@ public class ToLookupTest
 
 		var dict = pairs.ToLookup();
 
-		Assert.That(dict.Count, Is.EqualTo(3));
-		Assert.That(dict["foo"], Is.EqualTo(new[] { 1, 2 }));
-		Assert.That(dict["bar"], Is.EqualTo(new[] { 3 }));
-		Assert.That(dict["baz"], Is.EqualTo(new[] { 4, 5, 6 }));
+		Assert.Equal(3, dict.Count);
+		Assert.Equal(new[] { 1, 2 }, dict["foo"]);
+		Assert.Equal(new[] { 3 }, dict["bar"]);
+		Assert.Equal(new[] { 4, 5, 6 }, dict["baz"]);
 	}
 
-	[Test]
+	[Fact]
 	public void ToLookupWithKeyValuePairsWithComparer()
 	{
 		var pairs = new[]
@@ -62,13 +59,13 @@ public class ToLookupTest
 
 		var dict = pairs.ToLookup(StringComparer.OrdinalIgnoreCase);
 
-		Assert.That(dict.Count, Is.EqualTo(3));
-		Assert.That(dict["FOO"], Is.EqualTo(new[] { 1, 2 }));
-		Assert.That(dict["BAR"], Is.EqualTo(new[] { 3 }));
-		Assert.That(dict["BAZ"], Is.EqualTo(new[] { 4, 5, 6 }));
+		Assert.Equal(3, dict.Count);
+		Assert.Equal(new[] { 1, 2 }, dict["FOO"]);
+		Assert.Equal(new[] { 3 }, dict["BAR"]);
+		Assert.Equal(new[] { 4, 5, 6 }, dict["BAZ"]);
 	}
 
-	[Test]
+	[Fact]
 	public void ToLookupWithCouplesWithComparer()
 	{
 		var pairs = new[]
@@ -83,9 +80,9 @@ public class ToLookupTest
 
 		var dict = pairs.ToLookup(StringComparer.OrdinalIgnoreCase);
 
-		Assert.That(dict.Count, Is.EqualTo(3));
-		Assert.That(dict["FOO"], Is.EqualTo(new[] { 1, 2 }));
-		Assert.That(dict["BAR"], Is.EqualTo(new[] { 3 }));
-		Assert.That(dict["BAZ"], Is.EqualTo(new[] { 4, 5, 6 }));
+		Assert.Equal(3, dict.Count);
+		Assert.Equal(new[] { 1, 2 }, dict["FOO"]);
+		Assert.Equal(new[] { 3 }, dict["BAR"]);
+		Assert.Equal(new[] { 4, 5, 6 }, dict["BAZ"]);
 	}
 }

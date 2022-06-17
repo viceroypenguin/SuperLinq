@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class PartialSortTests
 {
-	[Test]
+	[Fact]
 	public void PartialSort()
 	{
 		var sorted = Enumerable.Range(1, 10)
@@ -16,7 +13,7 @@ public class PartialSortTests
 		sorted.AssertSequenceEqual(Enumerable.Range(0, 5));
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortWithOrder()
 	{
 		var sorted = Enumerable.Range(1, 10)
@@ -32,7 +29,7 @@ public class PartialSortTests
 		sorted.AssertSequenceEqual(Enumerable.Range(6, 5).Reverse());
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortWithDuplicates()
 	{
 		var sorted = Enumerable.Range(1, 10)
@@ -43,7 +40,7 @@ public class PartialSortTests
 		sorted.AssertSequenceEqual(1, 2, 3, 3, 3);
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortWithComparer()
 	{
 		var alphabet = Enumerable.Range(0, 26)
@@ -55,13 +52,13 @@ public class PartialSortTests
 		sorted.Select(s => s[0]).AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortIsLazy()
 	{
 		new BreakingSequence<object>().PartialSort(1);
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortIsStable()
 	{
 		var list = new[]

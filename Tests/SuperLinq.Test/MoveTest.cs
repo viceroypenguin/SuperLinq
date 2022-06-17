@@ -1,38 +1,35 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class MoveTest
 {
-	[Test]
+	[Fact]
 	public void MoveWithNegativeFromIndex()
 	{
-		AssertThrowsArgument.OutOfRangeException("fromIndex", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new[] { 1 }.Move(-1, 0, 0));
 	}
 
-	[Test]
+	[Fact]
 	public void MoveWithNegativeCount()
 	{
-		AssertThrowsArgument.OutOfRangeException("count", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new[] { 1 }.Move(0, -1, 0));
 	}
 
-	[Test]
+	[Fact]
 	public void MoveWithNegativeToIndex()
 	{
-		AssertThrowsArgument.OutOfRangeException("toIndex", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new[] { 1 }.Move(0, 0, -1));
 	}
 
-	[Test]
+	[Fact]
 	public void MoveIsLazy()
 	{
 		new BreakingSequence<int>().Move(0, 0, 0);
 	}
 
-	[TestCaseSource(nameof(MoveSource))]
+	[Theory, MemberData(nameof(MoveSource))]
 	public void Move(int length, int fromIndex, int count, int toIndex)
 	{
 		var source = Enumerable.Range(0, length);
@@ -44,23 +41,24 @@ public class MoveTest
 		var slice = source.Slice(fromIndex, count);
 		var exclude = source.Exclude(fromIndex, count);
 		var expectations = exclude.Take(toIndex).Concat(slice).Concat(exclude.Skip(toIndex));
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	public static IEnumerable<object> MoveSource()
+	public static IEnumerable<object[]> MoveSource()
 	{
 		const int length = 10;
-		return from index in Enumerable.Range(0, length)
-			   from count in Enumerable.Range(0, length + 1)
-			   from tcd in new[]
-			   {
-					   new TestCaseData(length, index, count, Math.Max(0, index - 1)),
-					   new TestCaseData(length, index, count, index + 1),
-				   }
-			   select tcd;
+		return
+			from index in Enumerable.Range(0, length)
+			from count in Enumerable.Range(0, length + 1)
+			from tcd in new[]
+			{
+				new object[] { length, index, count, Math.Max(0, index - 1), },
+				new object[] { length, index, count, index + 1, },
+			}
+			select tcd;
 	}
 
-	[TestCaseSource(nameof(MoveWithSequenceShorterThanToIndexSource))]
+	[Theory, MemberData(nameof(MoveWithSequenceShorterThanToIndexSource))]
 	public void MoveWithSequenceShorterThanToIndex(int length, int fromIndex, int count, int toIndex)
 	{
 		var source = Enumerable.Range(0, length);
@@ -70,41 +68,37 @@ public class MoveTest
 		var result = test.Move(fromIndex, count, toIndex);
 
 		var expectations = source.Exclude(fromIndex, count).Concat(source.Slice(fromIndex, count));
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	public static IEnumerable<object> MoveWithSequenceShorterThanToIndexSource()
-	{
-		const int length = 10;
+	public static IEnumerable<object[]> MoveWithSequenceShorterThanToIndexSource() =>
+		Enumerable.Range(10, 10 + 5)
+				  .Select(toIndex => new object[] { 10, 5, 2, toIndex, });
 
-		return Enumerable.Range(length, length + 5)
-						 .Select(toIndex => new TestCaseData(length, 5, 2, toIndex));
-	}
-
-	[Test]
+	[Fact]
 	public void MoveIsRepeatable()
 	{
 		var source = Enumerable.Range(0, 10);
 		var result = source.Move(0, 5, 10);
 
-		Assert.That(result.ToArray(), Is.EqualTo(result));
+		Assert.Equal(result, result.ToArray());
 	}
 
-	[Test]
+	[Fact]
 	public void MoveWithFromIndexEqualsToIndex()
 	{
 		var source = Enumerable.Range(0, 10);
 		var result = source.Move(5, 999, 5);
 
-		Assert.That(source, Is.SameAs(result));
+		Assert.Equal(result, source);
 	}
 
-	[Test]
+	[Fact]
 	public void MoveWithCountEqualsZero()
 	{
 		var source = Enumerable.Range(0, 10);
 		var result = source.Move(5, 0, 999);
 
-		Assert.That(source, Is.SameAs(result));
+		Assert.Equal(source, result);
 	}
 }

@@ -1,44 +1,41 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class PartitionTest
 {
-	[Test]
+	[Fact]
 	public void Partition()
 	{
 		var (evens, odds) =
 			Enumerable.Range(0, 10)
 					  .Partition(x => x % 2 == 0);
 
-		Assert.That(evens, Is.EqualTo(new[] { 0, 2, 4, 6, 8 }));
-		Assert.That(odds, Is.EqualTo(new[] { 1, 3, 5, 7, 9 }));
+		Assert.Equal(new[] { 0, 2, 4, 6, 8 }, evens);
+		Assert.Equal(new[] { 1, 3, 5, 7, 9 }, odds);
 	}
 
-	[Test]
+	[Fact]
 	public void PartitionWithEmptySequence()
 	{
 		var (evens, odds) =
 			Enumerable.Empty<int>()
 					  .Partition(x => x % 2 == 0);
 
-		Assert.That(evens, Is.Empty);
-		Assert.That(odds, Is.Empty);
+		Assert.Empty(evens);
+		Assert.Empty(odds);
 	}
 
-	[Test]
+	[Fact]
 	public void PartitionWithResultSelector()
 	{
 		var (evens, odds) =
 			Enumerable.Range(0, 10)
 					  .Partition(x => x % 2 == 0, Tuple.Create);
 
-		Assert.That(evens, Is.EqualTo(new[] { 0, 2, 4, 6, 8 }));
-		Assert.That(odds, Is.EqualTo(new[] { 1, 3, 5, 7, 9 }));
+		Assert.Equal(new[] { 0, 2, 4, 6, 8 }, evens);
+		Assert.Equal(new[] { 1, 3, 5, 7, 9 }, odds);
 	}
 
-	[Test]
+	[Fact]
 	public void PartitionBooleanGrouping()
 	{
 		var (evens, odds) =
@@ -46,11 +43,11 @@ public class PartitionTest
 					  .GroupBy(x => x % 2 == 0)
 					  .Partition((t, f) => Tuple.Create(t, f));
 
-		Assert.That(evens, Is.EqualTo(new[] { 0, 2, 4, 6, 8 }));
-		Assert.That(odds, Is.EqualTo(new[] { 1, 3, 5, 7, 9 }));
+		Assert.Equal(new[] { 0, 2, 4, 6, 8 }, evens);
+		Assert.Equal(new[] { 1, 3, 5, 7, 9 }, odds);
 	}
 
-	[Test]
+	[Fact]
 	public void PartitionNullableBooleanGrouping()
 	{
 		var xs = new int?[] { 1, 2, 3, null, 5, 6, 7, null, 9, 10 };
@@ -59,12 +56,12 @@ public class PartitionTest
 			xs.GroupBy(x => x != null ? x < 5 : (bool?)null)
 			  .Partition((t, f, n) => Tuple.Create(t, f, n));
 
-		Assert.That(lt5, Is.EqualTo(new[] { 1, 2, 3 }));
-		Assert.That(gte5, Is.EqualTo(new[] { 5, 6, 7, 9, 10 }));
-		Assert.That(nils, Is.EqualTo(new int?[] { null, null }));
+		Assert.Equal(new int?[] { 1, 2, 3 }, lt5);
+		Assert.Equal(new int?[] { 5, 6, 7, 9, 10 }, gte5);
+		Assert.Equal(new int?[] { null, null }, nils);
 	}
 
-	[Test]
+	[Fact]
 	public void PartitionBooleanGroupingWithSingleKey()
 	{
 		var (m3, etc) =
@@ -72,21 +69,21 @@ public class PartitionTest
 					  .GroupBy(x => x % 3)
 					  .Partition(0, Tuple.Create);
 
-		Assert.That(m3, Is.EqualTo(new[] { 0, 3, 6, 9 }));
+		Assert.Equal(new[] { 0, 3, 6, 9 }, m3);
 
 		using var r = etc.Read();
 		var r1 = r.Read();
-		Assert.That(r1.Key, Is.EqualTo(1));
-		Assert.That(r1, Is.EqualTo(new[] { 1, 4, 7 }));
+		Assert.Equal(1, r1.Key);
+		Assert.Equal(new[] { 1, 4, 7 }, r1);
 
 		var r2 = r.Read();
-		Assert.That(r2.Key, Is.EqualTo(2));
-		Assert.That(r2, Is.EqualTo(new[] { 2, 5, 8 }));
+		Assert.Equal(2, r2.Key);
+		Assert.Equal(new[] { 2, 5, 8 }, r2);
 
 		r.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void PartitionBooleanGroupingWitTwoKeys()
 	{
 		var (ms, r1, etc) =
@@ -94,17 +91,17 @@ public class PartitionTest
 					  .GroupBy(x => x % 3)
 					  .Partition(0, 1, Tuple.Create);
 
-		Assert.That(ms, Is.EqualTo(new[] { 0, 3, 6, 9 }));
-		Assert.That(r1, Is.EqualTo(new[] { 1, 4, 7 }));
+		Assert.Equal(new[] { 0, 3, 6, 9 }, ms);
+		Assert.Equal(new[] { 1, 4, 7 }, r1);
 
 		using var r = etc.Read();
 		var r2 = r.Read();
-		Assert.That(r2.Key, Is.EqualTo(2));
-		Assert.That(r2, Is.EqualTo(new[] { 2, 5, 8 }));
+		Assert.Equal(2, r2.Key);
+		Assert.Equal(new[] { 2, 5, 8 }, r2);
 		r.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void PartitionBooleanGroupingWitThreeKeys()
 	{
 		var (ms, r1, r2, etc) =
@@ -112,13 +109,13 @@ public class PartitionTest
 				.GroupBy(x => x % 3)
 				.Partition(0, 1, 2, Tuple.Create);
 
-		Assert.That(ms, Is.EqualTo(new[] { 0, 3, 6, 9 }));
-		Assert.That(r1, Is.EqualTo(new[] { 1, 4, 7 }));
-		Assert.That(r2, Is.EqualTo(new[] { 2, 5, 8 }));
-		Assert.That(etc, Is.Empty);
+		Assert.Equal(new[] { 0, 3, 6, 9 }, ms);
+		Assert.Equal(new[] { 1, 4, 7 }, r1);
+		Assert.Equal(new[] { 2, 5, 8 }, r2);
+		Assert.Empty(etc);
 	}
 
-	[Test]
+	[Fact]
 	public void PartitionBooleanGroupingWithSingleKeyWithComparer()
 	{
 		var words =
@@ -128,15 +125,15 @@ public class PartitionTest
 			words.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
 				.Partition("foo", StringComparer.OrdinalIgnoreCase, Tuple.Create);
 
-		Assert.That(foo, Is.EqualTo(new[] { "foo", "FOO" }));
+		Assert.Equal(new[] { "foo", "FOO" }, foo);
 
 		using var r = etc.Read();
 		var bar = r.Read();
-		Assert.That(bar, Is.EqualTo(new[] { "bar", "Bar" }));
+		Assert.Equal(new[] { "bar", "Bar" }, bar);
 		r.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void PartitionBooleanGroupingWithTwoKeysWithComparer()
 	{
 		var words =
@@ -146,22 +143,22 @@ public class PartitionTest
 			words.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
 				 .Partition("foo", "bar", StringComparer.OrdinalIgnoreCase, Tuple.Create);
 
-		Assert.That(foos, Is.EqualTo(new[] { "foo", "FOO" }));
-		Assert.That(bar, Is.EqualTo(new[] { "bar", "Bar" }));
+		Assert.Equal(new[] { "foo", "FOO" }, foos);
+		Assert.Equal(new[] { "bar", "Bar" }, bar);
 
 		using var r = etc.Read();
 		var baz = r.Read();
-		Assert.That(baz.Key, Is.EqualTo("baz"));
-		Assert.That(baz, Is.EqualTo(new[] { "baz", "bAz" }));
+		Assert.Equal("baz", baz.Key);
+		Assert.Equal(new[] { "baz", "bAz" }, baz);
 
 		var qux = r.Read();
-		Assert.That(qux.Key, Is.EqualTo("QUx"));
-		Assert.That(qux, Is.EqualTo(new[] { "QUx", "QuX" }));
+		Assert.Equal("QUx", qux.Key);
+		Assert.Equal(new[] { "QUx", "QuX" }, qux);
 
 		r.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void PartitionBooleanGroupingWithThreeKeysWithComparer()
 	{
 		var words =
@@ -171,14 +168,14 @@ public class PartitionTest
 			words.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
 				.Partition("foo", "bar", "baz", StringComparer.OrdinalIgnoreCase, Tuple.Create);
 
-		Assert.That(foos, Is.EqualTo(new[] { "foo", "FOO" }));
-		Assert.That(bar, Is.EqualTo(new[] { "bar", "Bar" }));
-		Assert.That(baz, Is.EqualTo(new[] { "baz", "bAz" }));
+		Assert.Equal(new[] { "foo", "FOO" }, foos);
+		Assert.Equal(new[] { "bar", "Bar" }, bar);
+		Assert.Equal(new[] { "baz", "bAz" }, baz);
 
 		using var r = etc.Read();
 		var qux = r.Read();
-		Assert.That(qux.Key, Is.EqualTo("QUx"));
-		Assert.That(qux, Is.EqualTo(new[] { "QUx", "QuX" }));
+		Assert.Equal("QUx", qux.Key);
+		Assert.Equal(new[] { "QUx", "QuX" }, qux);
 		r.ReadEnd();
 	}
 }

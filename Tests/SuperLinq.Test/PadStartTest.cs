@@ -1,19 +1,17 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class PadStartTest
 {
 	// PadStart(source, width)
 
-	[Test]
+	[Fact]
 	public void PadStartWithNegativeWidth()
 	{
-		AssertThrowsArgument.OutOfRangeException("width", () => Array.Empty<int>().PadStart(-1));
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
+			Array.Empty<int>().PadStart(-1));
 	}
 
-	[Test]
+	[Fact]
 	public void PadStartIsLazy()
 	{
 		new BreakingSequence<int>().PadStart(0);
@@ -21,19 +19,21 @@ public class PadStartTest
 
 	public class PadStartWithDefaultPadding
 	{
-		[TestCase(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
-		[TestCase(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
-		[TestCase(new[] { 123, 456, 789 }, 4, new[] { 0, 123, 456, 789 })]
-		[TestCase(new[] { 123, 456, 789 }, 5, new[] { 0, 0, 123, 456, 789 })]
+		[Theory]
+		[InlineData(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
+		[InlineData(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
+		[InlineData(new[] { 123, 456, 789 }, 4, new[] { 0, 123, 456, 789 })]
+		[InlineData(new[] { 123, 456, 789 }, 5, new[] { 0, 0, 123, 456, 789 })]
 		public void ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
 		{
 			AssertEqual(source, x => x.PadStart(width), expected);
 		}
 
-		[TestCase(new[] { "foo", "bar", "baz" }, 2, new[] { "foo", "bar", "baz" })]
-		[TestCase(new[] { "foo", "bar", "baz" }, 3, new[] { "foo", "bar", "baz" })]
-		[TestCase(new[] { "foo", "bar", "baz" }, 4, new[] { null, "foo", "bar", "baz" })]
-		[TestCase(new[] { "foo", "bar", "baz" }, 5, new[] { null, null, "foo", "bar", "baz" })]
+		[Theory]
+		[InlineData(new[] { "foo", "bar", "baz" }, 2, new[] { "foo", "bar", "baz" })]
+		[InlineData(new[] { "foo", "bar", "baz" }, 3, new[] { "foo", "bar", "baz" })]
+		[InlineData(new[] { "foo", "bar", "baz" }, 4, new[] { null, "foo", "bar", "baz" })]
+		[InlineData(new[] { "foo", "bar", "baz" }, 5, new[] { null, null, "foo", "bar", "baz" })]
 		public void ReferenceTypeElements(ICollection<string?> source, int width, IEnumerable<string?> expected)
 		{
 			AssertEqual(source, x => x.PadStart(width), expected);
@@ -42,13 +42,14 @@ public class PadStartTest
 
 	// PadStart(source, width, padding)
 
-	[Test]
+	[Fact]
 	public void PadStartWithPaddingWithNegativeWidth()
 	{
-		AssertThrowsArgument.OutOfRangeException("width", () => Array.Empty<int>().PadStart(-1, 1));
+		Assert.Throws<ArgumentOutOfRangeException>(
+			() => Array.Empty<int>().PadStart(-1, 1));
 	}
 
-	[Test]
+	[Fact]
 	public void PadStartWithPaddingIsLazy()
 	{
 		new BreakingSequence<int>().PadStart(0, -1);
@@ -56,19 +57,21 @@ public class PadStartTest
 
 	public class PadStartWithPadding
 	{
-		[TestCase(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
-		[TestCase(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
-		[TestCase(new[] { 123, 456, 789 }, 4, new[] { -1, 123, 456, 789 })]
-		[TestCase(new[] { 123, 456, 789 }, 5, new[] { -1, -1, 123, 456, 789 })]
+		[Theory]
+		[InlineData(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
+		[InlineData(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
+		[InlineData(new[] { 123, 456, 789 }, 4, new[] { -1, 123, 456, 789 })]
+		[InlineData(new[] { 123, 456, 789 }, 5, new[] { -1, -1, 123, 456, 789 })]
 		public void ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
 		{
 			AssertEqual(source, x => x.PadStart(width, -1), expected);
 		}
 
-		[TestCase(new[] { "foo", "bar", "baz" }, 2, new[] { "foo", "bar", "baz" })]
-		[TestCase(new[] { "foo", "bar", "baz" }, 3, new[] { "foo", "bar", "baz" })]
-		[TestCase(new[] { "foo", "bar", "baz" }, 4, new[] { "", "foo", "bar", "baz" })]
-		[TestCase(new[] { "foo", "bar", "baz" }, 5, new[] { "", "", "foo", "bar", "baz" })]
+		[Theory]
+		[InlineData(new[] { "foo", "bar", "baz" }, 2, new[] { "foo", "bar", "baz" })]
+		[InlineData(new[] { "foo", "bar", "baz" }, 3, new[] { "foo", "bar", "baz" })]
+		[InlineData(new[] { "foo", "bar", "baz" }, 4, new[] { "", "foo", "bar", "baz" })]
+		[InlineData(new[] { "foo", "bar", "baz" }, 5, new[] { "", "", "foo", "bar", "baz" })]
 		public void ReferenceTypeElements(ICollection<string> source, int width, IEnumerable<string> expected)
 		{
 			AssertEqual(source, x => x.PadStart(width, string.Empty), expected);
@@ -77,13 +80,14 @@ public class PadStartTest
 
 	// PadStart(source, width, paddingSelector)
 
-	[Test]
+	[Fact]
 	public void PadStartWithSelectorWithNegativeWidth()
 	{
-		AssertThrowsArgument.OutOfRangeException("width", () => Array.Empty<int>().PadStart(-1, x => x));
+		Assert.Throws<ArgumentOutOfRangeException>(
+			() => Array.Empty<int>().PadStart(-1, x => x));
 	}
 
-	[Test]
+	[Fact]
 	public void PadStartWithSelectorIsLazy()
 	{
 		new BreakingSequence<int>().PadStart(0, BreakingFunc.Of<int, int>());
@@ -91,23 +95,25 @@ public class PadStartTest
 
 	public class PadStartWithSelector
 	{
-		[TestCase(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
-		[TestCase(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
-		[TestCase(new[] { 123, 456, 789 }, 4, new[] { 0, 123, 456, 789 })]
-		[TestCase(new[] { 123, 456, 789 }, 5, new[] { 0, -1, 123, 456, 789 })]
-		[TestCase(new[] { 123, 456, 789 }, 6, new[] { 0, -1, -4, 123, 456, 789 })]
-		[TestCase(new[] { 123, 456, 789 }, 7, new[] { 0, -1, -4, -9, 123, 456, 789 })]
+		[Theory]
+		[InlineData(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
+		[InlineData(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
+		[InlineData(new[] { 123, 456, 789 }, 4, new[] { 0, 123, 456, 789 })]
+		[InlineData(new[] { 123, 456, 789 }, 5, new[] { 0, -1, 123, 456, 789 })]
+		[InlineData(new[] { 123, 456, 789 }, 6, new[] { 0, -1, -4, 123, 456, 789 })]
+		[InlineData(new[] { 123, 456, 789 }, 7, new[] { 0, -1, -4, -9, 123, 456, 789 })]
 		public void ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
 		{
 			AssertEqual(source, x => x.PadStart(width, y => y * -y), expected);
 		}
 
-		[TestCase(new[] { "foo", "bar", "baz" }, 2, new[] { "foo", "bar", "baz" })]
-		[TestCase(new[] { "foo", "bar", "baz" }, 3, new[] { "foo", "bar", "baz" })]
-		[TestCase(new[] { "foo", "bar", "baz" }, 4, new[] { "+", "foo", "bar", "baz" })]
-		[TestCase(new[] { "foo", "bar", "baz" }, 5, new[] { "+", "++", "foo", "bar", "baz" })]
-		[TestCase(new[] { "foo", "bar", "baz" }, 6, new[] { "+", "++", "+++", "foo", "bar", "baz" })]
-		[TestCase(new[] { "foo", "bar", "baz" }, 7, new[] { "+", "++", "+++", "++++", "foo", "bar", "baz" })]
+		[Theory]
+		[InlineData(new[] { "foo", "bar", "baz" }, 2, new[] { "foo", "bar", "baz" })]
+		[InlineData(new[] { "foo", "bar", "baz" }, 3, new[] { "foo", "bar", "baz" })]
+		[InlineData(new[] { "foo", "bar", "baz" }, 4, new[] { "+", "foo", "bar", "baz" })]
+		[InlineData(new[] { "foo", "bar", "baz" }, 5, new[] { "+", "++", "foo", "bar", "baz" })]
+		[InlineData(new[] { "foo", "bar", "baz" }, 6, new[] { "+", "++", "+++", "foo", "bar", "baz" })]
+		[InlineData(new[] { "foo", "bar", "baz" }, 7, new[] { "+", "++", "+++", "++++", "foo", "bar", "baz" })]
 		public void ReferenceTypeElements(ICollection<string> source, int width, IEnumerable<string> expected)
 		{
 			AssertEqual(source, x => x.PadStart(width, y => new string('+', y + 1)), expected);

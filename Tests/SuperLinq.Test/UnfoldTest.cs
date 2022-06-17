@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class UnfoldTest
 {
-	[Test]
+	[Fact]
 	public void UnfoldInfiniteSequence()
 	{
 		var result = SuperEnumerable.Unfold(1, x => (Result: x, State: x + 1),
@@ -16,10 +13,10 @@ public class UnfoldTest
 
 		var expectations = SuperEnumerable.Generate(1, x => x + 1).Take(100);
 
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void UnfoldFiniteSequence()
 	{
 		var result = SuperEnumerable.Unfold(1, x => (Result: x, State: x + 1),
@@ -29,10 +26,10 @@ public class UnfoldTest
 
 		var expectations = SuperEnumerable.Generate(1, x => x + 1).Take(100);
 
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void UnfoldIsLazy()
 	{
 		SuperEnumerable.Unfold(0, BreakingFunc.Of<int, (int, int)>(),
@@ -42,7 +39,7 @@ public class UnfoldTest
 	}
 
 
-	[Test]
+	[Fact]
 	public void UnfoldSingleElementSequence()
 	{
 		var result = SuperEnumerable.Unfold(0, x => (Result: x, State: x + 1),
@@ -52,16 +49,16 @@ public class UnfoldTest
 
 		var expectations = new[] { 0 };
 
-		Assert.That(result, Is.EqualTo(expectations));
+		Assert.Equal(expectations, result);
 	}
 
-	[Test]
+	[Fact]
 	public void UnfoldEmptySequence()
 	{
 		var result = SuperEnumerable.Unfold(0, x => (Result: x, State: x + 1),
 											  x => x.Result < 0,
 											  e => e.State,
 											  e => e.Result);
-		Assert.That(result, Is.Empty);
+		Assert.Empty(result);
 	}
 }

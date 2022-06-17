@@ -1,17 +1,14 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class WindowRightTest
 {
-	[Test]
+	[Fact]
 	public void WindowRightIsLazy()
 	{
 		new BreakingSequence<int>().WindowRight(1);
 	}
 
-	[Test]
+	[Fact]
 	public void WindowModifiedBeforeMoveNextDoesNotAffectNextWindow()
 	{
 		var sequence = Enumerable.Range(0, 3);
@@ -23,10 +20,10 @@ public class WindowRightTest
 		e.MoveNext();
 		var window2 = e.Current;
 
-		Assert.That(window2[0], Is.EqualTo(0));
+		Assert.Equal(0, window2[0]);
 	}
 
-	[Test]
+	[Fact]
 	public void WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
 	{
 		var sequence = Enumerable.Range(0, 3);
@@ -38,10 +35,10 @@ public class WindowRightTest
 		window1[0] = -1;
 		var window2 = e.Current;
 
-		Assert.That(window2[0], Is.EqualTo(0));
+		Assert.Equal(0, window2[0]);
 	}
 
-	[Test]
+	[Fact]
 	public void WindowModifiedDoesNotAffectPreviousWindow()
 	{
 		var sequence = Enumerable.Range(0, 3);
@@ -53,27 +50,27 @@ public class WindowRightTest
 		var window2 = e.Current;
 		window2[0] = -1;
 
-		Assert.That(window1[0], Is.EqualTo(0));
+		Assert.Equal(0, window1[0]);
 	}
 
-	[Test]
+	[Fact]
 	public void WindowRightWithNegativeWindowSize()
 	{
-		AssertThrowsArgument.OutOfRangeException("size", () =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Enumerable.Repeat(1, 10).WindowRight(-5));
 	}
 
-	[Test]
+	[Fact]
 	public void WindowRightWithEmptySequence()
 	{
 		using var xs = Enumerable.Empty<int>().AsTestingSequence();
 
 		var result = xs.WindowRight(5);
 
-		Assert.That(result, Is.Empty);
+		Assert.Empty(result);
 	}
 
-	[Test]
+	[Fact]
 	public void WindowRightWithSingleElement()
 	{
 		const int count = 100;
@@ -84,14 +81,14 @@ public class WindowRightTest
 			result = ts.WindowRight(1).ToArray();
 
 		// number of windows should be equal to the source sequence length
-		Assert.That(result.Length, Is.EqualTo(count));
+		Assert.Equal(count, result.Length);
 
 		// each window should contain single item consistent of element at that offset
 		foreach (var (index, item) in result.Index())
-			Assert.That(sequence[index], Is.EqualTo(item.Single()));
+			Assert.Equal(item.Single(), sequence[index]);
 	}
 
-	[Test]
+	[Fact]
 	public void WindowRightWithWindowSizeLargerThanSequence()
 	{
 		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
@@ -105,7 +102,7 @@ public class WindowRightTest
 		reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void WindowRightWithWindowSizeSmallerThanSequence()
 	{
 		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();

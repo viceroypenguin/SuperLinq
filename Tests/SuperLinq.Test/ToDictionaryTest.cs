@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
+﻿namespace Test;
 
-namespace Test;
-
-[TestFixture]
 public class ToDictionaryTest
 {
-	[Test]
+	[Fact]
 	public void ToDictionaryWithKeyValuePairs()
 	{
 		var pairs = new[]
@@ -17,12 +14,12 @@ public class ToDictionaryTest
 
 		var dict = pairs.ToDictionary();
 
-		Assert.That(dict["foo"], Is.EqualTo(123));
-		Assert.That(dict["bar"], Is.EqualTo(456));
-		Assert.That(dict["baz"], Is.EqualTo(789));
+		Assert.Equal(123, dict["foo"]);
+		Assert.Equal(456, dict["bar"]);
+		Assert.Equal(789, dict["baz"]);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDictionaryWithCouples()
 	{
 		var pairs = new[]
@@ -34,12 +31,12 @@ public class ToDictionaryTest
 
 		var dict = pairs.ToDictionary();
 
-		Assert.That(dict["foo"], Is.EqualTo(123));
-		Assert.That(dict["bar"], Is.EqualTo(456));
-		Assert.That(dict["baz"], Is.EqualTo(789));
+		Assert.Equal(123, dict["foo"]);
+		Assert.Equal(456, dict["bar"]);
+		Assert.Equal(789, dict["baz"]);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDictionaryWithKeyValuePairsWithComparer()
 	{
 		var pairs = new[]
@@ -51,12 +48,12 @@ public class ToDictionaryTest
 
 		var dict = pairs.ToDictionary(StringComparer.OrdinalIgnoreCase);
 
-		Assert.That(dict["FOO"], Is.EqualTo(123));
-		Assert.That(dict["BAR"], Is.EqualTo(456));
-		Assert.That(dict["BAZ"], Is.EqualTo(789));
+		Assert.Equal(123, dict["FOO"]);
+		Assert.Equal(456, dict["BAR"]);
+		Assert.Equal(789, dict["BAZ"]);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDictionaryWithCouplesWithComparer()
 	{
 		var pairs = new[]
@@ -68,8 +65,8 @@ public class ToDictionaryTest
 
 		var dict = pairs.ToDictionary(StringComparer.OrdinalIgnoreCase);
 
-		Assert.That(dict["FOO"], Is.EqualTo(123));
-		Assert.That(dict["BAR"], Is.EqualTo(456));
-		Assert.That(dict["BAZ"], Is.EqualTo(789));
+		Assert.Equal(123, dict["FOO"]);
+		Assert.Equal(456, dict["BAR"]);
+		Assert.Equal(789, dict["BAZ"]);
 	}
 }
