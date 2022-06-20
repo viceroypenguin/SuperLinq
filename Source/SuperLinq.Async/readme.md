@@ -1,12 +1,12 @@
-# SuperLinq
+# SuperLinq.Async
 
 Async LINQ to Objects is missing a few desirable features.
 
 This project enhances Async LINQ to Objects with extra methods, 
 in a manner which keeps to the spirit of LINQ.
 
-SuperLinq is available for download and installation as
-[NuGet packages](https://www.nuget.org/packages/superlinq/).
+SuperLinq.Async is available for download and installation as a
+[NuGet package](https://www.nuget.org/packages/superlinq.async/).
 
 ## Usage
 
@@ -30,6 +30,14 @@ Base library is supported on .NET Core 3.1 and .NET 5.0+.
 Completely consumes the given sequence. This method does not store any data 
 during execution
 
+### CountBy
+
+Applies a key-generating function to each element of a sequence and returns a
+sequence of unique keys and their number of occurrences in the original
+sequence.
+
+This method has 2 overloads.
+
 ### From
 
 Returns a sequence containing the values resulting from invoking (in order)
@@ -40,6 +48,13 @@ This method has 4 overloads.
 ### Insert
 
 Inserts the elements of a sequence into another sequence at a specified index.
+
+### Random
+
+Returns an infinite sequence of random integers using the standard .NET random
+number generator.
+
+This method has 6 overloads.
 
 ### SkipUntil
 
