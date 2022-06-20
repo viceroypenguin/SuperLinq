@@ -10,6 +10,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: 'csharp'
+
     - name: Setup .NET 3.1
       uses: actions/setup-dotnet@v2
       with:
@@ -31,8 +36,11 @@ jobs:
       run: dotnet test -c Release --no-build --verbosity normal
       if: github.repository == 'viceroypenguin/SuperLinq'
 
-    - name: Package
-      run: dotnet pack Source/SuperLinq/SuperLinq.csproj -c Release --no-build -o nupkgs
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+
+    - name: Package 
+      run: dotnet pack -c Release --no-build -o nupkgs
       if: startsWith(github.ref, 'refs/tags/')
     - name: Push to Nuget
       run: dotnet nuget push "./nupkgs/*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGETPUBLISHKEY }}
