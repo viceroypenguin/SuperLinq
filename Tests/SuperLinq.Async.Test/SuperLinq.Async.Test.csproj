@@ -14,9 +14,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Include="..\SuperLinq.Test\FuncModule.cs" Link="FuncModule.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Using Include="SuperLinq.Async" />
-		<Using Include="Test.Async.TestExtensions" Static="true" />
 		<Using Include="Xunit" />
+		<Using Include="Test.FuncModule" Static="true" />
+		<Using Include="Test.Async.TestExtensions" Static="true" />
 	</ItemGroup>
 
 	<ItemGroup>

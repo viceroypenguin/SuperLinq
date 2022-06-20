@@ -27,9 +27,15 @@
 		<Description>
 			This project enhances Async LINQ to Objects with the following methods:
 			
+			- AtLeast
+			- AtMost
+			- CompareCount
 			- Consume
+			- CountBy
+			- Exactly
 			- From
 			- Insert
+			- Random
 			- SkipUntil
 			- TakeUntil
 		</Description>

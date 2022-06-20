@@ -25,6 +25,21 @@ Base library is supported on .NET Core 3.1 and .NET 5.0+.
 
 ## Operators
 
+### AtLeast
+
+Determines whether or not the number of elements in the sequence is greater
+than or equal to the given integer.
+
+### AtMost
+
+Determines whether or not the number of elements in the sequence is lesser
+than or equal to the given integer.
+
+### CompareCount
+
+Compares two sequences and returns an integer that indicates whether the
+first sequence has fewer, the same or more elements than the second sequence.
+
 ### Consume
 
 Completely consumes the given sequence. This method does not store any data 
@@ -37,6 +52,11 @@ sequence of unique keys and their number of occurrences in the original
 sequence.
 
 This method has 2 overloads.
+
+### Exactly
+
+Determines whether or not the number of elements in the sequence is equals
+to the given integer.
 
 ### From
 

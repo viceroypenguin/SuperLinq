@@ -18,6 +18,7 @@ using System;
 
 static class FuncModule
 {
+	public static Func<TResult> Func<TResult>(Func<TResult> f) => f;
 	public static Func<T, TResult> Func<T, TResult>(Func<T, TResult> f) => f;
 	public static Func<T1, T2, TResult> Func<T1, T2, TResult>(Func<T1, T2, TResult> f) => f;
 	public static Func<T1, T2, T3, TResult> Func<T1, T2, T3, TResult>(Func<T1, T2, T3, TResult> f) => f;
