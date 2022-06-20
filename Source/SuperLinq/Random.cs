@@ -25,7 +25,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<int> Random()
 	{
-		return Random(GlobalRandom.Instance);
+		return Random(s_randomInstance);
 	}
 
 	/// <summary>
@@ -69,7 +69,7 @@ public static partial class SuperEnumerable
 	{
 		maxValue.ThrowIfLessThan(0);
 
-		return Random(GlobalRandom.Instance, maxValue);
+		return Random(s_randomInstance, maxValue);
 	}
 
 	/// <summary>
@@ -114,7 +114,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<int> Random(int minValue, int maxValue)
 	{
-		return Random(GlobalRandom.Instance, minValue, maxValue);
+		return Random(s_randomInstance, minValue, maxValue);
 	}
 
 	/// <summary>
@@ -158,7 +158,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<double> RandomDouble()
 	{
-		return RandomDouble(GlobalRandom.Instance);
+		return RandomDouble(s_randomInstance);
 	}
 
 	/// <summary>
@@ -191,6 +191,12 @@ public static partial class SuperEnumerable
 			yield return nextValue(rand);
 	}
 
+	private static readonly Random s_randomInstance =
+#if NET6_0_OR_GREATER
+		System.Random.Shared;
+#else
+		new GlobalRandom();
+
 	/// <remarks>
 	/// <see cref="System.Random"/> is not thread-safe so the following
 	/// implementation uses thread-local <see cref="System.Random"/>
@@ -200,15 +206,12 @@ public static partial class SuperEnumerable
 	/// random numbers in a thread-safe way</a>
 	/// </remarks>
 
-	sealed class GlobalRandom : Random
+	private sealed class GlobalRandom : Random
 	{
-		public static readonly Random Instance = new GlobalRandom();
+		private static int s_seed = Environment.TickCount;
 
-		static int _seed = Environment.TickCount;
-		[ThreadStatic] static Random? _threadRandom;
-		static Random ThreadRandom => _threadRandom ??= new Random(Interlocked.Increment(ref _seed));
-
-		GlobalRandom() { }
+		[ThreadStatic] static Random? s_threadRandom;
+		static Random ThreadRandom => s_threadRandom ??= new Random(Interlocked.Increment(ref s_seed));
 
 		public override int Next() => ThreadRandom.Next();
 		public override int Next(int minValue, int maxValue) => ThreadRandom.Next(minValue, maxValue);
@@ -229,4 +232,5 @@ public static partial class SuperEnumerable
 			throw new NotSupportedException("Should never reach this code.");
 		}
 	}
+#endif
 }
