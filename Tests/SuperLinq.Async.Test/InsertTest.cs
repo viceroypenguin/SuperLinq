@@ -3,11 +3,11 @@
 public class InsertTest
 {
 	[Fact]
-	public async ValueTask InsertWithNegativeIndex()
+	public async Task InsertWithNegativeIndex()
 	{
 		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await AsyncEnumerable.Range(1, 10)
-				.Insert(new[] { 97, 98, 99 }.ToAsyncEnumerable(), -1)
+				.Insert(AsyncSeq(97, 98, 99), -1)
 				.ToListAsync());
 	}
 
@@ -15,10 +15,10 @@ public class InsertTest
 	[InlineData(7)]
 	[InlineData(8)]
 	[InlineData(9)]
-	public async ValueTask InsertWithIndexGreaterThanSourceLengthMaterialized(int count)
+	public async Task InsertWithIndexGreaterThanSourceLengthMaterialized(int count)
 	{
 		var seq1 = AsyncEnumerable.Range(0, count);
-		var seq2 = new[] { 97, 98, 99 }.ToAsyncEnumerable();
+		var seq2 = AsyncSeq(97, 98, 99);
 
 		var result = seq1.Insert(seq2, count + 1);
 
@@ -34,7 +34,7 @@ public class InsertTest
 	public async Task InsertWithIndexGreaterThanSourceLengthLazy(int count)
 	{
 		var seq1 = AsyncEnumerable.Range(0, count);
-		var seq2 = new[] { 97, 98, 99 }.ToAsyncEnumerable();
+		var seq2 = AsyncSeq(97, 98, 99);
 
 		var result = seq1.Insert(seq2, count + 1).Take(count);
 
@@ -46,10 +46,10 @@ public class InsertTest
 	[InlineData(3, 1)]
 	[InlineData(3, 2)]
 	[InlineData(3, 3)]
-	public async ValueTask Insert(int count, int index)
+	public async Task Insert(int count, int index)
 	{
 		var seq1 = AsyncEnumerable.Range(1, count);
-		var seq2 = new[] { 97, 98, 99 }.ToAsyncEnumerable();
+		var seq2 = AsyncSeq(97, 98, 99);
 
 		var result = seq1.Insert(seq2, index);
 
@@ -66,7 +66,7 @@ public class InsertTest
 	}
 
 	[Fact]
-	public async ValueTask InsertDisposesEnumerators()
+	public async Task InsertDisposesEnumerators()
 	{
 		await using var seq1 = TestingSequence.Of(1);
 		await using var seq2 = TestingSequence.Of(2);

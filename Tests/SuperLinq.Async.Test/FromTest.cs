@@ -17,7 +17,7 @@ public class FromTest
 	[InlineData(2)]
 	[InlineData(3)]
 	[InlineData(4)]
-	public async ValueTask TestFromInvokesMethods(int numArgs)
+	public async Task TestFromInvokesMethods(int numArgs)
 	{
 		static Task<int> F1() => Task.FromResult(-2);
 		static Task<int> F2() => Task.FromResult(4);
@@ -52,7 +52,7 @@ public class FromTest
 	[InlineData(2)]
 	[InlineData(3)]
 	[InlineData(4)]
-	public async ValueTask TestFromInvokesMethodsMultipleTimes(int numArgs)
+	public async Task TestFromInvokesMethodsMultipleTimes(int numArgs)
 	{
 		var evals = new[] { 0, 0, 0, 0 };
 		Task<int> F1() { evals[0]++; return Task.FromResult(-2); }

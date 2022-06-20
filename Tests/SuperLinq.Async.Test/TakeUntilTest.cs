@@ -3,21 +3,21 @@
 public class TakeUntilTest
 {
 	[Fact]
-	public ValueTask TakeUntilPredicateNeverFalse()
+	public Task TakeUntilPredicateNeverFalse()
 	{
 		var sequence = AsyncEnumerable.Range(0, 5).TakeUntil(x => x != 100);
 		return sequence.AssertSequenceEqual(0);
 	}
 
 	[Fact]
-	public ValueTask TakeUntilPredicateNeverTrue()
+	public Task TakeUntilPredicateNeverTrue()
 	{
 		var sequence = AsyncEnumerable.Range(0, 5).TakeUntil(x => x == 100);
 		return sequence.AssertSequenceEqual(0, 1, 2, 3, 4);
 	}
 
 	[Fact]
-	public ValueTask TakeUntilPredicateBecomesTrueHalfWay()
+	public Task TakeUntilPredicateBecomesTrueHalfWay()
 	{
 		var sequence = AsyncEnumerable.Range(0, 5).TakeUntil(x => x == 2);
 		return sequence.AssertSequenceEqual(0, 1, 2);
@@ -30,7 +30,7 @@ public class TakeUntilTest
 	}
 
 	[Fact]
-	public ValueTask TakeUntilEvaluatesPredicateLazily()
+	public Task TakeUntilEvaluatesPredicateLazily()
 	{
 		// Predicate would explode at x == 0, but we never need to evaluate it due to the Take call.
 		var sequence = AsyncEnumerable.Range(-2, 5).TakeUntil(x => 1 / x == 1).Take(3);

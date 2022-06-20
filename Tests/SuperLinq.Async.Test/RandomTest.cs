@@ -32,7 +32,7 @@ public class RandomTest
 	/// Verify that we can produce a valid sequence or random doubles between 0.0 and 1.0
 	/// </summary>
 	[Fact]
-	public async ValueTask TestRandomDouble()
+	public async Task TestRandomDouble()
 	{
 		var resultA = AsyncSuperEnumerable.RandomDouble().Take(RandomTrials);
 		var resultB = AsyncSuperEnumerable.RandomDouble(new Random()).Take(RandomTrials);
@@ -48,7 +48,7 @@ public class RandomTest
 	/// Verify that the max constraint is preserved by the sequence generator.
 	/// </summary>
 	[Fact]
-	public async ValueTask TestRandomMaxConstraint()
+	public async Task TestRandomMaxConstraint()
 	{
 		var resultA = AsyncSuperEnumerable.Random(100).Take(RandomTrials);
 		var resultB = AsyncSuperEnumerable.Random(new Random(), 100).Take(RandomTrials);
@@ -63,7 +63,7 @@ public class RandomTest
 	/// Verify that the min/max constraints are preserved by the sequence generator.
 	/// </summary>
 	[Fact]
-	public async ValueTask TestRandomMinMaxConstraint()
+	public async Task TestRandomMinMaxConstraint()
 	{
 		var resultA = AsyncSuperEnumerable.Random(0, 100).Take(RandomTrials);
 		var resultB = AsyncSuperEnumerable.Random(new Random(), 0, 100).Take(RandomTrials);
@@ -79,7 +79,7 @@ public class RandomTest
 	/// is equivalent to a for loop accessing the same random generator.
 	/// </summary>
 	[Fact]
-	public ValueTask TestRandomEquivalence()
+	public Task TestRandomEquivalence()
 	{
 		// must use a specific seed to ensure sequences will be identical
 		var randA = new Random(12345);

@@ -7,13 +7,13 @@ public class CompareCountTest
 	[InlineData(0, 1, -1)]
 	[InlineData(1, 0, 1)]
 	[InlineData(1, 1, 0)]
-	public async ValueTask CompareCount(int xCount, int yCount, int expected)
+	public async Task CompareCount(int xCount, int yCount, int expected)
 	{
 		Assert.Equal(expected, await AsyncEnumerable.Range(0, xCount).CompareCount(AsyncEnumerable.Range(0, yCount)));
 	}
 
 	[Fact]
-	public async ValueTask CompareCountDisposesSequenceEnumerators()
+	public async Task CompareCountDisposesSequenceEnumerators()
 	{
 		await using var seq1 = TestingSequence.Of<int>();
 		await using var seq2 = TestingSequence.Of<int>();
@@ -22,7 +22,7 @@ public class CompareCountTest
 	}
 
 	[Fact]
-	public async ValueTask CompareCountDoesNotIterateUnnecessaryElements()
+	public async Task CompareCountDoesNotIterateUnnecessaryElements()
 	{
 		var seq1 = AsyncSeqExceptionAt(5);
 

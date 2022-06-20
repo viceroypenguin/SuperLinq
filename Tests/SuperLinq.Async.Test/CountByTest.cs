@@ -3,7 +3,7 @@
 public class CountByTest
 {
 	[Fact]
-	public ValueTask CountBySimpleTest()
+	public Task CountBySimpleTest()
 	{
 		var result = AsyncSeq(1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2)
 			.CountBy(c => c);
@@ -18,7 +18,7 @@ public class CountByTest
 	}
 
 	[Fact]
-	public ValueTask CountByWithSecondOccurenceImmediatelyAfterFirst()
+	public Task CountByWithSecondOccurenceImmediatelyAfterFirst()
 	{
 		var result = "jaffer".ToAsyncEnumerable()
 			.CountBy(c => c);
@@ -32,7 +32,7 @@ public class CountByTest
 	}
 
 	[Fact]
-	public ValueTask CountByEvenOddTest()
+	public Task CountByEvenOddTest()
 	{
 		var result = AsyncEnumerable.Range(1, 100)
 			.CountBy(c => c % 2);
@@ -43,7 +43,7 @@ public class CountByTest
 	}
 
 	[Fact]
-	public ValueTask CountByWithEqualityComparer()
+	public Task CountByWithEqualityComparer()
 	{
 		var result = AsyncSeq("a", "B", "c", "A", "b", "A")
 			.CountBy(c => c, StringComparer.OrdinalIgnoreCase);
@@ -55,7 +55,7 @@ public class CountByTest
 	}
 
 	[Fact]
-	public ValueTask CountByHasKeysOrderedLikeGroupBy()
+	public Task CountByHasKeysOrderedLikeGroupBy()
 	{
 		var randomSequence = SuperLinq.SuperEnumerable.Random(0, 100).Take(100).ToArray();
 
@@ -72,7 +72,7 @@ public class CountByTest
 	}
 
 	[Fact]
-	public ValueTask CountByWithSomeNullKeys()
+	public Task CountByWithSomeNullKeys()
 	{
 		var ss = AsyncSeq("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
 		var result = ss.CountBy(s => s);
