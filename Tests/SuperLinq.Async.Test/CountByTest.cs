@@ -57,7 +57,7 @@ public class CountByTest
 	[Fact]
 	public ValueTask CountByHasKeysOrderedLikeGroupBy()
 	{
-		var randomSequence = SuperEnumerable.Random(0, 100).Take(100).ToArray();
+		var randomSequence = SuperLinq.SuperEnumerable.Random(0, 100).Take(100).ToArray();
 
 		var countByKeys = randomSequence.ToAsyncEnumerable().CountBy(x => x).Select(x => x.key);
 		var groupByKeys = randomSequence.GroupBy(x => x).Select(x => x.Key);
