@@ -74,7 +74,11 @@ internal static class ExceptionHelpers
 		ThrowOutOfRange(paramName!, message);
 	}
 
-	[DoesNotReturn]
+	[Pure, DoesNotReturn]
 	private static void ThrowOutOfRange(string paramName, string? message) =>
 		throw new ArgumentOutOfRangeException(paramName, message);
+
+	[Pure, DoesNotReturn]
+	public static void ThrowInvalidOperationException(string? message) =>
+		throw new InvalidOperationException(message);
 }

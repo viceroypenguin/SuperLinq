@@ -37,32 +37,17 @@ public static partial class SuperEnumerable
 		source.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		return source.TryAsListLike() is { } listLike
-			   ? IterateList(listLike)
-			   : source.TryGetCollectionCount(out var collectionCount)
-				 ? IterateCollection(collectionCount)
-				 : IterateSequence();
+		return source.TryGetCollectionCount(out var i)
+				 ? IterateCollection(source, count, i, resultSelector)
+				 : IterateSequence(source, count, resultSelector);
 
-		IEnumerable<TResult> IterateList(IListLike<T> list)
-		{
-			var countdown = Math.Min(count, list.Count);
-
-			for (var i = 0; i < list.Count; i++)
-			{
-				var cd = list.Count - i <= count
-					   ? --countdown
-					   : (int?)null;
-				yield return resultSelector(list[i], cd);
-			}
-		}
-
-		IEnumerable<TResult> IterateCollection(int i)
+		static IEnumerable<TResult> IterateCollection(IEnumerable<T> source, int count, int i, Func<T, int?, TResult> resultSelector)
 		{
 			foreach (var item in source)
-				yield return resultSelector(item, i-- <= count ? i : (int?)null);
+				yield return resultSelector(item, i-- <= count ? i : null);
 		}
 
-		IEnumerable<TResult> IterateSequence()
+		static IEnumerable<TResult> IterateSequence(IEnumerable<T> source, int count, Func<T, int?, TResult> resultSelector)
 		{
 			var queue = new Queue<T>(Math.Max(1, count + 1));
 

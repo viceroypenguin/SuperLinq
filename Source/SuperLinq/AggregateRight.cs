@@ -43,12 +43,17 @@ public static partial class SuperEnumerable
 		source.ThrowIfNull();
 		func.ThrowIfNull();
 
-		var list = source.ToListLike();
+		using var e = source.Reverse().GetEnumerator();
 
-		if (list.Count == 0)
-			throw new InvalidOperationException("Sequence contains no elements.");
+		if (!e.MoveNext())
+			ExceptionHelpers.ThrowInvalidOperationException("Sequence contains no elements");
 
-		return AggregateRightImpl(list, list[^1], func, list.Count - 1);
+		var seed = e.Current;
+
+		while (e.MoveNext())
+			seed = func(e.Current, seed);
+
+		return seed;
 	}
 
 	/// <summary>
@@ -79,9 +84,10 @@ public static partial class SuperEnumerable
 		source.ThrowIfNull();
 		func.ThrowIfNull();
 
-		var list = source.ToListLike();
+		foreach (var i in source.Reverse())
+			seed = func(i, seed);
 
-		return AggregateRightImpl(list, seed, func, list.Count);
+		return seed;
 	}
 
 	/// <summary>
@@ -117,15 +123,5 @@ public static partial class SuperEnumerable
 		resultSelector.ThrowIfNull();
 
 		return resultSelector(source.AggregateRight(seed, func));
-	}
-
-	static TResult AggregateRightImpl<TSource, TResult>(IListLike<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
-	{
-		while (i-- > 0)
-		{
-			accumulator = func(list[i], accumulator);
-		}
-
-		return accumulator;
 	}
 }

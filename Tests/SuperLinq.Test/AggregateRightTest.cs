@@ -21,13 +21,10 @@ public class AggregateRightTest
 		Assert.Equal(Value, result);
 	}
 
-	[Theory]
-	[InlineData(SourceKind.BreakingList)]
-	[InlineData(SourceKind.BreakingReadOnlyList)]
-	[InlineData(SourceKind.Sequence)]
-	public void AggregateRight(SourceKind sourceKind)
+	[Fact]
+	public void AggregateRight()
 	{
-		var enumerable = Enumerable.Range(1, 5).Select(x => x.ToString()).ToSourceKind(sourceKind);
+		var enumerable = Enumerable.Range(1, 5).Select(x => x.ToString());
 
 		var result = enumerable.AggregateRight((a, b) => string.Format("({0}+{1})", a, b));
 

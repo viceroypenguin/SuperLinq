@@ -30,10 +30,28 @@ public static partial class SuperEnumerable
 		source.ThrowIfNull();
 		func.ThrowIfNull();
 
-		return ScanRightImpl(source, func,
-							 list => list.Count > 0
-								   ? (list[list.Count - 1], list.Count - 1)
-								   : ((TSource, int)?)null);
+		return _(source, func);
+
+		static IEnumerable<TSource> _(IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
+		{
+			using var e = source.Reverse().GetEnumerator();
+
+			if (!e.MoveNext())
+				yield break;
+
+			var seed = e.Current;
+			var stack = new Stack<TSource>();
+			stack.Push(seed);
+
+			while (e.MoveNext())
+			{
+				seed = func(e.Current, seed);
+				stack.Push(seed);
+			}
+
+			foreach (var item in stack)
+				yield return item;
+		}
 	}
 
 	/// <summary>
@@ -64,28 +82,21 @@ public static partial class SuperEnumerable
 		source.ThrowIfNull();
 		func.ThrowIfNull();
 
-		return ScanRightImpl(source, func, list => (seed, list.Count));
-	}
+		return _(source, seed, func);
 
-	static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult, TResult> func, Func<IListLike<TSource>, (TResult Seed, int Count)?> seeder)
-	{
-		var list = source.ToListLike();
-
-		var r = seeder(list);
-		if (!r.HasValue)
-			yield break;
-		var accumulator = r.Value.Seed;
-		var i = r.Value.Count;
-		var stack = new Stack<TResult>(i + 1);
-		stack.Push(accumulator);
-
-		while (i-- > 0)
+		static IEnumerable<TAccumulate> _(IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
 		{
-			accumulator = func(list[i], accumulator);
-			stack.Push(accumulator);
-		}
+			var stack = new Stack<TAccumulate>();
+			stack.Push(seed);
 
-		foreach (var item in stack)
-			yield return item;
+			foreach (var i in source.Reverse())
+			{
+				seed = func(i, seed);
+				stack.Push(seed);
+			}
+
+			foreach (var item in stack)
+				yield return item;
+		}
 	}
 }
