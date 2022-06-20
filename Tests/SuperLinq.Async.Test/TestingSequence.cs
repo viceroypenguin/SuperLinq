@@ -2,8 +2,7 @@
 
 static class TestingSequence
 {
-	internal static TestingSequence<T> Of<T>(params T[] elements) =>
-		new TestingSequence<T>(elements.ToAsyncEnumerable());
+	internal static TestingSequence<T> Of<T>(params T[] elements) => new(elements.ToAsyncEnumerable());
 
 	internal static TestingSequence<T> AsTestingSequence<T>(this IAsyncEnumerable<T> source) =>
 		source != null

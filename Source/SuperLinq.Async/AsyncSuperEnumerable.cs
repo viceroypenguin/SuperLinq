@@ -8,6 +8,6 @@ namespace SuperLinq.Async;
 /// </summary>
 public static partial class AsyncSuperEnumerable
 {
-	internal static ConfiguredCancelableAsyncEnumerable<T>.Enumerator GetConfiguredAsyncEnumerator<T>(this IAsyncEnumerable<T> enumerable, bool continueOnCapturedContext, CancellationToken cancellationToken) =>
-		enumerable.ConfigureAwait(continueOnCapturedContext).WithCancellation(cancellationToken).GetAsyncEnumerator();
+	internal static ConfiguredCancelableAsyncEnumerable<T>.Enumerator GetConfiguredAsyncEnumerator<T>(this IAsyncEnumerable<T> enumerable, CancellationToken cancellationToken) =>
+		enumerable.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
 }

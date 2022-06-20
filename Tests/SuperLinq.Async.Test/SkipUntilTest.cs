@@ -38,6 +38,13 @@ public class SkipUntilTest
 		return sequence.AssertSequenceEqual(0, 1, 2);
 	}
 
+	[Fact]
+	public async ValueTask SkipUntilDisposesEnumerator()
+	{
+		await using var seq1 = TestingSequence.Of<int>();
+		await seq1.SkipUntil(x => true).ToListAsync();
+	}
+
 	public static readonly IEnumerable<object[]> TestData =
 		new[]
 		{

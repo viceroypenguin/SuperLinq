@@ -43,7 +43,7 @@ public static partial class AsyncSuperEnumerable
 		{
 			var i = -1;
 
-			var iter = first.GetConfiguredAsyncEnumerator(false, cancellationToken);
+			await using var iter = first.GetConfiguredAsyncEnumerator(cancellationToken);
 
 			while (++i < index && await iter.MoveNextAsync())
 				yield return iter.Current;

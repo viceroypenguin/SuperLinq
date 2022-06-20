@@ -64,4 +64,12 @@ public class InsertTest
 	{
 		new AsyncBreakingSequence<int>().Insert(new AsyncBreakingSequence<int>(), 0);
 	}
+
+	[Fact]
+	public async ValueTask InsertDisposesEnumerators()
+	{
+		await using var seq1 = TestingSequence.Of(1);
+		await using var seq2 = TestingSequence.Of(2);
+		await seq1.Insert(seq2, 0).ToListAsync();
+	}
 }

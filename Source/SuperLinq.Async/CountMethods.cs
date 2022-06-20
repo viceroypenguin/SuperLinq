@@ -160,8 +160,8 @@ public static partial class AsyncSuperEnumerable
 		bool firstHasNext;
 		bool secondHasNext;
 
-		await using var e1 = first.GetConfiguredAsyncEnumerator(false, cancellationToken);
-		await using var e2 = second.GetConfiguredAsyncEnumerator(false, cancellationToken);
+		await using var e1 = first.GetConfiguredAsyncEnumerator(cancellationToken);
+		await using var e2 = second.GetConfiguredAsyncEnumerator(cancellationToken);
 
 		{
 			do

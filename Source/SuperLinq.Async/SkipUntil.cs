@@ -43,7 +43,7 @@ public static partial class AsyncSuperEnumerable
 
 		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			await using var enumerator = source.GetConfiguredAsyncEnumerator(continueOnCapturedContext: false, cancellationToken);
+			await using var enumerator = source.GetConfiguredAsyncEnumerator(cancellationToken);
 
 			do
 			{
