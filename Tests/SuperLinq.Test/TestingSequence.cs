@@ -45,6 +45,11 @@ sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
 	{
 		Assert.NotNull(_sequence);
 		var enumerator = _sequence.GetEnumerator().AsWatchable();
+		_disposed = false;
+		enumerator.Disposed += delegate
+		{
+			_disposed = true;
+		};
 		enumerator.MoveNextCalled += (_, moved) =>
 		{
 			MoveNextCallCount++;
