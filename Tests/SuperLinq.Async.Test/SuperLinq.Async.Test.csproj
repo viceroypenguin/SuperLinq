@@ -9,11 +9,14 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Source\SuperLinq\SuperLinq.csproj" />
 		<ProjectReference Include="..\..\Source\SuperLinq.Async\SuperLinq.Async.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<Using Include="SuperLinq" />
 		<Using Include="SuperLinq.Async" />
+		<Using Include="Test.Async.TestExtensions" Static="true" />
 		<Using Include="Xunit" />
 	</ItemGroup>
 

@@ -50,7 +50,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Include="..\SuperLinq\ExceptionHelpers.cs" Link="ExceptionHelpers.cs" />
+		<Compile Include="..\SuperLinq\ExceptionHelpers.cs" Link="ExceptionHelpers.cs" />
+		<Compile Include="..\SuperLinq\Collections\Dictionary.cs" Link="Collections\Dictionary.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

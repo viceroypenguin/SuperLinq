@@ -6,11 +6,14 @@ public enum SourceKind
 	BreakingList,
 	BreakingReadOnlyList,
 	BreakingCollection,
-	BreakingReadOnlyCollection
+	BreakingReadOnlyCollection,
 }
 
-static partial class TestExtensions
+internal static partial class TestExtensions
 {
+	public static IAsyncEnumerable<T> AsyncSeq<T>(params T[] items) =>
+		items.ToAsyncEnumerable();
+
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
 		Assert.Equal(expected, actual);
 
