@@ -33,9 +33,13 @@
 			- Consume
 			- CountBy
 			- Exactly
+			- FillBackward
+			- FillForward
+			- Fold
 			- From
 			- Insert
 			- Random
+			- Segment
 			- SkipUntil
 			- TakeUntil
 		</Description>

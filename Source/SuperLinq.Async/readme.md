@@ -58,6 +58,26 @@ This method has 2 overloads.
 Determines whether or not the number of elements in the sequence is equals
 to the given integer.
 
+### FillBackward
+
+Returns a sequence with each null reference or value in the source replaced
+with the following non-null reference or value in that sequence.
+
+This method has 7 overloads.
+
+### FillForward
+
+Returns a sequence with each null reference or value in the source replaced
+with the previous non-null reference or value seen in that sequence.
+
+This method has 7 overloads.
+
+### Fold
+
+Returns the result of applying a function to a sequence with 1 to 16 elements.
+
+This method has 16 overloads.
+
 ### From
 
 Returns a sequence containing the values resulting from invoking (in order)
@@ -73,6 +93,13 @@ Inserts the elements of a sequence into another sequence at a specified index.
 
 Returns an infinite sequence of random integers using the standard .NET random
 number generator.
+
+This method has 6 overloads.
+
+### Segment
+
+Divides a sequence into multiple sequences by using a segment detector based
+on the original sequence.
 
 This method has 6 overloads.
 
