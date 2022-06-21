@@ -30,6 +30,9 @@ dotnet_diagnostic.IDE0055.severity = warning
 dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = false
 
+# require accessibility modifiers
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:error
+
 # Avoid "this." and "Me." if not necessary
 dotnet_style_qualification_for_field = false:refactoring
 dotnet_style_qualification_for_property = false:refactoring

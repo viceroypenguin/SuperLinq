@@ -66,7 +66,6 @@ public static partial class SuperEnumerable
 	/// current element considered missing while the second argument
 	/// receives the next non-missing element.</param>
 	/// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
-	/// An <see cref="IEnumerable{T}"/> with missing values replaced.
 	/// <returns>
 	/// An <see cref="IEnumerable{T}"/> with missing elements filled.
 	/// </returns>
@@ -85,7 +84,7 @@ public static partial class SuperEnumerable
 		return FillBackwardImpl(source, predicate, fillSelector);
 	}
 
-	static IEnumerable<T> FillBackwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
+	private static IEnumerable<T> FillBackwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
 	{
 		List<T>? blanks = null;
 

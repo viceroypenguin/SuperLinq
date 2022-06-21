@@ -84,7 +84,7 @@ public static partial class SuperEnumerable
 		return FillForwardImpl(source, predicate, fillSelector);
 	}
 
-	static IEnumerable<T> FillForwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
+	private static IEnumerable<T> FillForwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
 	{
 		(bool, T) seed = default;
 
