@@ -50,22 +50,6 @@ public class CountDownTest
 		Assert.Equal(expected, ts.CountDown(count, ValueTuple.Create));
 	}
 
-	public static IEnumerable<object[]> ListData { get; } =
-		from e in GetData((xs, count, countdown) => new
-		{
-			Source = xs,
-			Count = count,
-			Countdown = countdown,
-		})
-		from kind in new[] { SourceKind.BreakingList, SourceKind.BreakingReadOnlyList }
-		select new object[] { e.Source.ToSourceKind(kind), e.Count, e.Source.Zip(e.Countdown, ValueTuple.Create), };
-
-	[Theory, MemberData(nameof(ListData))]
-	public void WithList(IEnumerable<int> xs, int count, IEnumerable<(int, int?)> expected)
-	{
-		Assert.Equal(expected, xs.CountDown(count, ValueTuple.Create));
-	}
-
 	public static IEnumerable<object[]> CollectionData { get; } =
 		from e in GetData((xs, count, countdown) => new
 		{
