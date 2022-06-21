@@ -61,17 +61,17 @@ public class ScanByTest
 		var source = new[] { "foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo" };
 		var result = source.ScanBy(c => c, k => -1, (i, k, e) => i + 1);
 
-		result.AssertSequenceEqual(("foo", 0), ((string)null, 0), ("bar", 0), ("baz", 0), ((string)null, 1), ((string)null, 2), ("baz", 1), ("bar", 1), ((string)null, 3), ("foo", 1));
+		result.AssertSequenceEqual(("foo", 0), (null, 0), ("bar", 0), ("baz", 0), (null, 1), (null, 2), ("baz", 1), ("bar", 1), (null, 3), ("foo", 1));
 	}
 
 	[Fact]
 	public void ScanByWithNullSeed()
 	{
-		var nil = (object)null;
+		var nil = (object?)null;
 		var source = new[] { "foo", null, "bar", null, "baz" };
 		var result = source.ScanBy(c => c, k => nil, (i, k, e) => nil);
 
-		result.AssertSequenceEqual(("foo", nil), ((string)null, nil), ("bar", nil), ((string)null, nil), ("baz", nil));
+		result.AssertSequenceEqual(("foo", nil), (null, nil), ("bar", nil), (null, nil), ("baz", nil));
 	}
 
 	[Fact]

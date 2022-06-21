@@ -115,14 +115,14 @@ public class CountDownTest
 	{
 		public static ICollection<T>
 			Create<T>(ICollection<T> collection,
-						 Func<IEnumerator<T>, IEnumerator<T>> em = null)
+						 Func<IEnumerator<T>, IEnumerator<T>>? em = null)
 		{
 			return new Collection<T>(collection, em);
 		}
 
 		public static IReadOnlyCollection<T>
 			CreateReadOnly<T>(ICollection<T> collection,
-						Func<IEnumerator<T>, IEnumerator<T>> em = null)
+						Func<IEnumerator<T>, IEnumerator<T>>? em = null)
 		{
 			return new ReadOnlyCollection<T>(collection, em);
 		}
@@ -136,7 +136,7 @@ public class CountDownTest
 		{
 			readonly Func<IEnumerator<T>, IEnumerator<T>> _em;
 
-			protected Sequence(Func<IEnumerator<T>, IEnumerator<T>> em) =>
+			protected Sequence(Func<IEnumerator<T>, IEnumerator<T>>? em) =>
 				_em = em ?? (e => e);
 
 			public IEnumerator<T> GetEnumerator() =>
@@ -157,7 +157,7 @@ public class CountDownTest
 			readonly ICollection<T> _collection;
 
 			public Collection(ICollection<T> collection,
-							  Func<IEnumerator<T>, IEnumerator<T>> em = null) :
+							  Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
 				base(em) =>
 				_collection = collection ?? throw new ArgumentNullException(nameof(collection));
 
@@ -184,7 +184,7 @@ public class CountDownTest
 			readonly ICollection<T> _collection;
 
 			public ReadOnlyCollection(ICollection<T> collection,
-									  Func<IEnumerator<T>, IEnumerator<T>> em = null) :
+									  Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
 				base(em) =>
 				_collection = collection ?? throw new ArgumentNullException(nameof(collection));
 

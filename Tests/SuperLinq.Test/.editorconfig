@@ -13,6 +13,7 @@ dotnet_diagnostic.MA0016.severity = none				# MA0016: Prefer returning collectio
 dotnet_diagnostic.MA0025.severity = none				# MA0025: Implement the functionality instead of throwing NotImplementedException
 dotnet_diagnostic.MA0046.severity = none				# MA0046: Use EventHandler<T> to declare events
 dotnet_diagnostic.MA0048.severity = none                # MA0048: File name must match type name
+dotnet_diagnostic.MA0076.severity = none				# MA0076: Do not use implicit culture-sensitive ToString in interpolated strings
 
 dotnet_diagnostic.xUnit1008.severity = error			# xUnit1008: Test data attribute should only be used on a Theory
 dotnet_diagnostic.xUnit1013.severity = error			# xUnit1013: Public method should be marked as test

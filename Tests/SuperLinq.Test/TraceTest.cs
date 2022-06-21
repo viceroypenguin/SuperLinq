@@ -64,10 +64,10 @@ public class TraceTest
 				yield return e.Current;
 		}
 
-		IEnumerator<string> _(TextReader reader)
+		static IEnumerator<string> _(TextReader reader)
 		{
 			Debug.Assert(reader != null);
-			string line;
+			string? line;
 			while ((line = reader.ReadLine()) != null)
 				yield return line;
 		}

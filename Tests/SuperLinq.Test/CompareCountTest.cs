@@ -132,8 +132,8 @@ public class CompareCountTest
 
 	static IEnumerable<TResult> GetTestSequenceKinds<T, TResult>(
 		IEnumerable<T> s1, IEnumerable<T> s2,
-		Func<(IEnumerable<T> Data, SequenceKind Kind),
-			(IEnumerable<T> Data, SequenceKind Kind), TResult> selector)
+		Func<(IEnumerable<T?> Data, SequenceKind Kind),
+			(IEnumerable<T?> Data, SequenceKind Kind), TResult> selector)
 	{
 		// Test that the operator is optimized for collections
 

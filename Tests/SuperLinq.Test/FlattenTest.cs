@@ -278,7 +278,7 @@ public class FlattenTest
 	[Fact]
 	public void FlattenSelectorIsLazy()
 	{
-		new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, IEnumerable>());
+		new BreakingSequence<int>().Flatten(BreakingFunc.Of<object?, IEnumerable>());
 	}
 
 	[Fact]
@@ -293,7 +293,7 @@ public class FlattenTest
 					{
 						new Attribute { Values = new[] { 1, 2 } },
 						new Attribute { Values = new[] { 3, 4 } },
-					}
+					},
 				},
 				new Series
 				{
@@ -301,26 +301,19 @@ public class FlattenTest
 					Attributes = new[]
 					{
 						new Attribute { Values = new[] { 5, 6 } },
-					}
-				}
+					},
+				},
 			};
 
 		var result = source.Flatten(obj =>
-		{
-			switch (obj)
+			obj switch
 			{
-				case string:
-					return null;
-				case IEnumerable inner:
-					return inner;
-				case Series s:
-					return new object[] { s.Name, s.Attributes };
-				case Attribute a:
-					return a.Values;
-				default:
-					return null;
-			}
-		});
+				string => null,
+				IEnumerable inner => inner,
+				Series s => new object[] { s.Name, s.Attributes },
+				Attribute a => a.Values,
+				_ => null,
+			});
 
 		var expectations = new object[] { "series1", 1, 2, 3, 4, "series2", 5, 6 };
 
@@ -349,17 +342,12 @@ public class FlattenTest
 		};
 
 		var result = source.Flatten(obj =>
-		{
-			switch (obj)
+			obj switch
 			{
-				case int:
-					return null;
-				case IEnumerable inner:
-					return inner;
-				default:
-					return Enumerable.Empty<object>();
-			}
-		});
+				int => null,
+				IEnumerable inner => inner,
+				_ => Enumerable.Empty<object>(),
+			});
 
 		var expectations = new object[] { 1, 2, 3, 4 };
 
@@ -387,15 +375,13 @@ public class FlattenTest
 		);
 
 		var result = new[] { source }.Flatten(obj =>
-		{
-			return obj switch
+			obj switch
 			{
 				int => null,
-				Tree<int> tree => new object[] { tree.Left, tree.Value, tree.Right },
+				Tree<int> tree => new object?[] { tree.Left, tree.Value, tree.Right },
 				IEnumerable inner => inner,
 				_ => Enumerable.Empty<object>(),
-			};
-		});
+			});
 
 		var expectations = Enumerable.Range(1, 7).Cast<object?>();
 
@@ -404,23 +390,23 @@ public class FlattenTest
 
 	class Series
 	{
-		public string Name;
-		public Attribute[] Attributes;
+		public string Name { get; init; } = string.Empty;
+		public Attribute[] Attributes { get; init; } = Array.Empty<Attribute>();
 	}
 
 	class Attribute
 	{
-		public int[] Values;
+		public int[] Values { get; init; } = Array.Empty<int>();
 	}
 
 	class Tree<T>
 	{
 		public readonly T Value;
-		public readonly Tree<T> Left;
-		public readonly Tree<T> Right;
+		public readonly Tree<T>? Left;
+		public readonly Tree<T>? Right;
 
 		public Tree(T value) : this(null, value, null) { }
-		public Tree(Tree<T> left, T value, Tree<T> right)
+		public Tree(Tree<T>? left, T value, Tree<T>? right)
 		{
 			Left = left;
 			Value = value;

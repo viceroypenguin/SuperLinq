@@ -1,4 +1,6 @@
-﻿namespace Test;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Test;
 
 static class SequenceReader
 {
@@ -17,7 +19,7 @@ static class SequenceReader
 /// <typeparam name="T">Type of elements to read.</typeparam>
 class SequenceReader<T> : IDisposable
 {
-	IEnumerator<T> _enumerator;
+	private IEnumerator<T>? _enumerator;
 
 	/// <summary>
 	/// Initializes a <see cref="SequenceReader{T}" /> instance
@@ -54,17 +56,17 @@ class SequenceReader<T> : IDisposable
 	/// Returns true if a value was successfully read; otherwise, false.
 	/// </returns>
 
-	public virtual bool TryRead(out T value)
+	public virtual bool TryRead([NotNullWhen(true)] out T? value)
 	{
 		EnsureNotDisposed();
 
 		value = default;
 
 		var e = _enumerator;
-		if (!e.MoveNext())
+		if (!e!.MoveNext())
 			return false;
 
-		value = e.Current;
+		value = e.Current!;
 		return true;
 	}
 
@@ -72,13 +74,13 @@ class SequenceReader<T> : IDisposable
 	/// Tires to read the next value otherwise return the default.
 	/// </summary>
 
-	public T TryRead() => TryRead(default);
+	public T? TryRead() => TryRead(default);
 
 	/// <summary>
 	/// Tires to read the next value otherwise return a given default.
 	/// </summary>
 
-	public T TryRead(T defaultValue) =>
+	public T? TryRead(T? defaultValue) =>
 		TryRead(out var result) ? result : defaultValue;
 
 	/// <summary>
@@ -110,6 +112,7 @@ class SequenceReader<T> : IDisposable
 	/// <see cref="Dispose"/> has not been previously called.
 	/// </summary>
 
+	[MemberNotNull(nameof(_enumerator))]
 	protected void EnsureNotDisposed()
 	{
 		if (_enumerator == null)

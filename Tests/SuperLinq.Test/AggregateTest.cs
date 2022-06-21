@@ -41,7 +41,7 @@ public class AggregateTest
 			AccumulatorCount = (m.Instantiation.GetParameters().Length - 2 /* source + resultSelector */) / 2 /* seed + accumulator */,
 			ResultSelectorType = rst,
 			Parameters =
-				rst.GetMethod("Invoke")
+				rst.GetMethod("Invoke")!
 				   .GetParameters()
 				   .Select(p => Expression.Parameter(p.ParameterType))
 				   .ToArray(),

@@ -24,7 +24,7 @@ static class EqualityComparer
 			_hasher = hasher ?? throw new ArgumentNullException(nameof(hasher));
 		}
 
-		public bool Equals(T x, T y) => _comparer(x, y);
+		public bool Equals(T? x, T? y) => _comparer(x!, y!);
 		public int GetHashCode(T obj) => _hasher(obj);
 	}
 }

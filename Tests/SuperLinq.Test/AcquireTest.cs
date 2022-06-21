@@ -5,9 +5,9 @@ public class AcquireTest
 	[Fact]
 	public void AcquireAll()
 	{
-		Disposable a = null;
-		Disposable b = null;
-		Disposable c = null;
+		Disposable? a = null;
+		Disposable? b = null;
+		Disposable? c = null;
 
 		var allocators = SuperEnumerable.From(() => a = new Disposable(),
 											 () => b = new Disposable(),
@@ -27,9 +27,9 @@ public class AcquireTest
 	[Fact]
 	public void AcquireSome()
 	{
-		Disposable a = null;
-		Disposable b = null;
-		Disposable c = null;
+		Disposable? a = null;
+		Disposable? b = null;
+		Disposable? c = null;
 
 		var allocators = SuperEnumerable.From(() => a = new Disposable(),
 											 () => b = new Disposable(),
@@ -39,9 +39,9 @@ public class AcquireTest
 		Assert.Throws<TestException>(() => allocators.Acquire());
 
 		Assert.NotNull(a);
-		Assert.True(a.Disposed);
+		Assert.True(a!.Disposed);
 		Assert.NotNull(b);
-		Assert.True(b.Disposed);
+		Assert.True(b!.Disposed);
 		Assert.Null(c);
 	}
 

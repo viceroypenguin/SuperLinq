@@ -19,8 +19,8 @@ static class TestingSequence
 /// </summary>
 sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
 {
-	bool? _disposed;
-	IEnumerable<T> _sequence;
+	private bool? _disposed;
+	private IEnumerable<T>? _sequence;
 
 	internal TestingSequence(IEnumerable<T> sequence) =>
 		_sequence = sequence;
@@ -44,7 +44,7 @@ sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
 	public IEnumerator<T> GetEnumerator()
 	{
 		Assert.NotNull(_sequence);
-		var enumerator = _sequence.GetEnumerator().AsWatchable();
+		var enumerator = _sequence!.GetEnumerator().AsWatchable();
 		_disposed = false;
 		enumerator.Disposed += delegate
 		{

@@ -48,7 +48,7 @@ public class ChooseTest
 
 	static class Option<T>
 	{
-		public static readonly (bool IsSome, T Value) None = (false, default);
+		public static readonly (bool IsSome, T? Value) None = (false, default);
 	}
 
 	[Fact]

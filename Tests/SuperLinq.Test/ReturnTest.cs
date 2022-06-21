@@ -12,8 +12,8 @@ public class ReturnTest
 
 	static class NullSingleton
 	{
-		public static readonly IEnumerable<object> Sequence = SuperEnumerable.Return<object>(null);
-		public static IList<object> List => (IList<object>)Sequence;
+		public static readonly IEnumerable<object?> Sequence = SuperEnumerable.Return<object?>(null);
+		public static IList<object?> List => (IList<object?>)Sequence;
 	}
 
 	[Fact]
@@ -38,30 +38,6 @@ public class ReturnTest
 	public void TestContainsReturnsTrueWhenTheResultingSequenceContainsTheItemProvided()
 	{
 		Assert.Contains(SomeSingleton.Item, SomeSingleton.Sequence);
-	}
-
-	[Fact]
-	public void TestContainsDoesNotThrowWhenTheItemContainedIsNull()
-	{
-		_ = SomeSingleton.Sequence.Contains(value: null);
-	}
-
-	[Fact]
-	public void TestContainsDoesNotThrowWhenTheItemProvidedIsNull()
-	{
-		_ = NullSingleton.Sequence.Contains(new object());
-	}
-
-	[Fact]
-	public void TestIndexOfDoesNotThrowWhenTheItemProvidedIsNull()
-	{
-		NullSingleton.List.IndexOf(new object());
-	}
-
-	[Fact]
-	public void TestIndexOfDoesNotThrowWhenTheItemContainedIsNull()
-	{
-		_ = SomeSingleton.List.IndexOf(item: null);
 	}
 
 	[Fact]

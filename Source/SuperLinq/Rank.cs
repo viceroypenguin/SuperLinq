@@ -23,7 +23,7 @@ public static partial class SuperEnumerable
 	/// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
 	public static IEnumerable<int> Rank<TSource>(
-		this IEnumerable<TSource> source, IComparer<TSource> comparer)
+		this IEnumerable<TSource> source, IComparer<TSource>? comparer)
 		where TSource : notnull =>
 		source.RankBy(x => x, comparer);
 

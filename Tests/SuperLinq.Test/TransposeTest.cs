@@ -17,7 +17,7 @@ public class TransposeTest
 		using var matrix = TestingSequence.Of(seq1, seq2, seq3, null);
 
 		Assert.Throws<NullReferenceException>(() =>
-			matrix.Transpose().FirstOrDefault());
+			matrix!.Transpose().FirstOrDefault());
 	}
 
 	[Fact]
@@ -44,10 +44,10 @@ public class TransposeTest
 	{
 		var expectations = new[]
 		{
-				new[] { 10, 20, 30 },
-				new[] { 11, 31 },
-				new[] { 32 }
-			};
+			new[] { 10, 20, 30 },
+			new[] { 11, 31 },
+			new[] { 32 },
+		};
 
 		using var row1 = TestingSequence.Of(10, 11);
 		using var row2 = TestingSequence.Of(20);

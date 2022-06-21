@@ -66,7 +66,7 @@ public class ToDataTableTest
 	public void ToDataTableMemberExpressionMethod()
 	{
 		Assert.Throws<ArgumentException>(() =>
-			_testObjects.ToDataTable(t => t.ToString()));
+			_testObjects.ToDataTable(t => t.ToString()!));
 	}
 
 
@@ -74,7 +74,7 @@ public class ToDataTableTest
 	public void ToDataTableMemberExpressionNonMember()
 	{
 		Assert.Throws<ArgumentException>(() =>
-			_testObjects.ToDataTable(t => t.ToString().Length));
+			_testObjects.ToDataTable(t => t.ToString()!.Length));
 	}
 
 	[Fact]
@@ -139,7 +139,7 @@ public class ToDataTableTest
 							  .Cast<DictionaryEntry>()
 							  .ToArray();
 
-		vars.Select(e => new { Name = e.Key.ToString(), Value = e.Value.ToString() })
+		vars.Select(e => new { Name = e.Key.ToString()!, Value = e.Value!.ToString()! })
 			.ToDataTable(dt, e => e.Name, e => e.Value);
 
 		var rows = dt.Rows.Cast<DataRow>().ToArray();
@@ -162,13 +162,13 @@ public class ToDataTableTest
 		var points = new[] { new Point(12, 34) }.ToDataTable();
 
 		Assert.Equal(3, points.Columns.Count);
-		DataColumn x, y, empty;
+		DataColumn? x, y, empty;
 		Assert.NotNull(x = points.Columns["X"]);
 		Assert.NotNull(y = points.Columns["Y"]);
 		Assert.NotNull(empty = points.Columns["IsEmpty"]);
 		var row = points.Rows.Cast<DataRow>().Single();
-		Assert.Equal(12, row[x]);
-		Assert.Equal(34, row[y]);
-		Assert.Equal(false, row[empty]);
+		Assert.Equal(12, row[x!]);
+		Assert.Equal(34, row[y!]);
+		Assert.Equal(false, row[empty!]);
 	}
 }

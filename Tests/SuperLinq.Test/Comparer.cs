@@ -19,6 +19,6 @@ sealed class Comparer
 			_comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
 		}
 
-		public int Compare(T x, T y) => _comparer(x, y);
+		public int Compare(T? x, T? y) => _comparer(x!, y!);
 	}
 }

@@ -8,17 +8,17 @@ namespace Test;
 public class NullArgumentTest
 {
 	[Theory, MemberData(nameof(GetNotNullInlineDatas))]
-	public void NotNull(Action InlineData) =>
-		InlineData();
+	public void NotNull(Action inlineData) =>
+		inlineData();
 
 	[Theory, MemberData(nameof(GetCanBeNullInlineDatas))]
-	public void CanBeNull(Action InlineData) =>
-		InlineData();
+	public void CanBeNull(Action inlineData) =>
+		inlineData();
 
 	public static IEnumerable<object[]> GetNotNullInlineDatas() =>
-		GetInlineDatas(canBeNull: false, InlineDataFactory: (method, args, paramName) => () =>
+		GetInlineDatas(canBeNull: false, inlineDataFactory: (method, args, paramName) => () =>
 		{
-			Exception e = null;
+			Exception? e = null;
 
 			try
 			{
@@ -31,19 +31,19 @@ public class NullArgumentTest
 
 			Assert.NotNull(e);
 			Assert.IsAssignableFrom<ArgumentNullException>(e);
-			var ane = (ArgumentNullException)e;
+			var ane = (ArgumentNullException)e!;
 			Assert.Equal(paramName, ane.ParamName);
 		});
 
 	public static IEnumerable<object[]> GetCanBeNullInlineDatas() =>
-		GetInlineDatas(canBeNull: true, InlineDataFactory: (method, args, _) => () => method.Invoke(null, args));
+		GetInlineDatas(canBeNull: true, inlineDataFactory: (method, args, _) => () => method.Invoke(null, args));
 
-	static IEnumerable<object[]> GetInlineDatas(bool canBeNull, Func<MethodInfo, object[], string, Action> InlineDataFactory) =>
+	static IEnumerable<object[]> GetInlineDatas(bool canBeNull, Func<MethodInfo, object[], string, Action> inlineDataFactory) =>
 		from m in typeof(SuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-		from t in CreateInlineDatas(m, canBeNull, InlineDataFactory)
+		from t in CreateInlineDatas(m, canBeNull, inlineDataFactory)
 		select t;
 
-	static IEnumerable<object[]> CreateInlineDatas(MethodInfo methodDefinition, bool canBeNull, Func<MethodInfo, object[], string, Action> InlineDataFactory)
+	static IEnumerable<object[]> CreateInlineDatas(MethodInfo methodDefinition, bool canBeNull, Func<MethodInfo, object[], string, Action> inlineDataFactory)
 	{
 		var method = InstantiateMethod(methodDefinition);
 		var parameters = method.GetParameters().ToList();
@@ -51,7 +51,7 @@ public class NullArgumentTest
 		return from param in parameters
 			   where IsReferenceType(param) && ParameterCanBeNull(param) == canBeNull
 			   let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
-			   let InlineData = InlineDataFactory(method, arguments, param.Name)
+			   let InlineData = inlineDataFactory(method, arguments, param.Name!)
 			   let testName = GetTestName(methodDefinition, param)
 			   select new object[] { InlineData };
 	}
@@ -88,7 +88,7 @@ public class NullArgumentTest
 
 		var nullableParameters = new[]
 		{
-			nameof(SuperEnumerable.Trace) + ".format"
+			nameof(SuperEnumerable.Trace) + ".format",
 		};
 
 		var type = parameter.ParameterType.GetTypeInfo();
@@ -104,8 +104,8 @@ public class NullArgumentTest
 		if (type == typeof(string)) return "";
 		if (type == typeof(TaskScheduler)) return TaskScheduler.Default;
 		if (type == typeof(IEnumerable<int>)) return new[] { 1, 2, 3 }; // Provide non-empty sequence for MinBy/MaxBy.
-		if (type.IsArray) return Array.CreateInstance(type.GetElementType(), 0);
-		if (type.GetTypeInfo().IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
+		if (type.IsArray) return Array.CreateInstance(type.GetElementType()!, 0);
+		if (type.GetTypeInfo().IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type)!;
 		if (typeof(Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
 
 		var typeInfo = type.GetTypeInfo();
@@ -121,7 +121,7 @@ public class NullArgumentTest
 	static Delegate CreateDelegateInstance(Type type)
 	{
 		var invoke = type.GetMethod("Invoke");
-		var parameters = invoke.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name));
+		var parameters = invoke!.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name));
 		var body = Expression.Default(invoke.ReturnType); // requires >= .NET 4.0
 		var lambda = Expression.Lambda(type, body, parameters);
 		return lambda.Compile();
@@ -130,10 +130,10 @@ public class NullArgumentTest
 	static object CreateGenericInterfaceInstance(TypeInfo type)
 	{
 		Debug.Assert(type.IsGenericType && type.IsInterface);
-		var name = type.Name.Substring(1); // Delete first character, i.e. the 'I' in IEnumerable
+		var name = type.Name[1..]; // Delete first character, i.e. the 'I' in IEnumerable
 		var definition = typeof(GenericArgs).GetTypeInfo().GetNestedType(name);
-		var instantiation = definition.MakeGenericType(type.GetGenericArguments());
-		return Activator.CreateInstance(instantiation);
+		var instantiation = definition!.MakeGenericType(type.GetGenericArguments());
+		return Activator.CreateInstance(instantiation)!;
 	}
 
 	static class EmptyEnumerable
@@ -153,14 +153,13 @@ public class NullArgumentTest
 		}
 	}
 
-	// ReSharper disable UnusedMember.Local, UnusedAutoPropertyAccessor.Local
 	static class GenericArgs
 	{
 		class Enumerator<T> : IEnumerator<T>
 		{
 			public bool MoveNext() => false;
-			public T Current { get; private set; }
-			object IEnumerator.Current => Current;
+			public T Current { get; private set; } = default!;
+			object? IEnumerator.Current => Current;
 			public void Reset() { }
 			public void Dispose() { }
 		}
@@ -171,9 +170,9 @@ public class NullArgumentTest
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		}
 
-		public class OrderedEnumerable<T> : Enumerable<T>, System.Linq.IOrderedEnumerable<T>
+		public class OrderedEnumerable<T> : Enumerable<T>, IOrderedEnumerable<T>
 		{
-			public System.Linq.IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer, bool descending)
+			public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool descending)
 			{
 				if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 				return this;
@@ -182,12 +181,12 @@ public class NullArgumentTest
 
 		public class Comparer<T> : IComparer<T>
 		{
-			public int Compare(T x, T y) => -1;
+			public int Compare(T? x, T? y) => -1;
 		}
 
 		public class EqualityComparer<T> : IEqualityComparer<T>
 		{
-			public bool Equals(T x, T y) => false;
+			public bool Equals(T? x, T? y) => false;
 			public int GetHashCode(T obj) => 0;
 		}
 	}
