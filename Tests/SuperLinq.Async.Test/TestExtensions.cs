@@ -2,6 +2,8 @@
 
 internal static partial class TestExtensions
 {
+	public static IEnumerable<T> Seq<T>(params T[] items) => items;
+
 	public static IAsyncEnumerable<T> AsyncSeq<T>(params T[] items) =>
 		items.ToAsyncEnumerable();
 

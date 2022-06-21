@@ -52,11 +52,8 @@ public class SegmentTests
 
 		foreach (var segment in result)
 		{
-			for (var i = 0; i < 2; i++)
-			{
-				Assert.True(segment.Any());
-				Assert.Equal(value, segment.Single());
-			}
+			Assert.True(segment.Any());
+			Assert.Equal(value, segment.Single());
 		}
 	}
 

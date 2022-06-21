@@ -54,7 +54,9 @@ public static partial class SuperEnumerable
 		source.ThrowIfNull();
 		newSegmentPredicate.ThrowIfNull();
 
-		return _(); IEnumerable<IEnumerable<T>> _()
+		return _(source, newSegmentPredicate);
+
+		static IEnumerable<IEnumerable<T>> _(IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
 		{
 			using var e = source.GetEnumerator();
 
