@@ -1,8 +1,13 @@
 ﻿namespace Test.Async;
 
-static class TestingSequence
+internal static class TestingSequence
 {
 	internal static TestingSequence<T> Of<T>(params T[] elements) => new(elements.ToAsyncEnumerable());
+
+	internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source) =>
+		source != null
+		? new TestingSequence<T>(source.ToAsyncEnumerable())
+		: throw new ArgumentNullException(nameof(source));
 
 	internal static TestingSequence<T> AsTestingSequence<T>(this IAsyncEnumerable<T> source) =>
 		source != null
@@ -14,10 +19,10 @@ static class TestingSequence
 /// Sequence that asserts whether GetEnumerator() is
 /// called exactly once or not.
 /// </summary>
-sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
+internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
 {
-	bool? _disposed;
-	IAsyncEnumerable<T>? _sequence;
+	private bool? _disposed;
+	private IAsyncEnumerable<T>? _sequence;
 
 	internal TestingSequence(IAsyncEnumerable<T> sequence) =>
 		_sequence = sequence;

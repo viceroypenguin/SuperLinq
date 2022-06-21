@@ -72,6 +72,10 @@
 		<PackageReference Include="System.Linq.Async" Version="6.0.1" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\..\Generators\SuperLinq.Async.Generator\SuperLinq.Async.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
 	<PropertyGroup Label="MinVer">
 		<MinVerAutoIncrement>minor</MinVerAutoIncrement>
 		<MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>

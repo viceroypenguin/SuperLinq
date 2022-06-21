@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generators", "Generators", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Generator", "Generators\SuperLinq.Generator\SuperLinq.Generator.csproj", "{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLinq.Async.Generator", "Generators\SuperLinq.Async.Generator\SuperLinq.Async.Generator.csproj", "{B6503F7F-B3DE-47E5-922E-3A6108E75970}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6503F7F-B3DE-47E5-922E-3A6108E75970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6503F7F-B3DE-47E5-922E-3A6108E75970}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6503F7F-B3DE-47E5-922E-3A6108E75970}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6503F7F-B3DE-47E5-922E-3A6108E75970}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{84058331-3025-438D-8A68-B55EE859C70D} = {8392DDDC-9D3E-4A41-A93C-1EF1503D71F9}
 		{1A4F94C6-2143-486B-B787-271506C327FC} = {99F4CCA1-C24D-4C5C-85B9-79CC6A30FAD2}
 		{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE} = {7805222E-6CD5-41FE-9945-0D9FD7DFA24C}
+		{B6503F7F-B3DE-47E5-922E-3A6108E75970} = {7805222E-6CD5-41FE-9945-0D9FD7DFA24C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A8EBCB0-B3EB-4D85-AD02-D349122C1D8E}
