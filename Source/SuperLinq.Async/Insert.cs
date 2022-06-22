@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace SuperLinq.Async;
+﻿namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
