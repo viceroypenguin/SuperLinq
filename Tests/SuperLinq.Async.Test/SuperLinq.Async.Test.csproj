@@ -15,6 +15,7 @@
 
 	<ItemGroup>
 		<Compile Include="..\SuperLinq.Test\BreakingFunc.cs" Link="BreakingFunc.cs" />
+		<Compile Include="..\SuperLinq.Test\EqualityComparer.cs" Link="EqualityComparer.cs" />
 		<Compile Include="..\SuperLinq.Test\FuncModule.cs" Link="FuncModule.cs" />
 	</ItemGroup>
 

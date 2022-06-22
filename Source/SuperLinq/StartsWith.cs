@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 
 	public static bool StartsWith<T>(this IEnumerable<T> first, IEnumerable<T> second)
 	{
-		return StartsWith(first, second, null);
+		return StartsWith(first, second, comparer: null);
 	}
 
 	/// <summary>
