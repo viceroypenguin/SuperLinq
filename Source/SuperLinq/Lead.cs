@@ -8,7 +8,28 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// This operator evaluates in a deferred and streaming manner.<br/>
 	/// For elements of the sequence that are less than <paramref name="offset"/> items from the end,
-	/// default(T) is used as the lead value.<br/>
+	/// <c>default(<typeparamref name="TSource"/>?)</c> is used as the lead value.<br/>
+	/// </remarks>
+	/// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
+	/// <param name="source">The sequence over which to evaluate Lead</param>
+	/// <param name="offset">The offset (expressed as a positive number) by which to lead each element of the sequence</param>
+	/// <returns>A sequence of tuples with the current and lead elements</returns>
+
+	public static IEnumerable<(TSource current, TSource? lead)> Lead<TSource>(this IEnumerable<TSource> source, int offset)
+	{
+		source.ThrowIfNull();
+
+		return source.Select(Some)
+					 .Lead(offset, default, (curr, lead) => (curr.Value, lead is (true, var some) ? some : default));
+	}
+
+	/// <summary>
+	/// Produces a projection of a sequence by evaluating pairs of elements separated by a positive offset.
+	/// </summary>
+	/// <remarks>
+	/// This operator evaluates in a deferred and streaming manner.<br/>
+	/// For elements of the sequence that are less than <paramref name="offset"/> items from the end,
+	/// <c>default(<typeparamref name="TSource"/>?)</c> is used as the lead value.<br/>
 	/// </remarks>
 	/// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
 	/// <typeparam name="TResult">The type of the elements in the result sequence</typeparam>

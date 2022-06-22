@@ -36,7 +36,7 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	static int CountUpTo<T>(this IEnumerable<T> source, int max)
+	internal static int CountUpTo<T>(this IEnumerable<T> source, int max)
 	{
 		source.ThrowIfNull();
 		max.ThrowIfLessThan(0);
@@ -52,5 +52,5 @@ public static partial class SuperEnumerable
 
 	// See https://github.com/atifaziz/Optuple
 
-	static (bool HasValue, T Value) Some<T>(T value) => (true, value);
+	internal static(bool HasValue, T Value) Some<T>(T value) => (true, value);
 }

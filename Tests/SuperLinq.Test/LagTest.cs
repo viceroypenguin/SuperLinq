@@ -51,6 +51,19 @@ public class LagTests
 		Assert.Equal(Enumerable.Repeat(lagDefault, lagBy), result.Take(lagBy));
 	}
 
+	[Fact]
+	public void TestLagTuple()
+	{
+		const int Count = 100;
+		const int LagBy = 10;
+		var sequence = Enumerable.Range(1, Count);
+		var result = sequence.Lag(LagBy);
+
+		Assert.Equal(Count, result.Count());
+		result.AssertSequenceEqual(
+			sequence.Select(x => (x, x <= LagBy ? default : x - LagBy)));
+	}
+
 	/// <summary>
 	/// Verify that lag will use default(T) if a specific default value is not supplied for the lag value.
 	/// </summary>

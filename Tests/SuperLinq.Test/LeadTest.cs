@@ -51,8 +51,21 @@ public class LeadTests
 		Assert.Equal(Enumerable.Repeat(leadDefault, leadBy), result.Skip(count - leadBy));
 	}
 
+	[Fact]
+	public void TestLeadTuple()
+	{
+		const int Count = 100;
+		const int LeadBy = 10;
+		var sequence = Enumerable.Range(1, Count);
+		var result = sequence.Lead(LeadBy);
+
+		Assert.Equal(Count, result.Count());
+		result.AssertSequenceEqual(
+			sequence.Select(x => (x, x <= Count - LeadBy ? x + LeadBy : default)));
+	}
+
 	/// <summary>
-	/// Verify that Lead() willuse default(T) if a specific default value is not supplied for the lead value.
+	/// Verify that Lead() will use default(T) if a specific default value is not supplied for the lead value.
 	/// </summary>
 	[Fact]
 	public void TestLeadImplicitDefaultValue()
