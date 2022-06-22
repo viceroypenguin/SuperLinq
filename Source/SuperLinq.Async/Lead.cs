@@ -89,25 +89,17 @@ public static partial class AsyncSuperEnumerable
 
 		static async IAsyncEnumerable<TResult> _(IAsyncEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, ValueTask<TResult>> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			var leadQueue = new Queue<TSource>(offset);
-			await using var iter = source.GetConfiguredAsyncEnumerator(cancellationToken);
+			var queue = new Queue<TSource>(offset + 1);
 
-			bool hasMore;
-			// first, prefetch and populate the lead queue with the next step of
-			// items to be streamed out to the consumer of the sequence
-			while ((hasMore = await iter.MoveNextAsync()) && leadQueue.Count < offset)
-				leadQueue.Enqueue(iter.Current);
-			// next, while the source sequence has items, yield the result of
-			// the projection function applied to the top of queue and current item
-			while (hasMore)
+			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
-				yield return await resultSelector(leadQueue.Dequeue(), iter.Current).ConfigureAwait(false);
-				leadQueue.Enqueue(iter.Current);
-				hasMore = await iter.MoveNextAsync();
+				queue.Enqueue(item);
+				if (queue.Count > offset)
+					yield return await resultSelector(queue.Dequeue(), item).ConfigureAwait(false);
 			}
-			// yield the remaining values in the lead queue with the default lead value
-			while (leadQueue.Count > 0)
-				yield return await resultSelector(leadQueue.Dequeue(), defaultLeadValue).ConfigureAwait(false);
+
+			while (queue.Count > 0)
+				yield return await resultSelector(queue.Dequeue(), defaultLeadValue).ConfigureAwait(false);
 		}
 	}
 }

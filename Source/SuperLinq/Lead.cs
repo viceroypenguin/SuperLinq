@@ -71,25 +71,17 @@ public static partial class SuperEnumerable
 
 		static IEnumerable<TResult> _(IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
 		{
-			var leadQueue = new Queue<TSource>(offset);
-			using var iter = source.GetEnumerator();
+			var queue = new Queue<TSource>(offset + 1);
 
-			bool hasMore;
-			// first, prefetch and populate the lead queue with the next step of
-			// items to be streamed out to the consumer of the sequence
-			while ((hasMore = iter.MoveNext()) && leadQueue.Count < offset)
-				leadQueue.Enqueue(iter.Current);
-			// next, while the source sequence has items, yield the result of
-			// the projection function applied to the top of queue and current item
-			while (hasMore)
+			foreach (var item in source)
 			{
-				yield return resultSelector(leadQueue.Dequeue(), iter.Current);
-				leadQueue.Enqueue(iter.Current);
-				hasMore = iter.MoveNext();
+				queue.Enqueue(item);
+				if (queue.Count > offset)
+					yield return resultSelector(queue.Dequeue(), item);
 			}
-			// yield the remaining values in the lead queue with the default lead value
-			while (leadQueue.Count > 0)
-				yield return resultSelector(leadQueue.Dequeue(), defaultLeadValue);
+
+			while (queue.Count > 0)
+				yield return resultSelector(queue.Dequeue(), defaultLeadValue);
 		}
 	}
 }

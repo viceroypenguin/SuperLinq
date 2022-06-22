@@ -69,7 +69,7 @@ public static partial class SuperEnumerable
 
 		static IEnumerable<TResult> _(IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
 		{
-			var lagQueue = new Queue<TSource>(offset);
+			var lagQueue = new Queue<TSource>(offset + 1);
 			foreach (var item in source)
 			{
 				lagQueue.Enqueue(item);

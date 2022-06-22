@@ -88,7 +88,7 @@ public static partial class AsyncSuperEnumerable
 
 		static async IAsyncEnumerable<TResult> _(IAsyncEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, ValueTask<TResult>> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			var lagQueue = new Queue<TSource>(offset);
+			var lagQueue = new Queue<TSource>(offset + 1);
 			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
 				lagQueue.Enqueue(item);
