@@ -13,30 +13,13 @@ public static partial class SuperEnumerable
 	/// The result of Slice() is identical to: <c>sequence.Skip(startIndex).Take(count)</c>
 	/// </remarks>
 	/// <typeparam name="T">The type of the elements in the source sequence</typeparam>
-	/// <param name="sequence">The sequence from which to extract elements</param>
+	/// <param name="source">The sequence from which to extract elements</param>
 	/// <param name="startIndex">The zero-based index at which to begin slicing</param>
 	/// <param name="count">The number of items to slice out of the index</param>
 	/// <returns>A new sequence containing any elements sliced out from the source sequence</returns>
-
-	public static IEnumerable<T> Slice<T>(this IEnumerable<T> sequence, int startIndex, int count)
+	[Obsolete("Slice has been replaced by Take(Range).")]
+	public static IEnumerable<T> Slice<T>(this IEnumerable<T> source, int startIndex, int count)
 	{
-		sequence.ThrowIfNull();
-		startIndex.ThrowIfLessThan(0);
-		count.ThrowIfLessThan(0);
-
-		return sequence switch
-		{
-			IList<T> list => SliceList(list.Count, i => list[i]),
-			IReadOnlyList<T> list => SliceList(list.Count, i => list[i]),
-			var seq => seq.Skip(startIndex).Take(count)
-		};
-
-		IEnumerable<T> SliceList(int listCount, Func<int, T> indexer)
-		{
-			var countdown = count;
-			var index = startIndex;
-			while (index < listCount && countdown-- > 0)
-				yield return indexer(index++);
-		}
+		return source.Take(startIndex..(startIndex + count));
 	}
 }

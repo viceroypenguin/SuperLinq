@@ -1,11 +1,7 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+﻿namespace SuperLinq.Async;
 
-namespace SuperLinq;
-
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
-#if !NET6_0_OR_GREATER
 	/// <summary>Returns a specified range of contiguous elements from a sequence.</summary>
 	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
 	/// <param name="source">The sequence to return elements from.</param>
@@ -14,9 +10,9 @@ public static partial class SuperEnumerable
 	/// <returns>An <see cref="IEnumerable{T}" /> that contains the specified <paramref name="range" /> of elements from the <paramref name="source" /> sequence.</returns>
 	/// <remarks>
 	/// <para>This method is implemented by using deferred execution. The immediate return value is an object that stores all the information that is required to perform the action. The query represented by this method is not executed until the object is enumerated either by calling its `GetEnumerator` method directly or by using `foreach` in Visual C# or `For Each` in Visual Basic.</para>
-	/// <para><see cref="SuperEnumerable.Take" /> enumerates <paramref name="source" /> and yields elements whose indices belong to the specified <paramref name="range"/>.</para>
+	/// <para><see cref="AsyncSuperEnumerable.Take" /> enumerates <paramref name="source" /> and yields elements whose indices belong to the specified <paramref name="range"/>.</para>
 	/// </remarks>
-	public static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, Range range)
+	public static IAsyncEnumerable<TSource> Take<TSource>(this IAsyncEnumerable<TSource> source, Range range)
 	{
 		source.ThrowIfNull();
 
@@ -27,24 +23,25 @@ public static partial class SuperEnumerable
 		{
 			if (start.Value == 0 || (end.IsFromEnd && end.Value >= start.Value))
 			{
-				return Array.Empty<TSource>();
+				return AsyncEnumerable.Empty<TSource>();
 			}
 		}
 		else if (!end.IsFromEnd)
 		{
-			return start.Value >= end.Value ? Array.Empty<TSource>()
+			return start.Value >= end.Value
+				? AsyncEnumerable.Empty<TSource>()
 				: TakeRangeIterator(source, start.Value, end.Value);
 		}
 
 		return TakeRangeFromEndIterator(source, start, end);
 	}
 
-	private static IEnumerable<TSource> TakeRangeIterator<TSource>(IEnumerable<TSource> source, int startIndex, int endIndex)
+	private static async IAsyncEnumerable<TSource> TakeRangeIterator<TSource>(IAsyncEnumerable<TSource> source, int startIndex, int endIndex, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
-		using var e = source.GetEnumerator();
+		await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
 
 		var index = 0;
-		while (index < startIndex && e.MoveNext())
+		while (index < startIndex && await e.MoveNextAsync())
 		{
 			++index;
 		}
@@ -54,44 +51,24 @@ public static partial class SuperEnumerable
 			yield break;
 		}
 
-		while (index < endIndex && e.MoveNext())
+		while (index < endIndex && await e.MoveNextAsync())
 		{
 			yield return e.Current;
 			++index;
 		}
 	}
 
-	private static IEnumerable<TSource> TakeRangeFromEndIterator<TSource>(IEnumerable<TSource> source, Index start, Index end)
+	private static async IAsyncEnumerable<TSource> TakeRangeFromEndIterator<TSource>(IAsyncEnumerable<TSource> source, Index start, Index end, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
-		// Attempt to extract the count of the source enumerator,
-		// in order to convert fromEnd indices to regular indices.
-		// Enumerable counts can change over time, so it is very
-		// important that this check happens at enumeration time;
-		// do not move it outside of the iterator method.
-		if (source.TryGetCollectionCount(out var count))
-		{
-			var startIndex = start.GetOffset(count);
-			var endIndex = end.GetOffset(count);
-
-			if (startIndex < endIndex)
-			{
-				foreach (var element in TakeRangeIterator(source, startIndex, endIndex))
-				{
-					yield return element;
-				}
-			}
-
-			yield break;
-		}
-
 		Queue<TSource> queue;
+		var count = 0;
 
 		if (start.IsFromEnd)
 		{
 			// TakeLast compat: enumerator should be disposed before yielding the first element.
-			using (var e = source.GetEnumerator())
+			await using (var e = source.GetConfiguredAsyncEnumerator(cancellationToken))
 			{
-				if (!e.MoveNext())
+				if (!await e.MoveNextAsync())
 				{
 					yield break;
 				}
@@ -101,7 +78,7 @@ public static partial class SuperEnumerable
 				count = 1;
 
 				var startCount = start.Value;
-				while (e.MoveNext())
+				while (await e.MoveNextAsync())
 				{
 					if (count >= startCount)
 						queue.Dequeue();
@@ -122,11 +99,11 @@ public static partial class SuperEnumerable
 		else
 		{
 			// SkipLast compat: the enumerator should be disposed at the end of the enumeration.
-			using var e = source.GetEnumerator();
+			await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
 
 			var startCount = start.Value;
 			var endCount = end.Value;
-			while (count < startCount && e.MoveNext())
+			while (count < startCount && await e.MoveNextAsync())
 			{
 				++count;
 			}
@@ -134,10 +111,10 @@ public static partial class SuperEnumerable
 			if (count == startCount)
 			{
 				queue = new Queue<TSource>();
-				while (queue.Count != endCount && e.MoveNext())
+				while (queue.Count != endCount && await e.MoveNextAsync())
 					queue.Enqueue(e.Current);
 
-				while (e.MoveNext())
+				while (await e.MoveNextAsync())
 				{
 					queue.Enqueue(e.Current);
 					yield return queue.Dequeue();
@@ -145,5 +122,4 @@ public static partial class SuperEnumerable
 			}
 		}
 	}
-#endif
 }

@@ -143,6 +143,11 @@ second sequence.
 
 This method has 4 overloads.
 
+### Take
+
+Returns a specified range of contiguous elements from a sequence using the
+range operator.
+
 ### TakeUntil
 
 Returns items from the input sequence until the given predicate returns true

@@ -38,7 +38,7 @@ public class MoveTest
 
 		var result = test.Move(fromIndex, count, toIndex);
 
-		var slice = source.Slice(fromIndex, count);
+		var slice = source.Take(fromIndex..(fromIndex + count));
 		var exclude = source.Exclude(fromIndex, count);
 		var expectations = exclude.Take(toIndex).Concat(slice).Concat(exclude.Skip(toIndex));
 		Assert.Equal(expectations, result);
@@ -67,7 +67,7 @@ public class MoveTest
 
 		var result = test.Move(fromIndex, count, toIndex);
 
-		var expectations = source.Exclude(fromIndex, count).Concat(source.Slice(fromIndex, count));
+		var expectations = source.Exclude(fromIndex, count).Concat(source.Take(fromIndex..(fromIndex + count)));
 		Assert.Equal(expectations, result);
 	}
 

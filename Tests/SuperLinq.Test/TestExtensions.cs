@@ -9,8 +9,10 @@ public enum SourceKind
 	BreakingReadOnlyCollection
 }
 
-static partial class TestExtensions
+internal static partial class TestExtensions
 {
+	internal static IEnumerable<T> Seq<T>(params T[] values) => values;
+
 	/// <summary>
 	/// Just to make our testing easier so we can chain the assertion call.
 	/// </summary>

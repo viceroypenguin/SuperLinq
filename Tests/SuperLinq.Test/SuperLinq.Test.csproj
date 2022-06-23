@@ -13,6 +13,7 @@
 
 	<ItemGroup>
 		<Using Include="SuperLinq" />
+		<Using Include="Test.TestExtensions" Static="true" />
 		<Using Include="Xunit" />
 	</ItemGroup>
 

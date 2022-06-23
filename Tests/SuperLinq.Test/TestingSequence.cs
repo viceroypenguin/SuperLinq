@@ -2,7 +2,7 @@
 
 namespace Test;
 
-static class TestingSequence
+internal static class TestingSequence
 {
 	internal static TestingSequence<T> Of<T>(params T[] elements) =>
 		new TestingSequence<T>(elements);
@@ -17,7 +17,7 @@ static class TestingSequence
 /// Sequence that asserts whether GetEnumerator() is
 /// called exactly once or not.
 /// </summary>
-sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
+internal sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
 {
 	private bool? _disposed;
 	private IEnumerable<T>? _sequence;
@@ -33,7 +33,7 @@ sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
 	/// <summary>
 	/// Checks that the iterator was disposed, and then resets.
 	/// </summary>
-	void AssertDisposed()
+	private void AssertDisposed()
 	{
 		if (_disposed == null)
 			return;

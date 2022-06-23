@@ -46,6 +46,7 @@
 			- Segment
 			- SkipUntil
 			- StartsWith
+			- Take
 			- TakeUntil
 		</Description>
 		<Description>$([System.Text.RegularExpressions.Regex]::Replace($(Description), `\s+`, ` `).Trim().Replace(` - `, `, `).Replace(`:,`, `:`))</Description>

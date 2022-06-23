@@ -2,8 +2,6 @@
 
 public class OrderedMergeTest
 {
-	static IEnumerable<T> Seq<T>(params T[] values) => values;
-
 	public static IEnumerable<object[]> TestData { get; } =
 		from e in new[]
 		{
