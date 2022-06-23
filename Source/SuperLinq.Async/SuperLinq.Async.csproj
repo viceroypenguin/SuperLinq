@@ -42,6 +42,7 @@
 			- Generate
 			- Insert
 			- Random
+			- RunLengthEncode
 			- Segment
 			- SkipUntil
 			- StartsWith

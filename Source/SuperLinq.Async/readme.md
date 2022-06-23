@@ -116,6 +116,14 @@ number generator.
 
 This method has 6 overloads.
 
+### RunLengthEncode
+
+Run-length encodes a sequence by converting consecutive instances of the same
+element into a `KeyValuePair<T, int>` representing the item and its occurrence
+count.
+
+This method has 2 overloads.
+
 ### Segment
 
 Divides a sequence into multiple sequences by using a segment detector based

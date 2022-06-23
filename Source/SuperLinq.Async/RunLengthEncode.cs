@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Run-length encodes a sequence by converting consecutive instances of the same element into
@@ -10,7 +10,7 @@ public static partial class SuperEnumerable
 	/// <param name="sequence">The sequence to run length encode</param>
 	/// <returns>A sequence of tuples containing the element and the occurrence count</returns>
 
-	public static IEnumerable<(T value, int count)> RunLengthEncode<T>(this IEnumerable<T> sequence)
+	public static IAsyncEnumerable<(T value, int count)> RunLengthEncode<T>(this IAsyncEnumerable<T> sequence)
 	{
 		return RunLengthEncode(sequence, comparer: null);
 	}
@@ -25,26 +25,26 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">The comparer used to identify equivalent items</param>
 	/// <returns>A sequence of tuples containing the element and the occurrence count</returns>
 
-	public static IEnumerable<(T value, int count)> RunLengthEncode<T>(this IEnumerable<T> sequence, IEqualityComparer<T>? comparer)
+	public static IAsyncEnumerable<(T value, int count)> RunLengthEncode<T>(this IAsyncEnumerable<T> sequence, IEqualityComparer<T>? comparer)
 	{
 		sequence.ThrowIfNull();
 
 		return _(sequence, comparer ?? EqualityComparer<T>.Default);
 
-		static IEnumerable<(T value, int count)> _(IEnumerable<T> sequence, IEqualityComparer<T> comparer)
+		static async IAsyncEnumerable<(T value, int count)> _(IAsyncEnumerable<T> sequence, IEqualityComparer<T> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			// This implementation could also have been written using a foreach loop,
 			// but it proved to be easier to deal with edge certain cases that occur
 			// (such as empty sequences) using an explicit iterator and a while loop.
 
-			using var iter = sequence.GetEnumerator();
+			await using var iter = sequence.GetConfiguredAsyncEnumerator(cancellationToken);
 
-			if (iter.MoveNext())
+			if (await iter.MoveNextAsync())
 			{
 				var prevItem = iter.Current;
 				var runCount = 1;
 
-				while (iter.MoveNext())
+				while (await iter.MoveNextAsync())
 				{
 					if (comparer.Equals(prevItem, iter.Current))
 					{
