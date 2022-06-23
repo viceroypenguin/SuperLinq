@@ -29,13 +29,16 @@ public static partial class SuperEnumerable
 	/// 6, 7 and 9.
 	/// </example>
 
-	public static IEnumerable<TResult> Choose<T, TResult>(this IEnumerable<T> source,
+	public static IEnumerable<TResult> Choose<T, TResult>(
+		this IEnumerable<T> source,
 		Func<T, (bool, TResult)> chooser)
 	{
 		source.ThrowIfNull();
 		chooser.ThrowIfNull();
 
-		return _(); IEnumerable<TResult> _()
+		return _(source, chooser);
+
+		static IEnumerable<TResult> _(IEnumerable<T> source, Func<T, (bool, TResult)> chooser)
 		{
 			foreach (var item in source)
 			{
