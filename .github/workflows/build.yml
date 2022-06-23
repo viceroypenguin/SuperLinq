@@ -41,7 +41,7 @@ jobs:
       with:
         artifact: /(.*)-(.*).trx/
         name: 'Test report $1 ($2)'
-        path: TestReports/*.trx
+        path: TestResults/*.trx
         reporter: 'dotnet-trx'
 
     - name: Perform CodeQL Analysis
