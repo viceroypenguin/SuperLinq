@@ -39,9 +39,8 @@ jobs:
       uses: dorny/test-reporter@v1
       if: success() || failure()    # run this step even if previous step failed
       with:
-        artifact: /(.*)-(.*).trx/
-        name: 'Test report $1 ($2)'
-        path: TestResults/*.trx
+        name: 'Test report'
+        path: '**/*.trx'
         reporter: 'dotnet-trx'
 
     - name: Perform CodeQL Analysis
