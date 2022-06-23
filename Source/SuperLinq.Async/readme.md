@@ -53,6 +53,13 @@ sequence.
 
 This method has 2 overloads.
 
+### EndsWith
+
+Determines whether the end of the first sequence is equivalent to the second
+sequence.
+
+This method has 4 overloads.
+
 ### Exactly
 
 Determines whether or not the number of elements in the sequence is equals
@@ -107,6 +114,13 @@ This method has 6 overloads.
 
 Skips items from the input sequence until the given predicate returns true
 when applied to the current source item; that item will be the last skipped
+
+### StartsWith
+
+Determines whether the beginning of the first sequence is equivalent to the
+second sequence.
+
+This method has 4 overloads.
 
 ### TakeUntil
 

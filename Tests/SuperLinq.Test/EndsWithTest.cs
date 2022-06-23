@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Test;
+﻿namespace Test;
 
 public class EndsWithTest
 {
@@ -63,7 +61,6 @@ public class EndsWithTest
 	}
 
 	[Fact]
-	[SuppressMessage("ReSharper", "RedundantArgumentDefaultValue")]
 	public void EndsWithUsesSpecifiedEqualityComparerOrDefault()
 	{
 		var first = new[] { 1, 2, 3 };

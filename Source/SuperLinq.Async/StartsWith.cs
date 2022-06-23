@@ -16,7 +16,7 @@ public static partial class AsyncSuperEnumerable
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>
-	/// This is the <see cref="IEnumerable{T}" /> equivalent of
+	/// This is the <see cref="IAsyncEnumerable{T}" /> equivalent of
 	/// <see cref="string.StartsWith(string)" /> and it calls
 	/// <see cref="IEqualityComparer{T}.Equals(T,T)" /> using
 	/// <see cref="EqualityComparer{T}.Default"/> on pairs of elements at
@@ -42,7 +42,7 @@ public static partial class AsyncSuperEnumerable
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>
-	/// This is the <see cref="IEnumerable{T}" /> equivalent of
+	/// This is the <see cref="IAsyncEnumerable{T}" /> equivalent of
 	/// <see cref="string.StartsWith(string)" /> and it calls
 	/// <see cref="IEqualityComparer{T}.Equals(T,T)" /> using
 	/// <see cref="EqualityComparer{T}.Default"/> on pairs of elements at
@@ -69,7 +69,7 @@ public static partial class AsyncSuperEnumerable
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>
-	/// This is the <see cref="IEnumerable{T}" /> equivalent of
+	/// This is the <see cref="IAsyncEnumerable{T}" /> equivalent of
 	/// <see cref="string.StartsWith(string)" /> and
 	/// it calls <see cref="IEqualityComparer{T}.Equals(T,T)" /> on pairs
 	/// of elements at the same index.
@@ -95,7 +95,7 @@ public static partial class AsyncSuperEnumerable
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>
-	/// This is the <see cref="IEnumerable{T}" /> equivalent of
+	/// This is the <see cref="IAsyncEnumerable{T}" /> equivalent of
 	/// <see cref="string.StartsWith(string)" /> and
 	/// it calls <see cref="IEqualityComparer{T}.Equals(T,T)" /> on pairs
 	/// of elements at the same index.
@@ -108,9 +108,12 @@ public static partial class AsyncSuperEnumerable
 
 		comparer ??= EqualityComparer<T>.Default;
 
-		await using var firstIter = first.GetConfiguredAsyncEnumerator(cancellationToken);
-		return await second.AllAwaitAsync(
-			async item => await firstIter.MoveNextAsync() && comparer.Equals(firstIter.Current, item),
-			cancellationToken).ConfigureAwait(false);
+		var snd = await second.ToListAsync(cancellationToken).ConfigureAwait(false);
+		return await first.Take(snd.Count)
+			.SequenceEqualAsync(
+				snd.ToAsyncEnumerable(),
+				comparer,
+				cancellationToken)
+			.ConfigureAwait(false);
 	}
 }

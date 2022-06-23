@@ -61,7 +61,8 @@ public static partial class SuperEnumerable
 
 		comparer ??= EqualityComparer<T>.Default;
 
-		using var firstIter = first.GetEnumerator();
-		return second.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
+		var snd = second.ToList();
+		return first.Take(snd.Count)
+			.SequenceEqual(snd, comparer);
 	}
 }

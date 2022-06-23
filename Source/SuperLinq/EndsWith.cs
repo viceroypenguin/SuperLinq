@@ -23,7 +23,7 @@ public static partial class SuperEnumerable
 
 	public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second)
 	{
-		return EndsWith(first, second, null);
+		return EndsWith(first, second, comparer: null);
 	}
 
 	/// <summary>
@@ -50,19 +50,17 @@ public static partial class SuperEnumerable
 		first.ThrowIfNull();
 		second.ThrowIfNull();
 
+		if (first.TryGetCollectionCount(out var firstCount) &&
+			second.TryGetCollectionCount(out var secondCount) &&
+			secondCount > firstCount)
+		{
+			return false;
+		}
+
 		comparer ??= EqualityComparer<T>.Default;
 
-		List<T> secondList;
-		return second.TryGetCollectionCount(out var secondCount)
-			   ? first.TryGetCollectionCount(out var firstCount) && secondCount > firstCount
-				 ? false
-				 : Impl(second, secondCount)
-			   : Impl(secondList = second.ToList(), secondList.Count);
-
-		bool Impl(IEnumerable<T> snd, int count)
-		{
-			using var firstIter = first.TakeLast(count).GetEnumerator();
-			return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
-		}
+		var snd = second.ToList();
+		return first.TakeLast(snd.Count)
+			.SequenceEqual(snd, comparer);
 	}
 }
