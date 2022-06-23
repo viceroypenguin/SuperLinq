@@ -29,6 +29,7 @@
 			
 			- AtLeast
 			- AtMost
+			- Choose
 			- CompareCount
 			- Consume
 			- CountBy
@@ -38,6 +39,7 @@
 			- FillForward
 			- Fold
 			- From
+			- Generate
 			- Insert
 			- Random
 			- Segment
