@@ -24,19 +24,10 @@ build/
 # Visual Studio 2015 cache/options directory
 .vs/
 
-# NUNIT
-*.VisualState.xml
-TestResult.xml
+# TestResults
+[Tt]est[Rr]esults/
 
-# ReSharper
-_ReSharper*/
-*.[Rr]e[Ss]harper
-*.DotSettings.user
-
-# CodeRush
-**/\.cr/
-
- NuGet Packages
+# NuGet Packages
 *.nupkg
 # The packages folder can be ignored because of Package Restore
 **/packages/*
@@ -48,8 +39,3 @@ docs/
 .vscode/
 *.lock.json
 tools/
-
-# IntelliJ Platform excludes
-
-.idea/
-

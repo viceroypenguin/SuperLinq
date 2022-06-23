@@ -34,7 +34,15 @@ jobs:
       run: dotnet build -c Release --no-restore
     - name: Test
       run: dotnet test -c Release --no-build --verbosity normal
-      if: github.repository == 'viceroypenguin/SuperLinq'
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()    # run this step even if previous step failed
+      with:
+        artifact: /(.*)-(.*).trx/
+        name: 'Test report $1 ($2)'
+        path: TestReports/*.trx
+        reporter: 'dotnet-trx'
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
