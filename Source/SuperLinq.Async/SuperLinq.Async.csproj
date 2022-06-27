@@ -44,6 +44,7 @@
 			- Random
 			- RunLengthEncode
 			- Segment
+			- Sequence
 			- SkipUntil
 			- StartsWith
 			- Take

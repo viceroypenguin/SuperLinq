@@ -228,7 +228,7 @@ public class TakeTest
 	}
 
 	[Fact]
-	public async Task NonEmptySource_DoNotThrowException()
+	public async Task NonEmptySourceDoNotThrowException()
 	{
 		Func<IAsyncEnumerable<int>> source = () => AsyncSeq( 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 );
 
@@ -239,7 +239,7 @@ public class TakeTest
 	}
 
 	[Fact]
-	public async Task EmptySource_DoNotThrowException()
+	public async Task EmptySourceDoNotThrowException()
 	{
 		Func<IAsyncEnumerable<int>> source = () => AsyncSeq<int>();
 

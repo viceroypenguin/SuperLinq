@@ -1,4 +1,6 @@
-﻿namespace Test;
+﻿using SuperLinq;
+
+namespace Test.Async;
 
 public class SequenceTest
 {
@@ -10,7 +12,7 @@ public class SequenceTest
 	public void RangeThrowsOutOfRange(int start, int count, int step)
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			SuperEnumerable.Range(start, count, step));
+			AsyncSuperEnumerable.Range(start, count, step));
 	}
 
 	[Theory]
@@ -22,13 +24,13 @@ public class SequenceTest
 	[InlineData(32, 10, -0)]
 	[InlineData(10, 0, 12)]
 	[InlineData(-10, 0, 12)]
-	public void Range(int start, int count, int step)
+	public Task Range(int start, int count, int step)
 	{
-		var result = SuperEnumerable.Range(start, count, step);
+		var result = AsyncSuperEnumerable.Range(start, count, step);
 		var expectations = Enumerable.Range(0, count)
 			.Select(i => start + step * i);
 
-		result.AssertSequenceEqual(expectations);
+		return result.AssertSequenceEqual(expectations);
 	}
 
 
@@ -38,12 +40,12 @@ public class SequenceTest
 	[InlineData(1, 10)]
 	[InlineData(30, 55)]
 	[InlineData(27, 172)]
-	public void SequenceWithAscendingRange(int start, int stop)
+	public Task SequenceWithAscendingRange(int start, int stop)
 	{
-		var result = SuperEnumerable.Sequence(start, stop);
+		var result = AsyncSuperEnumerable.Sequence(start, stop);
 		var expectations = Enumerable.Range(start, stop - start + 1);
 
-		result.AssertSequenceEqual(expectations);
+		return result.AssertSequenceEqual(expectations);
 	}
 
 	[Theory]
@@ -52,12 +54,12 @@ public class SequenceTest
 	[InlineData(10, 1)]
 	[InlineData(55, 30)]
 	[InlineData(172, 27)]
-	public void SequenceWithDescendingRange(int start, int stop)
+	public Task SequenceWithDescendingRange(int start, int stop)
 	{
-		var result = SuperEnumerable.Sequence(start, stop);
+		var result = AsyncSuperEnumerable.Sequence(start, stop);
 		var expectations = Enumerable.Range(stop, start - stop + 1).Reverse();
 
-		result.AssertSequenceEqual(expectations);
+		return result.AssertSequenceEqual(expectations);
 	}
 
 	[Theory]
@@ -66,12 +68,12 @@ public class SequenceTest
 	[InlineData(1, 10, 1)]
 	[InlineData(30, 55, 4)]
 	[InlineData(27, 172, 9)]
-	public void SequenceWithAscendingRangeAscendingStep(int start, int stop, int step)
+	public Task SequenceWithAscendingRangeAscendingStep(int start, int stop, int step)
 	{
-		var result = SuperEnumerable.Sequence(start, stop, step);
+		var result = AsyncSuperEnumerable.Sequence(start, stop, step);
 		var expectations = Enumerable.Range(start, stop - start + 1).TakeEvery(step);
 
-		result.AssertSequenceEqual(expectations);
+		return result.AssertSequenceEqual(expectations);
 	}
 
 	[Theory]
@@ -80,11 +82,11 @@ public class SequenceTest
 	[InlineData(1, 10, -1)]
 	[InlineData(30, 55, -4)]
 	[InlineData(27, 172, -9)]
-	public void SequenceWithAscendingRangeDescendigStep(int start, int stop, int step)
+	public async Task SequenceWithAscendingRangeDescendigStep(int start, int stop, int step)
 	{
-		var result = SuperEnumerable.Sequence(start, stop, step);
+		var result = AsyncSuperEnumerable.Sequence(start, stop, step);
 
-		Assert.Empty(result);
+		Assert.Empty(await result.ToListAsync());
 	}
 
 	[Theory]
@@ -93,11 +95,11 @@ public class SequenceTest
 	[InlineData(10, 1, 1)]
 	[InlineData(55, 30, 4)]
 	[InlineData(172, 27, 9)]
-	public void SequenceWithDescendingRangeAscendingStep(int start, int stop, int step)
+	public async Task SequenceWithDescendingRangeAscendingStep(int start, int stop, int step)
 	{
-		var result = SuperEnumerable.Sequence(start, stop, step);
+		var result = AsyncSuperEnumerable.Sequence(start, stop, step);
 
-		Assert.Empty(result);
+		Assert.Empty(await result.ToListAsync());
 	}
 
 	[Theory]
@@ -106,12 +108,12 @@ public class SequenceTest
 	[InlineData(10, 1, -1)]
 	[InlineData(55, 30, -4)]
 	[InlineData(172, 27, -9)]
-	public void SequenceWithDescendingRangeDescendigStep(int start, int stop, int step)
+	public Task SequenceWithDescendingRangeDescendigStep(int start, int stop, int step)
 	{
-		var result = SuperEnumerable.Sequence(start, stop, step);
+		var result = AsyncSuperEnumerable.Sequence(start, stop, step);
 		var expectations = Enumerable.Range(stop, start - stop + 1).Reverse().TakeEvery(Math.Abs(step));
 
-		result.AssertSequenceEqual(expectations);
+		return result.AssertSequenceEqual(expectations);
 	}
 
 	[Theory]
@@ -124,12 +126,12 @@ public class SequenceTest
 	[InlineData(int.MinValue, int.MinValue, -1)]
 	[InlineData(int.MinValue, int.MinValue, 1)]
 	[InlineData(int.MinValue, int.MinValue, null)]
-	public void SequenceWithStartEqualsStop(int start, int stop, int? step)
+	public async Task SequenceWithStartEqualsStop(int start, int stop, int? step)
 	{
-		var result = step.HasValue ? SuperEnumerable.Sequence(start, stop, step.Value)
-								   : SuperEnumerable.Sequence(start, stop);
+		var result = step.HasValue ? AsyncSuperEnumerable.Sequence(start, stop, step.Value)
+								   : AsyncSuperEnumerable.Sequence(start, stop);
 
-		Assert.Equal(result.Single(), start);
+		Assert.Equal(await result.SingleAsync(), start);
 	}
 
 	[Theory]
@@ -137,21 +139,21 @@ public class SequenceTest
 	[InlineData(int.MinValue + 1, int.MinValue, -1, 2)]
 	[InlineData(0, int.MaxValue, 10000000, (int.MaxValue / 10000000) + 1)]
 	[InlineData(int.MinValue, int.MaxValue, int.MaxValue, 3)]
-	public void SequenceEdgeCases(int start, int stop, int step, int count)
+	public async Task SequenceEdgeCases(int start, int stop, int step, int count)
 	{
-		var result = SuperEnumerable.Sequence(start, stop, step);
+		var result = AsyncSuperEnumerable.Sequence(start, stop, step);
 
-		Assert.Equal(result.Count(), count);
+		Assert.Equal(await result.CountAsync(), count);
 	}
 
 	[Theory]
 	[InlineData(5, 10)]
 	[InlineData(int.MaxValue, int.MaxValue)]
 	[InlineData(int.MinValue, int.MaxValue)]
-	public void SequenceWithStepZero(int start, int stop)
+	public async Task SequenceWithStepZero(int start, int stop)
 	{
-		var result = SuperEnumerable.Sequence(start, stop, 0);
+		var result = AsyncSuperEnumerable.Sequence(start, stop, 0);
 
-		Assert.True(result.Take(100).All(x => x == start));
+		Assert.True(await result.Take(100).AllAsync(x => x == start));
 	}
 }

@@ -131,6 +131,12 @@ on the original sequence.
 
 This method has 6 overloads.
 
+### Sequence
+
+Generates a sequence of integral numbers within the (inclusive) specified range.
+
+This method has 2 overloads.
+
 ### SkipUntil
 
 Skips items from the input sequence until the given predicate returns true
