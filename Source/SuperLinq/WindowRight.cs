@@ -42,33 +42,6 @@ public static partial class SuperEnumerable
 		source.ThrowIfNull();
 		size.ThrowIfLessThan(1);
 
-		return source.WindowRightWhile((_, i) => i < size);
-	}
-
-	/// <summary>
-	/// Creates a right-aligned sliding window over the source sequence
-	/// with a predicate function determining the window range.
-	/// </summary>
-
-	static IEnumerable<IList<TSource>> WindowRightWhile<TSource>(
-		this IEnumerable<TSource> source,
-		Func<TSource, int, bool> predicate)
-	{
-		source.ThrowIfNull();
-		predicate.ThrowIfNull();
-
-		return _(); IEnumerable<IList<TSource>> _()
-		{
-			var window = new List<TSource>();
-			foreach (var item in source)
-			{
-				window.Add(item);
-
-				// prepare next window before exposing data
-				var nextWindow = new List<TSource>(predicate(item, window.Count) ? window : window.Skip(1));
-				yield return window;
-				window = nextWindow;
-			}
-		}
+		return WindowImpl(source, size, WindowType.Right);
 	}
 }
