@@ -19,12 +19,12 @@ public class RunLengthEncodeTests
 	/// Verify that run-length encoding an empty sequence results in an empty sequence.
 	/// </summary>
 	[Fact]
-	public async Task TestRunLengthEncodeEmptySequence()
+	public Task TestRunLengthEncodeEmptySequence()
 	{
 		var sequence = AsyncEnumerable.Empty<int>();
 		var result = sequence.RunLengthEncode();
 
-		Assert.Empty(await result.ToListAsync());
+		return result.AssertEmpty();
 	}
 
 	/// <summary>

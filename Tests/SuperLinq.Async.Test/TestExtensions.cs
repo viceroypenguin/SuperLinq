@@ -13,6 +13,9 @@ internal static partial class TestExtensions
 				.Append(() => Task.FromException<int>(new NotSupportedException()))
 				.ToArray());
 
+	internal static async Task AssertEmpty<T>(this IAsyncEnumerable<T> actual) =>
+		Assert.Empty(await actual.ToListAsync());
+
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
 		Assert.Equal(expected, actual);
 

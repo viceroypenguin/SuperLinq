@@ -159,6 +159,19 @@ range operator.
 Returns items from the input sequence until the given predicate returns true
 when applied to the current source item; that item will be the last returned
 
+### Window
+
+Processes a sequence into a series of subsequences representing a windowed
+subset of the original
+
+### WindowLeft
+
+Creates a left-aligned sliding window over the source sequence of a given size.
+
+### WindowRight
+
+Creates a right-aligned sliding window over the source sequence of a given size.
+
 [dict]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.Dictionary-2
 [kvp]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.KeyValuePair-2
 [lookup]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.lookup-2

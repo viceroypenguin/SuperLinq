@@ -82,11 +82,11 @@ public class SequenceTest
 	[InlineData(1, 10, -1)]
 	[InlineData(30, 55, -4)]
 	[InlineData(27, 172, -9)]
-	public async Task SequenceWithAscendingRangeDescendigStep(int start, int stop, int step)
+	public Task SequenceWithAscendingRangeDescendigStep(int start, int stop, int step)
 	{
 		var result = AsyncSuperEnumerable.Sequence(start, stop, step);
 
-		Assert.Empty(await result.ToListAsync());
+		return result.AssertEmpty();
 	}
 
 	[Theory]
@@ -95,11 +95,11 @@ public class SequenceTest
 	[InlineData(10, 1, 1)]
 	[InlineData(55, 30, 4)]
 	[InlineData(172, 27, 9)]
-	public async Task SequenceWithDescendingRangeAscendingStep(int start, int stop, int step)
+	public Task SequenceWithDescendingRangeAscendingStep(int start, int stop, int step)
 	{
 		var result = AsyncSuperEnumerable.Sequence(start, stop, step);
 
-		Assert.Empty(await result.ToListAsync());
+		return result.AssertEmpty();
 	}
 
 	[Theory]

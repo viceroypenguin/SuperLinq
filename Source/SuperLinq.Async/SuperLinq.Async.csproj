@@ -49,6 +49,9 @@
 			- StartsWith
 			- Take
 			- TakeUntil
+			- Window
+			- WindowLeft
+			- WindowRight
 		</Description>
 		<Description>$([System.Text.RegularExpressions.Regex]::Replace($(Description), `\s+`, ` `).Trim().Replace(` - `, `, `).Replace(`:,`, `:`))</Description>
 
