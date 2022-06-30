@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Returns a sequence resulting from applying a function to each
@@ -34,24 +34,24 @@ public static partial class SuperEnumerable
 	/// <c>{ Number = 789, IsFirst = False, IsLast = True }</c> in turn.
 	/// </example>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	public static IEnumerable<TResult> TagFirstLast<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
+	public static IAsyncEnumerable<TResult> TagFirstLast<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
 	{
 		source.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
 		return _(source, resultSelector);
 
-		static IEnumerable<TResult> _(IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
+		static async IAsyncEnumerable<TResult> _(IAsyncEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			using var iter = source.GetEnumerator();
+			await using var iter = source.GetConfiguredAsyncEnumerator(cancellationToken);
 
-			if (!iter.MoveNext())
+			if (!await iter.MoveNextAsync())
 				yield break;
 
 			var cur = iter.Current;
 			var first = true;
 
-			while (iter.MoveNext())
+			while (await iter.MoveNextAsync())
 			{
 				yield return resultSelector(cur, first, false);
 				cur = iter.Current;

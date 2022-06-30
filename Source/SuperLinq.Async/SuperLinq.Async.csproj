@@ -49,6 +49,7 @@
 			- Sequence
 			- SkipUntil
 			- StartsWith
+			- TagFirstLast
 			- Take
 			- TakeUntil
 			- Window
