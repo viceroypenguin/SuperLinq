@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Returns a sequence of tuples where the `key` is 
@@ -10,10 +10,9 @@ public static partial class SuperEnumerable
 	/// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
 	/// <param name="source">The source sequence.</param>
 	/// <returns>A sequence of tuples.</returns>
-	/// <remarks>This operator uses deferred execution and streams its
-	/// results.</remarks>
+	/// <remarks>This operator uses deferred execution and streams its results.</remarks>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	public static IEnumerable<(int index, TSource item)> Index<TSource>(this IEnumerable<TSource> source)
+	public static IAsyncEnumerable<(int index, TSource item)> Index<TSource>(this IAsyncEnumerable<TSource> source)
 	{
 		return source.Index(0);
 	}
@@ -28,10 +27,9 @@ public static partial class SuperEnumerable
 	/// <param name="source">The source sequence.</param>
 	/// <param name="startIndex"></param>
 	/// <returns>A sequence of tuples.</returns>
-	/// <remarks>This operator uses deferred execution and streams its
-	/// results.</remarks>
+	/// <remarks>This operator uses deferred execution and streams its results.</remarks>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	public static IEnumerable<(int index, TSource item)> Index<TSource>(this IEnumerable<TSource> source, int startIndex)
+	public static IAsyncEnumerable<(int index, TSource item)> Index<TSource>(this IAsyncEnumerable<TSource> source, int startIndex)
 	{
 		source.ThrowIfNull();
 		return source.Select((item, index) => (startIndex + index, item));
