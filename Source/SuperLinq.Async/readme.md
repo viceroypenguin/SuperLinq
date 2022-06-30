@@ -132,6 +132,20 @@ This method has 2 overloads.
 
 Inserts the elements of a sequence into another sequence at a specified index.
 
+### Pad
+
+Pads a sequence with default values if it is narrower (shorter in length) than
+a given width.
+
+This method has 3 overloads.
+
+### PadStart
+
+Pads a sequence with default values in the beginning if it is narrower
+(shorter in length) than a given width.
+
+This method has 3 overloads.
+
 ### Random
 
 Returns an infinite sequence of random integers using the standard .NET random

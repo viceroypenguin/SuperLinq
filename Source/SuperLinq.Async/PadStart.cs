@@ -1,9 +1,9 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
-	/// Pads a sequence with default values if it is narrower (shorter
+	/// Pads a sequence with default values in the beginning if it is narrower (shorter
 	/// in length) than a given width.
 	/// </summary>
 	/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
@@ -19,21 +19,21 @@ public static partial class SuperEnumerable
 	/// <example>
 	/// <code><![CDATA[
 	/// int[] numbers = { 123, 456, 789 };
-	/// var result = numbers.Pad(5);
+	/// var result = numbers.PadStart(5);
 	/// ]]></code>
-	/// The <c>result</c> variable, when iterated over, will yield
-	/// 123, 456, 789 and two zeroes, in turn.
+	/// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
 	/// </example>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
-	public static IEnumerable<TSource?> Pad<TSource>(this IEnumerable<TSource> source, int width)
+	public static IAsyncEnumerable<TSource?> PadStart<TSource>(this IAsyncEnumerable<TSource> source, int width)
 	{
-		return Pad(source, width, default(TSource));
+		return PadStart(source, width, default(TSource));
 	}
 
 	/// <summary>
-	/// Pads a sequence with a given filler value if it is narrower (shorter
+	/// Pads a sequence with a given filler value in the beginning if it is narrower (shorter
 	/// in length) than a given width.
+	/// An additional parameter specifies the value to use for padding.
 	/// </summary>
 	/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
 	/// <param name="source">The sequence to pad.</param>
@@ -49,28 +49,30 @@ public static partial class SuperEnumerable
 	/// <example>
 	/// <code><![CDATA[
 	/// int[] numbers = { 123, 456, 789 };
-	/// var result = numbers.Pad(5, -1);
+	/// var result = numbers.PadStart(5, -1);
 	/// ]]></code>
-	/// The <c>result</c> variable, when iterated over, will yield
-	/// 123, 456, and 789 followed by two occurrences of -1, in turn.
+	/// The <c>result</c> variable will contain <c>{ -1, -1, 123, 456, 789 }</c>.
 	/// </example>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
-	public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
+	public static IAsyncEnumerable<TSource> PadStart<TSource>(this IAsyncEnumerable<TSource> source, int width, TSource padding)
 	{
 		source.ThrowIfNull();
 		width.ThrowIfLessThan(0);
-		return PadImpl(source, width, padding, paddingSelector: null);
+		return PadStartImpl(source, width, padding, paddingSelector: null);
 	}
 
 	/// <summary>
-	/// Pads a sequence with a dynamic filler value if it is narrower (shorter
+	/// Pads a sequence with a dynamic filler value in the beginning if it is narrower (shorter
 	/// in length) than a given width.
+	/// An additional parameter specifies the function to calculate padding.
 	/// </summary>
 	/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
 	/// <param name="source">The sequence to pad.</param>
 	/// <param name="width">The width/length below which to pad.</param>
-	/// <param name="paddingSelector">Function to calculate padding.</param>
+	/// <param name="paddingSelector">
+	/// Function to calculate padding given the index of the missing element.
+	/// </param>
 	/// <returns>
 	/// Returns a sequence that is at least as wide/long as the width/length
 	/// specified by the <paramref name="width"/> parameter.
@@ -80,38 +82,53 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	/// <example>
 	/// <code><![CDATA[
-	/// int[] numbers = { 0, 1, 2 };
-	/// var result = numbers.Pad(5, i => -i);
+	/// int[] numbers = { 123, 456, 789 };
+	/// var result = numbers.PadStart(6, i => -i);
 	/// ]]></code>
-	/// The <c>result</c> variable, when iterated over, will yield
-	/// 0, 1, 2, -3 and -4, in turn.
+	/// The <c>result</c> variable will contain <c>{ 0, -1, -2, 123, 456, 789 }</c>.
 	/// </example>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="paddingSelector"/> is null.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
-	public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
+	public static IAsyncEnumerable<TSource> PadStart<TSource>(this IAsyncEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
 	{
 		source.ThrowIfNull();
 		paddingSelector.ThrowIfNull();
 		width.ThrowIfLessThan(0);
-		return PadImpl(source, width, padding: default, paddingSelector);
+		return PadStartImpl(source, width, padding: default, paddingSelector);
 	}
 
-	private static IEnumerable<T> PadImpl<T>(
-		IEnumerable<T> source, int width,
-		T? padding, Func<int, T>? paddingSelector)
+	private static async IAsyncEnumerable<T> PadStartImpl<T>(
+		IAsyncEnumerable<T> source, int width,
+		T? padding, Func<int, T>? paddingSelector,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
+		var array = new T[width];
 		var count = 0;
-		foreach (var item in source)
+
+		await using (var e = source.GetConfiguredAsyncEnumerator(cancellationToken))
 		{
-			yield return item;
-			count++;
+			for (; count < width && await e.MoveNextAsync(); count++)
+				array[count] = e.Current;
+
+			if (count == width)
+			{
+				for (var i = 0; i < count; i++)
+					yield return array[i];
+
+				while (await e.MoveNextAsync())
+					yield return e.Current;
+
+				yield break;
+			}
 		}
 
-		while (count < width)
-		{
-			yield return paddingSelector != null ? paddingSelector(count) : padding!;
-			count++;
-		}
+		var len = width - count;
+
+		for (var i = 0; i < len; i++)
+			yield return paddingSelector != null ? paddingSelector(i) : padding!;
+
+		for (var i = 0; i < count; i++)
+			yield return array[i];
 	}
 }

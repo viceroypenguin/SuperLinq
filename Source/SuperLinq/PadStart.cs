@@ -23,7 +23,8 @@ public static partial class SuperEnumerable
 	/// ]]></code>
 	/// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
 	/// </example>
-
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IEnumerable<TSource?> PadStart<TSource>(this IEnumerable<TSource> source, int width)
 	{
 		return PadStart(source, width, default(TSource));
@@ -52,12 +53,13 @@ public static partial class SuperEnumerable
 	/// ]]></code>
 	/// The <c>result</c> variable will contain <c>{ -1, -1, 123, 456, 789 }</c>.
 	/// </example>
-
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
 	{
 		source.ThrowIfNull();
 		width.ThrowIfLessThan(0);
-		return PadStartImpl(source, width, padding, null);
+		return PadStartImpl(source, width, padding, paddingSelector: null);
 	}
 
 	/// <summary>
@@ -85,17 +87,20 @@ public static partial class SuperEnumerable
 	/// ]]></code>
 	/// The <c>result</c> variable will contain <c>{ 0, -1, -2, 123, 456, 789 }</c>.
 	/// </example>
-
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="paddingSelector"/> is null.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
 	{
 		source.ThrowIfNull();
 		paddingSelector.ThrowIfNull();
 		width.ThrowIfLessThan(0);
-		return PadStartImpl(source, width, default, paddingSelector);
+		return PadStartImpl(source, width, padding: default, paddingSelector);
 	}
 
-	static IEnumerable<T> PadStartImpl<T>(IEnumerable<T> source,
-		int width, T? padding, Func<int, T>? paddingSelector)
+	private static IEnumerable<T> PadStartImpl<T>(
+		IEnumerable<T> source, int width,
+		T? padding, Func<int, T>? paddingSelector)
 	{
 		return
 			source.TryGetCollectionCount(out var collectionCount)
@@ -104,7 +109,11 @@ public static partial class SuperEnumerable
 			  : Enumerable.Range(0, width - collectionCount)
 						  .Select(i => paddingSelector != null ? paddingSelector(i) : padding!)
 						  .Concat(source)
-			: _(); IEnumerable<T> _()
+			: _(source, width, padding, paddingSelector);
+
+		static IEnumerable<T> _(
+			IEnumerable<T> source, int width,
+			T? padding, Func<int, T>? paddingSelector)
 		{
 			var array = new T[width];
 			var count = 0;

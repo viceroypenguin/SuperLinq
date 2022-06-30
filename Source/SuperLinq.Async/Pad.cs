@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Pads a sequence with default values if it is narrower (shorter
@@ -26,7 +26,7 @@ public static partial class SuperEnumerable
 	/// </example>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
-	public static IEnumerable<TSource?> Pad<TSource>(this IEnumerable<TSource> source, int width)
+	public static IAsyncEnumerable<TSource?> Pad<TSource>(this IAsyncEnumerable<TSource> source, int width)
 	{
 		return Pad(source, width, default(TSource));
 	}
@@ -56,7 +56,7 @@ public static partial class SuperEnumerable
 	/// </example>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
-	public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
+	public static IAsyncEnumerable<TSource> Pad<TSource>(this IAsyncEnumerable<TSource> source, int width, TSource padding)
 	{
 		source.ThrowIfNull();
 		width.ThrowIfLessThan(0);
@@ -89,7 +89,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="paddingSelector"/> is null.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
-	public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
+	public static IAsyncEnumerable<TSource> Pad<TSource>(this IAsyncEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
 	{
 		source.ThrowIfNull();
 		paddingSelector.ThrowIfNull();
@@ -97,12 +97,13 @@ public static partial class SuperEnumerable
 		return PadImpl(source, width, padding: default, paddingSelector);
 	}
 
-	private static IEnumerable<T> PadImpl<T>(
-		IEnumerable<T> source, int width,
-		T? padding, Func<int, T>? paddingSelector)
+	private static async IAsyncEnumerable<T> PadImpl<T>(
+		IAsyncEnumerable<T> source, int width,
+		T? padding, Func<int, T>? paddingSelector,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
 		var count = 0;
-		foreach (var item in source)
+		await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 		{
 			yield return item;
 			count++;

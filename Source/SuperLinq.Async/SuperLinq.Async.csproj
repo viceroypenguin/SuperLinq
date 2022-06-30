@@ -44,6 +44,8 @@
 			- Generate
 			- Index
 			- Insert
+			- Pad
+			- PadStart
 			- Random
 			- RunLengthEncode
 			- Segment
