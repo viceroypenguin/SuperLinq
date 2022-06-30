@@ -39,7 +39,26 @@ partial class SuperEnumerable
 		source.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		return source.Index() // count-up
-					 .CountDown(1, (e, cd) => resultSelector(e.item, e.index == 0, cd == 0));
+		return _(source, resultSelector);
+
+		static IEnumerable<TResult> _(IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
+		{
+			using var iter = source.GetEnumerator();
+
+			if (!iter.MoveNext())
+				yield break;
+
+			var cur = iter.Current;
+			var first = true;
+
+			while (iter.MoveNext())
+			{
+				yield return resultSelector(cur, first, false);
+				cur = iter.Current;
+				first = false;
+			}
+
+			yield return resultSelector(cur, first, true);
+		}
 	}
 }
