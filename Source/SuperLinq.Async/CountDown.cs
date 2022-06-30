@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Provides a countdown counter for a given count of elements at the
@@ -32,28 +32,20 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null.</exception>
-	public static IEnumerable<TResult> CountDown<T, TResult>(
-		this IEnumerable<T> source,
+	public static IAsyncEnumerable<TResult> CountDown<T, TResult>(
+		this IAsyncEnumerable<T> source,
 		int count, Func<T, int?, TResult> resultSelector)
 	{
 		source.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		return source.TryGetCollectionCount(out var i)
-				 ? IterateCollection(source, count, i, resultSelector)
-				 : IterateSequence(source, count, resultSelector);
+		return _(source, count, resultSelector);
 
-		static IEnumerable<TResult> IterateCollection(IEnumerable<T> source, int count, int i, Func<T, int?, TResult> resultSelector)
-		{
-			foreach (var item in source)
-				yield return resultSelector(item, i-- <= count ? i : null);
-		}
-
-		static IEnumerable<TResult> IterateSequence(IEnumerable<T> source, int count, Func<T, int?, TResult> resultSelector)
+		static async IAsyncEnumerable<TResult> _(IAsyncEnumerable<T> source, int count, Func<T, int?, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var queue = new Queue<T>(Math.Max(1, count + 1));
 
-			foreach (var item in source)
+			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
 				queue.Enqueue(item);
 				if (queue.Count > count)

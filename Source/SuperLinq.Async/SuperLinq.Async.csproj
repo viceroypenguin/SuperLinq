@@ -33,6 +33,7 @@
 			- CompareCount
 			- Consume
 			- CountBy
+			- CountDown
 			- EndsWith
 			- Exactly
 			- FillBackward
