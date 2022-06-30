@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Interleaves the elements of two or more sequences into a single sequence, skipping sequences as they are consumed
@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="otherSources"/> is null.</exception>
 	/// <exception cref="ArgumentNullException">Any of the items in <paramref name="otherSources"/> is null.</exception>
-	public static IEnumerable<T> Interleave<T>(this IEnumerable<T> source, params IEnumerable<T>[] otherSources)
+	public static IAsyncEnumerable<T> Interleave<T>(this IAsyncEnumerable<T> source, params IAsyncEnumerable<T>[] otherSources)
 	{
 		source.ThrowIfNull();
 		otherSources.ThrowIfNull();
@@ -33,25 +33,25 @@ public static partial class SuperEnumerable
 
 		return _(otherSources.Prepend(source));
 
-		static IEnumerable<T> _(IEnumerable<IEnumerable<T>> sources)
+		static async IAsyncEnumerable<T> _(IEnumerable<IAsyncEnumerable<T>> sources, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			var enumerators = new List<IEnumerator<T>?>();
+			var enumerators = new List<ConfiguredCancelableAsyncEnumerable<T>.Enumerator?>();
 
 			try
 			{
 				foreach (var s in sources)
 				{
-					var enumerator = s.GetEnumerator();
+					var enumerator = s.GetConfiguredAsyncEnumerator(cancellationToken);
 
 					enumerators.Add(enumerator);
-					if (enumerator.MoveNext())
+					if (await enumerator.MoveNextAsync())
 					{
 						yield return enumerator.Current;
 					}
 					else
 					{
 						enumerators.RemoveAt(enumerators.Count - 1);
-						enumerator.Dispose();
+						await enumerator.DisposeAsync();
 					}
 				}
 
@@ -65,15 +65,15 @@ public static partial class SuperEnumerable
 						if (enumerator == null)
 							continue;
 
-						if (enumerator.MoveNext())
+						if (await enumerator.Value.MoveNextAsync())
 						{
 							hasNext = true;
-							yield return enumerator.Current;
+							yield return enumerator.Value.Current;
 						}
 						else
 						{
 							enumerators[i] = null;
-							enumerator.Dispose();
+							await enumerator.Value.DisposeAsync();
 						}
 					}
 				}
@@ -81,7 +81,8 @@ public static partial class SuperEnumerable
 			finally
 			{
 				foreach (var enumerator in enumerators)
-					enumerator?.Dispose();
+					if (enumerator != null)
+						await enumerator.Value.DisposeAsync();
 			}
 		}
 	}

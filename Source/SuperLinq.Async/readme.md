@@ -132,6 +132,11 @@ This method has 2 overloads.
 
 Inserts the elements of a sequence into another sequence at a specified index.
 
+### Interleave
+
+Interleaves the elements of two or more sequences into a single sequence,
+skipping sequences as they are consumed.
+
 ### Pad
 
 Pads a sequence with default values if it is narrower (shorter in length) than
