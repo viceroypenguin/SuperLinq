@@ -78,6 +78,10 @@ projected type.
 
 This method has 2 overloads.
 
+### ElementAt
+
+Returns the element at a specified index in a sequence.
+
 ### EndsWith
 
 Determines whether the end of the first sequence is equivalent to the second

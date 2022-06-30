@@ -35,6 +35,7 @@
 			- CountBy
 			- CountDown
 			- DistinctBy
+			- ElementAt
 			- EndsWith
 			- Exactly
 			- FillBackward
