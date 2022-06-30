@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Returns all distinct elements of the given source, where "distinctness"
@@ -19,16 +19,9 @@ public static partial class SuperEnumerable
 	/// comparing them by the specified key projection.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is null.</exception>
-#if NET6_0_OR_GREATER
-	[Obsolete("This method has been implemented by the framework.")]
-	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(
-		IEnumerable<TSource> source,
+	public static IAsyncEnumerable<TSource> DistinctBy<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector)
-#else
-	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(
-		this IEnumerable<TSource> source,
-		Func<TSource, TKey> keySelector)
-#endif
 	{
 		return DistinctBy(source, keySelector, comparer: default);
 	}
@@ -52,27 +45,20 @@ public static partial class SuperEnumerable
 	/// comparing them by the specified key projection.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is null.</exception>
-#if NET6_0_OR_GREATER
-	[Obsolete("This method has been implemented by the framework.")]
-	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(
-		IEnumerable<TSource> source,
-		Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
-#else
-	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<TSource> DistinctBy<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
 		IEqualityComparer<TKey>? comparer)
-#endif
 	{
 		source.ThrowIfNull();
 		keySelector.ThrowIfNull();
 
 		return _(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var knownKeys = new HashSet<TKey>(comparer);
-			foreach (var element in source)
+			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
 				if (knownKeys.Add(keySelector(element)))
 					yield return element;
