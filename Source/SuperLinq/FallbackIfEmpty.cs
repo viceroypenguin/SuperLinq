@@ -40,9 +40,7 @@ public static partial class SuperEnumerable
 		source.ThrowIfNull();
 		fallback.ThrowIfNull();
 
-		return source.TryGetCollectionCount(out var collectionCount)
-			 ? collectionCount == 0 ? fallback : source
-			 : _(source, fallback);
+		return _(source, fallback);
 
 		static IEnumerable<T> _(IEnumerable<T> source, IEnumerable<T> fallback)
 		{

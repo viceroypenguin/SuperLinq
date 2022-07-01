@@ -66,12 +66,18 @@ public static partial class SuperEnumerable
 		source.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		return source.TryGetCollectionCount(out var i)
-				 ? IterateCollection(source, count, i, resultSelector)
-				 : IterateSequence(source, count, resultSelector);
+		return source.TryGetCollectionCount(out var _)
+			? IterateCollection(source, count, resultSelector)
+			: IterateSequence(source, count, resultSelector);
 
-		static IEnumerable<TResult> IterateCollection(IEnumerable<TSource> source, int count, int i, Func<TSource, int?, TResult> resultSelector)
+		static IEnumerable<TResult> IterateCollection(IEnumerable<TSource> source, int count, Func<TSource, int?, TResult> resultSelector)
 		{
+			// Attempt to extract the count of the source enumerator,
+			// in order to convert fromEnd indices to regular indices.
+			// Enumerable counts can change over time, so it is very
+			// important that this check happens at enumeration time;
+			// do not move it outside of the iterator method.
+			_ = source.TryGetCollectionCount(out var i);
 			foreach (var item in source)
 				yield return resultSelector(item, i-- <= count ? i : null);
 		}
