@@ -94,6 +94,13 @@ This method has 4 overloads.
 Determines whether or not the number of elements in the sequence is equals
 to the given integer.
 
+### FallbackIfEmpty
+
+Returns the elements of a sequence and falls back to another if the original
+sequence is empty.
+
+This method has 3 overloads.
+
 ### FillBackward
 
 Returns a sequence with each null reference or value in the source replaced

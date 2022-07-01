@@ -178,7 +178,7 @@ Excludes elements from a sequence starting at a given index
 Returns the elements of a sequence and falls back to another if the original
 sequence is empty.
 
-This method has 6 overloads.
+This method has 2 overloads.
 
 ### FillBackward
 

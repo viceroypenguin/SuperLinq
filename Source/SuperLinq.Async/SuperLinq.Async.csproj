@@ -38,6 +38,7 @@
 			- ElementAt
 			- EndsWith
 			- Exactly
+			- FallbackIfEmpty
 			- FillBackward
 			- FillForward
 			- Fold
