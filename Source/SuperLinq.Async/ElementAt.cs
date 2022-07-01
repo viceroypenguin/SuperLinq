@@ -14,8 +14,10 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="index" /> is outside the bounds of the <paramref name="source" /> sequence.</exception>
 	/// <returns>The element at the specified position in the <paramref name="source" /> sequence.</returns>
 	/// <remarks>
-	/// <para>If the type of <paramref name="source" /> implements <see cref="IList{T}" />, that implementation is used to obtain the element at the specified index. Otherwise, this method obtains the specified element.</para>
-	/// <para>This method throws an exception if <paramref name="index" /> is out of range. To instead return a default value when the specified index is out of range, use the <see cref="SuperEnumerable.ElementAtOrDefault" /> method.</para>
+	/// <para>
+	/// This method throws an exception if <paramref name="index" /> is out of range. 
+	/// To instead return a default value when the specified index is out of range, 
+	/// use the <see cref="ElementAtOrDefaultAsync{TSource}(IAsyncEnumerable{TSource}, Index, CancellationToken)" /> method.</para>
 	/// </remarks>
 	public static async ValueTask<TSource> ElementAtAsync<TSource>(this IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken = default)
 	{
@@ -37,13 +39,12 @@ public static partial class AsyncSuperEnumerable
 
 	/// <summary>Returns the element at a specified index in a sequence or a default value if the index is out of range.</summary>
 	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
-	/// <param name="source">An <see cref="IEnumerable{T}" /> to return an element from.</param>
+	/// <param name="source">An <see cref="IAsyncEnumerable{T}" /> to return an element from.</param>
 	/// <param name="index">The index of the element to retrieve, which is either from the start or the end.</param>
 	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <exception cref="ArgumentNullException"><paramref name="source" /> is <see langword="null" />.</exception>
 	/// <returns><see langword="default" /> if <paramref name="index" /> is outside the bounds of the <paramref name="source" /> sequence; otherwise, the element at the specified position in the <paramref name="source" /> sequence.</returns>
 	/// <remarks>
-	/// <para>If the type of <paramref name="source" /> implements <see cref="IList{T}" />, that implementation is used to obtain the element at the specified index. Otherwise, this method obtains the specified element.</para>
 	/// <para>The default value for reference and nullable types is <see langword="null" />.</para>
 	/// </remarks>
 	public static async ValueTask<TSource?> ElementAtOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken = default)
