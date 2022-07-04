@@ -14,6 +14,8 @@ public static partial class SuperEnumerable
 	/// Its first argument is the current value in the sequence; second argument is the previous accumulator value.
 	/// </param>
 	/// <returns>The scanned sequence.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="func"/> is <see langword="null"/>.</exception>
 	/// <example>
 	/// <code><![CDATA[
 	/// var result = Enumerable.Range(1, 5).Select(i => i.ToString()).ScanRight((a, b) => $"({a}+{b})");
@@ -66,6 +68,9 @@ public static partial class SuperEnumerable
 	/// <param name="seed">The initial accumulator value.</param>
 	/// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
 	/// <returns>The scanned sequence.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="seed"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="func"/> is <see langword="null"/>.</exception>
 	/// <example>
 	/// <code><![CDATA[
 	/// var result = Enumerable.Range(1, 4).ScanRight("5", (a, b) => string.Format("({0}/{1})", a, b));
