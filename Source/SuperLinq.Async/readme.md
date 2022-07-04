@@ -94,6 +94,13 @@ This method has 4 overloads.
 Determines whether or not the number of elements in the sequence is equals
 to the given integer.
 
+### ExceptByItems (formerly ExceptBy)
+
+Returns the set of elements in the first sequence which aren't in the second
+sequence, according to a given key selector.
+
+This method has 2 overloads.
+
 ### FallbackIfEmpty
 
 Returns the elements of a sequence and falls back to another if the original
@@ -194,6 +201,12 @@ This method has 2 overloads.
 
 Skips items from the input sequence until the given predicate returns true
 when applied to the current source item; that item will be the last skipped
+
+### Split
+
+Splits the source sequence by a separator.
+
+This method has 12 overloads.
 
 ### StartsWith
 

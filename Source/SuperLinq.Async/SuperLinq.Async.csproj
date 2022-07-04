@@ -38,6 +38,7 @@
 			- ElementAt
 			- EndsWith
 			- Exactly
+			- ExceptBy
 			- FallbackIfEmpty
 			- FillBackward
 			- FillForward
@@ -54,6 +55,7 @@
 			- Segment
 			- Sequence
 			- SkipUntil
+			- Split
 			- StartsWith
 			- TagFirstLast
 			- Take

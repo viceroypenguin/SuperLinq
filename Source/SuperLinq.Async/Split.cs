@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 
 	/// <summary>
@@ -11,8 +11,8 @@ public static partial class SuperEnumerable
 	/// <param name="separator">Separator element.</param>
 	/// <returns>A sequence of splits of elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	public static IEnumerable<IEnumerable<TSource>> Split<TSource>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<IEnumerable<TSource>> Split<TSource>(
+		this IAsyncEnumerable<TSource> source,
 		TSource separator)
 	{
 		return Split(source, separator, int.MaxValue);
@@ -28,8 +28,8 @@ public static partial class SuperEnumerable
 	/// <returns>A sequence of splits of elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
-	public static IEnumerable<IEnumerable<TSource>> Split<TSource>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<IEnumerable<TSource>> Split<TSource>(
+		this IAsyncEnumerable<TSource> source,
 		TSource separator, int count)
 	{
 		return Split(source, separator, count, s => s);
@@ -50,8 +50,8 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
-	public static IEnumerable<TResult> Split<TSource, TResult>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<TResult> Split<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
 		TSource separator,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
@@ -75,8 +75,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
-	public static IEnumerable<TResult> Split<TSource, TResult>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<TResult> Split<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
 		TSource separator, int count,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
@@ -94,8 +94,8 @@ public static partial class SuperEnumerable
 	/// element equality.</param>
 	/// <returns>A sequence of splits of elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	public static IEnumerable<IEnumerable<TSource>> Split<TSource>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<IEnumerable<TSource>> Split<TSource>(
+		this IAsyncEnumerable<TSource> source,
 		TSource separator, IEqualityComparer<TSource>? comparer)
 	{
 		return Split(source, separator, comparer, int.MaxValue);
@@ -115,8 +115,8 @@ public static partial class SuperEnumerable
 	/// <returns>A sequence of splits of elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
-	public static IEnumerable<IEnumerable<TSource>> Split<TSource>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<IEnumerable<TSource>> Split<TSource>(
+		this IAsyncEnumerable<TSource> source,
 		TSource separator, IEqualityComparer<TSource>? comparer, int count)
 	{
 		return Split(source, separator, comparer, count, s => s);
@@ -140,8 +140,8 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
-	public static IEnumerable<TResult> Split<TSource, TResult>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<TResult> Split<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
 		TSource separator, IEqualityComparer<TSource> comparer,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
@@ -168,8 +168,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
-	public static IEnumerable<TResult> Split<TSource, TResult>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<TResult> Split<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
 		TSource separator, IEqualityComparer<TSource>? comparer, int count,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
@@ -192,8 +192,8 @@ public static partial class SuperEnumerable
 	/// <returns>A sequence of splits of elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="separatorFunc"/> is <see langword="null"/>.</exception>
-	public static IEnumerable<IEnumerable<TSource>> Split<TSource>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<IEnumerable<TSource>> Split<TSource>(
+		this IAsyncEnumerable<TSource> source,
 		Func<TSource, bool> separatorFunc)
 	{
 		return Split(source, separatorFunc, int.MaxValue);
@@ -212,8 +212,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="separatorFunc"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
-	public static IEnumerable<IEnumerable<TSource>> Split<TSource>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<IEnumerable<TSource>> Split<TSource>(
+		this IAsyncEnumerable<TSource> source,
 		Func<TSource, bool> separatorFunc, int count)
 	{
 		return Split(source, separatorFunc, count, s => s);
@@ -236,8 +236,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="separatorFunc"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
-	public static IEnumerable<TResult> Split<TSource, TResult>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<TResult> Split<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
 		Func<TSource, bool> separatorFunc,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
@@ -264,8 +264,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="separatorFunc"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
-	public static IEnumerable<TResult> Split<TSource, TResult>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<TResult> Split<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
 		Func<TSource, bool> separatorFunc, int count,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
@@ -276,17 +276,21 @@ public static partial class SuperEnumerable
 
 		return _(source, separatorFunc, count, resultSelector);
 
-		static IEnumerable<TResult> _(IEnumerable<TSource> source, Func<TSource, bool> separatorFunc, int count, Func<IEnumerable<TSource>, TResult> resultSelector)
+		static async IAsyncEnumerable<TResult> _(
+			IAsyncEnumerable<TSource> source,
+			Func<TSource, bool> separatorFunc, int count,
+			Func<IEnumerable<TSource>, TResult> resultSelector,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			if (count == 0) // No splits?
 			{
-				yield return resultSelector(source);
+				yield return resultSelector(await source.ToListAsync(cancellationToken).ConfigureAwait(false));
 				yield break;
 			}
 
 			var items = new List<TSource>();
 
-			foreach (var item in source)
+			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
 				if (count > 0 && separatorFunc(item))
 				{
