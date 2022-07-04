@@ -1,5 +1,7 @@
 ﻿namespace Test;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 public class BacksertTest
 {
 	[Fact]
@@ -40,3 +42,5 @@ public class BacksertTest
 		Assert.Equal(expected, test1.Backsert(test2, index).ToArray());
 	}
 }
+
+#pragma warning restore CS0618 // Type or member is obsolete

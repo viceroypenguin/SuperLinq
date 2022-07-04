@@ -72,4 +72,35 @@ public class InsertTest
 		await using var seq2 = TestingSequence.Of(2);
 		await seq1.Insert(seq2, 0).ToListAsync();
 	}
+
+	[Fact]
+	public void BacksertIsLazy()
+	{
+		new AsyncBreakingSequence<int>().Insert(new AsyncBreakingSequence<int>(), ^0);
+	}
+
+	[Theory]
+	[InlineData(new[] { 1, 2, 3 }, 4, new[] { 9 })]
+	public async Task BacksertWithIndexGreaterThanSourceLength(int[] seq1, int index, int[] seq2)
+	{
+		await using var test1 = seq1.AsTestingSequence();
+		await using var test2 = seq2.AsTestingSequence();
+
+		var result = test1.Insert(test2, ^index);
+
+		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await result.ElementAtAsync(0));
+	}
+
+	[Theory]
+	[InlineData(new[] { 1, 2, 3 }, 0, new[] { 8, 9 }, new[] { 1, 2, 3, 8, 9 })]
+	[InlineData(new[] { 1, 2, 3 }, 1, new[] { 8, 9 }, new[] { 1, 2, 8, 9, 3 })]
+	[InlineData(new[] { 1, 2, 3 }, 2, new[] { 8, 9 }, new[] { 1, 8, 9, 2, 3 })]
+	[InlineData(new[] { 1, 2, 3 }, 3, new[] { 8, 9 }, new[] { 8, 9, 1, 2, 3 })]
+	public async Task Backsert(int[] seq1, int index, int[] seq2, int[] expected)
+	{
+		await using var test1 = seq1.AsTestingSequence();
+		await using var test2 = seq2.AsTestingSequence();
+
+		await test1.Insert(test2, ^index).AssertSequenceEqual(expected);
+	}
 }

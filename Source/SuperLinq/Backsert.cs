@@ -51,42 +51,9 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// This method uses deferred execution and streams its results.
 	/// </remarks>
-
+	[Obsolete("Backsert has been replaced by Insert(second, Index index)")]
 	public static IEnumerable<T> Backsert<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
-		index.ThrowIfLessThan(0);
-
-		if (index == 0)
-			return first.Concat(second);
-
-		return _(first, second, index);
-
-		static IEnumerable<T> _(IEnumerable<T> first, IEnumerable<T> second, int index)
-		{
-			using var e = first.CountDown(index, ValueTuple.Create).GetEnumerator();
-
-			if (e.MoveNext())
-			{
-				var (_, countdown) = e.Current;
-				if (countdown is { } n && n != index - 1)
-					index.ThrowOutOfRange("Insertion index is greater than the length of the first sequence.");
-
-				do
-				{
-					T a;
-					(a, countdown) = e.Current;
-					if (countdown == index - 1)
-					{
-						foreach (var b in second)
-							yield return b;
-					}
-
-					yield return a;
-				}
-				while (e.MoveNext());
-			}
-		}
+		return first.Insert(second, ^index);
 	}
 }
