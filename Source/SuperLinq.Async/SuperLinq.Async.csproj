@@ -61,6 +61,8 @@
 			- Window
 			- WindowLeft
 			- WindowRight
+			- ZipLongest
+			- ZipShortest
 		</Description>
 		<Description>$([System.Text.RegularExpressions.Regex]::Replace($(Description), `\s+`, ` `).Trim().Replace(` - `, `, `).Replace(`:,`, `:`))</Description>
 

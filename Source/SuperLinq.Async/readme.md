@@ -231,6 +231,24 @@ Creates a left-aligned sliding window over the source sequence of a given size.
 
 Creates a right-aligned sliding window over the source sequence of a given size.
 
+### ZipLongest
+
+Returns a projection of tuples, where each tuple contains the N-th
+element from each of the argument sequences. The resulting sequence
+will always be as long as the longest of input sequences where the
+default value of each of the shorter sequence element types is used
+for padding.
+
+This method has 3 overloads.
+
+### ZipShortest
+
+Returns a projection of tuples, where each tuple contains the N-th
+element from each of the argument sequences. The resulting sequence
+is as short as the shortest input sequence.
+
+This method has 3 overloads.
+
 [dict]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.Dictionary-2
 [kvp]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.KeyValuePair-2
 [lookup]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.lookup-2
