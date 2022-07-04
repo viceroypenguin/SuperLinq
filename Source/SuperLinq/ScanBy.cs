@@ -20,14 +20,17 @@ public static partial class SuperEnumerable
 	/// <returns>
 	/// A sequence of keys paired with intermediate accumulator states.
 	/// </returns>
-
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="seedSelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="accumulator"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<(TKey key, TState state)> ScanBy<TSource, TKey, TState>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
 		Func<TKey, TState> seedSelector,
 		Func<TState, TKey, TSource, TState> accumulator)
 	{
-		return source.ScanBy(keySelector, seedSelector, accumulator, null);
+		return source.ScanBy(keySelector, seedSelector, accumulator, comparer: null);
 	}
 
 	/// <summary>
@@ -52,7 +55,10 @@ public static partial class SuperEnumerable
 	/// <returns>
 	/// A sequence of keys paired with intermediate accumulator states.
 	/// </returns>
-
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="seedSelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="accumulator"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<(TKey key, TState state)> ScanBy<TSource, TKey, TState>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
@@ -67,32 +73,30 @@ public static partial class SuperEnumerable
 
 		comparer ??= EqualityComparer<TKey>.Default;
 
-		return _();
+		return _(source, keySelector, seedSelector, accumulator, comparer);
 
-		IEnumerable<(TKey key, TState state)> _()
+		static IEnumerable<(TKey key, TState state)> _(
+			IEnumerable<TSource> source,
+			Func<TSource, TKey> keySelector,
+			Func<TKey, TState> seedSelector,
+			Func<TState, TKey, TSource, TState> accumulator,
+			IEqualityComparer<TKey> comparer)
 		{
 			var stateByKey = new Collections.Dictionary<TKey, TState>(comparer);
-
-			(bool, TKey, TState) prev = default;
 
 			foreach (var item in source)
 			{
 				var key = keySelector(item);
 
-				var state = // key same as the previous? then re-use the state
-							prev is (true, { } pk, { } ps)
-							&& comparer.Equals(pk, key) ? ps
-						  : // otherwise try & find state of the key
-							stateByKey.TryGetValue(key, out ps) ? ps
-						  : seedSelector(key);
+				var state = stateByKey.TryGetValue(key, out var ps)
+					? ps
+					: seedSelector(key);
 
 				state = accumulator(state, key, item);
 
 				stateByKey[key] = state;
 
 				yield return (key, state);
-
-				prev = (true, key, state);
 			}
 		}
 	}

@@ -16,21 +16,21 @@ public class ScanByTest
 	{
 		var source = new[]
 		{
-				"ana",
-				"beatriz",
-				"carla",
-				"bob",
-				"davi",
-				"adriano",
-				"angelo",
-				"carlos"
-			};
+			"ana",
+			"beatriz",
+			"carla",
+			"bob",
+			"davi",
+			"adriano",
+			"angelo",
+			"carlos",
+		};
 
 		var result =
-				source.ScanBy(
-					item => item.First(),
-					key => (Element: default(string), Key: key, State: key - 1),
-					(state, key, item) => (item, char.ToUpperInvariant(key), state.State + 1));
+			source.ScanBy(
+				item => item.First(),
+				key => (Element: default(string), Key: key, State: key - 1),
+				(state, key, item) => (item, char.ToUpperInvariant(key), state.State + 1));
 
 		result.AssertSequenceEqual(('a', ("ana", 'A', 97)), ('b', ("beatriz", 'B', 98)), ('c', ("carla", 'C', 99)), ('b', ("bob", 'B', 99)), ('d', ("davi", 'D', 100)), ('a', ("adriano", 'A', 98)), ('a', ("angelo", 'A', 99)), ('c', ("carlos", 'C', 100)));
 	}
