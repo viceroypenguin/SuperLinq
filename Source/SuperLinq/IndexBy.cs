@@ -37,7 +37,7 @@ public static partial class SuperEnumerable
 	/// Function that projects the key given an element in the source sequence.</param>
 	/// <param name="comparer">
 	/// The equality comparer to use to determine whether or not keys are
-	/// equal. If <c>null</c>, the default equality comparer for
+	/// equal. If <see langword="null"/>, the default equality comparer for
 	/// <typeparamref name="TSource"/> is used.</param>
 	/// <returns>
 	/// A sequence of elements paired with their index within the key-group.

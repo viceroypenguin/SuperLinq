@@ -7,7 +7,7 @@ public static partial class AsyncSuperEnumerable
 	/// </summary>
 	/// <remarks>
 	/// This operator evaluates in a deferred and streaming manner.<br/>
-	/// For elements prior to the lag offset, <c>default(<typeparamref name="TSource"/>?)</c> is used as the lagged value.<br/>
+	/// For elements prior to the lag offset, <see langword="default"/>(<typeparamref name="TSource"/>?) is used as the lagged value.<br/>
 	/// </remarks>
 	/// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
 	/// <param name="source">The sequence over which to evaluate lag</param>
@@ -27,7 +27,7 @@ public static partial class AsyncSuperEnumerable
 	/// </summary>
 	/// <remarks>
 	/// This operator evaluates in a deferred and streaming manner.<br/>
-	/// For elements prior to the lag offset, <c>default(<typeparamref name="TSource"/>?)</c> is used as the lagged value.<br/>
+	/// For elements prior to the lag offset, <see langword="default"/>(<typeparamref name="TSource"/>?) is used as the lagged value.<br/>
 	/// </remarks>
 	/// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
 	/// <typeparam name="TResult">The type of the elements of the result sequence</typeparam>

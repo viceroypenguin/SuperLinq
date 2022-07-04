@@ -12,7 +12,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="second">The sequence to compare to.</param>
 	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
-	/// <c>true</c> if <paramref name="first" /> begins with elements
+	/// <see langword="true"/> if <paramref name="first" /> begins with elements
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>
@@ -38,7 +38,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="second">The sequence to compare to.</param>
 	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
-	/// <c>true</c> if <paramref name="first" /> begins with elements
+	/// <see langword="true"/> if <paramref name="first" /> begins with elements
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>
@@ -65,7 +65,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="comparer">Equality comparer to use.</param>
 	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
-	/// <c>true</c> if <paramref name="first" /> begins with elements
+	/// <see langword="true"/> if <paramref name="first" /> begins with elements
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>
@@ -91,7 +91,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="comparer">Equality comparer to use.</param>
 	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
-	/// <c>true</c> if <paramref name="first" /> begins with elements
+	/// <see langword="true"/> if <paramref name="first" /> begins with elements
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>

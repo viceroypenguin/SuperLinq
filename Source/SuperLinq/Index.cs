@@ -12,7 +12,7 @@ public static partial class SuperEnumerable
 	/// <returns>A sequence of tuples.</returns>
 	/// <remarks>This operator uses deferred execution and streams its
 	/// results.</remarks>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<(int index, TSource item)> Index<TSource>(this IEnumerable<TSource> source)
 	{
 		return source.Index(0);
@@ -30,7 +30,7 @@ public static partial class SuperEnumerable
 	/// <returns>A sequence of tuples.</returns>
 	/// <remarks>This operator uses deferred execution and streams its
 	/// results.</remarks>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<(int index, TSource item)> Index<TSource>(this IEnumerable<TSource> source, int startIndex)
 	{
 		source.ThrowIfNull();

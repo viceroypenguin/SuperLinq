@@ -8,7 +8,7 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// This operator evaluates in a deferred and streaming manner.<br/>
 	/// For elements of the sequence that are less than <paramref name="offset"/> items from the end,
-	/// <c>default(<typeparamref name="TSource"/>?)</c> is used as the lead value.<br/>
+	/// <see langword="default"/>(<typeparamref name="TSource"/>?) is used as the lead value.<br/>
 	/// </remarks>
 	/// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
 	/// <param name="source">The sequence over which to evaluate Lead</param>
@@ -29,7 +29,7 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// This operator evaluates in a deferred and streaming manner.<br/>
 	/// For elements of the sequence that are less than <paramref name="offset"/> items from the end,
-	/// <c>default(<typeparamref name="TSource"/>?)</c> is used as the lead value.<br/>
+	/// <see langword="default"/>(<typeparamref name="TSource"/>?) is used as the lead value.<br/>
 	/// </remarks>
 	/// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
 	/// <typeparam name="TResult">The type of the elements in the result sequence</typeparam>

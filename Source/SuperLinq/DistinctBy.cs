@@ -17,8 +17,8 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">Projection for determining "distinctness"</param>
 	/// <returns>A sequence consisting of distinct elements from the source sequence,
 	/// comparing them by the specified key projection.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 #if NET6_0_OR_GREATER
 	[Obsolete("This method has been implemented by the framework.")]
 	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(
@@ -47,11 +47,11 @@ public static partial class SuperEnumerable
 	/// <param name="source">Source sequence</param>
 	/// <param name="keySelector">Projection for determining "distinctness"</param>
 	/// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
-	/// If null, the default equality comparer for <c>TSource</c> is used.</param>
+	/// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
 	/// <returns>A sequence consisting of distinct elements from the source sequence,
 	/// comparing them by the specified key projection.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 #if NET6_0_OR_GREATER
 	[Obsolete("This method has been implemented by the framework.")]
 	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(

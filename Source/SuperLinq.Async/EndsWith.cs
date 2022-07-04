@@ -10,7 +10,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="first">The sequence to check.</param>
 	/// <param name="second">The sequence to compare to.</param>
 	/// <returns>
-	/// <c>true</c> if <paramref name="first" /> ends with elements
+	/// <see langword="true"/> if <paramref name="first" /> ends with elements
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>
@@ -34,7 +34,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="first">The sequence to check.</param>
 	/// <param name="second">The sequence to compare to.</param>
 	/// <returns>
-	/// <c>true</c> if <paramref name="first" /> ends with elements
+	/// <see langword="true"/> if <paramref name="first" /> ends with elements
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>
@@ -59,7 +59,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="second">The sequence to compare to.</param>
 	/// <param name="comparer">Equality comparer to use.</param>
 	/// <returns>
-	/// <c>true</c> if <paramref name="first" /> ends with elements
+	/// <see langword="true"/> if <paramref name="first" /> ends with elements
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>
@@ -83,7 +83,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="second">The sequence to compare to.</param>
 	/// <param name="comparer">Equality comparer to use.</param>
 	/// <returns>
-	/// <c>true</c> if <paramref name="first" /> ends with elements
+	/// <see langword="true"/> if <paramref name="first" /> ends with elements
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>

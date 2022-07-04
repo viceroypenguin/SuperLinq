@@ -22,7 +22,7 @@ public static partial class SuperEnumerable
 	/// sequence may be buffered at any one time unless
 	/// <paramref name="source"/> is a collection or a list.
 	/// </remarks>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<(TSource item, int? count)> CountDown<TSource>(this IEnumerable<TSource> source, int count)
 	{
 		return source.CountDown(count, ValueTuple.Create);
@@ -46,7 +46,7 @@ public static partial class SuperEnumerable
 	/// value for the element and which returns those mapped to a
 	/// result returned in the resulting sequence. For elements before
 	/// the last <paramref name="count"/>, the countdown value is
-	/// <c>null</c>.</param>
+	/// <see langword="null"/>.</param>
 	/// <returns>
 	/// A sequence of results returned by
 	/// <paramref name="resultSelector"/>.
@@ -57,8 +57,8 @@ public static partial class SuperEnumerable
 	/// sequence may be buffered at any one time unless
 	/// <paramref name="source"/> is a collection or a list.
 	/// </remarks>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TResult> CountDown<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		int count, Func<TSource, int?, TResult> resultSelector)

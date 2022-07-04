@@ -97,7 +97,7 @@ public static partial class AsyncSuperEnumerable
 	/// <typeparam name="T">The type of the object returned by the functions.</typeparam>
 	/// <param name="functions">The functions to evaluate.</param>
 	/// <returns>A sequence with the values resulting from invoking all of the <paramref name="functions"/>.</returns>
-	/// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <c>null</c>.</exception>
+	/// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <see langword="null"/>.</exception>
 
 	public static IAsyncEnumerable<T> From<T>(params Func<Task<T>>[] functions) =>
 		Evaluate(functions);
@@ -113,7 +113,7 @@ public static partial class AsyncSuperEnumerable
 	/// <typeparam name="T">The type of the object returned by the functions.</typeparam>
 	/// <param name="functions">The functions to evaluate.</param>
 	/// <returns>A sequence with results from invoking <paramref name="functions"/>.</returns>
-	/// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <c>null</c>.</exception>
+	/// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <see langword="null"/>.</exception>
 
 	public static IAsyncEnumerable<T> Evaluate<T>(this IEnumerable<Func<Task<T>>> functions)
 	{
@@ -141,7 +141,7 @@ public static partial class AsyncSuperEnumerable
 	/// <typeparam name="T">The type of the object returned by the functions.</typeparam>
 	/// <param name="functions">The functions to evaluate.</param>
 	/// <returns>A sequence with results from invoking <paramref name="functions"/>.</returns>
-	/// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <c>null</c>.</exception>
+	/// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <see langword="null"/>.</exception>
 
 	public static IAsyncEnumerable<T> Evaluate<T>(this IAsyncEnumerable<Func<Task<T>>> functions)
 	{

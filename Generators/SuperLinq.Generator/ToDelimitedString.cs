@@ -44,7 +44,7 @@ public static partial class SuperEnumerable
 	/// is empty, the method returns an empty string.
 	/// </returns>
 	/// <exception cref=""ArgumentNullException"">
-	/// <paramref name=""source""/> or <paramref name=""delimiter""/> is <c>null</c>.
+	/// <paramref name=""source""/> or <paramref name=""delimiter""/> is <see langword=""null""/>.
 	/// </exception>
 	/// <remarks>
 	/// This operator uses immediate execution and effectively buffers the sequence.

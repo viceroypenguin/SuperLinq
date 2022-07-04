@@ -20,6 +20,9 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">The mapping from source element to key.</param>
 	/// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
 	/// any element in <paramref name="second"/>.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> ExceptByItems<TSource, TKey>(
 		this IEnumerable<TSource> first,
 		IEnumerable<TSource> second,
@@ -43,9 +46,13 @@ public static partial class SuperEnumerable
 	/// <paramref name="first"/> from being returned.</param>
 	/// <param name="keySelector">The mapping from source element to key.</param>
 	/// <param name="keyComparer">The equality comparer to use to determine whether or not keys are equal.
-	/// If null, the default equality comparer for <c>TSource</c> is used.</param>
+	/// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
 	/// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
 	/// any element in <paramref name="second"/>.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keyComparer"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> ExceptByItems<TSource, TKey>(
 		this IEnumerable<TSource> first,
 		IEnumerable<TSource> second,

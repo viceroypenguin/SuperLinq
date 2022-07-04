@@ -12,7 +12,7 @@ public static partial class SuperEnumerable
 	/// A sequence that contains the elements of <paramref name="source"/>
 	/// and all nested sequences (except strings).
 	/// </returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 
 	public static IEnumerable<object?> Flatten(this IEnumerable source) =>
 		Flatten(source, obj => obj is not string);
@@ -32,12 +32,12 @@ public static partial class SuperEnumerable
 	/// <returns>
 	/// A sequence that contains the elements of <paramref name="source"/>
 	/// and all nested sequences for which the predicate function
-	/// returned <c>true</c>.
+	/// returned <see langword="true"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException">
-	/// <paramref name="source"/> is <c>null</c>.</exception>
+	/// <paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException">
-	/// <paramref name="predicate"/> is <c>null</c>.</exception>
+	/// <paramref name="predicate"/> is <see langword="null"/>.</exception>
 
 	public static IEnumerable<object?> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
 	{
@@ -55,7 +55,7 @@ public static partial class SuperEnumerable
 	/// <param name="selector">
 	/// A function that receives each element of the sequence as an object
 	/// and projects an inner sequence to be flattened. If the function
-	/// returns <c>null</c> then the object argument is considered a leaf
+	/// returns <see langword="null"/> then the object argument is considered a leaf
 	/// of the flattening process.
 	/// </param>
 	/// <returns>
@@ -64,9 +64,9 @@ public static partial class SuperEnumerable
 	/// <paramref name="selector"/> function.
 	/// </returns>
 	/// <exception cref="ArgumentNullException">
-	/// <paramref name="source"/> is <c>null</c>.</exception>
+	/// <paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException">
-	/// <paramref name="selector"/> is <c>null</c>.</exception>
+	/// <paramref name="selector"/> is <see langword="null"/>.</exception>
 
 	public static IEnumerable<object?> Flatten(this IEnumerable source, Func<object?, IEnumerable?> selector)
 	{

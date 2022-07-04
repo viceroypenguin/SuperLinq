@@ -47,7 +47,7 @@ public static partial class SuperEnumerable
 	/// <param name="firstKeySelector">The mapping from first sequence to key</param>
 	/// <param name="secondKeySelector">The mapping from second sequence to key</param>
 	/// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
-	/// If null, the default equality comparer for <c>TKey</c> is used.</param>
+	/// If null, the default equality comparer for <typeparamref name="TKey"/> is used.</param>
 	/// <returns>A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
 	/// </returns>
 
@@ -109,7 +109,7 @@ public static partial class SuperEnumerable
 	/// <param name="secondKeySelector">The mapping from second sequence to key</param>
 	/// <param name="resultSelector">Function to apply to each pair of elements plus the key</param>
 	/// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
-	/// If null, the default equality comparer for <c>TKey</c> is used.</param>
+	/// If null, the default equality comparer for <typeparamref name="TKey"/> is used.</param>
 	/// <returns>A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
 	/// </returns>
 

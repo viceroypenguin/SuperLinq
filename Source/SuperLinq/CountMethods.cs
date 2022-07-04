@@ -12,14 +12,14 @@ public static partial class SuperEnumerable
 	/// function to return true</param>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
-	/// <returns><c>true</c> if the number of elements in the sequence is greater than
-	/// or equal to the given integer or <c>false</c> otherwise.</returns>
+	/// <returns><see langword="true"/> if the number of elements in the sequence is greater than
+	/// or equal to the given integer or <see langword="false"/> otherwise.</returns>
 	/// <example>
 	/// <code><![CDATA[
 	/// var numbers = new[] { 123, 456, 789 };
 	/// var result = numbers.AtLeast(2);
 	/// ]]></code>
-	/// The <c>result</c> variable will contain <c>true</c>.
+	/// The <c>result</c> variable will contain <see langword="true"/>.
 	/// </example>
 
 	public static bool AtLeast<T>(this IEnumerable<T> source, int count)
@@ -39,14 +39,14 @@ public static partial class SuperEnumerable
 	/// function to return true</param>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
-	/// <returns><c>true</c> if the number of elements in the sequence is lesser than
-	/// or equal to the given integer or <c>false</c> otherwise.</returns>
+	/// <returns><see langword="true"/> if the number of elements in the sequence is lesser than
+	/// or equal to the given integer or <see langword="false"/> otherwise.</returns>
 	/// <example>
 	/// <code><![CDATA[
 	/// var numbers = new[] { 123, 456, 789 };
 	/// var result = numbers.AtMost(2);
 	/// ]]></code>
-	/// The <c>result</c> variable will contain <c>false</c>.
+	/// The <c>result</c> variable will contain <see langword="false"/>.
 	/// </example>
 
 	public static bool AtMost<T>(this IEnumerable<T> source, int count)
@@ -65,14 +65,14 @@ public static partial class SuperEnumerable
 	/// function to return true</param>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
-	/// <returns><c>true</c> if the number of elements in the sequence is equals
-	/// to the given integer or <c>false</c> otherwise.</returns>
+	/// <returns><see langword="true"/> if the number of elements in the sequence is equals
+	/// to the given integer or <see langword="false"/> otherwise.</returns>
 	/// <example>
 	/// <code><![CDATA[
 	/// var numbers = new[] { 123, 456, 789 };
 	/// var result = numbers.Exactly(3);
 	/// ]]></code>
-	/// The <c>result</c> variable will contain <c>true</c>.
+	/// The <c>result</c> variable will contain <see langword="true"/>.
 	/// </example>
 
 	public static bool Exactly<T>(this IEnumerable<T> source, int count)
@@ -94,14 +94,14 @@ public static partial class SuperEnumerable
 	/// function to return true</param>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="min"/> is negative or <paramref name="max"/> is less than min</exception>
-	/// <returns><c>true</c> if the number of elements in the sequence is between (inclusive)
-	/// the min and max given integers or <c>false</c> otherwise.</returns>
+	/// <returns><see langword="true"/> if the number of elements in the sequence is between (inclusive)
+	/// the min and max given integers or <see langword="false"/> otherwise.</returns>
 	/// <example>
 	/// <code><![CDATA[
 	/// var numbers = new[] { 123, 456, 789 };
 	/// var result = numbers.CountBetween(1, 2);
 	/// ]]></code>
-	/// The <c>result</c> variable will contain <c>false</c>.
+	/// The <c>result</c> variable will contain <see langword="false"/>.
 	/// </example>
 
 	public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)

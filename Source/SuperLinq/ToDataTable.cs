@@ -122,7 +122,7 @@ public static partial class SuperEnumerable
 		}
 
 		//
-		// Ensure none of the expressions is null.
+		// Ensure none of the expressions is <see langword="null"/>.
 		//
 
 		if (expressions.Any(e => e == null))

@@ -21,9 +21,9 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="source">The first sequence in the interleave group</param>
 	/// <param name="otherSources">The other sequences in the interleave group</param>
 	/// <returns>A sequence of interleaved elements from all of the source sequences</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="otherSources"/> is null.</exception>
-	/// <exception cref="ArgumentNullException">Any of the items in <paramref name="otherSources"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="otherSources"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException">Any of the items in <paramref name="otherSources"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<T> Interleave<T>(this IAsyncEnumerable<T> source, params IAsyncEnumerable<T>[] otherSources)
 	{
 		source.ThrowIfNull();

@@ -24,7 +24,7 @@ public static partial class AsyncSuperEnumerable
 	/// The <c>result</c> variable, when iterated over, will yield
 	/// 123, 456, 789 and two zeroes, in turn.
 	/// </example>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IAsyncEnumerable<TSource?> Pad<TSource>(this IAsyncEnumerable<TSource> source, int width)
 	{
@@ -54,7 +54,7 @@ public static partial class AsyncSuperEnumerable
 	/// The <c>result</c> variable, when iterated over, will yield
 	/// 123, 456, and 789 followed by two occurrences of -1, in turn.
 	/// </example>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IAsyncEnumerable<TSource> Pad<TSource>(this IAsyncEnumerable<TSource> source, int width, TSource padding)
 	{
@@ -86,8 +86,8 @@ public static partial class AsyncSuperEnumerable
 	/// The <c>result</c> variable, when iterated over, will yield
 	/// 0, 1, 2, -3 and -4, in turn.
 	/// </example>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="paddingSelector"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="paddingSelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IAsyncEnumerable<TSource> Pad<TSource>(this IAsyncEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
 	{

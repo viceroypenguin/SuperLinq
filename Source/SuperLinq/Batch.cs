@@ -26,7 +26,7 @@ public static partial class SuperEnumerable
 	/// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to chunk.</param>
 	/// <param name="size">The maximum size of each chunk.</param>
 	/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements the input sequence split into chunks of size size.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="size"/> is below 1.</exception>
 	public static IEnumerable<IList<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size) =>
 #if NET6_0_OR_GREATER
@@ -45,8 +45,8 @@ public static partial class SuperEnumerable
 	/// <param name="size">The maximum size of each chunk.</param>
 	/// <param name="resultSelector">The projection that .</param>
 	/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements the input sequence split into chunks of size size.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="size"/> is below 1.</exception>
 	public static IEnumerable<TResult> Batch<TSource, TResult>(
 		this IEnumerable<TSource> source, int size,

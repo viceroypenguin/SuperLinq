@@ -24,7 +24,7 @@ public class RankTests
 	}
 
 	/// <summary>
-	/// Verify that Rank uses the default comparer when comparer is <c>null</c>
+	/// Verify that Rank uses the default comparer when comparer is <see langword="null"/>
 	/// </summary>
 	[Fact]
 	public void TestRankNullComparer()
@@ -34,7 +34,7 @@ public class RankTests
 	}
 
 	/// <summary>
-	/// Verify that Rank uses the default comparer when comparer is <c>null</c>
+	/// Verify that Rank uses the default comparer when comparer is <see langword="null"/>
 	/// </summary>
 	[Fact]
 	public void TestRankByNullComparer()

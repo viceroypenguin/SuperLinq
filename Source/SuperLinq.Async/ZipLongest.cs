@@ -32,7 +32,9 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This operator uses deferred execution and streams its results.
 	/// </remarks>
-
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(
 		this IAsyncEnumerable<TFirst> first,
 		IAsyncEnumerable<TSecond> second,
@@ -78,7 +80,10 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This operator uses deferred execution and streams its results.
 	/// </remarks>
-
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="third"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TResult> ZipLongest<T1, T2, T3, TResult>(
 		this IAsyncEnumerable<T1> first,
 		IAsyncEnumerable<T2> second,
@@ -129,7 +134,11 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This operator uses deferred execution and streams its results.
 	/// </remarks>
-
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="third"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="fourth"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TResult> ZipLongest<T1, T2, T3, T4, TResult>(
 		this IAsyncEnumerable<T1> first,
 		IAsyncEnumerable<T2> second,

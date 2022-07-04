@@ -9,7 +9,7 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
 	/// undefined results.<br/>
-	/// <c>SortedMerge</c> uses performs the merge in a deferred, streaming manner. <br/>
+	/// <see cref="SortedMerge{TSource}(IEnumerable{TSource}, OrderByDirection, IEnumerable{TSource}[])"/> uses performs the merge in a deferred, streaming manner. <br/>
 	///
 	/// Here is an example of a merge, as well as the produced result:
 	/// <code><![CDATA[

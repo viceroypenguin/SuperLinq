@@ -237,7 +237,8 @@ public static partial class SuperEnumerable
 	/// A sequence of values typed as <typeparamref name="TResult"/>.
 	/// </returns>
 
-	public static IEnumerable<TResult> Split<TSource, TResult>(this IEnumerable<TSource> source,
+	public static IEnumerable<TResult> Split<TSource, TResult>(
+		this IEnumerable<TSource> source,
 		Func<TSource, bool> separatorFunc, int count,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
@@ -246,7 +247,9 @@ public static partial class SuperEnumerable
 		count.ThrowIfLessThan(1);
 		resultSelector.ThrowIfNull();
 
-		return _(); IEnumerable<TResult> _()
+		return _(source, separatorFunc, count, resultSelector);
+
+		static IEnumerable<TResult> _(IEnumerable<TSource> source, Func<TSource, bool> separatorFunc, int count, Func<IEnumerable<TSource>, TResult> resultSelector)
 		{
 			if (count == 0) // No splits?
 			{

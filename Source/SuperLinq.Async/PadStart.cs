@@ -23,7 +23,7 @@ public static partial class AsyncSuperEnumerable
 	/// ]]></code>
 	/// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
 	/// </example>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IAsyncEnumerable<TSource?> PadStart<TSource>(this IAsyncEnumerable<TSource> source, int width)
 	{
@@ -53,7 +53,7 @@ public static partial class AsyncSuperEnumerable
 	/// ]]></code>
 	/// The <c>result</c> variable will contain <c>{ -1, -1, 123, 456, 789 }</c>.
 	/// </example>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IAsyncEnumerable<TSource> PadStart<TSource>(this IAsyncEnumerable<TSource> source, int width, TSource padding)
 	{
@@ -87,8 +87,8 @@ public static partial class AsyncSuperEnumerable
 	/// ]]></code>
 	/// The <c>result</c> variable will contain <c>{ 0, -1, -2, 123, 456, 789 }</c>.
 	/// </example>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="paddingSelector"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="paddingSelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IAsyncEnumerable<TSource> PadStart<TSource>(this IAsyncEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
 	{

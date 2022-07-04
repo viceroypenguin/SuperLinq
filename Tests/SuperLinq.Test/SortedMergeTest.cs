@@ -32,7 +32,7 @@ public class SortedMergeTests
 	}
 
 	/// <summary>
-	/// Verify that SortedMerge throws an exception if invoked on a <c>null</c> sequence.
+	/// Verify that SortedMerge throws an exception if invoked on a <see langword="null"/> sequence.
 	/// </summary>
 	[Fact]
 	public void TestSortedMergeComparerNull()

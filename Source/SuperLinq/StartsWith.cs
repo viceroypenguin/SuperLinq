@@ -11,7 +11,7 @@ public static partial class SuperEnumerable
 	/// <param name="first">The sequence to check.</param>
 	/// <param name="second">The sequence to compare to.</param>
 	/// <returns>
-	/// <c>true</c> if <paramref name="first" /> begins with elements
+	/// <see langword="true"/> if <paramref name="first" /> begins with elements
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>
@@ -37,7 +37,7 @@ public static partial class SuperEnumerable
 	/// <param name="second">The sequence to compare to.</param>
 	/// <param name="comparer">Equality comparer to use.</param>
 	/// <returns>
-	/// <c>true</c> if <paramref name="first" /> begins with elements
+	/// <see langword="true"/> if <paramref name="first" /> begins with elements
 	/// equivalent to <paramref name="second" />.
 	/// </returns>
 	/// <remarks>

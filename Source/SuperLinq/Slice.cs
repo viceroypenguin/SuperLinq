@@ -9,7 +9,7 @@ public static partial class SuperEnumerable
 	/// If the starting position or count specified result in slice extending past the end of the sequence,
 	/// it will return all elements up to that point. There is no guarantee that the resulting sequence will
 	/// contain the number of elements requested - it may have anywhere from 0 to <paramref name="count"/>.<br/>
-	/// This method is implemented in an optimized manner for any sequence implementing <c>IList{T}</c>.<br/>
+	/// This method is implemented in an optimized manner for any sequence implementing <see cref="IList{T}"/>.<br/>
 	/// The result of Slice() is identical to: <c>sequence.Skip(startIndex).Take(count)</c>
 	/// </remarks>
 	/// <typeparam name="T">The type of the elements in the source sequence</typeparam>

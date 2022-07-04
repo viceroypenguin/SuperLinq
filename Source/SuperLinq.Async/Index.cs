@@ -11,7 +11,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="source">The source sequence.</param>
 	/// <returns>A sequence of tuples.</returns>
 	/// <remarks>This operator uses deferred execution and streams its results.</remarks>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<(int index, TSource item)> Index<TSource>(this IAsyncEnumerable<TSource> source)
 	{
 		return source.Index(0);
@@ -28,7 +28,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="startIndex"></param>
 	/// <returns>A sequence of tuples.</returns>
 	/// <remarks>This operator uses deferred execution and streams its results.</remarks>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<(int index, TSource item)> Index<TSource>(this IAsyncEnumerable<TSource> source, int startIndex)
 	{
 		source.ThrowIfNull();

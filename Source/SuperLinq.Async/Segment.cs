@@ -7,7 +7,7 @@ public static partial class AsyncSuperEnumerable
 	/// </summary>
 	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
 	/// <param name="source">The sequence to segment</param>
-	/// <param name="newSegmentPredicate">A function, which returns <c>true</c> if the given element begins a new segment, and <c>false</c> otherwise</param>
+	/// <param name="newSegmentPredicate">A function, which returns <see langword="true"/> if the given element begins a new segment, and <see langword="false"/> otherwise</param>
 	/// <returns>A sequence of segment, each of which is a portion of the original sequence</returns>
 	/// <exception cref="ArgumentNullException">
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
@@ -25,7 +25,7 @@ public static partial class AsyncSuperEnumerable
 	/// </summary>
 	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
 	/// <param name="source">The sequence to segment</param>
-	/// <param name="newSegmentPredicate">A function, which returns <c>true</c> if the given element begins a new segment, and <c>false</c> otherwise</param>
+	/// <param name="newSegmentPredicate">A function, which returns <see langword="true"/> if the given element begins a new segment, and <see langword="false"/> otherwise</param>
 	/// <returns>A sequence of segment, each of which is a portion of the original sequence</returns>
 	/// <exception cref="ArgumentNullException">
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
@@ -43,7 +43,7 @@ public static partial class AsyncSuperEnumerable
 	/// </summary>
 	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
 	/// <param name="source">The sequence to segment</param>
-	/// <param name="newSegmentPredicate">A function, which returns <c>true</c> if the given element or index indicate a new segment, and <c>false</c> otherwise</param>
+	/// <param name="newSegmentPredicate">A function, which returns <see langword="true"/> if the given element or index indicate a new segment, and <see langword="false"/> otherwise</param>
 	/// <returns>A sequence of segment, each of which is a portion of the original sequence</returns>
 	/// <exception cref="ArgumentNullException">
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
@@ -61,7 +61,7 @@ public static partial class AsyncSuperEnumerable
 	/// </summary>
 	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
 	/// <param name="source">The sequence to segment</param>
-	/// <param name="newSegmentPredicate">A function, which returns <c>true</c> if the given element or index indicate a new segment, and <c>false</c> otherwise</param>
+	/// <param name="newSegmentPredicate">A function, which returns <see langword="true"/> if the given element or index indicate a new segment, and <see langword="false"/> otherwise</param>
 	/// <returns>A sequence of segment, each of which is a portion of the original sequence</returns>
 	/// <exception cref="ArgumentNullException">
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
@@ -79,7 +79,7 @@ public static partial class AsyncSuperEnumerable
 	/// </summary>
 	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
 	/// <param name="source">The sequence to segment</param>
-	/// <param name="newSegmentPredicate">A function, which returns <c>true</c> if the given current element, previous element or index indicate a new segment, and <c>false</c> otherwise</param>
+	/// <param name="newSegmentPredicate">A function, which returns <see langword="true"/> if the given current element, previous element or index indicate a new segment, and <see langword="false"/> otherwise</param>
 	/// <returns>A sequence of segment, each of which is a portion of the original sequence</returns>
 	/// <exception cref="ArgumentNullException">
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
@@ -95,7 +95,7 @@ public static partial class AsyncSuperEnumerable
 	/// </summary>
 	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
 	/// <param name="source">The sequence to segment</param>
-	/// <param name="newSegmentPredicate">A function, which returns <c>true</c> if the given current element, previous element or index indicate a new segment, and <c>false</c> otherwise</param>
+	/// <param name="newSegmentPredicate">A function, which returns <see langword="true"/> if the given current element, previous element or index indicate a new segment, and <see langword="false"/> otherwise</param>
 	/// <returns>A sequence of segment, each of which is a portion of the original sequence</returns>
 	/// <exception cref="ArgumentNullException">
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.

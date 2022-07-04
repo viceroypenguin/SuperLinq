@@ -5,7 +5,7 @@ public static partial class AsyncSuperEnumerable
 	/// <summary>
 	/// Applies a function to each element of the source sequence and
 	/// returns a new sequence of result elements for source elements
-	/// where the function returns a couple (2-tuple) having a <c>true</c>
+	/// where the function returns a couple (2-tuple) having a <see langword="true"/>
 	/// as its first element and result as the second.
 	/// </summary>
 	/// <typeparam name="T">
@@ -39,7 +39,7 @@ public static partial class AsyncSuperEnumerable
 	/// <summary>
 	/// Applies a function to each element of the source sequence and
 	/// returns a new sequence of result elements for source elements
-	/// where the function returns a couple (2-tuple) having a <c>true</c>
+	/// where the function returns a couple (2-tuple) having a <see langword="true"/>
 	/// as its first element and result as the second.
 	/// </summary>
 	/// <typeparam name="T">

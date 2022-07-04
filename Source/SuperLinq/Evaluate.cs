@@ -13,7 +13,7 @@ partial class SuperEnumerable
 	/// <typeparam name="T">The type of the object returned by the functions.</typeparam>
 	/// <param name="functions">The functions to evaluate.</param>
 	/// <returns>A sequence with results from invoking <paramref name="functions"/>.</returns>
-	/// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <c>null</c>.</exception>
+	/// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <see langword="null"/>.</exception>
 
 	public static IEnumerable<T> Evaluate<T>(this IEnumerable<Func<T>> functions)
 	{

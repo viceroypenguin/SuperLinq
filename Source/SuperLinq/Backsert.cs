@@ -38,8 +38,8 @@ public static partial class SuperEnumerable
 	/// plus the elements of <paramref name="second"/> inserted at
 	/// the given index from the end of <paramref name="first"/>.
 	/// </returns>
-	/// <exception cref="ArgumentNullException"><paramref name="first"/> is null.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="second"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	/// Thrown if <paramref name="index"/> is negative.
 	/// </exception>

@@ -14,8 +14,8 @@ public static partial class SuperEnumerable
 	/// An <see cref="IEnumerable{T}"/> that containing fallback values
 	/// if <paramref name="source"/> is empty; otherwise, <paramref name="source"/>.
 	/// </returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="fallback"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="fallback"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, params T[] fallback)
 	{
 		return source.FallbackIfEmpty((IEnumerable<T>)fallback);
@@ -33,8 +33,8 @@ public static partial class SuperEnumerable
 	/// An <see cref="IEnumerable{T}"/> that containing fallback values
 	/// if <paramref name="source"/> is empty; otherwise, <paramref name="source"/>.
 	/// </returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="fallback"/> is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="fallback"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, IEnumerable<T> fallback)
 	{
 		source.ThrowIfNull();
