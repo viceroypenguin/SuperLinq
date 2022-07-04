@@ -35,7 +35,7 @@ public static partial class SuperEnumerable
 		static string BuildArgumentString(int i, Func<int, string> builder) =>
 			string.Join(", ", Enumerable.Range(0, i).Select(j => builder(j + 1)));
 
-		for (var i = 1; i <= args.Length; i++)
+		for (var i = 2; i <= args.Length; i++)
 		{
 			var (ordinal, arity) = args[i - 1];
 

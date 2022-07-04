@@ -1,21 +1,4 @@
-﻿#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
-
-namespace SuperLinq;
+﻿namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -28,6 +11,8 @@ public static partial class SuperEnumerable
 	/// <param name="source">Source sequence.</param>
 	/// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
 	/// <returns>The final accumulator value.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source" /> is <see langword="null" />.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="func" /> is <see langword="null" />.</exception>
 	/// <example>
 	/// <code><![CDATA[
 	/// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => string.Format("({0}/{1})", a, b));
@@ -37,7 +22,6 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// This operator executes immediately.
 	/// </remarks>
-
 	public static TSource AggregateRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
 	{
 		source.ThrowIfNull();
@@ -68,6 +52,8 @@ public static partial class SuperEnumerable
 	/// <param name="seed">The initial accumulator value.</param>
 	/// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
 	/// <returns>The final accumulator value.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source" /> is <see langword="null" />.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="func" /> is <see langword="null" />.</exception>
 	/// <example>
 	/// <code><![CDATA[
 	/// var numbers = Enumerable.Range(1, 5);
@@ -105,6 +91,9 @@ public static partial class SuperEnumerable
 	/// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
 	/// <param name="resultSelector">A function to transform the final accumulator value into the result value.</param>
 	/// <returns>The transformed final accumulator value.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source" /> is <see langword="null" />.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="func" /> is <see langword="null" />.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="resultSelector" /> is <see langword="null" />.</exception>
 	/// <example>
 	/// <code><![CDATA[
 	/// var numbers = Enumerable.Range(1, 5);
