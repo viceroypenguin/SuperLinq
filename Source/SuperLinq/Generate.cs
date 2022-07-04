@@ -11,12 +11,13 @@ public static partial class SuperEnumerable
 	/// Generator function which takes the previous series element and uses it to generate the next element.
 	/// </param>
 	/// <returns>A sequence containing the generated values.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="generator"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// This function defers element generation until needed and streams the results.
 	/// </remarks>
 	/// <example>
 	/// <code><![CDATA[
-	/// var result = MoreEnumerable.Generate(2, n => n * n).Take(5);
+	/// var result = SuperEnumerable.Generate(2, n => n * n).Take(5);
 	/// ]]></code>
 	/// The <c>result</c> variable, when iterated over, will yield 2, 4, 16, 256, and 65536, in turn.
 	/// </example>
