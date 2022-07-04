@@ -44,7 +44,7 @@ public static partial class SuperEnumerable
 		second.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b));
+		return ZipShortestImpl(first, second, EnumerableEx.Repeat(default(object)), EnumerableEx.Repeat(default(object)), (a, b, c, d) => resultSelector(a, b));
 	}
 
 	/// <summary>
@@ -95,7 +95,7 @@ public static partial class SuperEnumerable
 		third.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		return ZipImpl<T1, T2, T3, object, TResult>(first, second, third, null, (a, b, c, _) => resultSelector(a, b, c));
+		return ZipShortestImpl(first, second, third, EnumerableEx.Repeat(default(object)), (a, b, c, _) => resultSelector(a, b, c));
 	}
 
 	/// <summary>
@@ -151,16 +151,37 @@ public static partial class SuperEnumerable
 		fourth.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		return ZipImpl(first, second, third, fourth, resultSelector);
+		return ZipShortestImpl(first, second, third, fourth, resultSelector);
 	}
 
-	static IEnumerable<TResult> ZipImpl<T1, T2, T3, T4, TResult>(
+	private static IEnumerable<TResult> ZipShortestImpl<T1, T2, T3, T4, TResult>(
 		IEnumerable<T1> s1,
 		IEnumerable<T2> s2,
-		IEnumerable<T3>? s3,
-		IEnumerable<T4>? s4,
+		IEnumerable<T3> s3,
+		IEnumerable<T4> s4,
 		Func<T1, T2, T3, T4, TResult> resultSelector)
 	{
-		return ZipImpl(s1, s2, s3, s4, resultSelector, 0);
+		using var e1 = s1.GetEnumerator();
+		using var e2 = s2.GetEnumerator();
+		using var e3 = s3.GetEnumerator();
+		using var e4 = s4.GetEnumerator();
+
+		while (true)
+		{
+			if (!e1.MoveNext())
+				yield break;
+			if (!e2.MoveNext())
+				yield break;
+			if (!e3.MoveNext())
+				yield break;
+			if (!e4.MoveNext())
+				yield break;
+
+			yield return resultSelector(
+				e1.Current,
+				e2.Current,
+				e3.Current,
+				e4.Current);
+		}
 	}
 }

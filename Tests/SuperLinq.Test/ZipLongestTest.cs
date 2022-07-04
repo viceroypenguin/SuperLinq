@@ -1,8 +1,6 @@
 ﻿namespace Test;
 public class ZipLongestTest
 {
-	static IEnumerable<T> Seq<T>(params T[] values) => values;
-
 	public static readonly IEnumerable<object[]> TestData =
 		new[]
 		{
@@ -30,21 +28,6 @@ public class ZipLongestTest
 	{
 		var bs = new BreakingSequence<int>();
 		bs.ZipLongest(bs, BreakingFunc.Of<int, int, int>());
-	}
-
-	[Fact]
-	public void ZipLongestDisposeSequencesEagerly()
-	{
-		var shorter = TestingSequence.Of(1, 2, 3);
-		var longer = SuperEnumerable.Generate(1, x => x + 1);
-		var zipped = shorter.ZipLongest(longer, ValueTuple.Create);
-
-		var count = 0;
-		foreach (var _ in zipped.Take(10))
-		{
-			if (++count == 4)
-				((IDisposable)shorter).Dispose();
-		}
 	}
 
 	[Fact]
