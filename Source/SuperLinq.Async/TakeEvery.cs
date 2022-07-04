@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Returns every N-th element of a sequence.
@@ -23,7 +23,7 @@ public static partial class SuperEnumerable
 	/// ]]></code>
 	/// The <c>result</c> variable, when iterated over, will yield 1, 3 and 5, in turn.
 	/// </example>
-	public static IEnumerable<TSource> TakeEvery<TSource>(this IEnumerable<TSource> source, int step)
+	public static IAsyncEnumerable<TSource> TakeEvery<TSource>(this IAsyncEnumerable<TSource> source, int step)
 	{
 		source.ThrowIfNull();
 		step.ThrowIfLessThan(1);
