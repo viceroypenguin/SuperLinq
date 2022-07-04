@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Returns the set of elements in the first sequence which aren't
@@ -20,9 +20,9 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">The mapping from source element to key.</param>
 	/// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
 	/// any element in <paramref name="second"/>.</returns>
-	public static IEnumerable<TSource> ExceptByItems<TSource, TKey>(
-		this IEnumerable<TSource> first,
-		IEnumerable<TSource> second,
+	public static IAsyncEnumerable<TSource> ExceptByItems<TSource, TKey>(
+		this IAsyncEnumerable<TSource> first,
+		IAsyncEnumerable<TSource> second,
 		Func<TSource, TKey> keySelector)
 		=> ExceptByItems(first, second, keySelector, keyComparer: default);
 
@@ -46,9 +46,9 @@ public static partial class SuperEnumerable
 	/// If null, the default equality comparer for <c>TSource</c> is used.</param>
 	/// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
 	/// any element in <paramref name="second"/>.</returns>
-	public static IEnumerable<TSource> ExceptByItems<TSource, TKey>(
-		this IEnumerable<TSource> first,
-		IEnumerable<TSource> second,
+	public static IAsyncEnumerable<TSource> ExceptByItems<TSource, TKey>(
+		this IAsyncEnumerable<TSource> first,
+		IAsyncEnumerable<TSource> second,
 		Func<TSource, TKey> keySelector,
 		IEqualityComparer<TKey>? keyComparer)
 	{
@@ -58,10 +58,13 @@ public static partial class SuperEnumerable
 
 		return _(first, second, keySelector, keyComparer);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? keyComparer)
+		static async IAsyncEnumerable<TSource> _(
+			IAsyncEnumerable<TSource> first, IAsyncEnumerable<TSource> second,
+			Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? keyComparer,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			var keys = second.Select(keySelector).ToHashSet(keyComparer);
-			foreach (var element in first)
+			var keys = await second.Select(keySelector).ToHashSetAsync(keyComparer, cancellationToken).ConfigureAwait(false);
+			await foreach (var element in first.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
 				var key = keySelector(element);
 				if (keys.Contains(key))
