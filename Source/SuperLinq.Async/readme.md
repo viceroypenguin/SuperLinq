@@ -25,6 +25,13 @@ Base library is supported on .NET Core 3.1 and .NET 5.0+.
 
 ## Operators
 
+### AggregateRight
+
+Applies a right-associative accumulator function over a sequence.
+This operator is the right-associative version of the Aggregate LINQ operator.
+
+This method has 9 overloads.
+
 ### AtLeast
 
 Determines whether or not the number of elements in the sequence is greater
@@ -150,6 +157,8 @@ This method has 2 overloads.
 
 Inserts the elements of a sequence into another sequence at a specified index.
 
+This method has 2 overloads.
+
 ### Interleave
 
 Interleaves the elements of two or more sequences into a single sequence,
@@ -183,6 +192,20 @@ element into a `KeyValuePair<T, int>` representing the item and its occurrence
 count.
 
 This method has 2 overloads.
+
+### ScanBy
+
+Applies an accumulator function over sequence element keys, returning the keys
+along with intermediate accumulator states.
+
+This method has 6 overloads.
+
+### ScanRight
+
+Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+This operator is the right-associative version of the Scan operator.
+
+This method has 6 overloads.
 
 ### Segment
 
@@ -225,6 +248,10 @@ the first and/or last of the sequence
 
 Returns a specified range of contiguous elements from a sequence using the
 range operator.
+
+### TakeEvery
+
+Returns every N-th element of a source sequence
 
 ### TakeUntil
 

@@ -260,6 +260,8 @@ This method has 2 overloads.
 
 Inserts the elements of a sequence into another sequence at a specified index.
 
+This method has 2 overloads.
+
 ### Interleave
 
 Interleaves the elements of two or more sequences into a single sequence,

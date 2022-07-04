@@ -27,6 +27,7 @@
 		<Description>
 			This project enhances Async LINQ to Objects with the following methods:
 			
+			- AggregateRight
 			- AtLeast
 			- AtMost
 			- Choose
@@ -52,6 +53,8 @@
 			- PadStart
 			- Random
 			- RunLengthEncode
+			- ScanBy
+			- ScanRight
 			- Segment
 			- Sequence
 			- SkipUntil
@@ -59,6 +62,7 @@
 			- StartsWith
 			- TagFirstLast
 			- Take
+			- TakeEvery
 			- TakeUntil
 			- Window
 			- WindowLeft
