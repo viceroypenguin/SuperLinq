@@ -11,6 +11,7 @@ public static partial class SuperEnumerable
 	/// <param name="generator">
 	/// Generation function to apply to each index.</param>
 	/// <returns>A sequence of generated results.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="generator"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// <para>
 	/// The sequence is (practically) infinite where the index ranges from
@@ -18,12 +19,11 @@ public static partial class SuperEnumerable
 	/// <para>
 	/// This function defers execution and streams the results.</para>
 	/// </remarks>
-
 	public static IEnumerable<TResult> GenerateByIndex<TResult>(Func<int, TResult> generator)
 	{
 		generator.ThrowIfNull();
 
-		return SuperEnumerable.Sequence(0, int.MaxValue)
-							 .Select(generator);
+		return Sequence(0, int.MaxValue)
+			.Select(generator);
 	}
 }

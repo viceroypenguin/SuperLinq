@@ -46,6 +46,7 @@
 			- Fold
 			- From
 			- Generate
+			- GenerateByIndex
 			- Index
 			- Insert
 			- Interleave
