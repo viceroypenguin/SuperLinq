@@ -87,7 +87,7 @@ public class PartialSortByTests
 		for (var i = 1; i <= 10; i++)
 		{
 			var sorted = list.PartialSortBy(i, x => x.key);
-			Assert.True(sorted.SequenceEqual(stableSort.Take(i)));
+			Assert.Equal(stableSort.Take(i), sorted);
 		}
 	}
 }

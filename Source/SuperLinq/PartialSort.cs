@@ -12,10 +12,11 @@ public static partial class SuperEnumerable
 	/// <param name="count">Number of (maximum) elements to return.</param>
 	/// <returns>A sequence containing at most top <paramref name="count"/>
 	/// elements from source, in their ascending order.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
 	/// This operator uses deferred execution and streams it results.
 	/// </remarks>
-
 	public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source, int count)
 	{
 		return source.PartialSort(count, comparer: null);
@@ -33,10 +34,11 @@ public static partial class SuperEnumerable
 	/// <param name="direction">The direction in which to sort the elements</param>
 	/// <returns>A sequence containing at most top <paramref name="count"/>
 	/// elements from source, in the specified order.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
 	/// This operator uses deferred execution and streams it results.
 	/// </remarks>
-
 	public static IEnumerable<T> PartialSort<T>(
 		this IEnumerable<T> source, int count, OrderByDirection direction)
 	{
@@ -55,10 +57,11 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
 	/// <returns>A sequence containing at most top <paramref name="count"/>
 	/// elements from source, in their ascending order.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
 	/// This operator uses deferred execution and streams it results.
 	/// </remarks>
-
 	public static IEnumerable<T> PartialSort<T>(
 		this IEnumerable<T> source,
 		int count, IComparer<T>? comparer)
@@ -80,19 +83,52 @@ public static partial class SuperEnumerable
 	/// <param name="direction">The direction in which to sort the elements</param>
 	/// <returns>A sequence containing at most top <paramref name="count"/>
 	/// elements from source, in the specified order.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
 	/// This operator uses deferred execution and streams it results.
 	/// </remarks>
-
 	public static IEnumerable<T> PartialSort<T>(
 		this IEnumerable<T> source, int count,
 		IComparer<T>? comparer, OrderByDirection direction)
 	{
 		source.ThrowIfNull();
+		count.ThrowIfLessThan(1);
+
 		comparer ??= Comparer<T>.Default;
 		if (direction == OrderByDirection.Descending)
 			comparer = new ReverseComparer<T>(comparer);
-		return PartialSortByImpl<T, T>(source, count, keySelector: null, keyComparer: null, comparer);
+
+		return _(source, count, comparer);
+
+		static IEnumerable<T> _(IEnumerable<T> source, int count, IComparer<T> comparer)
+		{
+			var top = new SortedSet<(T item, int index)>(
+				Comparer<(T item, int index)>.Create((x, y) =>
+				{
+					var result = comparer.Compare(x.item, y.item);
+					return result != 0 ? result :
+						Comparer<long>.Default.Compare(x.index, y.index);
+				}));
+
+			foreach (var (index, item) in source.Index())
+			{
+				if (top.Count < count)
+				{
+					top.Add((item, index));
+					continue;
+				}
+
+				if (comparer.Compare(item, top.Max.item) >= 0)
+					continue;
+
+				top.Remove(top.Max);
+				top.Add((item, index));
+			}
+
+			foreach (var (item, _) in top)
+				yield return item;
+		}
 	}
 
 	/// <summary>
@@ -106,10 +142,12 @@ public static partial class SuperEnumerable
 	/// <param name="count">Number of (maximum) elements to return.</param>
 	/// <returns>A sequence containing at most top <paramref name="count"/>
 	/// elements from source, in ascending order of their keys.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
 	/// This operator uses deferred execution and streams it results.
 	/// </remarks>
-
 	public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
 		this IEnumerable<TSource> source, int count,
 		Func<TSource, TKey> keySelector)
@@ -130,10 +168,12 @@ public static partial class SuperEnumerable
 	/// <param name="direction">The direction in which to sort the elements</param>
 	/// <returns>A sequence containing at most top <paramref name="count"/>
 	/// elements from source, in the specified order of their keys.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
 	/// This operator uses deferred execution and streams it results.
 	/// </remarks>
-
 	public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
 		this IEnumerable<TSource> source, int count,
 		Func<TSource, TKey> keySelector, OrderByDirection direction)
@@ -154,10 +194,12 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
 	/// <returns>A sequence containing at most top <paramref name="count"/>
 	/// elements from source, in ascending order of their keys.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
 	/// This operator uses deferred execution and streams it results.
 	/// </remarks>
-
 	public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
 		this IEnumerable<TSource> source, int count,
 		Func<TSource, TKey> keySelector,
@@ -181,10 +223,12 @@ public static partial class SuperEnumerable
 	/// <param name="direction">The direction in which to sort the elements</param>
 	/// <returns>A sequence containing at most top <paramref name="count"/>
 	/// elements from source, in the specified order of their keys.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
 	/// This operator uses deferred execution and streams it results.
 	/// </remarks>
-
 	public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
 		this IEnumerable<TSource> source, int count,
 		Func<TSource, TKey> keySelector,
@@ -192,76 +236,47 @@ public static partial class SuperEnumerable
 		OrderByDirection direction)
 	{
 		source.ThrowIfNull();
+		count.ThrowIfLessThan(1);
 		keySelector.ThrowIfNull();
 
 		comparer ??= Comparer<TKey>.Default;
 		if (direction == OrderByDirection.Descending)
 			comparer = new ReverseComparer<TKey>(comparer);
-		return PartialSortByImpl(source, count, keySelector, keyComparer: comparer, comparer: null);
-	}
 
-	static IEnumerable<TSource> PartialSortByImpl<TSource, TKey>(
-		IEnumerable<TSource> source, int count,
-		Func<TSource, TKey>? keySelector,
-		IComparer<TKey>? keyComparer,
-		IComparer<TSource>? comparer)
-	{
-		var top = new List<TSource>(count);
+		return _(source, count, keySelector, comparer);
 
-		static int? Insert<T>(List<T> list, T item, IComparer<T> comparer, int count)
+		static IEnumerable<TSource> _(IEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
 		{
-			var i = list.BinarySearch(item, comparer);
-			// find the place to insert
-			if (i < 0 && (i = ~i) >= count)
-				return null;
-			// move forward until we get to next larger
-			while (i < list.Count && comparer.Compare(item, list[i]) == 0)
-				i++;
-			// is the list full?
-			if (list.Count == count)
-			{
-				// if our insert location is at the end of the list
-				if (i == list.Count
-					// and we're _not larger_ than the last item
-					&& comparer.Compare(item, list[^1]) <= 0)
+			var top = new SortedSet<(TKey Item, int Index)>(
+				Comparer<(TKey item, int index)>.Create((x, y) =>
 				{
-					// then don't affect the list
-					return null;
+					var result = comparer.Compare(x.item, y.item);
+					return result != 0 ? result :
+						Comparer<long>.Default.Compare(x.index, y.index);
+				}));
+			var dic = new Dictionary<(TKey Item, int Index), TSource>(count);
+
+			foreach (var (index, item) in source.Index())
+			{
+				var key = (key: keySelector(item), index);
+				if (top.Count < count)
+				{
+					top.Add(key);
+					dic[key] = item;
+					continue;
 				}
-				// remove last item
-				list.RemoveAt(count - 1);
+
+				if (comparer.Compare(key.key, top.Max.Item) >= 0)
+					continue;
+
+				dic.Remove(top.Max);
+				top.Remove(top.Max);
+				top.Add(key);
+				dic[key] = item;
 			}
 
-			list.Insert(i, item);
-			return i;
+			foreach (var entry in top)
+				yield return dic[entry];
 		}
-
-		if (keyComparer != null)
-		{
-			var keys = new List<TKey>(count);
-
-			foreach (var item in source)
-			{
-				var key = keySelector!(item);
-				if (Insert(keys, key, keyComparer, count) is { } i)
-				{
-					if (top.Count == count)
-						top.RemoveAt(count - 1);
-					top.Insert(i, item);
-				}
-			}
-		}
-		else if (comparer != null)
-		{
-			foreach (var item in source)
-				_ = Insert(top, item, comparer, count);
-		}
-		else
-		{
-			throw new NotSupportedException("Should not be able to reach here.");
-		}
-
-		foreach (var item in top)
-			yield return item;
 	}
 }
