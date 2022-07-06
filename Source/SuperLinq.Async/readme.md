@@ -185,6 +185,18 @@ Pads a sequence with default values in the beginning if it is narrower
 
 This method has 3 overloads.
 
+### PartialSort
+
+Combines `OrderBy` (where element is key) and `Take` in a single operation.
+
+This method has 4 overloads.
+
+### PartialSortBy
+
+Combines `OrderBy` and `Take` in a single operation.
+
+This method has 4 overloads.
+
 ### Random
 
 Returns an infinite sequence of random integers using the standard .NET random

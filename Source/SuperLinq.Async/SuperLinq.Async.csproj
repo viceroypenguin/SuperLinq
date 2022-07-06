@@ -52,6 +52,8 @@
 			- OrderBy
 			- Pad
 			- PadStart
+			- PartialSort
+			- PartialSortBy
 			- Random
 			- RunLengthEncode
 			- ScanBy
