@@ -49,6 +49,7 @@
 			- Index
 			- Insert
 			- Interleave
+			- OrderBy
 			- Pad
 			- PadStart
 			- Random
@@ -64,6 +65,7 @@
 			- Take
 			- TakeEvery
 			- TakeUntil
+			- ThenBy
 			- Window
 			- WindowLeft
 			- WindowRight
@@ -88,6 +90,7 @@
 
 	<ItemGroup>
 		<Compile Include="..\SuperLinq\ExceptionHelpers.cs" Link="ExceptionHelpers.cs" />
+		<Compile Include="..\SuperLinq\ReverseComparer.cs" Link="ReverseComparer.cs" />
 		<Compile Include="..\SuperLinq\Collections\Dictionary.cs" Link="Collections\Dictionary.cs" />
 	</ItemGroup>
 

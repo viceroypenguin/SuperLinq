@@ -164,6 +164,13 @@ This method has 2 overloads.
 Interleaves the elements of two or more sequences into a single sequence,
 skipping sequences as they are consumed.
 
+### OrderBy
+
+Sorts the elements of a sequence in a particular direction (ascending,
+descending) according to a key.
+
+This method has 2 overloads.
+
 ### Pad
 
 Pads a sequence with default values if it is narrower (shorter in length) than
@@ -257,6 +264,13 @@ Returns every N-th element of a source sequence
 
 Returns items from the input sequence until the given predicate returns true
 when applied to the current source item; that item will be the last returned
+
+### ThenBy
+
+Performs a subsequent ordering of elements in a sequence in a particular
+direction (ascending, descending) according to a key.
+
+This method has 2 overloads.
 
 ### Window
 

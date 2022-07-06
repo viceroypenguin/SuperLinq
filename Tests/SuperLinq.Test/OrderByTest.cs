@@ -35,7 +35,7 @@ public class OrderByTests
 		var sequenceAscending = sequence.Select(x => x.ToString());
 		var sequenceDescending = sequenceAscending.Reverse();
 
-		var comparer = Comparer.Create<string>((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
+		var comparer = Comparer<string>.Create((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
 
 		var resultAsc1 = sequenceAscending.OrderBy(x => x, comparer, OrderByDirection.Descending);
 		var resultAsc2 = sequenceAscending.OrderByDescending(x => x, comparer);
@@ -90,16 +90,16 @@ public class OrderByTests
 	public void TestThenByComparerPreserved()
 	{
 		var sequence = new[]
-						   {
-								   new {A = "2", B = "0"},
-								   new {A = "1", B = "5"},
-								   new {A = "2", B = "2"},
-								   new {A = "1", B = "3"},
-								   new {A = "1", B = "4"},
-								   new {A = "2", B = "1"},
-							   };
+		{
+			new { A = "2", B = "0", },
+			new { A = "1", B = "5", },
+			new { A = "2", B = "2", },
+			new { A = "1", B = "3", },
+			new { A = "1", B = "4", },
+			new { A = "2", B = "1", },
+		};
 
-		var comparer = Comparer.Create<string>((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
+		var comparer = Comparer<string>.Create((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
 
 		var resultA1 = sequence.OrderBy(x => x.A, comparer, OrderByDirection.Ascending)
 								 .ThenBy(y => y.B, comparer, OrderByDirection.Ascending);

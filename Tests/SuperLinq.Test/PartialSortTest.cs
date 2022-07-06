@@ -89,7 +89,7 @@ public class PartialSortTests
 			(key: 5, text: "2"),
 		};
 
-		var comparer = Comparer.Create<(int key, string text)>((a, b) => a.key.CompareTo(b.key));
+		var comparer = Comparer<(int key, string text)>.Create((a, b) => a.key.CompareTo(b.key));
 
 		for (var i = 1; i <= 10; i++)
 		{

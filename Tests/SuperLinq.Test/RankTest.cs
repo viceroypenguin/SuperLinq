@@ -145,8 +145,8 @@ public class RankTests
 		var ordinals = Enumerable.Range(1, 10);
 		var sequence = ordinals.Select(x => new DateTime(2010, x, 20 - x));
 		// invert the CompareTo operation to Rank in reverse order (ascening to descending)
-		var resultA = sequence.AsTestingSequence().Rank(Comparer.Create<DateTime>((a, b) => -a.CompareTo(b)));
-		var resultB = sequence.AsTestingSequence().RankBy(x => x.Day, Comparer.Create<int>((a, b) => -a.CompareTo(b)));
+		var resultA = sequence.AsTestingSequence().Rank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
+		var resultB = sequence.AsTestingSequence().RankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
 
 		Assert.Equal(ordinals, resultA);
 		Assert.Equal(ordinals.Reverse(), resultB);
