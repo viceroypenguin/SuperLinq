@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.ObjectModel;
 
 namespace SuperLinq;
 
@@ -20,18 +19,19 @@ public static partial class SuperEnumerable
 	/// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
 	/// and the adjacent elements in the same order as found in the
 	/// source sequence.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// This method is implemented by using deferred execution and
 	/// streams the groupings. The grouping elements, however, are
 	/// buffered. Each grouping is therefore yielded as soon as it
 	/// is complete and before the next grouping occurs.
 	/// </remarks>
-
 	public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector)
 	{
-		return GroupAdjacent(source, keySelector, null);
+		return GroupAdjacent(source, keySelector, Identity<TSource>());
 	}
 
 	/// <summary>
@@ -52,13 +52,14 @@ public static partial class SuperEnumerable
 	/// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
 	/// and the adjacent elements in the same order as found in the
 	/// source sequence.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// This method is implemented by using deferred execution and
 	/// streams the groupings. The grouping elements, however, are
 	/// buffered. Each grouping is therefore yielded as soon as it
 	/// is complete and before the next grouping occurs.
 	/// </remarks>
-
 	public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
@@ -67,7 +68,7 @@ public static partial class SuperEnumerable
 		source.ThrowIfNull();
 		keySelector.ThrowIfNull();
 
-		return GroupAdjacent(source, keySelector, e => e, comparer);
+		return GroupAdjacent(source, keySelector, Identity<TSource>(), comparer);
 	}
 
 	/// <summary>
@@ -90,19 +91,28 @@ public static partial class SuperEnumerable
 	/// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
 	/// and the adjacent elements (of type <typeparamref name="TElement"/>)
 	/// in the same order as found in the source sequence.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="elementSelector"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// This method is implemented by using deferred execution and
 	/// streams the groupings. The grouping elements, however, are
 	/// buffered. Each grouping is therefore yielded as soon as it
 	/// is complete and before the next grouping occurs.
 	/// </remarks>
-
 	public static IEnumerable<IGrouping<TKey, TElement>> GroupAdjacent<TSource, TKey, TElement>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
 		Func<TSource, TElement> elementSelector)
 	{
-		return GroupAdjacent(source, keySelector, elementSelector, null);
+		source.ThrowIfNull();
+		keySelector.ThrowIfNull();
+		elementSelector.ThrowIfNull();
+
+		return GroupAdjacentImpl(
+			source, keySelector, elementSelector,
+			CreateGroupAdjacentGrouping,
+			comparer: null);
 	}
 
 	/// <summary>
@@ -128,13 +138,15 @@ public static partial class SuperEnumerable
 	/// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
 	/// and the adjacent elements (of type <typeparamref name="TElement"/>)
 	/// in the same order as found in the source sequence.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="elementSelector"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// This method is implemented by using deferred execution and
 	/// streams the groupings. The grouping elements, however, are
 	/// buffered. Each grouping is therefore yielded as soon as it
 	/// is complete and before the next grouping occurs.
 	/// </remarks>
-
 	public static IEnumerable<IGrouping<TKey, TElement>> GroupAdjacent<TSource, TKey, TElement>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
@@ -145,8 +157,10 @@ public static partial class SuperEnumerable
 		keySelector.ThrowIfNull();
 		elementSelector.ThrowIfNull();
 
-		return GroupAdjacentImpl(source, keySelector, elementSelector, CreateGroupAdjacentGrouping,
-								 comparer ?? EqualityComparer<TKey>.Default);
+		return GroupAdjacentImpl(
+			source, keySelector, elementSelector,
+			CreateGroupAdjacentGrouping,
+			comparer);
 	}
 
 	/// <summary>
@@ -169,13 +183,15 @@ public static partial class SuperEnumerable
 	/// <returns>A collection of elements of type
 	/// <typeparamref name="TResult" /> where each element represents
 	/// a projection over a group and its key.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// This method is implemented by using deferred execution and
 	/// streams the groupings. The grouping elements, however, are
 	/// buffered. Each grouping is therefore yielded as soon as it
 	/// is complete and before the next grouping occurs.
 	/// </remarks>
-
 	public static IEnumerable<TResult> GroupAdjacent<TSource, TKey, TResult>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
@@ -185,11 +201,10 @@ public static partial class SuperEnumerable
 		keySelector.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		// This should be removed once the target framework is bumped to something that supports covariance
-		TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
-
-		return GroupAdjacentImpl(source, keySelector, i => i, ResultSelectorWrapper,
-								 EqualityComparer<TKey>.Default);
+		return GroupAdjacentImpl(
+			source, keySelector, Identity<TSource>(),
+			(key, group) => resultSelector(key, group),
+			comparer: null);
 	}
 
 	/// <summary>
@@ -214,13 +229,15 @@ public static partial class SuperEnumerable
 	/// <returns>A collection of elements of type
 	/// <typeparamref name="TResult" /> where each element represents
 	/// a projection over a group and its key.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// This method is implemented by using deferred execution and
 	/// streams the groupings. The grouping elements, however, are
 	/// buffered. Each grouping is therefore yielded as soon as it
 	/// is complete and before the next grouping occurs.
 	/// </remarks>
-
 	public static IEnumerable<TResult> GroupAdjacent<TSource, TKey, TResult>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
@@ -231,63 +248,57 @@ public static partial class SuperEnumerable
 		keySelector.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		// This should be removed once the target framework is bumped to something that supports covariance
-		TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
-		return GroupAdjacentImpl(source, keySelector, i => i, ResultSelectorWrapper,
-								 comparer ?? EqualityComparer<TKey>.Default);
+		return GroupAdjacentImpl(
+			source, keySelector, Identity<TSource>(),
+			(key, group) => resultSelector(key, group),
+			comparer);
 	}
 
-	static IEnumerable<TResult> GroupAdjacentImpl<TSource, TKey, TElement, TResult>(
+	private static IEnumerable<TResult> GroupAdjacentImpl<TSource, TKey, TElement, TResult>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
 		Func<TSource, TElement> elementSelector,
-		Func<TKey, IList<TElement>, TResult> resultSelector,
-		IEqualityComparer<TKey> comparer)
+		Func<TKey, List<TElement>, TResult> resultSelector,
+		IEqualityComparer<TKey>? comparer)
 	{
+		comparer ??= EqualityComparer<TKey>.Default;
+
 		using var iterator = source.GetEnumerator();
 
-		(TKey, List<TElement>) group = default;
+		if (!iterator.MoveNext())
+			yield break;
+
+		var k = keySelector(iterator.Current);
+		var members = new List<TElement>() { elementSelector(iterator.Current), };
 
 		while (iterator.MoveNext())
 		{
 			var key = keySelector(iterator.Current);
 			var element = elementSelector(iterator.Current);
 
-			if (group is (var k, { } members))
+			if (comparer.Equals(k, key))
 			{
-				if (comparer.Equals(k, key))
-				{
-					members.Add(element);
-					continue;
-				}
-				else
-				{
-					yield return resultSelector(k, members);
-				}
+				members.Add(element);
+				continue;
 			}
-
-			group = (key, new List<TElement> { element });
-		}
-
-		{
-			if (group is (var k, { } members))
+			else
+			{
 				yield return resultSelector(k, members);
+				k = key;
+				members = new List<TElement> { element };
+			}
 		}
+
+		yield return resultSelector(k, members);
 	}
 
-	static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members) =>
-		Grouping.Create(key, members.IsReadOnly ? members : new ReadOnlyCollection<TElement>(members));
-
-	static class Grouping
-	{
-		public static Grouping<TKey, TElement> Create<TKey, TElement>(TKey key, IEnumerable<TElement> members) =>
-			new Grouping<TKey, TElement>(key, members);
-	}
+	private static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, List<TElement> members) =>
+		new Grouping<TKey, TElement>(key, members.AsReadOnly());
 
 	[Serializable]
-	sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>
+	private sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>
 	{
-		readonly IEnumerable<TElement> _members;
+		private readonly IEnumerable<TElement> _members;
 
 		public Grouping(TKey key, IEnumerable<TElement> members)
 		{
