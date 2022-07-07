@@ -47,6 +47,7 @@
 			- From
 			- Generate
 			- GenerateByIndex
+			- GroupAdjacent
 			- Index
 			- Insert
 			- Interleave

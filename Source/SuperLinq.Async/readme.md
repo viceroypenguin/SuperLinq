@@ -152,6 +152,13 @@ Returns a sequence of values based on indexes
 
 This method has 3 overloads.
 
+### GroupAdjacent
+
+Groups the adjacent elements of a sequence according to a specified key
+selector function.
+
+This method has 6 overloads.
+
 ### Index
 
 Returns a sequence of where the key is the zero-based index of the value in
