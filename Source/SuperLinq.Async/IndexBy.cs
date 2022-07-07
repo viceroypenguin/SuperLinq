@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Applies a key-generating function to each element of a sequence and
@@ -18,9 +18,9 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	public static IEnumerable<(int index, TSource item)>
+	public static IAsyncEnumerable<(int index, TSource item)>
 		IndexBy<TSource, TKey>(
-			this IEnumerable<TSource> source,
+			this IAsyncEnumerable<TSource> source,
 			Func<TSource, TKey> keySelector) =>
 		source.IndexBy(keySelector, comparer: null);
 
@@ -46,9 +46,9 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	public static IEnumerable<(int index, TSource item)>
+	public static IAsyncEnumerable<(int index, TSource item)>
 		IndexBy<TSource, TKey>(
-			this IEnumerable<TSource> source,
+			this IAsyncEnumerable<TSource> source,
 			Func<TSource, TKey> keySelector,
 			IEqualityComparer<TKey>? comparer) =>
 		from e in source.ScanBy(keySelector, k => (Index: -1, Item: default(TSource)), (s, k, e) => (s.Index + 1, e), comparer)

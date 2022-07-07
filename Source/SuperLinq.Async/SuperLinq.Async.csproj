@@ -49,6 +49,7 @@
 			- GenerateByIndex
 			- GroupAdjacent
 			- Index
+			- IndexBy
 			- Insert
 			- Interleave
 			- OrderBy
