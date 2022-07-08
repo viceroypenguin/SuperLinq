@@ -287,20 +287,6 @@ Performs a left outer join between two sequences.
 
 This method has 4 overloads.
 
-### MaxElementsBy
-
-Returns the maxima (maximal elements) of the given sequence, based on the
-given projection.
-
-This method has 2 overloads.
-
-### MinElementsBy
-
-Returns the minima (minimal elements) of the given sequence, based on the
-given projection.
-
-This method has 2 overloads.
-
 ### Move
 
 Returns a sequence with a range of elements in the source sequence
