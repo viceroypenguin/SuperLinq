@@ -23,11 +23,19 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	public static IEnumerable<TSource> ExceptByItems<TSource, TKey>(
+#if NET6_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static IEnumerable<TSource> ExceptBy<TSource, TKey>(
+		IEnumerable<TSource> first,
+		IEnumerable<TSource> second,
+		Func<TSource, TKey> keySelector)
+#else
+	public static IEnumerable<TSource> ExceptBy<TSource, TKey>(
 		this IEnumerable<TSource> first,
 		IEnumerable<TSource> second,
 		Func<TSource, TKey> keySelector)
-		=> ExceptByItems(first, second, keySelector, keyComparer: default);
+#endif
+		=> ExceptBy(first, second, keySelector, keyComparer: default);
 
 	/// <summary>
 	/// Returns the set of elements in the first sequence which aren't
@@ -53,11 +61,20 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keyComparer"/> is <see langword="null"/>.</exception>
-	public static IEnumerable<TSource> ExceptByItems<TSource, TKey>(
+#if NET6_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static IEnumerable<TSource> ExceptBy<TSource, TKey>(
+		IEnumerable<TSource> first,
+		IEnumerable<TSource> second,
+		Func<TSource, TKey> keySelector,
+		IEqualityComparer<TKey>? keyComparer)
+#else
+	public static IEnumerable<TSource> ExceptBy<TSource, TKey>(
 		this IEnumerable<TSource> first,
 		IEnumerable<TSource> second,
 		Func<TSource, TKey> keySelector,
 		IEqualityComparer<TKey>? keyComparer)
+#endif
 	{
 		first.ThrowIfNull();
 		second.ThrowIfNull();

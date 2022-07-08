@@ -158,14 +158,10 @@ This method has 3 overloads.
 Determines whether or not the number of elements in the sequence is equals
 to the given integer.
 
-### ExceptByItems (formerly ExceptBy)
+### ExceptBy (Hidden in .NET 6 in favor of the Framework version)
 
 Returns the set of elements in the first sequence which aren't in the second
 sequence, according to a given key selector.
-
-NB: Renamed from `ExceptBy`, due to conflict w/ .NET 6 operator. This method
-does have slightly different behavior from the .NET 6 operator, so it is still
-active even in .NET 6.
 
 This method has 2 overloads.
 

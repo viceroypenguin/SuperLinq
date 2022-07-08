@@ -7,7 +7,7 @@ public class ExceptByTest
 	{
 		var first = AsyncSeq("aaa", "bb", "c", "dddd");
 		var second = AsyncSeq("xx", "y");
-		var result = first.ExceptByItems(second, x => x.Length);
+		var result = first.ExceptBy(second, x => x.Length);
 		return result.AssertSequenceEqual("aaa", "dddd");
 	}
 
@@ -15,7 +15,7 @@ public class ExceptByTest
 	public void ExceptByIsLazy()
 	{
 		var bs = new AsyncBreakingSequence<string>();
-		bs.ExceptByItems(bs, BreakingFunc.Of<string, int>());
+		bs.ExceptBy(bs, BreakingFunc.Of<string, int>());
 	}
 
 	[Fact]
@@ -23,7 +23,7 @@ public class ExceptByTest
 	{
 		var first = AsyncSeq("aaa", "bb", "c", "a", "b", "c", "dddd");
 		var second = AsyncSeq("xx");
-		var result = first.ExceptByItems(second, x => x.Length);
+		var result = first.ExceptBy(second, x => x.Length);
 		return result.AssertSequenceEqual("aaa", "c", "dddd");
 	}
 
@@ -32,7 +32,7 @@ public class ExceptByTest
 	{
 		var first = AsyncSeq("first", "second", "third", "fourth");
 		var second = AsyncSeq("FIRST", "thiRD", "FIFTH");
-		var result = first.ExceptByItems(second, word => word, StringComparer.OrdinalIgnoreCase);
+		var result = first.ExceptBy(second, word => word, StringComparer.OrdinalIgnoreCase);
 		return result.AssertSequenceEqual("second", "fourth");
 	}
 
@@ -41,7 +41,7 @@ public class ExceptByTest
 	{
 		var first = AsyncSeq("aaa", "bb", "c", "dddd");
 		var second = AsyncSeq("xx", "y");
-		var result = first.ExceptByItems(second, x => x.Length, keyComparer: null);
+		var result = first.ExceptBy(second, x => x.Length, keyComparer: null);
 		return result.AssertSequenceEqual("aaa", "dddd");
 	}
 
@@ -49,6 +49,6 @@ public class ExceptByTest
 	public void ExceptByIsLazyWithComparer()
 	{
 		var bs = new AsyncBreakingSequence<string>();
-		bs.ExceptByItems(bs, BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
+		bs.ExceptBy(bs, BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
 	}
 }

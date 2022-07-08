@@ -23,11 +23,11 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> ExceptByItems<TSource, TKey>(
+	public static IAsyncEnumerable<TSource> ExceptBy<TSource, TKey>(
 		this IAsyncEnumerable<TSource> first,
 		IAsyncEnumerable<TSource> second,
 		Func<TSource, TKey> keySelector)
-		=> ExceptByItems(first, second, keySelector, keyComparer: default);
+		=> ExceptBy(first, second, keySelector, keyComparer: default);
 
 	/// <summary>
 	/// Returns the set of elements in the first sequence which aren't
@@ -53,7 +53,7 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keyComparer"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> ExceptByItems<TSource, TKey>(
+	public static IAsyncEnumerable<TSource> ExceptBy<TSource, TKey>(
 		this IAsyncEnumerable<TSource> first,
 		IAsyncEnumerable<TSource> second,
 		Func<TSource, TKey> keySelector,
