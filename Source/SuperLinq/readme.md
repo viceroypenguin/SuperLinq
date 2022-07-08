@@ -53,7 +53,14 @@ receives an `Index` parameter, which covers the same behavior.
 
 #### Batch
 The `.Batch()` method has been obsoleted in favor of the .NET method `.Chunk()`
-or the System.Interactive method `.Buffer()`
+or the System.Interactive method `.Buffer()`.
+
+#### CountDown
+An additional overload has been added that returns a stream of `(TSource item, int? count)`.
+
+#### Lag/Lead
+Additional overloads have been added for Lag/Lead that return streams of 
+`(TSource cur, TSource lag/lead)`.
 
 #### MaxBy/MinBy
 MaxBy and MinBy have been removed. These methods are superceded by PartialSort,
@@ -64,6 +71,10 @@ The sorting behavior of `.PartialSort()` has been changed slightly, as it now us
 a stable sorting algorithm. This means that items that have the same value (or key)
 will return in the same order that they were originally encountered in the stream.
 This is a minor change from old sorting behavior.
+
+#### RunLengthEncode
+The return type has been changed from a stream of `KeyValuePair<T, int>` 
+to a stream of `(T value, int count)`
 
 #### Scan
 The `.Scan()` method has been removed in favor of the System.Interactive version
