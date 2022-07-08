@@ -71,7 +71,6 @@
 			- OrderedMerge
 			- Pad
 			- PadStart
-			- Pairwise
 			- PartialSort
 			- PartialSortBy
 			- Partition

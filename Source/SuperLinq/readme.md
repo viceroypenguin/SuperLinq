@@ -66,6 +66,9 @@ Additional overloads have been added for Lag/Lead that return streams of
 MaxBy and MinBy have been removed. These methods are superceded by PartialSort,
 and conflict with new .NET 6.0 MaxBy/MinBy methods that operate slightly differently.
 
+#### Pairwise
+Pairwise has been removed as it overlaps behavior with both `.Lag()` and `.Window()`
+
 #### PartialSort
 The sorting behavior of `.PartialSort()` has been changed slightly, as it now uses
 a stable sorting algorithm. This means that items that have the same value (or key)
@@ -369,12 +372,6 @@ Pads a sequence with default values in the beginning if it is narrower
 (shorter in length) than a given width.
 
 This method has 3 overloads.
-
-### Pairwise
-
-Returns a sequence resulting from applying a function to each element in the
-source sequence and its predecessor, with the exception of the first element
-which is only returned as the predecessor of the second element
 
 ### PartialSort
 
