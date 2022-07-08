@@ -30,6 +30,48 @@ In most case, migration should be easy:
 This is because SuperLinq has been updated to be side-by-side compatible
 with .NET Core 3.1 and .NET 5.0/6.0. 
 
+### Breaking Changes
+
+#### Framework Support
+Support for earlier frameworks has been dropped. The earliest version supported
+by SuperLinq is .NET Core 3.1.
+
+#### System.Interactive
+SuperLinq now holds a dependency on System.Interactive. This is because some
+methods from SuperLinq overlap functions with the same and occasionally the same
+name. To reduce conflicts, SuperLinq will defer to System.Interactive for 
+these methods when possible. Methods removed include: `.Repeat()`, `.Scan()`, `.ForEach()`,
+`.Memoize()`.
+
+#### AwaitQuery/Observable/Experimental Operators
+These operators have been removed, as they do not fit the model of the other
+SuperLinq operators. 
+
+#### Backsert
+This method has been obsoleted in favor of a new overload for `.Insert()` that
+receives an `Index` parameter, which covers the same behavior.
+
+#### Batch
+The `.Batch()` method has been obsoleted in favor of the .NET method `.Chunk()`
+or the System.Interactive method `.Buffer()`
+
+#### MaxBy/MinBy
+MaxBy and MinBy have been removed. These methods are superceded by PartialSort,
+and conflict with new .NET 6.0 MaxBy/MinBy methods that operate slightly differently.
+
+#### PartialSort
+The sorting behavior of `.PartialSort()` has been changed slightly, as it now uses
+a stable sorting algorithm. This means that items that have the same value (or key)
+will return in the same order that they were originally encountered in the stream.
+This is a minor change from old sorting behavior.
+
+#### Scan
+The `.Scan()` method has been removed in favor of the System.Interactive version
+of the method. However, the behavior of the System.Interactive version differs
+slightly in that it does not return the seed/first element. If the existing behavior
+is desired, a new version of `.Scan()` may be introduced with a different name
+and the old behavior.
+
 ## .NET Versions
 
 Base library is supported on .NET Core 3.1 and .NET 5.0+.
