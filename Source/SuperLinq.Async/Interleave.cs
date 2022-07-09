@@ -35,54 +35,15 @@ public static partial class AsyncSuperEnumerable
 
 		static async IAsyncEnumerable<T> _(IEnumerable<IAsyncEnumerable<T>> sources, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			var enumerators = new List<ConfiguredCancelableAsyncEnumerable<T>.Enumerator?>();
+			var list = await EnumeratorList<T>.Create(sources, cancellationToken).ConfigureAwait(false);
+			await using var ignored_ = list.ConfigureAwait(false);
 
-			try
+			while (list.Any())
 			{
-				foreach (var s in sources)
+				for (var i = 0; await list.MoveNext(i).ConfigureAwait(false); i++)
 				{
-					var enumerator = s.GetConfiguredAsyncEnumerator(cancellationToken);
-
-					enumerators.Add(enumerator);
-					if (await enumerator.MoveNextAsync())
-					{
-						yield return enumerator.Current;
-					}
-					else
-					{
-						enumerators.RemoveAt(enumerators.Count - 1);
-						await enumerator.DisposeAsync();
-					}
+					yield return list.Current(i);
 				}
-
-				var hasNext = true;
-				while (hasNext)
-				{
-					hasNext = false;
-					for (var i = 0; i < enumerators.Count; i++)
-					{
-						var enumerator = enumerators[i];
-						if (enumerator == null)
-							continue;
-
-						if (await enumerator.Value.MoveNextAsync())
-						{
-							hasNext = true;
-							yield return enumerator.Value.Current;
-						}
-						else
-						{
-							enumerators[i] = null;
-							await enumerator.Value.DisposeAsync();
-						}
-					}
-				}
-			}
-			finally
-			{
-				foreach (var enumerator in enumerators)
-					if (enumerator != null)
-						await enumerator.Value.DisposeAsync();
 			}
 		}
 	}

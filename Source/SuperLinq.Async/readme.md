@@ -266,6 +266,20 @@ This method has 2 overloads.
 Skips items from the input sequence until the given predicate returns true
 when applied to the current source item; that item will be the last skipped
 
+### SortedMerge
+
+Merges two or more sequences that are in a common order (either ascending or
+descending) into a single sequence that preserves that order.
+
+This method has 4 overloads.
+
+### SortedMergeDescending
+
+Merges two or more sequences that are in a common order (either ascending or
+descending) into a single sequence that preserves that order.
+
+This method has 2 overloads.
+
 ### Split
 
 Splits the source sequence by a separator.

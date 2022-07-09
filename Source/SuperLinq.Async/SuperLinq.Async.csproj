@@ -64,6 +64,8 @@
 			- Segment
 			- Sequence
 			- SkipUntil
+			- SortedMerge
+			- SortedMergeDescending
 			- Split
 			- StartsWith
 			- TagFirstLast

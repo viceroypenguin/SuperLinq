@@ -43,18 +43,6 @@ public class InterleaveTests
 	}
 
 	/// <summary>
-	/// Verify that interleaving do not call enumerable GetEnumerator method eagerly
-	/// </summary>
-	[Fact]
-	public async Task TestInterleaveDoNotCallGetEnumeratorEagerly()
-	{
-		var sequenceA = TestingSequence.Of(1);
-		var sequenceB = new AsyncBreakingSequence<int>();
-
-		await sequenceA.Interleave(sequenceB).Take(1).Consume();
-	}
-
-	/// <summary>
 	/// Verify that interleaving do not call enumerators MoveNext method eagerly
 	/// </summary>
 	[Fact]

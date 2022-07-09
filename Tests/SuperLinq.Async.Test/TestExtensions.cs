@@ -22,6 +22,9 @@ internal static partial class TestExtensions
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
 		Assert.Equal(expected, actual);
 
+	internal static async Task AssertSequenceEqual<T>(this IAsyncEnumerable<T> actual, IAsyncEnumerable<T> expected) =>
+		Assert.Equal(await expected.ToListAsync(), await actual.ToListAsync());
+
 	internal static async Task AssertSequenceEqual<T>(this IAsyncEnumerable<T> actual, IEnumerable<T> expected) =>
 		Assert.Equal(expected, await actual.ToListAsync());
 
@@ -31,9 +34,9 @@ internal static partial class TestExtensions
 	public static WatchableEnumerator<T> AsWatchable<T>(this IAsyncEnumerator<T> source) => new(source);
 }
 
-sealed class WatchableEnumerator<T> : IAsyncEnumerator<T>
+internal sealed class WatchableEnumerator<T> : IAsyncEnumerator<T>
 {
-	readonly IAsyncEnumerator<T> _source;
+	private readonly IAsyncEnumerator<T> _source;
 
 	public event EventHandler? Disposed;
 	public event EventHandler<bool>? MoveNextCalled;
