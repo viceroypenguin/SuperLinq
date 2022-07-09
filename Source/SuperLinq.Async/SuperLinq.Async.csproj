@@ -35,6 +35,8 @@
 			- Consume
 			- CountBy
 			- CountDown
+			- DenseRank
+			- DenseRankBy
 			- DistinctBy
 			- ElementAt
 			- EndsWith
@@ -58,6 +60,8 @@
 			- PartialSort
 			- PartialSortBy
 			- Random
+			- Rank
+			- RankBy
 			- RunLengthEncode
 			- ScanBy
 			- ScanRight

@@ -77,6 +77,20 @@ second-last element, two represents the third-last element and so on.
 
 This method has 2 overloads.
 
+### DenseRank
+
+Ranks each item in the sequence with ascending ordering according to 
+the number of unique values encountered.
+
+This method has 2 overloads.
+
+### DenseRankBy
+
+Ranks each item in the sequence with ascending ordering according to 
+the number of unique values encountered.
+
+This method has 2 overloads.
+
 ### DistinctBy
 
 Returns all distinct elements of the given source, where "distinctness" is
@@ -225,6 +239,20 @@ Returns an infinite sequence of random integers using the standard .NET random
 number generator.
 
 This method has 6 overloads.
+
+### Rank
+
+Ranks each item in the sequence with ascending ordering according to 
+the total number of items encountered.
+
+This method has 2 overloads.
+
+### RankBy
+
+Ranks each item in the sequence with ascending ordering according to 
+the total number of items encountered.
+
+This method has 2 overloads.
 
 ### RunLengthEncode
 
