@@ -80,8 +80,11 @@ public class SortedMergeTests
 		var sequenceB = new[] { 1, 3, 5, 7, 9, 11 };
 		var sequenceC = new[] { 2, 4, 6, 8, 10, 12 };
 		var expectedResult = Enumerable.Range(1, 12);
-		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
+		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
+		Assert.Equal(expectedResult, result);
+
+		result = sequenceA.SortedMerge(sequenceB, sequenceC);
 		Assert.Equal(expectedResult, result);
 	}
 
@@ -95,8 +98,11 @@ public class SortedMergeTests
 		var sequenceB = Enumerable.Range(0, 10).Select(x => x * 3 + 1);
 		var sequenceC = Enumerable.Range(0, 10).Select(x => x * 3 + 2);
 		var expectedResult = Enumerable.Range(0, 10 * 3);
-		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
+		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
+		Assert.Equal(expectedResult, result);
+
+		result = sequenceA.SortedMerge(sequenceB, sequenceC);
 		Assert.Equal(expectedResult, result);
 	}
 
@@ -110,8 +116,11 @@ public class SortedMergeTests
 		var sequenceB = Enumerable.Range(0, 30).Select(x => x * 3 + 1).Take(30 / 2);
 		var sequenceC = Enumerable.Range(0, 30).Select(x => x * 3 + 2).Take(30 / 3);
 		var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC).OrderBy(x => x);
-		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
+		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
+		Assert.Equal(expectedResult, result);
+
+		result = sequenceA.SortedMerge(sequenceB, sequenceC);
 		Assert.Equal(expectedResult, result);
 	}
 
@@ -125,8 +134,11 @@ public class SortedMergeTests
 		var sequenceB = Enumerable.Range(0, 10).Select(x => x * 3 + 1).Reverse();
 		var sequenceC = Enumerable.Range(0, 10).Select(x => x * 3 + 2).Reverse();
 		var expectedResult = Enumerable.Range(0, 10 * 3).Reverse();
-		var result = sequenceA.SortedMerge(OrderByDirection.Descending, sequenceB, sequenceC);
 
+		var result = sequenceA.SortedMerge(OrderByDirection.Descending, sequenceB, sequenceC);
+		Assert.Equal(expectedResult, result);
+
+		result = sequenceA.SortedMergeDescending(sequenceB, sequenceC);
 		Assert.Equal(expectedResult, result);
 	}
 
@@ -142,8 +154,11 @@ public class SortedMergeTests
 		var comparer = StringComparer.InvariantCultureIgnoreCase;
 		var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC)
 									  .OrderBy(a => a, comparer);
-		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, comparer, sequenceB, sequenceC);
 
+		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, comparer, sequenceB, sequenceC);
+		Assert.Equal(expectedResult, result);
+
+		result = sequenceA.SortedMerge(comparer, sequenceB, sequenceC);
 		Assert.Equal(expectedResult, result);
 	}
 

@@ -514,6 +514,13 @@ Extracts elements from a sequence at a particular zero-based starting index
 Merges two or more sequences that are in a common order (either ascending or
 descending) into a single sequence that preserves that order.
 
+This method has 4 overloads.
+
+### SortedMergeDescending
+
+Merges two or more sequences that are in a common order (either ascending or
+descending) into a single sequence that preserves that order.
+
 This method has 2 overloads.
 
 ### Split

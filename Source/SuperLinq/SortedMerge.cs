@@ -24,6 +24,132 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	/// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
 	/// <param name="source">The primary sequence with which to merge</param>
+	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
+	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
+	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, params IEnumerable<TSource>[] otherSequences)
+	{
+		return SortedMerge(source, OrderByDirection.Ascending, comparer: null, otherSequences);
+	}
+
+	/// <summary>
+	/// Merges two or more sequences that are in a common order (either ascending or descending) into
+	/// a single sequence that preserves that order.
+	/// </summary>
+	/// <remarks>
+	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
+	/// undefined results.<br/>
+	/// <see cref="SortedMerge{TSource}(IEnumerable{TSource}, OrderByDirection, IEnumerable{TSource}[])"/> uses performs the merge in a deferred, streaming manner. <br/>
+	///
+	/// Here is an example of a merge, as well as the produced result:
+	/// <code><![CDATA[
+	///   var s1 = new[] { 3, 7, 11 };
+	///   var s2 = new[] { 2, 4, 20 };
+	///   var s3 = new[] { 17, 19, 25 };
+	///   var merged = s1.SortedMerge( OrderByDirection.Ascending, s2, s3 );
+	///   var result = merged.ToArray();
+	///   // result will be:
+	///   // { 2, 3, 4, 7, 11, 17, 19, 20, 25 }
+	/// ]]></code>
+	/// </remarks>
+	/// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
+	/// <param name="source">The primary sequence with which to merge</param>
+	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
+	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
+	public static IEnumerable<TSource> SortedMergeDescending<TSource>(this IEnumerable<TSource> source, params IEnumerable<TSource>[] otherSequences)
+	{
+		return SortedMerge(source, OrderByDirection.Descending, comparer: null, otherSequences);
+	}
+
+	/// <summary>
+	/// Merges two or more sequences that are in a common order (either ascending or descending) into
+	/// a single sequence that preserves that order.
+	/// </summary>
+	/// <remarks>
+	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
+	/// undefined results.<br/>
+	/// <see cref="SortedMerge{TSource}(IEnumerable{TSource}, OrderByDirection, IEnumerable{TSource}[])"/> uses performs the merge in a deferred, streaming manner. <br/>
+	///
+	/// Here is an example of a merge, as well as the produced result:
+	/// <code><![CDATA[
+	///   var s1 = new[] { 3, 7, 11 };
+	///   var s2 = new[] { 2, 4, 20 };
+	///   var s3 = new[] { 17, 19, 25 };
+	///   var merged = s1.SortedMerge( OrderByDirection.Ascending, s2, s3 );
+	///   var result = merged.ToArray();
+	///   // result will be:
+	///   // { 2, 3, 4, 7, 11, 17, 19, 20, 25 }
+	/// ]]></code>
+	/// </remarks>
+	/// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
+	/// <param name="source">The primary sequence with which to merge</param>
+	/// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
+	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
+	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
+	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, IComparer<TSource>? comparer, params IEnumerable<TSource>[] otherSequences)
+	{
+		return SortedMerge(source, OrderByDirection.Ascending, comparer, otherSequences);
+	}
+
+	/// <summary>
+	/// Merges two or more sequences that are in a common order (either ascending or descending) into
+	/// a single sequence that preserves that order.
+	/// </summary>
+	/// <remarks>
+	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
+	/// undefined results.<br/>
+	/// <see cref="SortedMerge{TSource}(IEnumerable{TSource}, OrderByDirection, IEnumerable{TSource}[])"/> uses performs the merge in a deferred, streaming manner. <br/>
+	///
+	/// Here is an example of a merge, as well as the produced result:
+	/// <code><![CDATA[
+	///   var s1 = new[] { 3, 7, 11 };
+	///   var s2 = new[] { 2, 4, 20 };
+	///   var s3 = new[] { 17, 19, 25 };
+	///   var merged = s1.SortedMerge( OrderByDirection.Ascending, s2, s3 );
+	///   var result = merged.ToArray();
+	///   // result will be:
+	///   // { 2, 3, 4, 7, 11, 17, 19, 20, 25 }
+	/// ]]></code>
+	/// </remarks>
+	/// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
+	/// <param name="source">The primary sequence with which to merge</param>
+	/// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
+	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
+	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
+	public static IEnumerable<TSource> SortedMergeDescending<TSource>(this IEnumerable<TSource> source, IComparer<TSource>? comparer, params IEnumerable<TSource>[] otherSequences)
+	{
+		return SortedMerge(source, OrderByDirection.Descending, comparer, otherSequences);
+	}
+
+	/// <summary>
+	/// Merges two or more sequences that are in a common order (either ascending or descending) into
+	/// a single sequence that preserves that order.
+	/// </summary>
+	/// <remarks>
+	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
+	/// undefined results.<br/>
+	/// <see cref="SortedMerge{TSource}(IEnumerable{TSource}, OrderByDirection, IEnumerable{TSource}[])"/> uses performs the merge in a deferred, streaming manner. <br/>
+	///
+	/// Here is an example of a merge, as well as the produced result:
+	/// <code><![CDATA[
+	///   var s1 = new[] { 3, 7, 11 };
+	///   var s2 = new[] { 2, 4, 20 };
+	///   var s3 = new[] { 17, 19, 25 };
+	///   var merged = s1.SortedMerge( OrderByDirection.Ascending, s2, s3 );
+	///   var result = merged.ToArray();
+	///   // result will be:
+	///   // { 2, 3, 4, 7, 11, 17, 19, 20, 25 }
+	/// ]]></code>
+	/// </remarks>
+	/// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
+	/// <param name="source">The primary sequence with which to merge</param>
 	/// <param name="direction">The ordering that all sequences must already exhibit</param>
 	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
 	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
@@ -55,16 +181,11 @@ public static partial class SuperEnumerable
 			return source; // optimization for when otherSequences is empty
 
 		comparer ??= Comparer<TSource>.Default;
-
-		// define an precedence function based on the comparer and direction
-		// this is a function that will return True if (b) should precede (a)
-		var precedenceFunc =
-			direction == OrderByDirection.Ascending
-				? (Func<TSource, TSource, bool>)((a, b) => comparer.Compare(b, a) < 0)
-				: (a, b) => comparer.Compare(b, a) > 0;
+		if (direction == OrderByDirection.Descending)
+			comparer = new ReverseComparer<TSource>(comparer);
 
 		// return the sorted merge result
-		return Impl(otherSequences.Prepend(source), precedenceFunc);
+		return Impl(otherSequences.Prepend(source), comparer);
 
 		// Private implementation method that performs a merge of multiple, ordered sequences using
 		// a precedence function which encodes order-sensitive comparison logic based on the caller's arguments.
@@ -77,7 +198,7 @@ public static partial class SuperEnumerable
 		//
 		// The algorithm used here will perform N*(K1+K2+...Kn-1) comparisons, where <c>N => otherSequences.Count()+1.</c>
 
-		static IEnumerable<TSource> Impl(IEnumerable<IEnumerable<TSource>> sequences, Func<TSource, TSource, bool> precedenceFunc)
+		static IEnumerable<TSource> Impl(IEnumerable<IEnumerable<TSource>> sequences, IComparer<TSource> comparer)
 		{
 			using var list = new EnumeratorList<TSource>(sequences);
 
@@ -96,7 +217,7 @@ public static partial class SuperEnumerable
 				{
 					var anotherElement = list.Current(i);
 					// determine which element follows based on ordering function
-					if (precedenceFunc(nextValue, anotherElement))
+					if (comparer.Compare(nextValue, anotherElement) > 0)
 					{
 						nextIndex = i;
 						nextValue = anotherElement;

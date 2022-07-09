@@ -93,6 +93,7 @@
 			- SkipUntil
 			- Slice
 			- SortedMerge
+			- SortedMergeDescending
 			- Split
 			- StartsWith
 			- Subsets
