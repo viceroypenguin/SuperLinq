@@ -1,24 +1,24 @@
 ﻿namespace Test;
 
-public class RankTests
+public class DenseRankTests
 {
 	[Fact]
-	public void TestRankIsLazy()
+	public void TestDenseRankIsLazy()
 	{
-		new BreakingSequence<int>().Rank();
+		new BreakingSequence<int>().DenseRank();
 	}
 
 	[Fact]
-	public void TestRankByIsLazy()
+	public void TestenseRankByIsLazy()
 	{
-		new BreakingSequence<int>().RankBy(BreakingFunc.Of<int, int>());
+		new BreakingSequence<int>().DenseRankBy(BreakingFunc.Of<int, int>());
 	}
 
 	[Fact]
 	public void TestRankNullComparer()
 	{
 		var sequence = Enumerable.Repeat(1, 10);
-		sequence.AsTestingSequence().Rank().AssertSequenceEqual(
+		sequence.AsTestingSequence().DenseRank().AssertSequenceEqual(
 			Enumerable.Repeat((1, 1), 10));
 	}
 
@@ -26,7 +26,7 @@ public class RankTests
 	public void TestRankByNullComparer()
 	{
 		var sequence = Enumerable.Repeat(1, 10);
-		sequence.AsTestingSequence().RankBy(x => x).AssertSequenceEqual(
+		sequence.AsTestingSequence().DenseRankBy(x => x).AssertSequenceEqual(
 			Enumerable.Repeat((1, 1), 10));
 	}
 
@@ -37,7 +37,7 @@ public class RankTests
 		var expectedResult = Enumerable.Range(456, 100)
 			.Select((x, i) => (x, i + 1));
 
-		var result = sequence.AsTestingSequence().Rank().ToArray();
+		var result = sequence.AsTestingSequence().DenseRank().ToArray();
 		Assert.Equal(100, result.Length);
 		result.AssertSequenceEqual(expectedResult);
 	}
@@ -49,7 +49,7 @@ public class RankTests
 		var expectedResult = Enumerable.Range(456, 100)
 			.Select((x, i) => (x, i + 1));
 
-		var result = sequence.AsTestingSequence().Rank().ToArray();
+		var result = sequence.AsTestingSequence().DenseRank().ToArray();
 		Assert.Equal(100, result.Length);
 		result.AssertSequenceEqual(expectedResult);
 	}
@@ -64,12 +64,12 @@ public class RankTests
 			.Concat(Enumerable.Range(0, 10))
 			.Concat(Enumerable.Range(0, 10));
 
-		var result = sequence.AsTestingSequence().Rank().ToList();
+		var result = sequence.AsTestingSequence().DenseRank().ToList();
 		Assert.Equal(10, result.Distinct().Count());
 		result.AssertSequenceEqual(
-			SuperEnumerable.Range(1, 10, 3)
+			SuperEnumerable.Range(1, 10, 1)
 				.SelectMany((x, i) => Enumerable.Repeat(x, 3)
-					// should be 0-9, repeated three times, with ranks 1,4,...,28
+					// should be 0-9, repeated three times, with ranks 1,2,...,10
 					.Select(y => (item: i, index: y))));
 	}
 
@@ -81,7 +81,7 @@ public class RankTests
 	{
 		var sequence = Enumerable.Range(1, 10);
 
-		var result = sequence.AsTestingSequence().Rank();
+		var result = sequence.AsTestingSequence().DenseRank();
 		Assert.Equal(1, result.OrderBy(x => x).First().rank);
 	}
 
@@ -103,7 +103,7 @@ public class RankTests
 			new { Name = "Jes", Age = 11, ExpectedRank = 1 },
 		};
 
-		var result = sequence.AsTestingSequence().RankBy(x => x.Age).ToArray();
+		var result = sequence.AsTestingSequence().DenseRankBy(x => x.Age).ToArray();
 		Assert.Equal(sequence.Length, result.Length);
 		result.AssertSequenceEqual(sequence
 			.OrderBy(x => x.ExpectedRank)
@@ -120,11 +120,11 @@ public class RankTests
 		var sequence = ordinals.Select(x => new DateTime(2010, x, 20 - x));
 
 		// invert the CompareTo operation to Rank in reverse order
-		var resultA = sequence.AsTestingSequence().Rank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
+		var resultA = sequence.AsTestingSequence().DenseRank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
 		resultA.AssertSequenceEqual(sequence
 			.OrderByDescending(x => x)
 			.Select((x, i) => (x, i + 1)));
-		var resultB = sequence.AsTestingSequence().RankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
+		var resultB = sequence.AsTestingSequence().DenseRankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
 		resultB.AssertSequenceEqual(sequence
 			.OrderByDescending(x => x.Day)
 			.Select((x, i) => (x, i + 1)));

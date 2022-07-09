@@ -79,6 +79,20 @@ a stable sorting algorithm. This means that items that have the same value (or k
 will return in the same order that they were originally encountered in the stream.
 This is a minor change from old sorting behavior.
 
+#### Rank
+The behavior and return type of Rank has been updated:
+* Previously, Rank would rank according the highest value by default, opposite to the sorting. 
+  * Now, Rank ranks according to the lowest value, matching the sorting
+* Previously, Rank would return a simple list of integers matching the original items
+  * Now, Rank returns a sorted list of items with their rank
+* Previously, Rank would rank each group with a sequential rank value
+  * Now, Rank ranks each group according to how many total items have been encountered
+    in the stream thus far. 
+  * DenseRank will rank each group with a seqential value.
+
+All of these changes are made to bring Rank/DenseRank with the
+behavior expressed for Rank/DenseRank in SQL systems (Sql Server, PostgreSQL, etc.)
+
 #### RunLengthEncode
 The return type has been changed from a stream of `KeyValuePair<T, int>` 
 to a stream of `(T value, int count)`
@@ -181,6 +195,20 @@ This method has 2 overloads.
 Provides a countdown counter for a given count of elements at the tail of the
 sequence where zero always represents the last element, one represents the
 second-last element, two represents the third-last element and so on.
+
+This method has 2 overloads.
+
+### DenseRank
+
+Ranks each item in the sequence with ascending ordering according to 
+the number of unique values encountered.
+
+This method has 2 overloads.
+
+### DenseRankBy
+
+Ranks each item in the sequence with ascending ordering according to 
+the number of unique values encountered.
 
 This method has 2 overloads.
 
@@ -431,15 +459,15 @@ This method has 2 overloads.
 
 ### Rank
 
-Ranks each item in the sequence in descending ordering using a default
-comparer.
+Ranks each item in the sequence with ascending ordering according to 
+the total number of items encountered.
 
 This method has 2 overloads.
 
 ### RankBy
 
-Ranks each item in the sequence in descending ordering by a specified key
-using a default comparer.
+Ranks each item in the sequence with ascending ordering according to 
+the total number of items encountered.
 
 This method has 2 overloads.
 

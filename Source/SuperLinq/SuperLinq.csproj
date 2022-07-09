@@ -40,6 +40,8 @@
 			- CountBy
 			- CountDown
 			- Consume
+			- DenseRank
+			- DenseRankBy
 			- DistinctBy
 			- ElementAt (pre-.NET 6.0)
 			- EndsWith
