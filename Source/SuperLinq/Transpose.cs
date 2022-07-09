@@ -10,6 +10,7 @@ public static partial class SuperEnumerable
 	/// <returns>
 	/// Returns a sequence of columns in the source swapped into rows.
 	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// If a rows is shorter than a follow it then the shorter row's
 	/// elements are skipped in the corresponding column sequences.
@@ -30,49 +31,29 @@ public static partial class SuperEnumerable
 	/// ]]></code>
 	/// The <c>result</c> variable will contain [[10, 20, 30], [11, 31], [32]].
 	/// </example>
-
 	public static IEnumerable<IEnumerable<T>> Transpose<T>(this IEnumerable<IEnumerable<T>> source)
 	{
 		source.ThrowIfNull();
 
-		return _(); IEnumerable<IEnumerable<T>> _()
+		return _(source);
+
+		static IEnumerable<IEnumerable<T>> _(IEnumerable<IEnumerable<T>> source)
 		{
-			IEnumerator<T>?[] enumerators = source.Select(e => e.GetEnumerator()).Acquire();
+			using var list = new EnumeratorList<T>(source);
 
-			try
+			while (true)
 			{
-				while (true)
+				var column = new T[list.Count];
+				var count = 0;
+				for (; list.MoveNext(count); count++)
 				{
-					var column = new T[enumerators.Length];
-					var count = 0;
-					for (var i = 0; i < enumerators.Length; i++)
-					{
-						var enumerator = enumerators[i];
-						if (enumerator == null)
-							continue;
-
-						if (enumerator.MoveNext())
-						{
-							column[count++] = enumerator.Current;
-						}
-						else
-						{
-							enumerator.Dispose();
-							enumerators[i] = null;
-						}
-					}
-
-					if (count == 0)
-						yield break;
-
-					Array.Resize(ref column, count);
-					yield return column;
+					column[count] = list.Current(count);
 				}
-			}
-			finally
-			{
-				foreach (var e in enumerators)
-					e?.Dispose();
+
+				if (count == 0)
+					yield break;
+
+				yield return new ArraySegment<T>(column, 0, count);
 			}
 		}
 	}

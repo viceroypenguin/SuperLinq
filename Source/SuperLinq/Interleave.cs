@@ -35,53 +35,14 @@ public static partial class SuperEnumerable
 
 		static IEnumerable<T> _(IEnumerable<IEnumerable<T>> sources)
 		{
-			var enumerators = new List<IEnumerator<T>?>();
+			using var list = new EnumeratorList<T>(sources);
 
-			try
+			while (list.Any())
 			{
-				foreach (var s in sources)
+				for (var i = 0; list.MoveNext(i); i++)
 				{
-					var enumerator = s.GetEnumerator();
-
-					enumerators.Add(enumerator);
-					if (enumerator.MoveNext())
-					{
-						yield return enumerator.Current;
-					}
-					else
-					{
-						enumerators.RemoveAt(enumerators.Count - 1);
-						enumerator.Dispose();
-					}
+					yield return list.Current(i);
 				}
-
-				var hasNext = true;
-				while (hasNext)
-				{
-					hasNext = false;
-					for (var i = 0; i < enumerators.Count; i++)
-					{
-						var enumerator = enumerators[i];
-						if (enumerator == null)
-							continue;
-
-						if (enumerator.MoveNext())
-						{
-							hasNext = true;
-							yield return enumerator.Current;
-						}
-						else
-						{
-							enumerators[i] = null;
-							enumerator.Dispose();
-						}
-					}
-				}
-			}
-			finally
-			{
-				foreach (var enumerator in enumerators)
-					enumerator?.Dispose();
 			}
 		}
 	}

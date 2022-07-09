@@ -43,6 +43,10 @@ name. To reduce conflicts, SuperLinq will defer to System.Interactive for
 these methods when possible. Methods removed include: `.Repeat()`, `.Scan()`, `.ForEach()`,
 `.Memoize()`.
 
+#### Acquire
+Acquire has been removed. It was used internally to support other operators, but
+improved data structures have been introduced to better support them.
+
 #### AwaitQuery/Observable/Experimental Operators
 These operators have been removed, as they do not fit the model of the other
 SuperLinq operators. 

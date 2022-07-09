@@ -27,7 +27,8 @@ public static partial class SuperEnumerable
 	/// <param name="direction">The ordering that all sequences must already exhibit</param>
 	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
 	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
-
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, params IEnumerable<TSource>[] otherSequences)
 	{
 		return SortedMerge(source, direction, comparer: null, otherSequences);
@@ -43,6 +44,8 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
 	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
 	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource>? comparer, params IEnumerable<TSource>[] otherSequences)
 	{
 		source.ThrowIfNull();
@@ -61,7 +64,7 @@ public static partial class SuperEnumerable
 				: (a, b) => comparer.Compare(b, a) > 0;
 
 		// return the sorted merge result
-		return Impl(new[] { source }.Concat(otherSequences));
+		return Impl(otherSequences.Prepend(source), precedenceFunc);
 
 		// Private implementation method that performs a merge of multiple, ordered sequences using
 		// a precedence function which encodes order-sensitive comparison logic based on the caller's arguments.
@@ -74,31 +77,24 @@ public static partial class SuperEnumerable
 		//
 		// The algorithm used here will perform N*(K1+K2+...Kn-1) comparisons, where <c>N => otherSequences.Count()+1.</c>
 
-		IEnumerable<TSource> Impl(IEnumerable<IEnumerable<TSource>> sequences)
+		static IEnumerable<TSource> Impl(IEnumerable<IEnumerable<TSource>> sequences, Func<TSource, TSource, bool> precedenceFunc)
 		{
-			using var disposables = new DisposableGroup<TSource>(sequences.Select(e => e.GetEnumerator()).Acquire());
-
-			var iterators = disposables.Iterators;
+			using var list = new EnumeratorList<TSource>(sequences);
 
 			// prime all of the iterators by advancing them to their first element (if any)
-			// NOTE: We start with the last index to simplify the removal of an iterator if
-			//       it happens to be terminal (no items) before we start merging
-			for (var i = iterators.Count - 1; i >= 0; i--)
-			{
-				if (!iterators[i].MoveNext())
-					disposables.Exclude(i);
-			}
+			for (var i = 0; list.MoveNext(i); i++)
+			{ }
 
 			// while all iterators have not yet been consumed...
-			while (iterators.Count > 0)
+			while (list.Any())
 			{
 				var nextIndex = 0;
-				var nextValue = disposables[0].Current;
+				var nextValue = list.Current(0);
 
 				// find the next least element to return
-				for (var i = 1; i < iterators.Count; i++)
+				for (var i = 1; i < list.Count; i++)
 				{
-					var anotherElement = disposables[i].Current;
+					var anotherElement = list.Current(i);
 					// determine which element follows based on ordering function
 					if (precedenceFunc(nextValue, anotherElement))
 					{
@@ -110,33 +106,8 @@ public static partial class SuperEnumerable
 				yield return nextValue; // next value in precedence order
 
 				// advance iterator that yielded element, excluding it when consumed
-				if (!iterators[nextIndex].MoveNext())
-					disposables.Exclude(nextIndex);
+				list.MoveNextOnce(nextIndex);
 			}
 		}
-	}
-
-	/// <summary>
-	/// Class used to assist in ensuring that groups of disposable iterators
-	/// are disposed - either when Excluded or when the DisposableGroup is disposed.
-	/// </summary>
-
-	sealed class DisposableGroup<T> : IDisposable
-	{
-		public DisposableGroup(IEnumerable<IEnumerator<T>> iterators) =>
-			Iterators = new List<IEnumerator<T>>(iterators);
-
-		public List<IEnumerator<T>> Iterators { get; }
-
-		public IEnumerator<T> this[int index] => Iterators[index];
-
-		public void Exclude(int index)
-		{
-			Iterators[index].Dispose();
-			Iterators.RemoveAt(index);
-		}
-
-		public void Dispose() =>
-			Iterators.ForEach(iter => iter.Dispose());
 	}
 }
