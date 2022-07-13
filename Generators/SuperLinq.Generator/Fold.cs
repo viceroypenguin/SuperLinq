@@ -50,7 +50,7 @@ public static partial class SuperEnumerable
 		source.ThrowIfNull();
 		folder.ThrowIfNull();
 
-		var elements = source.Take({e.CountArg + 1}).ToList();
+		var elements = source.Take({e.CountArg} + 1).ToList();
 		if (elements.Count != {e.CountArg})
 			throw new InvalidOperationException(
 				$""Sequence contained an incorrect number of elements. (Expected: {e.CountArg}, Actual: {{elements.Count}})"");
