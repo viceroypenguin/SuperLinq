@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Performs a pre-scan (exclusive prefix sum) on a sequence of elements.
@@ -32,8 +32,8 @@ public static partial class SuperEnumerable
 	/// <returns>The scanned sequence</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="transformation"/> is null</exception>
-	public static IEnumerable<TSource> PreScan<TSource>(
-		this IEnumerable<TSource> source,
+	public static IAsyncEnumerable<TSource> PreScan<TSource>(
+		this IAsyncEnumerable<TSource> source,
 		Func<TSource, TSource, TSource> transformation,
 		TSource identity)
 	{
@@ -42,18 +42,22 @@ public static partial class SuperEnumerable
 
 		return _(source, transformation, identity);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, Func<TSource, TSource, TSource> transformation, TSource identity)
+		static async IAsyncEnumerable<TSource> _(
+			IAsyncEnumerable<TSource> source,
+			Func<TSource, TSource, TSource> transformation,
+			TSource identity,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var aggregator = identity;
-			using var e = source.GetEnumerator();
+			await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
 
-			if (!e.MoveNext())
+			if (!await e.MoveNextAsync())
 				yield break;
 
 			yield return aggregator;
 			var current = e.Current;
 
-			while (e.MoveNext())
+			while (await e.MoveNextAsync())
 			{
 				aggregator = transformation(aggregator, current);
 				yield return aggregator;
