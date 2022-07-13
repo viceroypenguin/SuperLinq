@@ -1,12 +1,13 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Partitions or splits a sequence in two using a predicate.
 	/// </summary>
 	/// <param name="source">The source sequence.</param>
 	/// <param name="predicate">The predicate function.</param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <typeparam name="T">Type of source elements.</typeparam>
 	/// <returns>
 	/// A tuple of elements satisfying the predicate and those that do not,
@@ -22,10 +23,10 @@ public static partial class SuperEnumerable
 	/// and then 8. The <c>odds</c> variable, when iterated over, will yield
 	/// 1, 3, 5, 7 and then 9.
 	/// </example>
-	public static (IEnumerable<T> True, IEnumerable<T> False)
-		Partition<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+	public static ValueTask<(IAsyncEnumerable<T> True, IAsyncEnumerable<T> False)>
+		Partition<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate, CancellationToken cancellationToken = default)
 	{
-		return source.Partition(predicate, ValueTuple.Create);
+		return source.Partition(predicate, ValueTuple.Create, cancellationToken: cancellationToken);
 	}
 
 	/// <summary>
@@ -39,6 +40,7 @@ public static partial class SuperEnumerable
 	/// satisfy the predicate and those that do not, respectively, passed as
 	/// arguments.
 	/// </param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <typeparam name="T">Type of source elements.</typeparam>
 	/// <typeparam name="TResult">Type of the result.</typeparam>
 	/// <returns>
@@ -57,16 +59,17 @@ public static partial class SuperEnumerable
 	/// and then 8. The <c>odds</c> variable, when iterated over, will yield
 	/// 1, 3, 5, 7 and then 9.
 	/// </example>
-	public static TResult Partition<T, TResult>(
-		this IEnumerable<T> source,
+	public static ValueTask<TResult> Partition<T, TResult>(
+		this IAsyncEnumerable<T> source,
 		Func<T, bool> predicate,
-		Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
+		Func<IAsyncEnumerable<T>, IAsyncEnumerable<T>, TResult> resultSelector,
+		CancellationToken cancellationToken = default)
 	{
 		source.ThrowIfNull();
 		predicate.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		return source.GroupBy(predicate).Partition(resultSelector);
+		return source.GroupBy(predicate).Partition(resultSelector, cancellationToken: cancellationToken);
 	}
 
 	/// <summary>
@@ -80,19 +83,21 @@ public static partial class SuperEnumerable
 	/// Function that projects the result from sequences of true elements
 	/// and false elements, respectively, passed as arguments.
 	/// </param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The return value from <paramref name="resultSelector"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
-	public static TResult Partition<T, TResult>(
-		this IEnumerable<IGrouping<bool, T>> source,
-		Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
+	public static ValueTask<TResult> Partition<T, TResult>(
+		this IAsyncEnumerable<IAsyncGrouping<bool, T>> source,
+		Func<IAsyncEnumerable<T>, IAsyncEnumerable<T>, TResult> resultSelector,
+		CancellationToken cancellationToken = default)
 	{
 		source.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		return source.Partition(key1: true, key2: false, (t, f, _) => resultSelector(t, f));
+		return source.Partition(key1: true, key2: false, (t, f, _) => resultSelector(t, f), cancellationToken: cancellationToken);
 	}
 
 	/// <summary>
@@ -107,19 +112,21 @@ public static partial class SuperEnumerable
 	/// false elements and null elements, respectively, passed as
 	/// arguments.
 	/// </param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The return value from <paramref name="resultSelector"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
-	public static TResult Partition<T, TResult>(
-		this IEnumerable<IGrouping<bool?, T>> source,
-		Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
+	public static ValueTask<TResult> Partition<T, TResult>(
+		this IAsyncEnumerable<IAsyncGrouping<bool?, T>> source,
+		Func<IAsyncEnumerable<T>, IAsyncEnumerable<T>, IAsyncEnumerable<T>, TResult> resultSelector,
+		CancellationToken cancellationToken = default)
 	{
 		source.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		return source.Partition(key1: true, key2: false, key3: null, (t, f, n, _) => resultSelector(t, f, n));
+		return source.Partition(key1: true, key2: false, key3: null, (t, f, n, _) => resultSelector(t, f, n), cancellationToken: cancellationToken);
 	}
 
 	/// <summary>
@@ -137,17 +144,19 @@ public static partial class SuperEnumerable
 	/// the order in which they appear in <paramref name="source"/>),
 	/// passed as arguments.
 	/// </param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The return value from <paramref name="resultSelector"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
-	public static TResult Partition<TKey, TElement, TResult>(
-		this IEnumerable<IGrouping<TKey, TElement>> source,
+	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
+		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
 		TKey key,
-		Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
+		CancellationToken cancellationToken = default)
 	{
-		return Partition(source, key, comparer: null!, resultSelector);
+		return Partition(source, key, comparer: null!, resultSelector, cancellationToken: cancellationToken);
 	}
 
 	/// <summary>
@@ -167,21 +176,23 @@ public static partial class SuperEnumerable
 	/// the order in which they appear in <paramref name="source"/>),
 	/// passed as arguments.
 	/// </param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The return value from <paramref name="resultSelector"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
-	public static TResult Partition<TKey, TElement, TResult>(
-		this IEnumerable<IGrouping<TKey, TElement>> source,
+	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
+		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
 		TKey key, IEqualityComparer<TKey> comparer,
-		Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
+		CancellationToken cancellationToken = default)
 	{
 		source.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
 		return PartitionImpl(source, 1, key, key2: default!, key3: default!, comparer,
-							 (a, _, _, rest) => resultSelector(a, rest));
+							 (a, _, _, rest) => resultSelector(a, rest), cancellationToken);
 	}
 
 	/// <summary>
@@ -201,17 +212,19 @@ public static partial class SuperEnumerable
 	/// in which they appear in <paramref name="source"/>), passed as
 	/// arguments.
 	/// </param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The return value from <paramref name="resultSelector"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
-	public static TResult Partition<TKey, TElement, TResult>(
-		this IEnumerable<IGrouping<TKey, TElement>> source,
+	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
+		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
 		TKey key1, TKey key2,
-		Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
+		CancellationToken cancellationToken = default)
 	{
-		return Partition(source, key1, key2, comparer: null!, resultSelector);
+		return Partition(source, key1, key2, comparer: null!, resultSelector, cancellationToken: cancellationToken);
 	}
 
 	/// <summary>
@@ -233,21 +246,23 @@ public static partial class SuperEnumerable
 	/// in which they appear in <paramref name="source"/>), passed as
 	/// arguments.
 	/// </param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The return value from <paramref name="resultSelector"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
-	public static TResult Partition<TKey, TElement, TResult>(
-		this IEnumerable<IGrouping<TKey, TElement>> source,
+	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
+		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
 		TKey key1, TKey key2, IEqualityComparer<TKey> comparer,
-		Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
+		CancellationToken cancellationToken = default)
 	{
 		source.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
 		return PartitionImpl(source, 2, key1, key2, key3: default!, comparer,
-							 (a, b, c, rest) => resultSelector(a, b, rest));
+							 (a, b, c, rest) => resultSelector(a, b, rest), cancellationToken);
 	}
 
 	/// <summary>
@@ -268,17 +283,19 @@ public static partial class SuperEnumerable
 	/// in which they appear in <paramref name="source"/>), passed as
 	/// arguments.
 	/// </param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The return value from <paramref name="resultSelector"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
-	public static TResult Partition<TKey, TElement, TResult>(
-		this IEnumerable<IGrouping<TKey, TElement>> source,
+	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
+		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
 		TKey key1, TKey key2, TKey key3,
-		Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
+		CancellationToken cancellationToken = default)
 	{
-		return Partition(source, key1, key2, key3, comparer: null!, resultSelector);
+		return Partition(source, key1, key2, key3, comparer: null!, resultSelector, cancellationToken: cancellationToken);
 	}
 
 	/// <summary>
@@ -301,39 +318,42 @@ public static partial class SuperEnumerable
 	/// the order in which they appear in <paramref name="source"/>),
 	/// passed as arguments.
 	/// </param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The return value from <paramref name="resultSelector"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
-	public static TResult Partition<TKey, TElement, TResult>(
-		this IEnumerable<IGrouping<TKey, TElement>> source,
+	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
+		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
 		TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey> comparer,
-		Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
+		CancellationToken cancellationToken = default)
 	{
 		source.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		return PartitionImpl(source, 3, key1, key2, key3, comparer, resultSelector);
+		return PartitionImpl(source, 3, key1, key2, key3, comparer, resultSelector, cancellationToken);
 	}
 
-	private static TResult PartitionImpl<TKey, TElement, TResult>(
-		IEnumerable<IGrouping<TKey, TElement>> source,
+	private static async ValueTask<TResult> PartitionImpl<TKey, TElement, TResult>(
+		IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
 		int count, TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey>? comparer,
-		Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
+		CancellationToken cancellationToken)
 	{
 		comparer ??= EqualityComparer<TKey>.Default;
 
-		List<IGrouping<TKey, TElement>>? etc = null;
+		List<IAsyncGrouping<TKey, TElement>>? etc = null;
 
 		var groups = new[]
 		{
-			Enumerable.Empty<TElement>(),
-			Enumerable.Empty<TElement>(),
-			Enumerable.Empty<TElement>(),
+			AsyncEnumerable.Empty<TElement>(),
+			AsyncEnumerable.Empty<TElement>(),
+			AsyncEnumerable.Empty<TElement>(),
 		};
 
-		foreach (var e in source)
+		await foreach (var e in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 		{
 			var i = count > 0 && comparer.Equals(e.Key, key1) ? 0
 				  : count > 1 && comparer.Equals(e.Key, key2) ? 1
@@ -342,7 +362,7 @@ public static partial class SuperEnumerable
 
 			if (i < 0)
 			{
-				etc ??= new List<IGrouping<TKey, TElement>>();
+				etc ??= new List<IAsyncGrouping<TKey, TElement>>();
 				etc.Add(e);
 			}
 			else
@@ -351,6 +371,6 @@ public static partial class SuperEnumerable
 			}
 		}
 
-		return resultSelector(groups[0], groups[1], groups[2], etc ?? Enumerable.Empty<IGrouping<TKey, TElement>>());
+		return resultSelector(groups[0], groups[1], groups[2], etc?.ToAsyncEnumerable() ?? AsyncEnumerable.Empty<IAsyncGrouping<TKey, TElement>>());
 	}
 }
