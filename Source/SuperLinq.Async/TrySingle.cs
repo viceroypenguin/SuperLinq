@@ -1,11 +1,11 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Returns a tuple with the cardinality of the sequence and the
 	/// single element in the sequence if it contains exactly one element.
-	/// similar to <see cref="Enumerable.Single{T}(IEnumerable{T})"/>.
+	/// similar to <see cref="AsyncEnumerable.SingleAsync{TSource}(IAsyncEnumerable{TSource}, CancellationToken)"/>.
 	/// </summary>
 	/// <param name="source">The source sequence.</param>
 	/// <param name="zero">
@@ -17,6 +17,7 @@ public static partial class SuperEnumerable
 	/// <param name="many">
 	/// The value that is returned in the tuple if the sequence has two or
 	/// more elements.</param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <typeparam name="T">
 	/// The type of the elements of <paramref name="source"/>.</typeparam>
 	/// <typeparam name="TCardinality">
@@ -30,9 +31,11 @@ public static partial class SuperEnumerable
 	/// This operator uses immediate execution, but never consumes more
 	/// than two elements from the sequence.
 	/// </remarks>
-	public static (TCardinality Cardinality, T? Value)
-		TrySingle<T, TCardinality>(this IEnumerable<T> source,
-			TCardinality zero, TCardinality one, TCardinality many)
+	public static ValueTask<(TCardinality Cardinality, T? Value)>
+		TrySingle<T, TCardinality>(
+			this IAsyncEnumerable<T> source,
+			TCardinality zero, TCardinality one, TCardinality many,
+			CancellationToken cancellationToken = default)
 	{
 		return TrySingle(source, zero, one, many, ValueTuple.Create);
 	}
@@ -59,6 +62,7 @@ public static partial class SuperEnumerable
 	/// A function that receives the cardinality and, if the
 	/// sequence has just one element, the value of that element as
 	/// argument and projects a resulting value of type
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <typeparamref name="TResult"/>.</param>
 	/// <typeparam name="T">
 	/// The type of the elements of <paramref name="source"/>.</typeparam>
@@ -76,39 +80,21 @@ public static partial class SuperEnumerable
 	/// This operator uses immediate execution, but never consumes more
 	/// than two elements from the sequence.
 	/// </remarks>
-
-	public static TResult TrySingle<T, TCardinality, TResult>(
-		this IEnumerable<T> source,
+	public static async ValueTask<TResult> TrySingle<T, TCardinality, TResult>(
+		this IAsyncEnumerable<T> source,
 		TCardinality zero, TCardinality one, TCardinality many,
-		Func<TCardinality, T?, TResult> resultSelector)
+		Func<TCardinality, T?, TResult> resultSelector,
+		CancellationToken cancellationToken = default)
 	{
 		source.ThrowIfNull();
 		resultSelector.ThrowIfNull();
 
-		switch (source.TryGetCollectionCount())
-		{
-			case 0:
-				return resultSelector(zero, default);
-			case 1:
-			{
-				var item = source switch
-				{
-					IReadOnlyList<T> list => list[0],
-					IList<T> list => list[0],
-					_ => source.First()
-				};
-				return resultSelector(one, item);
-			}
-			case > 1:
-				return resultSelector(many, default);
-		}
-
-		using var e = source.GetEnumerator();
-		if (!e.MoveNext())
+		await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
+		if (!await e.MoveNextAsync())
 			return resultSelector(zero, default);
 
 		var current = e.Current;
-		return !e.MoveNext()
+		return !await e.MoveNextAsync()
 			? resultSelector(one, current)
 			: resultSelector(many, default);
 	}

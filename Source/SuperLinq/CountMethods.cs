@@ -112,7 +112,7 @@ public static partial class SuperEnumerable
 		return QuantityIterator(source, max + 1, min, max);
 	}
 
-	static bool QuantityIterator<T>(IEnumerable<T> source, int limit, int min, int max)
+	private static bool QuantityIterator<T>(IEnumerable<T> source, int limit, int min, int max)
 	{
 		source.ThrowIfNull();
 
