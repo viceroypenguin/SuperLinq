@@ -37,7 +37,7 @@ public static partial class AsyncSuperEnumerable
 			TCardinality zero, TCardinality one, TCardinality many,
 			CancellationToken cancellationToken = default)
 	{
-		return TrySingle(source, zero, one, many, ValueTuple.Create);
+		return TrySingle(source, zero, one, many, ValueTuple.Create, cancellationToken);
 	}
 
 	/// <summary>
