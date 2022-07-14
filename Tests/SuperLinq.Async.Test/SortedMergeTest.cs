@@ -1,4 +1,6 @@
-﻿namespace Test.Async;
+﻿using SuperLinq;
+
+namespace Test.Async;
 
 /// <summary>
 /// Tests that verify the behavior of the SortedMerge operator.

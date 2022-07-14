@@ -78,6 +78,21 @@ internal static class ExceptionHelpers
 	private static void ThrowOutOfRange(string paramName, string? message) =>
 		throw new ArgumentOutOfRangeException(paramName, message);
 
+
+	[Pure, MethodImpl(MethodImplOptions.AggressiveInlining), DoesNotReturn]
+	public static void Throw<TValue>(
+			[NotNull, DisallowNull] this TValue value,
+			string message,
+			[CallerArgumentExpression("value")] string? paramName = null)
+			where TValue : notnull
+	{
+		Throw(paramName!, message);
+	}
+
+	[Pure, DoesNotReturn]
+	private static void Throw(string paramName, string? message) =>
+		throw new ArgumentOutOfRangeException(paramName, message);
+
 	[Pure, DoesNotReturn]
 	public static void ThrowInvalidOperationException(string? message) =>
 		throw new InvalidOperationException(message);

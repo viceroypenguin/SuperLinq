@@ -232,7 +232,7 @@ public static partial class AsyncSuperEnumerable
 			IEqualityComparer<TKey> comparer,
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			var stateByKey = new Collections.Dictionary<TKey, TState>(comparer);
+			var stateByKey = new Collections.NullKeyDictionary<TKey, TState>(comparer);
 
 			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{

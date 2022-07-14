@@ -58,7 +58,7 @@ public static partial class SuperEnumerable
 
 		static (List<TKey>, List<int>) Loop(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> cmp)
 		{
-			var dic = new Collections.Dictionary<TKey, int>(cmp);
+			var dic = new Collections.NullKeyDictionary<TKey, int>(cmp);
 
 			var keys = new List<TKey>();
 			var counts = new List<int>();

@@ -1,4 +1,6 @@
-﻿namespace Test.Async;
+﻿using SuperLinq;
+
+namespace Test.Async;
 
 public class PartialSortByTests
 {

@@ -3,26 +3,24 @@
 namespace SuperLinq.Collections;
 
 /// <summary>
-/// A minimal <see cref="System.Collections.Generic.Dictionary{TKey,TValue}"/> wrapper that
+/// A minimal <see cref="Dictionary{TKey,TValue}"/> wrapper that
 /// allows null keys when <typeparamref name="TKey"/> is a
 /// reference type.
 /// </summary>
-// Add members if and when needed to keep coverage.
-
-sealed class Dictionary<TKey, TValue>
+internal sealed class NullKeyDictionary<TKey, TValue>
 {
 #pragma warning disable CS8714 // listen, we promise we're not going to stick a null in this dictionary...
-	private readonly System.Collections.Generic.Dictionary<TKey, TValue> _dict;
+	private readonly Dictionary<TKey, TValue> _dict;
 #pragma warning restore CS8714
 	private (bool, TValue) _null;
 
-	public Dictionary(IEqualityComparer<TKey> comparer)
+	public NullKeyDictionary(IEqualityComparer<TKey> comparer)
 	{
 		_dict = new(comparer);
 		_null = default;
 	}
 
-	public TValue this[TKey key]
+	public TValue this[TKey? key]
 	{
 		set
 		{
@@ -33,7 +31,7 @@ sealed class Dictionary<TKey, TValue>
 		}
 	}
 
-	public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
+	public bool TryGetValue(TKey? key, [MaybeNullWhen(false)] out TValue value)
 	{
 		if (key is null)
 		{
@@ -49,5 +47,19 @@ sealed class Dictionary<TKey, TValue>
 		}
 
 		return _dict.TryGetValue(key, out value);
+	}
+
+	public void Clear()
+	{
+		_dict.Clear();
+		_null = default;
+	}
+
+	public void Remove(TKey? key)
+	{
+		if (key is null)
+			_null = default;
+		else
+			_dict.Remove(key);
 	}
 }

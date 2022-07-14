@@ -1,4 +1,6 @@
-﻿namespace Test.Async;
+﻿using SuperLinq;
+
+namespace Test.Async;
 
 /// <summary>
 /// Verify the behavior of the OrderBy/ThenBy operators

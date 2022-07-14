@@ -101,12 +101,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="..\SuperLinq\ExceptionHelpers.cs" Link="ExceptionHelpers.cs" />
-		<Compile Include="..\SuperLinq\ReverseComparer.cs" Link="ReverseComparer.cs" />
-		<Compile Include="..\SuperLinq\Collections\Dictionary.cs" Link="Collections\Dictionary.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Include="readme.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
@@ -124,6 +118,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Generators\SuperLinq.Async.Generator\SuperLinq.Async.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\SuperLinq\SuperLinq.csproj" />
 	</ItemGroup>
 
 	<PropertyGroup Label="MinVer">

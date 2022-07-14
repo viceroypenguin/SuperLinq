@@ -82,7 +82,7 @@ public static partial class SuperEnumerable
 			Func<TState, TKey, TSource, TState> accumulator,
 			IEqualityComparer<TKey> comparer)
 		{
-			var stateByKey = new Collections.Dictionary<TKey, TState>(comparer);
+			var stateByKey = new Collections.NullKeyDictionary<TKey, TState>(comparer);
 
 			foreach (var item in source)
 			{

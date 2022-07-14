@@ -58,7 +58,7 @@ public static partial class AsyncSuperEnumerable
 
 		static async ValueTask<(List<TKey>, List<int>)> Loop(IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> cmp, CancellationToken cancellationToken)
 		{
-			var dic = new Collections.Dictionary<TKey, int>(cmp);
+			var dic = new Collections.NullKeyDictionary<TKey, int>(cmp);
 
 			var keys = new List<TKey>();
 			var counts = new List<int>();
