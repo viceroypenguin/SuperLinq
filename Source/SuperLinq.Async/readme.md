@@ -371,6 +371,11 @@ for padding.
 
 This method has 3 overloads.
 
+### ZipMap
+
+Returns a sequence of tuples, where each tuple contains both the original
+element as well as a projection from that element.
+
 ### ZipShortest
 
 Returns a projection of tuples, where each tuple contains the N-th
