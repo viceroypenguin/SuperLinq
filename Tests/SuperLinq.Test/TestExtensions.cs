@@ -59,4 +59,14 @@ internal static partial class TestExtensions
 				throw new ArgumentException(null, nameof(sourceKind));
 		}
 	}
+
+	internal static void AssertCollectionEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
+		actual.AssertCollectionEqual(expected, comparer: default);
+
+	internal static void AssertCollectionEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
+		actual.AssertCollectionEqual(expected, comparer: default);
+
+	internal static void AssertCollectionEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected, IEqualityComparer<T>? comparer) =>
+		actual.ToHashSet(comparer).SetEquals(expected);
+
 }

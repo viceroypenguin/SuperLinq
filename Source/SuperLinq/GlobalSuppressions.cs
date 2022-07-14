@@ -5,4 +5,5 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Naming", "CA1720:Identifier contains type name", Justification = "<Pending>", Scope = "member", Target = "~M:SuperLinq.SuperEnumerable.Single``1(SuperLinq.IExtremaEnumerable{``0})~``0")]
+[assembly: SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "PriorityQueue is the proper name for this Data Structure", Scope = "type", Target = "~T:SuperLinq.Collections.UpdatablePriorityQueue`2")]
+[assembly: SuppressMessage("Design", "CA1010:Generic interface should also be implemented", Justification = "IReadOnlyCollection is preferred over ICollection", Scope = "type", Target = "~T:SuperLinq.Collections.UpdatablePriorityQueue`2.UnorderedItemsCollection")]
