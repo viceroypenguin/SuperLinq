@@ -230,10 +230,11 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	public UnorderedItemsCollection UnorderedItems => _unorderedItems ??= new UnorderedItemsCollection(this);
 
 	/// <summary>
-	///  Adds the specified element with associated priority to the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>.
+	///  Adds or updates the specified element with associated priority to the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>.
 	/// </summary>
 	/// <param name="element">The element to add to the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>.</param>
 	/// <param name="priority">The priority with which to associate the new element.</param>
+	/// <remarks>If an elements already exists in this queue, the priority for that element is unconditionally updated to the new value.</remarks>
 	public void Enqueue(TElement element, TPriority priority)
 	{
 		_version++;
@@ -255,6 +256,55 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 					MoveUpCustomComparer((element, priority), index);
 				else if (cmp < 0)
 					MoveDownCustomComparer((element, priority), index);
+			}
+		}
+		else
+		{
+			// Virtually add the node at the end of the underlying array.
+			// Note that the node being enqueued does not need to be physically placed
+			// there at this point, as such an assignment would be redundant.
+
+			var currentSize = _size++;
+			if (_nodes.Length == currentSize)
+			{
+				Grow(currentSize + 1);
+			}
+
+			if (_priorityComparer == null)
+			{
+				MoveUpDefaultComparer((element, priority), currentSize);
+			}
+			else
+			{
+				MoveUpCustomComparer((element, priority), currentSize);
+			}
+		}
+	}
+
+	/// <summary>
+	///  Adds or updates the specified element with associated priority to the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>,
+	///  using the lessor of the existing or the new priority.
+	/// </summary>
+	/// <param name="element">The element to add to the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>.</param>
+	/// <param name="priority">The priority with which to associate the new element.</param>
+	/// <remarks>If an elements already exists in this queue, the priority for that element is set to the lessor of the new and the old priorities.</remarks>
+	public void EnqueueMinimum(TElement element, TPriority priority)
+	{
+		_version++;
+
+		if (_elementIndex.TryGetValue(element, out var index))
+		{
+			if (_priorityComparer == null)
+			{
+				var cmp = Comparer<TPriority>.Default.Compare(_nodes[index].Priority, priority);
+				if (cmp > 0)
+					MoveUpDefaultComparer((element, priority), index);
+			}
+			else
+			{
+				var cmp = _priorityComparer.Compare(_nodes[index].Priority, priority);
+				if (cmp > 0)
+					MoveUpCustomComparer((element, priority), index);
 			}
 		}
 		else
@@ -411,6 +461,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <exception cref="ArgumentNullException">
 	///  The specified <paramref name="items"/> argument was <see langword="null"/>.
 	/// </exception>
+	/// <remarks>Any existing elements will be unconditionally updated to the new priority.</remarks>
 	public void EnqueueRange(IEnumerable<(TElement Element, TPriority Priority)> items)
 	{
 		items.ThrowIfNull();
@@ -474,6 +525,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <exception cref="ArgumentNullException">
 	///  The specified <paramref name="elements"/> argument was <see langword="null"/>.
 	/// </exception>
+	/// <remarks>Any existing elements will be unconditionally updated to the new priority.</remarks>
 	public void EnqueueRange(IEnumerable<TElement> elements, TPriority priority)
 	{
 		elements.ThrowIfNull();
@@ -515,6 +567,123 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 			foreach (var element in elements)
 			{
 				Enqueue(element, priority);
+			}
+		}
+	}
+
+	/// <summary>
+	///  Enqueues a sequence of element/priority pairs to the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>.
+	/// </summary>
+	/// <param name="items">The pairs of elements and priorities to add to the queue.</param>
+	/// <exception cref="ArgumentNullException">
+	///  The specified <paramref name="items"/> argument was <see langword="null"/>.
+	/// </exception>
+	/// <remarks>Any existing elements will be updated to the new priority if and only if the new priority is lower than the existing priority.</remarks>
+	public void EnqueueRangeMinimum(IEnumerable<(TElement Element, TPriority Priority)> items)
+	{
+		items.ThrowIfNull();
+
+		var count = 0;
+		var collection = items as ICollection<(TElement Element, TPriority Priority)>;
+		if (collection is not null && (count = collection.Count) > _nodes.Length - _size)
+		{
+			Grow(_size + count);
+		}
+
+		if (_size == 0)
+		{
+			// build using Heapify() if the queue is empty.
+
+			if (collection is not null)
+			{
+				collection.CopyTo(_nodes, 0);
+				_size = count;
+			}
+			else
+			{
+				var i = 0;
+				var nodes = _nodes;
+				foreach (var (element, priority) in items)
+				{
+					if (nodes.Length == i)
+					{
+						Grow(i + 1);
+						nodes = _nodes;
+					}
+
+					nodes[i++] = (element, priority);
+				}
+
+				_size = i;
+			}
+
+			_version++;
+
+			if (_size > 1)
+			{
+				Heapify();
+			}
+		}
+		else
+		{
+			foreach (var (element, priority) in items)
+			{
+				EnqueueMinimum(element, priority);
+			}
+		}
+	}
+
+	/// <summary>
+	///  Enqueues a sequence of elements pairs to the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>,
+	///  all associated with the specified priority.
+	/// </summary>
+	/// <param name="elements">The elements to add to the queue.</param>
+	/// <param name="priority">The priority to associate with the new elements.</param>
+	/// <exception cref="ArgumentNullException">
+	///  The specified <paramref name="elements"/> argument was <see langword="null"/>.
+	/// </exception>
+	/// <remarks>Any existing elements will be updated to the new priority if and only if the new priority is lower than the existing priority.</remarks>
+	public void EnqueueRangeMinimum(IEnumerable<TElement> elements, TPriority priority)
+	{
+		elements.ThrowIfNull();
+
+		int count;
+		if (elements is ICollection<(TElement Element, TPriority Priority)> collection &&
+			(count = collection.Count) > _nodes.Length - _size)
+		{
+			Grow(_size + count);
+		}
+
+		if (_size == 0)
+		{
+			// build using Heapify() if the queue is empty.
+
+			var i = 0;
+			var nodes = _nodes;
+			foreach (var element in elements)
+			{
+				if (nodes.Length == i)
+				{
+					Grow(i + 1);
+					nodes = _nodes;
+				}
+
+				nodes[i++] = (element, priority);
+			}
+
+			_size = i;
+			_version++;
+
+			if (i > 1)
+			{
+				Heapify();
+			}
+		}
+		else
+		{
+			foreach (var element in elements)
+			{
+				EnqueueMinimum(element, priority);
 			}
 		}
 	}
@@ -649,8 +818,14 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 		_elementIndex.Clear();
 		for (var index = 0; index < _size; index++)
 		{
-			if (_elementIndex.TryGetValue(nodes[index].Element, out _))
+			if (_elementIndex.TryGetValue(nodes[index].Element, out var oldIndex))
 			{
+				var oldPriority = nodes[oldIndex].Priority;
+				var newPriority = nodes[index].Priority;
+
+				if ((_priorityComparer ?? Comparer<TPriority>.Default).Compare(oldPriority, newPriority) > 0)
+					nodes[oldIndex].Priority = newPriority;
+
 				nodes[index] = nodes[--_size];
 
 				// so we process same index again next loop

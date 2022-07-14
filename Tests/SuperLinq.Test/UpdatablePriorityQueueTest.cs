@@ -417,6 +417,13 @@ public class UpdatableUpdatablePriorityQueueTest
 			queue.Enqueue("delta", 20);
 			queue.Enqueue("echo", 10);
 
+			queue.UnorderedItems.AssertCollectionEqual(
+				("alpha", 50),
+				("bravo", 40),
+				("charlie", 30),
+				("delta", 20),
+				("echo", 10));
+
 			Assert.Equal("echo", queue.Dequeue());
 			Assert.Equal("delta", queue.Dequeue());
 			Assert.Equal("charlie", queue.Dequeue());
@@ -441,11 +448,70 @@ public class UpdatableUpdatablePriorityQueueTest
 					("echo", 10),
 				});
 
+			queue.UnorderedItems.AssertCollectionEqual(
+				("alpha", 50),
+				("bravo", 40),
+				("charlie", 30),
+				("delta", 20),
+				("echo", 10));
+
 			Assert.Equal("echo", queue.Dequeue());
 			Assert.Equal("delta", queue.Dequeue());
 			Assert.Equal("charlie", queue.Dequeue());
 			Assert.Equal("bravo", queue.Dequeue());
 			Assert.Equal("alpha", queue.Dequeue());
+		}
+
+		[Fact]
+		public void UpdatablePriorityQueue_Generic_EnqueueMinimum_UsesLowestPriority()
+		{
+			var queue = new UpdatablePriorityQueue<string, int>();
+
+			queue.EnqueueRange(new[] { "alpha", "bravo", "charlie", "delta", "echo", }, 30);
+
+			queue.EnqueueMinimum("alpha", 50);
+			queue.EnqueueMinimum("bravo", 40);
+			queue.EnqueueMinimum("charlie", 30);
+			queue.EnqueueMinimum("delta", 20);
+			queue.EnqueueMinimum("echo", 10);
+
+			queue.UnorderedItems.AssertCollectionEqual(
+				("alpha", 30),
+				("bravo", 30),
+				("charlie", 30),
+				("delta", 20),
+				("echo", 10));
+
+			Assert.Equal("echo", queue.Dequeue());
+			Assert.Equal("delta", queue.Dequeue());
+		}
+
+		[Fact]
+		public void UpdatablePriorityQueue_Generic_EnqueueRangeMinimum_UsesLowestPriority()
+		{
+			var queue = new UpdatablePriorityQueue<string, int>();
+
+			queue.EnqueueRange(new[] { "alpha", "bravo", "charlie", "delta", "echo", }, 30);
+
+			queue.EnqueueRangeMinimum(
+				new[]
+				{
+					("alpha", 50),
+					("bravo", 40),
+					("charlie", 30),
+					("delta", 20),
+					("echo", 10),
+				});
+
+			queue.UnorderedItems.AssertCollectionEqual(
+				("alpha", 30),
+				("bravo", 30),
+				("charlie", 30),
+				("delta", 20),
+				("echo", 10));
+
+			Assert.Equal("echo", queue.Dequeue());
+			Assert.Equal("delta", queue.Dequeue());
 		}
 
 		[Fact]
