@@ -55,4 +55,31 @@ public class GetShortestPathTest
 
 		Assert.Equal(expectedCost, actualCost);
 	}
+
+	public static IEnumerable<object?[]> GetStringIntPathData { get; } =
+		new[]
+		{
+			new object?[] { null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), },
+			new object?[] { StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("end", 10)), },
+			new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), },
+			new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("end", 1000)), },
+		};
+
+	[Theory]
+	[MemberData(nameof(GetStringIntPathData))]
+	public void GetStringIntPath(
+		IEqualityComparer<string>? stateComparer,
+		IComparer<int>? costComparer,
+		IEnumerable<(string state, int cost)> expectedPath)
+	{
+		var map = BuildStringIntMap();
+		var path = SuperEnumerable.GetShortestPath(
+			"start",
+			(x, c) => map[x].Select(y => (y.to, c + y.cost)),
+			"end",
+			stateComparer,
+			costComparer);
+
+		path.AssertSequenceEqual(expectedPath);
+	}
 }
