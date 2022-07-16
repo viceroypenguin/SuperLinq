@@ -11,7 +11,7 @@ public class GetShortestPathTest
 			new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, },
 		};
 
-	private static ILookup<string, (string to, int cost)> BuildStringIntMap()
+	private static ILookup<string, (string to, int cost)> BuildStringIntMap(IEqualityComparer<string>? stateComparer)
 	{
 		var costs =
 			new[]
@@ -34,7 +34,7 @@ public class GetShortestPathTest
 			.Where(x =>
 				x.to != "start"
 				&& x.from != "end")
-			.ToLookup(x => x.from, x => (x.to, x.cost));
+			.ToLookup(x => x.from, x => (x.to, x.cost), stateComparer);
 		return map;
 	}
 
@@ -45,7 +45,7 @@ public class GetShortestPathTest
 		IComparer<int>? costComparer,
 		int expectedCost)
 	{
-		var map = BuildStringIntMap();
+		var map = BuildStringIntMap(stateComparer);
 		var actualCost = SuperEnumerable.GetShortestPathCost(
 			"start",
 			(x, c) => map[x].Select(y => (y.to, c + y.cost)),
@@ -72,7 +72,7 @@ public class GetShortestPathTest
 		IComparer<int>? costComparer,
 		IEnumerable<(string state, int cost)> expectedPath)
 	{
-		var map = BuildStringIntMap();
+		var map = BuildStringIntMap(stateComparer);
 		var path = SuperEnumerable.GetShortestPath(
 			"start",
 			(x, c) => map[x].Select(y => (y.to, c + y.cost)),
@@ -81,5 +81,77 @@ public class GetShortestPathTest
 			costComparer);
 
 		path.AssertSequenceEqual(expectedPath);
+	}
+
+	public static IEnumerable<object?[]> GetStringIntPathsData { get; } =
+		new[]
+		{
+			new object?[] { null, null, Seq(
+				("start", (null, 0)),
+				("a", ("start", 1)),
+				("b", ("a", 3)),
+				("c", ("b", 6)),
+				("d", ("c", 10)),
+				("end", ("d", 15)),
+				("A", ("start", 10)),
+				("B", ("A", 30)),
+				("C", ("B", 60)),
+				("D", ("C", 100)),
+				("END", ("start", 10))),
+			},
+			new object?[] { StringComparer.InvariantCultureIgnoreCase, null, Seq(
+				("start", (null, 0)),
+				("a", ("start", 1)),
+				("b", ("a", 3)),
+				("c", ("b", 6)),
+				("d", ("c", 10)),
+				("end", ("start", 10))),
+			},
+			new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(
+				("start", (null, 0)),
+				("a", ("start", 1)),
+				("b", ("a", 3)),
+				("c", ("b", 6)),
+				("d", ("c", 10)),
+				("A", ("start", 10)),
+				("B", ("A", 30)),
+				("C", ("B", 60)),
+				("D", ("C", 100)),
+				("end", ("D", 150)),
+				("END", ("start", 1000))),
+			},
+			new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(
+				("start", (null, 0)),
+				("a", ("start", 10)),
+				("b", ("a", 30)),
+				("c", ("b", 60)),
+				("d", ("c", 100)),
+				("end", ("start", 1000))),
+			},
+		};
+
+	[Theory]
+	[MemberData(nameof(GetStringIntPathsData))]
+	public void GetStringIntPaths(
+		IEqualityComparer<string>? stateComparer,
+		IComparer<int>? costComparer,
+		IEnumerable<(string state, (string? prevState, int cost))> expectedMap)
+	{
+		var map = BuildStringIntMap(stateComparer);
+		var paths = SuperEnumerable.GetShortestPaths(
+			"start",
+			(x, c) => map[x].Select(y => (y.to, c + y.cost)),
+			stateComparer,
+			costComparer);
+
+		stateComparer ??= StringComparer.Ordinal;
+
+		Assert.Equal(expectedMap.Count(), paths.Count);
+		foreach (var (key, ev) in expectedMap)
+		{
+			Assert.True(paths.TryGetValue(key, out var av));
+			Assert.Equal(ev.prevState, av.previousState, stateComparer!);
+			Assert.Equal(ev.cost, av.cost);
+		}
 	}
 }

@@ -51,6 +51,11 @@ public partial class SuperEnumerable
 	///  will have undefined behavior.
 	/// </para>
 	/// <para>
+	///  This method will operate on an infinite map, however, 
+	///  performance will depend on how many states are required to
+	///  be evaluated before reaching the target point.
+	/// </para>
+	/// <para>
 	///	 This method uses <see cref="EqualityComparer{T}.Default"/>
 	///	 to compare <typeparamref name="TState"/>s and 
 	///	 <see cref="Comparer{T}.Default"/> to compare traversal
@@ -113,6 +118,11 @@ public partial class SuperEnumerable
 	///  that is to say, that it is not possible to go a negative
 	///  distance from one state to the next. Violating this assumption
 	///  will have undefined behavior.
+	/// </para>
+	/// <para>
+	///  This method will operate on an infinite map, however, 
+	///  performance will depend on how many states are required to
+	///  be evaluated before reaching the target point.
 	/// </para>
 	/// <para>
 	///  This operator executes immediately.
@@ -197,6 +207,11 @@ public partial class SuperEnumerable
 	///  will have undefined behavior.
 	/// </para>
 	/// <para>
+	///  This method will operate on an infinite map, however, 
+	///  performance will depend on how many states are required to
+	///  be evaluated before reaching the target point.
+	/// </para>
+	/// <para>
 	///	 This method uses <see cref="EqualityComparer{T}.Default"/>
 	///	 to compare <typeparamref name="TState"/>s and 
 	///	 <see cref="Comparer{T}.Default"/> to compare traversal
@@ -264,6 +279,11 @@ public partial class SuperEnumerable
 	///  will have undefined behavior.
 	/// </para>
 	/// <para>
+	///  This method will operate on an infinite map, however, 
+	///  performance will depend on how many states are required to
+	///  be evaluated before reaching the target point.
+	/// </para>
+	/// <para>
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
@@ -308,7 +328,7 @@ public partial class SuperEnumerable
 
 		return Generate(end, x => totalCost[x].parent!)
 			.TakeUntil(x => stateComparer.Equals(x, start))
-			.Select(x => (x, totalCost[x].cost))
+			.ZipMap(x => totalCost[x].cost)
 			.Reverse();
 	}
 
@@ -316,28 +336,175 @@ public partial class SuperEnumerable
 
 	#region Full Map Cost
 
-	public static IReadOnlyDictionary<TState, (TState previousState, TCost cost)>
+	/// <summary>
+	/// Find the shortest path from state <paramref name="start"/> 
+	/// to every other <typeparamref name="TState"/> in the map,
+	/// using Dijkstra's algorithm.
+	/// </summary>
+	/// <typeparam name="TState">The type of each state in the map</typeparam>
+	/// <typeparam name="TCost">The type of the cost to traverse between states</typeparam>
+	/// <param name="start">The starting state</param>
+	/// <param name="getNeighbors">
+	/// A function that returns the neighbors for a given state
+	/// and the total cost to get to that state based on the 
+	/// traversal cost at the current state.
+	/// </param>
+	/// <returns>
+	/// A map that contains, for every <typeparamref name="TState"/>,
+	/// the previous <typeparamref name="TState"/> in the shortest path
+	/// from <paramref name="start"/> to this <typeparamref name="TState"/>,
+	/// as well as the total cost to travel from <paramref name="start"/>
+	/// to this <typeparamref name="TState"/>.
+	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="getNeighbors"/> is <see langword="null"/>.</exception>
+	/// <remarks>
+	/// <para>
+	///  This method uses Dijkstra's algorithm to explore a map
+	///  and find the shortest path from <paramref name="start"/>
+	///  to every other <typeparamref name="TState"/> in the map. 
+	///  An <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>
+	///  is used to manage the list of <typeparamref name="TState"/>s
+	///  to process, to reduce the computation cost of this operator.
+	/// </para>
+	/// <para>
+	///  Loops and cycles are automatically detected and handled
+	///  correctly by this operator; only the cheapest path to
+	///  a given <typeparamref name="TState"/> is used, and other
+	///  paths (including loops) are discarded.
+	/// </para>
+	/// <para>
+	///  While <see cref="GetShortestPathCost{TState, TCost}(TState, Func{TState, TCost, IEnumerable{ValueTuple{TState, TCost}}}, TState)"/>
+	///  and <see cref="GetShortestPath{TState, TCost}(TState, Func{TState, TCost, IEnumerable{ValueTuple{TState, TCost}}}, TState)"/>
+	///  will work work on infinite maps, this method
+	///  will execute an infinite loop on infinite maps. This is because
+	///  this method will attemp to visit every point in the map.
+	///  This method will terminate only when any points returned by
+	///  <paramref name="getNeighbors"/> have all already been visited.
+	/// </para>
+	/// <para>
+	///  Dijkstra's algorithm assumes that all costs are positive,
+	///  that is to say, that it is not possible to go a negative
+	///  distance from one state to the next. Violating this assumption
+	///  will have undefined behavior.
+	/// </para>
+	/// <para>
+	///	 This method uses <see cref="EqualityComparer{T}.Default"/>
+	///	 to compare <typeparamref name="TState"/>s and 
+	///	 <see cref="Comparer{T}.Default"/> to compare traversal
+	///	 <typeparamref name="TCost"/>s.
+	/// </para>
+	/// <para>
+	///  This operator executes immediately.
+	/// </para>
+	/// </remarks>
+	public static IReadOnlyDictionary<TState, (TState? previousState, TCost? cost)>
 		GetShortestPaths<TState, TCost>(
 			TState start,
-			Func<TState, IEnumerable<(TState nextState, TCost cost)>> getNeighbors,
-			TState end)
+			Func<TState, TCost?, IEnumerable<(TState nextState, TCost cost)>> getNeighbors)
 		where TState : notnull
 		where TCost : notnull
 	{
-		throw new NotImplementedException();
+		return GetShortestPaths(
+			start,
+			getNeighbors,
+			stateComparer: null,
+			costComparer: null);
 	}
 
-	public static IReadOnlyDictionary<TState, (TState previousState, TCost cost)>
+	/// <summary>
+	/// Find the shortest path from state <paramref name="start"/> 
+	/// to every other <typeparamref name="TState"/> in the map,
+	/// using Dijkstra's algorithm.
+	/// </summary>
+	/// <typeparam name="TState">The type of each state in the map</typeparam>
+	/// <typeparam name="TCost">The type of the cost to traverse between states</typeparam>
+	/// <param name="start">The starting state</param>
+	/// <param name="getNeighbors">
+	/// A function that returns the neighbors for a given state
+	/// and the total cost to get to that state based on the 
+	/// traversal cost at the current state.
+	/// </param>
+	/// <param name="stateComparer">A custom equality comparer for <typeparamref name="TState"/></param>
+	/// <param name="costComparer">A custom comparer for <typeparamref name="TCost"/></param>
+	/// <returns>
+	/// A map that contains, for every <typeparamref name="TState"/>,
+	/// the previous <typeparamref name="TState"/> in the shortest path
+	/// from <paramref name="start"/> to this <typeparamref name="TState"/>,
+	/// as well as the total cost to travel from <paramref name="start"/>
+	/// to this <typeparamref name="TState"/>.
+	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="getNeighbors"/> is <see langword="null"/>.</exception>
+	/// <remarks>
+	/// <para>
+	///  This method uses Dijkstra's algorithm to explore a map
+	///  and find the shortest path from <paramref name="start"/>
+	///  to every other <typeparamref name="TState"/> in the map. 
+	///  An <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>
+	///  is used to manage the list of <typeparamref name="TState"/>s
+	///  to process, to reduce the computation cost of this operator.
+	/// </para>
+	/// <para>
+	///  Loops and cycles are automatically detected and handled
+	///  correctly by this operator; only the cheapest path to
+	///  a given <typeparamref name="TState"/> is used, and other
+	///  paths (including loops) are discarded.
+	/// </para>
+	/// <para>
+	///  While <see cref="GetShortestPathCost{TState, TCost}(TState, Func{TState, TCost, IEnumerable{ValueTuple{TState, TCost}}}, TState)"/>
+	///  and <see cref="GetShortestPath{TState, TCost}(TState, Func{TState, TCost, IEnumerable{ValueTuple{TState, TCost}}}, TState)"/>
+	///  will work work on infinite maps, this method
+	///  will execute an infinite loop on infinite maps. This is because
+	///  this method will attemp to visit every point in the map.
+	///  This method will terminate only when any points returned by
+	///  <paramref name="getNeighbors"/> have all already been visited.
+	/// </para>
+	/// <para>
+	///  Dijkstra's algorithm assumes that all costs are positive,
+	///  that is to say, that it is not possible to go a negative
+	///  distance from one state to the next. Violating this assumption
+	///  will have undefined behavior.
+	/// </para>
+	/// <para>
+	///  This operator executes immediately.
+	/// </para>
+	/// </remarks>
+	public static IReadOnlyDictionary<TState, (TState? previousState, TCost? cost)>
 		GetShortestPaths<TState, TCost>(
 			TState start,
-			Func<TState, IEnumerable<(TState nextState, TCost cost)>> getNeighbors,
-			TState end,
+			Func<TState, TCost?, IEnumerable<(TState nextState, TCost cost)>> getNeighbors,
 			IEqualityComparer<TState>? stateComparer,
 			IComparer<TCost>? costComparer)
 		where TState : notnull
 		where TCost : notnull
 	{
-		throw new NotImplementedException();
+		getNeighbors.ThrowIfNull();
+
+		stateComparer ??= EqualityComparer<TState>.Default;
+		costComparer ??= Comparer<TCost>.Default;
+
+		var totalCost = new Dictionary<TState, (TState? parent, TCost? cost)>(stateComparer);
+		var queue = new UpdatablePriorityQueue<TState, (TState? parent, TCost? cost)>(
+			16,
+			priorityComparer: Comparer<(TState? parent, TCost? cost)>.Create(
+				(x, y) => costComparer.Compare(x.cost, y.cost)),
+			stateComparer);
+
+		TState current = start;
+		(TState? parent, TCost? cost) from = default;
+		do
+		{
+			if (totalCost.TryGetValue(current, out _))
+				continue;
+
+			totalCost[current] = from;
+
+			var cost = from.cost;
+			var newStates = getNeighbors(current, cost)
+				.Select(s => (s.nextState, (current, s.cost)));
+			queue.EnqueueRangeMinimum(newStates!);
+		} while (queue.TryDequeue(out current!, out from));
+
+		return totalCost;
 	}
 
 	#endregion
