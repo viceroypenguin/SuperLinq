@@ -26,13 +26,14 @@
 	<PropertyGroup>
 		<Description>
 			This project enhances Async LINQ to Objects with the following methods:
-			
+
 			- AggregateRight
 			- AtLeast
 			- AtMost
 			- Choose
 			- CompareCount
 			- Consume
+			- CountBetween
 			- CountBy
 			- CountDown
 			- DenseRank

@@ -110,12 +110,6 @@ Base library is supported on .NET Core 3.1 and .NET 5.0+.
 
 ## Operators
 
-### Acquire
-
-Ensures that a source sequence of disposable objects are all acquired
-successfully. If the acquisition of any one fails then those successfully
-acquired till that point are disposed.
-
 ### Aggregate
 
 Applies multiple accumulators sequentially in a single pass over a sequence.
@@ -146,11 +140,7 @@ specified index from the tail of the sequence, where zero always represents
 the last position, one represents the second-last element, two represents
 the third-last element and so on.
 
-### Batch
-
-Batches the source sequence into sized buckets.
-
-This method has 2 overloads.
+(Obsoleted in favor of Insert)
 
 ### Cartesian
 

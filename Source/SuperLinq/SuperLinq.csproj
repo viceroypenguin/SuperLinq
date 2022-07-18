@@ -27,12 +27,9 @@
 		<Description>
 			This project enhances LINQ to Objects with the following methods:
 
-			- Acquire
 			- AggregateRight
 			- AtLeast
 			- AtMost
-			- Backsert
-			- Batch
 			- Cartesian
 			- Choose
 			- CountBetween
