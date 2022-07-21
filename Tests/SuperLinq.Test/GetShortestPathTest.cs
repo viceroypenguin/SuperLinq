@@ -34,10 +34,10 @@ public class GetShortestPathTest
 		public static IEnumerable<object?[]> GetStringIntCostData { get; } =
 			new[]
 			{
-			new object?[] { null, null, 15, 7, },
-			new object?[] { StringComparer.InvariantCultureIgnoreCase, null, 10, 4, },
-			new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 150, 6, },
-			new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, 1, },
+				new object?[] { null, null, 15, 7, },
+				new object?[] { StringComparer.InvariantCultureIgnoreCase, null, 10, 4, },
+				new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 150, 6, },
+				new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, 1, },
 			};
 
 		[Theory]
@@ -68,10 +68,10 @@ public class GetShortestPathTest
 		public static IEnumerable<object?[]> GetStringIntPathData { get; } =
 			new[]
 			{
-			new object?[] { null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), 7, },
-			new object?[] { StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("end", 10)), 4, },
-			new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), 6, },
-			new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("end", 1000)), 1, },
+				new object?[] { null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), 7, },
+				new object?[] { StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("end", 10)), 4, },
+				new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), 6, },
+				new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("end", 1000)), 1, },
 			};
 
 		[Theory]
@@ -102,48 +102,48 @@ public class GetShortestPathTest
 		public static IEnumerable<object?[]> GetStringIntPathsData { get; } =
 			new[]
 			{
-			new object?[] { null, null, Seq(
-				("start", (null, 0)),
-				("a", ("start", 1)),
-				("b", ("a", 3)),
-				("c", ("b", 6)),
-				("d", ("c", 10)),
-				("end", ("d", 15)),
-				("A", ("start", 10)),
-				("B", ("A", 30)),
-				("C", ("B", 60)),
-				("D", ("C", 100)),
-				("END", ("start", 10))),
-			},
-			new object?[] { StringComparer.InvariantCultureIgnoreCase, null, Seq(
-				("start", (null, 0)),
-				("a", ("start", 1)),
-				("b", ("a", 3)),
-				("c", ("b", 6)),
-				("d", ("c", 10)),
-				("end", ("start", 10))),
-			},
-			new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(
-				("start", (null, 0)),
-				("a", ("start", 1)),
-				("b", ("a", 3)),
-				("c", ("b", 6)),
-				("d", ("c", 10)),
-				("A", ("start", 10)),
-				("B", ("A", 30)),
-				("C", ("B", 60)),
-				("D", ("C", 100)),
-				("end", ("D", 150)),
-				("END", ("start", 1000))),
-			},
-			new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(
-				("start", (null, 0)),
-				("a", ("start", 10)),
-				("b", ("a", 30)),
-				("c", ("b", 60)),
-				("d", ("c", 100)),
-				("end", ("start", 1000))),
-			},
+				new object?[] { null, null, Seq(
+					("start", (null, 0)),
+					("a", ("start", 1)),
+					("b", ("a", 3)),
+					("c", ("b", 6)),
+					("d", ("c", 10)),
+					("end", ("d", 15)),
+					("A", ("start", 10)),
+					("B", ("A", 30)),
+					("C", ("B", 60)),
+					("D", ("C", 100)),
+					("END", ("start", 10))),
+				},
+				new object?[] { StringComparer.InvariantCultureIgnoreCase, null, Seq(
+					("start", (null, 0)),
+					("a", ("start", 1)),
+					("b", ("a", 3)),
+					("c", ("b", 6)),
+					("d", ("c", 10)),
+					("end", ("start", 10))),
+				},
+				new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(
+					("start", (null, 0)),
+					("a", ("start", 1)),
+					("b", ("a", 3)),
+					("c", ("b", 6)),
+					("d", ("c", 10)),
+					("A", ("start", 10)),
+					("B", ("A", 30)),
+					("C", ("B", 60)),
+					("D", ("C", 100)),
+					("end", ("D", 150)),
+					("END", ("start", 1000))),
+				},
+				new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(
+					("start", (null, 0)),
+					("a", ("start", 10)),
+					("b", ("a", 30)),
+					("c", ("b", 60)),
+					("d", ("c", 100)),
+					("end", ("start", 1000))),
+				},
 			};
 
 		[Theory]
@@ -225,6 +225,78 @@ public class GetShortestPathTest
 				(nextState: (2, 1), cost: 3.004d),
 				(nextState: (2, 2), cost: 4.006d));
 			Assert.Equal(27, count);
+		}
+	}
+
+	public class AStar
+	{
+		public static IEnumerable<object?[]> GetStringIntCostData { get; } =
+			new[]
+			{
+				new object?[] { null, null, 15, 7, },
+				new object?[] { StringComparer.InvariantCultureIgnoreCase, null, 10, 4, },
+				new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 150, 6, },
+				new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, 1, },
+			};
+
+		// No heuristic means this operates the same as Dijkstra; this is
+		// to prove the base algorithm still works.
+		// Primary improvement of A* is the heuristic to reduce nodes visited.
+		[Theory]
+		[MemberData(nameof(GetStringIntCostData))]
+		public void GetStringIntCost(
+			IEqualityComparer<string>? stateComparer,
+			IComparer<int>? costComparer,
+			int expectedCost,
+			int expectedCount)
+		{
+			var map = BuildStringIntMap(stateComparer);
+			var count = 0;
+			var actualCost = SuperEnumerable.GetShortestPathCost(
+				"start",
+				(x, c) =>
+				{
+					count++;
+					return map[x].Select(y => (y.to, c + y.cost, c + y.cost));
+				},
+				"end",
+				stateComparer,
+				costComparer);
+
+			Assert.Equal(expectedCost, actualCost);
+			Assert.Equal(expectedCount, count);
+		}
+
+		[Fact]
+		public void GetRegularMapCost()
+		{
+			var start = (x: 0, y: 0);
+			var end = (x: 2, y: 2);
+			((int x, int y) p, double cost, double bestGuess) GetNeighbor((int x, int y) p, double newCost)
+			{
+				var xD = p.x - end.x;
+				var yD = p.y - end.y;
+				var dist = Math.Sqrt(xD * xD + yD * yD);
+				return (p, newCost, newCost + dist);
+			}
+
+			var count = 0;
+			IEnumerable<((int x, int y) p, double cost, double bestGuess)> GetNeighbors((int x, int y) p, double cost)
+			{
+				count++;
+				yield return GetNeighbor((p.x + 1, p.y), cost + 1.001d);
+				yield return GetNeighbor((p.x, p.y + 1), cost + 1.002d);
+				yield return GetNeighbor((p.x - 1, p.y), cost + 1.003d);
+				yield return GetNeighbor((p.x, p.y - 1), cost + 1.004d);
+			}
+
+			var actualCost = SuperEnumerable.GetShortestPathCost<(int, int), double>(
+				start,
+				GetNeighbors,
+				end);
+
+			Assert.Equal(4.006d, actualCost, 3);
+			Assert.Equal(8, count);
 		}
 	}
 }
