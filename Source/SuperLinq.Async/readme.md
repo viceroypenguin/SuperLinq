@@ -348,6 +348,12 @@ direction (ascending, descending) according to a key.
 
 This method has 2 overloads.
 
+### Where
+
+Returns a sequence filtered by a matching sequence of boolean values. Useful if
+you have a fixed list of boolean values that should be used to filter multiple 
+similar sequences.
+
 ### Window
 
 Processes a sequence into a series of subsequences representing a windowed

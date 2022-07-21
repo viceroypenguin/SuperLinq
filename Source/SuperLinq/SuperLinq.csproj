@@ -110,8 +110,9 @@
 			- Transpose
 			- TraverseBreadthFirst
 			- TraverseDepthFirst
-			- TrySingle (EXPERIMENTAL)
+			- TrySingle
 			- Unfold
+			- Where
 			- Window
 			- WindowLeft
 			- WindowRight
