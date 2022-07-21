@@ -122,7 +122,7 @@ This method has 4 overloads.
 Determines whether or not the number of elements in the sequence is equals
 to the given integer.
 
-### ExceptByItems (formerly ExceptBy)
+### ExceptBy
 
 Returns the set of elements in the first sequence which aren't in the second
 sequence, according to a given key selector.
@@ -206,6 +206,8 @@ This method has 2 overloads.
 
 Interleaves the elements of two or more sequences into a single sequence,
 skipping sequences as they are consumed.
+
+This method has 2 overloads.
 
 ### OrderBy
 
