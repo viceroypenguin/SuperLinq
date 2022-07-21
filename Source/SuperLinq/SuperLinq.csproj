@@ -57,6 +57,9 @@
 			- FullJoin
 			- Generate
 			- GenerateByIndex
+			- GetShortestPath
+			- GetShortestPathCost
+			- GetShortestPaths
 			- GroupAdjacent
 			- Index
 			- IndexBy

@@ -65,6 +65,9 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | FullJoin						  | ✔️ | ⏱([#19](https://github.com/viceroypenguin/SuperLinq/issues/19)) |
 | Generate						  | ✔️ | ✔️ |
 | GenerateByIndex				  | ✔️ | ✔️ |
+| GetShortestPath				  | ✔️ | ⏱([#21](https://github.com/viceroypenguin/SuperLinq/issues/21)) |
+| GetShortestPathCost			  | ✔️ | ⏱([#21](https://github.com/viceroypenguin/SuperLinq/issues/21)) |
+| GetShortestPaths				  | ✔️ | ⏱([#21](https://github.com/viceroypenguin/SuperLinq/issues/21)) |
 | GroupAdjacent					  | ✔️ | ✔️ |
 | Index							  | ✔️ | ✔️ |
 | IndexBy						  | ✔️ | ✔️ |
@@ -92,7 +95,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | Rank							  | ✔️[^5] | ✔️ |
 | RankBy						  | ✔️[^5] | ✔️ |
 | Return						  | ✔️ | ❌ |
-| RightJoin						  | ✔️ | ❌ |
+| RightJoin						  | ✔️ | ⏱([#19](https://github.com/viceroypenguin/SuperLinq/issues/19)) |
 | RunLengthEncode				  | ✔️ | ✔️ |
 | Scan							  | ❌<br/>(Removed[^6]) | ❌[^6] |
 | ScanBy						  | ✔️ | ✔️ |
