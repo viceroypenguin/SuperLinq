@@ -12,6 +12,7 @@ public partial class SuperEnumerable
 	/// <param name="childrenSelector">
 	/// The function that produces the children of each element.</param>
 	/// <returns>A sequence containing the traversed values.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="childrenSelector"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// <para>
 	/// The tree is not checked for loops. If the resulting sequence needs
@@ -22,12 +23,13 @@ public partial class SuperEnumerable
 	/// This function defers traversal until needed and streams the
 	/// results.</para>
 	/// </remarks>
-
 	public static IEnumerable<T> TraverseBreadthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
 	{
 		childrenSelector.ThrowIfNull();
 
-		return _(); IEnumerable<T> _()
+		return _(root, childrenSelector);
+
+		static IEnumerable<T> _(T root, Func<T, IEnumerable<T>> childrenSelector)
 		{
 			var queue = new Queue<T>();
 			queue.Enqueue(root);
@@ -52,6 +54,7 @@ public partial class SuperEnumerable
 	/// <param name="childrenSelector">
 	/// The function that produces the children of each element.</param>
 	/// <returns>A sequence containing the traversed values.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="childrenSelector"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// <para>
 	/// The tree is not checked for loops. If the resulting sequence needs
@@ -62,12 +65,13 @@ public partial class SuperEnumerable
 	/// This function defers traversal until needed and streams the
 	/// results.</para>
 	/// </remarks>
-
 	public static IEnumerable<T> TraverseDepthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
 	{
 		childrenSelector.ThrowIfNull();
 
-		return _(); IEnumerable<T> _()
+		return _(root, childrenSelector);
+
+		static IEnumerable<T> _(T root, Func<T, IEnumerable<T>> childrenSelector)
 		{
 			var stack = new Stack<T>();
 			stack.Push(root);

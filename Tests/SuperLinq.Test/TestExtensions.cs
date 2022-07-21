@@ -28,6 +28,9 @@ internal static partial class TestExtensions
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
 		Assert.Equal(expected, actual);
 
+	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, Func<T, T, bool> comparer, params T[] expected) =>
+		Assert.Equal(expected, actual, EqualityComparer.Create(comparer));
+
 	internal static IEnumerable<string> GenerateSplits(this string str, params char[] separators)
 	{
 		foreach (var split in str.Split(separators))
@@ -59,4 +62,14 @@ internal static partial class TestExtensions
 				throw new ArgumentException(null, nameof(sourceKind));
 		}
 	}
+
+	internal static void AssertCollectionEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
+		actual.AssertCollectionEqual(expected, comparer: default);
+
+	internal static void AssertCollectionEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
+		actual.AssertCollectionEqual(expected, comparer: default);
+
+	internal static void AssertCollectionEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected, IEqualityComparer<T>? comparer) =>
+		actual.ToHashSet(comparer).SetEquals(expected);
+
 }

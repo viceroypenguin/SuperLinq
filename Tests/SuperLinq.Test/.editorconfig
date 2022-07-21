@@ -1,10 +1,12 @@
 [*.cs]
 
 dotnet_diagnostic.CA1305.severity = none				# CA1305: Specify IFormatProvider
+dotnet_diagnostic.CA1707.severity = none				# CA1707: Identifiers should not contain underscores
 dotnet_diagnostic.CA2201.severity = none				# CA2201: Do not raise reserved exception types
 
 dotnet_diagnostic.IDE0022.severity = none				# IDE0022: Use expression body for methods
 
+dotnet_diagnostic.MA0002.severity = none				# MA0002: IEqualityComparer<string> or IComparer<string> is missing
 dotnet_diagnostic.MA0006.severity = none				# MA0006: Use String.Equals instead of equality operator
 dotnet_diagnostic.MA0008.severity = none				# MA0008: Add StructLayoutAttribute
 dotnet_diagnostic.MA0009.severity = none				# MA0009: Add regex evaluation timeout

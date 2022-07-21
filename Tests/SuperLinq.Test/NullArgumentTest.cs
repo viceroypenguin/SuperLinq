@@ -38,12 +38,20 @@ public class NullArgumentTest
 	public static IEnumerable<object[]> GetCanBeNullInlineDatas() =>
 		GetInlineDatas(canBeNull: true, inlineDataFactory: (method, args, _) => () => method.Invoke(null, args));
 
-	static IEnumerable<object[]> GetInlineDatas(bool canBeNull, Func<MethodInfo, object[], string, Action> inlineDataFactory) =>
+	private static readonly string[] s_skipMethods =
+	{
+		nameof(SuperEnumerable.GetShortestPath),
+		nameof(SuperEnumerable.GetShortestPathCost),
+		nameof(SuperEnumerable.GetShortestPaths),
+	};
+
+	private static IEnumerable<object[]> GetInlineDatas(bool canBeNull, Func<MethodInfo, object[], string, Action> inlineDataFactory) =>
 		from m in typeof(SuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+		where !s_skipMethods.Contains(m.Name)
 		from t in CreateInlineDatas(m, canBeNull, inlineDataFactory)
 		select t;
 
-	static IEnumerable<object[]> CreateInlineDatas(MethodInfo methodDefinition, bool canBeNull, Func<MethodInfo, object[], string, Action> inlineDataFactory)
+	private static IEnumerable<object[]> CreateInlineDatas(MethodInfo methodDefinition, bool canBeNull, Func<MethodInfo, object[], string, Action> inlineDataFactory)
 	{
 		var method = InstantiateMethod(methodDefinition);
 		var parameters = method.GetParameters().ToList();
@@ -56,10 +64,10 @@ public class NullArgumentTest
 			   select new object[] { InlineData };
 	}
 
-	static string GetTestName(MethodInfo definition, ParameterInfo parameter) =>
+	private static string GetTestName(MethodInfo definition, ParameterInfo parameter) =>
 		$"{definition.Name}: '{parameter.Name}' ({parameter.Position});\n{definition}";
 
-	static MethodInfo InstantiateMethod(MethodInfo definition)
+	private static MethodInfo InstantiateMethod(MethodInfo definition)
 	{
 		if (!definition.IsGenericMethodDefinition) return definition;
 
@@ -67,7 +75,7 @@ public class NullArgumentTest
 		return definition.MakeGenericMethod(typeArguments);
 	}
 
-	static Type InstantiateType(TypeInfo typeParameter)
+	private static Type InstantiateType(TypeInfo typeParameter)
 	{
 		var constraints = typeParameter.GetGenericParameterConstraints();
 
@@ -77,10 +85,10 @@ public class NullArgumentTest
 		throw new NotImplementedException("NullArgumentTest.InstantiateType");
 	}
 
-	static bool IsReferenceType(ParameterInfo parameter) =>
+	private static bool IsReferenceType(ParameterInfo parameter) =>
 		!parameter.ParameterType.GetTypeInfo().IsValueType;
 
-	static bool ParameterCanBeNull(ParameterInfo parameter)
+	private static bool ParameterCanBeNull(ParameterInfo parameter)
 	{
 		var nullableTypes =
 			from t in new[] { typeof(IEqualityComparer<>), typeof(IComparer<>) }
@@ -98,12 +106,11 @@ public class NullArgumentTest
 		return nullableTypes.Contains(type) || nullableParameters.Contains(param, StringComparer.OrdinalIgnoreCase);
 	}
 
-	static object CreateInstance(Type type)
+	private static object CreateInstance(Type type)
 	{
 		if (type == typeof(int)) return 7; // int is used as size/length/range etc. avoid ArgumentOutOfRange for '0'.
 		if (type == typeof(string)) return "";
 		if (type == typeof(TaskScheduler)) return TaskScheduler.Default;
-		if (type == typeof(IEnumerable<int>)) return new[] { 1, 2, 3 }; // Provide non-empty sequence for MinBy/MaxBy.
 		if (type.IsArray) return Array.CreateInstance(type.GetElementType()!, 0);
 		if (type.GetTypeInfo().IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type)!;
 		if (typeof(Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
@@ -115,10 +122,10 @@ public class NullArgumentTest
 				: EmptyEnumerable.Instance;
 	}
 
-	static bool HasDefaultConstructor(Type type) =>
+	private static bool HasDefaultConstructor(Type type) =>
 		type.GetConstructor(Type.EmptyTypes) != null;
 
-	static Delegate CreateDelegateInstance(Type type)
+	private static Delegate CreateDelegateInstance(Type type)
 	{
 		var invoke = type.GetMethod("Invoke");
 		var parameters = invoke!.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name));
@@ -127,7 +134,7 @@ public class NullArgumentTest
 		return lambda.Compile();
 	}
 
-	static object CreateGenericInterfaceInstance(TypeInfo type)
+	private static object CreateGenericInterfaceInstance(TypeInfo type)
 	{
 		Debug.Assert(type.IsGenericType && type.IsInterface);
 		var name = type.Name[1..]; // Delete first character, i.e. the 'I' in IEnumerable
@@ -136,15 +143,15 @@ public class NullArgumentTest
 		return Activator.CreateInstance(instantiation)!;
 	}
 
-	static class EmptyEnumerable
+	private static class EmptyEnumerable
 	{
 		public static readonly IEnumerable Instance = new Enumerable();
 
-		sealed class Enumerable : IEnumerable
+		private sealed class Enumerable : IEnumerable
 		{
 			public IEnumerator GetEnumerator() => new Enumerator();
 
-			sealed class Enumerator : IEnumerator
+			private sealed class Enumerator : IEnumerator
 			{
 				public bool MoveNext() => false;
 				object IEnumerator.Current => throw new InvalidOperationException();
@@ -153,9 +160,9 @@ public class NullArgumentTest
 		}
 	}
 
-	static class GenericArgs
+	private static class GenericArgs
 	{
-		class Enumerator<T> : IEnumerator<T>
+		private class Enumerator<T> : IEnumerator<T>
 		{
 			public bool MoveNext() => false;
 			public T Current { get; private set; } = default!;
