@@ -341,6 +341,8 @@ This method has 2 overloads.
 Interleaves the elements of two or more sequences into a single sequence,
 skipping sequences as they are consumed.
 
+This method has 2 overloads.
+
 ### Lag
 
 Produces a projection of a sequence by evaluating pairs of elements separated

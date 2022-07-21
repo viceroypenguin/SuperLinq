@@ -41,6 +41,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | Choose						  | ✔️ | ✔️ |
 | CountBetween					  | ✔️ | ✔️ |
 | CompareCount					  | ✔️ | ✔️ |
+| ConcurrentMerge				  | ❌ | ✔️ |
 | CountBy						  | ✔️ | ✔️ |
 | CountDown						  | ✔️ | ✔️ |
 | Consume						  | ✔️ | ✔️ |
