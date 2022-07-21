@@ -56,6 +56,13 @@ This method has 2 overloads.
 Compares two sequences and returns an integer that indicates whether the
 first sequence has fewer, the same or more elements than the second sequence.
 
+### ConcurrentMerge
+
+Merges multiple async sequences into a single async sequence, iteration the
+sequences in parallel, and returning values when they are received.
+
+This method has 3 overloads.
+
 ### Consume
 
 Completely consumes the given sequence. This method does not store any data 
