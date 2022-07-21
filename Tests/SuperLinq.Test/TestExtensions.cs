@@ -28,6 +28,9 @@ internal static partial class TestExtensions
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
 		Assert.Equal(expected, actual);
 
+	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, Func<T, T, bool> comparer, params T[] expected) =>
+		Assert.Equal(expected, actual, EqualityComparer.Create(comparer));
+
 	internal static IEnumerable<string> GenerateSplits(this string str, params char[] separators)
 	{
 		foreach (var split in str.Split(separators))
