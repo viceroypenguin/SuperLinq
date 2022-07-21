@@ -267,6 +267,43 @@ public class GetShortestPathTest
 			Assert.Equal(expectedCount, count);
 		}
 
+		public static IEnumerable<object?[]> GetStringIntPathData { get; } =
+			new[]
+			{
+				new object?[] { null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), 7, },
+				new object?[] { StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("end", 10)), 4, },
+				new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), 6, },
+				new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("end", 1000)), 1, },
+			};
+
+		// No heuristic means this operates the same as Dijkstra; this is
+		// to prove the base algorithm still works.
+		// Primary improvement of A* is the heuristic to reduce nodes visited.
+		[Theory]
+		[MemberData(nameof(GetStringIntPathData))]
+		public void GetStringIntPath(
+			IEqualityComparer<string>? stateComparer,
+			IComparer<int>? costComparer,
+			IEnumerable<(string state, int cost)> expectedPath,
+			int expectedCount)
+		{
+			var map = BuildStringIntMap(stateComparer);
+			var count = 0;
+			var path = SuperEnumerable.GetShortestPath(
+				"start",
+				(x, c) =>
+				{
+					count++;
+					return map[x].Select(y => (y.to, c + y.cost, c + y.cost));
+				},
+				"end",
+				stateComparer,
+				costComparer);
+
+			path.AssertSequenceEqual(expectedPath);
+			Assert.Equal(expectedCount, count);
+		}
+
 		[Fact]
 		public void GetRegularMapCost()
 		{
@@ -296,6 +333,44 @@ public class GetShortestPathTest
 				end);
 
 			Assert.Equal(4.006d, actualCost, 3);
+			Assert.Equal(8, count);
+		}
+
+		[Fact]
+		public void GetRegularMapPath()
+		{
+			var start = (x: 0, y: 0);
+			var end = (x: 2, y: 2);
+			((int x, int y) p, double cost, double bestGuess) GetNeighbor((int x, int y) p, double newCost)
+			{
+				var xD = p.x - end.x;
+				var yD = p.y - end.y;
+				var dist = Math.Sqrt(xD * xD + yD * yD);
+				return (p, newCost, newCost + dist);
+			}
+
+			var count = 0;
+			IEnumerable<((int x, int y) p, double cost, double bestGuess)> GetNeighbors((int x, int y) p, double cost)
+			{
+				count++;
+				yield return GetNeighbor((p.x + 1, p.y), cost + 1.001d);
+				yield return GetNeighbor((p.x, p.y + 1), cost + 1.002d);
+				yield return GetNeighbor((p.x - 1, p.y), cost + 1.003d);
+				yield return GetNeighbor((p.x, p.y - 1), cost + 1.004d);
+			}
+
+			var actualPath = SuperEnumerable.GetShortestPath<(int, int), double>(
+				start,
+				GetNeighbors,
+				end);
+
+			actualPath.AssertSequenceEqual(
+				(a, b) => a.nextState == b.nextState && Math.Abs(a.cost - b.cost) < 0.001d,
+				(nextState: (0, 0), cost: 0),
+				(nextState: (1, 0), cost: 1.001d),
+				(nextState: (2, 0), cost: 2.002d),
+				(nextState: (2, 1), cost: 3.004d),
+				(nextState: (2, 2), cost: 4.006d));
 			Assert.Equal(8, count);
 		}
 	}
