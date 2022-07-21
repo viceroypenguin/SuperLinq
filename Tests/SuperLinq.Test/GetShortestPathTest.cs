@@ -2,15 +2,6 @@
 
 public class GetShortestPathTest
 {
-	public static IEnumerable<object?[]> GetStringIntCostData { get; } =
-		new[]
-		{
-			new object?[] { null, null, 15, },
-			new object?[] { StringComparer.InvariantCultureIgnoreCase, null, 10, },
-			new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 150, },
-			new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, },
-		};
-
 	private static ILookup<string, (string to, int cost)> BuildStringIntMap(IEqualityComparer<string>? stateComparer)
 	{
 		var costs =
@@ -38,31 +29,47 @@ public class GetShortestPathTest
 		return map;
 	}
 
+	public static IEnumerable<object?[]> GetStringIntCostData { get; } =
+		new[]
+		{
+			new object?[] { null, null, 15, 7, },
+			new object?[] { StringComparer.InvariantCultureIgnoreCase, null, 10, 4, },
+			new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 150, 6, },
+			new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, 1, },
+		};
+
 	[Theory]
 	[MemberData(nameof(GetStringIntCostData))]
 	public void GetStringIntCost(
 		IEqualityComparer<string>? stateComparer,
 		IComparer<int>? costComparer,
-		int expectedCost)
+		int expectedCost,
+		int expectedCount)
 	{
 		var map = BuildStringIntMap(stateComparer);
+		var count = 0;
 		var actualCost = SuperEnumerable.GetShortestPathCost(
 			"start",
-			(x, c) => map[x].Select(y => (y.to, c + y.cost)),
+			(x, c) =>
+			{
+				count++;
+				return map[x].Select(y => (y.to, c + y.cost));
+			},
 			"end",
 			stateComparer,
 			costComparer);
 
 		Assert.Equal(expectedCost, actualCost);
+		Assert.Equal(expectedCount, count);
 	}
 
 	public static IEnumerable<object?[]> GetStringIntPathData { get; } =
 		new[]
 		{
-			new object?[] { null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), },
-			new object?[] { StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("end", 10)), },
-			new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), },
-			new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("end", 1000)), },
+			new object?[] { null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), 7, },
+			new object?[] { StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("end", 10)), 4, },
+			new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), 6, },
+			new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("end", 1000)), 1, },
 		};
 
 	[Theory]
@@ -70,17 +77,24 @@ public class GetShortestPathTest
 	public void GetStringIntPath(
 		IEqualityComparer<string>? stateComparer,
 		IComparer<int>? costComparer,
-		IEnumerable<(string state, int cost)> expectedPath)
+		IEnumerable<(string state, int cost)> expectedPath,
+		int expectedCount)
 	{
 		var map = BuildStringIntMap(stateComparer);
+		var count = 0;
 		var path = SuperEnumerable.GetShortestPath(
 			"start",
-			(x, c) => map[x].Select(y => (y.to, c + y.cost)),
+			(x, c) =>
+			{
+				count++;
+				return map[x].Select(y => (y.to, c + y.cost));
+			},
 			"end",
 			stateComparer,
 			costComparer);
 
 		path.AssertSequenceEqual(expectedPath);
+		Assert.Equal(expectedCount, count);
 	}
 
 	public static IEnumerable<object?[]> GetStringIntPathsData { get; } =
@@ -138,14 +152,20 @@ public class GetShortestPathTest
 		IEnumerable<(string state, (string? prevState, int cost))> expectedMap)
 	{
 		var map = BuildStringIntMap(stateComparer);
+		var count = 0;
 		var paths = SuperEnumerable.GetShortestPaths(
 			"start",
-			(x, c) => map[x].Select(y => (y.to, c + y.cost)),
+			(x, c) =>
+			{
+				count++;
+				return map[x].Select(y => (y.to, c + y.cost));
+			},
 			stateComparer,
 			costComparer);
 
 		stateComparer ??= StringComparer.Ordinal;
 
+		Assert.Equal(expectedMap.Count(), count);
 		Assert.Equal(expectedMap.Count(), paths.Count);
 		foreach (var (key, ev) in expectedMap)
 		{
