@@ -122,6 +122,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | TraverseDepthFirst			  | ✔️ | ⏱([#21](https://github.com/viceroypenguin/SuperLinq/issues/21)) |
 | TrySingle						  | ✔️ | ✔️ |
 | Unfold						  | ✔️ | ❌ |
+| Where							  | ✔️ | ✔️ |
 | Window						  | ✔️ | ✔️ |
 | WindowLeft					  | ✔️ | ✔️ |
 | WindowRight					  | ✔️ | ✔️ |

@@ -90,8 +90,8 @@ internal static class ExceptionHelpers
 	}
 
 	[Pure, DoesNotReturn]
-	private static void Throw(string paramName, string? message) =>
-		throw new ArgumentOutOfRangeException(paramName, message);
+	public static void Throw(string paramName, string? message) =>
+		throw new ArgumentException(paramName, message);
 
 	[Pure, DoesNotReturn]
 	public static void ThrowInvalidOperationException(string? message) =>

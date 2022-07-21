@@ -78,6 +78,7 @@
 			- TakeEvery
 			- TakeUntil
 			- ThenBy
+			- Where
 			- Window
 			- WindowLeft
 			- WindowRight
