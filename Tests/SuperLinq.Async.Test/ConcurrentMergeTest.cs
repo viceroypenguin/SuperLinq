@@ -86,7 +86,7 @@ public class ConcurrentMergeTest
 
 	// excess time consumption - avoid unless explicit
 	// shorter times introduce variability in ordering
-	[Fact]
+	[Fact(Skip = "Explicit")]
 	public Task ConcurrentMergeReturnsInOrderOfDelay()
 	{
 		var seqA = AsyncSuperEnumerable.From(
@@ -106,7 +106,7 @@ public class ConcurrentMergeTest
 
 	// excess time consumption - avoid unless explicit
 	// shorter times introduce variability in ordering
-	[Fact]
+	[Fact(Skip = "Explicit")]
 	public Task ConcurrentMergeReturnsInOrderOfDelayUnbounded()
 	{
 		var seqA = AsyncSuperEnumerable.From(
