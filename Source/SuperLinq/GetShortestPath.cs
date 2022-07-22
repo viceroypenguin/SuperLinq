@@ -155,7 +155,8 @@ public partial class SuperEnumerable
 				break;
 
 			var newStates = getNeighbors(current, cost);
-			queue.EnqueueRangeMinimum(newStates);
+			foreach (var (s, p) in newStates)
+				queue.EnqueueMinimum(s, p);
 		} while (queue.TryDequeue(out current!, out cost));
 
 		return cost;
@@ -319,9 +320,9 @@ public partial class SuperEnumerable
 				break;
 
 			var cost = from.cost;
-			var newStates = getNeighbors(current, cost)
-				.Select(s => (s.nextState, (current, s.cost)));
-			queue.EnqueueRangeMinimum(newStates!);
+			var newStates = getNeighbors(current, cost);
+			foreach (var (s, p) in newStates)
+				queue.EnqueueMinimum(s, (current, p));
 		} while (queue.TryDequeue(out current!, out from));
 
 		return Generate(end, x => totalCost[x].parent!)
@@ -497,9 +498,9 @@ public partial class SuperEnumerable
 			totalCost[current] = from;
 
 			var cost = from.cost;
-			var newStates = getNeighbors(current, cost)
-				.Select(s => (s.nextState, (current, s.cost)));
-			queue.EnqueueRangeMinimum(newStates!);
+			var newStates = getNeighbors(current, cost);
+			foreach (var (s, p) in newStates)
+				queue.EnqueueMinimum(s, (current, p));
 		} while (queue.TryDequeue(out current!, out from));
 
 		return totalCost;
@@ -680,8 +681,8 @@ public partial class SuperEnumerable
 				break;
 
 			var newStates = getNeighbors(current, costs.traversed);
-			queue.EnqueueRangeMinimum(newStates
-				.Select(x => (x.nextState, (x.bestGuess, x.cost))));
+			foreach (var (s, p, h) in newStates)
+				queue.EnqueueMinimum(s, (h, p));
 		} while (queue.TryDequeue(out current!, out costs));
 
 		return costs.traversed;
@@ -857,9 +858,9 @@ public partial class SuperEnumerable
 				break;
 
 			var cost = from.traversed;
-			var newStates = getNeighbors(current, cost)
-				.Select(s => (s.nextState, (current, s.bestGuess, s.traversed)));
-			queue.EnqueueRangeMinimum(newStates!);
+			var newStates = getNeighbors(current, cost);
+			foreach (var (s, p, h) in newStates)
+				queue.EnqueueMinimum(s, (current, h, p));
 		} while (queue.TryDequeue(out current!, out from));
 
 		return Generate(end, x => totalCost[x].parent!)
