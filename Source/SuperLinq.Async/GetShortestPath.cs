@@ -1,8 +1,8 @@
 ﻿using SuperLinq.Collections;
 
-namespace SuperLinq;
+namespace SuperLinq.Async;
 
-public partial class SuperEnumerable
+public partial class AsyncSuperEnumerable
 {
 	#region Dijkstra
 
@@ -22,6 +22,7 @@ public partial class SuperEnumerable
 	/// traversal cost at the current state.
 	/// </param>
 	/// <param name="end">The target state</param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The traversal cost of the shortest path from <paramref name="start"/>
 	/// to <paramref name="end"/>.
@@ -62,17 +63,19 @@ public partial class SuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static TCost? GetShortestPathCost<TState, TCost>(
+	public static ValueTask<TCost?> GetShortestPathCost<TState, TCost>(
 		TState start,
-		Func<TState, TCost?, IEnumerable<(TState nextState, TCost cost)>> getNeighbors,
-		TState end)
+		Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost)>> getNeighbors,
+		TState end,
+		CancellationToken cancellationToken = default)
 		where TState : notnull
 		where TCost : notnull
 	{
 		return GetShortestPathCost(
 			start, getNeighbors, end,
 			stateComparer: null,
-			costComparer: null);
+			costComparer: null,
+			cancellationToken);
 	}
 
 	/// <summary>
@@ -91,6 +94,7 @@ public partial class SuperEnumerable
 	/// <param name="end">The target state</param>
 	/// <param name="stateComparer">A custom equality comparer for <typeparamref name="TState"/></param>
 	/// <param name="costComparer">A custom comparer for <typeparamref name="TCost"/></param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The traversal cost of the shortest path from <paramref name="start"/>
 	/// to <paramref name="end"/>.
@@ -125,12 +129,13 @@ public partial class SuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static TCost? GetShortestPathCost<TState, TCost>(
+	public static async ValueTask<TCost?> GetShortestPathCost<TState, TCost>(
 		TState start,
-		Func<TState, TCost?, IEnumerable<(TState nextState, TCost cost)>> getNeighbors,
+		Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost)>> getNeighbors,
 		TState end,
 		IEqualityComparer<TState>? stateComparer,
-		IComparer<TCost>? costComparer)
+		IComparer<TCost>? costComparer,
+		CancellationToken cancellationToken = default)
 		where TState : notnull
 		where TCost : notnull
 	{
@@ -146,12 +151,14 @@ public partial class SuperEnumerable
 		TCost? cost = default;
 		do
 		{
+			cancellationToken.ThrowIfCancellationRequested();
+
 			totalCost[current] = cost;
 			if (stateComparer.Equals(current, end))
 				break;
 
 			var newStates = getNeighbors(current, cost);
-			foreach (var (s, p) in newStates)
+			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, p);
 		} while (queue.TryDequeue(out current!, out cost));
@@ -177,6 +184,7 @@ public partial class SuperEnumerable
 	/// traversal cost at the current state.
 	/// </param>
 	/// <param name="end">The target state</param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The traversal path and cost of the shortest path from <paramref name="start"/>
 	/// to <paramref name="end"/>.
@@ -217,11 +225,12 @@ public partial class SuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<(TState nextState, TCost? cost)>
+	public static ValueTask<IEnumerable<(TState nextState, TCost? cost)>>
 		GetShortestPath<TState, TCost>(
 			TState start,
-			Func<TState, TCost?, IEnumerable<(TState nextState, TCost cost)>> getNeighbors,
-			TState end)
+			Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost)>> getNeighbors,
+			TState end,
+			CancellationToken cancellationToken = default)
 		where TState : notnull
 		where TCost : notnull
 	{
@@ -230,7 +239,8 @@ public partial class SuperEnumerable
 			getNeighbors,
 			end,
 			stateComparer: null,
-			costComparer: null);
+			costComparer: null,
+			cancellationToken);
 	}
 
 	/// <summary>
@@ -249,6 +259,7 @@ public partial class SuperEnumerable
 	/// <param name="end">The target state</param>
 	/// <param name="stateComparer">A custom equality comparer for <typeparamref name="TState"/></param>
 	/// <param name="costComparer">A custom comparer for <typeparamref name="TCost"/></param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The traversal path and cost of the shortest path from <paramref name="start"/>
 	/// to <paramref name="end"/>.
@@ -283,13 +294,14 @@ public partial class SuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<(TState state, TCost? cost)>
+	public static async ValueTask<IEnumerable<(TState state, TCost? cost)>>
 		GetShortestPath<TState, TCost>(
 			TState start,
-			Func<TState, TCost?, IEnumerable<(TState nextState, TCost cost)>> getNeighbors,
+			Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost)>> getNeighbors,
 			TState end,
 			IEqualityComparer<TState>? stateComparer,
-			IComparer<TCost>? costComparer)
+			IComparer<TCost>? costComparer,
+			CancellationToken cancellationToken = default)
 		where TState : notnull
 		where TCost : notnull
 	{
@@ -309,18 +321,20 @@ public partial class SuperEnumerable
 		(TState? parent, TCost cost) from = default;
 		do
 		{
+			cancellationToken.ThrowIfCancellationRequested();
+
 			totalCost[current] = from;
 			if (stateComparer.Equals(current, end))
 				break;
 
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
-			foreach (var (s, p) in newStates)
+			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, (current, p));
 		} while (queue.TryDequeue(out current!, out from));
 
-		return Generate(end, x => totalCost[x].parent!)
+		return SuperEnumerable.Generate(end, x => totalCost[x].parent!)
 			.TakeUntil(x => stateComparer.Equals(x, start))
 			.ZipMap(x => totalCost[x].cost)
 			.Reverse();
@@ -343,6 +357,7 @@ public partial class SuperEnumerable
 	/// and the total cost to get to that state based on the 
 	/// traversal cost at the current state.
 	/// </param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// A map that contains, for every <typeparamref name="TState"/>,
 	/// the previous <typeparamref name="TState"/> in the shortest path
@@ -367,8 +382,8 @@ public partial class SuperEnumerable
 	///  paths (including loops) are discarded.
 	/// </para>
 	/// <para>
-	///  While <see cref="GetShortestPathCost{TState, TCost}(TState, Func{TState, TCost, IEnumerable{ValueTuple{TState, TCost}}}, TState)"/>
-	///  and <see cref="GetShortestPath{TState, TCost}(TState, Func{TState, TCost, IEnumerable{ValueTuple{TState, TCost}}}, TState)"/>
+	///  While <see cref="GetShortestPathCost{TState, TCost}(TState, Func{TState, TCost, IAsyncEnumerable{ValueTuple{TState, TCost}}}, TState, CancellationToken)"/>
+	///  and <see cref="GetShortestPath{TState, TCost}(TState, Func{TState, TCost, IAsyncEnumerable{ValueTuple{TState, TCost}}}, TState, CancellationToken)"/>
 	///  will work work on infinite maps, this method
 	///  will execute an infinite loop on infinite maps. This is because
 	///  this method will attemp to visit every point in the map.
@@ -391,10 +406,11 @@ public partial class SuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static IReadOnlyDictionary<TState, (TState? previousState, TCost? cost)>
+	public static ValueTask<IReadOnlyDictionary<TState, (TState? previousState, TCost? cost)>>
 		GetShortestPaths<TState, TCost>(
 			TState start,
-			Func<TState, TCost?, IEnumerable<(TState nextState, TCost cost)>> getNeighbors)
+			Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost)>> getNeighbors,
+			CancellationToken cancellationToken = default)
 		where TState : notnull
 		where TCost : notnull
 	{
@@ -402,7 +418,8 @@ public partial class SuperEnumerable
 			start,
 			getNeighbors,
 			stateComparer: null,
-			costComparer: null);
+			costComparer: null,
+			cancellationToken);
 	}
 
 	/// <summary>
@@ -420,6 +437,7 @@ public partial class SuperEnumerable
 	/// </param>
 	/// <param name="stateComparer">A custom equality comparer for <typeparamref name="TState"/></param>
 	/// <param name="costComparer">A custom comparer for <typeparamref name="TCost"/></param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// A map that contains, for every <typeparamref name="TState"/>,
 	/// the previous <typeparamref name="TState"/> in the shortest path
@@ -444,8 +462,8 @@ public partial class SuperEnumerable
 	///  paths (including loops) are discarded.
 	/// </para>
 	/// <para>
-	///  While <see cref="GetShortestPathCost{TState, TCost}(TState, Func{TState, TCost, IEnumerable{ValueTuple{TState, TCost}}}, TState)"/>
-	///  and <see cref="GetShortestPath{TState, TCost}(TState, Func{TState, TCost, IEnumerable{ValueTuple{TState, TCost}}}, TState)"/>
+	///  While <see cref="GetShortestPathCost{TState, TCost}(TState, Func{TState, TCost, IAsyncEnumerable{ValueTuple{TState, TCost}}}, TState, CancellationToken)"/>
+	///  and <see cref="GetShortestPath{TState, TCost}(TState, Func{TState, TCost, IAsyncEnumerable{ValueTuple{TState, TCost}}}, TState, CancellationToken)"/>
 	///  will work work on infinite maps, this method
 	///  will execute an infinite loop on infinite maps. This is because
 	///  this method will attemp to visit every point in the map.
@@ -462,12 +480,13 @@ public partial class SuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static IReadOnlyDictionary<TState, (TState? previousState, TCost? cost)>
+	public static async ValueTask<IReadOnlyDictionary<TState, (TState? previousState, TCost? cost)>>
 		GetShortestPaths<TState, TCost>(
 			TState start,
-			Func<TState, TCost?, IEnumerable<(TState nextState, TCost cost)>> getNeighbors,
+			Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost)>> getNeighbors,
 			IEqualityComparer<TState>? stateComparer,
-			IComparer<TCost>? costComparer)
+			IComparer<TCost>? costComparer,
+			CancellationToken cancellationToken = default)
 		where TState : notnull
 		where TCost : notnull
 	{
@@ -487,11 +506,13 @@ public partial class SuperEnumerable
 		(TState? parent, TCost? cost) from = default;
 		do
 		{
+			cancellationToken.ThrowIfCancellationRequested();
+
 			totalCost[current] = from;
 
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
-			foreach (var (s, p) in newStates)
+			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, (current, p));
 		} while (queue.TryDequeue(out current!, out from));
@@ -523,6 +544,7 @@ public partial class SuperEnumerable
 	/// cost to get to <paramref name="end"/>.
 	/// </param>
 	/// <param name="end">The target state</param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The traversal cost of the shortest path from <paramref name="start"/>
 	/// to <paramref name="end"/>.
@@ -565,10 +587,11 @@ public partial class SuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static TCost? GetShortestPathCost<TState, TCost>(
+	public static ValueTask<TCost?> GetShortestPathCost<TState, TCost>(
 		TState start,
-		Func<TState, TCost?, IEnumerable<(TState nextState, TCost cost, TCost bestGuess)>> getNeighbors,
-		TState end)
+		Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost, TCost bestGuess)>> getNeighbors,
+		TState end,
+		CancellationToken cancellationToken = default)
 		where TState : notnull
 		where TCost : notnull
 	{
@@ -577,7 +600,8 @@ public partial class SuperEnumerable
 			getNeighbors,
 			end,
 			stateComparer: null,
-			costComparer: null);
+			costComparer: null,
+			cancellationToken);
 	}
 
 	/// <summary>
@@ -598,6 +622,7 @@ public partial class SuperEnumerable
 	/// <param name="end">The target state</param>
 	/// <param name="stateComparer">A custom equality comparer for <typeparamref name="TState"/></param>
 	/// <param name="costComparer">A custom comparer for <typeparamref name="TCost"/></param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The traversal cost of the shortest path from <paramref name="start"/>
 	/// to <paramref name="end"/>.
@@ -634,12 +659,13 @@ public partial class SuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static TCost? GetShortestPathCost<TState, TCost>(
+	public static async ValueTask<TCost?> GetShortestPathCost<TState, TCost>(
 		TState start,
-		Func<TState, TCost?, IEnumerable<(TState nextState, TCost cost, TCost bestGuess)>> getNeighbors,
+		Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost, TCost bestGuess)>> getNeighbors,
 		TState end,
 		IEqualityComparer<TState>? stateComparer,
-		IComparer<TCost>? costComparer)
+		IComparer<TCost>? costComparer,
+		CancellationToken cancellationToken = default)
 		where TState : notnull
 		where TCost : notnull
 	{
@@ -663,6 +689,8 @@ public partial class SuperEnumerable
 		(TCost bestGuess, TCost traversed) costs = default;
 		do
 		{
+			cancellationToken.ThrowIfCancellationRequested();
+
 			if (totalCost.TryGetValue(current, out var oldCost)
 				&& costComparer.Compare(costs.traversed, oldCost) >= 0)
 			{
@@ -674,7 +702,7 @@ public partial class SuperEnumerable
 				break;
 
 			var newStates = getNeighbors(current, costs.traversed);
-			foreach (var (s, p, h) in newStates)
+			await foreach (var (s, p, h) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
 				queue.EnqueueMinimum(s, (h, p));
 		} while (queue.TryDequeue(out current!, out costs));
 
@@ -701,6 +729,7 @@ public partial class SuperEnumerable
 	/// cost to get to <paramref name="end"/>.
 	/// </param>
 	/// <param name="end">The target state</param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The traversal path and cost of the shortest path from <paramref name="start"/>
 	/// to <paramref name="end"/>.
@@ -743,11 +772,12 @@ public partial class SuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<(TState nextState, TCost? cost)>
+	public static ValueTask<IEnumerable<(TState nextState, TCost? cost)>>
 		GetShortestPath<TState, TCost>(
 			TState start,
-			Func<TState, TCost?, IEnumerable<(TState nextState, TCost cost, TCost bestGuess)>> getNeighbors,
-			TState end)
+			Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost, TCost bestGuess)>> getNeighbors,
+			TState end,
+			CancellationToken cancellationToken = default)
 		where TState : notnull
 		where TCost : notnull
 	{
@@ -756,7 +786,8 @@ public partial class SuperEnumerable
 			getNeighbors,
 			end,
 			stateComparer: null,
-			costComparer: null);
+			costComparer: null,
+			cancellationToken);
 	}
 
 	/// <summary>
@@ -777,6 +808,7 @@ public partial class SuperEnumerable
 	/// <param name="end">The target state</param>
 	/// <param name="stateComparer">A custom equality comparer for <typeparamref name="TState"/></param>
 	/// <param name="costComparer">A custom comparer for <typeparamref name="TCost"/></param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// The traversal path and cost of the shortest path from <paramref name="start"/>
 	/// to <paramref name="end"/>.
@@ -813,13 +845,14 @@ public partial class SuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<(TState nextState, TCost? cost)>
+	public static async ValueTask<IEnumerable<(TState nextState, TCost? cost)>>
 		GetShortestPath<TState, TCost>(
 			TState start,
-			Func<TState, TCost?, IEnumerable<(TState nextState, TCost traversed, TCost bestGuess)>> getNeighbors,
+			Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost traversed, TCost bestGuess)>> getNeighbors,
 			TState end,
 			IEqualityComparer<TState>? stateComparer,
-			IComparer<TCost>? costComparer)
+			IComparer<TCost>? costComparer,
+			CancellationToken cancellationToken = default)
 		where TState : notnull
 		where TCost : notnull
 	{
@@ -843,6 +876,8 @@ public partial class SuperEnumerable
 		(TState? parent, TCost bestGuess, TCost traversed) from = default;
 		do
 		{
+			cancellationToken.ThrowIfCancellationRequested();
+
 			if (totalCost.TryGetValue(current, out _))
 				continue;
 
@@ -852,11 +887,11 @@ public partial class SuperEnumerable
 
 			var cost = from.traversed;
 			var newStates = getNeighbors(current, cost);
-			foreach (var (s, p, h) in newStates)
+			await foreach (var (s, p, h) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
 				queue.EnqueueMinimum(s, (current, h, p));
 		} while (queue.TryDequeue(out current!, out from));
 
-		return Generate(end, x => totalCost[x].parent!)
+		return SuperEnumerable.Generate(end, x => totalCost[x].parent!)
 			.TakeUntil(x => stateComparer.Equals(x, start))
 			.ZipMap(x => totalCost[x].traversed)
 			.Reverse();

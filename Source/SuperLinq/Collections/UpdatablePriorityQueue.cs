@@ -777,10 +777,10 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 		var lastNodeIndex = --_size;
 		_version++;
 
+		_elementIndex.Remove(_nodes[0].Element);
+
 		if (lastNodeIndex > 0)
 		{
-			_elementIndex.Remove(_nodes[0].Element);
-
 			var lastNode = _nodes[lastNodeIndex];
 			if (_priorityComparer == null)
 			{

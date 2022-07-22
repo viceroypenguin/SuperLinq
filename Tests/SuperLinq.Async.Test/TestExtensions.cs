@@ -22,6 +22,9 @@ internal static partial class TestExtensions
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
 		Assert.Equal(expected, actual);
 
+	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, Func<T, T, bool> comparer, params T[] expected) =>
+		Assert.Equal(expected, actual, EqualityComparer.Create(comparer));
+
 	internal static async Task AssertSequenceEqual<T>(this IAsyncEnumerable<T> actual, IAsyncEnumerable<T> expected) =>
 		Assert.Equal(await expected.ToListAsync(), await actual.ToListAsync());
 
