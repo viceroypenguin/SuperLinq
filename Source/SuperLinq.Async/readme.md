@@ -173,6 +173,18 @@ Returns a sequence of values based on indexes
 
 This method has 3 overloads.
 
+### GetShortestPath
+
+Finds the shortest path between two points, using either Dijkstra's algorithm
+or the A* algorithm (depending on whether a heuristic value is provided when 
+getting state neighbors). 
+
+The underlying map can be a plane, a graph, or any other state system provided
+by the consumer, since traversal from one state to the next is done by the
+consumer in the getNeighbors functor. 
+
+This method has 4 overloads.
+
 ### GroupAdjacent
 
 Groups the adjacent elements of a sequence according to a specified key
@@ -356,6 +368,16 @@ Performs a subsequent ordering of elements in a sequence in a particular
 direction (ascending, descending) according to a key.
 
 This method has 2 overloads.
+
+### TraverseBreadthFirst
+
+Traverses a tree in a breadth-first fashion, starting at a root node and using
+a user-defined function to get the children at each node of the tree.
+
+### TraverseDepthFirst
+
+Traverses a tree in a depth-first fashion, starting at a root node and using a
+user-defined function to get the children at each node of the tree.
 
 ### Where
 

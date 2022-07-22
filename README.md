@@ -65,9 +65,9 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | FullJoin						  | ✔️ | ⏱([#19](https://github.com/viceroypenguin/SuperLinq/issues/19)) |
 | Generate						  | ✔️ | ✔️ |
 | GenerateByIndex				  | ✔️ | ✔️ |
-| GetShortestPath				  | ✔️ | ⏱([#21](https://github.com/viceroypenguin/SuperLinq/issues/21)) |
-| GetShortestPathCost			  | ✔️ | ⏱([#21](https://github.com/viceroypenguin/SuperLinq/issues/21)) |
-| GetShortestPaths				  | ✔️ | ⏱([#21](https://github.com/viceroypenguin/SuperLinq/issues/21)) |
+| GetShortestPath				  | ✔️ | ✔️ |
+| GetShortestPathCost			  | ✔️ | ✔️ |
+| GetShortestPaths				  | ✔️ | ✔️ |
 | GroupAdjacent					  | ✔️ | ✔️ |
 | Index							  | ✔️ | ✔️ |
 | IndexBy						  | ✔️ | ✔️ |
@@ -122,8 +122,8 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | ToLookup						  | ✔️ | ❌ |
 | Trace							  | ✔️ | ❌ |
 | Transpose						  | ✔️ | ❌ |
-| TraverseBreadthFirst			  | ✔️ | ⏱([#21](https://github.com/viceroypenguin/SuperLinq/issues/21)) |
-| TraverseDepthFirst			  | ✔️ | ⏱([#21](https://github.com/viceroypenguin/SuperLinq/issues/21)) |
+| TraverseBreadthFirst			  | ✔️ | ✔️ |
+| TraverseDepthFirst			  | ✔️ | ✔️ |
 | TrySingle						  | ✔️ | ✔️ |
 | Unfold						  | ✔️ | ❌ |
 | Where							  | ✔️ | ✔️ |
