@@ -153,16 +153,14 @@ public partial class AsyncSuperEnumerable
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
-			if (totalCost.TryGetValue(current, out _))
-				continue;
-
 			totalCost[current] = cost;
 			if (stateComparer.Equals(current, end))
 				break;
 
 			var newStates = getNeighbors(current, cost);
 			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
-				queue.EnqueueMinimum(s, p);
+				if (!totalCost.TryGetValue(s, out _))
+					queue.EnqueueMinimum(s, p);
 		} while (queue.TryDequeue(out current!, out cost));
 
 		return cost;
@@ -325,9 +323,6 @@ public partial class AsyncSuperEnumerable
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
-			if (totalCost.TryGetValue(current, out _))
-				continue;
-
 			totalCost[current] = from;
 			if (stateComparer.Equals(current, end))
 				break;
@@ -335,7 +330,8 @@ public partial class AsyncSuperEnumerable
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
 			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
-				queue.EnqueueMinimum(s, (current, p));
+				if (!totalCost.TryGetValue(s, out _))
+					queue.EnqueueMinimum(s, (current, p));
 		} while (queue.TryDequeue(out current!, out from));
 
 		return SuperEnumerable.Generate(end, x => totalCost[x].parent!)
@@ -512,15 +508,13 @@ public partial class AsyncSuperEnumerable
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 
-			if (totalCost.TryGetValue(current, out _))
-				continue;
-
 			totalCost[current] = from;
 
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
 			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
-				queue.EnqueueMinimum(s, (current, p));
+				if (!totalCost.TryGetValue(s, out _))
+					queue.EnqueueMinimum(s, (current, p));
 		} while (queue.TryDequeue(out current!, out from));
 
 		return totalCost;

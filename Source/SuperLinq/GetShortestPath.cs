@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using SuperLinq.Collections;
+﻿using SuperLinq.Collections;
 
 namespace SuperLinq;
 
@@ -147,16 +146,14 @@ public partial class SuperEnumerable
 		TCost? cost = default;
 		do
 		{
-			if (totalCost.TryGetValue(current, out _))
-				continue;
-
 			totalCost[current] = cost;
 			if (stateComparer.Equals(current, end))
 				break;
 
 			var newStates = getNeighbors(current, cost);
 			foreach (var (s, p) in newStates)
-				queue.EnqueueMinimum(s, p);
+				if (!totalCost.TryGetValue(s, out _))
+					queue.EnqueueMinimum(s, p);
 		} while (queue.TryDequeue(out current!, out cost));
 
 		return cost;
@@ -312,9 +309,6 @@ public partial class SuperEnumerable
 		(TState? parent, TCost cost) from = default;
 		do
 		{
-			if (totalCost.TryGetValue(current, out _))
-				continue;
-
 			totalCost[current] = from;
 			if (stateComparer.Equals(current, end))
 				break;
@@ -322,7 +316,8 @@ public partial class SuperEnumerable
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
 			foreach (var (s, p) in newStates)
-				queue.EnqueueMinimum(s, (current, p));
+				if (!totalCost.TryGetValue(s, out _))
+					queue.EnqueueMinimum(s, (current, p));
 		} while (queue.TryDequeue(out current!, out from));
 
 		return Generate(end, x => totalCost[x].parent!)
@@ -492,15 +487,13 @@ public partial class SuperEnumerable
 		(TState? parent, TCost? cost) from = default;
 		do
 		{
-			if (totalCost.TryGetValue(current, out _))
-				continue;
-
 			totalCost[current] = from;
 
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
 			foreach (var (s, p) in newStates)
-				queue.EnqueueMinimum(s, (current, p));
+				if (!totalCost.TryGetValue(s, out _))
+					queue.EnqueueMinimum(s, (current, p));
 		} while (queue.TryDequeue(out current!, out from));
 
 		return totalCost;
