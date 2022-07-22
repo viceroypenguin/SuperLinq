@@ -3,7 +3,7 @@
 public class TraverseTest
 {
 	[Fact]
-	public void TraverseDepthFirstFNullGenerator()
+	public void TraverseDepthFirstIsStreaming()
 	{
 		SuperEnumerable.TraverseDepthFirst(new object(), o => new BreakingSequence<object>());
 	}
