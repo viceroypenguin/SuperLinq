@@ -99,6 +99,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | RunLengthEncode				  | ✔️ | ✔️ |
 | Scan							  | ❌<br/>(Removed[^6]) | ❌[^6] |
 | ScanBy						  | ✔️ | ✔️ |
+| ScanEx						  | ✔️ | ✔️ |
 | ScanRight						  | ✔️ | ✔️ |
 | Segment						  | ✔️ | ✔️ |
 | Sequence						  | ✔️ | ✔️ |
@@ -140,5 +141,5 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 [^3]: Batch has been replaced by `.Buffer()` in .NET Core 3.1/.NET 5 (implemented by System.Interactive(.Async)) and `.Chunk()` in .NET 6
 [^4]: Pipe has been replaced by `.Do()` (implemented by System.Interactive(.Async))
 [^5]: Rank has changed behavior, please review the breaking changes for Rank [here](Source/SuperLinq/readme.md#rank).
-[^6]: Scan has been replaced by implementation in System.Interactive(.Async)
+[^6]: Scan has been renamed to ScanEx; Scan is taken by implementation in System.Interactive(.Async) which does not conform to standard Scan operator behavior
 [^7]: Slice has been obsoleted in favor of `.Take(Range)`.
