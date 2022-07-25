@@ -19,7 +19,7 @@ public class PreScanTest
 	[Fact]
 	public void PreScanWithSingleElement()
 	{
-		var source = new[] { 111 };
+		var source = Seq(111);
 		var result = source.PreScan(BreakingFunc.Of<int, int, int>(), 999);
 		result.AssertSequenceEqual(999);
 	}
@@ -27,15 +27,15 @@ public class PreScanTest
 	[Fact]
 	public void PreScanSum()
 	{
-		var result = SampleData.Values.PreScan(SampleData.Plus, 0);
+		var result = Seq(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).PreScan((a, b) => a + b, 0);
 		result.AssertSequenceEqual(0, 1, 3, 6, 10, 15, 21, 28, 36, 45);
 	}
 
 	[Fact]
 	public void PreScanMul()
 	{
-		var seq = new[] { 1, 2, 3 };
-		var result = seq.PreScan(SampleData.Mul, 1);
+		var seq = Seq(1, 2, 3);
+		var result = seq.PreScan((a, b) => a * b, 1);
 		result.AssertSequenceEqual(1, 1, 2);
 	}
 
@@ -43,10 +43,9 @@ public class PreScanTest
 	public void PreScanFuncIsNotInvokedUnnecessarily()
 	{
 		var count = 0;
-		var gold = new[] { 0, 1, 3 };
 		var sequence = Enumerable.Range(1, 3).PreScan((a, b) =>
-			++count == gold.Length ? throw new TestException() : a + b, 0);
+			++count == 3 ? throw new TestException() : a + b, 0);
 
-		sequence.AssertSequenceEqual(gold);
+		sequence.AssertSequenceEqual(0, 1, 3);
 	}
 }
