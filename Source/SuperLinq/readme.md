@@ -98,11 +98,10 @@ The return type has been changed from a stream of `KeyValuePair<T, int>`
 to a stream of `(T value, int count)`
 
 #### Scan
-The `.Scan()` method has been removed in favor of the System.Interactive version
-of the method. However, the behavior of the System.Interactive version differs
-slightly in that it does not return the seed/first element. If the existing behavior
-is desired, a new version of `.Scan()` may be introduced with a different name
-and the old behavior.
+The `.Scan()` method has been renamed to `.ScanEx()` in order to avoid conflict 
+with the System.Interactive version of the method. However, the behavior of the 
+System.Interactive version differs slightly in that it does not return the 
+seed/first element. The new `.ScanEx()` method maintains the original behavior.
 
 ## .NET Versions
 
@@ -527,6 +526,12 @@ This method has 2 overloads.
 
 Applies an accumulator function over sequence element keys, returning the keys
 along with intermediate accumulator states.
+
+This method has 2 overloads.
+
+### ScanEx
+
+Peforms a scan (inclusive prefix sum) on a sequence of elements.
 
 This method has 2 overloads.
 
