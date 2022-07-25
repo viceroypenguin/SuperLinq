@@ -1,7 +1,13 @@
 ﻿# SuperLinq
 
-[![Build status](https://github.com/viceroypenguin/SuperLinq/actions/workflows/build.yml/badge.svg)](https://github.com/viceroypenguin/SuperLinq/actions)
-[![License](https://img.shields.io/github/license/viceroypenguin/Superlinq)](license.txt)
+| Name            | Status | History |
+| :---            | :---   | :---    |
+| GitHub Actions  | ![Build](https://github.com/viceroypenguin/SuperLinq/actions/workflows/build.yml/badge.svg) | [![GitHub Actions Build History](https://buildstats.info/github/chart/viceroypenguin/superlinq?branch=master&includeBuildsFromPullRequest=false)](https://github.com/viceroypenguin/SuperLinq/actions) |
+
+[![GitHub release](https://img.shields.io/github/release/viceroypenguin/superlinq.svg)](https://GitHub.com/viceroypenguin/superlinq/releases/)
+[![GitHub license](https://img.shields.io/github/license/viceroypenguin/superlinq.svg)](https://github.com/viceroypenguin/superlinq/blob/master/license.txt) 
+[![GitHub issues](https://img.shields.io/github/issues/viceroypenguin/superlinq.svg)](https://GitHub.com/viceroypenguin/superlinq/issues/) 
+[![GitHub issues-closed](https://img.shields.io/github/issues-closed/viceroypenguin/superlinq.svg)](https://GitHub.com/viceroypenguin/superlinq/issues?q=is%3Aissue+is%3Aclosed) 
 
 LINQ to Objects is missing a few desirable features.
 
@@ -15,7 +21,7 @@ and `IAsyncEnumerable<T>` (via SuperLinq.Async package).
 
 SuperLinq is available for download and installation as a
 [NuGet package](https://www.nuget.org/packages/superlinq/).
-[![NuGet](https://img.shields.io/nuget/v/SuperLinq.svg?style=plastic)](https://www.nuget.org/packages/SuperLinq/)
+[![NuGet Badge](https://buildstats.info/nuget/SuperLinq)](https://www.nuget.org/packages/SuperLinq/)
 
 The documentation for the SuperLinq methods can be found [here](Source/SuperLinq/readme.md).
 
@@ -23,7 +29,7 @@ The documentation for the SuperLinq methods can be found [here](Source/SuperLinq
 
 SuperLinq.Async is available for download and installation as a
 [NuGet package](https://www.nuget.org/packages/superlinq.async/). 
-[![NuGet](https://img.shields.io/nuget/v/SuperLinq.Async.svg?style=plastic)](https://www.nuget.org/packages/SuperLinq.Async/)
+[![NuGet Badge](https://buildstats.info/nuget/SuperLinq.Async)](https://www.nuget.org/packages/SuperLinq.Async/)
 
 The documentation for the SuperLinq.Async methods can be found [here](Source/SuperLinq.Async/readme.md).
 
