@@ -33,6 +33,7 @@
 			- Cartesian
 			- Choose
 			- CountBetween
+			- CollectionEqual
 			- CompareCount
 			- CountBy
 			- CountDown

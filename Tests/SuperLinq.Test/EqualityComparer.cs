@@ -1,24 +1,22 @@
 ﻿namespace Test;
 
-static class EqualityComparer
+internal static class EqualityComparer
 {
-	/// <summary>
-	/// Creates an <see cref="IEqualityComparer{T}"/> given a
-	/// <see cref="Func{T,T,Boolean}"/>.
-	/// </summary>
-
 	public static IEqualityComparer<T> Create<T>(Func<T, T, bool> comparer) =>
 		new DelegatingComparer<T>(comparer);
 
-	sealed class DelegatingComparer<T> : IEqualityComparer<T>
+	public static IEqualityComparer<T> Create<T>(Func<T, T, bool> comparer, Func<T, int> hasher) =>
+		new DelegatingComparer<T>(comparer, hasher);
+
+	private sealed class DelegatingComparer<T> : IEqualityComparer<T>
 	{
-		readonly Func<T, T, bool> _comparer;
-		readonly Func<T, int> _hasher;
+		private readonly Func<T, T, bool> _comparer;
+		private readonly Func<T, int> _hasher;
 
 		public DelegatingComparer(Func<T, T, bool> comparer)
 			: this(comparer, x => x == null ? 0 : x.GetHashCode()) { }
 
-		DelegatingComparer(Func<T, T, bool> comparer, Func<T, int> hasher)
+		public DelegatingComparer(Func<T, T, bool> comparer, Func<T, int> hasher)
 		{
 			_comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
 			_hasher = hasher ?? throw new ArgumentNullException(nameof(hasher));
