@@ -156,6 +156,13 @@ sequence of result elements for source elements where the function returns a
 couple (2-tuple) having a `true` as its first element and result as the
 second.
 
+### CollectionEqual
+
+Determines if two sequences contain the same value and number of elements,
+without requiring the elements to be in the same order.
+
+This method has 2 overloads.
+
 ### CompareCount
 
 Compares two sequences and returns an integer that indicates whether the
