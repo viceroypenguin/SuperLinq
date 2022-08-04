@@ -26,7 +26,7 @@ public static partial class AsyncSuperEnumerable
 	/// <para>
 	/// This method uses the default equality comparer for <typeparamref name="TSource"/>, <see cref="EqualityComparer{T}.Default"/>, to
 	/// build a <see cref="HashSet{T}" /> of the items from <paramref name="first"/>; and 
-	/// compares the collection to <paramref name="second"/> using <see cref="HashSet{T}.SetEquals(IAsyncEnumerable{T})"/>.
+	/// compares the collection to <paramref name="second"/> using <see cref="HashSet{T}.SetEquals(IEnumerable{T})"/>.
 	/// </para>
 	/// <para>
 	/// This method executes immediately.
