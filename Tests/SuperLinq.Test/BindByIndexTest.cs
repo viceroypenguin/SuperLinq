@@ -14,7 +14,7 @@ public class BindByIndexTest
 	{
 		using var seq1 = TestingSequence.Of<int>();
 		using var seq2 = TestingSequence.Of<int>();
-		Assert.Equal(Array.Empty<int>(), seq1.BindByIndex(seq2));
+		Assert.Empty(seq1.BindByIndex(seq2));
 	}
 
 	[Fact]
