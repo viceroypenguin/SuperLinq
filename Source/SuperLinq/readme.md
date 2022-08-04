@@ -141,6 +141,12 @@ the third-last element and so on.
 
 (Obsoleted in favor of Insert)
 
+### BindByIndex
+
+Extracts elements from a sequence according to a a sequence of indices.
+
+This method has 2 overloads.
+
 ### Cartesian
 
 Returns the Cartesian product of two or more sequences by combining each
