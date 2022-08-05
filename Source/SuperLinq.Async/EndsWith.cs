@@ -95,8 +95,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static async ValueTask<bool> EndsWith<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, IEqualityComparer<T>? comparer)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
 
 		comparer ??= EqualityComparer<T>.Default;
 

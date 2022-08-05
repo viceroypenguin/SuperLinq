@@ -26,8 +26,8 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException">Any of the items in <paramref name="otherSources"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<T> Interleave<T>(this IAsyncEnumerable<T> source, params IAsyncEnumerable<T>[] otherSources)
 	{
-		source.ThrowIfNull();
-		otherSources.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(otherSources);
 		return Interleave(otherSources.Prepend(source));
 	}
 
@@ -54,9 +54,9 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException">Any of the items in <paramref name="sources"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<T> Interleave<T>(this IEnumerable<IAsyncEnumerable<T>> sources)
 	{
-		sources.ThrowIfNull();
+		Guard.IsNotNull(sources);
 		foreach (var s in sources)
-			s.ThrowIfNull(nameof(sources));
+			Guard.IsNotNull(s, nameof(sources));
 
 		return _(sources);
 

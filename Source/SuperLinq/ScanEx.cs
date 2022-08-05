@@ -27,8 +27,8 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		Func<TSource, TSource, TSource> transformation)
 	{
-		source.ThrowIfNull();
-		transformation.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(transformation);
 
 		return _(source, transformation);
 
@@ -72,8 +72,8 @@ public static partial class SuperEnumerable
 		TState seed,
 		Func<TState, TSource, TState> transformation)
 	{
-		source.ThrowIfNull();
-		transformation.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(transformation);
 
 		return _(source, seed, transformation);
 

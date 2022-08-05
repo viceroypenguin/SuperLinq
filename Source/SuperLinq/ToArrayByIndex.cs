@@ -61,7 +61,7 @@ public static partial class SuperEnumerable
 	public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
 		Func<T, int> indexSelector, Func<T, TResult> resultSelector)
 	{
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(resultSelector);
 		return source.ToArrayByIndex(indexSelector, (e, _) => resultSelector(e));
 	}
 
@@ -96,9 +96,9 @@ public static partial class SuperEnumerable
 	public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
 		Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
 	{
-		source.ThrowIfNull();
-		indexSelector.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(indexSelector);
+		Guard.IsNotNull(resultSelector);
 
 		var lastIndex = -1;
 		var indexed = (List<KeyValuePair<int, T>>?)null;
@@ -178,7 +178,7 @@ public static partial class SuperEnumerable
 	public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
 		Func<T, int> indexSelector, Func<T, TResult> resultSelector)
 	{
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(resultSelector);
 		return source.ToArrayByIndex(length, indexSelector, (e, _) => resultSelector(e));
 	}
 
@@ -213,10 +213,10 @@ public static partial class SuperEnumerable
 	public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
 		Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
 	{
-		source.ThrowIfNull();
-		length.ThrowIfLessThan(0);
-		indexSelector.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsGreaterThanOrEqualTo(length, 0);
+		Guard.IsNotNull(indexSelector);
+		Guard.IsNotNull(resultSelector);
 
 		var array = new TResult[length];
 		foreach (var e in source)

@@ -49,8 +49,8 @@ public static partial class SuperEnumerable
 
 	public static bool StartsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T>? comparer)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
 
 		if (first.TryGetCollectionCount(out var firstCount) &&
 			second.TryGetCollectionCount(out var secondCount) &&

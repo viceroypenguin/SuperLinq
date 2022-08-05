@@ -29,10 +29,10 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> Move<T>(this IEnumerable<T> source, int fromIndex, int count, int toIndex)
 	{
-		source.ThrowIfNull();
-		fromIndex.ThrowIfLessThan(0);
-		count.ThrowIfLessThan(0);
-		toIndex.ThrowIfLessThan(0);
+		Guard.IsNotNull(source);
+		Guard.IsGreaterThanOrEqualTo(fromIndex, 0);
+		Guard.IsGreaterThanOrEqualTo(count, 0);
+		Guard.IsGreaterThanOrEqualTo(toIndex, 0);
 
 		if (toIndex == fromIndex || count == 0)
 			return source;

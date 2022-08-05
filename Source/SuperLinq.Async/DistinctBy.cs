@@ -50,8 +50,8 @@ public static partial class AsyncSuperEnumerable
 		Func<TSource, TKey> keySelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
 
 		return _(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 

@@ -14,7 +14,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> Take<TSource>(this IAsyncEnumerable<TSource> source, Range range)
 	{
-		source.ThrowIfNull();
+		Guard.IsNotNull(source);
 
 		var start = range.Start;
 		var end = range.End;

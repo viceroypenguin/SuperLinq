@@ -215,10 +215,10 @@ public static partial class AsyncSuperEnumerable
 		Func<TState, TKey, TSource, CancellationToken, ValueTask<TState>> accumulator,
 		IEqualityComparer<TKey>? comparer)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
-		seedSelector.ThrowIfNull();
-		accumulator.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
+		Guard.IsNotNull(seedSelector);
+		Guard.IsNotNull(accumulator);
 
 		comparer ??= EqualityComparer<TKey>.Default;
 

@@ -36,8 +36,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TResult> TagFirstLast<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
 	{
-		source.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(resultSelector);
 
 		return _(source, resultSelector);
 

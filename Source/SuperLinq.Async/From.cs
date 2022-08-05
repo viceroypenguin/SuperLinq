@@ -16,7 +16,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> From<T>(Func<Task<T>> function)
 	{
-		function.ThrowIfNull();
+		Guard.IsNotNull(function);
 		return _(function);
 
 		static async IAsyncEnumerable<T> _(Func<Task<T>> function, [EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -41,8 +41,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> From<T>(Func<Task<T>> function1, Func<Task<T>> function2)
 	{
-		function1.ThrowIfNull();
-		function2.ThrowIfNull();
+		Guard.IsNotNull(function1);
+		Guard.IsNotNull(function2);
 		return _(function1, function2);
 
 		static async IAsyncEnumerable<T> _(Func<Task<T>> function1, Func<Task<T>> function2, [EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -70,9 +70,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> From<T>(Func<Task<T>> function1, Func<Task<T>> function2, Func<Task<T>> function3)
 	{
-		function1.ThrowIfNull();
-		function2.ThrowIfNull();
-		function3.ThrowIfNull();
+		Guard.IsNotNull(function1);
+		Guard.IsNotNull(function2);
+		Guard.IsNotNull(function3);
 		return _(function1, function2, function3);
 
 		static async IAsyncEnumerable<T> _(Func<Task<T>> function1, Func<Task<T>> function2, Func<Task<T>> function3, [EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -117,7 +117,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> Evaluate<T>(this IEnumerable<Func<Task<T>>> functions)
 	{
-		functions.ThrowIfNull();
+		Guard.IsNotNull(functions);
 		return _(functions);
 
 		static async IAsyncEnumerable<T> _(IEnumerable<Func<Task<T>>> functions, [EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -145,7 +145,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> Evaluate<T>(this IAsyncEnumerable<Func<Task<T>>> functions)
 	{
-		functions.ThrowIfNull();
+		Guard.IsNotNull(functions);
 		return _(functions);
 
 		static async IAsyncEnumerable<T> _(IAsyncEnumerable<Func<Task<T>>> functions, [EnumeratorCancellation] CancellationToken cancellationToken = default)

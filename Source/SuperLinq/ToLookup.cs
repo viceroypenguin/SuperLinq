@@ -34,7 +34,7 @@ public static partial class SuperEnumerable
 	public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
 		IEqualityComparer<TKey>? comparer)
 	{
-		source.ThrowIfNull();
+		Guard.IsNotNull(source);
 		return source.ToLookup(e => e.Key, e => e.Value, comparer);
 	}
 
@@ -71,7 +71,7 @@ public static partial class SuperEnumerable
 	public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
 		IEqualityComparer<TKey>? comparer)
 	{
-		source.ThrowIfNull();
+		Guard.IsNotNull(source);
 		return source.ToLookup(e => e.Key, e => e.Value, comparer);
 	}
 }

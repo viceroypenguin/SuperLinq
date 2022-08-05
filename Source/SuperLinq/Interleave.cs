@@ -26,8 +26,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException">Any of the items in <paramref name="otherSources"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<T> Interleave<T>(this IEnumerable<T> source, params IEnumerable<T>[] otherSources)
 	{
-		source.ThrowIfNull();
-		otherSources.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(otherSources);
 
 		return Interleave(otherSources.Prepend(source));
 	}
@@ -54,7 +54,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException">Any of the items in <paramref name="sources"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<T> Interleave<T>(this IEnumerable<IEnumerable<T>> sources)
 	{
-		sources.ThrowIfNull();
+		Guard.IsNotNull(sources);
 		if (sources.Any(s => s == null))
 			throw new ArgumentNullException(nameof(sources), "One or more sequences passed to Interleave was null.");
 

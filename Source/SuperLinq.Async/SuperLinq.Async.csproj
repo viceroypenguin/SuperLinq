@@ -109,6 +109,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Using Include="CommunityToolkit.Diagnostics" />
 		<Using Include="System.Runtime.CompilerServices" />
 	</ItemGroup>
 

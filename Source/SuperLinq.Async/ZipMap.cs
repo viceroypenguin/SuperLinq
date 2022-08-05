@@ -19,8 +19,8 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="selector"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<(TSource item, TResult result)> ZipMap<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TResult> selector)
 	{
-		source.ThrowIfNull();
-		selector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(selector);
 
 		return source.ZipMap((x, _) => new ValueTask<TResult>(selector(x)));
 	}
@@ -42,8 +42,8 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="selector"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<(TSource item, TResult result)> ZipMap<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<TResult>> selector)
 	{
-		source.ThrowIfNull();
-		selector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(selector);
 
 		return source.ZipMap((x, _) => selector(x));
 	}
@@ -65,8 +65,8 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="selector"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<(TSource item, TResult result)> ZipMap<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<TResult>> selector)
 	{
-		source.ThrowIfNull();
-		selector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(selector);
 
 		return _(source, selector);
 

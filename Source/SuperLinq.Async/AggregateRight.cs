@@ -77,13 +77,13 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static async ValueTask<TSource> AggregateRight<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, CancellationToken, ValueTask<TSource>> func, CancellationToken cancellationToken = default)
 	{
-		source.ThrowIfNull();
-		func.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
 
 		await using var e = source.Reverse().GetConfiguredAsyncEnumerator(cancellationToken);
 
 		if (!await e.MoveNextAsync())
-			ExceptionHelpers.ThrowInvalidOperationException("Sequence contains no elements");
+			ThrowHelper.ThrowInvalidOperationException("Sequence contains no elements");
 
 		var seed = e.Current;
 
@@ -183,8 +183,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static async ValueTask<TAccumulate> AggregateRight<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func, CancellationToken cancellationToken = default)
 	{
-		source.ThrowIfNull();
-		func.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
 
 		await foreach (var i in source.Reverse().WithCancellation(cancellationToken).ConfigureAwait(false))
 			seed = await func(i, seed, cancellationToken).ConfigureAwait(false);
@@ -294,9 +294,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static async ValueTask<TResult> AggregateRight<TSource, TAccumulate, TResult>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func, Func<TAccumulate, CancellationToken, ValueTask<TResult>> resultSelector, CancellationToken cancellationToken = default)
 	{
-		source.ThrowIfNull();
-		func.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
+		Guard.IsNotNull(resultSelector);
 
 		return await resultSelector(await source.AggregateRight(seed, func, cancellationToken).ConfigureAwait(false), cancellationToken).ConfigureAwait(false);
 	}
