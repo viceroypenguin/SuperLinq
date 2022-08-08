@@ -36,9 +36,9 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> source, int subsetSize, Random rand)
 	{
-		rand.ThrowIfNull();
-		source.ThrowIfNull();
-		subsetSize.ThrowIfLessThan(0);
+		Guard.IsNotNull(rand);
+		Guard.IsNotNull(source);
+		Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
 
 		return RandomSubsetImpl(source, rand, seq => (seq.ToArray(), subsetSize));
 	}
@@ -57,7 +57,9 @@ public static partial class SuperEnumerable
 
 		if (array.Length < subsetSize)
 		{
-			subsetSize.ThrowOutOfRange("Subset size must be less than or equal to the source length.");
+			ThrowHelper.ThrowArgumentOutOfRangeException(
+				nameof(subsetSize),
+				"Subset size must be less than or equal to the source length.");
 		}
 
 		var m = 0;                // keeps track of count items shuffled

@@ -134,7 +134,7 @@ public partial class SuperEnumerable
 		where TState : notnull
 		where TCost : notnull
 	{
-		getNeighbors.ThrowIfNull();
+		Guard.IsNotNull(getNeighbors);
 
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
@@ -293,7 +293,7 @@ public partial class SuperEnumerable
 		where TState : notnull
 		where TCost : notnull
 	{
-		getNeighbors.ThrowIfNull();
+		Guard.IsNotNull(getNeighbors);
 
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
@@ -471,7 +471,7 @@ public partial class SuperEnumerable
 		where TState : notnull
 		where TCost : notnull
 	{
-		getNeighbors.ThrowIfNull();
+		Guard.IsNotNull(getNeighbors);
 
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
@@ -643,7 +643,7 @@ public partial class SuperEnumerable
 		where TState : notnull
 		where TCost : notnull
 	{
-		getNeighbors.ThrowIfNull();
+		Guard.IsNotNull(getNeighbors);
 
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
@@ -823,7 +823,7 @@ public partial class SuperEnumerable
 		where TState : notnull
 		where TCost : notnull
 	{
-		getNeighbors.ThrowIfNull();
+		Guard.IsNotNull(getNeighbors);
 
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;

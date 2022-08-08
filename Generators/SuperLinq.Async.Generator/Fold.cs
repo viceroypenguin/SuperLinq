@@ -49,12 +49,12 @@ public static partial class AsyncSuperEnumerable
     /// <exception cref=""InvalidOperationException""><paramref name=""source""/> does not contain exactly {e.CountElements}.</exception>
     public static async ValueTask<TResult> Fold<T, TResult>(this IAsyncEnumerable<T> source, Func<{e.Ts}, TResult> folder)
     {{
-		source.ThrowIfNull();
-		folder.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(folder);
 
 		var elements = await source.Take({e.Count1Arg}).ToListAsync();
 		if (elements.Count != {e.CountArg})
-			throw new InvalidOperationException(
+			ThrowHelper.ThrowInvalidOperationException(
 				$""Sequence contained an incorrect number of elements. (Expected: {e.CountArg}, Actual: {{elements.Count}})"");
 
 		return folder(");

@@ -77,10 +77,10 @@ public static partial class SuperEnumerable
     {{");
 
 			ForEachArgument((j, o) => $@"
-        {o}.ThrowIfNull();");
+        Guard.IsNotNull({o});");
 
 			sb.Append($@"
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(resultSelector);
 
         return _({BuildArgumentString((_, o) => o)}, resultSelector);
 

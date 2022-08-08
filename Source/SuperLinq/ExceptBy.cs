@@ -76,9 +76,9 @@ public static partial class SuperEnumerable
 		IEqualityComparer<TKey>? keyComparer)
 #endif
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
-		keySelector.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsNotNull(keySelector);
 
 		return _(first, second, keySelector, keyComparer);
 

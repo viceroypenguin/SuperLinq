@@ -66,10 +66,10 @@ public static partial class SuperEnumerable
 		Func<TState, TKey, TSource, TState> accumulator,
 		IEqualityComparer<TKey>? comparer)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
-		seedSelector.ThrowIfNull();
-		accumulator.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
+		Guard.IsNotNull(seedSelector);
+		Guard.IsNotNull(accumulator);
 
 		comparer ??= EqualityComparer<TKey>.Default;
 

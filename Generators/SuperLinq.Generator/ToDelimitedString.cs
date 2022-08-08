@@ -51,8 +51,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static string ToDelimitedString(this IEnumerable<global::{type.FullName}> source, string delimiter)
 	{{
-		source.ThrowIfNull();
-		delimiter.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(delimiter);
 		return ToDelimitedStringImpl(source, delimiter, Builder);
 
 		static StringBuilder Builder(StringBuilder sb, global::{type.FullName} e) => sb.Append(e);

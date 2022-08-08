@@ -45,8 +45,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillForward<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate)
 	{
-		source.ThrowIfNull();
-		predicate.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(predicate);
 
 		return FillForwardImpl(source, i => new ValueTask<bool>(predicate(i)), fillSelector: null);
 	}
@@ -72,8 +72,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillForward<T>(this IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> predicate)
 	{
-		source.ThrowIfNull();
-		predicate.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(predicate);
 
 		return FillForwardImpl(source, predicate, fillSelector: null);
 	}
@@ -104,9 +104,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillForward<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
 	{
-		source.ThrowIfNull();
-		predicate.ThrowIfNull();
-		fillSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(predicate);
+		Guard.IsNotNull(fillSelector);
 
 		return FillForwardImpl(source, i => new ValueTask<bool>(predicate(i)), (a, b) => new ValueTask<T>(fillSelector(a, b)));
 	}
@@ -137,9 +137,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillForward<T>(this IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> predicate, Func<T, T, T> fillSelector)
 	{
-		source.ThrowIfNull();
-		predicate.ThrowIfNull();
-		fillSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(predicate);
+		Guard.IsNotNull(fillSelector);
 
 		return FillForwardImpl(source, predicate, (a, b) => new ValueTask<T>(fillSelector(a, b)));
 	}
@@ -170,9 +170,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillForward<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate, Func<T, T, ValueTask<T>> fillSelector)
 	{
-		source.ThrowIfNull();
-		predicate.ThrowIfNull();
-		fillSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(predicate);
+		Guard.IsNotNull(fillSelector);
 
 		return FillForwardImpl(source, i => new ValueTask<bool>(predicate(i)), fillSelector);
 	}
@@ -203,9 +203,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillForward<T>(this IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> predicate, Func<T, T, ValueTask<T>> fillSelector)
 	{
-		source.ThrowIfNull();
-		predicate.ThrowIfNull();
-		fillSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(predicate);
+		Guard.IsNotNull(fillSelector);
 
 		return FillForwardImpl(source, predicate, fillSelector);
 	}

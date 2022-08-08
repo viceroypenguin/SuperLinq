@@ -65,8 +65,8 @@ public static partial class SuperEnumerable
 		Func<TSource, TKey> keySelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
 
 		return GroupAdjacent(source, keySelector, Identity<TSource>(), comparer);
 	}
@@ -105,9 +105,9 @@ public static partial class SuperEnumerable
 		Func<TSource, TKey> keySelector,
 		Func<TSource, TElement> elementSelector)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
-		elementSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
+		Guard.IsNotNull(elementSelector);
 
 		return GroupAdjacentImpl(
 			source, keySelector, elementSelector,
@@ -153,9 +153,9 @@ public static partial class SuperEnumerable
 		Func<TSource, TElement> elementSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
-		elementSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
+		Guard.IsNotNull(elementSelector);
 
 		return GroupAdjacentImpl(
 			source, keySelector, elementSelector,
@@ -197,9 +197,9 @@ public static partial class SuperEnumerable
 		Func<TSource, TKey> keySelector,
 		Func<TKey, IEnumerable<TSource>, TResult> resultSelector)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
+		Guard.IsNotNull(resultSelector);
 
 		return GroupAdjacentImpl(
 			source, keySelector, Identity<TSource>(),
@@ -244,9 +244,9 @@ public static partial class SuperEnumerable
 		Func<TKey, IEnumerable<TSource>, TResult> resultSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
+		Guard.IsNotNull(resultSelector);
 
 		return GroupAdjacentImpl(
 			source, keySelector, Identity<TSource>(),

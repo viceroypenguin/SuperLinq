@@ -40,9 +40,9 @@ public static partial class AsyncSuperEnumerable
 		IAsyncEnumerable<TSecond> second,
 		Func<TFirst, TSecond, TResult> resultSelector)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsNotNull(resultSelector);
 
 		return ZipLongestImpl(first, second, AsyncEnumerableEx.Repeat(default(object)), AsyncEnumerableEx.Repeat(default(object)), (a, b, c, d) => resultSelector(a, b), 2);
 	}
@@ -90,10 +90,10 @@ public static partial class AsyncSuperEnumerable
 		IAsyncEnumerable<T3> third,
 		Func<T1, T2, T3, TResult> resultSelector)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
-		third.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsNotNull(third);
+		Guard.IsNotNull(resultSelector);
 
 		return ZipLongestImpl(first, second, third, AsyncEnumerableEx.Repeat(default(object)), (a, b, c, d) => resultSelector(a, b, c), 3);
 	}
@@ -146,11 +146,11 @@ public static partial class AsyncSuperEnumerable
 		IAsyncEnumerable<T4> fourth,
 		Func<T1, T2, T3, T4, TResult> resultSelector)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
-		third.ThrowIfNull();
-		fourth.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsNotNull(third);
+		Guard.IsNotNull(fourth);
+		Guard.IsNotNull(resultSelector);
 
 		return ZipLongestImpl(first, second, third, fourth, resultSelector, 4);
 	}

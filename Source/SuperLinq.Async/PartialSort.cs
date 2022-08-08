@@ -92,8 +92,8 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<T> source, int count,
 		IComparer<T>? comparer, OrderByDirection direction)
 	{
-		source.ThrowIfNull();
-		count.ThrowIfLessThan(1);
+		Guard.IsNotNull(source);
+		Guard.IsGreaterThanOrEqualTo(count, 1);
 
 		comparer ??= Comparer<T>.Default;
 		if (direction == OrderByDirection.Descending)
@@ -235,9 +235,9 @@ public static partial class AsyncSuperEnumerable
 		IComparer<TKey>? comparer,
 		OrderByDirection direction)
 	{
-		source.ThrowIfNull();
-		count.ThrowIfLessThan(1);
-		keySelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsGreaterThanOrEqualTo(count, 1);
+		Guard.IsNotNull(keySelector);
 
 		comparer ??= Comparer<TKey>.Default;
 		if (direction == OrderByDirection.Descending)

@@ -24,13 +24,13 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static TSource AggregateRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
 	{
-		source.ThrowIfNull();
-		func.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
 
 		using var e = source.Reverse().GetEnumerator();
 
 		if (!e.MoveNext())
-			ExceptionHelpers.ThrowInvalidOperationException("Sequence contains no elements");
+			ThrowHelper.ThrowInvalidOperationException("Sequence contains no elements");
 
 		var seed = e.Current;
 
@@ -67,8 +67,8 @@ public static partial class SuperEnumerable
 
 	public static TAccumulate AggregateRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
 	{
-		source.ThrowIfNull();
-		func.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
 
 		foreach (var i in source.Reverse())
 			seed = func(i, seed);
@@ -107,9 +107,9 @@ public static partial class SuperEnumerable
 
 	public static TResult AggregateRight<TSource, TAccumulate, TResult>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func, Func<TAccumulate, TResult> resultSelector)
 	{
-		source.ThrowIfNull();
-		func.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
+		Guard.IsNotNull(resultSelector);
 
 		return resultSelector(source.AggregateRight(seed, func));
 	}

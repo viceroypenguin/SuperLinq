@@ -16,7 +16,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<(TSource current, TSource? lead)> Lead<TSource>(this IAsyncEnumerable<TSource> source, int offset)
 	{
-		source.ThrowIfNull();
+		Guard.IsNotNull(source);
 
 		return source.Select(Some)
 					 .Lead(offset, default, (curr, lead) => (curr.Value, lead is (true, var some) ? some : default));
@@ -39,8 +39,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TResult> Lead<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
 	{
-		source.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(resultSelector);
 
 		return source.Select(Some)
 					 .Lead(offset, default, (curr, lead) => resultSelector(curr.Value, lead is (true, var some) ? some : default));
@@ -81,9 +81,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TResult> Lead<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, ValueTask<TResult>> resultSelector)
 	{
-		source.ThrowIfNull();
-		resultSelector.ThrowIfNull();
-		offset.ThrowIfLessThan(1);
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(resultSelector);
+		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
 		return _(source, offset, defaultLeadValue, resultSelector);
 

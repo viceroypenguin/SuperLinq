@@ -16,8 +16,8 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="filter"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> Where<TSource>(this IAsyncEnumerable<TSource> source, IAsyncEnumerable<bool> filter)
 	{
-		source.ThrowIfNull();
-		filter.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(filter);
 
 		return _(source, filter);
 
@@ -31,7 +31,7 @@ public static partial class AsyncSuperEnumerable
 				var sMoved = await sIter.MoveNextAsync();
 				var fMoved = await fIter.MoveNextAsync();
 				if (sMoved != fMoved)
-					ExceptionHelpers.Throw(nameof(filter), "'source' and 'filter' did not have equal lengths.");
+					ThrowHelper.ThrowArgumentException(nameof(filter), "'source' and 'filter' did not have equal lengths.");
 
 				if (!sMoved)
 					yield break;

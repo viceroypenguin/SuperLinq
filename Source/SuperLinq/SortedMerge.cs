@@ -174,8 +174,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource>? comparer, params IEnumerable<TSource>[] otherSequences)
 	{
-		source.ThrowIfNull();
-		otherSequences.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(otherSequences);
 
 		if (otherSequences.Length == 0)
 			return source; // optimization for when otherSequences is empty
