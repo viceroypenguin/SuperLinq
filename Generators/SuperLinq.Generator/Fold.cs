@@ -47,12 +47,12 @@ public static partial class SuperEnumerable
     /// <exception cref=""InvalidOperationException""><paramref name=""source""/> does not contain exactly {e.CountElements}.</exception>
     public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<{e.Ts}, TResult> folder)
     {{
-		source.ThrowIfNull();
-		folder.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(folder);
 
 		var elements = source.Take({e.CountArg} + 1).ToList();
 		if (elements.Count != {e.CountArg})
-			throw new InvalidOperationException(
+			ThrowHelper.ThrowInvalidOperationException(
 				$""Sequence contained an incorrect number of elements. (Expected: {e.CountArg}, Actual: {{elements.Count}})"");
 
 		return folder(");

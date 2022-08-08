@@ -70,13 +70,13 @@ public static partial class SuperEnumerable
 			sb.Append($@"
         Func<{BuildArgumentString(i, j => $"TAccumulate{j}")}, TResult> resultSelector)
 	{{
-		source.ThrowIfNull();");
+		Guard.IsNotNull(source);");
 
 			ForEachArgument(i, (j, ordinal) => $@"
-        accumulator{j}.ThrowIfNull();");
+        Guard.IsNotNull(accumulator{j});");
 
 			sb.Append($@"
-        resultSelector.ThrowIfNull();
+        Guard.IsNotNull(resultSelector);
 
 		foreach (var item in source)
 		{{");

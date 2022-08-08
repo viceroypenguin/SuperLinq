@@ -15,7 +15,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, bool> newSegmentPredicate)
 	{
-		newSegmentPredicate.ThrowIfNull();
+		Guard.IsNotNull(newSegmentPredicate);
 
 		return Segment(source, (curr, prev, index) => newSegmentPredicate(curr));
 	}
@@ -33,7 +33,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
 	{
-		newSegmentPredicate.ThrowIfNull();
+		Guard.IsNotNull(newSegmentPredicate);
 
 		return Segment(source, (curr, prev, index) => newSegmentPredicate(curr, index));
 	}
@@ -51,8 +51,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
 	{
-		source.ThrowIfNull();
-		newSegmentPredicate.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(newSegmentPredicate);
 
 		return _(source, newSegmentPredicate);
 

@@ -86,8 +86,8 @@ public static partial class AsyncSuperEnumerable
 		Func<TCardinality, T?, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
-		source.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(resultSelector);
 
 		await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
 		if (!await e.MoveNextAsync())

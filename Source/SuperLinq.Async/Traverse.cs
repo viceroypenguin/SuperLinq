@@ -25,7 +25,7 @@ public partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<T> TraverseBreadthFirst<T>(T root, Func<T, IAsyncEnumerable<T>> childrenSelector)
 	{
-		childrenSelector.ThrowIfNull();
+		Guard.IsNotNull(childrenSelector);
 
 		return _(root, childrenSelector);
 
@@ -72,7 +72,7 @@ public partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<T> TraverseDepthFirst<T>(T root, Func<T, IAsyncEnumerable<T>> childrenSelector)
 	{
-		childrenSelector.ThrowIfNull();
+		Guard.IsNotNull(childrenSelector);
 
 		return _(root, childrenSelector);
 

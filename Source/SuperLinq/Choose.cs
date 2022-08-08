@@ -33,8 +33,8 @@ public static partial class SuperEnumerable
 		this IEnumerable<T> source,
 		Func<T, (bool, TResult)> chooser)
 	{
-		source.ThrowIfNull();
-		chooser.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(chooser);
 
 		return _(source, chooser);
 

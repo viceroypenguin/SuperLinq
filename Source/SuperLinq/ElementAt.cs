@@ -21,7 +21,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static TSource ElementAt<TSource>(this IEnumerable<TSource> source, Index index)
 	{
-		source.ThrowIfNull();
+		Guard.IsNotNull(source);
 
 		if (!index.IsFromEnd)
 		{
@@ -35,7 +35,7 @@ public static partial class SuperEnumerable
 
 		if (!TryGetElementFromEnd(source, index.Value, out var element))
 		{
-			index.ThrowOutOfRange();
+			ThrowHelper.ThrowArgumentOutOfRangeException(nameof(index));
 		}
 
 		return element;
@@ -53,7 +53,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static TSource? ElementAtOrDefault<TSource>(this IEnumerable<TSource> source, Index index)
 	{
-		source.ThrowIfNull();
+		Guard.IsNotNull(source);
 
 		if (!index.IsFromEnd)
 		{

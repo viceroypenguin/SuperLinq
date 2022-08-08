@@ -34,8 +34,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TSource> TakeUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
 	{
-		source.ThrowIfNull();
-		predicate.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(predicate);
 
 		return _(source, predicate);
 		

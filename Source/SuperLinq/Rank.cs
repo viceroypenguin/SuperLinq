@@ -49,8 +49,8 @@ public static partial class SuperEnumerable
 	public static IEnumerable<(TSource item, int rank)> DenseRankBy<TSource, TKey>(
 		this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
 
 		return RankByImpl(source, keySelector, comparer: null, isDense: true);
 	}
@@ -74,8 +74,8 @@ public static partial class SuperEnumerable
 		Func<TSource, TKey> keySelector,
 		IComparer<TKey> comparer)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
 
 		return RankByImpl(source, keySelector, comparer, isDense: true);
 	}
@@ -127,8 +127,8 @@ public static partial class SuperEnumerable
 	public static IEnumerable<(TSource item, int rank)> RankBy<TSource, TKey>(
 		this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
 
 		return RankByImpl(source, keySelector, comparer: null, isDense: false);
 	}
@@ -152,8 +152,8 @@ public static partial class SuperEnumerable
 		Func<TSource, TKey> keySelector,
 		IComparer<TKey> comparer)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
 
 		return RankByImpl(source, keySelector, comparer, isDense: false);
 	}

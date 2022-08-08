@@ -63,8 +63,8 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		int count, Func<TSource, int?, TResult> resultSelector)
 	{
-		source.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(resultSelector);
 
 		return source.TryGetCollectionCount(out var _)
 			? IterateCollection(source, count, resultSelector)

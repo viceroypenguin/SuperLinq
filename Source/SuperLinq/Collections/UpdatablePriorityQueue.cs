@@ -148,7 +148,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// </exception>
 	public UpdatablePriorityQueue(int initialCapacity, IComparer<TPriority>? priorityComparer, IEqualityComparer<TElement>? elementComparer)
 	{
-		initialCapacity.ThrowIfLessThan(0);
+		Guard.IsGreaterThanOrEqualTo(initialCapacity, 0);
 
 		_nodes = new (TElement, TPriority)[initialCapacity];
 		_priorityComparer = InitializeComparer(priorityComparer);
@@ -196,7 +196,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// </remarks>
 	public UpdatablePriorityQueue(IEnumerable<(TElement Element, TPriority Priority)> items, IComparer<TPriority>? priorityComparer, IEqualityComparer<TElement>? elementComparer)
 	{
-		items.ThrowIfNull();
+		Guard.IsNotNull(items);
 
 		_nodes = items.ToArray();
 		_priorityComparer = InitializeComparer(priorityComparer);
@@ -339,7 +339,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	{
 		if (_size == 0)
 		{
-			ExceptionHelpers.ThrowInvalidOperationException("Queue empty.");
+			ThrowHelper.ThrowInvalidOperationException("Queue empty.");
 		}
 
 		return _nodes[0].Element;
@@ -354,7 +354,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	{
 		if (_size == 0)
 		{
-			ExceptionHelpers.ThrowInvalidOperationException("Queue empty.");
+			ThrowHelper.ThrowInvalidOperationException("Queue empty.");
 		}
 
 		var element = _nodes[0].Element;
@@ -464,7 +464,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <remarks>Any existing elements will be unconditionally updated to the new priority.</remarks>
 	public void EnqueueRange(IEnumerable<(TElement Element, TPriority Priority)> items)
 	{
-		items.ThrowIfNull();
+		Guard.IsNotNull(items);
 
 		var count = 0;
 		var collection = items as ICollection<(TElement Element, TPriority Priority)>;
@@ -528,7 +528,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <remarks>Any existing elements will be unconditionally updated to the new priority.</remarks>
 	public void EnqueueRange(IEnumerable<TElement> elements, TPriority priority)
 	{
-		elements.ThrowIfNull();
+		Guard.IsNotNull(elements);
 
 		int count;
 		if (elements is ICollection<(TElement Element, TPriority Priority)> collection &&
@@ -581,7 +581,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <remarks>Any existing elements will be updated to the new priority if and only if the new priority is lower than the existing priority.</remarks>
 	public void EnqueueRangeMinimum(IEnumerable<(TElement Element, TPriority Priority)> items)
 	{
-		items.ThrowIfNull();
+		Guard.IsNotNull(items);
 
 		var count = 0;
 		var collection = items as ICollection<(TElement Element, TPriority Priority)>;
@@ -645,7 +645,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <remarks>Any existing elements will be updated to the new priority if and only if the new priority is lower than the existing priority.</remarks>
 	public void EnqueueRangeMinimum(IEnumerable<TElement> elements, TPriority priority)
 	{
-		elements.ThrowIfNull();
+		Guard.IsNotNull(elements);
 
 		int count;
 		if (elements is ICollection<(TElement Element, TPriority Priority)> collection &&
@@ -714,7 +714,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <returns>The current capacity of the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>.</returns>
 	public int EnsureCapacity(int capacity)
 	{
-		capacity.ThrowIfLessThan(0);
+		Guard.IsGreaterThanOrEqualTo(capacity, 0);
 
 		if (_nodes.Length < capacity)
 		{
@@ -1073,7 +1073,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 
 		void ICollection.CopyTo(Array array, int index)
 		{
-			array.ThrowIfNull();
+			Guard.IsNotNull(array);
 
 			try
 			{
@@ -1081,7 +1081,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 			}
 			catch (ArrayTypeMismatchException)
 			{
-				array.Throw("Target array type is not compatible with the type of items in the collection.");
+				ThrowHelper.ThrowArrayTypeMismatchException();
 			}
 		}
 
@@ -1131,7 +1131,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 			{
 				if (_version != _queue._version)
 				{
-					ExceptionHelpers.ThrowInvalidOperationException(
+					ThrowHelper.ThrowInvalidOperationException(
 						"Collection was modified; enumeration operation may not execute.");
 				}
 
@@ -1150,7 +1150,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 			{
 				if (_version != _queue._version)
 				{
-					ExceptionHelpers.ThrowInvalidOperationException(
+					ThrowHelper.ThrowInvalidOperationException(
 						"Collection was modified; enumeration operation may not execute.");
 				}
 
@@ -1178,7 +1178,7 @@ internal sealed class PriorityQueueDebugView<TElement, TPriority>
 
 	public PriorityQueueDebugView(UpdatablePriorityQueue<TElement, TPriority> queue)
 	{
-		queue.ThrowIfNull();
+		Guard.IsNotNull(queue);
 
 		_queue = queue;
 		_sort = true;

@@ -17,7 +17,7 @@ partial class SuperEnumerable
 
 	public static IEnumerable<T> Evaluate<T>(this IEnumerable<Func<T>> functions)
 	{
-		functions.ThrowIfNull();
+		Guard.IsNotNull(functions);
 		return functions.Select(f => f());
 	}
 }

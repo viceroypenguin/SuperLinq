@@ -45,8 +45,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate)
 	{
-		source.ThrowIfNull();
-		predicate.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(predicate);
 
 		return FillForwardImpl(source, predicate, null);
 	}
@@ -77,9 +77,9 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
 	{
-		source.ThrowIfNull();
-		predicate.ThrowIfNull();
-		fillSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(predicate);
+		Guard.IsNotNull(fillSelector);
 
 		return FillForwardImpl(source, predicate, fillSelector);
 	}

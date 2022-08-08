@@ -30,9 +30,9 @@ public static partial class AsyncSuperEnumerable
 	/// </exception>
 	public static IAsyncEnumerable<T> Insert<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, int index)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
-		index.ThrowIfLessThan(0);
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsGreaterThanOrEqualTo(index, 0);
 
 		return _(first, second, index);
 
@@ -46,7 +46,9 @@ public static partial class AsyncSuperEnumerable
 				yield return iter.Current;
 
 			if (i < index)
-				index.ThrowOutOfRange("Insertion index is greater than the length of the first sequence.");
+				ThrowHelper.ThrowArgumentOutOfRangeException(
+					nameof(index),
+					"Insertion index is greater than the length of the first sequence.");
 
 			await foreach (var item in second.WithCancellation(cancellationToken).ConfigureAwait(false))
 				yield return item;
@@ -84,8 +86,8 @@ public static partial class AsyncSuperEnumerable
 	/// </exception>
 	public static IAsyncEnumerable<T> Insert<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, Index index)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
 
 		return !index.IsFromEnd ? Insert(first, second, index) :
 			index.Value == 0 ? first.Concat(second) :
@@ -99,7 +101,9 @@ public static partial class AsyncSuperEnumerable
 			{
 				var (_, countdown) = e.Current;
 				if (countdown is { } n && n != index - 1)
-					index.ThrowOutOfRange("Insertion index is greater than the length of the first sequence.");
+					ThrowHelper.ThrowArgumentOutOfRangeException(
+						nameof(index),
+						"Insertion index is greater than the length of the first sequence.");
 
 				do
 				{

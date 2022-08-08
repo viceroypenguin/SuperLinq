@@ -33,7 +33,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<(int index, TSource item)> Index<TSource>(this IEnumerable<TSource> source, int startIndex)
 	{
-		source.ThrowIfNull();
+		Guard.IsNotNull(source);
 		return source.Select((item, index) => (startIndex + index, item));
 	}
 }

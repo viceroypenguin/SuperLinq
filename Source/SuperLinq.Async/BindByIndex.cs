@@ -51,10 +51,10 @@ public static partial class AsyncSuperEnumerable
 		Func<TSource, int, TResult> resultSelector,
 		Func<int, TResult> missingSelector)
 	{
-		source.ThrowIfNull();
-		indices.ThrowIfNull();
-		resultSelector.ThrowIfNull();
-		missingSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(indices);
+		Guard.IsNotNull(resultSelector);
+		Guard.IsNotNull(missingSelector);
 
 		return _(source, indices, resultSelector, missingSelector);
 
@@ -63,7 +63,7 @@ public static partial class AsyncSuperEnumerable
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			// keeps track of the order of indices to know what order items should be output in
-			var lookup = await indices.Index().ToDictionaryAsync(x => { x.item.ThrowIfLessThan(0, nameof(indices)); return x.item; }, x => x.index, cancellationToken).ConfigureAwait(false);
+			var lookup = await indices.Index().ToDictionaryAsync(x => { Guard.IsGreaterThanOrEqualTo(x.item, 0, nameof(indices)); return x.item; }, x => x.index, cancellationToken).ConfigureAwait(false);
 			// keep track of items out of output order
 			var lookback = new Dictionary<int, TSource>();
 
