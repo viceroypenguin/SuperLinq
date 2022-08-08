@@ -40,7 +40,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, string? format)
 	{
-		source.ThrowIfNull();
+		Guard.IsNotNull(source);
 
 		return TraceImpl(source,
 			string.IsNullOrEmpty(format)
@@ -65,8 +65,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, Func<TSource, string> formatter)
 	{
-		source.ThrowIfNull();
-		formatter.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(formatter);
 		return TraceImpl(source, formatter);
 	}
 

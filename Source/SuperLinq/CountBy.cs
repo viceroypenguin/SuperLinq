@@ -32,8 +32,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<(TKey key, int count)> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
 
 		return _(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 

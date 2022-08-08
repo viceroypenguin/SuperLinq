@@ -16,7 +16,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<(TSource current, TSource? lag)> Lag<TSource>(this IEnumerable<TSource> source, int offset)
 	{
-		source.ThrowIfNull();
+		Guard.IsNotNull(source);
 
 		return source.Select(Some)
 					 .Lag(offset, default, (curr, lag) => (curr.Value, lag is (true, var some) ? some : default));
@@ -38,8 +38,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
 	{
-		source.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(resultSelector);
 
 		return source.Select(Some)
 					 .Lag(offset, default, (curr, lag) => resultSelector(curr.Value, lag is (true, var some) ? some : default));
@@ -61,9 +61,9 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
 	{
-		source.ThrowIfNull();
-		resultSelector.ThrowIfNull();
-		offset.ThrowIfLessThan(1);
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(resultSelector);
+		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
 		return _(source, offset, defaultLagValue, resultSelector);
 

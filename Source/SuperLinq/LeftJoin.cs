@@ -38,7 +38,7 @@ public static partial class SuperEnumerable
 		Func<TSource, TResult> firstSelector,
 		Func<TSource, TSource, TResult> bothSelector)
 	{
-		keySelector.ThrowIfNull();
+		Guard.IsNotNull(keySelector);
 		return first.LeftJoin(second, keySelector,
 							  firstSelector, bothSelector,
 							  null);
@@ -84,7 +84,7 @@ public static partial class SuperEnumerable
 		Func<TSource, TSource, TResult> bothSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		keySelector.ThrowIfNull();
+		Guard.IsNotNull(keySelector);
 		return first.LeftJoin(second,
 							  keySelector, keySelector,
 							  firstSelector, bothSelector,
@@ -179,12 +179,12 @@ public static partial class SuperEnumerable
 		Func<TFirst, TSecond, TResult> bothSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
-		firstKeySelector.ThrowIfNull();
-		secondKeySelector.ThrowIfNull();
-		firstSelector.ThrowIfNull();
-		bothSelector.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsNotNull(firstKeySelector);
+		Guard.IsNotNull(secondKeySelector);
+		Guard.IsNotNull(firstSelector);
+		Guard.IsNotNull(bothSelector);
 
 		return
 			from f in first.GroupJoin(second, firstKeySelector, secondKeySelector,

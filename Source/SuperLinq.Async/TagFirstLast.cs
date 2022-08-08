@@ -36,8 +36,8 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TResult> TagFirstLast<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
 	{
-		source.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(resultSelector);
 
 		return _(source, resultSelector);
 

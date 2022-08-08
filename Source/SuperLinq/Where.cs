@@ -18,8 +18,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="filter"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, IEnumerable<bool> filter)
 	{
-		source.ThrowIfNull();
-		filter.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(filter);
 
 		return _(source, filter);
 
@@ -33,7 +33,7 @@ public static partial class SuperEnumerable
 				var sMoved = sIter.MoveNext();
 				var fMoved = fIter.MoveNext();
 				if (sMoved != fMoved)
-					ExceptionHelpers.Throw(nameof(filter), "'source' and 'filter' did not have equal lengths.");
+					ThrowHelper.ThrowArgumentException(nameof(filter), "'source' and 'filter' did not have equal lengths.");
 
 				if (!sMoved)
 					yield break;

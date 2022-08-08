@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TResult> Generate<TResult>(TResult initial, Func<TResult, TResult> generator)
 	{
-		generator.ThrowIfNull();
+		Guard.IsNotNull(generator);
 
 		return _(initial, generator);
 

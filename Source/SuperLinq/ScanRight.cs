@@ -29,8 +29,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TSource> ScanRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
 	{
-		source.ThrowIfNull();
-		func.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
 
 		return _(source, func);
 
@@ -84,8 +84,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
 	{
-		source.ThrowIfNull();
-		func.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
 
 		return _(source, seed, func);
 

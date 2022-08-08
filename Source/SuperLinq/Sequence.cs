@@ -16,9 +16,9 @@ public static partial class SuperEnumerable
 	/// </exception>
 	public static IEnumerable<int> Range(int start, int count, int step)
 	{
-		count.ThrowIfLessThan(0);
+		Guard.IsGreaterThanOrEqualTo(count, 0);
 		var max = start + (count - 1) * (long)step;
-		max.ThrowIfNotInRange(int.MinValue, int.MaxValue, paramName: nameof(count));
+		Guard.IsBetweenOrEqualTo(max, int.MinValue, int.MaxValue, name: nameof(count));
 		return _(start, count, step);
 
 		static IEnumerable<int> _(int start, int count, int step)

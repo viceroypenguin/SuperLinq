@@ -21,7 +21,7 @@ public static partial class SuperEnumerable
 	[Pure]
 	internal static bool TryGetCollectionCount<T>(this IEnumerable<T> source, out int count)
 	{
-		source.ThrowIfNull();
+		Guard.IsNotNull(source);
 		switch (source)
 		{
 			case ICollection<T> collection:
@@ -38,8 +38,8 @@ public static partial class SuperEnumerable
 
 	internal static int CountUpTo<T>(this IEnumerable<T> source, int max)
 	{
-		source.ThrowIfNull();
-		max.ThrowIfLessThan(0);
+		Guard.IsNotNull(source);
+		Guard.IsGreaterThanOrEqualTo(max, 0);
 
 		var count = 0;
 

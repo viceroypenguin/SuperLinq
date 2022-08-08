@@ -86,8 +86,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> ScanRight<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, CancellationToken, ValueTask<TSource>> func)
 	{
-		source.ThrowIfNull();
-		func.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
 
 		return _(source, func);
 
@@ -200,8 +200,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func)
 	{
-		source.ThrowIfNull();
-		func.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
 
 		return _(source, seed, func);
 

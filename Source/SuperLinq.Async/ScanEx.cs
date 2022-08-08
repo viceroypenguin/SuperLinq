@@ -27,8 +27,8 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, TSource, TSource> transformation)
 	{
-		source.ThrowIfNull();
-		transformation.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(transformation);
 
 		return _(source, transformation);
 
@@ -75,8 +75,8 @@ public static partial class AsyncSuperEnumerable
 		TState seed,
 		Func<TState, TSource, TState> transformation)
 	{
-		source.ThrowIfNull();
-		transformation.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(transformation);
 
 		return _(source, seed, transformation);
 

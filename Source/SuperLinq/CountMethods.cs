@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 
 	public static bool AtLeast<T>(this IEnumerable<T> source, int count)
 	{
-		count.ThrowIfLessThan(0);
+		Guard.IsGreaterThanOrEqualTo(count, 0);
 
 		return QuantityIterator(source, count, count, int.MaxValue);
 	}
@@ -51,7 +51,7 @@ public static partial class SuperEnumerable
 
 	public static bool AtMost<T>(this IEnumerable<T> source, int count)
 	{
-		count.ThrowIfLessThan(0);
+		Guard.IsGreaterThanOrEqualTo(count, 0);
 
 		return QuantityIterator(source, count + 1, 0, count);
 	}
@@ -77,7 +77,7 @@ public static partial class SuperEnumerable
 
 	public static bool Exactly<T>(this IEnumerable<T> source, int count)
 	{
-		count.ThrowIfLessThan(0);
+		Guard.IsGreaterThanOrEqualTo(count, 0);
 
 		return QuantityIterator(source, count + 1, count, count);
 	}
@@ -106,15 +106,15 @@ public static partial class SuperEnumerable
 
 	public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
 	{
-		min.ThrowIfLessThan(0);
-		max.ThrowIfLessThan(min);
+		Guard.IsGreaterThanOrEqualTo(min, 0);
+		Guard.IsGreaterThanOrEqualTo(max, min);
 
 		return QuantityIterator(source, max + 1, min, max);
 	}
 
 	private static bool QuantityIterator<T>(IEnumerable<T> source, int limit, int min, int max)
 	{
-		source.ThrowIfNull();
+		Guard.IsNotNull(source);
 
 		var count = source.TryGetCollectionCount() ?? source.CountUpTo(limit);
 
@@ -144,8 +144,8 @@ public static partial class SuperEnumerable
 
 	public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
 
 		if (first.TryGetCollectionCount(out var firstCount))
 		{

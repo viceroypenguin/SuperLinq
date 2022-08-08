@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
 	{
-		sequence.ThrowIfNull();
+		Guard.IsNotNull(sequence);
 
 		return _(sequence);
 
@@ -72,8 +72,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence, int subsetSize)
 	{
-		sequence.ThrowIfNull();
-		subsetSize.ThrowIfLessThan(0);
+		Guard.IsNotNull(sequence);
+		Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
 
 		// NOTE: Theres an interesting trade-off that we have to make in this operator.
 		// Ideally, we would throw an exception here if the {subsetSize} parameter is
@@ -120,7 +120,9 @@ public static partial class SuperEnumerable
 			{
 				// precondition: subsetSize <= set.Count
 				if (subsetSize > set.Count)
-					subsetSize.ThrowOutOfRange("Subset size must be <= sequence.Count()");
+					ThrowHelper.ThrowArgumentOutOfRangeException(
+						nameof(subsetSize),
+						"Subset size must be <= sequence.Count()");
 
 				// initialize set arrays...
 				_set = set;
@@ -174,7 +176,7 @@ public static partial class SuperEnumerable
 
 			void IDisposable.Dispose() { }
 
-			void ExtractSubset()
+			private void ExtractSubset()
 			{
 				for (var i = 0; i < _subsetSize; i++)
 					_subset[i] = _set[_indices[i] - 1];
@@ -186,12 +188,12 @@ public static partial class SuperEnumerable
 
 		public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
 		{
-			sequence.ThrowIfNull();
+			Guard.IsNotNull(sequence);
 			_sequence = sequence;
 
-			subsetSize.ThrowIfLessThan(0);
+			Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
 			if (sequence.TryGetCollectionCount(out var cnt))
-				subsetSize.ThrowIfGreaterThan(cnt - 1);
+				Guard.IsLessThanOrEqualTo(subsetSize, cnt - 1);
 
 			_subsetSize = subsetSize;
 		}

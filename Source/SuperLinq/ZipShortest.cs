@@ -42,9 +42,9 @@ public static partial class SuperEnumerable
 		IEnumerable<TSecond> second,
 		Func<TFirst, TSecond, TResult> resultSelector)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsNotNull(resultSelector);
 
 		return ZipShortestImpl(first, second, EnumerableEx.Repeat(default(object)), EnumerableEx.Repeat(default(object)), (a, b, c, d) => resultSelector(a, b));
 	}
@@ -95,10 +95,10 @@ public static partial class SuperEnumerable
 		IEnumerable<T3> third,
 		Func<T1, T2, T3, TResult> resultSelector)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
-		third.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsNotNull(third);
+		Guard.IsNotNull(resultSelector);
 
 		return ZipShortestImpl(first, second, third, EnumerableEx.Repeat(default(object)), (a, b, c, _) => resultSelector(a, b, c));
 	}
@@ -154,11 +154,11 @@ public static partial class SuperEnumerable
 		IEnumerable<T4> fourth,
 		Func<T1, T2, T3, T4, TResult> resultSelector)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
-		third.ThrowIfNull();
-		fourth.ThrowIfNull();
-		resultSelector.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsNotNull(third);
+		Guard.IsNotNull(fourth);
+		Guard.IsNotNull(resultSelector);
 
 		return ZipShortestImpl(first, second, third, fourth, resultSelector);
 	}

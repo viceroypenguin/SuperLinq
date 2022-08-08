@@ -160,7 +160,7 @@ public static partial class SuperEnumerable
 		Func<T, T, TResult> bothSelector,
 		IComparer<TKey>? comparer)
 	{
-		keySelector.ThrowIfNull(); // Argument name changes to 'firstKeySelector'
+		Guard.IsNotNull(keySelector); // Argument name changes to 'firstKeySelector'
 		return OrderedMerge(first, second, keySelector, keySelector, firstSelector, secondSelector, bothSelector, comparer);
 	}
 
@@ -254,13 +254,13 @@ public static partial class SuperEnumerable
 		Func<TFirst, TSecond, TResult> bothSelector,
 		IComparer<TKey>? comparer)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
-		firstKeySelector.ThrowIfNull();
-		secondKeySelector.ThrowIfNull();
-		firstSelector.ThrowIfNull();
-		bothSelector.ThrowIfNull();
-		secondSelector.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsNotNull(firstKeySelector);
+		Guard.IsNotNull(secondKeySelector);
+		Guard.IsNotNull(firstSelector);
+		Guard.IsNotNull(bothSelector);
+		Guard.IsNotNull(secondSelector);
 		comparer ??= Comparer<TKey>.Default;
 
 		return _();

@@ -81,8 +81,8 @@ public static partial class AsyncSuperEnumerable
 		IEqualityComparer<TSource>? comparer,
 		CancellationToken cancellationToken = default)
 	{
-		first.ThrowIfNull();
-		second.ThrowIfNull();
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
 
 		var firstSet = await first.CountBy(Identity<TSource>(), comparer)
 			.ToHashSetAsync(ValueTupleEqualityComparer.Create<TSource, int>(comparer, comparer2: null), cancellationToken)

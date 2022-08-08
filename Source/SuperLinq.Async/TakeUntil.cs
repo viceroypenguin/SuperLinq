@@ -34,8 +34,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TSource> TakeUntil<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate)
 	{
-		source.ThrowIfNull();
-		predicate.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(predicate);
 
 		return _(source, predicate);
 

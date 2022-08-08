@@ -24,9 +24,9 @@ internal class Lookup<TKey, TElement> : IEnumerable<IGrouping<TKey, TElement>>, 
 
 	internal static Lookup<TKey, TElement> Create<TSource>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer)
 	{
-		source.ThrowIfNull();
-		keySelector.ThrowIfNull();
-		elementSelector.ThrowIfNull();
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(keySelector);
+		Guard.IsNotNull(elementSelector);
 		Lookup<TKey, TElement> lookup = new Lookup<TKey, TElement>(comparer);
 		foreach (TSource item in source)
 		{
@@ -249,7 +249,7 @@ internal class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IList<TElem
 	{
 		get
 		{
-			index.ThrowIfNotInRange(0, count - 1);
+			Guard.IsBetweenOrEqualTo(index, 0, count - 1);
 			return elements[index];
 		}
 		set
