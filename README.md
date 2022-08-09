@@ -114,7 +114,9 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | SkipUntil						  | ✔️ | ✔️ |
 | Slice							  | ✔️[^7] | ❌[^7] |
 | SortedMerge					  | ✔️ | ✔️ |
+| SortedMergeBy					  | ✔️ | ✔️ |
 | SortedMergeDescending			  | ✔️ | ✔️ |
+| SortedMergeByDescending		  | ✔️ | ✔️ |
 | Split							  | ✔️ | ✔️ |
 | StartsWith					  | ✔️ | ✔️ |
 | Subsets						  | ✔️ | ⏱([#20](https://github.com/viceroypenguin/SuperLinq/issues/20)) |
