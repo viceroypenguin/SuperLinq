@@ -34,7 +34,7 @@ public class SortedMergeByTests
 	}
 
 	/// <summary>
-	/// Verify that SortedMergeBy throws an exception if invoked on a <see langword="null"/> sequence.
+	/// Verify that SortedMergeBy sorts correctly with a <see langword="null"/> comparer.
 	/// </summary>
 	[Fact]
 	public async Task TestSortedMergeByComparerNull()

@@ -344,14 +344,14 @@ This method has 4 overloads.
 
 ### SortedMergeDescending
 
-Merges two or more sequences that are in a common order (either ascending or
-descending) into a single sequence that preserves that order.
+Merges two or more sequences that are in a common descending order
+into a single sequence that preserves that order.
 
 This method has 2 overloads.
 
 ### SortedMergeByDescending
 
-Merges two or more sequences that are in a common order (either ascending or descending)
+Merges two or more sequences that are in a common descending order
 according to a key into a single sequence that preserves that order.
 
 This method has 2 overloads.

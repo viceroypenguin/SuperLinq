@@ -38,7 +38,7 @@ public static partial class SuperEnumerable
 	/// a single sequence that preserves that order.
 	/// </summary>
 	/// <remarks>
-	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
+	/// Using SortedMergeDescending on sequences that are not ordered or are not in the same order produces
 	/// undefined results.<br/>
 	/// This method uses deferred execution and streams its results.<br />
 	///
@@ -101,7 +101,7 @@ public static partial class SuperEnumerable
 	/// a single sequence that preserves that order.
 	/// </summary>
 	/// <remarks>
-	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
+	/// Using SortedMergeDescending on sequences that are not ordered or are not in the same order produces
 	/// undefined results.<br/>
 	/// This method uses deferred execution and streams its results.<br />
 	///
@@ -198,7 +198,7 @@ public static partial class SuperEnumerable
 	/// according to a key into a single sequence that preserves that order.
 	/// </summary>
 	/// <remarks>
-	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
+	/// Using SortedMergeBy on sequences that are not ordered or are not in the same order produces
 	/// undefined results.<br/>
 	/// This method uses deferred execution and streams its results.<br />
 	/// </remarks>
@@ -221,7 +221,7 @@ public static partial class SuperEnumerable
 	/// according to a key into a single sequence that preserves that order.
 	/// </summary>
 	/// <remarks>
-	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
+	/// Using SortedMergeByDescending on sequences that are not ordered or are not in the same order produces
 	/// undefined results.<br/>
 	/// This method uses deferred execution and streams its results.<br />
 	/// </remarks>
@@ -244,7 +244,7 @@ public static partial class SuperEnumerable
 	/// according to a key into a single sequence that preserves that order.
 	/// </summary>
 	/// <remarks>
-	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
+	/// Using SortedMergeBy on sequences that are not ordered or are not in the same order produces
 	/// undefined results.<br/>
 	/// This method uses deferred execution and streams its results.<br />
 	/// </remarks>
@@ -268,7 +268,7 @@ public static partial class SuperEnumerable
 	/// according to a key into a single sequence that preserves that order.
 	/// </summary>
 	/// <remarks>
-	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
+	/// Using SortedMergeByDescending on sequences that are not ordered or are not in the same order produces
 	/// undefined results.<br/>
 	/// This method uses deferred execution and streams its results.<br />
 	/// </remarks>
@@ -292,7 +292,7 @@ public static partial class SuperEnumerable
 	/// according to a key into a single sequence that preserves that order.
 	/// </summary>
 	/// <remarks>
-	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
+	/// Using SortedMergeBy on sequences that are not ordered or are not in the same order produces
 	/// undefined results.<br/>
 	/// This method uses deferred execution and streams its results.<br />
 	/// </remarks>
@@ -316,7 +316,7 @@ public static partial class SuperEnumerable
 	/// according to a key into a single sequence that preserves that order.
 	/// </summary>
 	/// <remarks>
-	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
+	/// Using SortedMergeBy on sequences that are not ordered or are not in the same order produces
 	/// undefined results.<br/>
 	/// This method uses deferred execution and streams its results.<br />
 	/// </remarks>
