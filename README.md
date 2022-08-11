@@ -43,6 +43,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | AtMost						  | ✔️ | ✔️ |
 | Backsert						  | ✔️[^2] | ❌[^2] |
 | Batch							  | ❌<br/>(Removed[^3]) | ❌[^3] |
+| BindByIndex					  | ✔️ | ✔️ |
 | Cartesian						  | ✔️ | ❌ |
 | Choose						  | ✔️ | ✔️ |
 | CountBetween					  | ✔️ | ✔️ |

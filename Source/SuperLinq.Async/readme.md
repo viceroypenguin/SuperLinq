@@ -42,6 +42,12 @@ than or equal to the given integer.
 Determines whether or not the number of elements in the sequence is lesser
 than or equal to the given integer.
 
+### BindByIndex
+
+Extracts elements from a sequence according to a a sequence of indices.
+
+This method has 2 overloads.
+
 ### Choose
 
 Applies a function to each element of the source sequence and returns a new
