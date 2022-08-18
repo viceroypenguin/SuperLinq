@@ -2,6 +2,8 @@
 
 namespace Test;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 public class RightJoinTest
 {
 	public enum Side { Right, Both }
@@ -158,3 +160,5 @@ public class RightJoinTest
 		Assert.Empty(result);
 	}
 }
+
+#pragma warning restore CS0618 // Type or member is obsolete

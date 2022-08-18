@@ -12,18 +12,20 @@ public static partial class SuperEnumerable
 	/// <param name="second">The second input sequence.</param>
 	/// <returns>
 	/// A sequence with elements from the two input sequences merged, as
-	/// in a full outer join.</returns>
+	/// in a full outer join.
+	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// This method uses deferred execution. The behavior is undefined
 	/// if the sequences are unordered as inputs.
 	/// </remarks>
-
-
+	[Obsolete("OrderedMerge has been replaced by FullOuterJoin")]
 	public static IEnumerable<T> OrderedMerge<T>(
 		this IEnumerable<T> first,
 		IEnumerable<T> second)
 	{
-		return OrderedMerge(first, second, null);
+		return OrderedMerge(first, second, Identity<T>(), Identity<T>(), Identity<T>(), static (a, _) => a);
 	}
 
 	/// <summary>
@@ -39,18 +41,21 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">An <see cref="IComparer{T}"/> to compare elements.</param>
 	/// <returns>
 	/// A sequence with elements from the two input sequences merged, as
-	/// in a full outer join.</returns>
+	/// in a full outer join.
+	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// This method uses deferred execution. The behavior is undefined
 	/// if the sequences are unordered as inputs.
 	/// </remarks>
-
+	[Obsolete("OrderedMerge has been replaced by FullOuterJoin")]
 	public static IEnumerable<T> OrderedMerge<T>(
 		this IEnumerable<T> first,
 		IEnumerable<T> second,
 		IComparer<T>? comparer)
 	{
-		return OrderedMerge(first, second, e => e, f => f, s => s, (a, _) => a, comparer);
+		return OrderedMerge(first, second, Identity<T>(), Identity<T>(), Identity<T>(), static (a, _) => a, comparer);
 	}
 
 	/// <summary>
@@ -67,18 +72,60 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">Function to extract a key given an element.</param>
 	/// <returns>
 	/// A sequence with elements from the two input sequences merged
-	/// according to a key, as in a full outer join.</returns>
+	/// according to a key, as in a full outer join.
+	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// This method uses deferred execution. The behavior is undefined
 	/// if the sequences are unordered (by key) as inputs.
 	/// </remarks>
-
+	[Obsolete("OrderedMerge has been replaced by FullOuterJoin")]
 	public static IEnumerable<T> OrderedMerge<T, TKey>(
 		this IEnumerable<T> first,
 		IEnumerable<T> second,
 		Func<T, TKey> keySelector)
 	{
-		return OrderedMerge(first, second, keySelector, a => a, b => b, (a, _) => a, null);
+		Guard.IsNotNull(keySelector);
+
+		return OrderedMerge(first, second, keySelector, Identity<T>(), Identity<T>(), static (a, _) => a);
+	}
+
+	/// <summary>
+	/// Merges two ordered sequences into one with an additional
+	/// parameter specifying the element key by which the sequences are
+	/// ordered. Where the keys equal in both sequences, the
+	/// element from the first sequence is returned in the resulting
+	/// sequence.
+	/// </summary>
+	/// <typeparam name="T">Type of elements in input and output sequences.</typeparam>
+	/// <typeparam name="TKey">Type of keys used for merging.</typeparam>
+	/// <param name="first">The first input sequence.</param>
+	/// <param name="second">The second input sequence.</param>
+	/// <param name="keySelector">Function to extract a key given an element.</param>
+	/// <param name="comparer">An <see cref="IComparer{T}"/> to compare elements.</param>
+	/// <returns>
+	/// A sequence with elements from the two input sequences merged
+	/// according to a key, as in a full outer join.
+	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <remarks>
+	/// This method uses deferred execution. The behavior is undefined
+	/// if the sequences are unordered (by key) as inputs.
+	/// </remarks>
+	[Obsolete("OrderedMerge has been replaced by FullOuterJoin")]
+	public static IEnumerable<T> OrderedMerge<T, TKey>(
+		this IEnumerable<T> first,
+		IEnumerable<T> second,
+		Func<T, TKey> keySelector,
+		IComparer<TKey>? comparer)
+	{
+		Guard.IsNotNull(keySelector);
+
+		return OrderedMerge(first, second, keySelector, Identity<T>(), Identity<T>(), static (a, _) => a, comparer);
 	}
 
 	/// <summary>
@@ -109,7 +156,7 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution. The behavior is undefined
 	/// if the sequences are unordered (by key) as inputs.
 	/// </remarks>
-
+	[Obsolete("OrderedMerge has been replaced by FullOuterJoin")]
 	public static IEnumerable<TResult> OrderedMerge<T, TKey, TResult>(
 		this IEnumerable<T> first,
 		IEnumerable<T> second,
@@ -118,7 +165,19 @@ public static partial class SuperEnumerable
 		Func<T, TResult> secondSelector,
 		Func<T, T, TResult> bothSelector)
 	{
-		return OrderedMerge(first, second, keySelector, firstSelector, secondSelector, bothSelector, null);
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsNotNull(keySelector);
+		Guard.IsNotNull(firstSelector);
+		Guard.IsNotNull(bothSelector);
+		Guard.IsNotNull(secondSelector);
+
+		return MergeJoin(
+			first, second,
+			JoinOperation.FullOuter,
+			keySelector, keySelector,
+			firstSelector, secondSelector,
+			bothSelector);
 	}
 
 	/// <summary>
@@ -150,7 +209,7 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution. The behavior is undefined
 	/// if the sequences are unordered (by key) as inputs.
 	/// </remarks>
-
+	[Obsolete("OrderedMerge has been replaced by FullOuterJoin")]
 	public static IEnumerable<TResult> OrderedMerge<T, TKey, TResult>(
 		this IEnumerable<T> first,
 		IEnumerable<T> second,
@@ -160,8 +219,27 @@ public static partial class SuperEnumerable
 		Func<T, T, TResult> bothSelector,
 		IComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(keySelector); // Argument name changes to 'firstKeySelector'
-		return OrderedMerge(first, second, keySelector, keySelector, firstSelector, secondSelector, bothSelector, comparer);
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsNotNull(keySelector);
+		Guard.IsNotNull(firstSelector);
+		Guard.IsNotNull(bothSelector);
+		Guard.IsNotNull(secondSelector);
+
+		return comparer == null
+			? MergeJoin(
+				first, second,
+				JoinOperation.FullOuter,
+				keySelector, keySelector,
+				firstSelector, secondSelector,
+				bothSelector)
+			: MergeJoin(
+				first, second,
+				JoinOperation.FullOuter,
+				keySelector, keySelector,
+				firstSelector, secondSelector,
+				bothSelector,
+				comparer);
 	}
 
 	/// <summary>
@@ -196,7 +274,7 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution. The behavior is undefined
 	/// if the sequences are unordered (by key) as inputs.
 	/// </remarks>
-
+	[Obsolete("OrderedMerge has been replaced by FullOuterJoin")]
 	public static IEnumerable<TResult> OrderedMerge<TFirst, TSecond, TKey, TResult>(
 		this IEnumerable<TFirst> first,
 		IEnumerable<TSecond> second,
@@ -206,7 +284,20 @@ public static partial class SuperEnumerable
 		Func<TSecond, TResult> secondSelector,
 		Func<TFirst, TSecond, TResult> bothSelector)
 	{
-		return OrderedMerge(first, second, firstKeySelector, secondKeySelector, firstSelector, secondSelector, bothSelector, null);
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsNotNull(firstKeySelector);
+		Guard.IsNotNull(secondKeySelector);
+		Guard.IsNotNull(firstSelector);
+		Guard.IsNotNull(bothSelector);
+		Guard.IsNotNull(secondSelector);
+
+		return MergeJoin(
+			first, second,
+			JoinOperation.FullOuter,
+			firstKeySelector, secondKeySelector,
+			firstSelector, secondSelector,
+			bothSelector);
 	}
 
 	/// <summary>
@@ -243,7 +334,7 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution. The behavior is undefined
 	/// if the sequences are unordered (by key) as inputs.
 	/// </remarks>
-
+	[Obsolete("OrderedMerge has been replaced by FullOuterJoin")]
 	public static IEnumerable<TResult> OrderedMerge<TFirst, TSecond, TKey, TResult>(
 		this IEnumerable<TFirst> first,
 		IEnumerable<TSecond> second,
@@ -261,56 +352,20 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(firstSelector);
 		Guard.IsNotNull(bothSelector);
 		Guard.IsNotNull(secondSelector);
-		comparer ??= Comparer<TKey>.Default;
 
-		return _();
-
-		IEnumerable<TResult> _()
-		{
-			using var e1 = first.GetEnumerator();
-			using var e2 = second.GetEnumerator();
-
-			var gotFirst = e1.MoveNext();
-			var gotSecond = e2.MoveNext();
-
-			while (gotFirst || gotSecond)
-			{
-				if (gotFirst && gotSecond)
-				{
-					var element1 = e1.Current;
-					var key1 = firstKeySelector(element1);
-					var element2 = e2.Current;
-					var key2 = secondKeySelector(element2);
-					var comparison = comparer.Compare(key1, key2);
-
-					if (comparison < 0)
-					{
-						yield return firstSelector(element1);
-						gotFirst = e1.MoveNext();
-					}
-					else if (comparison > 0)
-					{
-						yield return secondSelector(element2);
-						gotSecond = e2.MoveNext();
-					}
-					else
-					{
-						yield return bothSelector(element1, element2);
-						gotFirst = e1.MoveNext();
-						gotSecond = e2.MoveNext();
-					}
-				}
-				else if (gotSecond)
-				{
-					yield return secondSelector(e2.Current);
-					gotSecond = e2.MoveNext();
-				}
-				else // (gotFirst)
-				{
-					yield return firstSelector(e1.Current);
-					gotFirst = e1.MoveNext();
-				}
-			}
-		}
+		return comparer == null
+			? MergeJoin(
+				first, second,
+				JoinOperation.FullOuter,
+				firstKeySelector, secondKeySelector,
+				firstSelector, secondSelector,
+				bothSelector)
+			: MergeJoin(
+				first, second,
+				JoinOperation.FullOuter,
+				firstKeySelector, secondKeySelector,
+				firstSelector, secondSelector,
+				bothSelector,
+				comparer);
 	}
 }

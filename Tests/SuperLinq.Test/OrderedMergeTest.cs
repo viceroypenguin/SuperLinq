@@ -1,5 +1,7 @@
 ﻿namespace Test;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 public class OrderedMergeTest
 {
 	public static IEnumerable<object[]> TestData { get; } =
@@ -47,3 +49,5 @@ public class OrderedMergeTest
 		Assert.Equal(expected, first.AsTestingSequence().OrderedMerge(second.AsTestingSequence()));
 	}
 }
+
+#pragma warning restore CS0618 // Type or member is obsolete

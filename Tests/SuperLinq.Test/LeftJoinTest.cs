@@ -2,6 +2,8 @@
 
 namespace Test;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 public class LeftJoinTest
 {
 	public enum Side { Left, Both }
@@ -158,3 +160,5 @@ public class LeftJoinTest
 			(Left, baz, missing));
 	}
 }
+
+#pragma warning restore CS0618 // Type or member is obsolete

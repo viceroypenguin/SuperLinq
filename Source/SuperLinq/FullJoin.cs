@@ -7,34 +7,43 @@ public static partial class SuperEnumerable
 	/// Additional arguments specify key selection functions and result
 	/// projection functions.
 	/// </summary>
-	/// <typeparam name="TSource">
-	/// The type of elements in the source sequence.</typeparam>
-	/// <typeparam name="TKey">
-	/// The type of the key returned by the key selector function.</typeparam>
-	/// <typeparam name="TResult">
-	/// The type of the result elements.</typeparam>
-	/// <param name="first">
-	/// The first sequence to join fully.</param>
-	/// <param name="second">
-	/// The second sequence to join fully.</param>
-	/// <param name="keySelector">
-	/// Function that projects the key given an element of one of the
-	/// sequences to join.</param>
+	/// <typeparam name="TSource">The type of elements in the source sequence.</typeparam>
+	/// <typeparam name="TKey">The type of the key returned by the key selector function.</typeparam>
+	/// <typeparam name="TResult">The type of the result elements.</typeparam>
+	/// <param name="first">The first sequence.</param>
+	/// <param name="second">The second sequence.</param>
+	/// <param name="keySelector">Function that projects the key given an element of one of the sequences to join.</param>
 	/// <param name="firstSelector">
 	/// Function that projects the result given just an element from
 	/// <paramref name="first"/> where there is no corresponding element
-	/// in <paramref name="second"/>.</param>
+	/// in <paramref name="second"/>.
+	/// </param>
 	/// <param name="secondSelector">
 	/// Function that projects the result given just an element from
 	/// <paramref name="second"/> where there is no corresponding element
-	/// in <paramref name="first"/>.</param>
+	/// in <paramref name="first"/>.
+	/// </param>
 	/// <param name="bothSelector">
 	/// Function that projects the result given an element from
 	/// <paramref name="first"/> and an element from <paramref name="second"/>
-	/// that match on a common key.</param>
-	/// <returns>A sequence containing results projected from a full
-	/// outer join of the two input sequences.</returns>
-
+	/// that match on a common key.
+	/// </param>
+	/// <returns>
+	/// A sequence containing results projected from a full
+	/// outer join of the two input sequences.
+	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="firstSelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="secondSelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="bothSelector"/> is <see langword="null"/>.</exception>
+	/// <remarks>
+	/// <para>
+	/// This method uses deferred execution and streams its results.
+	/// </para>
+	/// </remarks>
+	[Obsolete("FullJoin has been replaced by FullOuterJoin")]
 	public static IEnumerable<TResult> FullJoin<TSource, TKey, TResult>(
 		this IEnumerable<TSource> first,
 		IEnumerable<TSource> second,
@@ -44,9 +53,11 @@ public static partial class SuperEnumerable
 		Func<TSource, TSource, TResult> bothSelector)
 	{
 		Guard.IsNotNull(keySelector);
-		return first.FullJoin(second, keySelector,
-							  firstSelector, secondSelector, bothSelector,
-							  null);
+
+		return FullJoin(
+			first, second,
+			keySelector, keySelector,
+			firstSelector, secondSelector, bothSelector);
 	}
 
 	/// <summary>
@@ -54,37 +65,47 @@ public static partial class SuperEnumerable
 	/// Additional arguments specify key selection functions, result
 	/// projection functions and a key comparer.
 	/// </summary>
-	/// <typeparam name="TSource">
-	/// The type of elements in the source sequence.</typeparam>
-	/// <typeparam name="TKey">
-	/// The type of the key returned by the key selector function.</typeparam>
-	/// <typeparam name="TResult">
-	/// The type of the result elements.</typeparam>
-	/// <param name="first">
-	/// The first sequence to join fully.</param>
-	/// <param name="second">
-	/// The second sequence to join fully.</param>
-	/// <param name="keySelector">
-	/// Function that projects the key given an element of one of the
-	/// sequences to join.</param>
+	/// <typeparam name="TSource">The type of elements in the source sequence.</typeparam>
+	/// <typeparam name="TKey">The type of the key returned by the key selector function.</typeparam>
+	/// <typeparam name="TResult">The type of the result elements.</typeparam>
+	/// <param name="first">The first sequence.</param>
+	/// <param name="second">The second sequence.</param>
+	/// <param name="keySelector">Function that projects the key given an element of one of the sequences to join.</param>
 	/// <param name="firstSelector">
 	/// Function that projects the result given just an element from
 	/// <paramref name="first"/> where there is no corresponding element
-	/// in <paramref name="second"/>.</param>
+	/// in <paramref name="second"/>.
+	/// </param>
 	/// <param name="secondSelector">
 	/// Function that projects the result given just an element from
 	/// <paramref name="second"/> where there is no corresponding element
-	/// in <paramref name="first"/>.</param>
+	/// in <paramref name="first"/>.
+	/// </param>
 	/// <param name="bothSelector">
 	/// Function that projects the result given an element from
 	/// <paramref name="first"/> and an element from <paramref name="second"/>
-	/// that match on a common key.</param>
+	/// that match on a common key.
+	/// </param>
 	/// <param name="comparer">
 	/// The <see cref="IEqualityComparer{T}"/> instance used to compare
-	/// keys for equality.</param>
-	/// <returns>A sequence containing results projected from a full
-	/// outer join of the two input sequences.</returns>
-
+	/// keys for equality.
+	/// </param>
+	/// <returns>
+	/// A sequence containing results projected from a full
+	/// outer join of the two input sequences.
+	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="firstSelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="secondSelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="bothSelector"/> is <see langword="null"/>.</exception>
+	/// <remarks>
+	/// <para>
+	/// This method uses deferred execution and streams its results.
+	/// </para>
+	/// </remarks>
+	[Obsolete("FullJoin has been replaced by FullOuterJoin")]
 	public static IEnumerable<TResult> FullJoin<TSource, TKey, TResult>(
 		this IEnumerable<TSource> first,
 		IEnumerable<TSource> second,
@@ -95,10 +116,12 @@ public static partial class SuperEnumerable
 		IEqualityComparer<TKey>? comparer)
 	{
 		Guard.IsNotNull(keySelector);
-		return first.FullJoin(second,
-							  keySelector, keySelector,
-							  firstSelector, secondSelector, bothSelector,
-							  comparer);
+
+		return FullJoin(
+			first, second,
+			keySelector, keySelector,
+			firstSelector, secondSelector, bothSelector,
+			comparer);
 	}
 
 	/// <summary>
@@ -106,37 +129,46 @@ public static partial class SuperEnumerable
 	/// Additional arguments specify key selection functions and result
 	/// projection functions.
 	/// </summary>
-	/// <typeparam name="TFirst">
-	/// The type of elements in the first sequence.</typeparam>
-	/// <typeparam name="TSecond">
-	/// The type of elements in the second sequence.</typeparam>
-	/// <typeparam name="TKey">
-	/// The type of the key returned by the key selector functions.</typeparam>
-	/// <typeparam name="TResult">
-	/// The type of the result elements.</typeparam>
-	/// <param name="first">
-	/// The first sequence to join fully.</param>
-	/// <param name="second">
-	/// The second sequence to join fully.</param>
-	/// <param name="firstKeySelector">
-	/// Function that projects the key given an element from <paramref name="first"/>.</param>
-	/// <param name="secondKeySelector">
-	/// Function that projects the key given an element from <paramref name="second"/>.</param>
+	/// <typeparam name="TFirst">The type of elements in the first sequence.</typeparam>
+	/// <typeparam name="TSecond">The type of elements in the second sequence.</typeparam>
+	/// <typeparam name="TKey">The type of the key returned by the key selector functions.</typeparam>
+	/// <typeparam name="TResult">The type of the result elements.</typeparam>
+	/// <param name="first">The first sequence.</param>
+	/// <param name="second">The second sequence.</param>
+	/// <param name="firstKeySelector">Function that projects the key given an element from <paramref name="first"/>.</param>
+	/// <param name="secondKeySelector">Function that projects the key given an element from <paramref name="second"/>.</param>
 	/// <param name="firstSelector">
 	/// Function that projects the result given just an element from
 	/// <paramref name="first"/> where there is no corresponding element
-	/// in <paramref name="second"/>.</param>
+	/// in <paramref name="second"/>.
+	/// </param>
 	/// <param name="secondSelector">
 	/// Function that projects the result given just an element from
 	/// <paramref name="second"/> where there is no corresponding element
-	/// in <paramref name="first"/>.</param>
+	/// in <paramref name="first"/>.
+	/// </param>
 	/// <param name="bothSelector">
 	/// Function that projects the result given an element from
 	/// <paramref name="first"/> and an element from <paramref name="second"/>
-	/// that match on a common key.</param>
-	/// <returns>A sequence containing results projected from a full
-	/// outer join of the two input sequences.</returns>
-
+	/// that match on a common key.
+	/// </param>
+	/// <returns>
+	/// A sequence containing results projected from a full
+	/// outer join of the two input sequences.
+	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="firstKeySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="secondKeySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="firstSelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="secondSelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="bothSelector"/> is <see langword="null"/>.</exception>
+	/// <remarks>
+	/// <para>
+	/// This method uses deferred execution and streams its results.
+	/// </para>
+	/// </remarks>
+	[Obsolete("FullJoin has been replaced by FullOuterJoin")]
 	public static IEnumerable<TResult> FullJoin<TFirst, TSecond, TKey, TResult>(
 		this IEnumerable<TFirst> first,
 		IEnumerable<TSecond> second,
@@ -144,51 +176,73 @@ public static partial class SuperEnumerable
 		Func<TSecond, TKey> secondKeySelector,
 		Func<TFirst, TResult> firstSelector,
 		Func<TSecond, TResult> secondSelector,
-		Func<TFirst, TSecond, TResult> bothSelector) =>
-		first.FullJoin(second,
-					   firstKeySelector, secondKeySelector,
-					   firstSelector, secondSelector, bothSelector,
-					   null);
+		Func<TFirst, TSecond, TResult> bothSelector)
+	{
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+		Guard.IsNotNull(firstKeySelector);
+		Guard.IsNotNull(secondKeySelector);
+		Guard.IsNotNull(firstSelector);
+		Guard.IsNotNull(secondSelector);
+		Guard.IsNotNull(bothSelector);
+
+		return HashJoin(
+			first, second,
+			JoinOperation.FullOuter,
+			firstKeySelector, secondKeySelector,
+			firstSelector, secondSelector,
+			bothSelector);
+	}
 
 	/// <summary>
 	/// Performs a full outer join on two heterogeneous sequences.
 	/// Additional arguments specify key selection functions, result
 	/// projection functions and a key comparer.
 	/// </summary>
-	/// <typeparam name="TFirst">
-	/// The type of elements in the first sequence.</typeparam>
-	/// <typeparam name="TSecond">
-	/// The type of elements in the second sequence.</typeparam>
-	/// <typeparam name="TKey">
-	/// The type of the key returned by the key selector functions.</typeparam>
-	/// <typeparam name="TResult">
-	/// The type of the result elements.</typeparam>
-	/// <param name="first">
-	/// The first sequence to join fully.</param>
-	/// <param name="second">
-	/// The second sequence to join fully.</param>
-	/// <param name="firstKeySelector">
-	/// Function that projects the key given an element from <paramref name="first"/>.</param>
-	/// <param name="secondKeySelector">
-	/// Function that projects the key given an element from <paramref name="second"/>.</param>
+	/// <typeparam name="TFirst">The type of elements in the first sequence.</typeparam>
+	/// <typeparam name="TSecond">The type of elements in the second sequence.</typeparam>
+	/// <typeparam name="TKey">The type of the key returned by the key selector functions.</typeparam>
+	/// <typeparam name="TResult">The type of the result elements.</typeparam>
+	/// <param name="first">The first sequence.</param>
+	/// <param name="second">The second sequence.</param>
+	/// <param name="firstKeySelector">Function that projects the key given an element from <paramref name="first"/>.</param>
+	/// <param name="secondKeySelector">Function that projects the key given an element from <paramref name="second"/>.</param>
 	/// <param name="firstSelector">
 	/// Function that projects the result given just an element from
 	/// <paramref name="first"/> where there is no corresponding element
-	/// in <paramref name="second"/>.</param>
+	/// in <paramref name="second"/>.
+	/// </param>
 	/// <param name="secondSelector">
 	/// Function that projects the result given just an element from
 	/// <paramref name="second"/> where there is no corresponding element
-	/// in <paramref name="first"/>.</param>
+	/// in <paramref name="first"/>.
+	/// </param>
 	/// <param name="bothSelector">
 	/// Function that projects the result given an element from
 	/// <paramref name="first"/> and an element from <paramref name="second"/>
-	/// that match on a common key.</param>
+	/// that match on a common key.
+	/// </param>
 	/// <param name="comparer">
 	/// The <see cref="IEqualityComparer{T}"/> instance used to compare
-	/// keys for equality.</param>
-	/// <returns>A sequence containing results projected from a full
-	/// outer join of the two input sequences.</returns>
-
+	/// keys for equality.
+	/// </param>
+	/// <returns>
+	/// A sequence containing results projected from a full
+	/// outer join of the two input sequences.
+	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="firstKeySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="secondKeySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="firstSelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="secondSelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="bothSelector"/> is <see langword="null"/>.</exception>
+	/// <remarks>
+	/// <para>
+	/// This method uses deferred execution and streams its results.
+	/// </para>
+	/// </remarks>
+	[Obsolete("FullJoin has been replaced by FullOuterJoin")]
 	public static IEnumerable<TResult> FullJoin<TFirst, TSecond, TKey, TResult>(
 		this IEnumerable<TFirst> first,
 		IEnumerable<TSecond> second,
@@ -207,36 +261,19 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(secondSelector);
 		Guard.IsNotNull(bothSelector);
 
-		return _(); IEnumerable<TResult> _()
-		{
-			var seconds = second.Select(e => new KeyValuePair<TKey, TSecond>(secondKeySelector(e), e)).ToArray();
-			var secondLookup = seconds.ToLookup(e => e.Key, e => e.Value, comparer);
-			var firstKeys = new HashSet<TKey>(comparer);
-
-			foreach (var fe in first)
-			{
-				var key = firstKeySelector(fe);
-				firstKeys.Add(key);
-
-				using var se = secondLookup[key].GetEnumerator();
-
-				if (se.MoveNext())
-				{
-					do { yield return bothSelector(fe, se.Current); }
-					while (se.MoveNext());
-				}
-				else
-				{
-					se.Dispose();
-					yield return firstSelector(fe);
-				}
-			}
-
-			foreach (var se in seconds)
-			{
-				if (!firstKeys.Contains(se.Key))
-					yield return secondSelector(se.Value);
-			}
-		}
+		return comparer == null
+			? HashJoin(
+				first, second,
+				JoinOperation.FullOuter,
+				firstKeySelector, secondKeySelector,
+				firstSelector, secondSelector,
+				bothSelector)
+			: HashJoin(
+				first, second,
+				JoinOperation.FullOuter,
+				firstKeySelector, secondKeySelector,
+				firstSelector, secondSelector,
+				bothSelector,
+				comparer);
 	}
 }
