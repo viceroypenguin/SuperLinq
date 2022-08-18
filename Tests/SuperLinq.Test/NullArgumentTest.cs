@@ -67,22 +67,38 @@ public class NullArgumentTest
 	private static string GetTestName(MethodInfo definition, ParameterInfo parameter) =>
 		$"{definition.Name}: '{parameter.Name}' ({parameter.Position});\n{definition}";
 
+	private static readonly string[] s_joinMethods =
+	{
+		nameof(SuperEnumerable.InnerJoin),
+		nameof(SuperEnumerable.LeftOuterJoin),
+		nameof(SuperEnumerable.RightOuterJoin),
+		nameof(SuperEnumerable.FullOuterJoin),
+	};
+
 	private static MethodInfo InstantiateMethod(MethodInfo definition)
 	{
 		if (!definition.IsGenericMethodDefinition) return definition;
 
-		var typeArguments = definition.GetGenericArguments().Select(t => InstantiateType(t.GetTypeInfo())).ToArray();
+		var typeArguments = definition.GetGenericArguments()
+			.Select(t => InstantiateType(t.GetTypeInfo()))
+			.ToArray();
 		return definition.MakeGenericMethod(typeArguments);
-	}
 
-	private static Type InstantiateType(TypeInfo typeParameter)
-	{
-		var constraints = typeParameter.GetGenericParameterConstraints();
+		Type InstantiateType(TypeInfo typeParameter)
+		{
+			var constraints = typeParameter.GetGenericParameterConstraints();
 
-		if (constraints.Length == 0) return typeof(int);
-		if (constraints.Length == 1) return constraints.Single();
+			if (constraints.Length == 0)
+				return s_joinMethods.Contains(definition.Name)
+					? typeof(string)
+					: typeof(int);
+			if (constraints.Length == 1) return constraints.Single();
+			if (constraints.Select(c => c.GetGenericTypeDefinition())
+					.CollectionEqual(typeof(IEqualityComparer<>), typeof(IComparer<>)))
+				return typeof(StringComparer);
 
-		throw new NotImplementedException("NullArgumentTest.InstantiateType");
+			throw new NotImplementedException("NullArgumentTest.InstantiateType");
+		}
 	}
 
 	private static bool IsReferenceType(ParameterInfo parameter) =>
@@ -90,26 +106,30 @@ public class NullArgumentTest
 
 	private static bool ParameterCanBeNull(ParameterInfo parameter)
 	{
-		var nullableTypes =
-			from t in new[] { typeof(IEqualityComparer<>), typeof(IComparer<>) }
-			select t.GetTypeInfo();
+		var type = parameter.ParameterType.GetTypeInfo();
+		type = type.IsGenericType ? type.GetGenericTypeDefinition().GetTypeInfo() : type;
+
+		if (Seq(typeof(IEqualityComparer<>), typeof(IComparer<>))
+				.Select(t => t.GetTypeInfo())
+				.Contains(type))
+			return true;
 
 		var nullableParameters = new[]
 		{
 			nameof(SuperEnumerable.Trace) + ".format",
 		};
 
-		var type = parameter.ParameterType.GetTypeInfo();
-		type = type.IsGenericType ? type.GetGenericTypeDefinition().GetTypeInfo() : type;
 		var param = parameter.Member.Name + "." + parameter.Name;
 
-		return nullableTypes.Contains(type) || nullableParameters.Contains(param, StringComparer.OrdinalIgnoreCase);
+		return nullableParameters.Contains(param, StringComparer.OrdinalIgnoreCase);
 	}
 
 	private static object CreateInstance(Type type)
 	{
 		if (type == typeof(int)) return 7; // int is used as size/length/range etc. avoid ArgumentOutOfRange for '0'.
 		if (type == typeof(string)) return "";
+		if (type == typeof(JoinType)) return JoinType.Hash;
+		if (type == typeof(StringComparer)) return StringComparer.Ordinal;
 		if (type == typeof(TaskScheduler)) return TaskScheduler.Default;
 		if (type.IsArray) return Array.CreateInstance(type.GetElementType()!, 0);
 		if (type.GetTypeInfo().IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type)!;
