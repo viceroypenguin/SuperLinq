@@ -511,11 +511,10 @@ the total number of items encountered.
 
 This method has 2 overloads.
 
-### Repeat
+### Replace
 
-Repeats the sequence indefinitely or a specific number of times.
-
-This method has 2 overloads.
+Replaces a single value in a sequence at a specified index
+with the given replacement value.
 
 ### Return
 
