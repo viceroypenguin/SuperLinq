@@ -288,6 +288,11 @@ the total number of items encountered.
 
 This method has 2 overloads.
 
+### Replace
+
+Replaces a single value in a sequence at a specified index
+with the given replacement value.
+
 ### RunLengthEncode
 
 Run-length encodes a sequence by converting consecutive instances of the same

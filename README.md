@@ -102,6 +102,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | RandomSubset					  | ✔️ | ⏱([#20](https://github.com/viceroypenguin/SuperLinq/issues/20)) |
 | Rank							  | ✔️[^5] | ✔️ |
 | RankBy						  | ✔️[^5] | ✔️ |
+| Replace						  | ✔️ | ✔️ |
 | Return						  | ✔️ | ❌ |
 | RightJoin						  | ✔️ | ⏱([#19](https://github.com/viceroypenguin/SuperLinq/issues/19)) |
 | RunLengthEncode				  | ✔️ | ✔️ |
