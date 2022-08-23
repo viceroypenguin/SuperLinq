@@ -76,13 +76,11 @@ public static partial class SuperEnumerable
 
 				if (newSegmentPredicate(current, previous, index))
 				{
-					yield return segment;              // yield the completed segment
-					segment = new List<T> { current }; // start a new segment
+					yield return segment;
+					segment = new List<T>();
 				}
-				else // not a new segment, append and continue
-				{
-					segment.Add(current);
-				}
+
+				segment.Add(current);
 
 				previous = current;
 			}
