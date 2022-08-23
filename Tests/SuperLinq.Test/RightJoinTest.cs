@@ -1,4 +1,4 @@
-﻿using static Test.RightJoinTest.Side;
+﻿using static Test.FullOuterJoinTest.Side;
 
 namespace Test;
 
@@ -6,8 +6,6 @@ namespace Test;
 
 public class RightJoinTest
 {
-	public enum Side { Right, Both }
-
 	[Fact]
 	public void RightJoinWithHomogeneousSequencesIsLazy()
 	{
