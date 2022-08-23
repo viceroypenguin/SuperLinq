@@ -12,7 +12,6 @@ public static partial class SuperEnumerable
 	/// <typeparam name="TLeft">The type of elements in the first sequence.</typeparam>
 	/// <typeparam name="TRight">The type of elements in the second sequence.</typeparam>
 	/// <typeparam name="TKey">The type of the key returned by the key selector functions.</typeparam>
-	/// <typeparam name="TResult">The type of the result elements.</typeparam>
 	/// <param name="left">The first sequence.</param>
 	/// <param name="right">The second sequence.</param>
 	/// <param name="joinType">A value indicating which type of join to use.</param>
@@ -32,8 +31,8 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<(TLeft? left, TRight? right)> FullOuterJoin<TLeft, TRight, TKey, TResult>(
-		IEnumerable<TLeft> left,
+	public static IEnumerable<(TLeft? left, TRight? right)> FullOuterJoin<TLeft, TRight, TKey>(
+		this IEnumerable<TLeft> left,
 		IEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
@@ -67,7 +66,6 @@ public static partial class SuperEnumerable
 	/// <typeparam name="TRight">The type of elements in the second sequence.</typeparam>
 	/// <typeparam name="TKey">The type of the key returned by the key selector functions.</typeparam>
 	/// <typeparam name="TComparer">The type of the comparer used to compare keys.</typeparam>
-	/// <typeparam name="TResult">The type of the result elements.</typeparam>
 	/// <param name="left">The first sequence.</param>
 	/// <param name="right">The second sequence.</param>
 	/// <param name="joinType">A value indicating which type of join to use.</param>
@@ -91,8 +89,8 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<(TLeft? left, TRight? right)> FullOuterJoin<TLeft, TRight, TKey, TComparer, TResult>(
-		IEnumerable<TLeft> left,
+	public static IEnumerable<(TLeft? left, TRight? right)> FullOuterJoin<TLeft, TRight, TKey, TComparer>(
+		this IEnumerable<TLeft> left,
 		IEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
@@ -166,7 +164,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TResult> FullOuterJoin<TLeft, TRight, TKey, TResult>(
-		IEnumerable<TLeft> left,
+		this IEnumerable<TLeft> left,
 		IEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
@@ -244,7 +242,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TResult> FullOuterJoin<TLeft, TRight, TKey, TComparer, TResult>(
-		IEnumerable<TLeft> left,
+		this IEnumerable<TLeft> left,
 		IEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,

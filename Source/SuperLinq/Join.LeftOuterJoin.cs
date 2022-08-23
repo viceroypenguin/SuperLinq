@@ -31,7 +31,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<(TLeft left, TRight? right)> LeftOuterJoin<TLeft, TRight, TKey>(
-		IEnumerable<TLeft> left,
+		this IEnumerable<TLeft> left,
 		IEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
@@ -83,7 +83,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<(TLeft left, TRight? right)> LeftOuterJoin<TLeft, TRight, TKey, TComparer>(
-		IEnumerable<TLeft> left,
+		this IEnumerable<TLeft> left,
 		IEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
@@ -145,7 +145,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TResult> LeftOuterJoin<TLeft, TRight, TKey, TResult>(
-		IEnumerable<TLeft> left,
+		this IEnumerable<TLeft> left,
 		IEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
@@ -210,7 +210,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TResult> LeftOuterJoin<TLeft, TRight, TKey, TComparer, TResult>(
-		IEnumerable<TLeft> left,
+		this IEnumerable<TLeft> left,
 		IEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,

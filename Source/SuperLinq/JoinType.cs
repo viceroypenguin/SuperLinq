@@ -18,5 +18,9 @@ public enum JoinType
 	/// <summary>
 	/// Sort both inputs and simultaneously enumerate both to execute the join.
 	/// </summary>
+	/// <remarks>
+	/// A merge join assumes that the left and right inputs are already sorted.
+	/// If they are not sorted, then the results will be undefined.
+	/// </remarks>
 	Merge,
 }
