@@ -16,7 +16,7 @@ public enum JoinType
 	Hash,
 
 	/// <summary>
-	/// Sort both inputs and simultaneously enumerate both to execute the join.
+	/// Simultaneously enumerates both sequences to execute the join.
 	/// </summary>
 	/// <remarks>
 	/// A merge join assumes that the left and right inputs are already sorted.

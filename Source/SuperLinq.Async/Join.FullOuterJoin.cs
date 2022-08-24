@@ -1,9 +1,9 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
-	/// Performs a right outer join on two heterogeneous sequences,
+	/// Performs a full outer join on two heterogeneous sequences,
 	/// returning a <see cref="ValueTuple{T1, T2}"/> containing 
 	/// the elements from <paramref name="left"/> and <paramref name="right"/>,
 	/// if present, and <see langword="null"/> otherwise.
@@ -18,7 +18,7 @@ public static partial class SuperEnumerable
 	/// <param name="leftKeySelector">Function that projects the key given an element from <paramref name="left"/>.</param>
 	/// <param name="rightKeySelector">Function that projects the key given an element from <paramref name="right"/>.</param>
 	/// <returns>
-	/// A sequence containing results projected from a right
+	/// A sequence containing results projected from a full
 	/// outer join of the two input sequences.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="left"/> is <see langword="null"/>.</exception>
@@ -31,9 +31,9 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<(TLeft? left, TRight right)> RightOuterJoin<TLeft, TRight, TKey>(
-		this IEnumerable<TLeft> left,
-		IEnumerable<TRight> right,
+	public static IAsyncEnumerable<(TLeft? left, TRight? right)> FullOuterJoin<TLeft, TRight, TKey>(
+		this IAsyncEnumerable<TLeft> left,
+		IAsyncEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
 		Func<TRight, TKey> rightKeySelector)
@@ -43,24 +43,24 @@ public static partial class SuperEnumerable
 				nameof(joinType),
 				$"Parameter joinType (JoinType) must not be equal to JoinType.Loop, was {joinType}.");
 
-		return Join<TLeft, TRight, TKey, (TLeft? left, TRight right)>(
+		return Join<TLeft, TRight, TKey, (TLeft?, TRight?)>(
 			left,
 			right,
 			joinType,
-			JoinOperation.RightOuter,
+			JoinOperation.FullOuter,
 			leftKeySelector,
 			rightKeySelector,
-			leftResultSelector: default,
+			static l => (l, default),
 			static r => (default, r),
 			ValueTuple.Create);
 	}
 
 	/// <summary>
-	/// Performs a right outer join on two heterogeneous sequences,
+	/// Performs a full outer join on two heterogeneous sequences,
 	/// returning a <see cref="ValueTuple{T1, T2}"/> containing 
 	/// the elements from <paramref name="left"/> and <paramref name="right"/>,
 	/// if present, and <see langword="null"/> otherwise.
-	/// Additional arguments specify key selection functions.
+	/// Additional arguments specify key selection functions and a key comparer.
 	/// </summary>
 	/// <typeparam name="TLeft">The type of elements in the first sequence.</typeparam>
 	/// <typeparam name="TRight">The type of elements in the second sequence.</typeparam>
@@ -76,7 +76,7 @@ public static partial class SuperEnumerable
 	/// <see cref="IComparer{T}"/> used to compare keys.
 	/// </param>
 	/// <returns>
-	/// A sequence containing results projected from a right
+	/// A sequence containing results projected from a full
 	/// outer join of the two input sequences.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="left"/> is <see langword="null"/>.</exception>
@@ -89,9 +89,9 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<(TLeft? left, TRight right)> RightOuterJoin<TLeft, TRight, TKey, TComparer>(
-		this IEnumerable<TLeft> left,
-		IEnumerable<TRight> right,
+	public static IAsyncEnumerable<(TLeft? left, TRight? right)> FullOuterJoin<TLeft, TRight, TKey, TComparer>(
+		this IAsyncEnumerable<TLeft> left,
+		IAsyncEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
 		Func<TRight, TKey> rightKeySelector,
@@ -103,21 +103,22 @@ public static partial class SuperEnumerable
 				nameof(joinType),
 				$"Parameter joinType (JoinType) must not be equal to JoinType.Loop, was {joinType}.");
 
-		return Join<TLeft, TRight, TKey, TComparer, (TLeft? left, TRight right)>(
+		return Join<TLeft, TRight, TKey, TComparer, (TLeft?, TRight?)>(
 			left,
 			right,
 			joinType,
-			JoinOperation.RightOuter,
+			JoinOperation.FullOuter,
 			leftKeySelector,
 			rightKeySelector,
-			leftResultSelector: default,
+			static l => (l, default),
 			static r => (default, r),
 			ValueTuple.Create,
 			comparer);
 	}
 
 	/// <summary>
-	/// Performs a right outer join on two heterogeneous sequences.
+	/// Performs a full outer join on two heterogeneous sequences using
+	/// the default comparer for <typeparamref name="TKey"/>.
 	/// Additional arguments specify key selection and result
 	/// projection functions.
 	/// </summary>
@@ -130,6 +131,11 @@ public static partial class SuperEnumerable
 	/// <param name="joinType">A value indicating which type of join to use.</param>
 	/// <param name="leftKeySelector">Function that projects the key given an element from <paramref name="left"/>.</param>
 	/// <param name="rightKeySelector">Function that projects the key given an element from <paramref name="right"/>.</param>
+	/// <param name="leftResultSelector">
+	/// Function that projects the result given just an element from
+	/// <paramref name="left"/> where there is no corresponding element
+	/// in <paramref name="right"/>.
+	/// </param>
 	/// <param name="rightResultSelector">
 	/// Function that projects the result given just an element from
 	/// <paramref name="right"/> where there is no corresponding element
@@ -141,13 +147,14 @@ public static partial class SuperEnumerable
 	/// that match on a common key.
 	/// </param>
 	/// <returns>
-	/// A sequence containing results projected from a right
+	/// A sequence containing results projected from a full
 	/// outer join of the two input sequences.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="left"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="right"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="leftKeySelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="rightKeySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="leftResultSelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="rightResultSelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="bothResultSelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentException"><paramref name="joinType"/> is <see cref="JoinType.Loop"/>.</exception>
@@ -156,12 +163,13 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TResult> RightOuterJoin<TLeft, TRight, TKey, TResult>(
-		this IEnumerable<TLeft> left,
-		IEnumerable<TRight> right,
+	public static IAsyncEnumerable<TResult> FullOuterJoin<TLeft, TRight, TKey, TResult>(
+		this IAsyncEnumerable<TLeft> left,
+		IAsyncEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
 		Func<TRight, TKey> rightKeySelector,
+		Func<TLeft, TResult> leftResultSelector,
 		Func<TRight, TResult> rightResultSelector,
 		Func<TLeft, TRight, TResult> bothResultSelector)
 	{
@@ -174,16 +182,16 @@ public static partial class SuperEnumerable
 			left,
 			right,
 			joinType,
-			JoinOperation.RightOuter,
+			JoinOperation.FullOuter,
 			leftKeySelector,
 			rightKeySelector,
-			leftResultSelector: default,
+			leftResultSelector,
 			rightResultSelector,
 			bothResultSelector);
 	}
 
 	/// <summary>
-	/// Performs a right outer join on two heterogeneous sequences.
+	/// Performs a full outer join on two heterogeneous sequences.
 	/// Additional arguments specify key selection functions, result
 	/// projection functions and a key comparer.
 	/// </summary>
@@ -197,6 +205,11 @@ public static partial class SuperEnumerable
 	/// <param name="joinType">A value indicating which type of join to use.</param>
 	/// <param name="leftKeySelector">Function that projects the key given an element from <paramref name="left"/>.</param>
 	/// <param name="rightKeySelector">Function that projects the key given an element from <paramref name="right"/>.</param>
+	/// <param name="leftResultSelector">
+	/// Function that projects the result given just an element from
+	/// <paramref name="left"/> where there is no corresponding element
+	/// in <paramref name="right"/>.
+	/// </param>
 	/// <param name="rightResultSelector">
 	/// Function that projects the result given just an element from
 	/// <paramref name="right"/> where there is no corresponding element
@@ -212,13 +225,14 @@ public static partial class SuperEnumerable
 	/// <see cref="IComparer{T}"/> used to compare keys.
 	/// </param>
 	/// <returns>
-	/// A sequence containing results projected from a right
+	/// A sequence containing results projected from a full
 	/// outer join of the two input sequences.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="left"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="right"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="leftKeySelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="rightKeySelector"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="leftResultSelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="rightResultSelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="bothResultSelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentException"><paramref name="joinType"/> is <see cref="JoinType.Loop"/>.</exception>
@@ -227,12 +241,13 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TResult> RightOuterJoin<TLeft, TRight, TKey, TComparer, TResult>(
-		this IEnumerable<TLeft> left,
-		IEnumerable<TRight> right,
+	public static IAsyncEnumerable<TResult> FullOuterJoin<TLeft, TRight, TKey, TComparer, TResult>(
+		this IAsyncEnumerable<TLeft> left,
+		IAsyncEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
 		Func<TRight, TKey> rightKeySelector,
+		Func<TLeft, TResult> leftResultSelector,
 		Func<TRight, TResult> rightResultSelector,
 		Func<TLeft, TRight, TResult> bothResultSelector,
 		TComparer comparer)
@@ -247,10 +262,10 @@ public static partial class SuperEnumerable
 			left,
 			right,
 			joinType,
-			JoinOperation.RightOuter,
+			JoinOperation.FullOuter,
 			leftKeySelector,
 			rightKeySelector,
-			leftResultSelector: default,
+			leftResultSelector,
 			rightResultSelector,
 			bothResultSelector,
 			comparer);

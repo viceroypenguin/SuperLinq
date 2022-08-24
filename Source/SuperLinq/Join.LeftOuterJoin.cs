@@ -46,7 +46,7 @@ public static partial class SuperEnumerable
 			rightKeySelector,
 			static l => (l, default),
 			rightResultSelector: default,
-			static (l, r) => (l, r));
+			ValueTuple.Create);
 	}
 
 	/// <summary>
@@ -100,7 +100,7 @@ public static partial class SuperEnumerable
 			rightKeySelector,
 			static l => (l, default),
 			rightResultSelector: default,
-			static (l, r) => (l, r),
+			ValueTuple.Create,
 			comparer);
 	}
 

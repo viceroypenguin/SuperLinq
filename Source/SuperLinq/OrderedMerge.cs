@@ -177,7 +177,8 @@ public static partial class SuperEnumerable
 			JoinOperation.FullOuter,
 			keySelector, keySelector,
 			firstSelector, secondSelector,
-			bothSelector);
+			bothSelector,
+			Comparer<TKey>.Default);
 	}
 
 	/// <summary>
@@ -226,20 +227,13 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(bothSelector);
 		Guard.IsNotNull(secondSelector);
 
-		return comparer == null
-			? MergeJoin(
-				first, second,
-				JoinOperation.FullOuter,
-				keySelector, keySelector,
-				firstSelector, secondSelector,
-				bothSelector)
-			: MergeJoin(
+		return MergeJoin(
 				first, second,
 				JoinOperation.FullOuter,
 				keySelector, keySelector,
 				firstSelector, secondSelector,
 				bothSelector,
-				comparer);
+				comparer ?? Comparer<TKey>.Default);
 	}
 
 	/// <summary>
@@ -297,7 +291,8 @@ public static partial class SuperEnumerable
 			JoinOperation.FullOuter,
 			firstKeySelector, secondKeySelector,
 			firstSelector, secondSelector,
-			bothSelector);
+			bothSelector, 
+			Comparer<TKey>.Default);
 	}
 
 	/// <summary>
@@ -353,19 +348,12 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(bothSelector);
 		Guard.IsNotNull(secondSelector);
 
-		return comparer == null
-			? MergeJoin(
-				first, second,
-				JoinOperation.FullOuter,
-				firstKeySelector, secondKeySelector,
-				firstSelector, secondSelector,
-				bothSelector)
-			: MergeJoin(
+		return MergeJoin(
 				first, second,
 				JoinOperation.FullOuter,
 				firstKeySelector, secondKeySelector,
 				firstSelector, secondSelector,
 				bothSelector,
-				comparer);
+				comparer ?? Comparer<TKey>.Default);
 	}
 }

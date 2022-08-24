@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace SuperLinq;
+namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	private class ComparerEqualityComparer<TKey> : IEqualityComparer<TKey>
 	{
@@ -17,22 +17,23 @@ public static partial class SuperEnumerable
 		public int GetHashCode([DisallowNull] TKey obj) => throw new NotSupportedException();
 	}
 
-	private static IEnumerable<TResult> MergeJoin<TLeft, TRight, TKey, TResult>(
-		IEnumerable<TLeft> left,
-		IEnumerable<TRight> right,
+	private static async IAsyncEnumerable<TResult> MergeJoin<TLeft, TRight, TKey, TResult>(
+		IAsyncEnumerable<TLeft> left,
+		IAsyncEnumerable<TRight> right,
 		JoinOperation joinOperation,
 		Func<TLeft, TKey> leftKeySelector,
 		Func<TRight, TKey> rightKeySelector,
 		Func<TLeft, TResult>? leftResultSelector,
 		Func<TRight, TResult>? rightResultSelector,
 		Func<TLeft, TRight, TResult> bothResultSelector,
-		IComparer<TKey> comparer)
+		IComparer<TKey> comparer,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
-		using var e1 = left.GroupAdjacent(leftKeySelector, new ComparerEqualityComparer<TKey>(comparer)).GetEnumerator();
-		using var e2 = right.GroupAdjacent(rightKeySelector, new ComparerEqualityComparer<TKey>(comparer)).GetEnumerator();
+		await using var e1 = left.GroupAdjacent(leftKeySelector, new ComparerEqualityComparer<TKey>(comparer)).GetConfiguredAsyncEnumerator(cancellationToken);
+		await using var e2 = right.GroupAdjacent(rightKeySelector, new ComparerEqualityComparer<TKey>(comparer)).GetConfiguredAsyncEnumerator(cancellationToken);
 
-		var gotLeft = e1.MoveNext();
-		var gotRight = e2.MoveNext();
+		var gotLeft = await e1.MoveNextAsync();
+		var gotRight = await e2.MoveNextAsync();
 
 		while (gotLeft && gotRight)
 		{
@@ -45,22 +46,22 @@ public static partial class SuperEnumerable
 				if (joinOperation.HasFlag(JoinOperation.LeftOuter))
 					foreach (var e in l)
 						yield return leftResultSelector!(e);
-				gotLeft = e1.MoveNext();
+				gotLeft = await e1.MoveNextAsync();
 			}
 			else if (comparison > 0)
 			{
 				if (joinOperation.HasFlag(JoinOperation.RightOuter))
 					foreach (var e in r)
 						yield return rightResultSelector!(e);
-				gotRight = e2.MoveNext();
+				gotRight = await e2.MoveNextAsync();
 			}
 			else
 			{
 				foreach (var el in l)
 					foreach (var er in r)
 						yield return bothResultSelector(el, er);
-				gotLeft = e1.MoveNext();
-				gotRight = e2.MoveNext();
+				gotLeft = await e1.MoveNextAsync();
+				gotRight = await e2.MoveNextAsync();
 			}
 		}
 
@@ -70,7 +71,7 @@ public static partial class SuperEnumerable
 			{
 				foreach (var e in e1.Current)
 					yield return leftResultSelector!(e);
-			} while (e1.MoveNext());
+			} while (await e1.MoveNextAsync());
 			yield break;
 		}
 
@@ -80,7 +81,7 @@ public static partial class SuperEnumerable
 			{
 				foreach (var e in e2.Current)
 					yield return rightResultSelector!(e);
-			} while (e2.MoveNext());
+			} while (await e2.MoveNextAsync());
 			yield break;
 		}
 	}

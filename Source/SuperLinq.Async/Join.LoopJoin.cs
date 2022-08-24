@@ -1,19 +1,20 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
-	private static IEnumerable<TResult> LoopJoin<TLeft, TRight,TKey, TResult>(
-		IEnumerable<TLeft> left,
-		IEnumerable<TRight> right,
+	private static async IAsyncEnumerable<TResult> LoopJoin<TLeft, TRight,TKey, TResult>(
+		IAsyncEnumerable<TLeft> left,
+		IAsyncEnumerable<TRight> right,
 		JoinOperation joinOperation,
 		Func<TLeft, TKey> leftKeySelector,
 		Func<TRight, TKey> rightKeySelector,
 		Func<TLeft, TResult>? leftResultSelector,
 		Func<TLeft, TRight, TResult> bothResultSelector,
-		IEqualityComparer<TKey> comparer)
+		IEqualityComparer<TKey> comparer,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
-		var rList = right.ToList();
-		foreach (var l in left)
+		var rList = await right.ToListAsync(cancellationToken).ConfigureAwait(false);
+		await foreach (var l in left.WithCancellation(cancellationToken).ConfigureAwait(false))
 		{
 			var lKey = leftKeySelector(l);
 			var flag = false;

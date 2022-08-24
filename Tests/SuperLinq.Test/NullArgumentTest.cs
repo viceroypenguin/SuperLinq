@@ -94,7 +94,7 @@ public class NullArgumentTest
 					: typeof(int);
 			if (constraints.Length == 1) return constraints.Single();
 			if (constraints.Select(c => c.GetGenericTypeDefinition())
-					.CollectionEqual(typeof(IEqualityComparer<>), typeof(IComparer<>)))
+					.CollectionEqual(Seq(typeof(IEqualityComparer<>), typeof(IComparer<>))))
 				return typeof(StringComparer);
 
 			throw new NotImplementedException("NullArgumentTest.InstantiateType");

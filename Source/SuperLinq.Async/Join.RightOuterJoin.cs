@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
 	/// Performs a right outer join on two heterogeneous sequences,
@@ -31,9 +31,9 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<(TLeft? left, TRight right)> RightOuterJoin<TLeft, TRight, TKey>(
-		this IEnumerable<TLeft> left,
-		IEnumerable<TRight> right,
+	public static IAsyncEnumerable<(TLeft? left, TRight right)> RightOuterJoin<TLeft, TRight, TKey>(
+		this IAsyncEnumerable<TLeft> left,
+		IAsyncEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
 		Func<TRight, TKey> rightKeySelector)
@@ -89,9 +89,9 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<(TLeft? left, TRight right)> RightOuterJoin<TLeft, TRight, TKey, TComparer>(
-		this IEnumerable<TLeft> left,
-		IEnumerable<TRight> right,
+	public static IAsyncEnumerable<(TLeft? left, TRight right)> RightOuterJoin<TLeft, TRight, TKey, TComparer>(
+		this IAsyncEnumerable<TLeft> left,
+		IAsyncEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
 		Func<TRight, TKey> rightKeySelector,
@@ -156,9 +156,9 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TResult> RightOuterJoin<TLeft, TRight, TKey, TResult>(
-		this IEnumerable<TLeft> left,
-		IEnumerable<TRight> right,
+	public static IAsyncEnumerable<TResult> RightOuterJoin<TLeft, TRight, TKey, TResult>(
+		this IAsyncEnumerable<TLeft> left,
+		IAsyncEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
 		Func<TRight, TKey> rightKeySelector,
@@ -227,9 +227,9 @@ public static partial class SuperEnumerable
 	/// This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TResult> RightOuterJoin<TLeft, TRight, TKey, TComparer, TResult>(
-		this IEnumerable<TLeft> left,
-		IEnumerable<TRight> right,
+	public static IAsyncEnumerable<TResult> RightOuterJoin<TLeft, TRight, TKey, TComparer, TResult>(
+		this IAsyncEnumerable<TLeft> left,
+		IAsyncEnumerable<TRight> right,
 		JoinType joinType,
 		Func<TLeft, TKey> leftKeySelector,
 		Func<TRight, TKey> rightKeySelector,

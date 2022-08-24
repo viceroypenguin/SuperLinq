@@ -1,4 +1,6 @@
-﻿namespace Test.Async;
+﻿using SuperLinq;
+
+namespace Test.Async;
 
 internal static partial class TestExtensions
 {
@@ -33,6 +35,15 @@ internal static partial class TestExtensions
 
 	internal static async Task AssertSequenceEqual<T>(this IAsyncEnumerable<T> actual, params T[] expected) =>
 		Assert.Equal(expected, await actual.ToListAsync());
+
+	internal static async Task AssertCollectionEqual<T>(this IAsyncEnumerable<T> actual, params T[] expected) =>
+		Assert.True(await actual.CollectionEqual(expected.ToAsyncEnumerable(), comparer: default));
+
+	internal static async Task AssertCollectionEqual<T>(this IAsyncEnumerable<T> actual, IEnumerable<T> expected) =>
+		Assert.True(await actual.CollectionEqual(expected.ToAsyncEnumerable(), comparer: default));
+
+	internal static async Task AssertCollectionEqual<T>(this IAsyncEnumerable<T> actual, IEnumerable<T> expected, IEqualityComparer<T>? comparer) =>
+		Assert.True(await actual.CollectionEqual(expected.ToAsyncEnumerable(), comparer));
 
 	public static WatchableEnumerator<T> AsWatchable<T>(this IAsyncEnumerator<T> source) => new(source);
 }

@@ -1,6 +1,6 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Async;
 
-public static partial class SuperEnumerable
+public static partial class AsyncSuperEnumerable
 {
 	[Flags]
 	private enum JoinOperation
@@ -11,9 +11,9 @@ public static partial class SuperEnumerable
 		FullOuter = LeftOuter | RightOuter,
 	}
 
-	private static IEnumerable<TResult> Join<TLeft, TRight, TKey, TResult>(
-		IEnumerable<TLeft> left,
-		IEnumerable<TRight> right,
+	private static IAsyncEnumerable<TResult> Join<TLeft, TRight, TKey, TResult>(
+		IAsyncEnumerable<TLeft> left,
+		IAsyncEnumerable<TRight> right,
 		JoinType joinType,
 		JoinOperation joinOperation,
 		Func<TLeft, TKey> leftKeySelector,
@@ -68,13 +68,13 @@ public static partial class SuperEnumerable
 				bothResultSelector,
 				Comparer<TKey>.Default),
 
-			_ => ThrowHelper.ThrowArgumentException<IEnumerable<TResult>>(nameof(joinType), $"Unknown Join Type: {joinType}"),
+			_ => ThrowHelper.ThrowArgumentException<IAsyncEnumerable<TResult>>(nameof(joinType), $"Unknown Join Type: {joinType}"),
 		};
 	}
 
-	private static IEnumerable<TResult> Join<TLeft, TRight, TKey, TComparer, TResult>(
-		IEnumerable<TLeft> left,
-		IEnumerable<TRight> right,
+	private static IAsyncEnumerable<TResult> Join<TLeft, TRight, TKey, TComparer, TResult>(
+		IAsyncEnumerable<TLeft> left,
+		IAsyncEnumerable<TRight> right,
 		JoinType joinType,
 		JoinOperation joinOperation,
 		Func<TLeft, TKey> leftKeySelector,
@@ -132,7 +132,7 @@ public static partial class SuperEnumerable
 				bothResultSelector,
 				comparer),
 
-			_ => ThrowHelper.ThrowArgumentException<IEnumerable<TResult>>(nameof(joinType), $"Unknown Join Type: {joinType}"),
+			_ => ThrowHelper.ThrowArgumentException<IAsyncEnumerable<TResult>>(nameof(joinType), $"Unknown Join Type: {joinType}"),
 		};
 	}
 }

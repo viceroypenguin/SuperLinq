@@ -1,6 +1,7 @@
-﻿using static Test.FullOuterJoinTest.Side;
+﻿using SuperLinq;
+using static Test.Async.FullOuterJoinTest.Side;
 
-namespace Test;
+namespace Test.Async;
 
 public class LeftOuterJoinTest
 {
@@ -15,8 +16,8 @@ public class LeftOuterJoinTest
 	[Theory, MemberData(nameof(GetJoinTypes))]
 	public void LeftOuterJoinIsLazy(JoinType joinType)
 	{
-		var xs = new BreakingSequence<int>();
-		var ys = new BreakingSequence<double>();
+		var xs = new AsyncBreakingSequence<int>();
+		var ys = new AsyncBreakingSequence<double>();
 
 		xs.LeftOuterJoin(
 			ys, joinType,
@@ -46,7 +47,7 @@ public class LeftOuterJoinTest
 	}
 
 	[Theory, MemberData(nameof(GetJoinTypes))]
-	public void LeftOuterJoinResults(JoinType joinType)
+	public async Task LeftOuterJoinResults(JoinType joinType)
 	{
 		var foo = (1, "foo");
 		var bar1 = (2, "bar");
@@ -57,8 +58,8 @@ public class LeftOuterJoinTest
 		var quux = (5, "quux");
 		var quuz = (6, "quuz");
 
-		var xs = Seq(foo, bar1, qux);
-		var ys = Seq(bar2, bar3, baz, quuz, quux);
+		var xs = AsyncSeq(foo, bar1, qux);
+		var ys = AsyncSeq(bar2, bar3, baz, quuz, quux);
 
 		var missing = default((int, string));
 
@@ -70,7 +71,7 @@ public class LeftOuterJoinTest
 				x => (Left, x, missing),
 				(x, y) => (Both, x, y));
 
-		result.AssertCollectionEqual(
+		await result.AssertCollectionEqual(
 			(Left, foo, missing),
 			(Both, bar1, bar2),
 			(Both, bar1, bar3),
@@ -78,7 +79,7 @@ public class LeftOuterJoinTest
 	}
 
 	[Theory, MemberData(nameof(GetJoinTypes))]
-	public void LeftOuterJoinWithComparerResults(JoinType joinType)
+	public async Task LeftOuterJoinWithComparerResults(JoinType joinType)
 	{
 		var foo = ("one", "foo");
 		var bar1 = ("two", "bar");
@@ -89,8 +90,8 @@ public class LeftOuterJoinTest
 		var quux = ("five", "quux");
 		var quuz = ("six", "quuz");
 
-		var xs = Seq(foo, bar1, qux);
-		var ys = Seq(bar2, bar3, baz, quuz, quux);
+		var xs = AsyncSeq(foo, bar1, qux);
+		var ys = AsyncSeq(bar2, bar3, baz, quuz, quux);
 
 		var missing = default((string, string));
 
@@ -103,7 +104,7 @@ public class LeftOuterJoinTest
 				(x, y) => (Both, x, y),
 				StringComparer.OrdinalIgnoreCase);
 
-		result.AssertCollectionEqual(
+		await result.AssertCollectionEqual(
 			(Left, foo, missing),
 			(Both, bar1, bar2),
 			(Both, bar1, bar3),
@@ -111,14 +112,14 @@ public class LeftOuterJoinTest
 	}
 
 	[Theory, MemberData(nameof(GetJoinTypes))]
-	public void LeftOuterJoinEmptyLeft(JoinType joinType)
+	public async Task LeftOuterJoinEmptyLeft(JoinType joinType)
 	{
 		var foo = (1, "foo");
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = Seq<(int, string)>();
-		var ys = Seq(foo, bar, baz);
+		var xs = AsyncSeq<(int, string)>();
+		var ys = AsyncSeq(foo, bar, baz);
 
 		var missing = default((int, string));
 
@@ -130,18 +131,18 @@ public class LeftOuterJoinTest
 				x => (Left, x, missing),
 				(x, y) => (Both, x, y));
 
-		result.AssertSequenceEqual();
+		await result.AssertSequenceEqual();
 	}
 
 	[Theory, MemberData(nameof(GetJoinTypes))]
-	public void LeftOuterJoinEmptyRight(JoinType joinType)
+	public async Task LeftOuterJoinEmptyRight(JoinType joinType)
 	{
 		var foo = (1, "foo");
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = Seq(foo, bar, baz);
-		var ys = Seq<(int, string)>();
+		var xs = AsyncSeq(foo, bar, baz);
+		var ys = AsyncSeq<(int, string)>();
 
 		var missing = default((int, string));
 
@@ -153,7 +154,7 @@ public class LeftOuterJoinTest
 				x => (Left, x, missing),
 				(x, y) => (Both, x, y));
 
-		result.AssertSequenceEqual(
+		await result.AssertSequenceEqual(
 			(Left, foo, missing),
 			(Left, bar, missing),
 			(Left, baz, missing));

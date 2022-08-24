@@ -191,7 +191,8 @@ public static partial class SuperEnumerable
 			JoinOperation.FullOuter,
 			firstKeySelector, secondKeySelector,
 			firstSelector, secondSelector,
-			bothSelector);
+			bothSelector,
+			EqualityComparer<TKey>.Default);
 	}
 
 	/// <summary>
@@ -261,19 +262,12 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(secondSelector);
 		Guard.IsNotNull(bothSelector);
 
-		return comparer == null
-			? HashJoin(
-				first, second,
-				JoinOperation.FullOuter,
-				firstKeySelector, secondKeySelector,
-				firstSelector, secondSelector,
-				bothSelector)
-			: HashJoin(
+		return HashJoin(
 				first, second,
 				JoinOperation.FullOuter,
 				firstKeySelector, secondKeySelector,
 				firstSelector, secondSelector,
 				bothSelector,
-				comparer);
+				comparer ?? EqualityComparer<TKey>.Default);
 	}
 }
