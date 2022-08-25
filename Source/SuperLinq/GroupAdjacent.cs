@@ -276,17 +276,14 @@ public static partial class SuperEnumerable
 			var key = keySelector(iterator.Current);
 			var element = elementSelector(iterator.Current);
 
-			if (comparer.Equals(k, key))
-			{
-				members.Add(element);
-				continue;
-			}
-			else
+			if (!comparer.Equals(k, key))
 			{
 				yield return resultSelector(k, members);
 				k = key;
-				members = new List<TElement> { element };
+				members = new List<TElement>();
 			}
+
+			members.Add(element);
 		}
 
 		yield return resultSelector(k, members);

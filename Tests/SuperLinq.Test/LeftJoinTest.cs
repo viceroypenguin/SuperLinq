@@ -1,11 +1,11 @@
-﻿using static Test.LeftJoinTest.Side;
+﻿using static Test.FullOuterJoinTest.Side;
 
 namespace Test;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 public class LeftJoinTest
 {
-	public enum Side { Left, Both }
-
 	[Fact]
 	public void LeftJoinWithHomogeneousSequencesIsLazy()
 	{
@@ -158,3 +158,5 @@ public class LeftJoinTest
 			(Left, baz, missing));
 	}
 }
+
+#pragma warning restore CS0618 // Type or member is obsolete

@@ -41,8 +41,8 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | AggregateRight				  | ✔️ | ✔️ |
 | AtLeast						  | ✔️ | ✔️ |
 | AtMost						  | ✔️ | ✔️ |
-| Backsert						  | ✔️[^2] | ❌[^2] |
-| Batch							  | ❌<br/>(Removed[^3]) | ❌[^3] |
+| Backsert						  | ⚠️[^2] | ❌[^2] |
+| Batch							  | ⚠️<br/>(Removed[^3]) | ❌[^3] |
 | BindByIndex					  | ✔️ | ✔️ |
 | Cartesian						  | ✔️ | ❌ |
 | Choose						  | ✔️ | ✔️ |
@@ -69,8 +69,9 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | Flatten						  | ✔️ | ❌ |
 | Fold							  | ✔️ | ❌ |
 | From							  | ✔️ | ✔️ |
-| FullGroupJoin					  | ✔️ | ⏱([#19](https://github.com/viceroypenguin/SuperLinq/issues/19)) |
-| FullJoin						  | ✔️ | ⏱([#19](https://github.com/viceroypenguin/SuperLinq/issues/19)) |
+| FullGroupJoin					  | ✔️ | ❌ |
+| FullJoin						  | ⚠️[^9] | ❌ |
+| FullOuterJoin					  | ✔️ | ✔️ |
 | Generate						  | ✔️ | ✔️ |
 | GenerateByIndex				  | ✔️ | ✔️ |
 | GetShortestPath				  | ✔️ | ✔️ |
@@ -79,16 +80,18 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | GroupAdjacent					  | ✔️ | ✔️ |
 | Index							  | ✔️ | ✔️ |
 | IndexBy						  | ✔️ | ✔️ |
+| InnerJoin						  | ✔️ | ✔️ |
 | Insert						  | ✔️ | ✔️ |
 | Interleave					  | ✔️ | ✔️ |
 | Lag							  | ✔️ | ✔️ |
 | Lead							  | ✔️ | ✔️ |
-| LeftJoin						  | ✔️ | ⏱([#19](https://github.com/viceroypenguin/SuperLinq/issues/19)) |
+| LeftJoin						  | ⚠️[^9] | ❌ |
+| LeftOuterJoin					  | ✔️ | ✔️ |
 | MaxBy							  | ❌<br/>(Removed[^8]) | ❌[^8] |
 | MinBy							  | ❌<br/>(Removed[^8]) | ❌[^8] |
 | Move							  | ✔️ | ⏱([#27](https://github.com/viceroypenguin/SuperLinq/issues/27)) |
 | OrderBy						  | ✔️ | ✔️ |
-| OrderedMerge					  | ✔️ | ⏱([#19](https://github.com/viceroypenguin/SuperLinq/issues/19)) |
+| OrderedMerge					  | ⚠️[^9] | ❌ |
 | Pad							  | ✔️ | ✔️ |
 | PadStart						  | ✔️ | ✔️ |
 | PartialSort					  | ✔️ | ✔️ |
@@ -104,7 +107,8 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | RankBy						  | ✔️[^5] | ✔️ |
 | Replace						  | ✔️ | ✔️ |
 | Return						  | ✔️ | ❌ |
-| RightJoin						  | ✔️ | ⏱([#19](https://github.com/viceroypenguin/SuperLinq/issues/19)) |
+| RightJoin						  | ⚠️[^9] | ❌ |
+| RightOuterJoin				  | ✔️ | ✔️ |
 | RunLengthEncode				  | ✔️ | ✔️ |
 | Scan							  | ❌<br/>(Removed[^6]) | ❌[^6] |
 | ScanBy						  | ✔️ | ✔️ |
@@ -114,7 +118,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | Sequence						  | ✔️ | ✔️ |
 | Shuffle						  | ✔️ | ⏱([#20](https://github.com/viceroypenguin/SuperLinq/issues/20)) |
 | SkipUntil						  | ✔️ | ✔️ |
-| Slice							  | ✔️[^7] | ❌[^7] |
+| Slice							  | ⚠️[^7] | ❌[^7] |
 | SortedMerge					  | ✔️ | ✔️ |
 | SortedMergeBy					  | ✔️ | ✔️ |
 | SortedMergeDescending			  | ✔️ | ✔️ |
@@ -152,5 +156,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 [^3]: Batch has been replaced by `.Buffer()` in .NET Core 3.1/.NET 5 (implemented by System.Interactive(.Async)) and `.Chunk()` in .NET 6
 [^4]: Pipe has been replaced by `.Do()` (implemented by System.Interactive(.Async))
 [^5]: Rank has changed behavior, please review the breaking changes for Rank [here](Source/SuperLinq/readme.md#rank).
-[^6]: Scan has been renamed to ScanEx; Scan is taken by implementation in System.Interactive(.Async) which does not conform to standard Scan operator behavior
+[^6]: Scan has been renamed to `ScanEx()`; Scan is taken by implementation in System.Interactive(.Async) which does not conform to standard Scan operator behavior
 [^7]: Slice has been obsoleted in favor of `.Take(Range)`.
+[^9]: FullJoin, LeftJoin, RightJoin, and OrderedMerge have been obsoleted in favor of `.InnerJoin()`/ `.LeftOuterJoin()`/ `.RightOuterJoin()`/ `.FullOuterJoin()`
+
