@@ -163,6 +163,13 @@ with the previous non-null reference or value seen in that sequence.
 
 This method has 7 overloads.
 
+### FullOuterJoin
+
+Performs a full outer join of two sequences. A parameter is available to
+select between join techniques of Hash, and Merge.
+
+This method has 4 overloads.
+
 ### Fold
 
 Returns the result of applying a function to a sequence with 1 to 16 elements.
@@ -221,6 +228,13 @@ a comparer to use for testing equivalence of keys.
 
 This method has 2 overloads.
 
+### InnerJoin
+
+Performs an inner join of two sequences. A parameter is available to
+select between join techniques of Loop, Hash, and Merge.
+
+This method has 4 overloads.
+
 ### Insert
 
 Inserts the elements of a sequence into another sequence at a specified index.
@@ -233,6 +247,13 @@ Interleaves the elements of two or more sequences into a single sequence,
 skipping sequences as they are consumed.
 
 This method has 2 overloads.
+
+### LeftOuterJoin
+
+Performs a left outer join of two sequences. A parameter is available to
+select between join techniques of Loop, Hash, and Merge.
+
+This method has 4 overloads.
 
 ### OrderBy
 
@@ -292,6 +313,13 @@ This method has 2 overloads.
 
 Replaces a single value in a sequence at a specified index
 with the given replacement value.
+
+### RightOuterJoin
+
+Performs a right outer join of two sequences. A parameter is available to
+select between join techniques of Hash, and Merge.
+
+This method has 4 overloads.
 
 ### RunLengthEncode
 
