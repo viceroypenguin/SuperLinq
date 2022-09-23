@@ -97,6 +97,20 @@ second-last element, two represents the third-last element and so on.
 
 This method has 2 overloads.
 
+### DensePartialSort
+
+Executes a partial sort of the top K elements of a sequence, including ties. If K is less than the total number of
+elements in the sequence, then this method will improve performance.
+
+This method has 4 overloads.
+
+### DensePartialSortBy
+
+Executes a partial sort of the top K elements of a sequence, including ties, according to a key. If K is less than the
+total number of elements in the sequence, then this method will improve performance.
+
+This method has 4 overloads.
+
 ### DenseRank
 
 Ranks each item in the sequence with ascending ordering according to 
@@ -278,13 +292,15 @@ This method has 3 overloads.
 
 ### PartialSort
 
-Combines `OrderBy` (where element is key) and `Take` in a single operation.
+Executes a partial sort of the top K elements of a sequence. If K is less than the total number of elements in the
+sequence, then this method will improve performance.
 
 This method has 4 overloads.
 
 ### PartialSortBy
 
-Combines `OrderBy` and `Take` in a single operation.
+Executes a partial sort of the top K elements of a sequence, according to a key. If K is less than the total number of
+elements in the sequence, then this method will improve performance.
 
 This method has 4 overloads.
 
