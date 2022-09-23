@@ -104,12 +104,7 @@ public static partial class AsyncSuperEnumerable
 		static async IAsyncEnumerable<T> _(IAsyncEnumerable<T> source, int count, IComparer<T> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var top = new SortedSet<(T item, int index)>(
-				Comparer<(T item, int index)>.Create((x, y) =>
-				{
-					var result = comparer.Compare(x.item, y.item);
-					return result != 0 ? result :
-						Comparer<long>.Default.Compare(x.index, y.index);
-				}));
+				ValueTupleComparer.Create<T, int>(comparer, default));
 
 			await foreach (var (index, item) in source.Index().WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
@@ -248,12 +243,7 @@ public static partial class AsyncSuperEnumerable
 		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var top = new SortedSet<(TKey Item, int Index)>(
-				Comparer<(TKey item, int index)>.Create((x, y) =>
-				{
-					var result = comparer.Compare(x.item, y.item);
-					return result != 0 ? result :
-						Comparer<long>.Default.Compare(x.index, y.index);
-				}));
+				ValueTupleComparer.Create<TKey, int>(comparer, default));
 			var dic = new Dictionary<(TKey Item, int Index), TSource>(count);
 
 			await foreach (var (index, item) in source.Index().WithCancellation(cancellationToken).ConfigureAwait(false))

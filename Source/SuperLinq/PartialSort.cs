@@ -104,12 +104,7 @@ public static partial class SuperEnumerable
 		static IEnumerable<T> _(IEnumerable<T> source, int count, IComparer<T> comparer)
 		{
 			var top = new SortedSet<(T item, int index)>(
-				Comparer<(T item, int index)>.Create((x, y) =>
-				{
-					var result = comparer.Compare(x.item, y.item);
-					return result != 0 ? result :
-						Comparer<long>.Default.Compare(x.index, y.index);
-				}));
+				ValueTupleComparer.Create<T, int>(comparer, default));
 
 			foreach (var (index, item) in source.Index())
 			{
@@ -248,12 +243,7 @@ public static partial class SuperEnumerable
 		static IEnumerable<TSource> _(IEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
 		{
 			var top = new SortedSet<(TKey Item, int Index)>(
-				Comparer<(TKey item, int index)>.Create((x, y) =>
-				{
-					var result = comparer.Compare(x.item, y.item);
-					return result != 0 ? result :
-						Comparer<long>.Default.Compare(x.index, y.index);
-				}));
+				ValueTupleComparer.Create<TKey, int>(comparer, default));
 			var dic = new Dictionary<(TKey Item, int Index), TSource>(count);
 
 			foreach (var (index, item) in source.Index())
