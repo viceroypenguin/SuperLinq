@@ -3,19 +3,24 @@
 public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
-	/// Combines <see cref="AsyncEnumerable.OrderBy{TSource,TKey}(IAsyncEnumerable{TSource},Func{TSource,TKey})"/>,
-	/// where each element is its key, and <see cref="AsyncEnumerable.Take{TSource}(IAsyncEnumerable{TSource}, int)"/>
-	/// in a single operation.
+	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence. If <paramref name="count"/>
+	/// is less than the total number of elements in <paramref name="source"/>, then this method will improve
+	/// performance.
 	/// </summary>
 	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
 	/// <param name="source">The source sequence.</param>
 	/// <param name="count">Number of (maximum) elements to return.</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/>
-	/// elements from source, in their ascending order.</returns>
+	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in their ascending
+	/// order.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
+	/// <para>
+	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	/// </para>
+	/// <para>
 	/// This operator uses deferred execution and streams it results.
+	/// </para>
 	/// </remarks>
 	public static IAsyncEnumerable<T> PartialSort<T>(this IAsyncEnumerable<T> source, int count)
 	{
@@ -23,21 +28,25 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Combines <see cref="AsyncSuperEnumerable.OrderBy{T, TKey}(IAsyncEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
-	/// where each element is its key, and <see cref="AsyncEnumerable.Take{TSource}(IAsyncEnumerable{TSource}, int)"/>
-	/// in a single operation.
-	/// An additional parameter specifies the direction of the sort
+	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence.
+	/// If <paramref name="count"/> is less than the total number of elements in <paramref name="source"/>, then this
+	/// method will improve performance.
 	/// </summary>
 	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
 	/// <param name="source">The source sequence.</param>
 	/// <param name="count">Number of (maximum) elements to return.</param>
 	/// <param name="direction">The direction in which to sort the elements</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/>
-	/// elements from source, in the specified order.</returns>
+	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in the specified
+	/// order.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
+	/// <para>
+	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	/// </para>
+	/// <para>
 	/// This operator uses deferred execution and streams it results.
+	/// </para>
 	/// </remarks>
 	public static IAsyncEnumerable<T> PartialSort<T>(
 		this IAsyncEnumerable<T> source, int count, OrderByDirection direction)
@@ -46,21 +55,25 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Combines <see cref="AsyncEnumerable.OrderBy{TSource,TKey}(IAsyncEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
-	/// where each element is its key, and <see cref="AsyncEnumerable.Take{TSource}(IAsyncEnumerable{TSource}, int)"/>
-	/// in a single operation. An additional parameter specifies how the
-	/// elements compare to each other.
+	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence, using <paramref
+	/// name="comparer"/> to compare elements. If <paramref name="count"/> is less than the total number of elements in
+	/// <paramref name="source"/>, then this method will improve performance.
 	/// </summary>
 	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
 	/// <param name="source">The source sequence.</param>
 	/// <param name="count">Number of (maximum) elements to return.</param>
 	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/>
-	/// elements from source, in their ascending order.</returns>
+	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in their ascending
+	/// order.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
+	/// <para>
+	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	/// </para>
+	/// <para>
 	/// This operator uses deferred execution and streams it results.
+	/// </para>
 	/// </remarks>
 	public static IAsyncEnumerable<T> PartialSort<T>(
 		this IAsyncEnumerable<T> source,
@@ -70,23 +83,26 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Combines <see cref="AsyncSuperEnumerable.OrderBy{T, TKey}(IAsyncEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
-	/// where each element is its key, and <see cref="AsyncEnumerable.Take{TSource}(IAsyncEnumerable{TSource}, int)"/>
-	/// in a single operation.
-	/// Additional parameters specify how the elements compare to each other and
-	/// the direction of the sort.
+	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence,
+	/// using <paramref name="comparer"/> to compare elements. If <paramref name="count"/> is less than the total number
+	/// of elements in <paramref name="source"/>, then this method will improve performance.
 	/// </summary>
 	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
 	/// <param name="source">The source sequence.</param>
 	/// <param name="count">Number of (maximum) elements to return.</param>
 	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
 	/// <param name="direction">The direction in which to sort the elements</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/>
-	/// elements from source, in the specified order.</returns>
+	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in the specified
+	/// order.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
+	/// <para>
+	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	/// </para>
+	/// <para>
 	/// This operator uses deferred execution and streams it results.
+	/// </para>
 	/// </remarks>
 	public static IAsyncEnumerable<T> PartialSort<T>(
 		this IAsyncEnumerable<T> source, int count,
@@ -127,21 +143,27 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Combines <see cref="AsyncEnumerable.OrderBy{TSource,TKey}(IAsyncEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
-	/// and <see cref="AsyncEnumerable.Take{TSource}(IAsyncEnumerable{TSource}, int)"/> in a single operation.
+	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence according to the key for each
+	/// element. If <paramref name="count"/> is less than the total number of elements in <paramref name="source"/>,
+	/// then this method will improve performance.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
 	/// <typeparam name="TKey">Type of keys.</typeparam>
 	/// <param name="source">The source sequence.</param>
 	/// <param name="keySelector">A function to extract a key from an element.</param>
 	/// <param name="count">Number of (maximum) elements to return.</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/>
-	/// elements from source, in ascending order of their keys.</returns>
+	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in ascending order of
+	/// their keys.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
+	/// <para>
+	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	/// </para>
+	/// <para>
 	/// This operator uses deferred execution and streams it results.
+	/// </para>
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> PartialSortBy<TSource, TKey>(
 		this IAsyncEnumerable<TSource> source, int count,
@@ -151,9 +173,9 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Combines <see cref="AsyncSuperEnumerable.OrderBy{T, TKey}(IAsyncEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
-	/// and <see cref="AsyncEnumerable.Take{TSource}(IAsyncEnumerable{TSource}, int)"/> in a single operation.
-	/// An additional parameter specifies the direction of the sort
+	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence
+	/// according to the key for each element. If <paramref name="count"/> is less than the total number of elements in
+	/// <paramref name="source"/>, then this method will improve performance.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
 	/// <typeparam name="TKey">Type of keys.</typeparam>
@@ -161,13 +183,18 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="keySelector">A function to extract a key from an element.</param>
 	/// <param name="count">Number of (maximum) elements to return.</param>
 	/// <param name="direction">The direction in which to sort the elements</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/>
-	/// elements from source, in the specified order of their keys.</returns>
+	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in the specified order
+	/// of their keys.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
+	/// <para>
+	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	/// </para>
+	/// <para>
 	/// This operator uses deferred execution and streams it results.
+	/// </para>
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> PartialSortBy<TSource, TKey>(
 		this IAsyncEnumerable<TSource> source, int count,
@@ -177,9 +204,9 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Combines <see cref="AsyncEnumerable.OrderBy{TSource,TKey}(IAsyncEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
-	/// and <see cref="AsyncEnumerable.Take{TSource}(IAsyncEnumerable{TSource}, int)"/> in a single operation.
-	/// An additional parameter specifies how the keys compare to each other.
+	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence according to the key for each
+	/// element, using <paramref name="comparer"/> to compare the keys. If <paramref name="count"/> is less than the
+	/// total number of elements in <paramref name="source"/>, then this method will improve performance.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
 	/// <typeparam name="TKey">Type of keys.</typeparam>
@@ -187,13 +214,18 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="keySelector">A function to extract a key from an element.</param>
 	/// <param name="count">Number of (maximum) elements to return.</param>
 	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/>
-	/// elements from source, in ascending order of their keys.</returns>
+	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in ascending order of
+	/// their keys.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
+	/// <para>
+	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	/// </para>
+	/// <para>
 	/// This operator uses deferred execution and streams it results.
+	/// </para>
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> PartialSortBy<TSource, TKey>(
 		this IAsyncEnumerable<TSource> source, int count,
@@ -204,10 +236,10 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Combines <see cref="AsyncSuperEnumerable.OrderBy{T, TKey}(IAsyncEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
-	/// and <see cref="AsyncEnumerable.Take{TSource}(IAsyncEnumerable{TSource}, int)"/> in a single operation.
-	/// Additional parameters specify how the elements compare to each other and
-	/// the direction of the sort.
+	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence
+	/// according to the key for each element, using <paramref name="comparer"/> to compare the keys. If <paramref
+	/// name="count"/> is less than the total number of elements in <paramref name="source"/>, then this method will
+	/// improve performance.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
 	/// <typeparam name="TKey">Type of keys.</typeparam>
@@ -216,13 +248,18 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="count">Number of (maximum) elements to return.</param>
 	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
 	/// <param name="direction">The direction in which to sort the elements</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/>
-	/// elements from source, in the specified order of their keys.</returns>
+	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in the specified order
+	/// of their keys.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
 	/// <remarks>
+	/// <para>
+	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	/// </para>
+	/// <para>
 	/// This operator uses deferred execution and streams it results.
+	/// </para>
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> PartialSortBy<TSource, TKey>(
 		this IAsyncEnumerable<TSource> source, int count,
