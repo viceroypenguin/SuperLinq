@@ -279,9 +279,9 @@ public static partial class AsyncSuperEnumerable
 
 		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			var top = new SortedSet<(TKey Item, int Index)>(
+			var top = new SortedSet<(TKey Key, int Index)>(
 				ValueTupleComparer.Create<TKey, int>(comparer, default));
-			var dic = new Dictionary<(TKey Item, int Index), TSource>(count);
+			var dic = new Dictionary<(TKey Key, int Index), TSource>(count);
 
 			await foreach (var (index, item) in source.Index().WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
@@ -293,7 +293,7 @@ public static partial class AsyncSuperEnumerable
 					continue;
 				}
 
-				if (comparer.Compare(key.key, top.Max.Item) >= 0)
+				if (comparer.Compare(key.key, top.Max.Key) >= 0)
 					continue;
 
 				dic.Remove(top.Max);
