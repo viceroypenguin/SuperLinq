@@ -90,7 +90,11 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | LeftJoin						  | ⚠️[^9] | ❌ |
 | LeftOuterJoin					  | ✔️ | ✔️ |
 | MaxBy							  | ❌<br/>(Removed[^8]) | ❌[^8] |
+| MaxItems						  | ✔️ | ✔️ |
+| MaxItemsBy					  | ✔️ | ✔️ |
 | MinBy							  | ❌<br/>(Removed[^8]) | ❌[^8] |
+| MinItems						  | ✔️ | ✔️ |
+| MinItemsBy					  | ✔️ | ✔️ |
 | Move							  | ✔️ | ⏱([#27](https://github.com/viceroypenguin/SuperLinq/issues/27)) |
 | OrderBy						  | ✔️ | ✔️ |
 | OrderedMerge					  | ⚠️[^9] | ❌ |
@@ -154,7 +158,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 
 [^1]: Internal operator no longer used
 [^2]: Backsert has been obsoleted in favor of `.Insert(Index)`
-[^8]: These methods have been removed; their names conflict with the new `.MinBy()`/`.MaxBy()` in .NET 6, and their behavior is better implemented by `.PartialSort()`/`.DensePartialSort()`
+[^8]: These methods have been renamed to `.MinItems()`/`.MaxItems()`; their names conflict with the new `.MinBy()`/`.MaxBy()` in .NET 6.
 [^3]: Batch has been replaced by `.Buffer()` in .NET Core 3.1/.NET 5 (implemented by System.Interactive(.Async)) and `.Chunk()` in .NET 6; it is kept only for compatibility reasons.
 [^4]: Pipe has been replaced by `.Do()` (implemented by System.Interactive(.Async))
 [^5]: Rank has changed behavior, please review the breaking changes for Rank [here](Source/SuperLinq/readme.md#rank).
