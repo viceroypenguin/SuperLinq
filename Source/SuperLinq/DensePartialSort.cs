@@ -3,9 +3,9 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence. If <paramref name="count"/>
-	/// is less than the total number of elements in <paramref name="source"/>, then this method will improve
-	/// performance.
+	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence, including ties. If <paramref
+	/// name="count"/> is less than the total number of elements in <paramref name="source"/>, then this method will
+	/// improve performance.
 	/// </summary>
 	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
 	/// <param name="source">The source sequence.</param>
@@ -22,70 +22,70 @@ public static partial class SuperEnumerable
 	/// This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source, int count)
+	public static IEnumerable<T> DensePartialSort<T>(this IEnumerable<T> source, int count)
 	{
-		return source.PartialSort(count, comparer: null);
-	}
-
-	/// <summary>
-	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence.
-	/// If <paramref name="count"/> is less than the total number of elements in <paramref name="source"/>, then this
-	/// method will improve performance.
-	/// </summary>
-	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="count">Number of (maximum) elements to return.</param>
-	/// <param name="direction">The direction in which to sort the elements</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in the specified
-	/// order.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
-	/// <remarks>
-	/// <para>
-	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
-	/// </para>
-	/// <para>
-	/// This operator uses deferred execution and streams it results.
-	/// </para>
-	/// </remarks>
-	public static IEnumerable<T> PartialSort<T>(
-		this IEnumerable<T> source, int count, OrderByDirection direction)
-	{
-		return source.PartialSort(count, comparer: null, direction);
-	}
-
-	/// <summary>
-	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence, using <paramref
-	/// name="comparer"/> to compare elements. If <paramref name="count"/> is less than the total number of elements in
-	/// <paramref name="source"/>, then this method will improve performance.
-	/// </summary>
-	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="count">Number of (maximum) elements to return.</param>
-	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in their ascending
-	/// order.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
-	/// <remarks>
-	/// <para>
-	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
-	/// </para>
-	/// <para>
-	/// This operator uses deferred execution and streams it results.
-	/// </para>
-	/// </remarks>
-	public static IEnumerable<T> PartialSort<T>(
-		this IEnumerable<T> source,
-		int count, IComparer<T>? comparer)
-	{
-		return PartialSort(source, count, comparer, OrderByDirection.Ascending);
+		return source.DensePartialSort(count, comparer: null);
 	}
 
 	/// <summary>
 	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence,
-	/// using <paramref name="comparer"/> to compare elements. If <paramref name="count"/> is less than the total number
-	/// of elements in <paramref name="source"/>, then this method will improve performance.
+	/// including ties. If <paramref name="count"/> is less than the total number of elements in <paramref
+	/// name="source"/>, then this method will improve performance.
+	/// </summary>
+	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
+	/// <param name="source">The source sequence.</param>
+	/// <param name="count">Number of (maximum) elements to return.</param>
+	/// <param name="direction">The direction in which to sort the elements</param>
+	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in the specified
+	/// order.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
+	/// <remarks>
+	/// <para>
+	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	/// </para>
+	/// <para>
+	/// This operator uses deferred execution and streams it results.
+	/// </para>
+	/// </remarks>
+	public static IEnumerable<T> DensePartialSort<T>(
+		this IEnumerable<T> source, int count, OrderByDirection direction)
+	{
+		return source.DensePartialSort(count, comparer: null, direction);
+	}
+
+	/// <summary>
+	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence, including ties, using
+	/// <paramref name="comparer"/> to compare elements. If <paramref name="count"/> is less than the total number of
+	/// elements in <paramref name="source"/>, then this method will improve performance.
+	/// </summary>
+	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
+	/// <param name="source">The source sequence.</param>
+	/// <param name="count">Number of (maximum) elements to return.</param>
+	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
+	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in their ascending
+	/// order.</returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
+	/// <remarks>
+	/// <para>
+	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	/// </para>
+	/// <para>
+	/// This operator uses deferred execution and streams it results.
+	/// </para>
+	/// </remarks>
+	public static IEnumerable<T> DensePartialSort<T>(
+		this IEnumerable<T> source,
+		int count, IComparer<T>? comparer)
+	{
+		return DensePartialSort(source, count, comparer, OrderByDirection.Ascending);
+	}
+
+	/// <summary>
+	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence,
+	/// including ties, using <paramref name="comparer"/> to compare elements. If <paramref name="count"/> is less than
+	/// the total number of elements in <paramref name="source"/>, then this method will improve performance.
 	/// </summary>
 	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
 	/// <param name="source">The source sequence.</param>
@@ -104,48 +104,17 @@ public static partial class SuperEnumerable
 	/// This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<T> PartialSort<T>(
+	public static IEnumerable<T> DensePartialSort<T>(
 		this IEnumerable<T> source, int count,
 		IComparer<T>? comparer, OrderByDirection direction)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 1);
-
-		comparer ??= Comparer<T>.Default;
-		if (direction == OrderByDirection.Descending)
-			comparer = new ReverseComparer<T>(comparer);
-
-		return _(source, count, comparer);
-
-		static IEnumerable<T> _(IEnumerable<T> source, int count, IComparer<T> comparer)
-		{
-			var top = new SortedSet<(T item, int index)>(
-				ValueTupleComparer.Create<T, int>(comparer, default));
-
-			foreach (var (index, item) in source.Index())
-			{
-				if (top.Count < count)
-				{
-					top.Add((item, index));
-					continue;
-				}
-
-				if (comparer.Compare(item, top.Max.item) >= 0)
-					continue;
-
-				top.Remove(top.Max);
-				top.Add((item, index));
-			}
-
-			foreach (var (item, _) in top)
-				yield return item;
-		}
+		return DensePartialSortBy(source, count, Identity<T>(), comparer, direction);
 	}
 
 	/// <summary>
-	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence according to the key for each
-	/// element. If <paramref name="count"/> is less than the total number of elements in <paramref name="source"/>,
-	/// then this method will improve performance.
+	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence, including ties, according to
+	/// the key for each element. If <paramref name="count"/> is less than the total number of elements in <paramref
+	/// name="source"/>, then this method will improve performance.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
 	/// <typeparam name="TKey">Type of keys.</typeparam>
@@ -165,17 +134,17 @@ public static partial class SuperEnumerable
 	/// This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
+	public static IEnumerable<TSource> DensePartialSortBy<TSource, TKey>(
 		this IEnumerable<TSource> source, int count,
 		Func<TSource, TKey> keySelector)
 	{
-		return source.PartialSortBy(count, keySelector, comparer: null);
+		return source.DensePartialSortBy(count, keySelector, comparer: null);
 	}
 
 	/// <summary>
-	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence
-	/// according to the key for each element. If <paramref name="count"/> is less than the total number of elements in
-	/// <paramref name="source"/>, then this method will improve performance.
+	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence,
+	/// including ties, according to the key for each element. If <paramref name="count"/> is less than the total number
+	/// of elements in <paramref name="source"/>, then this method will improve performance.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
 	/// <typeparam name="TKey">Type of keys.</typeparam>
@@ -196,17 +165,17 @@ public static partial class SuperEnumerable
 	/// This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
+	public static IEnumerable<TSource> DensePartialSortBy<TSource, TKey>(
 		this IEnumerable<TSource> source, int count,
 		Func<TSource, TKey> keySelector, OrderByDirection direction)
 	{
-		return source.PartialSortBy(count, keySelector, comparer: null, direction);
+		return source.DensePartialSortBy(count, keySelector, comparer: null, direction);
 	}
 
 	/// <summary>
-	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence according to the key for each
-	/// element, using <paramref name="comparer"/> to compare the keys. If <paramref name="count"/> is less than the
-	/// total number of elements in <paramref name="source"/>, then this method will improve performance.
+	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence, including ties, according to
+	/// the key for each element, using <paramref name="comparer"/> to compare the keys. If <paramref name="count"/> is
+	/// less than the total number of elements in <paramref name="source"/>, then this method will improve performance.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
 	/// <typeparam name="TKey">Type of keys.</typeparam>
@@ -227,19 +196,19 @@ public static partial class SuperEnumerable
 	/// This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
+	public static IEnumerable<TSource> DensePartialSortBy<TSource, TKey>(
 		this IEnumerable<TSource> source, int count,
 		Func<TSource, TKey> keySelector,
 		IComparer<TKey>? comparer)
 	{
-		return PartialSortBy(source, count, keySelector, comparer, OrderByDirection.Ascending);
+		return DensePartialSortBy(source, count, keySelector, comparer, OrderByDirection.Ascending);
 	}
 
 	/// <summary>
-	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence
-	/// according to the key for each element, using <paramref name="comparer"/> to compare the keys. If <paramref
-	/// name="count"/> is less than the total number of elements in <paramref name="source"/>, then this method will
-	/// improve performance.
+	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence,
+	/// including ties, according to the key for each element, using <paramref name="comparer"/> to compare the keys. If
+	/// <paramref name="count"/> is less than the total number of elements in <paramref name="source"/>, then this
+	/// method will improve performance.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
 	/// <typeparam name="TKey">Type of keys.</typeparam>
@@ -261,7 +230,7 @@ public static partial class SuperEnumerable
 	/// This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
+	public static IEnumerable<TSource> DensePartialSortBy<TSource, TKey>(
 		this IEnumerable<TSource> source, int count,
 		Func<TSource, TKey> keySelector,
 		IComparer<TKey>? comparer,
@@ -279,31 +248,38 @@ public static partial class SuperEnumerable
 
 		static IEnumerable<TSource> _(IEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
 		{
-			var top = new SortedSet<(TKey Key, int Index)>(
-				ValueTupleComparer.Create<TKey, int>(comparer, default));
-			var dic = new Dictionary<(TKey Key, int Index), TSource>(count);
+			var top = new SortedSet<TKey>(comparer);
+			var dic = new Dictionary<(TKey Key, int Index), List<TSource>>(count);
 
-			foreach (var (index, item) in source.Index())
+			foreach (var item in source)
 			{
-				var key = (key: keySelector(item), index);
-				if (top.Count < count)
+				var key = keySelector(item);
+				if (top.TryGetValue(key, out var oKey))
 				{
-					top.Add(key);
-					dic[key] = item;
+					dic[(oKey, 1)].Add(item);
 					continue;
 				}
 
-				if (comparer.Compare(key.key, top.Max.Key) >= 0)
+				if (top.Count < count)
+				{
+					top.Add(key);
+					dic[(key, 1)] = new() { item, };
+					continue;
+				}
+
+				var max = top.Max!;
+				if (comparer.Compare(key, max) > 0)
 					continue;
 
-				dic.Remove(top.Max);
-				top.Remove(top.Max);
+				dic.Remove((max, 1));
+				top.Remove(max);
 				top.Add(key);
-				dic[key] = item;
+				dic[(key, 1)] = new() { item, };
 			}
 
 			foreach (var entry in top)
-				yield return dic[entry];
+				foreach (var i in dic[(entry, 1)])
+					yield return i;
 		}
 	}
 }

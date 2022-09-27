@@ -75,8 +75,9 @@ This method has been obsoleted in favor of a new method `.LeftOuterJoin()`, whic
 has more options and capabilities.
 
 #### MaxBy/MinBy
-MaxBy and MinBy have been removed. These methods are superceded by PartialSort,
-and conflict with new .NET 6.0 MaxBy/MinBy methods that operate slightly differently.
+MaxBy and MinBy have been removed. These methods are superceded by PartialSort and DensePartialSort, and conflict with
+new .NET 6.0 MaxBy/MinBy methods that operate slightly differently. PartialSort will ignore ties and return at most K
+elements. DensePartialSort will return the top K groups of elements including ties.
 
 #### OrderedMerge
 This method has been obsoleted in favor of a new method `.FullOuterJoin()`, which
@@ -215,6 +216,20 @@ sequence where zero always represents the last element, one represents the
 second-last element, two represents the third-last element and so on.
 
 This method has 2 overloads.
+
+### DensePartialSort
+
+Executes a partial sort of the top K elements of a sequence, including ties. If K is less than the total number of
+elements in the sequence, then this method will improve performance.
+
+This method has 4 overloads.
+
+### DensePartialSortBy
+
+Executes a partial sort of the top K elements of a sequence, including ties, according to a key. If K is less than the
+total number of elements in the sequence, then this method will improve performance.
+
+This method has 4 overloads.
 
 ### DenseRank
 
@@ -490,13 +505,15 @@ This method has 3 overloads.
 
 ### PartialSort
 
-Combines `OrderBy` (where element is key) and `Take` in a single operation.
+Executes a partial sort of the top K elements of a sequence. If K is less than the total number of elements in the
+sequence, then this method will improve performance.
 
 This method has 4 overloads.
 
 ### PartialSortBy
 
-Combines `OrderBy` and `Take` in a single operation.
+Executes a partial sort of the top K elements of a sequence, according to a key. If K is less than the total number of
+elements in the sequence, then this method will improve performance.
 
 This method has 4 overloads.
 
