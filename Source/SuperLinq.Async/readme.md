@@ -269,6 +269,30 @@ select between join techniques of Loop, Hash, and Merge.
 
 This method has 4 overloads.
 
+### MaxItems
+
+Returns all of the elements of the given sequence that share the maximum value.
+
+This method has 2 overloads.
+
+### MaxItemsBy
+
+Returns all of the elements of the given sequence that share the maximum value.
+
+This method has 2 overloads.
+
+### MinItems
+
+Returns all of the elements of the given sequence that share the minimum value.
+
+This method has 2 overloads.
+
+### MinItemsBy
+
+Returns all of the elements of the given sequence that share the minimum value.
+
+This method has 2 overloads.
+
 ### OrderBy
 
 Sorts the elements of a sequence in a particular direction (ascending,
