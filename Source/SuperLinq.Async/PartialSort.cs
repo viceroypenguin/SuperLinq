@@ -122,8 +122,11 @@ public static partial class AsyncSuperEnumerable
 			var top = new SortedSet<(T item, int index)>(
 				ValueTupleComparer.Create<T, int>(comparer, default));
 
-			await foreach (var (index, item) in source.Index().WithCancellation(cancellationToken).ConfigureAwait(false))
+			var index = -1;
+			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
+				index++;
+
 				if (top.Count < count)
 				{
 					top.Add((item, index));
@@ -283,9 +286,10 @@ public static partial class AsyncSuperEnumerable
 				ValueTupleComparer.Create<TKey, int>(comparer, default));
 			var dic = new Dictionary<(TKey Key, int Index), TSource>(count);
 
-			await foreach (var (index, item) in source.Index().WithCancellation(cancellationToken).ConfigureAwait(false))
+			var index = 0;
+			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
-				var key = (key: keySelector(item), index);
+				var key = (key: keySelector(item), index++);
 				if (top.Count < count)
 				{
 					top.Add(key);
