@@ -71,8 +71,8 @@ first sequence has fewer, the same or more elements than the second sequence.
 
 ### ConcurrentMerge
 
-Merges multiple async sequences into a single async sequence, iteration the
-sequences in parallel, and returning values when they are received.
+Merges multiple async sequences into a single async sequence, iterating the
+sequences in parallel and returning values as they are received.
 
 This method has 3 overloads.
 
