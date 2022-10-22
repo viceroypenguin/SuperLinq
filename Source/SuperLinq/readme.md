@@ -752,6 +752,11 @@ direction (ascending, descending) according to a key.
 
 This method has 2 overloads.
 
+### ToArray (with length)
+
+Optimized version of ToArray(). Creates first array with expected length
+to avoid multiply copying items from smaller arrays to bigger.
+
 ### ToArrayByIndex
 
 Creates an array from an IEnumerable<T> where a function is used to determine
@@ -780,6 +785,12 @@ Creates a [dictionary][dict] from a sequence of [key-value pair][kvp] elements
 or tuples of 2.
 
 This method has 4 overloads.
+
+### ToList (with length)
+
+Optimized version of ToList(). Creates list with expected length
+to avoid multiply copying items from smaller lists to bigger.
+
 ### ToLookup
 
 Creates a [lookup][lookup] from a sequence of [key-value pair][kvp] elements
