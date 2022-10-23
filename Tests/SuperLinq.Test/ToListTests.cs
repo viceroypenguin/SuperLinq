@@ -29,6 +29,17 @@ public class ToListTests
 	}
 
 	[Fact]
+	public void ToListWithLengthEqualTo0()
+	{
+		const int Length = 0;
+		var enumerable = Enumerable.Range(0, 1);
+
+		var result = enumerable.ToList(Length);
+
+		Assert.Equal(enumerable, result);
+	}
+
+	[Fact]
 	public void ToListWithLengthSmallerThan0()
 	{
 		const int Length = -1;

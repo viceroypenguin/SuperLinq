@@ -34,7 +34,9 @@ public static partial class SuperEnumerable
 
 	private static T[] CreateTwiceBiggerArray<T>(T[] array)
 	{
-		var resultArray = new T[array.Length * 2];
+		var newLength = array.Length == 0 ? 1 : array.Length * 2;
+		var resultArray = new T[newLength];
+
 		for (var i = 0; i < array.Length; i++)
 		{
 			resultArray[i] = array[i];

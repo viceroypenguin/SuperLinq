@@ -27,6 +27,17 @@ public class ToArrayTests
 	}
 
 	[Fact]
+	public void ToArrayWithLengthEqualTo0()
+	{
+		const int Length = 0;
+		var enumerable = Enumerable.Range(0, 1);
+
+		var result = enumerable.ToArray(Length);
+
+		Assert.Equal(enumerable, result);
+	}
+
+	[Fact]
 	public void ToArrayWithLengthSmallerThan0()
 	{
 		const int Length = -1;
