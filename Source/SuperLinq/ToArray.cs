@@ -11,8 +11,13 @@ public static partial class SuperEnumerable
 	/// <returns>
 	/// An array that contains elements from the input sequence
 	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is <see langword="null"/>.</exception>
 	public static T[] ToArray<T>(this IEnumerable<T> source, int length)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsGreaterThanOrEqualTo(length, 0);
+
 		var resultArray = new T[length];
 		var i = 0;
 		foreach (var item in source)

@@ -27,4 +27,13 @@ public class ToListTests
 		Assert.Equal(enumerable, result);
 		Assert.True(result.Capacity > Length);
 	}
+
+	[Fact]
+	public void ToListWithLengthSmallerThan0()
+	{
+		const int Length = -1;
+		var enumerable = Enumerable.Range(0, 1);
+
+		Assert.Throws<ArgumentOutOfRangeException>(() => enumerable.ToList(Length));
+	}
 }

@@ -25,4 +25,13 @@ public class ToArrayTests
 
 		Assert.Equal(enumerable, result);
 	}
+
+	[Fact]
+	public void ToArrayWithLengthSmallerThan0()
+	{
+		const int Length = -1;
+		var enumerable = Enumerable.Range(0, 1);
+
+		Assert.Throws<ArgumentOutOfRangeException>(() => enumerable.ToArray(Length));
+	}
 }

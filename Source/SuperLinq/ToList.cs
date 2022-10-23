@@ -11,8 +11,13 @@ public static partial class SuperEnumerable
 	/// <returns>
 	/// A <see cref="List{T}"/> that contains elements from the input sequence
 	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is <see langword="null"/>.</exception>
 	public static List<T> ToList<T>(this IEnumerable<T> source, int length)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsGreaterThanOrEqualTo(length, 0);
+
 		var resultList = new List<T>(length);
 		resultList.AddRange(source);
 		return resultList;
