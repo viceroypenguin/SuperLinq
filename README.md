@@ -137,12 +137,12 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | TakeEvery						  | ✔️ | ✔️ |
 | TakeUntil						  | ✔️ | ✔️ |
 | ThenBy						  | ✔️ | ✔️ |
-| ToArray (with length)			  | ✔️ | ❌ |
+| ToArray						  | ✔️ | ❌ |
 | ToArrayByIndex				  | ✔️ | ✔️ |
 | ToDataTable					  | ✔️ | ❌ |
 | ToDelimitedString				  | ✔️ | ❌ |
 | ToDictionary					  | ✔️ | ❌ |
-| ToList (with length)			  | ✔️ | ❌ |
+| ToList						  | ✔️ | ❌ |
 | ToLookup						  | ✔️ | ❌ |
 | Trace							  | ✔️ | ❌ |
 | Transpose						  | ✔️ | ❌ |
