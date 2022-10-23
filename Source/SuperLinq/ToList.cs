@@ -14,7 +14,7 @@ public static partial class SuperEnumerable
 	public static List<T> ToList<T>(this IEnumerable<T> source, int length)
 	{
 		var resultList = new List<T>(length);
-		source.ForEach(resultList.Add);
+		resultList.AddRange(source);
 		return resultList;
 	}
 }
