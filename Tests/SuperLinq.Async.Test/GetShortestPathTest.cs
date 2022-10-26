@@ -233,6 +233,15 @@ public class GetShortestPathTest
 				(nextState: (2, 2), cost: 4.006d));
 			Assert.Equal(27, count);
 		}
+
+		[Fact]
+		public async Task InvalidMapThrowsException()
+		{
+			await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+				await AsyncSuperEnumerable.GetShortestPathCost<int, int>(1, (a, b) => AsyncSeq<(int, int)>(), 2));
+			await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+				await AsyncSuperEnumerable.GetShortestPath<int, int>(1, (a, b) => AsyncSeq<(int, int)>(), 2));
+		}
 	}
 
 	public class AStar
@@ -385,6 +394,15 @@ public class GetShortestPathTest
 				(nextState: (2, 1), cost: 3.004d),
 				(nextState: (2, 2), cost: 4.006d));
 			Assert.Equal(8, count);
+		}
+
+		[Fact]
+		public async Task InvalidMapThrowsException()
+		{
+			await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+				await AsyncSuperEnumerable.GetShortestPathCost<int, int>(1, (a, b) => AsyncSeq<(int, int, int)>(), 2));
+			await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+				await AsyncSuperEnumerable.GetShortestPath<int, int>(1, (a, b) => AsyncSeq<(int, int, int)>(), 2));
 		}
 	}
 }

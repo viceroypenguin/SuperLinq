@@ -226,6 +226,15 @@ public class GetShortestPathTest
 				(nextState: (2, 2), cost: 4.006d));
 			Assert.Equal(27, count);
 		}
+
+		[Fact]
+		public void InvalidMapThrowsException()
+		{
+			Assert.Throws<InvalidOperationException>(() =>
+				SuperEnumerable.GetShortestPathCost<int, int>(1, (a, b) => Array.Empty<(int, int)>(), 2));
+			Assert.Throws<InvalidOperationException>(() =>
+				SuperEnumerable.GetShortestPath<int, int>(1, (a, b) => Array.Empty<(int, int)>(), 2));
+		}
 	}
 
 	public class AStar
@@ -372,6 +381,15 @@ public class GetShortestPathTest
 				(nextState: (2, 1), cost: 3.004d),
 				(nextState: (2, 2), cost: 4.006d));
 			Assert.Equal(8, count);
+		}
+
+		[Fact]
+		public void InvalidMapThrowsException()
+		{
+			Assert.Throws<InvalidOperationException>(() =>
+				SuperEnumerable.GetShortestPathCost<int, int>(1, (a, b) => Array.Empty<(int, int, int)>(), 2));
+			Assert.Throws<InvalidOperationException>(() =>
+				SuperEnumerable.GetShortestPath<int, int>(1, (a, b) => Array.Empty<(int, int, int)>(), 2));
 		}
 	}
 }

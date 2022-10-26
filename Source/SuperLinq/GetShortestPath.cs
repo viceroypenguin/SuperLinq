@@ -27,6 +27,7 @@ public partial class SuperEnumerable
 	/// to <paramref name="end"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="getNeighbors"/> is <see langword="null"/>.</exception>
+	/// <exception cref="InvalidOperationException">The map is entirely explored and no path to <paramref name="end"/> is found.</exception>
 	/// <remarks>
 	/// <para>
 	///  This method uses Dijkstra's algorithm to explore a map
@@ -96,6 +97,7 @@ public partial class SuperEnumerable
 	/// to <paramref name="end"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="getNeighbors"/> is <see langword="null"/>.</exception>
+	/// <exception cref="InvalidOperationException">The map is entirely explored and no path to <paramref name="end"/> is found.</exception>
 	/// <remarks>
 	/// <para>
 	///  This method uses Dijkstra's algorithm to explore a map
@@ -154,7 +156,10 @@ public partial class SuperEnumerable
 			foreach (var (s, p) in newStates)
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, p);
-		} while (queue.TryDequeue(out current!, out cost));
+
+			if (!queue.TryDequeue(out current!, out cost))
+				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
+		} while (true);
 
 		return cost;
 	}
@@ -182,6 +187,7 @@ public partial class SuperEnumerable
 	/// to <paramref name="end"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="getNeighbors"/> is <see langword="null"/>.</exception>
+	/// <exception cref="InvalidOperationException">The map is entirely explored and no path to <paramref name="end"/> is found.</exception>
 	/// <remarks>
 	/// <para>
 	///  This method uses Dijkstra's algorithm to explore a map
@@ -254,6 +260,7 @@ public partial class SuperEnumerable
 	/// to <paramref name="end"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="getNeighbors"/> is <see langword="null"/>.</exception>
+	/// <exception cref="InvalidOperationException">The map is entirely explored and no path to <paramref name="end"/> is found.</exception>
 	/// <remarks>
 	/// <para>
 	///  This method uses Dijkstra's algorithm to explore a map
@@ -318,12 +325,16 @@ public partial class SuperEnumerable
 			foreach (var (s, p) in newStates)
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, (current, p));
-		} while (queue.TryDequeue(out current!, out from));
+
+			if (!queue.TryDequeue(out current!, out from))
+				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
+		} while (true);
 
 		return Generate(end, x => totalCost[x].parent!)
 			.TakeUntil(x => stateComparer.Equals(x, start))
 			.ZipMap(x => totalCost[x].cost)
-			.Reverse();
+			.Reverse()
+			.ToList();
 	}
 
 	#endregion
@@ -528,6 +539,7 @@ public partial class SuperEnumerable
 	/// to <paramref name="end"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="getNeighbors"/> is <see langword="null"/>.</exception>
+	/// <exception cref="InvalidOperationException">The map is entirely explored and no path to <paramref name="end"/> is found.</exception>
 	/// <remarks>
 	/// <para>
 	///  This method uses the A* algorithm to explore a map
@@ -603,6 +615,7 @@ public partial class SuperEnumerable
 	/// to <paramref name="end"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="getNeighbors"/> is <see langword="null"/>.</exception>
+	/// <exception cref="InvalidOperationException">The map is entirely explored and no path to <paramref name="end"/> is found.</exception>
 	/// <remarks>
 	/// <para>
 	///  This method uses the A* algorithm to explore a map
@@ -663,20 +676,21 @@ public partial class SuperEnumerable
 		(TCost bestGuess, TCost traversed) costs = default;
 		do
 		{
-			if (totalCost.TryGetValue(current, out var oldCost)
-				&& costComparer.Compare(costs.traversed, oldCost) >= 0)
+			if (!totalCost.TryGetValue(current, out var oldCost)
+				|| costComparer.Compare(costs.traversed, oldCost) < 0)
 			{
-				continue;
+				totalCost[current] = costs.traversed;
+				if (stateComparer.Equals(current, end))
+					break;
+
+				var newStates = getNeighbors(current, costs.traversed);
+				foreach (var (s, p, h) in newStates)
+					queue.EnqueueMinimum(s, (h, p));
 			}
 
-			totalCost[current] = costs.traversed;
-			if (stateComparer.Equals(current, end))
-				break;
-
-			var newStates = getNeighbors(current, costs.traversed);
-			foreach (var (s, p, h) in newStates)
-				queue.EnqueueMinimum(s, (h, p));
-		} while (queue.TryDequeue(out current!, out costs));
+			if (!queue.TryDequeue(out current!, out costs))
+				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
+		} while (true);
 
 		return costs.traversed;
 	}
@@ -706,6 +720,7 @@ public partial class SuperEnumerable
 	/// to <paramref name="end"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="getNeighbors"/> is <see langword="null"/>.</exception>
+	/// <exception cref="InvalidOperationException">The map is entirely explored and no path to <paramref name="end"/> is found.</exception>
 	/// <remarks>
 	/// <para>
 	///  This method uses the A* algorithm to explore a map
@@ -782,6 +797,7 @@ public partial class SuperEnumerable
 	/// to <paramref name="end"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="getNeighbors"/> is <see langword="null"/>.</exception>
+	/// <exception cref="InvalidOperationException">The map is entirely explored and no path to <paramref name="end"/> is found.</exception>
 	/// <remarks>
 	/// <para>
 	///  This method uses the A* algorithm to explore a map
@@ -843,23 +859,28 @@ public partial class SuperEnumerable
 		(TState? parent, TCost bestGuess, TCost traversed) from = default;
 		do
 		{
-			if (totalCost.TryGetValue(current, out _))
-				continue;
+			if (!totalCost.TryGetValue(current, out var oldCost)
+				|| costComparer.Compare(from.traversed, oldCost.traversed) < 0)
+			{
+				totalCost[current] = (from.parent, from.traversed);
+				if (stateComparer.Equals(current, end))
+					break;
 
-			totalCost[current] = (from.parent, from.traversed);
-			if (stateComparer.Equals(current, end))
-				break;
+				var cost = from.traversed;
+				var newStates = getNeighbors(current, cost);
+				foreach (var (s, p, h) in newStates)
+					queue.EnqueueMinimum(s, (current, h, p));
+			}
 
-			var cost = from.traversed;
-			var newStates = getNeighbors(current, cost);
-			foreach (var (s, p, h) in newStates)
-				queue.EnqueueMinimum(s, (current, h, p));
-		} while (queue.TryDequeue(out current!, out from));
+			if (!queue.TryDequeue(out current!, out from))
+				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
+		} while (true);
 
 		return Generate(end, x => totalCost[x].parent!)
 			.TakeUntil(x => stateComparer.Equals(x, start))
 			.ZipMap(x => totalCost[x].traversed)
-			.Reverse();
+			.Reverse()
+			.ToList();
 	}
 
 	#endregion
