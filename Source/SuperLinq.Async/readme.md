@@ -79,7 +79,13 @@ This method has 3 overloads.
 ### Consume
 
 Completely consumes the given sequence. This method does not store any data 
-during execution
+during execution.
+
+### CopyTo
+
+Copies all of the elements of the given sequence into the specified list.
+
+This method has 2 overloads.
 
 ### CountBy
 

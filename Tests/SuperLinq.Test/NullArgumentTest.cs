@@ -43,6 +43,7 @@ public class NullArgumentTest
 		nameof(SuperEnumerable.GetShortestPath),
 		nameof(SuperEnumerable.GetShortestPathCost),
 		nameof(SuperEnumerable.GetShortestPaths),
+		nameof(SuperEnumerable.CopyTo),
 	};
 
 	private static IEnumerable<object[]> GetInlineDatas(bool canBeNull, Func<MethodInfo, object[], string, Action> inlineDataFactory) =>
