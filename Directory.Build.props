@@ -1,16 +1,17 @@
 <Project>
-  <PropertyGroup>
-    <LangVersion>10</LangVersion>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
+	<PropertyGroup>
+		<LangVersion>10</LangVersion>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
 
 		<TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Meziantou.Analyzer" Version="1.0.740" PrivateAssets="All" />
+		<PackageReference Include="Meziantou.Analyzer" Version="1.0.744" PrivateAssets="All" />
 		<PackageReference Include="Microsoft.CodeAnalysis.PerformanceSensitiveAnalyzers" Version="3.3.1" PrivateAssets="All" />
+		<PackageReference Include="PolySharp" Version="1.7.1" PrivateAssets="All" />
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
