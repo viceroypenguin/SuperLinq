@@ -194,7 +194,13 @@ first sequence has fewer, the same or more elements than the second sequence.
 ### Consume
 
 Completely consumes the given sequence. This method uses immediate execution,
-and doesn't store any data during execution
+and doesn't store any data during execution.
+
+### CopyTo
+
+Copies all of the elements of the given sequence into the specified list.
+
+This method has 4 overloads
 
 ### CountBetween
 

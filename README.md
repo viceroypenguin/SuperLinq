@@ -50,6 +50,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | CollectionEqual				  | ✔️ | ✔️ |
 | CompareCount					  | ✔️ | ✔️ |
 | ConcurrentMerge				  | ❌ | ✔️ |
+| CopyTo						  | ✔️ | ✔️ |
 | CountBy						  | ✔️ | ✔️ |
 | CountDown						  | ✔️ | ✔️ |
 | Consume						  | ✔️ | ✔️ |
