@@ -190,7 +190,7 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> SortedMerge<TSource>(this IAsyncEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource>? comparer, params IAsyncEnumerable<TSource>[] otherSequences)
 	{
-		return SortedMergeBy(source, Identity<TSource>(), direction, comparer, otherSequences);
+		return SortedMergeBy(source, Identity, direction, comparer, otherSequences);
 	}
 
 	/// <summary>

@@ -7,6 +7,5 @@ public static partial class SuperEnumerable
 	/// </summary>
 	/// <typeparam name="T">The type of identity function</typeparam>
 	/// <returns>A reference to the identity function</returns>
-	public static Func<T, T> Identity<T>() =>
-		static x => x;
+	public static T Identity<T>(T x) => x;
 }

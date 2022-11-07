@@ -108,7 +108,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<T> source, int count,
 		IComparer<T>? comparer, OrderByDirection direction)
 	{
-		return DensePartialSortBy(source, count, Identity<T>(), comparer, direction);
+		return DensePartialSortBy(source, count, Identity, comparer, direction);
 	}
 
 	/// <summary>
