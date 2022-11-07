@@ -188,14 +188,14 @@ public static partial class SuperEnumerable
 				if (TryGetCollectionCount(source, out var n)
 					&& n > array.Length)
 				{
-					ThrowHelper.ThrowArgumentException(nameof(array), "Destination is not long enough.");
+					ThrowHelper.ThrowArgumentException(nameof(list), "Destination is not long enough.");
 				}
 
 				var i = index;
 				foreach (var el in source)
 				{
 					if (i > array.Length)
-						ThrowHelper.ThrowArgumentException(nameof(array), "Destination is not long enough.");
+						ThrowHelper.ThrowArgumentException(nameof(list), "Destination is not long enough.");
 
 					array[i++] = el;
 				}

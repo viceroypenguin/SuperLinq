@@ -51,7 +51,6 @@ public class CopyToTest
 	public void ThrowsOnTooMuchDataForIListArray()
 	{
 		Assert.Throws<ArgumentException>(
-			"list",
 			() => Seq(1).CopyTo((IList<int>)Array.Empty<int>()));
 	}
 
