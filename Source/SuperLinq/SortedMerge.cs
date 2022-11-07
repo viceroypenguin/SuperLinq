@@ -190,7 +190,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource>? comparer, params IEnumerable<TSource>[] otherSequences)
 	{
-		return SortedMergeBy(source, Identity<TSource>(), direction, comparer, otherSequences);
+		return SortedMergeBy(source, Identity, direction, comparer, otherSequences);
 	}
 
 	/// <summary>

@@ -25,7 +25,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<T> first,
 		IEnumerable<T> second)
 	{
-		return OrderedMerge(first, second, Identity<T>(), Identity<T>(), Identity<T>(), static (a, _) => a);
+		return OrderedMerge(first, second, Identity, Identity, Identity, static (a, _) => a);
 	}
 
 	/// <summary>
@@ -55,7 +55,7 @@ public static partial class SuperEnumerable
 		IEnumerable<T> second,
 		IComparer<T>? comparer)
 	{
-		return OrderedMerge(first, second, Identity<T>(), Identity<T>(), Identity<T>(), static (a, _) => a, comparer);
+		return OrderedMerge(first, second, Identity, Identity, Identity, static (a, _) => a, comparer);
 	}
 
 	/// <summary>
@@ -89,7 +89,7 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(keySelector);
 
-		return OrderedMerge(first, second, keySelector, Identity<T>(), Identity<T>(), static (a, _) => a);
+		return OrderedMerge(first, second, keySelector, Identity, Identity, static (a, _) => a);
 	}
 
 	/// <summary>
@@ -125,7 +125,7 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(keySelector);
 
-		return OrderedMerge(first, second, keySelector, Identity<T>(), Identity<T>(), static (a, _) => a, comparer);
+		return OrderedMerge(first, second, keySelector, Identity, Identity, static (a, _) => a, comparer);
 	}
 
 	/// <summary>

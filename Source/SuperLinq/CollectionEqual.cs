@@ -83,9 +83,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(second);
 
 		var cmp = ValueTupleEqualityComparer.Create<TSource, int>(comparer, comparer2: null);
-		var firstSet = first.CountBy(Identity<TSource>(), comparer)
+		var firstSet = first.CountBy(Identity, comparer)
 			.ToHashSet(cmp);
-		var secondSet = second.CountBy(Identity<TSource>(), comparer);
+		var secondSet = second.CountBy(Identity, comparer);
 		return firstSet.SetEquals(secondSet);
 	}
 }

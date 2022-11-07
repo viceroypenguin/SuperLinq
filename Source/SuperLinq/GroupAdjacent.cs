@@ -31,7 +31,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector)
 	{
-		return GroupAdjacent(source, keySelector, Identity<TSource>());
+		return GroupAdjacent(source, keySelector, Identity);
 	}
 
 	/// <summary>
@@ -68,7 +68,7 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		return GroupAdjacent(source, keySelector, Identity<TSource>(), comparer);
+		return GroupAdjacent(source, keySelector, Identity, comparer);
 	}
 
 	/// <summary>
@@ -202,7 +202,7 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(resultSelector);
 
 		return GroupAdjacentImpl(
-			source, keySelector, Identity<TSource>(),
+			source, keySelector, Identity,
 			(key, group) => resultSelector(key, group),
 			comparer: null);
 	}
@@ -249,7 +249,7 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(resultSelector);
 
 		return GroupAdjacentImpl(
-			source, keySelector, Identity<TSource>(),
+			source, keySelector, Identity,
 			(key, group) => resultSelector(key, group),
 			comparer);
 	}

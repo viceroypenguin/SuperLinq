@@ -84,10 +84,10 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(first);
 		Guard.IsNotNull(second);
 
-		var firstSet = await first.CountBy(Identity<TSource>(), comparer)
+		var firstSet = await first.CountBy(Identity, comparer)
 			.ToHashSetAsync(ValueTupleEqualityComparer.Create<TSource, int>(comparer, comparer2: null), cancellationToken)
 			.ConfigureAwait(false);
-		var secondSet = await second.CountBy(Identity<TSource>(), comparer)
+		var secondSet = await second.CountBy(Identity, comparer)
 			.ToListAsync(cancellationToken)
 			.ConfigureAwait(false);
 		return firstSet.SetEquals(secondSet);

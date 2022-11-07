@@ -14,7 +14,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<(TSource item, int rank)> DenseRank<TSource>(
 		this IAsyncEnumerable<TSource> source)
 	{
-		return source.DenseRankBy(Identity<TSource>());
+		return source.DenseRankBy(Identity);
 	}
 
 	/// <summary>
@@ -30,7 +30,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<(TSource item, int rank)> DenseRank<TSource>(
 		this IAsyncEnumerable<TSource> source, IComparer<TSource> comparer)
 	{
-		return source.DenseRankBy(Identity<TSource>(), comparer);
+		return source.DenseRankBy(Identity, comparer);
 	}
 
 	/// <summary>
@@ -92,7 +92,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<(TSource item, int rank)> Rank<TSource>(
 		this IAsyncEnumerable<TSource> source)
 	{
-		return source.RankBy(Identity<TSource>());
+		return source.RankBy(Identity);
 	}
 
 	/// <summary>
@@ -108,7 +108,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<(TSource item, int rank)> Rank<TSource>(
 		this IAsyncEnumerable<TSource> source, IComparer<TSource> comparer)
 	{
-		return source.RankBy(Identity<TSource>(), comparer);
+		return source.RankBy(Identity, comparer);
 	}
 
 	/// <summary>

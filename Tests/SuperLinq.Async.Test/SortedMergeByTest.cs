@@ -16,7 +16,7 @@ public class SortedMergeByTests
 		var sequenceA = new AsyncBreakingSequence<int>();
 		var sequenceB = new AsyncBreakingSequence<int>();
 
-		sequenceA.SortedMergeBy(SuperEnumerable.Identity<int>(), OrderByDirection.Ascending, sequenceB);
+		sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, sequenceB);
 	}
 
 	/// <summary>
@@ -30,7 +30,7 @@ public class SortedMergeByTests
 
 		// Expected and thrown by BreakingSequence
 		await Assert.ThrowsAsync<NotSupportedException>(async () =>
-			await sequenceA.SortedMergeBy(SuperEnumerable.Identity<int>(), OrderByDirection.Ascending, new AsyncBreakingSequence<int>()).Consume());
+			await sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, new AsyncBreakingSequence<int>()).Consume());
 	}
 
 	/// <summary>
@@ -41,7 +41,7 @@ public class SortedMergeByTests
 	{
 		var sequenceA = AsyncEnumerable.Range(1, 3);
 		var sequenceB = AsyncEnumerable.Range(4, 3);
-		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity<int>(), OrderByDirection.Ascending, (IComparer<int>?)null, sequenceB);
+		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, (IComparer<int>?)null, sequenceB);
 
 		await result.AssertSequenceEqual(sequenceA.Concat(sequenceB));
 	}
@@ -53,7 +53,7 @@ public class SortedMergeByTests
 	public async Task TestSortedMergeByOtherSequencesEmpty()
 	{
 		var sequenceA = AsyncEnumerable.Range(1, 10);
-		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity<int>(), OrderByDirection.Ascending);
+		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending);
 
 		await result.AssertSequenceEqual(sequenceA);
 	}
@@ -67,7 +67,7 @@ public class SortedMergeByTests
 		var sequenceA = AsyncEnumerable.Empty<int>();
 		var sequenceB = AsyncEnumerable.Empty<int>();
 		var sequenceC = AsyncEnumerable.Empty<int>();
-		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity<int>(), OrderByDirection.Ascending, sequenceB, sequenceC);
+		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, sequenceB, sequenceC);
 
 		await result.AssertSequenceEqual(sequenceA);
 	}
@@ -83,10 +83,10 @@ public class SortedMergeByTests
 		var sequenceC = AsyncSeq<int>(2, 4, 6, 8, 10, 12);
 		var expectedResult = Enumerable.Range(1, 12);
 
-		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity<int>(), OrderByDirection.Ascending, sequenceB, sequenceC);
+		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);
 
-		result = sequenceA.SortedMergeBy(SuperEnumerable.Identity<int>(), sequenceB, sequenceC);
+		result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);
 	}
 
@@ -101,10 +101,10 @@ public class SortedMergeByTests
 		var sequenceC = AsyncEnumerable.Range(0, 10).Select(x => x * 3 + 2);
 		var expectedResult = Enumerable.Range(0, 10 * 3);
 
-		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity<int>(), OrderByDirection.Ascending, sequenceB, sequenceC);
+		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);
 
-		result = sequenceA.SortedMergeBy(SuperEnumerable.Identity<int>(), sequenceB, sequenceC);
+		result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);
 	}
 
@@ -119,10 +119,10 @@ public class SortedMergeByTests
 		var sequenceC = AsyncEnumerable.Range(0, 30).Select(x => x * 3 + 2).Take(30 / 3);
 		var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC).OrderBy(x => x);
 
-		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity<int>(), OrderByDirection.Ascending, sequenceB, sequenceC);
+		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);
 
-		result = sequenceA.SortedMergeBy(SuperEnumerable.Identity<int>(), sequenceB, sequenceC);
+		result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);
 	}
 
@@ -137,10 +137,10 @@ public class SortedMergeByTests
 		var sequenceC = AsyncEnumerable.Range(0, 10).Select(x => x * 3 + 2).Reverse();
 		var expectedResult = Enumerable.Range(0, 10 * 3).Reverse();
 
-		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity<int>(), OrderByDirection.Descending, sequenceB, sequenceC);
+		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Descending, sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);
 
-		result = sequenceA.SortedMergeByDescending(SuperEnumerable.Identity<int>(), sequenceB, sequenceC);
+		result = sequenceA.SortedMergeByDescending(SuperEnumerable.Identity, sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);
 	}
 
@@ -157,10 +157,10 @@ public class SortedMergeByTests
 		var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC)
 									  .OrderBy(a => a, comparer);
 
-		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity<string>(), OrderByDirection.Ascending, comparer, sequenceB, sequenceC);
+		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, comparer, sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);
 
-		result = sequenceA.SortedMergeBy(SuperEnumerable.Identity<string>(), comparer, sequenceB, sequenceC);
+		result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, comparer, sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);
 	}
 
@@ -176,7 +176,7 @@ public class SortedMergeByTests
 		await using var sequenceD = AsyncEnumerable.Range(1, 0).AsTestingSequence();
 
 		await sequenceA
-			.SortedMergeBy(SuperEnumerable.Identity<int>(), OrderByDirection.Ascending, sequenceB, sequenceC, sequenceD)
+			.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, sequenceB, sequenceC, sequenceD)
 			.Consume(); // ensures the sequences are actually merged and iterators are obtained
 	}
 }
