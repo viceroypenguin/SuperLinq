@@ -78,29 +78,42 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(array);
 
-		if (source is ICollection<TSource> coll)
+		CopyTo(source, array, 0);
+	}
+
+	private static void CopyTo<TSource>(this IEnumerable<TSource> source, TSource[] array, int index)
+	{
+		if (source is TSource[] arr)
 		{
-			coll.CopyTo(array);
+			arr.CopyTo(array, index);
 		}
-		else if (source is TSource[] arr)
+		else if (source is ICollection<TSource> coll)
 		{
-			arr.CopyTo(array);
+			coll.CopyTo(array, index);
 		}
 		else
 		{
-			if (TryGetCollectionCount(source, out var n)
-				&& n > array.Length)
+			if (TryGetCollectionCount(source, out var n))
 			{
-				ThrowHelper.ThrowArgumentException(nameof(array), "Destination is not long enough.");
-			}
-
-			var i = 0;
-			foreach (var el in source)
-			{
-				if (i > array.Length)
+				if (n + index > array.Length)
 					ThrowHelper.ThrowArgumentException(nameof(array), "Destination is not long enough.");
 
-				array[i++] = el;
+				var i = index;
+				foreach (var el in source)
+				{
+					array[i++] = el;
+				}
+			}
+			else
+			{
+				var i = index;
+				foreach (var el in source)
+				{
+					if (i > array.Length)
+						ThrowHelper.ThrowArgumentException(nameof(array), "Destination is not long enough.");
+
+					array[i++] = el;
+				}
 			}
 		}
 	}
@@ -175,31 +188,7 @@ public static partial class SuperEnumerable
 		}
 		else if (list is TSource[] array)
 		{
-			if (source is ICollection<TSource> coll)
-			{
-				coll.CopyTo(array, index);
-			}
-			else if (source is TSource[] arr)
-			{
-				arr.CopyTo(array, index);
-			}
-			else
-			{
-				if (TryGetCollectionCount(source, out var n)
-					&& n > array.Length)
-				{
-					ThrowHelper.ThrowArgumentException(nameof(list), "Destination is not long enough.");
-				}
-
-				var i = index;
-				foreach (var el in source)
-				{
-					if (i > array.Length)
-						ThrowHelper.ThrowArgumentException(nameof(list), "Destination is not long enough.");
-
-					array[i++] = el;
-				}
-			}
+			CopyTo(source, array, index);
 		}
 		else
 		{
