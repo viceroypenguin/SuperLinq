@@ -53,19 +53,7 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(list);
 		Guard.IsGreaterThanOrEqualTo(index, 0);
 
-		if (list is List<TSource> l)
-		{
-			var i = index;
-			await foreach (var el in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-			{
-				if (i < l.Count)
-					l[i] = el;
-				else
-					l.Add(el);
-				i++;
-			}
-		}
-		else if (list is TSource[] array)
+		if (list is TSource[] array)
 		{
 			var i = index;
 			await foreach (var el in source.WithCancellation(cancellationToken).ConfigureAwait(false))

@@ -43,7 +43,6 @@ public class CopyToTest
 	public void ThrowsOnTooMuchDataForArray()
 	{
 		Assert.Throws<ArgumentException>(
-			"array",
 			() => Seq(1).CopyTo(Array.Empty<int>()));
 	}
 
@@ -51,7 +50,6 @@ public class CopyToTest
 	public void ThrowsOnTooMuchDataForIListArray()
 	{
 		Assert.Throws<ArgumentException>(
-			"list",
 			() => Seq(1).CopyTo((IList<int>)Array.Empty<int>()));
 	}
 
@@ -59,7 +57,6 @@ public class CopyToTest
 	public void ThrowsOnTooMuchDataForSpan()
 	{
 		Assert.Throws<ArgumentException>(
-			"span",
 			() => Seq(1).CopyTo(Array.Empty<int>().AsSpan()));
 	}
 
