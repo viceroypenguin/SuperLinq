@@ -19,18 +19,14 @@ jobs:
       with:
         languages: 'csharp'
 
-    - name: Setup .NET 3.1
-      uses: actions/setup-dotnet@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '3.1.x'
-    - name: Setup .NET 5.0
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: '5.0.x'
-    - name: Setup .NET 6.0
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: '6.0.x'
+        dotnet-version: |
+          3.1.x
+          5.0.x
+          6.0.x
+          7.0.x
 
     - name: Restore dependencies
       run: dotnet restore
