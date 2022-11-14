@@ -10,7 +10,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Meziantou.Analyzer" Version="1.0.745" PrivateAssets="All" />
+		<PackageReference Include="Meziantou.Analyzer" Version="1.0.747" PrivateAssets="All" />
 		<PackageReference Include="Microsoft.CodeAnalysis.PerformanceSensitiveAnalyzers" Version="3.3.1" PrivateAssets="All" />
 		<PackageReference Include="PolySharp" Version="1.7.1" PrivateAssets="All" />
 	</ItemGroup>
