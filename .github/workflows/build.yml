@@ -3,7 +3,7 @@ name: Build
 on: 
   push:
     branches-ignore: 
-      - 'dependabot/*'
+      - 'dependabot/**'
   pull_request:
 
 jobs:
@@ -35,14 +35,9 @@ jobs:
     - name: Test
       run: dotnet test -c Release --no-build --verbosity normal
 
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()    # run this step even if previous step failed
-      with:
-        name: 'Test report'
-        path: '**/*.trx'
-        reporter: 'dotnet-trx'
-
+    - name: Upload coverage reports to Codecov with GitHub Action
+      uses: codecov/codecov-action@v3
+      
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
 
