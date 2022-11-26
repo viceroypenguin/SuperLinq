@@ -126,7 +126,9 @@ public static partial class AsyncSuperEnumerable
 		var len = width - count;
 
 		for (var i = 0; i < len; i++)
-			yield return paddingSelector != null ? paddingSelector(i) : padding!;
+			yield return paddingSelector != null 
+				? paddingSelector(i) 
+				: Debug.AssertNotNull(padding);
 
 		for (var i = 0; i < count; i++)
 			yield return array[i];

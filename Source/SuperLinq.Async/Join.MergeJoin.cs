@@ -45,14 +45,14 @@ public static partial class AsyncSuperEnumerable
 			{
 				if (joinOperation.HasFlag(JoinOperation.LeftOuter))
 					foreach (var e in l)
-						yield return leftResultSelector!(e);
+						yield return Debug.AssertNotNull(leftResultSelector)(e);
 				gotLeft = await e1.MoveNextAsync();
 			}
 			else if (comparison > 0)
 			{
 				if (joinOperation.HasFlag(JoinOperation.RightOuter))
 					foreach (var e in r)
-						yield return rightResultSelector!(e);
+						yield return Debug.AssertNotNull(rightResultSelector)(e);
 				gotRight = await e2.MoveNextAsync();
 			}
 			else
@@ -70,7 +70,7 @@ public static partial class AsyncSuperEnumerable
 			do
 			{
 				foreach (var e in e1.Current)
-					yield return leftResultSelector!(e);
+					yield return Debug.AssertNotNull(leftResultSelector)(e);
 			} while (await e1.MoveNextAsync());
 			yield break;
 		}
@@ -80,7 +80,7 @@ public static partial class AsyncSuperEnumerable
 			do
 			{
 				foreach (var e in e2.Current)
-					yield return rightResultSelector!(e);
+					yield return Debug.AssertNotNull(rightResultSelector)(e);
 			} while (await e2.MoveNextAsync());
 			yield break;
 		}

@@ -267,7 +267,7 @@ public static partial class SuperEnumerable
 					continue;
 				}
 
-				var max = top.Max!;
+				var max = Debug.AssertNotNull(top.Max);
 				if (comparer.Compare(key, max) > 0)
 					continue;
 

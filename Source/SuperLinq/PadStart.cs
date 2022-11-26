@@ -102,14 +102,18 @@ public static partial class SuperEnumerable
 		IEnumerable<T> source, int width,
 		T? padding, Func<int, T>? paddingSelector)
 	{
-		return
-			source.TryGetCollectionCount(out var collectionCount)
-			? collectionCount >= width
-			  ? source
-			  : Enumerable.Range(0, width - collectionCount)
-						  .Select(i => paddingSelector != null ? paddingSelector(i) : padding!)
-						  .Concat(source)
-			: _(source, width, padding, paddingSelector);
+		if (source.TryGetCollectionCount(out var collectionCount))
+		{
+			return collectionCount >= width
+				? source
+				: Enumerable.Range(0, width - collectionCount)
+					.Select(i => paddingSelector != null
+						? paddingSelector(i)
+						: Debug.AssertNotNull(padding))
+					.Concat(source)
+		}
+		else
+			return _(source, width, padding, paddingSelector);
 
 		static IEnumerable<T> _(
 			IEnumerable<T> source, int width,
@@ -138,7 +142,9 @@ public static partial class SuperEnumerable
 			var len = width - count;
 
 			for (var i = 0; i < len; i++)
-				yield return paddingSelector != null ? paddingSelector(i) : padding!;
+				yield return paddingSelector != null
+					? paddingSelector(i)
+					: Debug.AssertNotNull(padding);
 
 			for (var i = 0; i < count; i++)
 				yield return array[i];

@@ -44,14 +44,14 @@ public static partial class SuperEnumerable
 			{
 				if (joinOperation.HasFlag(JoinOperation.LeftOuter))
 					foreach (var e in l)
-						yield return leftResultSelector!(e);
+						yield return Debug.AssertNotNull(leftResultSelector)(e);
 				gotLeft = e1.MoveNext();
 			}
 			else if (comparison > 0)
 			{
 				if (joinOperation.HasFlag(JoinOperation.RightOuter))
 					foreach (var e in r)
-						yield return rightResultSelector!(e);
+						yield return Debug.AssertNotNull(rightResultSelector)(e);
 				gotRight = e2.MoveNext();
 			}
 			else
@@ -69,7 +69,7 @@ public static partial class SuperEnumerable
 			do
 			{
 				foreach (var e in e1.Current)
-					yield return leftResultSelector!(e);
+					yield return Debug.AssertNotNull(leftResultSelector)(e);
 			} while (e1.MoveNext());
 			yield break;
 		}
@@ -79,7 +79,7 @@ public static partial class SuperEnumerable
 			do
 			{
 				foreach (var e in e2.Current)
-					yield return rightResultSelector!(e);
+					yield return Debug.AssertNotNull(rightResultSelector)(e);
 			} while (e2.MoveNext());
 			yield break;
 		}
