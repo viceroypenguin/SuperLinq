@@ -31,7 +31,7 @@ public static partial class SuperEnumerable
 			if (joinOperation.HasFlag(JoinOperation.LeftOuter)
 				&& !flag)
 			{
-				yield return leftResultSelector!(l);
+				yield return Debug.AssertNotNull(leftResultSelector)(l);
 			}
 		}
 	}

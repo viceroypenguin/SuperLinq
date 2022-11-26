@@ -46,7 +46,7 @@ public static partial class AsyncSuperEnumerable
 			if (!right.Contains(lKey))
 			{
 				if (joinOperation.HasFlag(JoinOperation.LeftOuter))
-					yield return leftResultSelector!(l);
+					yield return Debug.AssertNotNull(leftResultSelector)(l);
 				continue;
 			}
 
@@ -63,7 +63,7 @@ public static partial class AsyncSuperEnumerable
 					continue;
 
 				foreach (var r in g)
-					yield return rightResultSelector!(r);
+					yield return Debug.AssertNotNull(rightResultSelector)(r);
 			}
 		}
 	}

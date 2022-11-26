@@ -110,7 +110,9 @@ public static partial class SuperEnumerable
 
 		while (count < width)
 		{
-			yield return paddingSelector != null ? paddingSelector(count) : padding!;
+			yield return paddingSelector != null
+				? paddingSelector(count)
+				: Debug.AssertNotNull(padding);
 			count++;
 		}
 	}

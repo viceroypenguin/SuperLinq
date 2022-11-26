@@ -83,7 +83,7 @@ public static partial class SuperEnumerable
 			_hasMoreResults = true; // there's always at least one permutation: the original set itself
 		}
 
-		public IList<T> Current => _current!;
+		public IList<T> Current => Debug.AssertNotNull(_current);
 
 		object IEnumerator.Current => Current;
 

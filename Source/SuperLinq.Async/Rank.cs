@@ -176,7 +176,9 @@ public static partial class AsyncSuperEnumerable
 			.ConfigureAwait(false))
 		{
 			if (rank == 0
-				|| comparer.Compare(keySelector(cur), keySelector(lag!)) != 0)
+				|| comparer.Compare(
+					keySelector(cur), 
+					keySelector(Debug.AssertNotNull(lag))) != 0)
 			{
 				rank += isDense ? 1 : count;
 				count = 0;

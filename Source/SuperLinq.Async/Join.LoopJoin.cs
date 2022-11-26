@@ -32,7 +32,7 @@ public static partial class AsyncSuperEnumerable
 			if (joinOperation.HasFlag(JoinOperation.LeftOuter)
 				&& !flag)
 			{
-				yield return leftResultSelector!(l);
+				yield return Debug.AssertNotNull(leftResultSelector)(l);
 			}
 		}
 	}
