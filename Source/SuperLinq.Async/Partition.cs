@@ -97,7 +97,10 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(resultSelector);
 
-		return source.Partition(key1: true, key2: false, (t, f, _) => resultSelector(t, f), cancellationToken: cancellationToken);
+		return source.Partition(
+			key1: true, key2: false, 
+			(t, f, _) => resultSelector(t, f), 
+			cancellationToken: cancellationToken);
 	}
 
 	/// <summary>
@@ -126,7 +129,10 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(resultSelector);
 
-		return source.Partition(key1: true, key2: false, key3: null, (t, f, n, _) => resultSelector(t, f, n), cancellationToken: cancellationToken);
+		return source.Partition(
+			key1: true, key2: false, key3: null, 
+			(t, f, n, _) => resultSelector(t, f, n), 
+			cancellationToken: cancellationToken);
 	}
 
 	/// <summary>
@@ -156,7 +162,7 @@ public static partial class AsyncSuperEnumerable
 		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
-		return Partition(source, key, comparer: null!, resultSelector, cancellationToken: cancellationToken);
+		return Partition(source, key, comparer: default, resultSelector, cancellationToken: cancellationToken);
 	}
 
 	/// <summary>
@@ -184,15 +190,17 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
 	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
 		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
-		TKey key, IEqualityComparer<TKey> comparer,
+		TKey key, IEqualityComparer<TKey>? comparer,
 		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(resultSelector);
 
-		return PartitionImpl(source, 1, key, key2: default!, key3: default!, comparer,
-							 (a, _, _, rest) => resultSelector(a, rest), cancellationToken);
+		return PartitionImpl(
+			source, 1, key, key2: default, key3: default, comparer,
+			(a, _, _, rest) => resultSelector(a, rest), 
+			cancellationToken);
 	}
 
 	/// <summary>
@@ -224,7 +232,7 @@ public static partial class AsyncSuperEnumerable
 		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
-		return Partition(source, key1, key2, comparer: null!, resultSelector, cancellationToken: cancellationToken);
+		return Partition(source, key1, key2, comparer: default, resultSelector, cancellationToken: cancellationToken);
 	}
 
 	/// <summary>
@@ -254,15 +262,17 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
 	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
 		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
-		TKey key1, TKey key2, IEqualityComparer<TKey> comparer,
+		TKey key1, TKey key2, IEqualityComparer<TKey>? comparer,
 		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(resultSelector);
 
-		return PartitionImpl(source, 2, key1, key2, key3: default!, comparer,
-							 (a, b, c, rest) => resultSelector(a, b, rest), cancellationToken);
+		return PartitionImpl(
+			source, 2, key1, key2, key3: default, comparer,
+			(a, b, c, rest) => resultSelector(a, b, rest),
+			cancellationToken);
 	}
 
 	/// <summary>
@@ -295,7 +305,7 @@ public static partial class AsyncSuperEnumerable
 		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
-		return Partition(source, key1, key2, key3, comparer: null!, resultSelector, cancellationToken: cancellationToken);
+		return Partition(source, key1, key2, key3, comparer: default, resultSelector, cancellationToken: cancellationToken);
 	}
 
 	/// <summary>
@@ -326,7 +336,7 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
 	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
 		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
-		TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey> comparer,
+		TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey>? comparer,
 		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
@@ -338,7 +348,7 @@ public static partial class AsyncSuperEnumerable
 
 	private static async ValueTask<TResult> PartitionImpl<TKey, TElement, TResult>(
 		IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
-		int count, TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey>? comparer,
+		int count, TKey? key1, TKey? key2, TKey? key3, IEqualityComparer<TKey>? comparer,
 		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
 		CancellationToken cancellationToken)
 	{
@@ -355,9 +365,9 @@ public static partial class AsyncSuperEnumerable
 
 		await foreach (var e in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 		{
-			var i = count > 0 && comparer.Equals(e.Key, key1) ? 0
-				  : count > 1 && comparer.Equals(e.Key, key2) ? 1
-				  : count > 2 && comparer.Equals(e.Key, key3) ? 2
+			var i = count > 0 && comparer.Equals(e.Key, Debug.AssertNotNull(key1)) ? 0
+				  : count > 1 && comparer.Equals(e.Key, Debug.AssertNotNull(key2)) ? 1
+				  : count > 2 && comparer.Equals(e.Key, Debug.AssertNotNull(key3)) ? 2
 				  : -1;
 
 			if (i < 0)
