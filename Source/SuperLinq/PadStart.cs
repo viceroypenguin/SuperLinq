@@ -110,7 +110,7 @@ public static partial class SuperEnumerable
 					.Select(i => paddingSelector != null
 						? paddingSelector(i)
 						: Debug.AssertNotNull(padding))
-					.Concat(source)
+					.Concat(source);
 		}
 		else
 			return _(source, width, padding, paddingSelector);
