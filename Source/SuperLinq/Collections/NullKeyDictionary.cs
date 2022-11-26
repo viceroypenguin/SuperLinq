@@ -7,59 +7,21 @@ namespace SuperLinq.Collections;
 /// allows null keys when <typeparamref name="TKey"/> is a
 /// reference type.
 /// </summary>
-internal sealed class NullKeyDictionary<TKey, TValue>
+internal sealed class NullKeyDictionary<TKey, TValue> : Dictionary<ValueTuple<TKey>, TValue>
 {
-#pragma warning disable CS8714 // listen, we promise we're not going to stick a null in this dictionary...
-	private readonly Dictionary<TKey, TValue> _dict;
-#pragma warning restore CS8714
-	private (bool, TValue) _null;
+	public NullKeyDictionary(IEqualityComparer<TKey>? comparer)
+		: base(comparer: ValueTupleEqualityComparer.Create(comparer))
+	{ }
 
-	public NullKeyDictionary(IEqualityComparer<TKey> comparer)
+	public TValue this[TKey key]
 	{
-		_dict = new(comparer);
-		_null = default;
+		get => this[ValueTuple.Create(key)];
+		set => this[ValueTuple.Create(key)] = value;
 	}
 
-	public TValue this[TKey? key]
-	{
-		set
-		{
-			if (key is null)
-				_null = (true, value);
-			else
-				_dict[key] = value;
-		}
-	}
+	public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
+		=> this.TryGetValue(ValueTuple.Create(key), out value);
 
-	public bool TryGetValue(TKey? key, [MaybeNullWhen(false)] out TValue value)
-	{
-		if (key is null)
-		{
-			switch (_null)
-			{
-				case (true, var v):
-					value = v;
-					return true;
-				case (false, _):
-					value = default;
-					return false;
-			}
-		}
-
-		return _dict.TryGetValue(key, out value);
-	}
-
-	public void Clear()
-	{
-		_dict.Clear();
-		_null = default;
-	}
-
-	public void Remove(TKey? key)
-	{
-		if (key is null)
-			_null = default;
-		else
-			_dict.Remove(key);
-	}
+	public bool Remove(TKey key)
+		=> this.Remove(ValueTuple.Create(key));
 }
