@@ -48,9 +48,17 @@ internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
 		{
 			_disposed = true;
 		};
+		var ended = false;
 		enumerator.MoveNextCalled += (_, moved) =>
 		{
+			Assert.False(_disposed, "LINQ operators should not call MoveNext() on a disposed sequence.");
+			ended = !moved;
 			MoveNextCallCount++;
+		};
+		enumerator.GetCurrentCalled += delegate
+		{
+			Assert.False(_disposed, "LINQ operators should not attempt to get the Current value on a disposed sequence.");
+			Assert.False(ended, "LINQ operators should not attempt to get the Current value on a completed sequence.");
 		};
 		_sequence = null;
 		return enumerator;

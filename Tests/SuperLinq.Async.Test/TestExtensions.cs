@@ -53,12 +53,20 @@ internal sealed class WatchableEnumerator<T> : IAsyncEnumerator<T>
 	private readonly IAsyncEnumerator<T> _source;
 
 	public event EventHandler? Disposed;
+	public event EventHandler? GetCurrentCalled;
 	public event EventHandler<bool>? MoveNextCalled;
 
 	public WatchableEnumerator(IAsyncEnumerator<T> source) =>
 		_source = source ?? throw new ArgumentNullException(nameof(source));
 
-	public T Current => _source.Current;
+	public T Current
+	{
+		get
+		{
+			GetCurrentCalled?.Invoke(this, EventArgs.Empty);
+			return _source.Current;
+		}
+	}
 
 	public async ValueTask<bool> MoveNextAsync()
 	{
