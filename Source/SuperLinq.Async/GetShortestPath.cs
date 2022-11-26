@@ -141,7 +141,9 @@ public partial class AsyncSuperEnumerable
 		where TState : notnull
 		where TCost : notnull
 	{
+		Guard.IsNotNull(start);
 		Guard.IsNotNull(getNeighbors);
+		Guard.IsNotNull(end);
 
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
@@ -149,7 +151,7 @@ public partial class AsyncSuperEnumerable
 		var totalCost = new Dictionary<TState, TCost?>(stateComparer);
 		var queue = new UpdatablePriorityQueue<TState, TCost>(16, costComparer, stateComparer);
 
-		TState current = start;
+		TState? current = start;
 		TCost? cost = default;
 		do
 		{
@@ -164,7 +166,7 @@ public partial class AsyncSuperEnumerable
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, p);
 
-			if (!queue.TryDequeue(out current!, out cost))
+			if (!queue.TryDequeue(out current, out cost))
 				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
 		} while (true);
 
@@ -312,7 +314,9 @@ public partial class AsyncSuperEnumerable
 		where TState : notnull
 		where TCost : notnull
 	{
+		Guard.IsNotNull(start);
 		Guard.IsNotNull(getNeighbors);
+		Guard.IsNotNull(end);
 
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
@@ -324,7 +328,7 @@ public partial class AsyncSuperEnumerable
 				(x, y) => costComparer.Compare(x.cost, y.cost)),
 			stateComparer);
 
-		TState current = start;
+		TState? current = start;
 		(TState? parent, TCost cost) from = default;
 		do
 		{
@@ -340,7 +344,7 @@ public partial class AsyncSuperEnumerable
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, (current, p));
 
-			if (!queue.TryDequeue(out current!, out from))
+			if (!queue.TryDequeue(out current, out from))
 				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
 		} while (true);
 
@@ -501,6 +505,7 @@ public partial class AsyncSuperEnumerable
 		where TState : notnull
 		where TCost : notnull
 	{
+		Guard.IsNotNull(start);
 		Guard.IsNotNull(getNeighbors);
 
 		stateComparer ??= EqualityComparer<TState>.Default;
@@ -513,7 +518,7 @@ public partial class AsyncSuperEnumerable
 				(x, y) => costComparer.Compare(x.cost, y.cost)),
 			stateComparer);
 
-		TState current = start;
+		TState? current = start;
 		(TState? parent, TCost? cost) from = default;
 		do
 		{
@@ -526,7 +531,7 @@ public partial class AsyncSuperEnumerable
 			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, (current, p));
-		} while (queue.TryDequeue(out current!, out from));
+		} while (queue.TryDequeue(out current, out from));
 
 		return totalCost;
 	}
@@ -682,7 +687,9 @@ public partial class AsyncSuperEnumerable
 		where TState : notnull
 		where TCost : notnull
 	{
+		Guard.IsNotNull(start);
 		Guard.IsNotNull(getNeighbors);
+		Guard.IsNotNull(end);
 
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
@@ -698,7 +705,7 @@ public partial class AsyncSuperEnumerable
 				}),
 			stateComparer);
 
-		TState current = start;
+		TState? current = start;
 		(TCost bestGuess, TCost traversed) costs = default;
 		do
 		{
@@ -716,7 +723,7 @@ public partial class AsyncSuperEnumerable
 					queue.EnqueueMinimum(s, (h, p));
 			}
 
-			if (!queue.TryDequeue(out current!, out costs))
+			if (!queue.TryDequeue(out current, out costs))
 				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
 		} while (true);
 
@@ -872,7 +879,9 @@ public partial class AsyncSuperEnumerable
 		where TState : notnull
 		where TCost : notnull
 	{
+		Guard.IsNotNull(start);
 		Guard.IsNotNull(getNeighbors);
+		Guard.IsNotNull(end);
 
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
@@ -888,7 +897,7 @@ public partial class AsyncSuperEnumerable
 				}),
 			stateComparer);
 
-		TState current = start;
+		TState? current = start;
 		(TState? parent, TCost bestGuess, TCost traversed) from = default;
 		do
 		{
@@ -907,7 +916,7 @@ public partial class AsyncSuperEnumerable
 					queue.EnqueueMinimum(s, (current, h, p));
 			}
 
-			if (!queue.TryDequeue(out current!, out from))
+			if (!queue.TryDequeue(out current, out from))
 				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
 		} while (true);
 
