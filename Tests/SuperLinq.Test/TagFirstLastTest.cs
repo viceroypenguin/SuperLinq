@@ -5,14 +5,14 @@ public class TagFirstLastTest
 	[Fact]
 	public void TagFirstLastIsLazy()
 	{
+		new BreakingSequence<object>().TagFirstLast();
 		new BreakingSequence<object>().TagFirstLast(BreakingFunc.Of<object, bool, bool, object>());
 	}
 
 	[Fact]
 	public void TagFirstLastEmptySequence()
 	{
-		Seq<int>().TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
-			.AssertSequenceEqual();
+		Seq<int>().TagFirstLast().AssertSequenceEqual();
 	}
 
 	[Fact]

@@ -7,14 +7,14 @@ public class TagFirstLastTest
 	[Fact]
 	public void TagFirstLastIsLazy()
 	{
+		new AsyncBreakingSequence<object>().TagFirstLast();
 		new AsyncBreakingSequence<object>().TagFirstLast(BreakingFunc.Of<object, bool, bool, object>());
 	}
 
 	[Fact]
 	public async Task TagFirstLastEmptySequence()
 	{
-		await AsyncSeq<int>().TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
-			.AssertSequenceEqual();
+		await AsyncSeq<int>().TagFirstLast().AssertSequenceEqual();
 	}
 
 	[Fact]
