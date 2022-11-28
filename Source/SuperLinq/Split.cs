@@ -15,7 +15,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		TSource separator)
 	{
-		return Split(source, separator, int.MaxValue);
+		return Split(source, separator, count: int.MaxValue);
 	}
 
 	/// <summary>
@@ -32,7 +32,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		TSource separator, int count)
 	{
-		return Split(source, separator, count, s => s);
+		return Split(source, separator, count, Identity);
 	}
 
 	/// <summary>
@@ -55,7 +55,7 @@ public static partial class SuperEnumerable
 		TSource separator,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
-		return Split(source, separator, int.MaxValue, resultSelector);
+		return Split(source, separator, count: int.MaxValue, resultSelector);
 	}
 
 	/// <summary>
@@ -80,7 +80,7 @@ public static partial class SuperEnumerable
 		TSource separator, int count,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
-		return Split(source, separator, null, count, resultSelector);
+		return Split(source, separator, comparer: null, count, resultSelector);
 	}
 
 	/// <summary>
@@ -98,7 +98,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		TSource separator, IEqualityComparer<TSource>? comparer)
 	{
-		return Split(source, separator, comparer, int.MaxValue);
+		return Split(source, separator, comparer, count: int.MaxValue);
 	}
 
 	/// <summary>
@@ -119,7 +119,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		TSource separator, IEqualityComparer<TSource>? comparer, int count)
 	{
-		return Split(source, separator, comparer, count, s => s);
+		return Split(source, separator, comparer, count, Identity);
 	}
 
 	/// <summary>
@@ -145,7 +145,7 @@ public static partial class SuperEnumerable
 		TSource separator, IEqualityComparer<TSource> comparer,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
-		return Split(source, separator, comparer, int.MaxValue, resultSelector);
+		return Split(source, separator, comparer, count: int.MaxValue, resultSelector);
 	}
 
 	/// <summary>
@@ -196,7 +196,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		Func<TSource, bool> separatorFunc)
 	{
-		return Split(source, separatorFunc, int.MaxValue);
+		return Split(source, separatorFunc, count: int.MaxValue);
 	}
 
 	/// <summary>
@@ -216,7 +216,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		Func<TSource, bool> separatorFunc, int count)
 	{
-		return Split(source, separatorFunc, count, s => s);
+		return Split(source, separatorFunc, count, Identity);
 	}
 
 	/// <summary>
@@ -241,7 +241,7 @@ public static partial class SuperEnumerable
 		Func<TSource, bool> separatorFunc,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
-		return Split(source, separatorFunc, int.MaxValue, resultSelector);
+		return Split(source, separatorFunc, count: int.MaxValue, resultSelector);
 	}
 
 	/// <summary>
