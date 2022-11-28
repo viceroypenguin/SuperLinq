@@ -20,8 +20,8 @@ public class InterleaveTests
 	[Fact]
 	public void TestInterleaveTestsSourcesForNull()
 	{
-		Assert.Throws<ArgumentNullException>(() =>
-			new[] { new BreakingSequence<int>(), default!, }.Interleave());
+		Assert.Throws<ArgumentNullException>("sources", () =>
+			new[] { new BreakingSequence<int>(), default!, }.Interleave<int>());
 	}
 
 	/// <summary>
