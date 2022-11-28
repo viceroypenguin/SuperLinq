@@ -735,6 +735,8 @@ Returns a sequence resulting from applying a function to each element in the
 source sequence with additional parameters indicating whether the element is
 the first and/or last of the sequence
 
+This method has 2 overloads.
+
 ### Take (pre-.NET 6)
 
 Returns a specified range of contiguous elements from a sequence using the
