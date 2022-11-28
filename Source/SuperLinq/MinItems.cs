@@ -10,8 +10,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// <para>
-	/// This operator is a shortcut for <see cref="DensePartialSort{T}(IEnumerable{T}, int, OrderByDirection)"/> with a
-	/// <c>direction</c> of <see cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>. 
+	/// This operator is a shortcut for <see cref="EnumerableEx.MinByWithTies{TSource, TKey}(IEnumerable{TSource},
+	/// Func{TSource, TKey})" />.
 	/// </para>
 	/// <para>
 	/// This operator uses deferred execution and streams it results.
@@ -19,7 +19,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<T> MinItems<T>(this IEnumerable<T> source)
 	{
-		return source.DensePartialSort(1, OrderByDirection.Ascending);
+		return source.MinByWithTies(Identity);
 	}
 
 	/// <summary>
@@ -31,16 +31,16 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// <para>
-	/// This operator is a shortcut for <see cref="DensePartialSort{T}(IEnumerable{T}, int, IComparer{T}?, OrderByDirection)"/> with a
-	/// <c>count</c> of <c>1</c>. 
+	/// This operator is a shortcut for <see cref="EnumerableEx.MinByWithTies{TSource, TKey}(IEnumerable{TSource},
+	/// Func{TSource, TKey}, IComparer{TKey})" />.
 	/// </para>
 	/// <para>
 	/// This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<T> MinItems<T>(this IEnumerable<T> source, IComparer<T>? comparer)
+	public static IEnumerable<T> MinItems<T>(this IEnumerable<T> source, IComparer<T> comparer)
 	{
-		return source.DensePartialSort(1, comparer, OrderByDirection.Ascending);
+		return source.MinByWithTies(Identity, comparer);
 	}
 
 	/// <summary>
@@ -53,9 +53,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// <para>
-	/// This operator is a shortcut for <see cref="DensePartialSortBy{TSource, TKey}(IEnumerable{TSource}, int,
-	/// Func{TSource, TKey}, OrderByDirection)"/> with a <c>direction</c> of <see cref="OrderByDirection.Ascending"/>
-	/// and a <c>count</c> of <c>1</c>. 
+	/// This operator is a shortcut for <see cref="EnumerableEx.MinByWithTies{TSource, TKey}(IEnumerable{TSource},
+	/// Func{TSource, TKey})" />.
 	/// </para>
 	/// <para>
 	/// This operator uses deferred execution and streams it results.
@@ -63,7 +62,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> MinItemsBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 	{
-		return source.DensePartialSortBy(1, keySelector, OrderByDirection.Ascending);
+		return source.MinByWithTies(keySelector);
 	}
 
 	/// <summary>
@@ -77,16 +76,15 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// <para>
-	/// This operator is a shortcut for <see cref="DensePartialSortBy{TSource, TKey}(IEnumerable{TSource}, int,
-	/// Func{TSource, TKey}, IComparer{TKey}?, OrderByDirection)"/> with a <c>direction</c> of <see
-	/// cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>. 
+	/// This operator is a shortcut for <see cref="EnumerableEx.MinByWithTies{TSource, TKey}(IEnumerable{TSource},
+	/// Func{TSource, TKey}, IComparer{TKey})" />.
 	/// </para>
 	/// <para>
 	/// This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TSource> MinItemsBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer)
+	public static IEnumerable<TSource> MinItemsBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
 	{
-		return source.DensePartialSortBy(1, keySelector, comparer, OrderByDirection.Ascending);
+		return source.MinByWithTies(keySelector, comparer);
 	}
 }
