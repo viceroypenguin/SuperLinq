@@ -122,7 +122,7 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(resultSelector);
 
 		return source.Partition(
-			key1: true, key2: false, key3: null, 
+			key1: true, key2: false, key3: null,
 			(t, f, n, _) => resultSelector(t, f, n));
 	}
 

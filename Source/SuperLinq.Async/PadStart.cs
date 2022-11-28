@@ -27,7 +27,7 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IAsyncEnumerable<TSource?> PadStart<TSource>(this IAsyncEnumerable<TSource> source, int width)
 	{
-		return PadStart(source, width, default(TSource));
+		return PadStart(source, width, padding: default);
 	}
 
 	/// <summary>
@@ -57,9 +57,7 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IAsyncEnumerable<TSource> PadStart<TSource>(this IAsyncEnumerable<TSource> source, int width, TSource padding)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(width, 0);
-		return PadStartImpl(source, width, padding, paddingSelector: null);
+		return PadStart(source, width, paddingSelector: _ => padding);
 	}
 
 	/// <summary>
@@ -95,42 +93,41 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(paddingSelector);
 		Guard.IsGreaterThanOrEqualTo(width, 0);
-		return PadStartImpl(source, width, padding: default, paddingSelector);
-	}
 
-	private static async IAsyncEnumerable<T> PadStartImpl<T>(
-		IAsyncEnumerable<T> source, int width,
-		T? padding, Func<int, T>? paddingSelector,
-		[EnumeratorCancellation] CancellationToken cancellationToken = default)
-	{
-		var array = new T[width];
-		var count = 0;
+		return PadStartImpl(source, width, paddingSelector);
 
-		await using (var e = source.GetConfiguredAsyncEnumerator(cancellationToken))
+		static async IAsyncEnumerable<TSource> PadStartImpl(
+			IAsyncEnumerable<TSource> source, int width,
+			Func<int, TSource> paddingSelector,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			for (; count < width && await e.MoveNextAsync(); count++)
-				array[count] = e.Current;
+			var array = new TSource[width];
+			var count = 0;
 
-			if (count == width)
+			await using (var e = source.GetConfiguredAsyncEnumerator(cancellationToken))
 			{
-				for (var i = 0; i < count; i++)
-					yield return array[i];
+				for (; count < width && await e.MoveNextAsync(); count++)
+					array[count] = e.Current;
 
-				while (await e.MoveNextAsync())
-					yield return e.Current;
+				if (count == width)
+				{
+					for (var i = 0; i < count; i++)
+						yield return array[i];
 
-				yield break;
+					while (await e.MoveNextAsync())
+						yield return e.Current;
+
+					yield break;
+				}
 			}
+
+			var len = width - count;
+
+			for (var i = 0; i < len; i++)
+				yield return paddingSelector(i);
+
+			for (var i = 0; i < count; i++)
+				yield return array[i];
 		}
-
-		var len = width - count;
-
-		for (var i = 0; i < len; i++)
-			yield return paddingSelector != null 
-				? paddingSelector(i) 
-				: Debug.AssertNotNull(padding);
-
-		for (var i = 0; i < count; i++)
-			yield return array[i];
 	}
 }
