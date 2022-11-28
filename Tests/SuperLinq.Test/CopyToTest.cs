@@ -45,9 +45,9 @@ public class CopyToTest
 		Assert.Throws<ArgumentException>(
 			() => Seq(1).CopyTo(Array.Empty<int>()));
 		Assert.Throws<ArgumentException>(
-			() => new List<int> { 1 }.CopyTo(Array.Empty<int>()));
+			() => new List<int> { 1 }.AsEnumerable().CopyTo(Array.Empty<int>()));
 		Assert.Throws<ArgumentException>(
-			() => new List<int> { 1 }.AsReadOnly().CopyTo(Array.Empty<int>()));
+			() => new List<int> { 1 }.AsReadOnly().AsEnumerable().CopyTo(Array.Empty<int>()));
 	}
 
 	[Fact]
@@ -56,9 +56,11 @@ public class CopyToTest
 		Assert.Throws<ArgumentException>(
 			() => Seq(1).CopyTo((IList<int>)Array.Empty<int>()));
 		Assert.Throws<ArgumentException>(
-			() => new List<int> { 1 }.CopyTo((IList<int>)Array.Empty<int>()));
+			() => Enumerable.Range(1, 1).CopyTo((IList<int>)Array.Empty<int>()));
 		Assert.Throws<ArgumentException>(
-			() => new List<int> { 1 }.AsReadOnly().CopyTo((IList<int>)Array.Empty<int>()));
+			() => new List<int> { 1 }.AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
+		Assert.Throws<ArgumentException>(
+			() => new List<int> { 1 }.AsReadOnly().AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
 	}
 
 	[Fact]
@@ -67,7 +69,7 @@ public class CopyToTest
 		Assert.Throws<ArgumentException>(
 			() => Seq(1).CopyTo(Array.Empty<int>().AsSpan()));
 		Assert.Throws<ArgumentException>(
-			() => new List<int> { 1 }.CopyTo(Array.Empty<int>().AsSpan()));
+			() => new List<int> { 1 }.AsEnumerable().CopyTo(Array.Empty<int>().AsSpan()));
 	}
 
 	[Fact]
@@ -78,7 +80,7 @@ public class CopyToTest
 		Seq(1).CopyTo(span);
 		span.ToArray().AssertSequenceEqual(1, 0, 0, 0);
 
-		new List<int> { 2 }.CopyTo(span[1..]);
+		new List<int> { 2 }.AsEnumerable().CopyTo(span[1..]);
 		span.ToArray().AssertSequenceEqual(1, 2, 0, 0);
 
 		Enumerable.Range(3, 1).CopyTo(span[2..]);
@@ -93,10 +95,10 @@ public class CopyToTest
 		Seq(1).CopyTo(array);
 		array.AssertSequenceEqual(1, 0, 0, 0);
 
-		new List<int> { 2 }.CopyTo(array, 1);
+		new List<int> { 2 }.AsEnumerable().CopyTo(array, 1);
 		array.AssertSequenceEqual(1, 2, 0, 0);
 
-		new List<int> { 3 }.AsReadOnly().CopyTo(array, 2);
+		new List<int> { 3 }.AsReadOnly().AsEnumerable().CopyTo(array, 2);
 		array.AssertSequenceEqual(1, 2, 3, 0);
 
 		Enumerable.Range(4, 1).CopyTo(array, 3);
