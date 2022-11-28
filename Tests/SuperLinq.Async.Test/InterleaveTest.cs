@@ -15,6 +15,16 @@ public class InterleaveTests
 	}
 
 	/// <summary>
+	/// Verify that Interleave fails when encountering a null source
+	/// </summary>
+	[Fact]
+	public void TestInterleaveTestsSourcesForNull()
+	{
+		Assert.Throws<ArgumentNullException>("sources", () =>
+			new[] { new AsyncBreakingSequence<int>(), default!, }.Interleave<int>());
+	}
+
+	/// <summary>
 	/// Verify that interleaving disposes those enumerators that it managed
 	/// to open successfully
 	/// </summary>
