@@ -21,7 +21,7 @@ public class InterleaveTests
 	public void TestInterleaveTestsSourcesForNull()
 	{
 		Assert.Throws<ArgumentNullException>(() =>
-			new BreakingSequence<int>().Interleave(default!));
+			new[] { new BreakingSequence<int>(), default!, }.Interleave());
 	}
 
 	/// <summary>
