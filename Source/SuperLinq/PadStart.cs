@@ -27,7 +27,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IEnumerable<TSource?> PadStart<TSource>(this IEnumerable<TSource> source, int width)
 	{
-		return PadStart(source, width, default(TSource));
+		return PadStart(source, width, padding: default);
 	}
 
 	/// <summary>
@@ -59,7 +59,8 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(source);
 		Guard.IsGreaterThanOrEqualTo(width, 0);
-		return PadStartImpl(source, width, padding, paddingSelector: null);
+
+		return PadStart(source, width, paddingSelector: _ => padding);
 	}
 
 	/// <summary>
@@ -95,59 +96,56 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(paddingSelector);
 		Guard.IsGreaterThanOrEqualTo(width, 0);
-		return PadStartImpl(source, width, padding: default, paddingSelector);
-	}
 
-	private static IEnumerable<T> PadStartImpl<T>(
-		IEnumerable<T> source, int width,
-		T? padding, Func<int, T>? paddingSelector)
-	{
-		if (source.TryGetCollectionCount(out var collectionCount))
+		return PadStartImpl(source, width, paddingSelector);
+
+		static IEnumerable<TSource> PadStartImpl(
+			IEnumerable<TSource> source, int width,
+			Func<int, TSource> paddingSelector)
 		{
-			return collectionCount >= width
-				? source
-				: Enumerable.Range(0, width - collectionCount)
-					.Select(i => paddingSelector != null
-						? paddingSelector(i)
-						: Debug.AssertNotNull(padding))
-					.Concat(source);
-		}
-		else
-			return _(source, width, padding, paddingSelector);
-
-		static IEnumerable<T> _(
-			IEnumerable<T> source, int width,
-			T? padding, Func<int, T>? paddingSelector)
-		{
-			var array = new T[width];
-			var count = 0;
-
-			using (var e = source.GetEnumerator())
+			if (source.TryGetCollectionCount(out var collectionCount))
 			{
-				for (; count < width && e.MoveNext(); count++)
-					array[count] = e.Current;
-
-				if (count == width)
-				{
-					for (var i = 0; i < count; i++)
-						yield return array[i];
-
-					while (e.MoveNext())
-						yield return e.Current;
-
-					yield break;
-				}
+				return collectionCount >= width
+					? source
+					: Enumerable.Range(0, width - collectionCount)
+						.Select(paddingSelector)
+						.Concat(source);
 			}
+			else
+				return _(source, width, paddingSelector);
 
-			var len = width - count;
+			static IEnumerable<TSource> _(
+				IEnumerable<TSource> source, int width,
+				Func<int, TSource> paddingSelector)
+			{
+				var array = new TSource[width];
+				var count = 0;
 
-			for (var i = 0; i < len; i++)
-				yield return paddingSelector != null
-					? paddingSelector(i)
-					: Debug.AssertNotNull(padding);
+				using (var e = source.GetEnumerator())
+				{
+					for (; count < width && e.MoveNext(); count++)
+						array[count] = e.Current;
 
-			for (var i = 0; i < count; i++)
-				yield return array[i];
+					if (count == width)
+					{
+						for (var i = 0; i < count; i++)
+							yield return array[i];
+
+						while (e.MoveNext())
+							yield return e.Current;
+
+						yield break;
+					}
+				}
+
+				var len = width - count;
+
+				for (var i = 0; i < len; i++)
+					yield return paddingSelector(i);
+
+				for (var i = 0; i < count; i++)
+					yield return array[i];
+			}
 		}
 	}
 }

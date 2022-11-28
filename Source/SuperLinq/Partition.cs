@@ -341,9 +341,9 @@ public static partial class SuperEnumerable
 
 		foreach (var e in source)
 		{
-			var i = count > 0 && comparer.Equals(e.Key, Debug.AssertNotNull(key1)) ? 0
-				  : count > 1 && comparer.Equals(e.Key, Debug.AssertNotNull(key2)) ? 1
-				  : count > 2 && comparer.Equals(e.Key, Debug.AssertNotNull(key3)) ? 2
+			var i = count > 0 && comparer.Equals(e.Key, key1) ? 0
+				  : count > 1 && comparer.Equals(e.Key, key2) ? 1
+				  : count > 2 && comparer.Equals(e.Key, key3) ? 2
 				  : -1;
 
 			if (i < 0)
