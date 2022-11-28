@@ -51,6 +51,19 @@ public class ZipShortestTest
 		bs.ZipShortest(bs, BreakingFunc.Of<int, int, int>());
 	}
 
+	[Theory]
+	[InlineData(1), InlineData(2), InlineData(3), InlineData(4)]
+	public void ZipShortestEndsAtShortestSequence(int shortSequence)
+	{
+		var seq1 = Enumerable.Range(1, shortSequence == 1 ? 2 : 3);
+		var seq2 = Enumerable.Range(1, shortSequence == 2 ? 2 : 3);
+		var seq3 = Enumerable.Range(1, shortSequence == 3 ? 2 : 3);
+		var seq4 = Enumerable.Range(1, shortSequence == 4 ? 2 : 3);
+
+		var seq = seq1.ZipShortest(seq2, seq3, seq4, (a, _, _, _) => a);
+		seq.AssertSequenceEqual(1, 2);
+	}
+
 	[Fact]
 	public void MoveNextIsNotCalledUnnecessarilyWhenFirstIsShorter()
 	{
