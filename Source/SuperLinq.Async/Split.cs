@@ -282,12 +282,6 @@ public static partial class AsyncSuperEnumerable
 			Func<IEnumerable<TSource>, TResult> resultSelector,
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			if (count == 0) // No splits?
-			{
-				yield return resultSelector(await source.ToListAsync(cancellationToken).ConfigureAwait(false));
-				yield break;
-			}
-
 			var items = new List<TSource>();
 
 			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
