@@ -1,4 +1,6 @@
-﻿namespace Test.Async;
+﻿using SuperLinq;
+
+namespace Test.Async;
 
 public class TagFirstLastTest
 {
@@ -6,6 +8,13 @@ public class TagFirstLastTest
 	public void TagFirstLastIsLazy()
 	{
 		new AsyncBreakingSequence<object>().TagFirstLast(BreakingFunc.Of<object, bool, bool, object>());
+	}
+
+	[Fact]
+	public async Task TagFirstLastEmptySequence()
+	{
+		await AsyncSeq<int>().TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
+			.AssertSequenceEqual();
 	}
 
 	[Fact]

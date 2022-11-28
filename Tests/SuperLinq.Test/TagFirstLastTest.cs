@@ -9,6 +9,13 @@ public class TagFirstLastTest
 	}
 
 	[Fact]
+	public void TagFirstLastEmptySequence()
+	{
+		Seq<int>().TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
+			.AssertSequenceEqual();
+	}
+
+	[Fact]
 	public void TagFirstLastWithSourceSequenceOfOne()
 	{
 		var source = new[] { 123 };
