@@ -1,6 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
@@ -19,6 +21,7 @@ public static partial class AsyncSuperEnumerable
 	/// To instead return a default value when the specified index is out of range, 
 	/// use the <see cref="ElementAtOrDefaultAsync{TSource}(IAsyncEnumerable{TSource}, Index, CancellationToken)" /> method.</para>
 	/// </remarks>
+	[ExcludeFromCodeCoverage] // we copied from netfx - they have sufficient code coverage that we did not copy
 	public static async ValueTask<TSource> ElementAtAsync<TSource>(this IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
@@ -47,6 +50,7 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// <para>The default value for reference and nullable types is <see langword="null" />.</para>
 	/// </remarks>
+	[ExcludeFromCodeCoverage] // we copied from netfx - they have sufficient code coverage that we did not copy
 	public static async ValueTask<TSource?> ElementAtOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
@@ -60,6 +64,7 @@ public static partial class AsyncSuperEnumerable
 		return element;
 	}
 
+	[ExcludeFromCodeCoverage] // we copied from netfx - they have sufficient code coverage that we did not copy
 	private static async ValueTask<(bool success, TSource? element)> TryGetElementFromEnd<TSource>(IAsyncEnumerable<TSource> source, int indexFromEnd, CancellationToken cancellationToken)
 	{
 		if (indexFromEnd > 0)
