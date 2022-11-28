@@ -28,7 +28,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IEnumerable<TSource?> Pad<TSource>(this IEnumerable<TSource> source, int width)
 	{
-		return Pad(source, width, default(TSource));
+		return Pad(source, width, padding: default);
 	}
 
 	/// <summary>
@@ -60,7 +60,8 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(source);
 		Guard.IsGreaterThanOrEqualTo(width, 0);
-		return PadImpl(source, width, padding, paddingSelector: null);
+
+		return Pad(source, width, paddingSelector: _ => padding);
 	}
 
 	/// <summary>
@@ -94,26 +95,25 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(paddingSelector);
 		Guard.IsGreaterThanOrEqualTo(width, 0);
-		return PadImpl(source, width, padding: default, paddingSelector);
-	}
 
-	private static IEnumerable<T> PadImpl<T>(
-		IEnumerable<T> source, int width,
-		T? padding, Func<int, T>? paddingSelector)
-	{
-		var count = 0;
-		foreach (var item in source)
-		{
-			yield return item;
-			count++;
-		}
+		return _(source, width, paddingSelector);
 
-		while (count < width)
+		static IEnumerable<TSource> _(
+			IEnumerable<TSource> source, int width,
+			Func<int, TSource> paddingSelector)
 		{
-			yield return paddingSelector != null
-				? paddingSelector(count)
-				: Debug.AssertNotNull(padding);
-			count++;
+			var count = 0;
+			foreach (var item in source)
+			{
+				yield return item;
+				count++;
+			}
+
+			while (count < width)
+			{
+				yield return paddingSelector(count);
+				count++;
+			}
 		}
 	}
 }
