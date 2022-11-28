@@ -35,19 +35,27 @@ public static partial class SuperEnumerable
 		}
 		else
 		{
-			if (TryGetCollectionCount(source, out var n)
-				&& n > span.Length)
+			if (TryGetCollectionCount(source, out var n))
 			{
-				ThrowHelper.ThrowArgumentException(nameof(span), "Destination is not long enough.");
-			}
-
-			var i = 0;
-			foreach (var el in source)
-			{
-				if (i > span.Length)
+				if (n > span.Length)
 					ThrowHelper.ThrowArgumentException(nameof(span), "Destination is not long enough.");
 
-				span[i++] = el;
+				var i = 0;
+				foreach (var el in source)
+				{
+					span[i++] = el;
+				}
+			}
+			else
+			{
+				var i = 0;
+				foreach (var el in source)
+				{
+					if (i >= span.Length)
+						ThrowHelper.ThrowArgumentException(nameof(span), "Destination is not long enough.");
+
+					span[i++] = el;
+				}
 			}
 		}
 	}
@@ -109,7 +117,7 @@ public static partial class SuperEnumerable
 				var i = index;
 				foreach (var el in source)
 				{
-					if (i > array.Length)
+					if (i >= array.Length)
 						ThrowHelper.ThrowArgumentException(nameof(array), "Destination is not long enough.");
 
 					array[i++] = el;
