@@ -98,8 +98,8 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(resultSelector);
 
 		return source.Partition(
-			key1: true, key2: false, 
-			(t, f, _) => resultSelector(t, f), 
+			key1: true, key2: false,
+			(t, f, _) => resultSelector(t, f),
 			cancellationToken: cancellationToken);
 	}
 
@@ -130,8 +130,8 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(resultSelector);
 
 		return source.Partition(
-			key1: true, key2: false, key3: null, 
-			(t, f, n, _) => resultSelector(t, f, n), 
+			key1: true, key2: false, key3: null,
+			(t, f, n, _) => resultSelector(t, f, n),
 			cancellationToken: cancellationToken);
 	}
 
@@ -199,7 +199,7 @@ public static partial class AsyncSuperEnumerable
 
 		return PartitionImpl(
 			source, 1, key, key2: default, key3: default, comparer,
-			(a, _, _, rest) => resultSelector(a, rest), 
+			(a, _, _, rest) => resultSelector(a, rest),
 			cancellationToken);
 	}
 
@@ -365,9 +365,9 @@ public static partial class AsyncSuperEnumerable
 
 		await foreach (var e in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 		{
-			var i = count > 0 && comparer.Equals(e.Key, Debug.AssertNotNull(key1)) ? 0
-				  : count > 1 && comparer.Equals(e.Key, Debug.AssertNotNull(key2)) ? 1
-				  : count > 2 && comparer.Equals(e.Key, Debug.AssertNotNull(key3)) ? 2
+			var i = count > 0 && comparer.Equals(e.Key, key1) ? 0
+				  : count > 1 && comparer.Equals(e.Key, key2) ? 1
+				  : count > 2 && comparer.Equals(e.Key, key3) ? 2
 				  : -1;
 
 			if (i < 0)

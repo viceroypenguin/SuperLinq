@@ -58,9 +58,6 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(width, 0);
-
 		return Pad(source, width, paddingSelector: _ => padding);
 	}
 
