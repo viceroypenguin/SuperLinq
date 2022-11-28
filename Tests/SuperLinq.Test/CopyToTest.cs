@@ -46,6 +46,8 @@ public class CopyToTest
 			() => Seq(1).CopyTo(Array.Empty<int>()));
 		Assert.Throws<ArgumentException>(
 			() => new List<int> { 1 }.CopyTo(Array.Empty<int>()));
+		Assert.Throws<ArgumentException>(
+			() => new List<int> { 1 }.AsReadOnly().CopyTo(Array.Empty<int>()));
 	}
 
 	[Fact]
@@ -78,6 +80,9 @@ public class CopyToTest
 
 		new List<int> { 2 }.CopyTo(span[1..]);
 		span.ToArray().AssertSequenceEqual(1, 2, 0, 0);
+
+		Enumerable.Range(3, 1).CopyTo(span[2..]);
+		span.ToArray().AssertSequenceEqual(1, 2, 3, 0);
 	}
 
 	[Fact]
@@ -88,8 +93,14 @@ public class CopyToTest
 		Seq(1).CopyTo(array);
 		array.AssertSequenceEqual(1, 0, 0, 0);
 
-		Seq(2).CopyTo(array, 1);
+		new List<int> { 2 }.CopyTo(array, 1);
 		array.AssertSequenceEqual(1, 2, 0, 0);
+
+		new List<int> { 3 }.AsReadOnly().CopyTo(array, 2);
+		array.AssertSequenceEqual(1, 2, 3, 0);
+
+		Enumerable.Range(4, 1).CopyTo(array, 3);
+		array.AssertSequenceEqual(1, 2, 3, 4);
 	}
 
 	[Fact]

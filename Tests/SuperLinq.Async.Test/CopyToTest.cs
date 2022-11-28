@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 
-namespace Test;
+namespace Test.Async;
 
 public class CopyToTest
 {
