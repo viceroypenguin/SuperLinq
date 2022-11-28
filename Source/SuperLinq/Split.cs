@@ -278,12 +278,6 @@ public static partial class SuperEnumerable
 
 		static IEnumerable<TResult> _(IEnumerable<TSource> source, Func<TSource, bool> separatorFunc, int count, Func<IEnumerable<TSource>, TResult> resultSelector)
 		{
-			if (count == 0) // No splits?
-			{
-				yield return resultSelector(source);
-				yield break;
-			}
-
 			var items = new List<TSource>();
 
 			foreach (var item in source)
