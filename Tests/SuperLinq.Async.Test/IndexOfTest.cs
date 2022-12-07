@@ -5,8 +5,16 @@ public class IndexOfTest
 	[Fact]
 	public async Task IndexOfWithNegativeStart()
 	{
+		await using var sequence = AsyncSeq(1).AsTestingSequence();
 		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
-			await AsyncSeq(1).IndexOf(1, -1));
+			await sequence.IndexOf(1, -1));
+	}
+
+	[Fact]
+	public async Task IndexOfWorksWithEmptySequence()
+	{
+		await using var sequence = AsyncSeq<int>().AsTestingSequence();
+		Assert.Equal(-1, await sequence.IndexOf(5));
 	}
 
 	[Fact]
@@ -34,6 +42,24 @@ public class IndexOfTest
 		Assert.Equal(
 			7,
 			await sequence.IndexOf(102, ^5));
+	}
+
+	[Fact]
+	public async Task IndexOfMissingValueFromStart()
+	{
+		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
+		Assert.Equal(
+			-1,
+			await sequence.IndexOf(95));
+	}
+
+	[Fact]
+	public async Task IndexOfMissingValueFromEnd()
+	{
+		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
+		Assert.Equal(
+			-1,
+			await sequence.IndexOf(95, ^5));
 	}
 
 	[Fact]
