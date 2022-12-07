@@ -83,6 +83,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | GroupAdjacent					  | ✔️ | ✔️ |
 | Index							  | ✔️ | ✔️ |
 | IndexBy						  | ✔️ | ✔️ |
+| IndexOf						  | ✔️ | ✔️ |
 | InnerJoin						  | ✔️ | ✔️ |
 | Insert						  | ✔️ | ✔️ |
 | Interleave					  | ✔️ | ✔️ |
