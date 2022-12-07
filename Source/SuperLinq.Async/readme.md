@@ -248,6 +248,12 @@ a comparer to use for testing equivalence of keys.
 
 This method has 2 overloads.
 
+### IndexOf
+
+Returns the index of a particular value within a sequence.
+
+This method has 2 overloads.
+
 ### InnerJoin
 
 Performs an inner join of two sequences. A parameter is available to
