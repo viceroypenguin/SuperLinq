@@ -3,11 +3,11 @@
 public class IndexOfTest
 {
 	[Fact]
-	public async Task IndexOfWithNegativeStart()
+	public async Task IndexOfWithNegativeCount()
 	{
 		await using var sequence = AsyncSeq(1).AsTestingSequence();
 		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
-			await sequence.IndexOf(1, -1));
+			await sequence.IndexOf(1, 1, -1));
 	}
 
 	[Fact]
@@ -24,6 +24,15 @@ public class IndexOfTest
 		Assert.Equal(
 			2,
 			await sequence.IndexOf(102));
+	}
+
+	[Fact]
+	public async Task IndexOfFromStartCount()
+	{
+		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
+		Assert.Equal(
+			2,
+			await sequence.IndexOf(102, 0, 3));
 	}
 
 	[Fact]
@@ -63,6 +72,24 @@ public class IndexOfTest
 	}
 
 	[Fact]
+	public async Task IndexOfMissingValueFromStartCount()
+	{
+		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
+		Assert.Equal(
+			-1,
+			await sequence.IndexOf(104, 0, 4));
+	}
+
+	[Fact]
+	public async Task IndexOfMissingValueFromEndCount()
+	{
+		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
+		Assert.Equal(
+			-1,
+			await sequence.IndexOf(104, ^5, 4));
+	}
+
+	[Fact]
 	public async Task IndexOfDoesNotIterateUnnecessaryElements()
 	{
 		await using var source = SuperLinq.SuperEnumerable
@@ -78,6 +105,25 @@ public class IndexOfTest
 			.ToAsyncEnumerable()
 			.AsTestingSequence();
 
-		Assert.Equal(2, await source.IndexOf("carla"));
+		Assert.Equal(4, await source.IndexOf("davi"));
+	}
+
+	[Fact]
+	public async Task IndexOfDoesNotIterateUnnecessaryElementsCount()
+	{
+		await using var source = SuperLinq.SuperEnumerable
+			.From(
+				() => "ana",
+				() => "beatriz",
+				() => "carla",
+				() => "bob",
+				() => "davi",
+				() => throw new TestException(),
+				() => "angelo",
+				() => "carlos")
+			.ToAsyncEnumerable()
+			.AsTestingSequence();
+
+		Assert.Equal(-1, await source.IndexOf("carlos", 0, 5));
 	}
 }

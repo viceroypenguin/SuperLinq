@@ -252,7 +252,7 @@ This method has 2 overloads.
 
 Returns the index of a particular value within a sequence.
 
-This method has 2 overloads.
+This method has 3 overloads.
 
 ### InnerJoin
 
