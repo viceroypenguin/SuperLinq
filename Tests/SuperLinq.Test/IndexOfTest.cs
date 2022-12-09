@@ -3,11 +3,11 @@
 public class IndexOfTest
 {
 	[Fact]
-	public void IndexOfWithNegativeStart()
+	public void IndexOfWithNegativeCount()
 	{
 		using var sequence = Seq(1).AsTestingSequence();
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			sequence.IndexOf(1, -1));
+			sequence.IndexOf(1, 1, -1));
 	}
 
 	[Fact]
@@ -24,6 +24,15 @@ public class IndexOfTest
 		Assert.Equal(
 			2,
 			sequence.IndexOf(102));
+	}
+
+	[Fact]
+	public void IndexOfFromStartCount()
+	{
+		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
+		Assert.Equal(
+			2,
+			sequence.IndexOf(102, 0, 3));
 	}
 
 	[Fact]
@@ -73,6 +82,24 @@ public class IndexOfTest
 	}
 
 	[Fact]
+	public void IndexOfMissingValueFromStartCount()
+	{
+		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
+		Assert.Equal(
+			-1,
+			sequence.IndexOf(104, 0, 4));
+	}
+
+	[Fact]
+	public void IndexOfMissingValueFromEndCount()
+	{
+		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
+		Assert.Equal(
+			-1,
+			sequence.IndexOf(104, ^5, 4));
+	}
+
+	[Fact]
 	public void IndexOfDoesNotIterateUnnecessaryElements()
 	{
 		using var source = SuperEnumerable
@@ -87,6 +114,24 @@ public class IndexOfTest
 				() => "carlos")
 			.AsTestingSequence();
 
-		Assert.Equal(2, source.IndexOf("carla"));
+		Assert.Equal(4, source.IndexOf("davi"));
+	}
+
+	[Fact]
+	public void IndexOfDoesNotIterateUnnecessaryElementsCount()
+	{
+		using var source = SuperEnumerable
+			.From(
+				() => "ana",
+				() => "beatriz",
+				() => "carla",
+				() => "bob",
+				() => "davi",
+				() => throw new TestException(),
+				() => "angelo",
+				() => "carlos")
+			.AsTestingSequence();
+
+		Assert.Equal(-1, source.IndexOf("carlos", 0, 5));
 	}
 }
