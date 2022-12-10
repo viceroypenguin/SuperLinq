@@ -274,6 +274,12 @@ skipping sequences as they are consumed.
 
 This method has 2 overloads.
 
+### LastIndexOf
+
+Returns the last index of a particular value within a sequence.
+
+This method has 3 overloads.
+
 ### LeftOuterJoin
 
 Performs a left outer join of two sequences. A parameter is available to
