@@ -457,6 +457,12 @@ by a negative offset.
 
 This method has 2 overloads.
 
+### LastIndexOf
+
+Returns the last index of a particular value within a sequence.
+
+This method has 3 overloads.
+
 ### Lead
 
 Produces a projection of a sequence by evaluating pairs of elements separated

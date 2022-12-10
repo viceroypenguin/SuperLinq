@@ -3,8 +3,8 @@
 public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
-	/// Searches for the specified object and returns the zero-based index of the first occurrence within the entire
-	/// <see cref="IAsyncEnumerable{T}"/>.
+	/// Searches for the specified object and returns the zero-based index of the last occurrence within the entire <see
+	/// cref="IAsyncEnumerable{T}"/>.
 	/// </summary>
 	/// <typeparam name="TSource">
 	/// The type of elements of <paramref name="source"/></typeparam>
@@ -14,89 +14,52 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any
 	/// time.</param>
 	/// <returns>
-	/// The zero-based index of the first occurrence of <paramref name="item"/> within the entire <see
+	/// The zero-based index of the last occurrence of <paramref name="item"/> within the entire <see
 	/// cref="IAsyncEnumerable{T}"/>, if found; otherwise, <c>-1</c>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 	/// <remarks>
 	/// <para>
 	/// The <see cref="IAsyncEnumerable{T}"/> is searched forward starting at the first element and ending at the last
+	/// element, and the index of the last instance of <paramref name="item"/> is returned.
+	/// </para>
+	/// <para>
+	/// This method determines equality using the default equality comparer <see cref="EqualityComparer{T}.Default"/>
+	/// for <typeparamref name="TSource"/>, the type of values in the list.
+	/// </para>
+	/// <para>
+	/// This operator executes immediately.
+	/// </para>
+	/// </remarks>
+	public static ValueTask<int> LastIndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, CancellationToken cancellationToken = default)
+	{
+		return source.LastIndexOf(item, ^1, int.MaxValue, cancellationToken);
+	}
+
+	/// <summary>
+	/// Searches for the specified object and returns the zero-based index of the last occurrence within the range of
+	/// elements in the <see cref="IAsyncEnumerable{T}"/> that extends backwards from the specified index to the first
 	/// element.
-	/// </para>
-	/// <para>
-	/// This method determines equality using the default equality comparer <see cref="EqualityComparer{T}.Default"/>
-	/// for <typeparamref name="TSource"/>, the type of values in the list.
-	/// </para>
-	/// <para>
-	/// This operator executes immediately.
-	/// </para>
-	/// </remarks>
-	public static ValueTask<int> IndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, CancellationToken cancellationToken = default)
-	{
-		return source.IndexOf(item, 0, int.MaxValue, cancellationToken);
-	}
-
-	/// <summary>
-	/// Searches for the specified object and returns the zero-based index of the first occurrence within the range of
-	/// elements in the <see cref="IAsyncEnumerable{T}"/> that extends from the specified index to the last element.
 	/// </summary>
 	/// <typeparam name="TSource">
 	/// The type of elements of <paramref name="source"/></typeparam>
 	/// <param name="source">The source sequence.</param>
 	/// <param name="item">The object to locate in the <see cref="IAsyncEnumerable{T}"/>. The value can be <see
 	/// langword="null"/> for reference types.</param>
-	/// <param name="index">The <see cref="System.Index"/> of the starting element within the sequence.</param>
+	/// <param name="index">The <see cref="System.Index"/> of the ending element within the sequence.</param>
 	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any
 	/// time.</param>
 	/// <returns>
-	/// The zero-based index of the first occurrence of <paramref name="item"/> within the the range of elements in the
-	/// <see cref="IAsyncEnumerable{T}"/> that extends from <paramref name="index"/> to the last element, if found;
-	/// otherwise, <c>-1</c>.
-	/// </returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	/// <remarks>
-	/// <para>
-	/// The <see cref="IAsyncEnumerable{T}"/> is searched forward starting at <paramref name="index"/> and ending at the
-	/// last element.
-	/// </para>
-	/// <para>
-	/// This method determines equality using the default equality comparer <see cref="EqualityComparer{T}.Default"/>
-	/// for <typeparamref name="TSource"/>, the type of values in the list.
-	/// </para>
-	/// <para>
-	/// This operator executes immediately.
-	/// </para>
-	/// </remarks>
-	public static ValueTask<int> IndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, Index index, CancellationToken cancellationToken = default)
-	{
-		return source.IndexOf(item, index, int.MaxValue, cancellationToken);
-	}
-
-	/// <summary>
-	/// Searches for the specified object and returns the zero-based index of the first occurrence within the range of
-	/// elements in the <see cref="IAsyncEnumerable{T}"/> that starts at the specified index to the last element and
-	/// contains the specified number of elements.
-	/// </summary>
-	/// <typeparam name="TSource">
-	/// The type of elements of <paramref name="source"/></typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="item">The object to locate in the <see cref="IAsyncEnumerable{T}"/>. The value can be <see
-	/// langword="null"/> for reference types.</param>
-	/// <param name="index">The <see cref="System.Index"/> of the starting element within the sequence.</param>
-	/// <param name="count">The number of elements in the section to search.</param>
-	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any
-	/// time.</param>
-	/// <returns>
-	/// The zero-based index of the first occurrence of <paramref name="item"/> within the the range of elements in the
-	/// <see cref="IAsyncEnumerable{T}"/> that that starts at <paramref name="index"/> and contains <paramref
-	/// name="count"/> number of elements, if found; otherwise, <c>-1</c>.
+	/// The zero-based index of the last occurrence of <paramref name="item"/> within the the range of elements in the
+	/// <see cref="IAsyncEnumerable{T}"/> that extends backwards from <paramref name="index"/> to the first element, if
+	/// found; otherwise, <c>-1</c>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is less than <c>0</c>.</exception>
 	/// <remarks>
 	/// <para>
-	/// The <see cref="IAsyncEnumerable{T}"/> is searched forward starting at <paramref name="index"/> and ending at
-	/// <paramref name="index"/> plus <paramref name="count"/> minus <c>1</c>, if count is greater than <c>0</c>.
+	/// The <see cref="IAsyncEnumerable{T}"/> is searched forward starting at the first element and ending at <paramref
+	/// name="index"/>, and the index of the last instance of <paramref name="item"/> is returned.
 	/// </para>
 	/// <para>
 	/// This method determines equality using the default equality comparer <see cref="EqualityComparer{T}.Default"/>
@@ -106,64 +69,87 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static async ValueTask<int> IndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, Index index, int count, CancellationToken cancellationToken = default)
+	public static ValueTask<int> LastIndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, Index index, CancellationToken cancellationToken = default)
+	{
+		return source.LastIndexOf(item, index, int.MaxValue, cancellationToken);
+	}
+
+	/// <summary>
+	/// Searches for the specified object and returns the zero-based index of the last occurrence within the range of
+	/// elements in the <see cref="IAsyncEnumerable{T}"/> that ends at the specified index to the last element and contains
+	/// the specified number of elements.
+	/// </summary>
+	/// <typeparam name="TSource">
+	/// The type of elements of <paramref name="source"/></typeparam>
+	/// <param name="source">The source sequence.</param>
+	/// <param name="item">The object to locate in the <see cref="IAsyncEnumerable{T}"/>. The value can be <see
+	/// langword="null"/> for reference types.</param>
+	/// <param name="index">The <see cref="System.Index"/> of the ending element within the sequence.</param>
+	/// <param name="count">The number of elements in the section to search.</param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any
+	/// time.</param>
+	/// <returns>
+	/// The zero-based index of the last occurrence of <paramref name="item"/> within the the range of elements in the
+	/// <see cref="IAsyncEnumerable{T}"/> that that ends at <paramref name="index"/> and contains <paramref name="count"/>
+	/// number of elements, if found; otherwise, <c>-1</c>.
+	/// </returns>
+	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than <c>0</c>.</exception>
+	/// <remarks>
+	/// <para>
+	/// The <see cref="IAsyncEnumerable{T}"/> is searched forward starting at the first element and ending at <paramref
+	/// name="index"/>, and the index of the last instance of <paramref name="item"/> no earlier in the sequence than
+	/// <paramref name="count"/> items before <paramref name="index"/> is returned.
+	/// </para>
+	/// <para>
+	/// This method determines equality using the default equality comparer <see cref="EqualityComparer{T}.Default"/>
+	/// for <typeparamref name="TSource"/>, the type of values in the list.
+	/// </para>
+	/// <para>
+	/// This operator executes immediately.
+	/// </para>
+	/// </remarks>
+	public static async ValueTask<int> LastIndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, Index index, int count, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 
 		if (!index.IsFromEnd)
 		{
+			var lastIndex = -1;
 			var i = 0;
-			var c = 0;
 			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
 				if (i >= index.Value)
-				{
-					if (EqualityComparer<TSource>.Default.Equals(element, item))
-						return i;
-					if (++c >= count)
-						return -1;
-				}
+					break;
 
+				if (EqualityComparer<TSource>.Default.Equals(element, item))
+					lastIndex = i;
 				i++;
 			}
 
-			return -1;
+			return i - lastIndex > count ? -1 : lastIndex;
 		}
 		else
 		{
-			await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
-
-			var indexFromEnd = index.Value;
+			var indexFromEnd = index.Value - 1;
+			var lastIndex = -1;
 			var i = 0;
-			if (await e.MoveNextAsync())
+
+			Queue<TSource> queue = new(indexFromEnd + 1);
+			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
-				Queue<TSource> queue = new();
-				queue.Enqueue(e.Current);
-
-				while (await e.MoveNextAsync())
-				{
-					if (queue.Count == indexFromEnd)
-					{
-						queue.Dequeue();
-						i++;
-					}
-
-					queue.Enqueue(e.Current);
-				}
-
-				var c = 0;
-				while (queue.Count != 0)
+				queue.Enqueue(element);
+				if (queue.Count > indexFromEnd)
 				{
 					if (EqualityComparer<TSource>.Default.Equals(queue.Dequeue(), item))
-						return i;
-					if (++c >= count)
-						return -1;
+						lastIndex = i;
+
 					i++;
 				}
 			}
 
-			return -1;
+			return i - lastIndex > count ? -1 : lastIndex;
 		}
 	}
 }

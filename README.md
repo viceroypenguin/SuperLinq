@@ -88,6 +88,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | Insert						  | ✔️ | ✔️ |
 | Interleave					  | ✔️ | ✔️ |
 | Lag							  | ✔️ | ✔️ |
+| LastIndexOf					  | ✔️ | ✔️ |
 | Lead							  | ✔️ | ✔️ |
 | LeftJoin						  | ⚠️[^9] | ❌ |
 | LeftOuterJoin					  | ✔️ | ✔️ |
