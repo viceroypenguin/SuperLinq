@@ -1,0 +1,99 @@
+﻿namespace Test.Async;
+
+public class FindLastIndexTest
+{
+	[Fact]
+	public async Task FindLastIndexWithNegativeCount()
+	{
+		await using var sequence = AsyncSeq(1).AsTestingSequence();
+		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
+			await sequence.FindLastIndex(i => i == 1, 1, -1));
+	}
+
+	[Fact]
+	public async Task FindLastIndexWorksWithEmptySequence()
+	{
+		await using var sequence = AsyncSeq<int>().AsTestingSequence();
+		Assert.Equal(-1, await sequence.FindLastIndex(i => i == 5));
+	}
+
+	[Fact]
+	public async Task FindLastIndexFromStart()
+	{
+		await using var sequence = AsyncEnumerable.Range(100, 5)
+			.Concat(AsyncEnumerable.Range(100, 5))
+			.AsTestingSequence();
+		Assert.Equal(
+			7,
+			await sequence.FindLastIndex(i => i == 102));
+	}
+
+	[Fact]
+	public async Task FindLastIndexFromStartCount()
+	{
+		await using var sequence = AsyncEnumerable.Range(100, 5)
+			.Concat(AsyncEnumerable.Range(100, 5))
+			.AsTestingSequence();
+		Assert.Equal(
+			7,
+			await sequence.FindLastIndex(i => i == 102, int.MaxValue, 8));
+	}
+
+	[Fact]
+	public async Task FindLastIndexFromStartIndex()
+	{
+		await using var sequence = AsyncEnumerable.Range(100, 5)
+			.Concat(AsyncEnumerable.Range(100, 5))
+			.AsTestingSequence();
+		Assert.Equal(
+			7,
+			await sequence.FindLastIndex(i => i == 102, 8));
+	}
+
+	[Fact]
+	public async Task FindLastIndexFromEndIndex()
+	{
+		await using var sequence = AsyncEnumerable.Range(100, 5)
+			.Concat(AsyncEnumerable.Range(100, 5))
+			.AsTestingSequence();
+		Assert.Equal(
+			7,
+			await sequence.FindLastIndex(i => i == 102, ^3));
+	}
+
+	[Fact]
+	public async Task FindLastIndexMissingValueFromStart()
+	{
+		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
+		Assert.Equal(
+			-1,
+			await sequence.FindLastIndex(i => i == 95));
+	}
+
+	[Fact]
+	public async Task FindLastIndexMissingValueFromEnd()
+	{
+		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
+		Assert.Equal(
+			-1,
+			await sequence.FindLastIndex(i => i == 95, ^5));
+	}
+
+	[Fact]
+	public async Task FindLastIndexMissingValueFromStartCount()
+	{
+		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
+		Assert.Equal(
+			-1,
+			await sequence.FindLastIndex(i => i == 100, int.MaxValue, 4));
+	}
+
+	[Fact]
+	public async Task FindLastIndexMissingValueFromEndCount()
+	{
+		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
+		Assert.Equal(
+			-1,
+			await sequence.FindLastIndex(i => i == 100, ^1, 3));
+	}
+}
