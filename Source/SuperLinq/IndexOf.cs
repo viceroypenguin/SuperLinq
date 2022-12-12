@@ -102,67 +102,6 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource item, Index index, int count)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
-
-		if (TryGetCollectionCount(source, out var length))
-		{
-			index = index.GetOffset(length);
-		}
-
-		if (!index.IsFromEnd)
-		{
-			var i = 0;
-			var c = 0;
-			foreach (var element in source)
-			{
-				if (i >= index.Value)
-				{
-					if (EqualityComparer<TSource>.Default.Equals(element, item))
-						return i;
-					if (++c >= count)
-						return -1;
-				}
-
-				i++;
-			}
-
-			return -1;
-		}
-		else
-		{
-			using var e = source.GetEnumerator();
-
-			var indexFromEnd = index.Value;
-			var i = 0;
-			if (e.MoveNext())
-			{
-				Queue<TSource> queue = new();
-				queue.Enqueue(e.Current);
-
-				while (e.MoveNext())
-				{
-					if (queue.Count == indexFromEnd)
-					{
-						queue.Dequeue();
-						i++;
-					}
-
-					queue.Enqueue(e.Current);
-				}
-
-				var c = 0;
-				while (queue.Count != 0)
-				{
-					if (EqualityComparer<TSource>.Default.Equals(queue.Dequeue(), item))
-						return i;
-					if (++c >= count)
-						return -1;
-					i++;
-				}
-			}
-
-			return -1;
-		}
+		return FindIndex(source, i => EqualityComparer<TSource>.Default.Equals(i, item), index, count);
 	}
 }

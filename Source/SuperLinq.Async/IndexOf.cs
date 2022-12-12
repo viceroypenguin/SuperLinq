@@ -106,64 +106,8 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static async ValueTask<int> IndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, Index index, int count, CancellationToken cancellationToken = default)
+	public static ValueTask<int> IndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, Index index, int count, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
-
-		if (!index.IsFromEnd)
-		{
-			var i = 0;
-			var c = 0;
-			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-			{
-				if (i >= index.Value)
-				{
-					if (EqualityComparer<TSource>.Default.Equals(element, item))
-						return i;
-					if (++c >= count)
-						return -1;
-				}
-
-				i++;
-			}
-
-			return -1;
-		}
-		else
-		{
-			await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
-
-			var indexFromEnd = index.Value;
-			var i = 0;
-			if (await e.MoveNextAsync())
-			{
-				Queue<TSource> queue = new();
-				queue.Enqueue(e.Current);
-
-				while (await e.MoveNextAsync())
-				{
-					if (queue.Count == indexFromEnd)
-					{
-						queue.Dequeue();
-						i++;
-					}
-
-					queue.Enqueue(e.Current);
-				}
-
-				var c = 0;
-				while (queue.Count != 0)
-				{
-					if (EqualityComparer<TSource>.Default.Equals(queue.Dequeue(), item))
-						return i;
-					if (++c >= count)
-						return -1;
-					i++;
-				}
-			}
-
-			return -1;
-		}
+		return FindIndex(source, i => EqualityComparer<TSource>.Default.Equals(i, item), index, count, cancellationToken);
 	}
 }
