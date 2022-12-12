@@ -189,6 +189,12 @@ Returns the index of the first element to satisfy a predicate.
 
 This method has 3 overloads.
 
+### FindLastIndex
+
+Returns the index of a last element to satisfy a predicate.
+
+This method has 3 overloads.
+
 ### FullOuterJoin
 
 Performs a full outer join of two sequences. A parameter is available to

@@ -70,6 +70,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | FillBackward					  | ✔️ | ✔️ |
 | FillForward					  | ✔️ | ✔️ |
 | FindIndex						  | ✔️ | ✔️ |
+| FindLastIndex					  | ✔️ | ✔️ |
 | Flatten						  | ✔️ | ❌ |
 | Fold							  | ✔️ | ❌ |
 | From							  | ✔️ | ✔️ |
