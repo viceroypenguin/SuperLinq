@@ -69,6 +69,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 | FallbackIfEmpty				  | ✔️ | ✔️ |
 | FillBackward					  | ✔️ | ✔️ |
 | FillForward					  | ✔️ | ✔️ |
+| FindIndex						  | ✔️ | ✔️ |
 | Flatten						  | ✔️ | ❌ |
 | Fold							  | ✔️ | ❌ |
 | From							  | ✔️ | ✔️ |

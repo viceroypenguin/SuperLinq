@@ -183,6 +183,12 @@ with the previous non-null reference or value seen in that sequence.
 
 This method has 7 overloads.
 
+### FindIndex
+
+Returns the index of the first element to satisfy a predicate.
+
+This method has 3 overloads.
+
 ### FullOuterJoin
 
 Performs a full outer join of two sequences. A parameter is available to
