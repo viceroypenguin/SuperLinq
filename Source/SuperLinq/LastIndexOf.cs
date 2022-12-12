@@ -104,50 +104,6 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static int LastIndexOf<TSource>(this IEnumerable<TSource> source, TSource item, Index index, int count)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
-
-		if (TryGetCollectionCount(source, out var length))
-		{
-			index = index.GetOffset(length);
-		}
-
-		if (!index.IsFromEnd)
-		{
-			var lastIndex = -1;
-			var i = 0;
-			foreach (var element in source)
-			{
-				if (i >= index.Value)
-					break;
-
-				if (EqualityComparer<TSource>.Default.Equals(element, item))
-					lastIndex = i;
-				i++;
-			}
-
-			return i - lastIndex > count ? -1 : lastIndex;
-		}
-		else
-		{
-			var indexFromEnd = index.Value - 1;
-			var lastIndex = -1;
-			var i = 0;
-
-			Queue<TSource> queue = new(indexFromEnd + 1);
-			foreach (var element in source)
-			{
-				queue.Enqueue(element);
-				if (queue.Count > indexFromEnd)
-				{
-					if (EqualityComparer<TSource>.Default.Equals(queue.Dequeue(), item))
-						lastIndex = i;
-
-					i++;
-				}
-			}
-
-			return i - lastIndex > count ? -1 : lastIndex;
-		}
+		return FindLastIndex(source, i => EqualityComparer<TSource>.Default.Equals(i, item), index, count);
 	}
 }

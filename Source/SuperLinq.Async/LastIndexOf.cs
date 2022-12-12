@@ -109,47 +109,8 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static async ValueTask<int> LastIndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, Index index, int count, CancellationToken cancellationToken = default)
+	public static ValueTask<int> LastIndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, Index index, int count, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
-
-		if (!index.IsFromEnd)
-		{
-			var lastIndex = -1;
-			var i = 0;
-			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-			{
-				if (i >= index.Value)
-					break;
-
-				if (EqualityComparer<TSource>.Default.Equals(element, item))
-					lastIndex = i;
-				i++;
-			}
-
-			return i - lastIndex > count ? -1 : lastIndex;
-		}
-		else
-		{
-			var indexFromEnd = index.Value - 1;
-			var lastIndex = -1;
-			var i = 0;
-
-			Queue<TSource> queue = new(indexFromEnd + 1);
-			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-			{
-				queue.Enqueue(element);
-				if (queue.Count > indexFromEnd)
-				{
-					if (EqualityComparer<TSource>.Default.Equals(queue.Dequeue(), item))
-						lastIndex = i;
-
-					i++;
-				}
-			}
-
-			return i - lastIndex > count ? -1 : lastIndex;
-		}
+		return FindLastIndex(source, i => EqualityComparer<TSource>.Default.Equals(i, item), index, count, cancellationToken);
 	}
 }
