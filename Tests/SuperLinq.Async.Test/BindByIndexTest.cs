@@ -53,7 +53,7 @@ public class BindByIndexTest
 		var seq1 = AsyncEnumerable.Range(1, 10);
 		var seq2 = AsyncSeq(index);
 
-		return Assert.ThrowsAsync<ArgumentOutOfRangeException>("indices", 
+		return Assert.ThrowsAsync<ArgumentOutOfRangeException>("indices",
 			async () => await seq1.BindByIndex(seq2).Consume());
 	}
 

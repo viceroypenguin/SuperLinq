@@ -25,21 +25,21 @@ public class TakeEveryTest
 	[Fact]
 	public Task TakeEveryNonEmptySequence()
 	{
-		var result = AsyncSeq(1, 2, 3, 4, 5 ).TakeEvery(1);
+		var result = AsyncSeq(1, 2, 3, 4, 5).TakeEvery(1);
 		return result.AssertSequenceEqual(1, 2, 3, 4, 5);
 	}
 
 	[Fact]
 	public Task TakeEveryOtherOnNonEmptySequence()
 	{
-		var result = AsyncSeq(1, 2, 3, 4, 5 ).TakeEvery(2);
+		var result = AsyncSeq(1, 2, 3, 4, 5).TakeEvery(2);
 		return result.AssertSequenceEqual(1, 3, 5);
 	}
 
 	[Fact]
 	public Task TakeEveryThirdOnNonEmptySequence()
 	{
-		var result = AsyncSeq(1, 2, 3, 4, 5 ).TakeEvery(3);
+		var result = AsyncSeq(1, 2, 3, 4, 5).TakeEvery(3);
 		return result.AssertSequenceEqual(1, 4);
 	}
 

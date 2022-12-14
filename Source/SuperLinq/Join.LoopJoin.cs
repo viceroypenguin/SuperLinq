@@ -2,7 +2,7 @@
 
 public static partial class SuperEnumerable
 {
-	private static IEnumerable<TResult> LoopJoin<TLeft, TRight,TKey, TResult>(
+	private static IEnumerable<TResult> LoopJoin<TLeft, TRight, TKey, TResult>(
 		IEnumerable<TLeft> left,
 		IEnumerable<TRight> right,
 		JoinOperation joinOperation,

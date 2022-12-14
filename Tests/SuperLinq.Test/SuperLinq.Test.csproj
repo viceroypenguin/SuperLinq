@@ -4,7 +4,9 @@
 		<AssemblyTitle>SuperLinq.Test</AssemblyTitle>
 		<AssemblyName>SuperLinq.Test</AssemblyName>
 		<RootNamespace>Test</RootNamespace>
+		
 		<IsPackable>false</IsPackable>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
 	</PropertyGroup>
 
 	<ItemGroup>

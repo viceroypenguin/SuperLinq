@@ -175,14 +175,16 @@ public static partial class AsyncSuperEnumerable
 			.WithCancellation(cancellationToken)
 			.ConfigureAwait(false))
 		{
+#pragma warning disable CA1508 // Avoid dead conditional code
 			if (rank == 0
 				|| comparer.Compare(
-					keySelector(cur), 
+					keySelector(cur),
 					keySelector(Debug.AssertNotNull(lag))) != 0)
 			{
 				rank += isDense ? 1 : count;
 				count = 0;
 			}
+#pragma warning restore CA1508 // Avoid dead conditional code
 
 			count++;
 

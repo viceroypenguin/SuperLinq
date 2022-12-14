@@ -2,7 +2,7 @@
 
 public static partial class AsyncSuperEnumerable
 {
-	private static async IAsyncEnumerable<TResult> LoopJoin<TLeft, TRight,TKey, TResult>(
+	private static async IAsyncEnumerable<TResult> LoopJoin<TLeft, TRight, TKey, TResult>(
 		IAsyncEnumerable<TLeft> left,
 		IAsyncEnumerable<TRight> right,
 		JoinOperation joinOperation,

@@ -73,7 +73,7 @@ public class WindowRightTest
 	}
 
 	[Fact]
-	public async Task  WindowRightWithSingleElement()
+	public async Task WindowRightWithSingleElement()
 	{
 		const int count = 100;
 		var sequence = Enumerable.Range(1, count).ToArray();

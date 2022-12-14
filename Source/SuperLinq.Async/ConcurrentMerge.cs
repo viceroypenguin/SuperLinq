@@ -86,7 +86,7 @@ public static partial class AsyncSuperEnumerable
 			int maxConcurrency,
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+			using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 			cancellationToken = cts.Token;
 
 			var list = new List<IAsyncEnumerator<TSource>>();
@@ -228,6 +228,7 @@ public static partial class AsyncSuperEnumerable
 				{
 					cts.Cancel();
 
+#pragma warning disable CA1031 // Do not catch general exception types
 					try
 					{
 						// clear out remaining pending tasks
@@ -253,6 +254,7 @@ public static partial class AsyncSuperEnumerable
 						await Task.WhenAll(pendingTaskList).ConfigureAwait(false);
 					}
 					catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
 				}
 			}
 		}

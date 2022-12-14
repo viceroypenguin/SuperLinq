@@ -52,5 +52,5 @@ public static partial class SuperEnumerable
 
 	// See https://github.com/atifaziz/Optuple
 
-	internal static(bool HasValue, T Value) Some<T>(T value) => (true, value);
+	internal static (bool HasValue, T Value) Some<T>(T value) => (true, value);
 }

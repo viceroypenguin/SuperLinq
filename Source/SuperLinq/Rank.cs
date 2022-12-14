@@ -172,6 +172,7 @@ public static partial class SuperEnumerable
 			.OrderBy(keySelector, comparer)
 			.Lag(1))
 		{
+#pragma warning disable CA1508 // Avoid dead conditional code
 			if (rank == 0
 				|| comparer.Compare(
 					keySelector(cur),
@@ -180,6 +181,7 @@ public static partial class SuperEnumerable
 				rank += isDense ? 1 : count;
 				count = 0;
 			}
+#pragma warning restore CA1508 // Avoid dead conditional code
 
 			count++;
 

@@ -291,7 +291,7 @@ public static partial class SuperEnumerable
 			JoinOperation.FullOuter,
 			firstKeySelector, secondKeySelector,
 			firstSelector, secondSelector,
-			bothSelector, 
+			bothSelector,
 			Comparer<TKey>.Default);
 	}
 
