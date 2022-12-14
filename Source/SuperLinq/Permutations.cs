@@ -9,7 +9,7 @@ public static partial class SuperEnumerable
 	/// The private implementation class that produces permutations of a sequence.
 	/// </summary>
 
-	class PermutationEnumerator<T> : IEnumerator<IList<T>>
+	private sealed class PermutationEnumerator<T> : IEnumerator<IList<T>>
 	{
 		// NOTE: The algorithm used to generate permutations uses the fact that any set
 		//       can be put into 1-to-1 correspondence with the set of ordinals number (0..n).
@@ -47,14 +47,14 @@ public static partial class SuperEnumerable
 		//                               for( int j = 0; j < 8; j++ )
 		//                                   DoSomething();
 
-		readonly IList<T> _valueSet;
-		readonly int[] _permutation;
-		readonly IEnumerable<Action> _generator;
+		private readonly IList<T> _valueSet;
+		private readonly int[] _permutation;
+		private readonly IEnumerable<Action> _generator;
 
-		IEnumerator<Action> _generatorIterator;
-		bool _hasMoreResults;
+		private IEnumerator<Action> _generatorIterator;
+		private bool _hasMoreResults;
 
-		IList<T>? _current;
+		private IList<T>? _current;
 
 		public PermutationEnumerator(IEnumerable<T> valueSet)
 		{
@@ -102,12 +102,12 @@ public static partial class SuperEnumerable
 			return prevResult;
 		}
 
-		void IDisposable.Dispose() { }
+		void IDisposable.Dispose() => _generatorIterator?.Dispose();
 
 		/// <summary>
 		/// Transposes elements in the cached permutation array to produce the next permutation
 		/// </summary>
-		void NextPermutation()
+		private void NextPermutation()
 		{
 			// find the largest index j with m_Permutation[j] < m_Permutation[j+1]
 			var j = _permutation.Length - 2;
@@ -153,7 +153,7 @@ public static partial class SuperEnumerable
 		/// same.
 		/// </remarks>
 		/// <returns>List of permuted source sequence values</returns>
-		IList<T> PermuteValueSet()
+		private IList<T> PermuteValueSet()
 		{
 			var permutedSet = new T[_permutation.Length];
 			for (var i = 0; i < _permutation.Length; i++)
@@ -176,12 +176,14 @@ public static partial class SuperEnumerable
 	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
 	/// <param name="sequence">The original sequence to permute</param>
 	/// <returns>A sequence of lists representing permutations of the original sequence</returns>
-
+	/// <exception cref="ArgumentNullException"><paramref name="sequence"/> is null.</exception>
 	public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
 	{
 		Guard.IsNotNull(sequence);
 
-		return _(); IEnumerable<IList<T>> _()
+		return _(sequence); 
+		
+		static IEnumerable<IList<T>> _(IEnumerable<T> sequence)
 		{
 			using var iter = new PermutationEnumerator<T>(sequence);
 
