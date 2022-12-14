@@ -1,6 +1,6 @@
 ﻿namespace SuperLinq.Async;
 
-internal class EnumeratorList<T> : IAsyncDisposable
+internal sealed class EnumeratorList<T> : IAsyncDisposable
 {
 	private readonly List<ConfiguredCancelableAsyncEnumerable<T>.Enumerator> _iter;
 

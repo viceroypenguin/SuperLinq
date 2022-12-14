@@ -95,7 +95,7 @@ public static partial class SuperEnumerable
 	/// This class is responsible for producing the lexographically ordered k-subsets
 	/// </summary>
 
-	sealed class SubsetGenerator<T> : IEnumerable<IList<T>>
+	private sealed class SubsetGenerator<T> : IEnumerable<IList<T>>
 	{
 		/// <summary>
 		/// SubsetEnumerator uses a snapshot of the original sequence, and an
@@ -103,7 +103,7 @@ public static partial class SuperEnumerable
 		/// predetermined size less than or equal to the original set size.
 		/// </summary>
 
-		class SubsetEnumerator : IEnumerator<IList<T>>
+		private sealed class SubsetEnumerator : IEnumerator<IList<T>>
 		{
 			private readonly IList<T> _set;   // the original set of elements
 			private readonly T[] _subset;     // the current subset to return

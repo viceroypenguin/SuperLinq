@@ -4,7 +4,7 @@ namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
-	private class ComparerEqualityComparer<TKey> : IEqualityComparer<TKey>
+	private sealed class ComparerEqualityComparer<TKey> : IEqualityComparer<TKey>
 	{
 		private readonly IComparer<TKey> _comparer;
 
