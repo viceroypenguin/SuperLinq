@@ -1,4 +1,6 @@
-﻿namespace Test.Async;
+﻿using System;
+
+namespace Test.Async;
 
 public class BindByIndexTest
 {
@@ -20,28 +22,31 @@ public class BindByIndexTest
 	[Fact]
 	public async Task BindByIndexInOrder()
 	{
-		var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
-		await using var seq2 = AsyncSeq(1, 3, 5, 7, 9).AsTestingSequence();
+		var indexes = AsyncSeq(1, 3, 5, 7, 9);
+		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
+		await using var seq2 = indexes.AsTestingSequence();
 
-		await seq1.BindByIndex(seq2).AssertSequenceEqual(seq2.Select(x => x + 1));
+		await seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
 	[Fact]
 	public async Task BindByIndexOutOfOrder()
 	{
+		var indexes = AsyncSeq(9, 7, 5, 3, 1);
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
-		await using var seq2 = AsyncSeq(9, 7, 5, 3, 1).AsTestingSequence();
+		await using var seq2 = indexes.AsTestingSequence();
 
-		await seq1.BindByIndex(seq2).AssertSequenceEqual(seq2.Select(x => x + 1));
+		await seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
 	[Fact]
 	public async Task BindByIndexComplex()
 	{
+		var indexes = AsyncSeq(0, 1, 8, 9, 3, 4, 2);
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
-		await using var seq2 = AsyncSeq(0, 1, 8, 9, 3, 4, 2).AsTestingSequence();
+		await using var seq2 = indexes.AsTestingSequence();
 
-		await seq1.BindByIndex(seq2).AssertSequenceEqual(seq2.Select(x => x + 1));
+		await seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
 	[Theory]
@@ -60,28 +65,34 @@ public class BindByIndexTest
 	[Fact]
 	public async Task BindByIndexTransformInOrder()
 	{
+		var indexes = AsyncSeq(1, 3, 5, 7, 9);
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
-		await using var seq2 = AsyncSeq(1, 3, 5, 7, 9).AsTestingSequence();
+		await using var seq2 = indexes.AsTestingSequence();
 
-		await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).AssertSequenceEqual(seq2.Select(x => (int?)(x + 1)));
+		await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
+			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
 	[Fact]
 	public async Task BindByIndexTransformOutOfOrder()
 	{
+		var indexes = AsyncSeq(9, 7, 5, 3, 1);
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
-		await using var seq2 = AsyncSeq(9, 7, 5, 3, 1).AsTestingSequence();
+		await using var seq2 = indexes.AsTestingSequence();
 
-		await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).AssertSequenceEqual(seq2.Select(x => (int?)(x + 1)));
+		await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
+			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
 	[Fact]
 	public async Task BindByIndexTransformComplex()
 	{
+		var indexes = AsyncSeq(0, 1, 8, 9, 3, 4, 2);
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
-		await using var seq2 = AsyncSeq(0, 1, 8, 9, 3, 4, 2).AsTestingSequence();
+		await using var seq2 = indexes.AsTestingSequence();
 
-		await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).AssertSequenceEqual(seq2.Select(x => (int?)(x + 1)));
+		await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
+			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
 	[Fact]
@@ -90,7 +101,8 @@ public class BindByIndexTest
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
 		await using var seq2 = AsyncSeq(1, 10, 3, 30).AsTestingSequence();
 
-		await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).AssertSequenceEqual(2, null, 4, null);
+		await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
+			.AssertSequenceEqual(2, null, 4, null);
 	}
 
 	[Fact]
