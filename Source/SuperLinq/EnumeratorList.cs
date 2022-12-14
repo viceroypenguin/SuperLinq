@@ -1,6 +1,6 @@
 ﻿namespace SuperLinq;
 
-internal class EnumeratorList<T> : IDisposable
+internal sealed class EnumeratorList<T> : IDisposable
 {
 	private readonly List<IEnumerator<T>> _iter = new();
 

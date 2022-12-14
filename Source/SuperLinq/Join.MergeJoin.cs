@@ -4,7 +4,7 @@ namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
-	private class ComparerEqualityComparer<TKey> : IEqualityComparer<TKey>
+	private sealed class ComparerEqualityComparer<TKey> : IEqualityComparer<TKey>
 	{
 		private readonly IComparer<TKey> _comparer;
 
