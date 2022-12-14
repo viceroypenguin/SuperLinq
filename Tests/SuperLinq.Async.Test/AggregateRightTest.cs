@@ -14,18 +14,16 @@ public class AggregateRightTest
 	[Fact]
 	public async Task AggregateRightFuncIsNotInvokedOnSingleElementSequence()
 	{
-		const int Value = 1;
+		await using var enumerable = AsyncSeq(1).AsTestingSequence();
+		var result = await enumerable.AggregateRight(BreakingFunc.Of<int, int, int>());
 
-		var result = await AsyncSeq(Value).AggregateRight(BreakingFunc.Of<int, int, int>());
-
-		Assert.Equal(Value, result);
+		Assert.Equal(1, result);
 	}
 
 	[Fact]
 	public async Task AggregateRight()
 	{
-		var enumerable = AsyncEnumerable.Range(1, 5).Select(x => x.ToString());
-
+		await using var enumerable = AsyncEnumerable.Range(1, 5).Select(x => x.ToString()).AsTestingSequence();
 		var result = await enumerable.AggregateRight((a, b) => string.Format("({0}+{1})", a, b));
 
 		Assert.Equal("(1+(2+(3+(4+5))))", result);
@@ -37,24 +35,24 @@ public class AggregateRightTest
 	[InlineData(true)]
 	public async Task AggregateRightSeedWithEmptySequence(object defaultValue)
 	{
-		Assert.Equal(defaultValue, await AsyncEnumerable.Empty<int>().AggregateRight(defaultValue, (a, b) => b));
+		await using var enumerable = AsyncSeq<int>().AsTestingSequence();
+		Assert.Equal(defaultValue, await enumerable.AggregateRight(defaultValue, (a, b) => b));
 	}
 
 	[Fact]
 	public async Task AggregateRightSeedFuncIsNotInvokedOnEmptySequence()
 	{
-		const int Value = 1;
+		await using var enumerable = AsyncSeq<int>().AsTestingSequence();
+		var result = await enumerable.AggregateRight(1, BreakingFunc.Of<int, int, int>());
 
-		var result = await AsyncEnumerable.Empty<int>().AggregateRight(Value, BreakingFunc.Of<int, int, int>());
-
-		Assert.Equal(Value, result);
+		Assert.Equal(1, result);
 	}
 
 	[Fact]
 	public async Task AggregateRightSeed()
 	{
-		var result = await AsyncEnumerable
-			.Range(1, 4)
+		await using var enumerable = AsyncEnumerable.Range(1, 4).AsTestingSequence();
+		var result = await enumerable
 			.AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b));
 
 		Assert.Equal("(1+(2+(3+(4+5))))", result);
@@ -66,15 +64,19 @@ public class AggregateRightTest
 	[InlineData(true)]
 	public async Task AggregateRightResultorWithEmptySequence(object defaultValue)
 	{
-		Assert.True(await AsyncEnumerable.Empty<int>().AggregateRight(defaultValue, (a, b) => b, a => a == defaultValue));
+		await using var enumerable = AsyncSeq<int>().AsTestingSequence();
+		var result = await enumerable.AggregateRight(defaultValue, (a, b) => b, a => a == defaultValue);
+
+		Assert.True(result);
 	}
 
 	[Fact]
 	public async Task AggregateRightResultor()
 	{
-		var result = await AsyncEnumerable
-			.Range(1, 4)
+		await using var enumerable = AsyncEnumerable.Range(1, 4).AsTestingSequence();
+		var result = await enumerable
 			.AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b), a => a.Length);
+
 		Assert.Equal("(1+(2+(3+(4+5))))".Length, result);
 	}
 }
