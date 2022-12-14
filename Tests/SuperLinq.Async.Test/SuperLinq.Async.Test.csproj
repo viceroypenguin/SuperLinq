@@ -6,6 +6,7 @@
 		<RootNamespace>Test.Async</RootNamespace>
 
 		<IsPackable>false</IsPackable>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
 	</PropertyGroup>
 
 	<ItemGroup>

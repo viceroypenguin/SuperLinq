@@ -227,7 +227,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	///  The enumeration does not order items by priority, since that would require N * log(N) time and N space.
 	///  Items are instead enumerated following the internal array heap layout.
 	/// </remarks>
-	public UnorderedItemsCollection UnorderedItems => _unorderedItems ??= new UnorderedItemsCollection(this);
+	public IReadOnlyCollection<(TElement Element, TPriority Priority)> UnorderedItems => _unorderedItems ??= new UnorderedItemsCollection(this);
 
 	/// <summary>
 	///  Adds or updates the specified element with associated priority to the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>.
@@ -1060,7 +1060,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// </summary>
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(typeof(PriorityQueueDebugView<,>))]
-	public sealed class UnorderedItemsCollection : IReadOnlyCollection<(TElement Element, TPriority Priority)>, ICollection
+	internal sealed class UnorderedItemsCollection : IReadOnlyCollection<(TElement Element, TPriority Priority)>, ICollection
 	{
 		internal readonly UpdatablePriorityQueue<TElement, TPriority> _queue;
 

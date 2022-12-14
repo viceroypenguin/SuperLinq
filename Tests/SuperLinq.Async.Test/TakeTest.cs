@@ -193,7 +193,7 @@ public class TakeTest
 	[Fact]
 	public async Task OutOfBoundNoException()
 	{
-		Func<IAsyncEnumerable<int>> source = () => AsyncSeq( 1, 2, 3, 4, 5 );
+		Func<IAsyncEnumerable<int>> source = () => AsyncSeq(1, 2, 3, 4, 5);
 
 		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await source().Take(0..6).ToListAsync());
 		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await source().Take(0..int.MaxValue).ToListAsync());
@@ -230,7 +230,7 @@ public class TakeTest
 	[Fact]
 	public async Task NonEmptySourceDoNotThrowException()
 	{
-		Func<IAsyncEnumerable<int>> source = () => AsyncSeq( 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 );
+		Func<IAsyncEnumerable<int>> source = () => AsyncSeq(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
 		Assert.Empty(await source().Take(3..2).ToListAsync());
 		Assert.Empty(await source().Take(6..^5).ToListAsync());

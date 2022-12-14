@@ -181,8 +181,8 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(sequence);
 
-		return _(sequence); 
-		
+		return _(sequence);
+
 		static IEnumerable<IList<T>> _(IEnumerable<T> sequence)
 		{
 			using var iter = new PermutationEnumerator<T>(sequence);

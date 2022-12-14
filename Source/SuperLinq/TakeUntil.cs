@@ -38,7 +38,7 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(predicate);
 
 		return _(source, predicate);
-		
+
 		static IEnumerable<TSource> _(IEnumerable<TSource> source, Func<TSource, bool> predicate)
 		{
 			foreach (var item in source)

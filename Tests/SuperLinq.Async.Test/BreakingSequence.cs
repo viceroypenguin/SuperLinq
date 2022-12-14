@@ -6,6 +6,6 @@
 /// </summary>
 class AsyncBreakingSequence<T> : IAsyncEnumerable<T>
 {
-	public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default) 
+	public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
 		=> throw new NotSupportedException();
 }
