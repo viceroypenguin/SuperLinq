@@ -103,6 +103,34 @@ public static partial class SuperEnumerable
                 yield return resultSelector({BuildArgumentString((j, _) => $"item{j}")});
 		}}
     }}");
+
+			sb.Append($@"
+
+    /// <summary>
+    /// Returns the Cartesian product of {arity} sequences by enumerating all
+    /// possible combinations of one item from each sequence.
+    /// </summary>
+    /// <returns>A sequence of <see cref=""ValueTuple{{{BuildArgumentString((j, _) => $"T{j}")}}}"" /> 
+    /// containing elements from each of the sequences.</returns>
+    /// <remarks>
+    /// <para>
+    /// The method returns items in the same order as a nested foreach
+    /// loop, but all sequences except for <paramref name=""first""/> are
+    /// cached when iterated over. The cache is then re-used for any
+    /// subsequent iterations.</para>
+    /// <para>
+    /// This method uses deferred execution and stream its results.</para>
+    /// </remarks>");
+
+			ForEachArgument((j, o) => $@"
+    /// <typeparam name=""T{j}"">
+    /// The type of the elements of <paramref name=""{o}""/>.</typeparam>
+    /// <param name=""{o}"">The {o} sequence of elements.</param>");
+			sb.Append($@"
+    public static IEnumerable<({BuildArgumentString((j, _) => $"T{j}")})> Cartesian<{BuildArgumentString((j, _) => $"T{j}")}>(
+		this {BuildArgumentString((j, k) => $"IEnumerable<T{j}> {k}")}) =>
+		Cartesian({BuildArgumentString((j, k) => k)}, ValueTuple.Create);
+");
 		}
 
 		sb.Append($@"
