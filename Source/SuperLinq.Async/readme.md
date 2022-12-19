@@ -235,7 +235,31 @@ The underlying map can be a plane, a graph, or any other state system provided
 by the consumer, since traversal from one state to the next is done by the
 consumer in the getNeighbors functor. 
 
-This method has 4 overloads.
+This method has 8 overloads.
+
+### GetShortestPathCost
+
+Finds the cost of the shortest path between two points, using either Dijkstra's 
+algorithm or the A* algorithm (depending on whether a heuristic value is provided 
+when getting state neighbors). 
+
+The underlying map can be a plane, a graph, or any other state system provided
+by the consumer, since traversal from one state to the next is done by the
+consumer in the getNeighbors functor. 
+
+This method has 8 overloads.
+
+### GetShortestPaths
+
+Finds the shortest path from a starting point to every other point in the map,
+using either Dijkstra's algorithm.
+
+The underlying map can be a plane, a graph, or any other state system provided
+by the consumer, since traversal from one state to the next is done by the
+consumer in the getNeighbors functor. The map must have a finite number of states
+in order for this method to complete.
+
+This method has 2 overloads.
 
 ### GroupAdjacent
 
