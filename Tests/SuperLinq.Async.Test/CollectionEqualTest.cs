@@ -5,121 +5,166 @@ public class CollectionEqualTest
 	[Fact]
 	public async Task CollectionEqualIntSequenceInOrder()
 	{
-		Assert.True(await AsyncSeq(1, 2, 3).CollectionEqual(AsyncSeq(1, 2, 3)));
+		await using var xs = AsyncSeq(1, 2, 3).AsTestingSequence();
+		await using var ys = AsyncSeq(1, 2, 3).AsTestingSequence();
+		Assert.True(await xs.CollectionEqual(ys));
 	}
 
 	[Fact]
 	public async Task CollectionEqualIntSequenceOutOfOrder()
 	{
-		Assert.True(await AsyncSeq(1, 2, 3).CollectionEqual(AsyncSeq(3, 2, 1)));
+		await using var xs = AsyncSeq(1, 2, 3).AsTestingSequence();
+		await using var ys = AsyncSeq(3, 2, 1).AsTestingSequence();
+		Assert.True(await xs.CollectionEqual(ys));
 	}
 
 	[Fact]
 	public async Task CollectionEqualIntSequenceDuplicate()
 	{
-		Assert.True(await AsyncSeq(1, 1, 2, 2, 3, 3).CollectionEqual(AsyncSeq(1, 1, 2, 2, 3, 3)));
+		await using var xs = AsyncSeq(1, 1, 2, 2, 3, 3).AsTestingSequence();
+		await using var ys = AsyncSeq(1, 1, 2, 2, 3, 3).AsTestingSequence();
+		Assert.True(await xs.CollectionEqual(ys));
 	}
 
 	[Fact]
 	public async Task CollectionEqualIntDifferentSequence()
 	{
-		Assert.False(await AsyncSeq(1, 2, 3).CollectionEqual(AsyncSeq(1, 2, 5)));
+		await using var xs = AsyncSeq(1, 2, 3).AsTestingSequence();
+		await using var ys = AsyncSeq(1, 2, 5).AsTestingSequence();
+		Assert.False(await xs.CollectionEqual(ys));
 	}
 
 	[Fact]
 	public async Task CollectionEqualIntDifferentDuplicate()
 	{
-		Assert.False(await AsyncSeq(1, 1, 2, 2, 3, 3).CollectionEqual(AsyncSeq(1, 2, 3)));
+		await using var xs = AsyncSeq(1, 1, 2, 2, 3, 3).AsTestingSequence();
+		await using var ys = AsyncSeq(1, 2, 3).AsTestingSequence();
+		Assert.False(await xs.CollectionEqual(ys));
 	}
 
 	[Fact]
 	public async Task CollectionEqualStringSequenceInOrder()
 	{
-		Assert.True(await AsyncSeq("foo", "bar", "qux").CollectionEqual(AsyncSeq("foo", "bar", "qux")));
+		await using var xs = AsyncSeq("foo", "bar", "qux").AsTestingSequence();
+		await using var ys = AsyncSeq("foo", "bar", "qux").AsTestingSequence();
+		Assert.True(await xs.CollectionEqual(ys));
 	}
 
 	[Fact]
 	public async Task CollectionEqualStringSequenceOutOfOrder()
 	{
-		Assert.True(await AsyncSeq("foo", "bar", "qux").CollectionEqual(AsyncSeq("qux", "bar", "foo")));
+		await using var xs = AsyncSeq("foo", "bar", "qux").AsTestingSequence();
+		await using var ys = AsyncSeq("qux", "bar", "foo").AsTestingSequence();
+		Assert.True(await xs.CollectionEqual(ys));
 	}
 
 	[Fact]
 	public async Task CollectionEqualStringSequenceDuplicate()
 	{
-		Assert.True(await AsyncSeq("foo", "foo", "bar", "bar", "qux", "qux").CollectionEqual(AsyncSeq("foo", "foo", "bar", "bar", "qux", "qux")));
+		await using var xs = AsyncSeq("foo", "foo", "bar", "bar", "qux", "qux").AsTestingSequence();
+		await using var ys = AsyncSeq("foo", "foo", "bar", "bar", "qux", "qux").AsTestingSequence();
+		Assert.True(await xs.CollectionEqual(ys));
 	}
 
 	[Fact]
 	public async Task CollectionEqualStringDifferentSequence()
 	{
-		Assert.False(await AsyncSeq("foo", "bar", "qux").CollectionEqual(AsyncSeq("foo", "bar", "baz")));
+		await using var xs = AsyncSeq("foo", "bar", "qux").AsTestingSequence();
+		await using var ys = AsyncSeq("foo", "bar", "baz").AsTestingSequence();
+		Assert.False(await xs.CollectionEqual(ys));
 	}
 
 	[Fact]
 	public async Task CollectionEqualStringDifferentDuplicate()
 	{
-		Assert.False(await AsyncSeq("foo", "foo", "bar", "bar", "qux", "qux").CollectionEqual(AsyncSeq("foo", "bar", "qux")));
+		await using var xs = AsyncSeq("foo", "foo", "bar", "bar", "qux", "qux").AsTestingSequence();
+		await using var ys = AsyncSeq("foo", "bar", "qux").AsTestingSequence();
+		Assert.False(await xs.CollectionEqual(ys));
 	}
 
 
 	[Fact]
 	public async Task CollectionEqualIntSequenceInOrderComparer()
 	{
-		Assert.True(await AsyncSeq(1, 2, 3).CollectionEqual(AsyncSeq(-1, -2, -3), EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
+		await using var xs = AsyncSeq(1, 2, 3).AsTestingSequence();
+		await using var ys = AsyncSeq(-1, -2, -3).AsTestingSequence();
+		Assert.True(await xs.CollectionEqual(
+			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
 	[Fact]
 	public async Task CollectionEqualIntSequenceOutOfOrderComparer()
 	{
-		Assert.True(await AsyncSeq(1, 2, 3).CollectionEqual(AsyncSeq(-3, -2, -1), EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
+		await using var xs = AsyncSeq(1, 2, 3).AsTestingSequence();
+		await using var ys = AsyncSeq(-3, -2, -1).AsTestingSequence();
+		Assert.True(await xs.CollectionEqual(
+			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
 	[Fact]
 	public async Task CollectionEqualIntSequenceDuplicateComparer()
 	{
-		Assert.True(await AsyncSeq(1, 1, 2, 2, 3, 3).CollectionEqual(AsyncSeq(-1, 1, -2, 2, -3, 3), EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
+		await using var xs = AsyncSeq(1, 1, 2, 2, 3, 3).AsTestingSequence();
+		await using var ys = AsyncSeq(-1, 1, -2, 2, -3, 3).AsTestingSequence();
+		Assert.True(await xs.CollectionEqual(
+			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
 	[Fact]
 	public async Task CollectionEqualIntDifferentSequenceComparer()
 	{
-		Assert.False(await AsyncSeq(1, 2, 3).CollectionEqual(AsyncSeq(-1, -2, -5), EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
+		await using var xs = AsyncSeq(1, 2, 3).AsTestingSequence();
+		await using var ys = AsyncSeq(-1, -2, -5).AsTestingSequence();
+		Assert.False(await xs.CollectionEqual(
+			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
 	[Fact]
 	public async Task CollectionEqualIntDifferentDuplicateComparer()
 	{
-		Assert.False(await AsyncSeq(1, 1, 2, 2, 3, 3).CollectionEqual(AsyncSeq(1, 2, 3), EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
+		await using var xs = AsyncSeq(1, 1, 2, 2, 3, 3).AsTestingSequence();
+		await using var ys = AsyncSeq(1, 2, 3).AsTestingSequence();
+		Assert.False(await xs.CollectionEqual(
+			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
 	[Fact]
 	public async Task CollectionEqualStringSequenceInOrderComparer()
 	{
-		Assert.True(await AsyncSeq("foo", "bar", "qux").CollectionEqual(AsyncSeq("FOO", "BAR", "QUX"), StringComparer.OrdinalIgnoreCase));
+		await using var xs = AsyncSeq("foo", "bar", "qux").AsTestingSequence();
+		await using var ys = AsyncSeq("FOO", "BAR", "QUX").AsTestingSequence();
+		Assert.True(await xs.CollectionEqual(ys, StringComparer.OrdinalIgnoreCase));
 	}
 
 	[Fact]
 	public async Task CollectionEqualStringSequenceOutOfOrderComparer()
 	{
-		Assert.True(await AsyncSeq("foo", "bar", "qux").CollectionEqual(AsyncSeq("QUX", "BAR", "FOO"), StringComparer.OrdinalIgnoreCase));
+		await using var xs = AsyncSeq("foo", "bar", "qux").AsTestingSequence();
+		await using var ys = AsyncSeq("QUX", "BAR", "FOO").AsTestingSequence();
+		Assert.True(await xs.CollectionEqual(ys, StringComparer.OrdinalIgnoreCase));
 	}
 
 	[Fact]
 	public async Task CollectionEqualStringSequenceDuplicateComparer()
 	{
-		Assert.True(await AsyncSeq("foo", "foo", "bar", "bar", "qux", "qux").CollectionEqual(AsyncSeq("foo", "FOO", "BAR", "bar", "QUX", "qux"), StringComparer.OrdinalIgnoreCase));
+		await using var xs = AsyncSeq("foo", "foo", "bar", "bar", "qux", "qux").AsTestingSequence();
+		await using var ys = AsyncSeq("foo", "FOO", "BAR", "bar", "QUX", "qux").AsTestingSequence();
+		Assert.True(await xs.CollectionEqual(ys, StringComparer.OrdinalIgnoreCase));
 	}
 
 	[Fact]
 	public async Task CollectionEqualStringDifferentSequenceComparer()
 	{
-		Assert.False(await AsyncSeq("foo", "bar", "qux").CollectionEqual(AsyncSeq("FOO", "BAR", "BAZ"), StringComparer.OrdinalIgnoreCase));
+		await using var xs = AsyncSeq("foo", "bar", "qux").AsTestingSequence();
+		await using var ys = AsyncSeq("FOO", "BAR", "BAZ").AsTestingSequence();
+		Assert.False(await xs.CollectionEqual(ys, StringComparer.OrdinalIgnoreCase));
 	}
 
 	[Fact]
 	public async Task CollectionEqualStringDifferentDuplicateComparer()
 	{
-		Assert.False(await AsyncSeq("foo", "foo", "bar", "bar", "qux", "qux").CollectionEqual(AsyncSeq("FOO", "BAR", "QUX"), StringComparer.OrdinalIgnoreCase));
+		await using var xs = AsyncSeq("foo", "foo", "bar", "bar", "qux", "qux").AsTestingSequence();
+		await using var ys = AsyncSeq("FOO", "BAR", "QUX").AsTestingSequence();
+		Assert.False(await xs.CollectionEqual(ys, StringComparer.OrdinalIgnoreCase));
 	}
 }
