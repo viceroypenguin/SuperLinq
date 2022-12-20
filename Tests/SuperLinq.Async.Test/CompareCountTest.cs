@@ -9,7 +9,9 @@ public class CompareCountTest
 	[InlineData(1, 1, 0)]
 	public async Task CompareCount(int xCount, int yCount, int expected)
 	{
-		Assert.Equal(expected, await AsyncEnumerable.Range(0, xCount).CompareCount(AsyncEnumerable.Range(0, yCount)));
+		await using var xs = AsyncEnumerable.Range(0, xCount).AsTestingSequence();
+		await using var ys = AsyncEnumerable.Range(0, yCount).AsTestingSequence();
+		Assert.Equal(expected, await xs.CompareCount(ys));
 	}
 
 	[Fact]
@@ -24,11 +26,9 @@ public class CompareCountTest
 	[Fact]
 	public async Task CompareCountDoesNotIterateUnnecessaryElements()
 	{
-		var seq1 = AsyncSeqExceptionAt(5);
-
-		var seq2 = AsyncEnumerable.Range(1, 3);
+		await using var seq1 = AsyncSeqExceptionAt(5).AsTestingSequence();
+		await using var seq2 = AsyncEnumerable.Range(1, 3).AsTestingSequence();
 
 		Assert.Equal(1, await seq1.CompareCount(seq2));
-		Assert.Equal(-1, await seq2.CompareCount(seq1));
 	}
 }

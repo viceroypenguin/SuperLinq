@@ -111,22 +111,26 @@ public class CompareCountTest
 	[Fact]
 	public void CompareCountDoesNotIterateUnnecessaryElements()
 	{
-		var seq1 = SuperEnumerable.From(() => 1,
-									   () => 2,
-									   () => 3,
-									   () => 4,
-									   () => throw new TestException());
+		using var seq1 = SuperEnumerable
+			.From(
+				() => 1,
+				() => 2,
+				() => 3,
+				() => 4,
+				() => throw new TestException())
+			.AsTestingSequence();
 
-		var seq2 = Enumerable.Range(1, 3);
+		using var seq2 = Enumerable.Range(1, 3).AsTestingSequence();
 
 		Assert.Equal(1, seq1.CompareCount(seq2));
-		Assert.Equal(-1, seq2.CompareCount(seq1));
 	}
 
 	private static IEnumerable<TResult> GetTestSequenceKinds<T, TResult>(
 		IEnumerable<T> s1, IEnumerable<T> s2,
-		Func<(IEnumerable<T?> Data, SourceKind Kind),
-			(IEnumerable<T?> Data, SourceKind Kind), TResult> selector)
+		Func<
+			(IEnumerable<T?> Data, SourceKind Kind),
+			(IEnumerable<T?> Data, SourceKind Kind),
+			TResult> selector)
 	{
 		// Test that the operator is optimized for collections
 
