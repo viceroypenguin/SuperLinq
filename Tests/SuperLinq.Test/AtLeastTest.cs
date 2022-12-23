@@ -75,9 +75,7 @@ public class AtLeastTest
 	[Fact]
 	public void AtLeastDoesNotIterateUnnecessaryElements()
 	{
-		var source = SuperEnumerable.From(() => 1,
-										 () => 2,
-										 () => throw new TestException());
+		using var source = SeqExceptionAt(3).AsTestingSequence();
 		Assert.True(source.AtLeast(2));
 	}
 }
