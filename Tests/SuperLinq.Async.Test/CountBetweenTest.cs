@@ -26,7 +26,8 @@ public class CountBetweenTest
 	[Fact]
 	public async Task CountBetweenWithMaxEqualsMin()
 	{
-		Assert.True(await AsyncSeq(1).CountBetween(1, 1));
+		await using var xs = AsyncSeq(1).AsTestingSequence();
+		Assert.True(await xs.CountBetween(1, 1));
 	}
 
 	[Theory]
@@ -37,12 +38,14 @@ public class CountBetweenTest
 	[InlineData(5, 2, 4, false)]
 	public async Task CountBetweenRangeTests(int count, int min, int max, bool expecting)
 	{
-		Assert.Equal(expecting, await AsyncEnumerable.Range(1, count).CountBetween(min, max));
+		await using var xs = AsyncEnumerable.Range(1, count).AsTestingSequence();
+		Assert.Equal(expecting, await xs.CountBetween(min, max));
 	}
 
 	[Fact]
 	public async Task CountBetweenDoesNotIterateUnnecessaryElements()
 	{
-		Assert.False(await AsyncSeqExceptionAt(5).CountBetween(2, 3));
+		await using var xs = AsyncSeqExceptionAt(5).AsTestingSequence();
+		Assert.False(await xs.CountBetween(2, 3));
 	}
 }

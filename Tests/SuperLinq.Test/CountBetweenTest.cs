@@ -45,11 +45,7 @@ public class CountBetweenTest
 	[Fact]
 	public void CountBetweenDoesNotIterateUnnecessaryElements()
 	{
-		var source = SuperEnumerable.From(() => 1,
-										 () => 2,
-										 () => 3,
-										 () => 4,
-										 () => throw new TestException());
+		using var source = SeqExceptionAt(5).AsTestingSequence();
 		Assert.False(source.CountBetween(2, 3));
 	}
 }
