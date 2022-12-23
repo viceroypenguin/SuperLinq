@@ -15,6 +15,7 @@
 
 	<ItemGroup>
 		<Using Include="SuperLinq" />
+		<Using Include="Test.FuncModule" Static="true" />
 		<Using Include="Test.TestExtensions" Static="true" />
 		<Using Include="Xunit" />
 	</ItemGroup>

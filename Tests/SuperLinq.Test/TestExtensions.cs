@@ -13,6 +13,13 @@ internal static partial class TestExtensions
 {
 	internal static IEnumerable<T> Seq<T>(params T[] values) => values;
 
+	public static IEnumerable<int> SeqExceptionAt(int index) =>
+		SuperEnumerable.From(
+			Enumerable.Range(1, index)
+				.Select(i => Func(() => i))
+				.Append(() => throw new NotSupportedException())
+				.ToArray());
+
 	/// <summary>
 	/// Just to make our testing easier so we can chain the assertion call.
 	/// </summary>
