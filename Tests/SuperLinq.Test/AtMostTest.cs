@@ -54,10 +54,7 @@ public class AtMostTest
 	[Fact]
 	public void AtMostDoesNotIterateUnnecessaryElements()
 	{
-		var source = SuperEnumerable.From(() => 1,
-										 () => 2,
-										 () => 3,
-										 () => throw new TestException());
+		using var source = SeqExceptionAt(4).AsTestingSequence();
 		Assert.False(source.AtMost(2));
 	}
 }
