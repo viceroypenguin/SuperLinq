@@ -5,49 +5,55 @@ public class CountByTest
 	[Fact]
 	public void CountBySimpleTest()
 	{
-		var result = new[] { 1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2 }.CountBy(c => c);
+		using var xs = Seq(1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2)
+			.AsTestingSequence();
 
-		result.AssertSequenceEqual(
-			(1, 4),
-			(2, 3),
-			(3, 2),
-			(4, 1),
-			(5, 1),
-			(6, 1));
+		xs.CountBy(c => c)
+			.AssertSequenceEqual(
+				(1, 4),
+				(2, 3),
+				(3, 2),
+				(4, 1),
+				(5, 1),
+				(6, 1));
 	}
 
 	[Fact]
 	public void CountByWithSecondOccurenceImmediatelyAfterFirst()
 	{
-		var result = "jaffer".CountBy(c => c);
+		using var xs = "jaffer".AsTestingSequence();
 
-		result.AssertSequenceEqual(
-			('j', 1),
-			('a', 1),
-			('f', 2),
-			('e', 1),
-			('r', 1));
+		xs.CountBy(c => c)
+			.AssertSequenceEqual(
+				('j', 1),
+				('a', 1),
+				('f', 2),
+				('e', 1),
+				('r', 1));
 	}
 
 	[Fact]
 	public void CountByEvenOddTest()
 	{
-		var result = Enumerable.Range(1, 100).CountBy(c => c % 2);
-
-		result.AssertSequenceEqual(
-			(1, 50),
-			(0, 50));
+		using var xs = Enumerable.Range(1, 100)
+			.AsTestingSequence();
+		xs.CountBy(c => c % 2)
+			.AssertSequenceEqual(
+				(1, 50),
+				(0, 50));
 	}
 
 	[Fact]
 	public void CountByWithEqualityComparer()
 	{
-		var result = new[] { "a", "B", "c", "A", "b", "A" }.CountBy(c => c, StringComparer.OrdinalIgnoreCase);
+		using var xs = Seq("a", "B", "c", "A", "b", "A")
+			.AsTestingSequence();
 
-		result.AssertSequenceEqual(
-			("a", 3),
-			("B", 2),
-			("c", 1));
+		xs.CountBy(c => c, StringComparer.OrdinalIgnoreCase)
+			.AssertSequenceEqual(
+				("a", 3),
+				("B", 2),
+				("c", 1));
 	}
 
 	[Fact]
@@ -55,7 +61,8 @@ public class CountByTest
 	{
 		var randomSequence = SuperEnumerable.Random(0, 100).Take(100).ToArray();
 
-		var countByKeys = randomSequence.CountBy(x => x).Select(x => x.key);
+		using var xs = randomSequence.AsTestingSequence();
+		var countByKeys = xs.CountBy(x => x).Select(x => x.key);
 		var groupByKeys = randomSequence.GroupBy(x => x).Select(x => x.Key);
 
 		countByKeys.AssertSequenceEqual(groupByKeys);
@@ -70,16 +77,13 @@ public class CountByTest
 	[Fact]
 	public void CountByWithSomeNullKeys()
 	{
-		var ss = new[]
-		{
-			"foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo"
-		};
-		var result = ss.CountBy(s => s);
-
-		result.AssertSequenceEqual(
-			("foo", 2),
-			(default, 4),
-			("bar", 2),
-			("baz", 2));
+		using var ss = Seq("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo")
+			.AsTestingSequence();
+		ss.CountBy(s => s)
+			.AssertSequenceEqual(
+				("foo", 2),
+				(null, 4),
+				("bar", 2),
+				("baz", 2));
 	}
 }
