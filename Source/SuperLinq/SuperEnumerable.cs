@@ -3,6 +3,15 @@
 namespace SuperLinq;
 
 /// <summary>
+/// A delegate that projects a <see cref="ReadOnlySpan{T}" /> of items into a <typeparamref name="TResult"/>.
+/// </summary>
+/// <typeparam name="TSource">The type of the elements of the source.</typeparam>
+/// <typeparam name="TResult">The type of the value returned by selector.</typeparam>
+/// <param name="source">A sequence of values to transform.</param>
+/// <returns>The transformed value produced by this delegate.</returns>
+public delegate TResult ReadOnlySpanProjector<TSource, out TResult>(ReadOnlySpan<TSource> source);
+
+/// <summary>
 /// Provides a set of static methods for querying objects that
 /// implement <see cref="IEnumerable{T}" />.
 /// </summary>
