@@ -31,42 +31,32 @@ public class TrySingleTest
 		Assert.Equal(10, value);
 	}
 
-	[Theory, MemberData(nameof(SingletonCollectionInlineDatas))]
-	public void TrySingleWithSingletonCollection<T>(IEnumerable<T> source, T result)
+	[Fact]
+	public void TrySingleWithSingletonCollection<T>()
 	{
+		var source = new BreakingSingleElementCollection<int>(10);
 		var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
 		Assert.Equal("one", cardinality);
-		Assert.Equal(result, value);
+		Assert.Equal(10, value);
 	}
 
-	public static IEnumerable<object[]> SingletonCollectionInlineDatas { get; } =
-		new[]
-		{
-			new object[] { new BreakingSingleElementCollection<int>(10), 10, },
-		};
-
-	class BreakingSingleElementCollectionBase<T> : IEnumerable<T>
+	private sealed class BreakingSingleElementCollection<T> : ICollection<T>
 	{
-		readonly T _element;
+		private readonly T _element;
 
-		protected BreakingSingleElementCollectionBase(T element) => _element = element;
+		public BreakingSingleElementCollection(T element) =>
+			_element = element;
 
 		public int Count { get; } = 1;
 
 		public IEnumerator<T> GetEnumerator()
 		{
 			yield return _element;
-			throw new Exception($"{nameof(SuperEnumerable.TrySingle)} should not have attempted to consume a second element.");
+			throw new InvalidOperationException($"{nameof(SuperEnumerable.TrySingle)} should not have attempted to consume a second element.");
 		}
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-	}
-
-	sealed class BreakingSingleElementCollection<T> :
-		BreakingSingleElementCollectionBase<T>, ICollection<T>
-	{
-		public BreakingSingleElementCollection(T element) : base(element) { }
 
 		public void Add(T item) => throw new NotImplementedException();
 		public void Clear() => throw new NotImplementedException();
@@ -74,12 +64,6 @@ public class TrySingleTest
 		public void CopyTo(T[] array, int arrayIndex) => throw new NotImplementedException();
 		public bool Remove(T item) => throw new NotImplementedException();
 		public bool IsReadOnly => true;
-	}
-
-	sealed class BreakingSingleElementReadOnlyCollection<T> :
-		BreakingSingleElementCollectionBase<T>, IReadOnlyCollection<T>
-	{
-		public BreakingSingleElementReadOnlyCollection(T element) : base(element) { }
 	}
 
 	[Theory]
@@ -103,7 +87,7 @@ public class TrySingleTest
 		{
 			yield return 1;
 			yield return 2;
-			throw new Exception(nameof(SuperEnumerable.TrySingle) + " should not have attempted to consume a third element.");
+			throw new InvalidOperationException(nameof(SuperEnumerable.TrySingle) + " should not have attempted to consume a third element.");
 		}
 
 		var (cardinality, value) = TestSequence().TrySingle("zero", "one", "many");
