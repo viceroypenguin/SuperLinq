@@ -174,4 +174,18 @@ public static partial class SuperEnumerable
 			return firstHasNext.CompareTo(secondHasNext);
 		}
 	}
+
+	private static int CountUpTo<T>(this IEnumerable<T> source, int max)
+	{
+		Guard.IsNotNull(source);
+		Guard.IsGreaterThanOrEqualTo(max, 0);
+
+		var count = 0;
+
+		using var e = source.GetEnumerator();
+		while (count < max && e.MoveNext())
+			count++;
+
+		return count;
+	}
 }

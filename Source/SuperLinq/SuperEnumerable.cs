@@ -36,21 +36,5 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	internal static int CountUpTo<T>(this IEnumerable<T> source, int max)
-	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(max, 0);
-
-		var count = 0;
-
-		using var e = source.GetEnumerator();
-		while (count < max && e.MoveNext())
-			count++;
-
-		return count;
-	}
-
-	// See https://github.com/atifaziz/Optuple
-
 	internal static (bool HasValue, T Value) Some<T>(T value) => (true, value);
 }
