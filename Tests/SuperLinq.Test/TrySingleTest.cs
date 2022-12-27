@@ -32,7 +32,7 @@ public class TrySingleTest
 	}
 
 	[Fact]
-	public void TrySingleWithSingletonCollection<T>()
+	public void TrySingleWithSingletonCollection()
 	{
 		var source = new BreakingSingleElementCollection<int>(10);
 		var (cardinality, value) = source.TrySingle("zero", "one", "many");
