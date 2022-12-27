@@ -34,13 +34,12 @@ public class SubsetTest
 	[Fact]
 	public void TestSubsetLargerThanSequence()
 	{
-		const int count = 10;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Subsets(count + 5);
+		var sequence = Enumerable.Range(1, 10);
 
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
 		{
-			result.Consume(); // this particular exception is deferred until sequence evaluation
+			sequence.Subsets(15)
+				.Consume();
 		});
 	}
 
