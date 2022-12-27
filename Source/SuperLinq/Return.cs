@@ -2,7 +2,7 @@
 
 namespace SuperLinq;
 
-partial class SuperEnumerable
+public partial class SuperEnumerable
 {
 	/// <summary>
 	/// Returns a single-element sequence containing the item provided.
@@ -10,12 +10,12 @@ partial class SuperEnumerable
 	/// <typeparam name="T">The type of the item.</typeparam>
 	/// <param name="item">The item to return in a sequence.</param>
 	/// <returns>A sequence containing only <paramref name="item"/>.</returns>
+	public static IEnumerable<T> Return<T>(T item) =>
+		new SingleElementList<T>(item);
 
-	public static IEnumerable<T> Return<T>(T item) => new SingleElementList<T>(item);
-
-	sealed class SingleElementList<T> : IList<T>, IReadOnlyList<T>
+	private sealed class SingleElementList<T> : IList<T>, IReadOnlyList<T>
 	{
-		readonly T _item;
+		private readonly T _item;
 
 		public SingleElementList(T item) => _item = item;
 
@@ -24,7 +24,7 @@ partial class SuperEnumerable
 
 		public T this[int index]
 		{
-			get => index == 0 ? _item : throw new ArgumentOutOfRangeException(nameof(index), "Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')");
+			get => index == 0 ? _item : ThrowHelper.ThrowArgumentOutOfRangeException<T>(nameof(index));
 			set => throw ReadOnlyException();
 		}
 
@@ -44,7 +44,7 @@ partial class SuperEnumerable
 		public void Insert(int index, T item) => throw ReadOnlyException();
 		public void RemoveAt(int index) => throw ReadOnlyException();
 
-		static NotSupportedException ReadOnlyException() =>
-			new NotSupportedException("Single element list is immutable.");
+		private static NotSupportedException ReadOnlyException() =>
+			new("Single element list is immutable.");
 	}
 }
