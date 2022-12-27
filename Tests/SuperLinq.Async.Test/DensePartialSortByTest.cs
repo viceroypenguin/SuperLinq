@@ -11,46 +11,49 @@ public class DensePartialSortByTests
 	}
 
 	[Fact]
-	public Task DensePartialSortBy()
+	public async Task DensePartialSortBy()
 	{
 		var ns = SuperEnumerable.RandomDouble().Take(10).ToArray();
 
-		var sorted = ns.Select((n, i) => KeyValuePair.Create(i, n))
+		await using var xs = ns.Select((n, i) => KeyValuePair.Create(i, n))
 			.Repeat(2)
 			.Reverse()
 			.ToAsyncEnumerable()
+			.AsTestingSequence();
+		var sorted = xs
 			.DensePartialSortBy(3, e => e.Key);
 
-		return sorted.Select(e => e.Value).AssertSequenceEqual(
+		await sorted.Select(e => e.Value).AssertSequenceEqual(
 			ns.Take(3).SelectMany(x => new[] { x, x, }));
 	}
 
-	[Fact]
-	public async Task DensePartialSortWithOrder()
+	[Theory]
+	[InlineData(OrderByDirection.Ascending)]
+	[InlineData(OrderByDirection.Descending)]
+	public async Task DensePartialSortWithOrder(OrderByDirection direction)
 	{
-		var ns = SuperEnumerable.RandomDouble().Take(10).ToArray();
+		var ns = SuperEnumerable.RandomDouble()
+			.Take(10)
+			.ToArray()
+			.AsEnumerable();
 
-		var sorted = ns.Select((n, i) => KeyValuePair.Create(i, n))
+		await using var xs = ns.Select((n, i) => KeyValuePair.Create(i, n))
 			.Repeat(2)
 			.Reverse()
 			.ToAsyncEnumerable()
-			.DensePartialSortBy(3, e => e.Key, OrderByDirection.Ascending);
+			.AsTestingSequence();
+		var sorted = xs
+			.DensePartialSortBy(3, e => e.Key, direction);
+
+		if (direction == OrderByDirection.Descending)
+			ns = ns.Reverse();
 
 		await sorted.Select(e => e.Value).AssertSequenceEqual(
 			ns.Take(3).SelectMany(x => new[] { x, x, }));
-
-		sorted = ns.Select((n, i) => KeyValuePair.Create(i, n))
-			.Repeat(2)
-			.Reverse()
-			.ToAsyncEnumerable()
-			.DensePartialSortBy(3, e => e.Key, OrderByDirection.Descending);
-
-		await sorted.Select(e => e.Value).AssertSequenceEqual(
-			ns.Reverse().Take(3).SelectMany(x => new[] { x, x, }));
 	}
 
 	[Fact]
-	public Task DensePartialSortWithComparer()
+	public async Task DensePartialSortWithComparer()
 	{
 		var alphabet = Enumerable.Range(0, 26)
 			.Repeat(2)
@@ -58,8 +61,11 @@ public class DensePartialSortByTests
 			.ToArray();
 
 		var ns = alphabet.Zip(SuperEnumerable.RandomDouble(), KeyValuePair.Create).ToArray();
-		var sorted = ns.ToAsyncEnumerable().DensePartialSortBy(3, e => e.Key, StringComparer.Ordinal);
+		await using var xs = ns.ToAsyncEnumerable().AsTestingSequence();
 
-		return sorted.Select(e => e.Key[0]).AssertSequenceEqual('A', 'A', 'C', 'C', 'E', 'E');
+		var sorted = xs.DensePartialSortBy(3, e => e.Key, StringComparer.Ordinal);
+
+		await sorted.Select(e => e.Key[0])
+			.AssertSequenceEqual('A', 'A', 'C', 'C', 'E', 'E');
 	}
 }
