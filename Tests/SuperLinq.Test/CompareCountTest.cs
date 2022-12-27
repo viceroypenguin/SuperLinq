@@ -123,28 +123,18 @@ public class CompareCountTest
 		Assert.Equal(-1, seq2.CompareCount(seq1));
 	}
 
-	enum SequenceKind
-	{
-		Sequence,
-		Collection,
-		ReadOnlyCollection,
-	}
-
-	static IEnumerable<TResult> GetTestSequenceKinds<T, TResult>(
+	private static IEnumerable<TResult> GetTestSequenceKinds<T, TResult>(
 		IEnumerable<T> s1, IEnumerable<T> s2,
-		Func<(IEnumerable<T?> Data, SequenceKind Kind),
-			(IEnumerable<T?> Data, SequenceKind Kind), TResult> selector)
+		Func<(IEnumerable<T?> Data, SourceKind Kind),
+			(IEnumerable<T?> Data, SourceKind Kind), TResult> selector)
 	{
 		// Test that the operator is optimized for collections
 
-		var s1Seq = (s1.Select(x => x), SequenceKind.Sequence);
-		var s2Seq = (s2.Select(x => x), SequenceKind.Sequence);
+		var s1Seq = (s1.Select(x => x), SourceKind.Sequence);
+		var s2Seq = (s2.Select(x => x), SourceKind.Sequence);
 
-		var s1Col = (s1.ToSourceKind(SourceKind.BreakingCollection), SequenceKind.Collection);
-		var s2Col = (s2.ToSourceKind(SourceKind.BreakingCollection), SequenceKind.Collection);
-
-		var s1ReadOnlyCol = (s1.ToSourceKind(SourceKind.BreakingReadOnlyCollection), SequenceKind.ReadOnlyCollection);
-		var s2ReadOnlyCol = (s2.ToSourceKind(SourceKind.BreakingReadOnlyCollection), SequenceKind.ReadOnlyCollection);
+		var s1Col = (s1.ToSourceKind(SourceKind.BreakingCollection), SourceKind.BreakingCollection);
+		var s2Col = (s2.ToSourceKind(SourceKind.BreakingCollection), SourceKind.BreakingCollection);
 
 		// sequences
 		yield return selector(s1Seq, s2Seq);
@@ -153,10 +143,5 @@ public class CompareCountTest
 		yield return selector(s1Seq, s2Col);
 		yield return selector(s1Col, s2Seq);
 		yield return selector(s1Col, s2Col);
-
-		// sequences and readOnlyCollections
-		yield return selector(s1Seq, s2ReadOnlyCol);
-		yield return selector(s1ReadOnlyCol, s2Seq);
-		yield return selector(s1ReadOnlyCol, s2ReadOnlyCol);
 	}
 }

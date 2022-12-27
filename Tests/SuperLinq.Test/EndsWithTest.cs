@@ -74,7 +74,6 @@ public class EndsWithTest
 
 	[Theory]
 	[InlineData(SourceKind.BreakingCollection)]
-	[InlineData(SourceKind.BreakingReadOnlyCollection)]
 	public void EndsWithUsesCollectionsCountToAvoidUnnecessaryIteration(SourceKind sourceKind)
 	{
 		var first = new[] { 1, 2 }.ToSourceKind(sourceKind);
