@@ -93,9 +93,8 @@ public static partial class SuperEnumerable
 			{
 				var item = source switch
 				{
-					IReadOnlyList<T> list => list[0],
 					IList<T> list => list[0],
-					_ => source.First()
+					_ => source.First(),
 				};
 				return resultSelector(one, item);
 			}
