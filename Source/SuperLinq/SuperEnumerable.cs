@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System.Collections;
 
 namespace SuperLinq;
 
@@ -8,17 +8,15 @@ namespace SuperLinq;
 /// </summary>
 public static partial class SuperEnumerable
 {
-	[Pure]
 	internal static int? TryGetCollectionCount<T>(this IEnumerable<T> source) =>
 		source switch
 		{
 			null => throw new ArgumentNullException(nameof(source)),
 			ICollection<T> collection => collection.Count,
-			IReadOnlyCollection<T> collection => collection.Count,
+			ICollection collection => collection.Count,
 			_ => null
 		};
 
-	[Pure]
 	internal static bool TryGetCollectionCount<T>(this IEnumerable<T> source, out int count)
 	{
 		Guard.IsNotNull(source);
@@ -27,7 +25,7 @@ public static partial class SuperEnumerable
 			case ICollection<T> collection:
 				count = collection.Count;
 				return true;
-			case IReadOnlyCollection<T> collection:
+			case ICollection collection:
 				count = collection.Count;
 				return true;
 			default:
