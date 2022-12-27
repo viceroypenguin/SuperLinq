@@ -7,9 +7,7 @@ public class TrySingleTest
 	[Theory]
 	[InlineData(SourceKind.Sequence)]
 	[InlineData(SourceKind.BreakingList)]
-	[InlineData(SourceKind.BreakingReadOnlyList)]
 	[InlineData(SourceKind.BreakingCollection)]
-	[InlineData(SourceKind.BreakingReadOnlyCollection)]
 	public void TrySingleWithEmptySource(SourceKind kind)
 	{
 		var source = Array.Empty<int?>().ToSourceKind(kind);
@@ -23,7 +21,6 @@ public class TrySingleTest
 	[Theory]
 	[InlineData(SourceKind.Sequence)]
 	[InlineData(SourceKind.BreakingList)]
-	[InlineData(SourceKind.BreakingReadOnlyList)]
 	public void TrySingleWithSingleton(SourceKind kind)
 	{
 		var source = new int?[] { 10 }.ToSourceKind(kind);
@@ -47,7 +44,6 @@ public class TrySingleTest
 		new[]
 		{
 			new object[] { new BreakingSingleElementCollection<int>(10), 10, },
-			new object[] { new BreakingSingleElementReadOnlyCollection<int>(20), 20, },
 		};
 
 	class BreakingSingleElementCollectionBase<T> : IEnumerable<T>
@@ -89,9 +85,7 @@ public class TrySingleTest
 	[Theory]
 	[InlineData(SourceKind.Sequence)]
 	[InlineData(SourceKind.BreakingList)]
-	[InlineData(SourceKind.BreakingReadOnlyList)]
 	[InlineData(SourceKind.BreakingCollection)]
-	[InlineData(SourceKind.BreakingReadOnlyCollection)]
 	public void TrySingleWithMoreThanOne(SourceKind kind)
 	{
 		var source = new int?[] { 10, 20 }.ToSourceKind(kind);

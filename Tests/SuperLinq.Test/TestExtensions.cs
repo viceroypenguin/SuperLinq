@@ -1,12 +1,12 @@
-﻿namespace Test;
+﻿using CommunityToolkit.Diagnostics;
+
+namespace Test;
 
 public enum SourceKind
 {
 	Sequence,
 	BreakingList,
-	BreakingReadOnlyList,
 	BreakingCollection,
-	BreakingReadOnlyCollection
 }
 
 internal static partial class TestExtensions
@@ -40,28 +40,17 @@ internal static partial class TestExtensions
 	internal static IEnumerable<IEnumerable<T?>> ArrangeCollectionInlineDatas<T>(this IEnumerable<T> input)
 	{
 		yield return input.ToSourceKind(SourceKind.Sequence);
-		yield return input.ToSourceKind(SourceKind.BreakingReadOnlyCollection);
 		yield return input.ToSourceKind(SourceKind.BreakingCollection);
 	}
 
-	internal static IEnumerable<T?> ToSourceKind<T>(this IEnumerable<T?> input, SourceKind sourceKind)
-	{
-		switch (sourceKind)
+	internal static IEnumerable<T?> ToSourceKind<T>(this IEnumerable<T?> input, SourceKind sourceKind) =>
+		sourceKind switch
 		{
-			case SourceKind.Sequence:
-				return input.Select(x => x);
-			case SourceKind.BreakingList:
-				return new BreakingList<T?>(input.ToList());
-			case SourceKind.BreakingReadOnlyList:
-				return new BreakingReadOnlyList<T?>(input.ToList());
-			case SourceKind.BreakingCollection:
-				return new BreakingCollection<T?>(input.ToList());
-			case SourceKind.BreakingReadOnlyCollection:
-				return new BreakingReadOnlyCollection<T?>(input.ToList());
-			default:
-				throw new ArgumentException(null, nameof(sourceKind));
-		}
-	}
+			SourceKind.Sequence => input.Select(x => x),
+			SourceKind.BreakingList => new BreakingList<T?>(input.ToList()),
+			SourceKind.BreakingCollection => new BreakingCollection<T?>(input.ToList()),
+			_ => ThrowHelper.ThrowArgumentException<IEnumerable<T?>>(nameof(sourceKind)),
+		};
 
 	internal static void AssertCollectionEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
 		Assert.True(actual.CollectionEqual(expected, comparer: default));
