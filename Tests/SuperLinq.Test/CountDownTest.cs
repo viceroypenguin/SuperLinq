@@ -22,8 +22,6 @@ public class CountDownTest
 	public static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)
 	{
 		var xs = Enumerable.Range(0, 5).ToArray();
-		yield return selector(xs, -1, new int?[] { null, null, null, null, null });
-		yield return selector(xs, 0, new int?[] { null, null, null, null, null });
 		yield return selector(xs, 1, new int?[] { null, null, null, null, 0 });
 		yield return selector(xs, 2, new int?[] { null, null, null, 1, 0 });
 		yield return selector(xs, 3, new int?[] { null, null, 2, 1, 0 });
