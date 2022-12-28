@@ -12,19 +12,17 @@ public class CountDownTest
 			.CountDown(42, BreakingFunc.Of<object, int?, object>());
 	}
 
-	[Fact]
-	public void WithNegativeCount()
+	[Theory]
+	[InlineData(0), InlineData(-1)]
+	public void ExceptionOnNegativeCount(int param)
 	{
-		Enumerable.Range(1, 10)
-				  .CountDown(-1000, (_, cd) => cd)
-				  .AssertSequenceEqual(Enumerable.Repeat((int?)null, 10));
+		Assert.Throws<ArgumentOutOfRangeException>("count", () =>
+			Seq(1).CountDown(param));
 	}
 
 	public static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)
 	{
 		var xs = Enumerable.Range(0, 5).ToArray();
-		yield return selector(xs, -1, new int?[] { null, null, null, null, null });
-		yield return selector(xs, 0, new int?[] { null, null, null, null, null });
 		yield return selector(xs, 1, new int?[] { null, null, null, null, 0 });
 		yield return selector(xs, 2, new int?[] { null, null, null, 1, 0 });
 		yield return selector(xs, 3, new int?[] { null, null, 2, 1, 0 });
