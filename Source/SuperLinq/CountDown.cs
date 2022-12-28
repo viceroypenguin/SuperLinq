@@ -65,6 +65,7 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(resultSelector);
+		Guard.IsGreaterThanOrEqualTo(count, 1);
 
 		return source.TryGetCollectionCount(out var _)
 			? IterateCollection(source, count, resultSelector)

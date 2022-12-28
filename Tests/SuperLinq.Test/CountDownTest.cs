@@ -13,11 +13,10 @@ public class CountDownTest
 	}
 
 	[Fact]
-	public void WithNegativeCount()
+	public void ExceptionOnNegativeCount()
 	{
-		Enumerable.Range(1, 10)
-				  .CountDown(-1000, (_, cd) => cd)
-				  .AssertSequenceEqual(Enumerable.Repeat((int?)null, 10));
+		Assert.Throws<ArgumentOutOfRangeException>("count", () =>
+			Seq(1).CountDown(-1));
 	}
 
 	public static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)

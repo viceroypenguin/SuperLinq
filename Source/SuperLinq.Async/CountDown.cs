@@ -64,6 +64,7 @@ public static partial class AsyncSuperEnumerable
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(resultSelector);
+		Guard.IsGreaterThanOrEqualTo(count, 1);
 
 		return _(source, count, resultSelector);
 

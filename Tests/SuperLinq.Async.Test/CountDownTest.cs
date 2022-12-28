@@ -1,4 +1,6 @@
-﻿namespace Test.Async;
+﻿using SuperLinq;
+
+namespace Test.Async;
 
 public class CountDownTest
 {
@@ -7,6 +9,13 @@ public class CountDownTest
 	{
 		new AsyncBreakingSequence<object>()
 			.CountDown(42, BreakingFunc.Of<object, int?, object>());
+	}
+
+	[Fact]
+	public void ExceptionOnNegativeCount()
+	{
+		Assert.Throws<ArgumentOutOfRangeException>("count", () =>
+			AsyncSeq(1).CountDown(-1));
 	}
 
 	[Fact]
