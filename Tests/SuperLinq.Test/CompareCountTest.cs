@@ -33,7 +33,7 @@ public class CompareCountTest
 		int expectedCompareCount,
 		int expectedMoveNextCallCount)
 	{
-		var collection = new BreakingCollection<int>(collectionCount);
+		var collection = new BreakingCollection<int>(Enumerable.Range(0, collectionCount));
 
 		using var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence();
 
@@ -52,7 +52,7 @@ public class CompareCountTest
 		int expectedCompareCount,
 		int expectedMoveNextCallCount)
 	{
-		var collection = new BreakingCollection<int>(collectionCount);
+		var collection = new BreakingCollection<int>(Enumerable.Range(0, collectionCount));
 
 		using var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence();
 
@@ -91,7 +91,7 @@ public class CompareCountTest
 	[Fact]
 	public void CompareCountDisposesFirstEnumerator()
 	{
-		var collection = new BreakingCollection<int>(0);
+		var collection = new BreakingCollection<int>(Array.Empty<int>());
 
 		using var seq = TestingSequence.Of<int>();
 
@@ -101,7 +101,7 @@ public class CompareCountTest
 	[Fact]
 	public void CompareCountDisposesSecondEnumerator()
 	{
-		var collection = new BreakingCollection<int>(0);
+		var collection = new BreakingCollection<int>(Array.Empty<int>());
 
 		using var seq = TestingSequence.Of<int>();
 

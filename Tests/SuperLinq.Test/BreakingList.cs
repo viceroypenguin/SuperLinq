@@ -8,16 +8,15 @@ namespace Test;
 /// method of <see cref="IEnumerable"/> - either because they should be using the indexer or because they are
 /// expected to be lazily evaluated.
 /// </summary>
-sealed class BreakingList<T> : BreakingCollection<T?>, IList<T?>
+internal sealed class BreakingList<T> : BreakingCollection<T>, IList<T>
 {
-	public BreakingList() : this(new List<T?>()) { }
-	public BreakingList(List<T?> list) : base(list) { }
+	public BreakingList(IEnumerable<T> source) : base(source) { }
 
-	public int IndexOf(T? item) => List.IndexOf(item);
-	public void Insert(int index, T? item) => throw new NotImplementedException();
+	public int IndexOf(T item) => List.IndexOf(item);
+	public void Insert(int index, T item) => throw new NotImplementedException();
 	public void RemoveAt(int index) => throw new NotImplementedException();
 
-	public T? this[int index]
+	public T this[int index]
 	{
 		get => List[index];
 		set => throw new NotImplementedException();
