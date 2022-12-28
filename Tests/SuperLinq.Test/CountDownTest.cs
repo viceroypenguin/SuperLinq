@@ -12,11 +12,12 @@ public class CountDownTest
 			.CountDown(42, BreakingFunc.Of<object, int?, object>());
 	}
 
-	[Fact]
-	public void ExceptionOnNegativeCount()
+	[Theory]
+	[InlineData(0), InlineData(-1)]
+	public void ExceptionOnNegativeCount(int param)
 	{
 		Assert.Throws<ArgumentOutOfRangeException>("count", () =>
-			Seq(1).CountDown(-1));
+			Seq(1).CountDown(param));
 	}
 
 	public static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)
