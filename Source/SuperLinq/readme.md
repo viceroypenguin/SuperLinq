@@ -874,6 +874,8 @@ Creates a left-aligned sliding window over the source sequence of a given size.
 
 Creates a right-aligned sliding window over the source sequence of a given size.
 
+This method has 4 overloads.
+
 ### ZipLongest
 
 Returns a projection of tuples, where each tuple contains the N-th
