@@ -862,7 +862,9 @@ similar sequences.
 ### Window
 
 Processes a sequence into a series of subsequences representing a windowed
-subset of the original
+subset of the original.
+
+This method has 4 overloads.
 
 ### WindowLeft
 
