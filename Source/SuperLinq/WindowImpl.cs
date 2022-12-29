@@ -61,11 +61,9 @@ public static partial class SuperEnumerable
 		var n = 0;
 		while (n < size && iter.MoveNext())
 		{
-			array[n] = iter.Current;
+			array[n++] = iter.Current;
 			if (type == WindowType.Right)
 				yield return projector(new ArraySegment<TSource>(array, 0, n));
-
-			n++;
 		}
 
 		if (type != WindowType.Right && n == size)
