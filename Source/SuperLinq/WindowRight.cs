@@ -62,7 +62,7 @@ public static partial class SuperEnumerable
 	/// sequence.
 	/// </para>
 	/// <para>
-	/// In this overload of <c>Window</c>, a single array of length <paramref name="size"/> is allocated as a buffer for
+	/// In this overload of <c>WindowRight</c>, a single array of length <paramref name="size"/> is allocated as a buffer for
 	/// all subsequences.
 	/// </para>
 	/// <para>
