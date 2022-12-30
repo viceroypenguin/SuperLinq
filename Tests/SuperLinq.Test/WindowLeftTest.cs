@@ -6,12 +6,30 @@ public class WindowLeftTest
 	public void WindowLeftIsLazy()
 	{
 		new BreakingSequence<int>().WindowLeft(1);
+		new BreakingSequence<int>().WindowLeft(1, BreakingFunc.Of<IReadOnlyList<int>, int>());
+		new BreakingSequence<int>().WindowLeft(new int[3], BreakingFunc.Of<IReadOnlyList<int>, int>());
+		new BreakingSequence<int>().WindowLeft(new int[3], 1, BreakingFunc.Of<IReadOnlyList<int>, int>());
+	}
+
+	[Fact]
+	public void WindowLeftNegativeWindowSizeException()
+	{
+		var sequence = Enumerable.Repeat(1, 10);
+
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
+			sequence.WindowLeft(-5));
+
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
+			sequence.WindowLeft(Array.Empty<int>(), -5, SuperEnumerable.Identity));
+
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
+			sequence.WindowLeft(-5, SuperEnumerable.Identity));
 	}
 
 	[Fact]
 	public void WindowModifiedBeforeMoveNextDoesNotAffectNextWindow()
 	{
-		var sequence = Enumerable.Range(0, 3);
+		using var sequence = Enumerable.Range(0, 3).AsTestingSequence();
 		using var e = sequence.WindowLeft(2).GetEnumerator();
 
 		e.MoveNext();
@@ -26,7 +44,7 @@ public class WindowLeftTest
 	[Fact]
 	public void WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
 	{
-		var sequence = Enumerable.Range(0, 3);
+		using var sequence = Enumerable.Range(0, 3).AsTestingSequence();
 		using var e = sequence.WindowLeft(2).GetEnumerator();
 
 		e.MoveNext();
@@ -41,7 +59,7 @@ public class WindowLeftTest
 	[Fact]
 	public void WindowModifiedDoesNotAffectPreviousWindow()
 	{
-		var sequence = Enumerable.Range(0, 3);
+		using var sequence = Enumerable.Range(0, 3).AsTestingSequence();
 		using var e = sequence.WindowLeft(2).GetEnumerator();
 
 		e.MoveNext();
@@ -53,39 +71,58 @@ public class WindowLeftTest
 		Assert.Equal(1, window1[1]);
 	}
 
+	/// <summary>
+	/// Verify that a sliding window of an any size over an empty sequence
+	/// is an empty sequence
+	/// </summary>
 	[Fact]
-	public void WindowLeftWithNegativeWindowSize()
+	public void WindowLeftEmptySequence()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			Enumerable.Repeat(1, 10).WindowLeft(-5));
-	}
+		using var sequence = Seq<int>().AsTestingSequence();
 
-	[Fact]
-	public void WindowLeftWithEmptySequence()
-	{
-		using var xs = Enumerable.Empty<int>().AsTestingSequence();
-
-		var result = xs.WindowLeft(5);
-
+		var result = sequence.WindowLeft(5);
 		Assert.Empty(result);
 	}
 
 	[Fact]
-	public void WindowLeftWithSingleElement()
+	public void WindowLeftBufferEmptySequence()
 	{
-		const int count = 100;
-		var sequence = Enumerable.Range(1, count).ToArray();
+		using var sequence = Seq<int>().AsTestingSequence();
 
-		IList<int>[] result;
-		using (var ts = sequence.AsTestingSequence())
-			result = ts.WindowLeft(1).ToArray();
+		var result = sequence.WindowLeft(5, SuperEnumerable.Identity);
+		Assert.Empty(result);
+	}
+
+	/// <summary>
+	/// Verify that decomposing a sequence into windows of a single item
+	/// degenerates to the original sequence.
+	/// </summary>
+	[Fact]
+	public void WindowLeftSingleElement()
+	{
+		var sequence = Enumerable.Range(1, 100);
+		using var xs = sequence.AsTestingSequence();
+		var result = xs.WindowLeft(1).ToList();
 
 		// number of windows should be equal to the source sequence length
-		Assert.Equal(count, result.Length);
-
+		Assert.Equal(100, result.Count);
 		// each window should contain single item consistent of element at that offset
-		foreach (var (index, item) in result.Index())
-			Assert.Equal(item.Single(), sequence[index]);
+		foreach (var (actual, expected) in result.Zip(sequence))
+			Assert.Equal(SuperEnumerable.Return(expected), actual);
+	}
+
+	[Fact]
+	public void WindowLeftBufferSingleElement()
+	{
+		var sequence = Enumerable.Range(1, 100);
+		using var xs = sequence.AsTestingSequence();
+		var result = xs.WindowLeft(1, l => l[0]).ToList();
+
+		// number of windows should be equal to the source sequence length
+		Assert.Equal(100, result.Count);
+		// each window should contain single item consistent of element at that offset
+		foreach (var (actual, expected) in result.Zip(sequence))
+			Assert.Equal(expected, actual);
 	}
 
 	[Fact]
@@ -94,7 +131,6 @@ public class WindowLeftTest
 		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
 
 		using var reader = sequence.WindowLeft(10).Read();
-
 		reader.Read().AssertSequenceEqual(1, 2, 3, 4, 5);
 		reader.Read().AssertSequenceEqual(2, 3, 4, 5);
 		reader.Read().AssertSequenceEqual(3, 4, 5);
@@ -104,17 +140,44 @@ public class WindowLeftTest
 	}
 
 	[Fact]
+	public void WindowLeftBufferWithWindowSizeLargerThanSequence()
+	{
+		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
+
+		using var reader = sequence.WindowLeft(10, a => string.Join("", a)).Read();
+		Assert.Equal("12345", reader.Read());
+		Assert.Equal("2345", reader.Read());
+		Assert.Equal("345", reader.Read());
+		Assert.Equal("45", reader.Read());
+		Assert.Equal("5", reader.Read());
+		reader.ReadEnd();
+	}
+
+	[Fact]
 	public void WindowLeftWithWindowSizeSmallerThanSequence()
 	{
 		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
 
 		using var reader = sequence.WindowLeft(3).Read();
-
 		reader.Read().AssertSequenceEqual(1, 2, 3);
 		reader.Read().AssertSequenceEqual(2, 3, 4);
 		reader.Read().AssertSequenceEqual(3, 4, 5);
 		reader.Read().AssertSequenceEqual(4, 5);
 		reader.Read().AssertSequenceEqual(5);
+		reader.ReadEnd();
+	}
+
+	[Fact]
+	public void WindowLeftBufferWithWindowSizeSmallerThanSequence()
+	{
+		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
+
+		using var reader = sequence.WindowLeft(3, a => string.Join("", a)).Read();
+		Assert.Equal("123", reader.Read());
+		Assert.Equal("234", reader.Read());
+		Assert.Equal("345", reader.Read());
+		Assert.Equal("45", reader.Read());
+		Assert.Equal("5", reader.Read());
 		reader.ReadEnd();
 	}
 }

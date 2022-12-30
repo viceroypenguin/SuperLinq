@@ -66,8 +66,10 @@ public static partial class SuperEnumerable
 				yield return projector(new ArraySegment<TSource>(array, 0, n));
 		}
 
-		if (type != WindowType.Right && n == size)
+		if (type == WindowType.Normal && n == size)
 			yield return projector(new ArraySegment<TSource>(array));
+		else if (type == WindowType.Left && n > 0)
+			yield return projector(new ArraySegment<TSource>(array, 0, n));
 
 		while (iter.MoveNext())
 		{
