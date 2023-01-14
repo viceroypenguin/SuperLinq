@@ -3,7 +3,7 @@
 public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
-	/// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// This operator is the right-associative version of the
 	/// <see cref="AsyncEnumerableEx.Scan{TSource}(IAsyncEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
 	/// </summary>
@@ -32,7 +32,7 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// This operator is the right-associative version of the
 	/// <see cref="AsyncEnumerableEx.Scan{TSource}(IAsyncEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
 	/// </summary>
@@ -61,7 +61,7 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// This operator is the right-associative version of the
 	/// <see cref="AsyncEnumerableEx.Scan{TSource}(IAsyncEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
 	/// </summary>
@@ -114,7 +114,7 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// The specified seed value is used as the initial accumulator value.
 	/// This operator is the right-associative version of the
 	/// <see cref="AsyncEnumerableEx.Scan{TSource, TAccumulate}(IAsyncEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.
@@ -144,7 +144,7 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// The specified seed value is used as the initial accumulator value.
 	/// This operator is the right-associative version of the
 	/// <see cref="AsyncEnumerableEx.Scan{TSource, TAccumulate}(IAsyncEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.
@@ -174,7 +174,7 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// The specified seed value is used as the initial accumulator value.
 	/// This operator is the right-associative version of the
 	/// <see cref="AsyncEnumerableEx.Scan{TSource, TAccumulate}(IAsyncEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.

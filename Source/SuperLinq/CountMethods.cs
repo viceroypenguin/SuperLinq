@@ -35,7 +35,7 @@ public static partial class SuperEnumerable
 	/// </summary>
 	/// <typeparam name="T">Element type of sequence</typeparam>
 	/// <param name="source">The source sequence</param>
-	/// <param name="count">The maximun number of items a sequence must have for this
+	/// <param name="count">The maximum number of items a sequence must have for this
 	/// function to return true</param>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
@@ -90,7 +90,7 @@ public static partial class SuperEnumerable
 	/// <param name="source">The source sequence</param>
 	/// <param name="min">The minimum number of items a sequence must have for this
 	/// function to return true</param>
-	/// <param name="max">The maximun number of items a sequence must have for this
+	/// <param name="max">The maximum number of items a sequence must have for this
 	/// function to return true</param>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="min"/> is negative or <paramref name="max"/> is less than min</exception>
