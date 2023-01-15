@@ -41,8 +41,8 @@ public class BindByIndexTest
 	public void BindByIndexComplex()
 	{
 		var indexes = Seq(0, 1, 8, 9, 3, 4, 2);
-		var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
-		var seq2 = indexes.AsTestingSequence();
+		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
+		using var seq2 = indexes.AsTestingSequence();
 
 		seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
