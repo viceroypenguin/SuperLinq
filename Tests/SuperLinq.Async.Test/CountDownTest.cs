@@ -1,4 +1,6 @@
-﻿namespace Test.Async;
+﻿using SuperLinq;
+
+namespace Test.Async;
 
 public class CountDownTest
 {
@@ -9,20 +11,17 @@ public class CountDownTest
 			.CountDown(42, BreakingFunc.Of<object, int?, object>());
 	}
 
-	[Fact]
-	public Task WithNegativeCount()
+	[Theory]
+	[InlineData(0), InlineData(-1)]
+	public void ExceptionOnNegativeCount(int param)
 	{
-		const int count = 10;
-		return AsyncEnumerable.Range(1, count)
-			.CountDown(-1000, (_, cd) => cd)
-			.AssertSequenceEqual(Enumerable.Repeat((int?)null, count));
+		Assert.Throws<ArgumentOutOfRangeException>("count", () =>
+			AsyncSeq(1).CountDown(param));
 	}
 
 	private static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)
 	{
 		var xs = Enumerable.Range(0, 5).ToArray();
-		yield return selector(xs, -1, new int?[] { null, null, null, null, null });
-		yield return selector(xs, 0, new int?[] { null, null, null, null, null });
 		yield return selector(xs, 1, new int?[] { null, null, null, null, 0 });
 		yield return selector(xs, 2, new int?[] { null, null, null, 1, 0 });
 		yield return selector(xs, 3, new int?[] { null, null, 2, 1, 0 });

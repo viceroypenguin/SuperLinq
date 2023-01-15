@@ -862,15 +862,21 @@ similar sequences.
 ### Window
 
 Processes a sequence into a series of subsequences representing a windowed
-subset of the original
+subset of the original.
+
+This method has 4 overloads.
 
 ### WindowLeft
 
 Creates a left-aligned sliding window over the source sequence of a given size.
 
+This method has 4 overloads.
+
 ### WindowRight
 
 Creates a right-aligned sliding window over the source sequence of a given size.
+
+This method has 4 overloads.
 
 ### ZipLongest
 
