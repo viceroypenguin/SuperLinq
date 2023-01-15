@@ -135,8 +135,7 @@ public class DenseRankTests
 		// invert the CompareTo operation to Rank in reverse order
 		await using (var xs = sequence.AsTestingSequence())
 		{
-			var resultA = sequence.AsTestingSequence()
-				.DenseRank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
+			var resultA = xs.DenseRank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
 			await resultA.AssertSequenceEqual(sequence
 				.OrderByDescending(SuperLinq.SuperEnumerable.Identity)
 				.Select((x, i) => (x, i + 1)));
@@ -144,8 +143,7 @@ public class DenseRankTests
 
 		await using (var xs = sequence.AsTestingSequence())
 		{
-			var resultB = sequence.AsTestingSequence()
-				.DenseRankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
+			var resultB = xs.DenseRankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
 			await resultB.AssertSequenceEqual(sequence
 				.OrderByDescending(x => x.Day)
 				.Select((x, i) => (x, i + 1)));
