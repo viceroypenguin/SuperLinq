@@ -3,11 +3,12 @@
 public class DistinctByTest
 {
 	[Fact]
-	public Task DistinctBy()
+	public async Task DistinctBy()
 	{
-		var source = AsyncSeq("first", "second", "third", "fourth", "fifth");
+		await using var source = AsyncSeq("first", "second", "third", "fourth", "fifth")
+			.AsTestingSequence();
 		var distinct = source.DistinctBy(word => word.Length);
-		return distinct.AssertSequenceEqual("first", "second");
+		await distinct.AssertSequenceEqual("first", "second");
 	}
 
 	[Fact]
@@ -17,19 +18,21 @@ public class DistinctByTest
 	}
 
 	[Fact]
-	public Task DistinctByWithComparer()
+	public async Task DistinctByWithComparer()
 	{
-		var source = AsyncSeq("first", "FIRST", "second", "second", "third");
+		await using var source = AsyncSeq("first", "FIRST", "second", "second", "third")
+			.AsTestingSequence();
 		var distinct = source.DistinctBy(word => word, StringComparer.OrdinalIgnoreCase);
-		return distinct.AssertSequenceEqual("first", "second", "third");
+		await distinct.AssertSequenceEqual("first", "second", "third");
 	}
 
 	[Fact]
-	public Task DistinctByNullComparer()
+	public async Task DistinctByNullComparer()
 	{
-		var source = AsyncSeq("first", "second", "third", "fourth", "fifth");
+		await using var source = AsyncSeq("first", "second", "third", "fourth", "fifth")
+			.AsTestingSequence();
 		var distinct = source.DistinctBy(word => word.Length, comparer: null);
-		return distinct.AssertSequenceEqual("first", "second");
+		await distinct.AssertSequenceEqual("first", "second");
 	}
 
 	[Fact]
