@@ -19,7 +19,7 @@ internal static class TestingSequence
 /// Sequence that asserts whether GetEnumerator() is
 /// called exactly once or not.
 /// </summary>
-internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
+internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable, IDisposable
 {
 	private bool? _disposed;
 	private IAsyncEnumerable<T>? _sequence;
@@ -37,6 +37,15 @@ internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
 			_disposed = null;
 		}
 		return default;
+	}
+
+	public void Dispose()
+	{
+		if (_disposed != null)
+		{
+			Assert.True(_disposed, "Expected sequence to be disposed.");
+			_disposed = null;
+		}
 	}
 
 	public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
