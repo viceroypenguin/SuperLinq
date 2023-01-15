@@ -33,8 +33,7 @@ public class CompareCountTest
 		int expectedCompareCount,
 		int expectedMoveNextCallCount)
 	{
-		var collection = new BreakingCollection<int>(Enumerable.Range(0, collectionCount));
-
+		using var collection = new BreakingCollection<int>(Enumerable.Range(0, collectionCount));
 		using var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence();
 
 		Assert.Equal(expectedCompareCount, collection.CompareCount(seq));
@@ -52,8 +51,7 @@ public class CompareCountTest
 		int expectedCompareCount,
 		int expectedMoveNextCallCount)
 	{
-		var collection = new BreakingCollection<int>(Enumerable.Range(0, collectionCount));
-
+		using var collection = new BreakingCollection<int>(Enumerable.Range(0, collectionCount));
 		using var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence();
 
 		Assert.Equal(expectedCompareCount, seq.CompareCount(collection));
@@ -91,8 +89,7 @@ public class CompareCountTest
 	[Fact]
 	public void CompareCountDisposesFirstEnumerator()
 	{
-		var collection = new BreakingCollection<int>(Array.Empty<int>());
-
+		using var collection = new BreakingCollection<int>(Array.Empty<int>());
 		using var seq = TestingSequence.Of<int>();
 
 		Assert.Equal(0, seq.CompareCount(collection));
@@ -101,8 +98,7 @@ public class CompareCountTest
 	[Fact]
 	public void CompareCountDisposesSecondEnumerator()
 	{
-		var collection = new BreakingCollection<int>(Array.Empty<int>());
-
+		using var collection = new BreakingCollection<int>(Array.Empty<int>());
 		using var seq = TestingSequence.Of<int>();
 
 		Assert.Equal(0, collection.CompareCount(seq));
@@ -137,8 +133,10 @@ public class CompareCountTest
 		var s1Seq = (s1.Select(x => x), SourceKind.Sequence);
 		var s2Seq = (s2.Select(x => x), SourceKind.Sequence);
 
+#pragma warning disable CA2000 // don't need to test disposal here
 		var s1Col = (s1.ToSourceKind(SourceKind.BreakingCollection), SourceKind.BreakingCollection);
 		var s2Col = (s2.ToSourceKind(SourceKind.BreakingCollection), SourceKind.BreakingCollection);
+#pragma warning restore CA2000
 
 		// sequences
 		yield return selector(s1Seq, s2Seq);
