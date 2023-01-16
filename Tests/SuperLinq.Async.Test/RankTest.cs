@@ -15,29 +15,32 @@ public class RankTests
 	}
 
 	[Fact]
-	public Task TestRankNullComparer()
+	public async Task TestRankNullComparer()
 	{
-		var sequence = Enumerable.Repeat(1, 10);
-		return sequence.AsTestingSequence().Rank().AssertSequenceEqual(
+		await using var sequence = Enumerable.Repeat(1, 10)
+			.AsTestingSequence();
+		await sequence.Rank().AssertSequenceEqual(
 			Enumerable.Repeat((1, 1), 10));
 	}
 
 	[Fact]
-	public Task TestRankByNullComparer()
+	public async Task TestRankByNullComparer()
 	{
-		var sequence = Enumerable.Repeat(1, 10);
-		return sequence.AsTestingSequence().RankBy(x => x).AssertSequenceEqual(
+		await using var sequence = Enumerable.Repeat(1, 10)
+			.AsTestingSequence();
+		await sequence.RankBy(x => x).AssertSequenceEqual(
 			Enumerable.Repeat((1, 1), 10));
 	}
 
 	[Fact]
 	public async Task TestRankDescendingSequence()
 	{
-		var sequence = Enumerable.Range(456, 100).Reverse();
+		await using var sequence = Enumerable.Range(456, 100).Reverse()
+			.AsTestingSequence();
 		var expectedResult = Enumerable.Range(456, 100)
 			.Select((x, i) => (x, i + 1));
 
-		var result = await sequence.AsTestingSequence().Rank().ToArrayAsync();
+		var result = await sequence.Rank().ToArrayAsync();
 		Assert.Equal(100, result.Length);
 		result.AssertSequenceEqual(expectedResult);
 	}
@@ -45,11 +48,11 @@ public class RankTests
 	[Fact]
 	public async Task TestRankByAscendingSeries()
 	{
-		var sequence = Enumerable.Range(456, 100);
+		await using var sequence = Enumerable.Range(456, 100).AsTestingSequence();
 		var expectedResult = Enumerable.Range(456, 100)
 			.Select((x, i) => (x, i + 1));
 
-		var result = await sequence.AsTestingSequence().Rank().ToArrayAsync();
+		var result = await sequence.Rank().ToArrayAsync();
 		Assert.Equal(100, result.Length);
 		result.AssertSequenceEqual(expectedResult);
 	}
@@ -60,11 +63,12 @@ public class RankTests
 	[Fact]
 	public async Task TestRankGroupedItems()
 	{
-		var sequence = Enumerable.Range(0, 10)
+		await using var sequence = Enumerable.Range(0, 10)
 			.Concat(Enumerable.Range(0, 10))
-			.Concat(Enumerable.Range(0, 10));
+			.Concat(Enumerable.Range(0, 10))
+			.AsTestingSequence();
 
-		var result = await sequence.AsTestingSequence().Rank().ToListAsync();
+		var result = await sequence.Rank().ToListAsync();
 		Assert.Equal(10, result.Distinct().Count());
 		result.AssertSequenceEqual(
 			SuperLinq.SuperEnumerable.Range(1, 10, 3)
@@ -79,9 +83,10 @@ public class RankTests
 	[Fact]
 	public async Task TestRankOfHighestItemIsOne()
 	{
-		var sequence = Enumerable.Range(1, 10);
+		await using var sequence = Enumerable.Range(1, 10)
+			.AsTestingSequence();
 
-		var result = sequence.AsTestingSequence().Rank();
+		var result = sequence.Rank();
 		Assert.Equal(1, (await result.OrderBy(x => x).FirstAsync()).rank);
 	}
 
@@ -103,7 +108,9 @@ public class RankTests
 			new { Name = "Jes", Age = 11, ExpectedRank = 1 },
 		};
 
-		var result = await sequence.AsTestingSequence().RankBy(x => x.Age).ToArrayAsync();
+		await using var xs = sequence.AsTestingSequence();
+		var result = await xs.RankBy(x => x.Age).ToArrayAsync();
+
 		Assert.Equal(sequence.Length, result.Length);
 		result.AssertSequenceEqual(sequence
 			.OrderBy(x => x.ExpectedRank)
@@ -120,13 +127,20 @@ public class RankTests
 		var sequence = ordinals.Select(x => new DateTime(2010, x, 20 - x));
 
 		// invert the CompareTo operation to Rank in reverse order
-		var resultA = sequence.AsTestingSequence().Rank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
-		await resultA.AssertSequenceEqual(sequence
-			.OrderByDescending(x => x)
-			.Select((x, i) => (x, i + 1)));
-		var resultB = sequence.AsTestingSequence().RankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
-		await resultB.AssertSequenceEqual(sequence
-			.OrderByDescending(x => x.Day)
-			.Select((x, i) => (x, i + 1)));
+		await using (var xs = sequence.AsTestingSequence())
+		{
+			var resultA = xs.Rank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
+			await resultA.AssertSequenceEqual(sequence
+				.OrderByDescending(x => x)
+				.Select((x, i) => (x, i + 1)));
+		}
+
+		await using (var xs = sequence.AsTestingSequence())
+		{
+			var resultB = xs.RankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
+			await resultB.AssertSequenceEqual(sequence
+				.OrderByDescending(x => x.Day)
+				.Select((x, i) => (x, i + 1)));
+		}
 	}
 }
