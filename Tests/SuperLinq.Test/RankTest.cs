@@ -17,8 +17,9 @@ public class RankTests
 	[Fact]
 	public void TestRankNullComparer()
 	{
-		var sequence = Enumerable.Repeat(1, 10);
-		sequence.AsTestingSequence().Rank().AssertSequenceEqual(
+		using var sequence = Enumerable.Repeat(1, 10)
+			.AsTestingSequence();
+		sequence.Rank().AssertSequenceEqual(
 			Enumerable.Repeat((1, 1), 10));
 	}
 
