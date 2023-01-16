@@ -22,11 +22,11 @@ public class SegmentTests
 	[Fact]
 	public async Task TestIdentitySegment()
 	{
-		var sequence = Enumerable.Range(1, 5);
-		var result = sequence.ToAsyncEnumerable().Segment(x => false);
+		await using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
 
+		var result = sequence.Segment(x => false);
 		(await result.SingleAsync())
-			.AssertSequenceEqual(sequence);
+			.AssertSequenceEqual(Enumerable.Range(1, 5));
 	}
 
 	/// <summary>
@@ -35,7 +35,7 @@ public class SegmentTests
 	[Fact]
 	public async Task TestEmptySequence()
 	{
-		var sequence = AsyncEnumerable.Repeat(-1, 0);
+		await using var sequence = AsyncEnumerable.Repeat(-1, 0).AsTestingSequence();
 		var result = await sequence.Segment(x => true).ToListAsync();
 		Assert.Empty(result);
 	}
@@ -46,9 +46,9 @@ public class SegmentTests
 	[Fact]
 	public async Task TestSegmentIsIdempotent()
 	{
-		var sequence = Enumerable.Repeat(-1, 10);
-		var result = sequence.ToAsyncEnumerable().Segment(x => true);
+		await using var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence();
 
+		var result = sequence.Segment(x => true);
 		foreach (var segment in await result.ToListAsync())
 		{
 			Assert.True(segment.Any());
@@ -63,14 +63,12 @@ public class SegmentTests
 	[Fact]
 	public async Task TestFirstSegmentNeverEmpty()
 	{
-		var sequence = Enumerable.Repeat(-1, 10);
-		var resultA = sequence.ToAsyncEnumerable().Segment(x => true);
-		var resultB = sequence.ToAsyncEnumerable().Segment((x, index) => true);
-		var resultC = sequence.ToAsyncEnumerable().Segment((x, prevX, index) => true);
-
-		Assert.NotEmpty(await resultA.FirstAsync());
-		Assert.NotEmpty(await resultB.FirstAsync());
-		Assert.NotEmpty(await resultC.FirstAsync());
+		await using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
+			Assert.NotEmpty(await sequence.Segment(x => true).FirstAsync());
+		await using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
+			Assert.NotEmpty(await sequence.Segment((x, index) => true).FirstAsync());
+		await using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
+			Assert.NotEmpty(await sequence.Segment((x, prevX, index) => true).FirstAsync());
 	}
 
 	/// <summary>
@@ -79,13 +77,12 @@ public class SegmentTests
 	[Fact]
 	public async Task TestSegmentationStartsWithSecondItem()
 	{
-		var resultA = AsyncSeq(0).Segment(BreakingFunc.Of<int, bool>());
-		var resultB = AsyncSeq(0).Segment(BreakingFunc.Of<int, int, bool>());
-		var resultC = AsyncSeq(0).Segment(BreakingFunc.Of<int, int, int, bool>());
-
-		Assert.NotEmpty(await resultA.FirstAsync());
-		Assert.NotEmpty(await resultB.FirstAsync());
-		Assert.NotEmpty(await resultC.FirstAsync());
+		await using (var sequence = AsyncSeq(0).AsTestingSequence())
+			Assert.NotEmpty(await sequence.Segment(BreakingFunc.Of<int, bool>()).FirstAsync());
+		await using (var sequence = AsyncSeq(0).AsTestingSequence())
+			Assert.NotEmpty(await sequence.Segment(BreakingFunc.Of<int, int, bool>()).FirstAsync());
+		await using (var sequence = AsyncSeq(0).AsTestingSequence())
+			Assert.NotEmpty(await sequence.Segment(BreakingFunc.Of<int, int, int, bool>()).FirstAsync());
 	}
 
 	/// <summary>
@@ -94,18 +91,14 @@ public class SegmentTests
 	[Fact]
 	public async Task VerifyCanSegmentByIndex()
 	{
-		const int Count = 100;
-		const int SegmentSize = 2;
+		await using var sequence = Enumerable.Repeat(1, 100)
+			.AsTestingSequence();
+		var result = await sequence
+			.Segment((x, i) => i % 2 == 0)
+			.ToListAsync();
 
-		var sequence = Enumerable.Repeat(1, Count);
-		var result = sequence.ToAsyncEnumerable()
-			.Segment((x, i) => i % SegmentSize == 0);
-
-		Assert.Equal(Count / SegmentSize, await result.CountAsync());
-		foreach (var segment in await result.ToListAsync())
-		{
-			Assert.Equal(SegmentSize, segment.Count());
-		}
+		Assert.Equal(100 / 2, result.Count);
+		Assert.True(result.All(s => s.Count() == 2));
 	}
 
 	/// <summary>
@@ -115,12 +108,15 @@ public class SegmentTests
 	public async Task VerifyCanSegmentByPrevious()
 	{
 		var sequence = Enumerable.Range(1, 3)
-								 .SelectMany(x => Enumerable.Repeat(x, 5));
-		var result = sequence.ToAsyncEnumerable()
-			.Segment((curr, prev, i) => curr != prev);
+			.SelectMany(x => Enumerable.Repeat(x, 5));
 
-		Assert.Equal(sequence.Distinct().Count(), await result.CountAsync());
-		Assert.True(await result.AllAsync(s => s.Count() == 5));
+		await using var xs = sequence.AsTestingSequence();
+		var result = await xs
+			.Segment((curr, prev, i) => curr != prev)
+			.ToListAsync();
+
+		Assert.Equal(sequence.Distinct().Count(), result.Count);
+		Assert.True(result.All(s => s.Count() == 5));
 	}
 
 	public static readonly IEnumerable<object[]> TestData =
@@ -143,10 +139,10 @@ public class SegmentTests
 	[MemberData(nameof(TestData))]
 	public async Task TestSegment(IEnumerable<int> source, IAsyncEnumerable<IEnumerable<int>> expected)
 	{
-		await foreach (var (first, second) in
-			source.AsTestingSequence()
-				.Segment(v => v % 3 == 0)
-				.Zip(expected))
+		await using var xs = source.AsTestingSequence();
+		await foreach (var (first, second) in xs
+			.Segment(v => v % 3 == 0)
+			.Zip(expected))
 		{
 			Assert.Equal(second, first);
 		}
