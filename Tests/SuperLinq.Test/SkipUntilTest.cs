@@ -5,22 +5,29 @@ public class SkipUntilTest
 	[Fact]
 	public void SkipUntilPredicateNeverFalse()
 	{
-		var sequence = Enumerable.Range(0, 5).SkipUntil(x => x != 100);
-		sequence.AssertSequenceEqual(1, 2, 3, 4);
+		using var sequence = Enumerable.Range(0, 5)
+			.AsTestingSequence();
+		sequence
+			.SkipUntil(x => x != 100)
+			.AssertSequenceEqual(1, 2, 3, 4);
 	}
 
 	[Fact]
 	public void SkipUntilPredicateNeverTrue()
 	{
-		var sequence = Enumerable.Range(0, 5).SkipUntil(x => x == 100);
-		Assert.Empty(sequence);
+		using var sequence = Enumerable.Range(0, 5)
+			.AsTestingSequence();
+		Assert.Empty(sequence.SkipUntil(x => x == 100));
 	}
 
 	[Fact]
 	public void SkipUntilPredicateBecomesTrueHalfWay()
 	{
-		var sequence = Enumerable.Range(0, 5).SkipUntil(x => x == 2);
-		sequence.AssertSequenceEqual(3, 4);
+		using var sequence = Enumerable.Range(0, 5)
+			.AsTestingSequence();
+		sequence
+			.SkipUntil(x => x == 2)
+			.AssertSequenceEqual(3, 4);
 	}
 
 	[Fact]
@@ -32,10 +39,13 @@ public class SkipUntilTest
 	[Fact]
 	public void SkipUntilEvaluatesPredicateLazily()
 	{
+		using var sequence = Enumerable.Range(-2, 5)
+			.AsTestingSequence();
 		// Predicate would explode at x == 0, but we never need to evaluate it as we've
 		// started returning items after -1.
-		var sequence = Enumerable.Range(-2, 5).SkipUntil(x => 1 / x == -1);
-		sequence.AssertSequenceEqual(0, 1, 2);
+		sequence
+			.SkipUntil(x => 1 / x == -1)
+			.AssertSequenceEqual(0, 1, 2);
 	}
 
 	public static readonly IEnumerable<object[]> TestData =
@@ -54,6 +64,7 @@ public class SkipUntilTest
 	[Theory, MemberData(nameof(TestData))]
 	public void TestSkipUntil(int[] source, int min, int[] expected)
 	{
-		Assert.Equal(expected, source.AsTestingSequence().SkipUntil(v => v >= min).ToArray());
+		using var xs = source.AsTestingSequence();
+		Assert.Equal(expected, xs.SkipUntil(v => v >= min).ToArray());
 	}
 }
