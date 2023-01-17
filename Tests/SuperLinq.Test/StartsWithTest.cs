@@ -1,4 +1,7 @@
-﻿namespace Test;
+﻿using System.Collections.Generic;
+using Xunit;
+
+namespace Test;
 
 public class StartsWithTest
 {
@@ -8,7 +11,10 @@ public class StartsWithTest
 	[InlineData(new[] { 1, 2, 3 }, new[] { 1, 2, 3, 4 }, false)]
 	public void StartsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second, bool expected)
 	{
-		Assert.Equal(expected, first.StartsWith(second));
+		using var f = first.AsTestingSequence();
+		using var s = second.AsTestingSequence();
+
+		Assert.Equal(expected, f.StartsWith(s));
 	}
 
 	[Theory]
@@ -17,7 +23,10 @@ public class StartsWithTest
 	[InlineData(new[] { '1', '2', '3' }, new[] { '1', '2', '3', '4' }, false)]
 	public void StartsWithWithChars(IEnumerable<char> first, IEnumerable<char> second, bool expected)
 	{
-		Assert.Equal(expected, first.StartsWith(second));
+		using var f = first.AsTestingSequence();
+		using var s = second.AsTestingSequence();
+
+		Assert.Equal(expected, f.StartsWith(s));
 	}
 
 	[Theory]
@@ -26,20 +35,28 @@ public class StartsWithTest
 	[InlineData("123", "1234", false)]
 	public void StartsWithWithStrings(string first, string second, bool expected)
 	{
-		// Conflict with String.StartsWith(), which has precedence in this case
-		Assert.Equal(expected, SuperEnumerable.StartsWith(first, second));
+		using var f = first.AsTestingSequence();
+		using var s = second.AsTestingSequence();
+
+		Assert.Equal(expected, f.StartsWith(s));
 	}
 
 	[Fact]
 	public void StartsWithReturnsTrueIfBothEmpty()
 	{
-		Assert.True(Array.Empty<int>().StartsWith(Array.Empty<int>()));
+		using var f = Array.Empty<int>().AsTestingSequence();
+		using var s = Array.Empty<int>().AsTestingSequence();
+
+		Assert.True(f.StartsWith(s));
 	}
 
 	[Fact]
 	public void StartsWithReturnsFalseIfOnlyFirstIsEmpty()
 	{
-		Assert.False(Array.Empty<int>().StartsWith(new[] { 1, 2, 3 }));
+		using var f = Array.Empty<int>().AsTestingSequence();
+		using var s = Seq(1, 2, 3).AsTestingSequence();
+
+		Assert.False(f.StartsWith(s));
 	}
 
 	[Theory]
@@ -47,37 +64,28 @@ public class StartsWithTest
 	[InlineData("1", "", true)]
 	public void StartsWithReturnsTrueIfSecondIsEmpty(string first, string second, bool expected)
 	{
-		// Conflict with String.StartsWith(), which has precedence in this case
-		Assert.Equal(expected, SuperEnumerable.StartsWith(first, second));
-	}
+		using var f = first.AsTestingSequence();
+		using var s = second.AsTestingSequence();
 
-	[Fact]
-	public void StartsWithDisposesBothSequenceEnumerators()
-	{
-		using var first = TestingSequence.Of(1, 2, 3);
-		using var second = TestingSequence.Of(1);
-
-		first.StartsWith(second);
+		Assert.Equal(expected, f.StartsWith(s));
 	}
 
 	[Fact]
 	public void StartsWithUsesSpecifiedEqualityComparerOrDefault()
 	{
-		var first = new[] { 1, 2, 3 };
-		var second = new[] { 4, 5, 6 };
+		var first = Seq(1, 2, 3);
+		var second = Seq(4, 5, 6);
 
-		Assert.False(first.StartsWith(second));
 		Assert.False(first.StartsWith(second, null));
 		Assert.False(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return false; })));
 		Assert.True(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
 	}
 
-	[Theory]
-	[InlineData(SourceKind.BreakingCollection)]
-	public void StartsWithUsesCollectionsCountToAvoidUnnecessaryIteration(SourceKind sourceKind)
+	[Fact]
+	public void StartsWithUsesCollectionsCountToAvoidUnnecessaryIteration()
 	{
-		var first = new[] { 1, 2 }.ToSourceKind(sourceKind);
-		var second = new[] { 1, 2, 3 }.ToSourceKind(sourceKind);
+		using var first = new BreakingCollection<int>(1, 2);
+		using var second = new BreakingCollection<int>(1, 2, 3);
 
 		Assert.False(first.StartsWith(second));
 	}
