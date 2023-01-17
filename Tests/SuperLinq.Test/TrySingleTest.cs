@@ -10,7 +10,7 @@ public class TrySingleTest
 	[InlineData(SourceKind.BreakingCollection)]
 	public void TrySingleWithEmptySource(SourceKind kind)
 	{
-		var source = Array.Empty<int?>().ToSourceKind(kind);
+		using var source = Array.Empty<int?>().ToSourceKind(kind);
 
 		var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
@@ -23,7 +23,7 @@ public class TrySingleTest
 	[InlineData(SourceKind.BreakingList)]
 	public void TrySingleWithSingleton(SourceKind kind)
 	{
-		var source = new int?[] { 10 }.ToSourceKind(kind);
+		using var source = new int?[] { 10 }.ToSourceKind(kind);
 
 		var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
@@ -72,7 +72,7 @@ public class TrySingleTest
 	[InlineData(SourceKind.BreakingCollection)]
 	public void TrySingleWithMoreThanOne(SourceKind kind)
 	{
-		var source = new int?[] { 10, 20 }.ToSourceKind(kind);
+		using var source = new int?[] { 10, 20 }.ToSourceKind(kind);
 
 		var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
@@ -83,14 +83,13 @@ public class TrySingleTest
 	[Fact]
 	public void TrySingleDoesNotConsumeMoreThanTwoElementsFromTheSequence()
 	{
-		static IEnumerable<int> TestSequence()
-		{
-			yield return 1;
-			yield return 2;
-			throw new InvalidOperationException(nameof(SuperEnumerable.TrySingle) + " should not have attempted to consume a third element.");
-		}
-
-		var (cardinality, value) = TestSequence().TrySingle("zero", "one", "many");
+		using var xs = SuperEnumerable
+			.From(
+				() => 1,
+				() => 2,
+				BreakingFunc.Of<int>())
+			.AsTestingSequence();
+		var (cardinality, value) = xs.TrySingle("zero", "one", "many");
 
 		Assert.Equal("many", cardinality);
 		Assert.Equal(0, value);
