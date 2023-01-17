@@ -46,7 +46,9 @@ public class OrderedMergeTest
 		IEnumerable<int> second,
 		IEnumerable<int> expected)
 	{
-		Assert.Equal(expected, first.AsTestingSequence().OrderedMerge(second.AsTestingSequence()));
+		using var f = first.AsTestingSequence();
+		using var s = second.AsTestingSequence();
+		Assert.Equal(expected, f.OrderedMerge(s));
 	}
 }
 
