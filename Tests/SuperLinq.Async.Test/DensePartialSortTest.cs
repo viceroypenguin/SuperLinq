@@ -51,7 +51,6 @@ public class DensePartialSortTests
 			.ToArray();
 
 		await using var xs = alphabet
-			.ToAsyncEnumerable()
 			.AsTestingSequence();
 
 		await xs

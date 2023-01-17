@@ -102,7 +102,6 @@ public class IndexOfTest
 				() => throw new TestException(),
 				() => "angelo",
 				() => "carlos")
-			.ToAsyncEnumerable()
 			.AsTestingSequence();
 
 		Assert.Equal(4, await source.IndexOf("davi"));
@@ -121,7 +120,6 @@ public class IndexOfTest
 				() => throw new TestException(),
 				() => "angelo",
 				() => "carlos")
-			.ToAsyncEnumerable()
 			.AsTestingSequence();
 
 		Assert.Equal(-1, await source.IndexOf("carlos", 0, 5));

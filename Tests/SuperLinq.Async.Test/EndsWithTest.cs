@@ -8,8 +8,8 @@ public class EndsWithTest
 	[InlineData(new[] { 1, 2, 3 }, new[] { 0, 1, 2, 3 }, false)]
 	public async Task EndsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second, bool expected)
 	{
-		await using var f = first.ToAsyncEnumerable().AsTestingSequence();
-		await using var s = second.ToAsyncEnumerable().AsTestingSequence();
+		await using var f = first.AsTestingSequence();
+		await using var s = second.AsTestingSequence();
 		Assert.Equal(expected, await f.EndsWith(s));
 	}
 
@@ -19,8 +19,8 @@ public class EndsWithTest
 	[InlineData(new[] { '1', '2', '3' }, new[] { '0', '1', '2', '3' }, false)]
 	public async Task EndsWithWithChars(IEnumerable<char> first, IEnumerable<char> second, bool expected)
 	{
-		await using var f = first.ToAsyncEnumerable().AsTestingSequence();
-		await using var s = second.ToAsyncEnumerable().AsTestingSequence();
+		await using var f = first.AsTestingSequence();
+		await using var s = second.AsTestingSequence();
 		Assert.Equal(expected, await f.EndsWith(s));
 	}
 
@@ -30,8 +30,8 @@ public class EndsWithTest
 	[InlineData("123", "0123", false)]
 	public async Task EndsWithWithStrings(string first, string second, bool expected)
 	{
-		await using var f = first.ToAsyncEnumerable().AsTestingSequence();
-		await using var s = second.ToAsyncEnumerable().AsTestingSequence();
+		await using var f = first.AsTestingSequence();
+		await using var s = second.AsTestingSequence();
 		Assert.Equal(expected, await f.EndsWith(s));
 	}
 
@@ -56,8 +56,8 @@ public class EndsWithTest
 	[InlineData("1", "", true)]
 	public async Task EndsWithReturnsTrueIfSecondIsEmpty(string first, string second, bool expected)
 	{
-		await using var f = first.ToAsyncEnumerable().AsTestingSequence();
-		await using var s = second.ToAsyncEnumerable().AsTestingSequence();
+		await using var f = first.AsTestingSequence();
+		await using var s = second.AsTestingSequence();
 		Assert.Equal(expected, await f.EndsWith(s));
 	}
 

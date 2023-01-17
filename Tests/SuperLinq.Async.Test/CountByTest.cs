@@ -21,8 +21,7 @@ public class CountByTest
 	[Fact]
 	public async Task CountByWithSecondOccurenceImmediatelyAfterFirst()
 	{
-		await using var xs = "jaffer".ToAsyncEnumerable()
-			.AsTestingSequence();
+		await using var xs = "jaffer".AsTestingSequence();
 
 		await xs.CountBy(c => c)
 			.AssertSequenceEqual(
@@ -65,8 +64,7 @@ public class CountByTest
 	{
 		var randomSequence = SuperLinq.SuperEnumerable.Random(0, 100).Take(100).ToArray();
 
-		await using var xs = randomSequence.ToAsyncEnumerable()
-			.AsTestingSequence();
+		await using var xs = randomSequence.AsTestingSequence();
 		var countByKeys = xs.CountBy(x => x).Select(x => x.key);
 		var groupByKeys = randomSequence.GroupBy(x => x).Select(x => x.Key);
 

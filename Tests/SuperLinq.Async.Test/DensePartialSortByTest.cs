@@ -18,7 +18,6 @@ public class DensePartialSortByTests
 		await using var xs = ns.Select((n, i) => KeyValuePair.Create(i, n))
 			.Repeat(2)
 			.Reverse()
-			.ToAsyncEnumerable()
 			.AsTestingSequence();
 		var sorted = xs
 			.DensePartialSortBy(3, e => e.Key);
@@ -40,7 +39,6 @@ public class DensePartialSortByTests
 		await using var xs = ns.Select((n, i) => KeyValuePair.Create(i, n))
 			.Repeat(2)
 			.Reverse()
-			.ToAsyncEnumerable()
 			.AsTestingSequence();
 		var sorted = xs
 			.DensePartialSortBy(3, e => e.Key, direction);
@@ -61,7 +59,7 @@ public class DensePartialSortByTests
 			.ToArray();
 
 		var ns = alphabet.Zip(SuperEnumerable.RandomDouble(), KeyValuePair.Create).ToArray();
-		await using var xs = ns.ToAsyncEnumerable().AsTestingSequence();
+		await using var xs = ns.AsTestingSequence();
 
 		var sorted = xs.DensePartialSortBy(3, e => e.Key, StringComparer.Ordinal);
 

@@ -32,7 +32,6 @@ public class ChooseTest
 		await using var xs =
 			"O,l,2,3,4,S,6,7,B,9"
 			   .Split(',')
-			   .ToAsyncEnumerable()
 			   .AsTestingSequence();
 
 		await xs
