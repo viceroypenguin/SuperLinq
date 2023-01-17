@@ -106,14 +106,14 @@ public class TakeTest
 	[Fact]
 	public async Task RunOnce()
 	{
-		var source = new[] { 2, 5, 9, 1 };
+		var source = AsyncSeq(2, 5, 9, 1);
 		int[] expected = { 2, 5, 9 };
 
-		Assert.Equal(expected, await source.AsTestingSequence().Take(3).ToListAsync());
-		Assert.Equal(expected, await source.AsTestingSequence().Take(0..3).ToListAsync());
-		Assert.Equal(expected, await source.AsTestingSequence().Take(^4..3).ToListAsync());
-		Assert.Equal(expected, await source.AsTestingSequence().Take(0..^1).ToListAsync());
-		Assert.Equal(expected, await source.AsTestingSequence().Take(^4..^1).ToListAsync());
+		Assert.Equal(expected, await source.Take(3).ToListAsync());
+		Assert.Equal(expected, await source.Take(0..3).ToListAsync());
+		Assert.Equal(expected, await source.Take(^4..3).ToListAsync());
+		Assert.Equal(expected, await source.Take(0..^1).ToListAsync());
+		Assert.Equal(expected, await source.Take(^4..^1).ToListAsync());
 	}
 
 	[Fact]
@@ -193,100 +193,100 @@ public class TakeTest
 	[Fact]
 	public async Task OutOfBoundNoException()
 	{
-		Func<IAsyncEnumerable<int>> source = () => AsyncSeq(1, 2, 3, 4, 5);
+		static IAsyncEnumerable<int> Source() => AsyncSeq(1, 2, 3, 4, 5);
 
-		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await source().Take(0..6).ToListAsync());
-		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await source().Take(0..int.MaxValue).ToListAsync());
+		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await Source().Take(0..6).ToListAsync());
+		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await Source().Take(0..int.MaxValue).ToListAsync());
 
-		Assert.Equal(new int[] { 1, 2, 3, 4 }, await source().Take(^10..4).ToListAsync());
-		Assert.Equal(new int[] { 1, 2, 3, 4 }, await source().Take(^int.MaxValue..4).ToListAsync());
-		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await source().Take(^10..6).ToListAsync());
-		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await source().Take(^int.MaxValue..6).ToListAsync());
-		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await source().Take(^10..int.MaxValue).ToListAsync());
-		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await source().Take(^int.MaxValue..int.MaxValue).ToListAsync());
+		Assert.Equal(new int[] { 1, 2, 3, 4 }, await Source().Take(^10..4).ToListAsync());
+		Assert.Equal(new int[] { 1, 2, 3, 4 }, await Source().Take(^int.MaxValue..4).ToListAsync());
+		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await Source().Take(^10..6).ToListAsync());
+		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await Source().Take(^int.MaxValue..6).ToListAsync());
+		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await Source().Take(^10..int.MaxValue).ToListAsync());
+		Assert.Equal(new int[] { 1, 2, 3, 4, 5 }, await Source().Take(^int.MaxValue..int.MaxValue).ToListAsync());
 
-		Assert.Empty(await source().Take(0..^6).ToListAsync());
-		Assert.Empty(await source().Take(0..^int.MaxValue).ToListAsync());
-		Assert.Empty(await source().Take(4..^6).ToListAsync());
-		Assert.Empty(await source().Take(4..^int.MaxValue).ToListAsync());
-		Assert.Empty(await source().Take(6..^6).ToListAsync());
-		Assert.Empty(await source().Take(6..^int.MaxValue).ToListAsync());
-		Assert.Empty(await source().Take(int.MaxValue..^6).ToListAsync());
-		Assert.Empty(await source().Take(int.MaxValue..^int.MaxValue).ToListAsync());
+		Assert.Empty(await Source().Take(0..^6).ToListAsync());
+		Assert.Empty(await Source().Take(0..^int.MaxValue).ToListAsync());
+		Assert.Empty(await Source().Take(4..^6).ToListAsync());
+		Assert.Empty(await Source().Take(4..^int.MaxValue).ToListAsync());
+		Assert.Empty(await Source().Take(6..^6).ToListAsync());
+		Assert.Empty(await Source().Take(6..^int.MaxValue).ToListAsync());
+		Assert.Empty(await Source().Take(int.MaxValue..^6).ToListAsync());
+		Assert.Empty(await Source().Take(int.MaxValue..^int.MaxValue).ToListAsync());
 
-		Assert.Equal(new int[] { 1, 2, 3, 4 }, await source().Take(^10..^1).ToListAsync());
-		Assert.Equal(new int[] { 1, 2, 3, 4 }, await source().Take(^int.MaxValue..^1).ToListAsync());
-		Assert.Empty(await source().Take(^0..^6).ToListAsync());
-		Assert.Empty(await source().Take(^1..^6).ToListAsync());
-		Assert.Empty(await source().Take(^6..^6).ToListAsync());
-		Assert.Empty(await source().Take(^10..^6).ToListAsync());
-		Assert.Empty(await source().Take(^int.MaxValue..^6).ToListAsync());
-		Assert.Empty(await source().Take(^0..^int.MaxValue).ToListAsync());
-		Assert.Empty(await source().Take(^1..^int.MaxValue).ToListAsync());
-		Assert.Empty(await source().Take(^6..^int.MaxValue).ToListAsync());
-		Assert.Empty(await source().Take(^int.MaxValue..^int.MaxValue).ToListAsync());
+		Assert.Equal(new int[] { 1, 2, 3, 4 }, await Source().Take(^10..^1).ToListAsync());
+		Assert.Equal(new int[] { 1, 2, 3, 4 }, await Source().Take(^int.MaxValue..^1).ToListAsync());
+		Assert.Empty(await Source().Take(^0..^6).ToListAsync());
+		Assert.Empty(await Source().Take(^1..^6).ToListAsync());
+		Assert.Empty(await Source().Take(^6..^6).ToListAsync());
+		Assert.Empty(await Source().Take(^10..^6).ToListAsync());
+		Assert.Empty(await Source().Take(^int.MaxValue..^6).ToListAsync());
+		Assert.Empty(await Source().Take(^0..^int.MaxValue).ToListAsync());
+		Assert.Empty(await Source().Take(^1..^int.MaxValue).ToListAsync());
+		Assert.Empty(await Source().Take(^6..^int.MaxValue).ToListAsync());
+		Assert.Empty(await Source().Take(^int.MaxValue..^int.MaxValue).ToListAsync());
 	}
 
 	[Fact]
 	public async Task NonEmptySourceDoNotThrowException()
 	{
-		Func<IAsyncEnumerable<int>> source = () => AsyncSeq(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+		static IAsyncEnumerable<int> Source() => AsyncSeq(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-		Assert.Empty(await source().Take(3..2).ToListAsync());
-		Assert.Empty(await source().Take(6..^5).ToListAsync());
-		Assert.Empty(await source().Take(3..^8).ToListAsync());
-		Assert.Empty(await source().Take(^6..^7).ToListAsync());
+		Assert.Empty(await Source().Take(3..2).ToListAsync());
+		Assert.Empty(await Source().Take(6..^5).ToListAsync());
+		Assert.Empty(await Source().Take(3..^8).ToListAsync());
+		Assert.Empty(await Source().Take(^6..^7).ToListAsync());
 	}
 
 	[Fact]
 	public async Task EmptySourceDoNotThrowException()
 	{
-		Func<IAsyncEnumerable<int>> source = () => AsyncSeq<int>();
+		static IAsyncEnumerable<int> Source() => AsyncSeq<int>();
 
 		// Multiple elements in the middle.
-		Assert.Empty(await source().Take(^9..5).ToListAsync());
-		Assert.Empty(await source().Take(2..7).ToListAsync());
-		Assert.Empty(await source().Take(2..^4).ToListAsync());
-		Assert.Empty(await source().Take(^7..^4).ToListAsync());
+		Assert.Empty(await Source().Take(^9..5).ToListAsync());
+		Assert.Empty(await Source().Take(2..7).ToListAsync());
+		Assert.Empty(await Source().Take(2..^4).ToListAsync());
+		Assert.Empty(await Source().Take(^7..^4).ToListAsync());
 
 		// Range with default index.
-		Assert.Empty(await source().Take(^9..).ToListAsync());
-		Assert.Empty(await source().Take(2..).ToListAsync());
-		Assert.Empty(await source().Take(..^4).ToListAsync());
-		Assert.Empty(await source().Take(..6).ToListAsync());
+		Assert.Empty(await Source().Take(^9..).ToListAsync());
+		Assert.Empty(await Source().Take(2..).ToListAsync());
+		Assert.Empty(await Source().Take(..^4).ToListAsync());
+		Assert.Empty(await Source().Take(..6).ToListAsync());
 
 		// All.
-		Assert.Empty(await source().Take(..).ToListAsync());
+		Assert.Empty(await Source().Take(..).ToListAsync());
 
 		// Single element in the middle.
-		Assert.Empty(await source().Take(^9..2).ToListAsync());
-		Assert.Empty(await source().Take(2..3).ToListAsync());
-		Assert.Empty(await source().Take(2..^7).ToListAsync());
-		Assert.Empty(await source().Take(^5..^4).ToListAsync());
+		Assert.Empty(await Source().Take(^9..2).ToListAsync());
+		Assert.Empty(await Source().Take(2..3).ToListAsync());
+		Assert.Empty(await Source().Take(2..^7).ToListAsync());
+		Assert.Empty(await Source().Take(^5..^4).ToListAsync());
 
 		// Single element at start.
-		Assert.Empty(await source().Take(^10..1).ToListAsync());
-		Assert.Empty(await source().Take(0..1).ToListAsync());
-		Assert.Empty(await source().Take(0..^9).ToListAsync());
-		Assert.Empty(await source().Take(^10..^9).ToListAsync());
+		Assert.Empty(await Source().Take(^10..1).ToListAsync());
+		Assert.Empty(await Source().Take(0..1).ToListAsync());
+		Assert.Empty(await Source().Take(0..^9).ToListAsync());
+		Assert.Empty(await Source().Take(^10..^9).ToListAsync());
 
 		// Single element at end.
-		Assert.Empty(await source().Take(^1..^10).ToListAsync());
-		Assert.Empty(await source().Take(9..10).ToListAsync());
-		Assert.Empty(await source().Take(9..^9).ToListAsync());
-		Assert.Empty(await source().Take(^1..^9).ToListAsync());
+		Assert.Empty(await Source().Take(^1..^10).ToListAsync());
+		Assert.Empty(await Source().Take(9..10).ToListAsync());
+		Assert.Empty(await Source().Take(9..^9).ToListAsync());
+		Assert.Empty(await Source().Take(^1..^9).ToListAsync());
 
 		// No element.
-		Assert.Empty(await source().Take(3..3).ToListAsync());
-		Assert.Empty(await source().Take(6..^4).ToListAsync());
-		Assert.Empty(await source().Take(3..^7).ToListAsync());
-		Assert.Empty(await source().Take(^3..7).ToListAsync());
-		Assert.Empty(await source().Take(^6..^6).ToListAsync());
+		Assert.Empty(await Source().Take(3..3).ToListAsync());
+		Assert.Empty(await Source().Take(6..^4).ToListAsync());
+		Assert.Empty(await Source().Take(3..^7).ToListAsync());
+		Assert.Empty(await Source().Take(^3..7).ToListAsync());
+		Assert.Empty(await Source().Take(^6..^6).ToListAsync());
 
 		// Invalid range.
-		Assert.Empty(await source().Take(3..2).ToListAsync());
-		Assert.Empty(await source().Take(6..^5).ToListAsync());
-		Assert.Empty(await source().Take(3..^8).ToListAsync());
-		Assert.Empty(await source().Take(^6..^7).ToListAsync());
+		Assert.Empty(await Source().Take(3..2).ToListAsync());
+		Assert.Empty(await Source().Take(6..^5).ToListAsync());
+		Assert.Empty(await Source().Take(3..^8).ToListAsync());
+		Assert.Empty(await Source().Take(^6..^7).ToListAsync());
 	}
 }

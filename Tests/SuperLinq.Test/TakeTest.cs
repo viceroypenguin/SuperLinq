@@ -206,12 +206,12 @@ public class TakeTest
 		var source = new[] { 2, 5, 9, 1 };
 		int[] expected = { 2, 5, 9 };
 
-		Assert.Equal(expected, source.AsTestingSequence().Take(3));
+		Assert.Equal(expected, source.Take(3));
 
-		Assert.Equal(expected, source.AsTestingSequence().Take(0..3));
-		Assert.Equal(expected, source.AsTestingSequence().Take(^4..3));
-		Assert.Equal(expected, source.AsTestingSequence().Take(0..^1));
-		Assert.Equal(expected, source.AsTestingSequence().Take(^4..^1));
+		Assert.Equal(expected, source.Take(0..3));
+		Assert.Equal(expected, source.Take(^4..3));
+		Assert.Equal(expected, source.Take(0..^1));
+		Assert.Equal(expected, source.Take(^4..^1));
 	}
 
 	[Fact]
@@ -220,12 +220,12 @@ public class TakeTest
 		var source = Seq(2, 5, 9, 1);
 		int[] expected = { 2, 5, 9 };
 
-		Assert.Equal(expected, source.AsTestingSequence().Take(3));
+		Assert.Equal(expected, source.Take(3));
 
-		Assert.Equal(expected, source.AsTestingSequence().Take(0..3));
-		Assert.Equal(expected, source.AsTestingSequence().Take(^4..3));
-		Assert.Equal(expected, source.AsTestingSequence().Take(0..^1));
-		Assert.Equal(expected, source.AsTestingSequence().Take(^4..^1));
+		Assert.Equal(expected, source.Take(0..3));
+		Assert.Equal(expected, source.Take(^4..3));
+		Assert.Equal(expected, source.Take(0..^1));
+		Assert.Equal(expected, source.Take(^4..^1));
 	}
 
 	[Fact]
