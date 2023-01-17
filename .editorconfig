@@ -218,7 +218,7 @@ dotnet_diagnostic.CS1998.severity = error               # CS1998: Async method l
 dotnet_diagnostic.CS4014.severity = error               # CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
 
 # Dispose things need disposing
-dotnet_diagnostic.CA2000.severity = warning             # CA2000: Dispose objects before losing scope
+dotnet_diagnostic.CA2000.severity = error               # CA2000: Dispose objects before losing scope
 
 # Overly strict checks
 dotnet_diagnostic.CA2007.severity = none                # CA2007: Consider calling ConfigureAwait on the awaited task
