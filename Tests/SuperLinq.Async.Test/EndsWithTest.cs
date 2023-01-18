@@ -9,8 +9,7 @@ public class EndsWithTest
 	public async Task EndsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second, bool expected)
 	{
 		await using var f = first.AsTestingSequence();
-		await using var s = second.AsTestingSequence();
-		Assert.Equal(expected, await f.EndsWith(s));
+		Assert.Equal(expected, await f.EndsWith(second));
 	}
 
 	[Theory]

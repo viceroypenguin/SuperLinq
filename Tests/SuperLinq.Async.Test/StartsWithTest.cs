@@ -12,9 +12,8 @@ public class StartsWithTest
 	public async Task StartsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second, bool expected)
 	{
 		await using var f = first.AsTestingSequence();
-		await using var s = second.AsTestingSequence();
 
-		Assert.Equal(expected, await f.StartsWith(s));
+		Assert.Equal(expected, await f.StartsWith(second));
 	}
 
 	[Theory]
