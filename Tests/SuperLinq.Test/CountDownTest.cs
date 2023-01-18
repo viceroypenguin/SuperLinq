@@ -17,7 +17,7 @@ public class CountDownTest
 	public void ExceptionOnNegativeCount(int param)
 	{
 		Assert.Throws<ArgumentOutOfRangeException>("count", () =>
-			Seq(1).CountDown(param));
+			new BreakingSequence<int>().CountDown(param));
 	}
 
 	public static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)

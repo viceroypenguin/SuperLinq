@@ -107,14 +107,7 @@ public class CompareCountTest
 	[Fact]
 	public void CompareCountDoesNotIterateUnnecessaryElements()
 	{
-		using var seq1 = SuperEnumerable
-			.From(
-				() => 1,
-				() => 2,
-				() => 3,
-				() => 4,
-				() => throw new TestException())
-			.AsTestingSequence();
+		using var seq1 = SeqExceptionAt(5).AsTestingSequence();
 
 		using var seq2 = Enumerable.Range(1, 3).AsTestingSequence();
 

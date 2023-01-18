@@ -6,7 +6,7 @@ public class AtMostTest
 	public void AtMostWithNegativeCount()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new[] { 1 }.AtMost(-1));
+			new BreakingSequence<int>().AtMost(-1));
 	}
 
 	[Fact]

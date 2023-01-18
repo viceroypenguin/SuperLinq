@@ -6,7 +6,7 @@ public class AtLeastTest
 	public async Task AtLeastWithNegativeCount()
 	{
 		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
-			await AsyncSeq(1).AtLeast(-1));
+			await new AsyncBreakingSequence<int>().AtLeast(-1));
 	}
 
 	[Fact]

@@ -6,21 +6,21 @@ public class CountBetweenTest
 	public Task CountBetweenWithNegativeMin()
 	{
 		return Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
-			await AsyncSeq(1).CountBetween(-1, 0));
+			await new AsyncBreakingSequence<int>().CountBetween(-1, 0));
 	}
 
 	[Fact]
 	public Task CountBetweenWithNegativeMax()
 	{
 		return Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
-			await AsyncSeq(1).CountBetween(0, -1));
+			await new AsyncBreakingSequence<int>().CountBetween(0, -1));
 	}
 
 	[Fact]
 	public Task CountBetweenWithMaxLesserThanMin()
 	{
 		return Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
-			await AsyncSeq(1).CountBetween(1, 0));
+			await new AsyncBreakingSequence<int>().CountBetween(1, 0));
 	}
 
 	[Fact]

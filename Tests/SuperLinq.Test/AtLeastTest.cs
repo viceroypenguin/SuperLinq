@@ -6,7 +6,7 @@ public class AtLeastTest
 	public void AtLeastWithNegativeCount()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new[] { 1 }.AtLeast(-1));
+			new BreakingSequence<int>().AtLeast(-1));
 	}
 
 	[Fact]

@@ -6,7 +6,7 @@ public class ExactlyTest
 	public void ExactlyWithNegativeCount()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new[] { 1 }.Exactly(-1));
+			new BreakingSequence<int>().Exactly(-1));
 	}
 
 	[Fact]
