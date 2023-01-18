@@ -3,12 +3,12 @@
 public class ExceptByTest
 {
 	[Fact]
-	public Task SimpleExceptBy()
+	public async Task SimpleExceptBy()
 	{
-		var first = AsyncSeq("aaa", "bb", "c", "dddd");
-		var second = AsyncSeq("xx", "y");
+		await using var first = AsyncSeq("aaa", "bb", "c", "dddd").AsTestingSequence();
+		await using var second = AsyncSeq("xx", "y").AsTestingSequence();
 		var result = first.ExceptBy(second, x => x.Length);
-		return result.AssertSequenceEqual("aaa", "dddd");
+		await result.AssertSequenceEqual("aaa", "dddd");
 	}
 
 	[Fact]
@@ -19,30 +19,30 @@ public class ExceptByTest
 	}
 
 	[Fact]
-	public Task ExceptByDoesNotRepeatSourceElementsWithDuplicateKeys()
+	public async Task ExceptByDoesNotRepeatSourceElementsWithDuplicateKeys()
 	{
-		var first = AsyncSeq("aaa", "bb", "c", "a", "b", "c", "dddd");
-		var second = AsyncSeq("xx");
+		await using var first = AsyncSeq("aaa", "bb", "c", "a", "b", "c", "dddd").AsTestingSequence();
+		await using var second = AsyncSeq("xx").AsTestingSequence();
 		var result = first.ExceptBy(second, x => x.Length);
-		return result.AssertSequenceEqual("aaa", "c", "dddd");
+		await result.AssertSequenceEqual("aaa", "c", "dddd");
 	}
 
 	[Fact]
-	public Task ExceptByWithComparer()
+	public async Task ExceptByWithComparer()
 	{
-		var first = AsyncSeq("first", "second", "third", "fourth");
-		var second = AsyncSeq("FIRST", "thiRD", "FIFTH");
+		await using var first = AsyncSeq("first", "second", "third", "fourth").AsTestingSequence();
+		await using var second = AsyncSeq("FIRST", "thiRD", "FIFTH").AsTestingSequence();
 		var result = first.ExceptBy(second, word => word, StringComparer.OrdinalIgnoreCase);
-		return result.AssertSequenceEqual("second", "fourth");
+		await result.AssertSequenceEqual("second", "fourth");
 	}
 
 	[Fact]
-	public Task ExceptByNullComparer()
+	public async Task ExceptByNullComparer()
 	{
-		var first = AsyncSeq("aaa", "bb", "c", "dddd");
-		var second = AsyncSeq("xx", "y");
+		await using var first = AsyncSeq("aaa", "bb", "c", "dddd").AsTestingSequence();
+		await using var second = AsyncSeq("xx", "y").AsTestingSequence();
 		var result = first.ExceptBy(second, x => x.Length, keyComparer: null);
-		return result.AssertSequenceEqual("aaa", "dddd");
+		await result.AssertSequenceEqual("aaa", "dddd");
 	}
 
 	[Fact]

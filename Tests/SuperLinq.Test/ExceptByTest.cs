@@ -7,8 +7,8 @@ public class ExceptByTest
 	[Fact]
 	public void SimpleExceptBy()
 	{
-		string[] first = { "aaa", "bb", "c", "dddd" };
-		string[] second = { "xx", "y" };
+		using var first = Seq("aaa", "bb", "c", "dddd").AsTestingSequence();
+		using var second = Seq("xx", "y").AsTestingSequence();
 		var result = SuperEnumerable.ExceptBy(first, second, x => x.Length);
 		result.AssertSequenceEqual("aaa", "dddd");
 	}
@@ -23,8 +23,8 @@ public class ExceptByTest
 	[Fact]
 	public void ExceptByDoesNotRepeatSourceElementsWithDuplicateKeys()
 	{
-		string[] first = { "aaa", "bb", "c", "a", "b", "c", "dddd" };
-		string[] second = { "xx" };
+		using var first = Seq("aaa", "bb", "c", "a", "b", "c", "dddd").AsTestingSequence();
+		using var second = Seq("xx").AsTestingSequence();
 		var result = SuperEnumerable.ExceptBy(first, second, x => x.Length);
 		result.AssertSequenceEqual("aaa", "c", "dddd");
 	}
@@ -32,8 +32,8 @@ public class ExceptByTest
 	[Fact]
 	public void ExceptByWithComparer()
 	{
-		string[] first = { "first", "second", "third", "fourth" };
-		string[] second = { "FIRST", "thiRD", "FIFTH" };
+		using var first = Seq("first", "second", "third", "fourth").AsTestingSequence();
+		using var second = Seq("FIRST", "thiRD", "FIFTH").AsTestingSequence();
 		var result = SuperEnumerable.ExceptBy(first, second, word => word, StringComparer.OrdinalIgnoreCase);
 		result.AssertSequenceEqual("second", "fourth");
 	}
@@ -41,8 +41,8 @@ public class ExceptByTest
 	[Fact]
 	public void ExceptByNullComparer()
 	{
-		string[] first = { "aaa", "bb", "c", "dddd" };
-		string[] second = { "xx", "y" };
+		using var first = Seq("aaa", "bb", "c", "dddd").AsTestingSequence();
+		using var second = Seq("xx", "y").AsTestingSequence();
 		var result = SuperEnumerable.ExceptBy(first, second, x => x.Length, keyComparer: null);
 		result.AssertSequenceEqual("aaa", "dddd");
 	}
