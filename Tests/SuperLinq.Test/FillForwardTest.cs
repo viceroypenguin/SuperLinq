@@ -13,16 +13,18 @@ public class FillForwardTest
 	[Fact]
 	public void FillForward()
 	{
-		int? na = null;
-		var input = new[] { na, na, 1, 2, na, na, na, 3, 4, na, na };
-		var result = input.FillForward();
-		Assert.Equal(new[] { na, na, 1, 2, 2, 2, 2, 3, 4, 4, 4 }, result);
+		using var input = Seq<int?>(null, null, 1, 2, null, null, null, 3, 4, null, null)
+			.AsTestingSequence();
+
+		input
+			.FillForward()
+			.AssertSequenceEqual(default(int?), null, 1, 2, 2, 2, 2, 3, 4, 4, 4);
 	}
 
 	[Fact]
 	public void FillForwardWithFillSelector()
 	{
-		const string table = @"
+		const string Table = @"
                 Europe UK          London      123
                 -      -           Manchester  234
                 -      -           Glasgow     345
@@ -34,35 +36,31 @@ public class FillForwardTest
                 -      Kenya       Nairobi     901
             ";
 
-		var data =
-			from line in table.Split('\n')
+		using var data = (
+			from line in Table.Split('\n')
 			select line.Trim() into line
 			where !string.IsNullOrEmpty(line)
-			select Regex.Split(line, "\x20+").Fold((cont, ctry, city, val) => new
+			let x = Regex.Split(line, "\x20+")
+			select new
 			{
-				Continent = cont,
-				Country = ctry,
-				City = city,
-				Value = int.Parse(val),
-			});
+				Continent = x[0],
+				Country = x[1],
+				City = x[2],
+				Value = int.Parse(x[3]),
+			}).AsTestingSequence();
 
-		data = data.FillForward(e => e.Continent == "-", (e, f) => new { f.Continent, e.Country, e.City, e.Value })
-				   .FillForward(e => e.Country == "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value });
-
-
-		var expected = new[]
-		{
-			new { Continent = "Europe", Country = "UK",      City = "London",     Value = 123 },
-			new { Continent = "Europe", Country = "UK",      City = "Manchester", Value = 234 },
-			new { Continent = "Europe", Country = "UK",      City = "Glasgow",    Value = 345 },
-			new { Continent = "Europe", Country = "Germany", City = "Munich",     Value = 456 },
-			new { Continent = "Europe", Country = "Germany", City = "Frankfurt",  Value = 567 },
-			new { Continent = "Europe", Country = "Germany", City = "Stuttgart",  Value = 678 },
-			new { Continent = "Africa", Country = "Egypt",   City = "Cairo",      Value = 789 },
-			new { Continent = "Africa", Country = "Egypt",   City = "Alexandria", Value = 890 },
-			new { Continent = "Africa", Country = "Kenya",   City = "Nairobi",    Value = 901 },
-		};
-
-		Assert.Equal(expected, data);
+		data
+			.FillForward(e => e.Continent == "-", (e, f) => new { f.Continent, e.Country, e.City, e.Value })
+			.FillForward(e => e.Country == "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value })
+			.AssertSequenceEqual(
+				new { Continent = "Europe", Country = "UK", City = "London", Value = 123 },
+				new { Continent = "Europe", Country = "UK", City = "Manchester", Value = 234 },
+				new { Continent = "Europe", Country = "UK", City = "Glasgow", Value = 345 },
+				new { Continent = "Europe", Country = "Germany", City = "Munich", Value = 456 },
+				new { Continent = "Europe", Country = "Germany", City = "Frankfurt", Value = 567 },
+				new { Continent = "Europe", Country = "Germany", City = "Stuttgart", Value = 678 },
+				new { Continent = "Africa", Country = "Egypt", City = "Cairo", Value = 789 },
+				new { Continent = "Africa", Country = "Egypt", City = "Alexandria", Value = 890 },
+				new { Continent = "Africa", Country = "Kenya", City = "Nairobi", Value = 901 });
 	}
 }
