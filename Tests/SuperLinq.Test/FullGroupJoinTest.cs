@@ -1,6 +1,4 @@
-﻿using static Test.FullGroupJoinTest.OverloadCase;
-
-namespace Test;
+﻿namespace Test;
 
 public class FullGroupJoinTest
 {
@@ -17,14 +15,14 @@ public class FullGroupJoinTest
 	}
 
 	[Theory]
-	[InlineData(CustomResult)]
-	[InlineData(TupleResult)]
+	[InlineData(OverloadCase.CustomResult)]
+	[InlineData(OverloadCase.TupleResult)]
 	public void FullGroupJoinsResults(OverloadCase overloadCase)
 	{
-		var listA = new[] { 1, 2 };
-		var listB = new[] { 2, 3 };
+		using var listA = Seq(1, 2).AsTestingSequence();
+		using var listB = Seq(2, 3).AsTestingSequence();
 
-		var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
+		var result = FullGroupJoin(overloadCase, listA, listB, SuperEnumerable.Identity).ToDictionary(a => a.Key);
 
 		Assert.Equal(3, result.Keys.Count);
 
@@ -39,14 +37,14 @@ public class FullGroupJoinTest
 	}
 
 	[Theory]
-	[InlineData(CustomResult)]
-	[InlineData(TupleResult)]
+	[InlineData(OverloadCase.CustomResult)]
+	[InlineData(OverloadCase.TupleResult)]
 	public void FullGroupJoinsEmptyLeft(OverloadCase overloadCase)
 	{
-		var listA = Array.Empty<int>();
-		var listB = new[] { 2, 3 };
+		using var listA = Array.Empty<int>().AsTestingSequence();
+		using var listB = Seq(2, 3).AsTestingSequence();
 
-		var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
+		var result = FullGroupJoin(overloadCase, listA, listB, SuperEnumerable.Identity).ToDictionary(a => a.Key);
 
 		Assert.Equal(2, result.Keys.Count);
 
@@ -58,14 +56,14 @@ public class FullGroupJoinTest
 	}
 
 	[Theory]
-	[InlineData(CustomResult)]
-	[InlineData(TupleResult)]
+	[InlineData(OverloadCase.CustomResult)]
+	[InlineData(OverloadCase.TupleResult)]
 	public void FullGroupJoinsEmptyRight(OverloadCase overloadCase)
 	{
-		var listA = new[] { 2, 3 };
-		var listB = Array.Empty<int>();
+		using var listA = Seq(2, 3).AsTestingSequence();
+		using var listB = Array.Empty<int>().AsTestingSequence();
 
-		var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
+		var result = FullGroupJoin(overloadCase, listA, listB, SuperEnumerable.Identity).ToDictionary(a => a.Key);
 
 		Assert.Equal(2, result.Keys.Count);
 
@@ -77,29 +75,29 @@ public class FullGroupJoinTest
 	}
 
 	[Theory]
-	[InlineData(CustomResult)]
-	[InlineData(TupleResult)]
+	[InlineData(OverloadCase.CustomResult)]
+	[InlineData(OverloadCase.TupleResult)]
 	public void FullGroupPreservesOrder(OverloadCase overloadCase)
 	{
 		var listA = new[]
 		{
-				(3, 1),
-				(1, 1),
-				(2, 1),
-				(1, 2),
-				(1, 3),
-				(3, 2),
-				(1, 4),
-				(3, 3),
-			};
+			(3, 1),
+			(1, 1),
+			(2, 1),
+			(1, 2),
+			(1, 3),
+			(3, 2),
+			(1, 4),
+			(3, 3),
+		};
 		var listB = new[]
 		{
-				(4, 1),
-				(3, 1),
-				(2, 1),
-				(0, 1),
-				(3, 0),
-			};
+			(4, 1),
+			(3, 1),
+			(2, 1),
+			(0, 1),
+			(3, 0),
+		};
 
 		var result = FullGroupJoin(overloadCase, listA, listB, x => x.Item1).ToList();
 
@@ -114,12 +112,16 @@ public class FullGroupJoinTest
 		}
 	}
 
-	static IEnumerable<(int Key, IEnumerable<T> First, IEnumerable<T> Second)> FullGroupJoin<T>(OverloadCase overloadCase, IEnumerable<T> listA, IEnumerable<T> listB, Func<T, int> getKey)
+	private static IEnumerable<(int Key, IEnumerable<T> First, IEnumerable<T> Second)> FullGroupJoin<T>(
+		OverloadCase overloadCase,
+		IEnumerable<T> listA,
+		IEnumerable<T> listB,
+		Func<T, int> getKey)
 	{
 		return overloadCase switch
 		{
-			CustomResult => listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create, comparer: null),
-			TupleResult => listA.FullGroupJoin(listB, getKey, getKey),
+			OverloadCase.CustomResult => listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create, comparer: null),
+			OverloadCase.TupleResult => listA.FullGroupJoin(listB, getKey, getKey),
 			_ => throw new ArgumentOutOfRangeException(nameof(overloadCase)),
 		};
 	}
