@@ -132,21 +132,17 @@ public class DenseRankTests
 		var ordinals = Enumerable.Range(1, 10);
 		var sequence = ordinals.Select(x => new DateTime(2010, x, 20 - x));
 
-		// invert the CompareTo operation to Rank in reverse order
-		await using (var xs = sequence.AsTestingSequence())
-		{
-			var resultA = xs.DenseRank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
-			await resultA.AssertSequenceEqual(sequence
-				.OrderByDescending(SuperLinq.SuperEnumerable.Identity)
-				.Select((x, i) => (x, i + 1)));
-		}
+		await using var xs = sequence.AsTestingSequence(2);
 
-		await using (var xs = sequence.AsTestingSequence())
-		{
-			var resultB = xs.DenseRankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
-			await resultB.AssertSequenceEqual(sequence
-				.OrderByDescending(x => x.Day)
-				.Select((x, i) => (x, i + 1)));
-		}
+		// invert the CompareTo operation to Rank in reverse order
+		var resultA = xs.DenseRank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
+		await resultA.AssertSequenceEqual(sequence
+			.OrderByDescending(SuperLinq.SuperEnumerable.Identity)
+			.Select((x, i) => (x, i + 1)));
+
+		var resultB = xs.DenseRankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
+		await resultB.AssertSequenceEqual(sequence
+			.OrderByDescending(x => x.Day)
+			.Select((x, i) => (x, i + 1)));
 	}
 }

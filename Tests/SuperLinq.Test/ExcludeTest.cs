@@ -52,14 +52,13 @@ public class ExcludeTests
 	[Fact]
 	public void TestExcludeEmptySequence()
 	{
-		using (var sequence = Enumerable.Empty<int>().AsTestingSequence())
-			Assert.Equal(Enumerable.Empty<int>(), sequence.Exclude(0, 0));
-		using (var sequence = Enumerable.Empty<int>().AsTestingSequence())
-			// shouldn't matter how many we ask for past end
-			Assert.Equal(Enumerable.Empty<int>(), sequence.Exclude(0, 10));
-		using (var sequence = Enumerable.Empty<int>().AsTestingSequence())
-			// shouldn't matter where we start
-			Assert.Equal(Enumerable.Empty<int>(), sequence.Exclude(5, 5));
+		using var sequence = Enumerable.Empty<int>().AsTestingSequence(3);
+
+		Assert.Equal(Enumerable.Empty<int>(), sequence.Exclude(0, 0));
+		// shouldn't matter how many we ask for past end
+		Assert.Equal(Enumerable.Empty<int>(), sequence.Exclude(0, 10));
+		// shouldn't matter where we start
+		Assert.Equal(Enumerable.Empty<int>(), sequence.Exclude(5, 5));
 	}
 
 	/// <summary>
