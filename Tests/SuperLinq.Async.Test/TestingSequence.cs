@@ -96,3 +96,133 @@ internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
 		return enumerator;
 	}
 }
+
+public class TestingSequenceTest
+{
+	[Fact]
+	public async Task TestingSequenceShouldValidateDisposal()
+	{
+		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
+		{
+			var enumerator = enumerable.GetAsyncEnumerator();
+
+			await Task.Yield();
+			yield break;
+		}
+
+		var ex = await Assert.ThrowsAsync<TrueException>(async () =>
+		{
+			using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+			await InvalidUsage(xs).Consume();
+		});
+		Assert.StartsWith(TestingSequence.ExpectedDisposal, ex.Message);
+	}
+
+	[Fact]
+	public async Task TestingSequenceShouldValidateNumberOfUsages()
+	{
+		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
+		{
+			await using (var enumerator = enumerable.GetAsyncEnumerator())
+				yield return 1;
+			await using (var enumerator = enumerable.GetAsyncEnumerator())
+				yield return 2;
+			await using (var enumerator = enumerable.GetAsyncEnumerator())
+				yield return 3;
+
+			await Task.Yield();
+			yield break;
+		}
+
+		var ex = await Assert.ThrowsAsync<FalseException>(async () =>
+		{
+			using var xs = Enumerable.Range(1, 10).AsTestingSequence(2);
+			await InvalidUsage(xs).Consume();
+		});
+		Assert.StartsWith(TestingSequence.TooManyEnumerations, ex.Message);
+	}
+
+	[Fact]
+	public async Task TestingSequenceShouldValidateMoveNextOnDisposedSequence()
+	{
+		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
+		{
+			await using var enumerator = enumerable.GetAsyncEnumerator();
+			await enumerator.DisposeAsync();
+			await enumerator.MoveNextAsync();
+
+			await Task.Yield();
+			yield break;
+		}
+
+		var ex = await Assert.ThrowsAsync<TrueException>(async () =>
+		{
+			using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+			await InvalidUsage(xs).Consume();
+		});
+		Assert.StartsWith(TestingSequence.MoveNextDisposed, ex.Message);
+	}
+
+	[Fact]
+	public async Task TestingSequenceShouldValidateCurrentOnDisposedSequence()
+	{
+		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
+		{
+			await using var enumerator = enumerable.GetAsyncEnumerator();
+			await enumerator.DisposeAsync();
+			yield return enumerator.Current;
+
+			await Task.Yield();
+			yield break;
+		}
+
+		var ex = await Assert.ThrowsAsync<TrueException>(async () =>
+		{
+			using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+			await InvalidUsage(xs).Consume();
+		});
+		Assert.StartsWith(TestingSequence.CurrentDisposed, ex.Message);
+	}
+
+	[Fact]
+	public async Task TestingSequenceShouldValidateCurrentOnEndedSequence()
+	{
+		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
+		{
+			await using var enumerator = enumerable.GetAsyncEnumerator();
+			while (await enumerator.MoveNextAsync())
+				yield return enumerator.Current;
+			yield return enumerator.Current;
+
+			await Task.Yield();
+			yield break;
+		}
+
+		var ex = await Assert.ThrowsAsync<FalseException>(async () =>
+		{
+			using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+			await InvalidUsage(xs).Consume();
+		});
+		Assert.StartsWith(TestingSequence.CurrentCompleted, ex.Message);
+	}
+
+	[Fact]
+	public async Task TestingSequenceShouldValidateSimultaneousEnumeration()
+	{
+		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
+		{
+			await using var enum1 = enumerable.GetAsyncEnumerator();
+			await using var enum2 = enumerable.GetAsyncEnumerator();
+
+			await Task.Yield();
+			yield break;
+		}
+
+		var ex = await Assert.ThrowsAsync<FalseException>(async () =>
+		{
+			using var xs = Enumerable.Range(1, 10).AsTestingSequence(2);
+			await InvalidUsage(xs).Consume();
+		});
+		Assert.StartsWith(TestingSequence.SimultaneousEnumerations, ex.Message);
+	}
+}
