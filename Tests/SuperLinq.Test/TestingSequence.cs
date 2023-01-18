@@ -40,8 +40,9 @@ internal sealed class TestingSequence<T> : IDisposableEnumerable<T>
 
 	public IEnumerator<T> GetEnumerator()
 	{
-		Assert.NotNull(_sequence);
-		var enumerator = _sequence!.GetEnumerator().AsWatchable();
+		Assert.False(_sequence is null, "Sequence should not be enumerated more than once.");
+
+		var enumerator = _sequence.GetEnumerator().AsWatchable();
 		_disposed = false;
 		enumerator.Disposed += delegate
 		{
