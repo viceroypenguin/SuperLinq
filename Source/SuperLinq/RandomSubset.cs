@@ -75,7 +75,7 @@ public static partial class SuperEnumerable
 			--w;
 		}
 
-		// yield the random subet as a new sequence
+		// yield the random subset as a new sequence
 		for (var i = 0; i < subsetSize; i++)
 			yield return array[i];
 	}

@@ -666,13 +666,13 @@ This method has 2 overloads.
 
 ### ScanEx
 
-Peforms a scan (inclusive prefix sum) on a sequence of elements.
+Performs a scan (inclusive prefix sum) on a sequence of elements.
 
 This method has 2 overloads.
 
 ### ScanRight
 
-Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 This operator is the right-associative version of the Scan operator.
 
 This method has 2 overloads.

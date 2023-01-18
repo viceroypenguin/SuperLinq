@@ -48,7 +48,8 @@ public static partial class SuperEnumerable
 						yield return subset;
 				}
 
-				yield return sequenceAsList; // the last subet is the original set itself
+				// the last subset is the original set itself
+				yield return sequenceAsList;
 			}
 		}
 	}
@@ -75,9 +76,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(sequence);
 		Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
 
-		// NOTE: Theres an interesting trade-off that we have to make in this operator.
+		// NOTE: There's an interesting trade-off that we have to make in this operator.
 		// Ideally, we would throw an exception here if the {subsetSize} parameter is
-		// greater than the sequence length. Unforunately, determining the length of a
+		// greater than the sequence length. Unfortunately, determining the length of a
 		// sequence is not always possible without enumerating it. Herein lies the rub.
 		// We want Subsets() to be a deferred operation that only iterates the sequence
 		// when the caller is ready to consume the results. However, this forces us to
