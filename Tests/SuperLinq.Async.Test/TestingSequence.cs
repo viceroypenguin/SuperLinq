@@ -43,8 +43,9 @@ internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
 
 	public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
 	{
-		Assert.NotNull(_sequence);
-		var enumerator = _sequence!.GetAsyncEnumerator(cancellationToken).AsWatchable();
+		Assert.False(_sequence is null, "Sequence should not be enumerated more than once.");
+
+		var enumerator = _sequence.GetAsyncEnumerator(cancellationToken).AsWatchable();
 		_disposed = false;
 		enumerator.Disposed += delegate
 		{
