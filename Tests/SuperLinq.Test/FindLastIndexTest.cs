@@ -5,9 +5,8 @@ public class FindLastIndexTest
 	[Fact]
 	public void FindLastIndexWithNegativeCount()
 	{
-		using var sequence = Seq(1).AsTestingSequence();
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			sequence.FindLastIndex(i => i == 1, 1, -1));
+			new BreakingSequence<int>().FindLastIndex(i => i == 1, 1, -1));
 	}
 
 	[Fact]
@@ -62,7 +61,7 @@ public class FindLastIndexTest
 	}
 
 	[Fact]
-	public void FindLastIndexFromEndOfArray()
+	public void FindLastIndexUsesCollectionLengthCorrectly()
 	{
 		var array = new int[20];
 		array[^7] = 3;
@@ -75,7 +74,8 @@ public class FindLastIndexTest
 	[Fact]
 	public void FindLastIndexMissingValueFromStart()
 	{
-		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
+		using var sequence = Enumerable.Range(100, 5)
+			.AsTestingSequence();
 		Assert.Equal(
 			-1,
 			sequence.FindLastIndex(i => i == 95));
@@ -84,7 +84,8 @@ public class FindLastIndexTest
 	[Fact]
 	public void FindLastIndexMissingValueFromEnd()
 	{
-		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
+		using var sequence = Enumerable.Range(100, 5)
+			.AsTestingSequence();
 		Assert.Equal(
 			-1,
 			sequence.FindLastIndex(i => i == 95, ^5));
@@ -93,7 +94,8 @@ public class FindLastIndexTest
 	[Fact]
 	public void FindLastIndexMissingValueFromStartCount()
 	{
-		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
+		using var sequence = Enumerable.Range(100, 5)
+			.AsTestingSequence();
 		Assert.Equal(
 			-1,
 			sequence.FindLastIndex(i => i == 100, int.MaxValue, 4));
@@ -102,7 +104,8 @@ public class FindLastIndexTest
 	[Fact]
 	public void FindLastIndexMissingValueFromEndCount()
 	{
-		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
+		using var sequence = Enumerable.Range(100, 5)
+			.AsTestingSequence();
 		Assert.Equal(
 			-1,
 			sequence.FindLastIndex(i => i == 100, ^1, 3));
