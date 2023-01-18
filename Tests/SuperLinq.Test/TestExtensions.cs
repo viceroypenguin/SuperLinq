@@ -19,7 +19,7 @@ internal static partial class TestExtensions
 		SuperEnumerable.From(
 			Enumerable.Range(1, index)
 				.Select(i => Func(() => i))
-				.Append(() => throw new NotSupportedException())
+				.Append(BreakingFunc.Of<int>())
 				.ToArray());
 
 	/// <summary>
