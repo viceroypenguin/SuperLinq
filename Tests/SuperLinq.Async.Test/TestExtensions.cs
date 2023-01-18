@@ -1,4 +1,5 @@
-﻿using SuperLinq;
+﻿using CommunityToolkit.Diagnostics;
+using SuperLinq;
 
 namespace Test.Async;
 
@@ -56,8 +57,11 @@ internal sealed class WatchableEnumerator<T> : IAsyncEnumerator<T>
 	public event EventHandler? GetCurrentCalled;
 	public event EventHandler<bool>? MoveNextCalled;
 
-	public WatchableEnumerator(IAsyncEnumerator<T> source) =>
-		_source = source ?? throw new ArgumentNullException(nameof(source));
+	public WatchableEnumerator(IAsyncEnumerator<T> source)
+	{
+		Guard.IsNotNull(source);
+		_source = source;
+	}
 
 	public T Current
 	{

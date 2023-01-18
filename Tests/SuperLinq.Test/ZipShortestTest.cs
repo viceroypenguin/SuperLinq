@@ -100,7 +100,7 @@ public class ZipShortestTest
 	{
 		using var s1 = TestingSequence.Of(1, 2);
 
-		Assert.Throws<InvalidOperationException>(() =>
+		Assert.Throws<TestException>(() =>
 			s1.ZipShortest(new BreakingSequence<int>(), ValueTuple.Create).Consume());
 	}
 }

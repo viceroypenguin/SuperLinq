@@ -27,7 +27,7 @@ public class SortedMergeTests
 		using var sequenceA = TestingSequence.Of<int>();
 
 		// Expected and thrown by BreakingSequence
-		Assert.Throws<InvalidOperationException>(() =>
+		Assert.Throws<TestException>(() =>
 			sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>()).Consume());
 	}
 

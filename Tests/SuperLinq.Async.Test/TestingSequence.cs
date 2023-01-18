@@ -1,4 +1,6 @@
-﻿namespace Test.Async;
+﻿using CommunityToolkit.Diagnostics;
+
+namespace Test.Async;
 
 internal static class TestingSequence
 {
@@ -7,12 +9,12 @@ internal static class TestingSequence
 	internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source) =>
 		source != null
 		? new TestingSequence<T>(source.ToAsyncEnumerable())
-		: throw new ArgumentNullException(nameof(source));
+		: ThrowHelper.ThrowArgumentNullException<TestingSequence<T>>(nameof(source));
 
 	internal static TestingSequence<T> AsTestingSequence<T>(this IAsyncEnumerable<T> source) =>
 		source != null
 		? new TestingSequence<T>(source)
-		: throw new ArgumentNullException(nameof(source));
+		: ThrowHelper.ThrowArgumentNullException<TestingSequence<T>>(nameof(source));
 }
 
 /// <summary>
@@ -41,8 +43,9 @@ internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
 
 	public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
 	{
-		Assert.NotNull(_sequence);
-		var enumerator = _sequence!.GetAsyncEnumerator(cancellationToken).AsWatchable();
+		Assert.False(_sequence is null, "Sequence should not be enumerated more than once.");
+
+		var enumerator = _sequence.GetAsyncEnumerator(cancellationToken).AsWatchable();
 		_disposed = false;
 		enumerator.Disposed += delegate
 		{

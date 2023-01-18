@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
@@ -10,7 +11,7 @@ internal static class TestingSequence
 	internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source) =>
 		source != null
 		? new TestingSequence<T>(source)
-		: throw new ArgumentNullException(nameof(source));
+		: ThrowHelper.ThrowArgumentNullException<TestingSequence<T>>(nameof(source));
 }
 
 /// <summary>
@@ -43,8 +44,9 @@ internal sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
 
 	public IEnumerator<T> GetEnumerator()
 	{
-		Assert.NotNull(_sequence);
-		var enumerator = _sequence!.GetEnumerator().AsWatchable();
+		Assert.False(_sequence is null, "Sequence should not be enumerated more than once.");
+
+		var enumerator = _sequence.GetEnumerator().AsWatchable();
 		_disposed = false;
 		enumerator.Disposed += delegate
 		{

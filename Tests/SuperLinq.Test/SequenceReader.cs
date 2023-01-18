@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
-static class SequenceReader
+internal static class SequenceReader
 {
 	public static SequenceReader<T> Read<T>(this IEnumerable<T> source)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		Guard.IsNotNull(source);
 		return new SequenceReader<T>(source);
 	}
 }
@@ -17,7 +18,7 @@ static class SequenceReader
 /// "read" operation.
 /// </summary>
 /// <typeparam name="T">Type of elements to read.</typeparam>
-class SequenceReader<T> : IDisposable
+internal sealed class SequenceReader<T> : IDisposable
 {
 	private IEnumerator<T>? _enumerator;
 
@@ -37,94 +38,55 @@ class SequenceReader<T> : IDisposable
 	/// </summary>
 	/// <param name="enumerator">Source enumerator.</param>
 
-	public SequenceReader(IEnumerator<T> enumerator) =>
-		_enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
-
-	static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
+	public SequenceReader(IEnumerator<T> enumerator)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		Guard.IsNotNull(enumerator);
+		_enumerator = enumerator;
+	}
+
+	private static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
+	{
+		Guard.IsNotNull(source);
 		return source.GetEnumerator();
 	}
 
 	/// <summary>
-	/// Tires to read the next value.
+	/// Reads the next value. If the sequence is already finished, then it fails the unit test.
 	/// </summary>
-	/// <param name="value">
-	/// When this method returns, contains the value read on success.
-	/// </param>
-	/// <returns>
-	/// Returns true if a value was successfully read; otherwise, false.
-	/// </returns>
-
-	public virtual bool TryRead([NotNullWhen(true)] out T? value)
+	public T Read()
 	{
 		EnsureNotDisposed();
 
-		value = default;
+		Assert.True(
+			_enumerator.MoveNext(),
+			"Sequence is expected to have another value.");
 
-		var e = _enumerator;
-		if (!e!.MoveNext())
-			return false;
-
-		value = e.Current!;
-		return true;
+		return _enumerator.Current!;
 	}
 
 	/// <summary>
-	/// Tires to read the next value otherwise return the default.
+	/// Reads the end. If the end has not been reached, then it fails the unit test.
 	/// </summary>
-
-	public T? TryRead() => TryRead(default);
-
-	/// <summary>
-	/// Tires to read the next value otherwise return a given default.
-	/// </summary>
-
-	public T? TryRead(T? defaultValue) =>
-		TryRead(out var result) ? result : defaultValue;
-
-	/// <summary>
-	/// Reads a value otherwise throws <see cref="InvalidOperationException"/>
-	/// if no more values are available.
-	/// </summary>
-	/// <returns>
-	/// Returns the read value;
-	/// </returns>
-
-	public T Read() =>
-		TryRead(out var result) ? result : throw new InvalidOperationException();
-
-	/// <summary>
-	/// Reads the end. If the end has not been reached then it
-	/// throws <see cref="InvalidOperationException"/>.
-	/// </summary>
-
-	public virtual void ReadEnd()
+	public void ReadEnd()
 	{
 		EnsureNotDisposed();
 
-		if (_enumerator.MoveNext())
-			throw new InvalidOperationException();
+		Assert.False(
+			_enumerator.MoveNext(),
+			"Sequence is expected to be completed.");
 	}
-
-	/// <summary>
-	/// Ensures that this object has not been disposed, that
-	/// <see cref="Dispose"/> has not been previously called.
-	/// </summary>
 
 	[MemberNotNull(nameof(_enumerator))]
-	protected void EnsureNotDisposed()
+	private void EnsureNotDisposed()
 	{
 		if (_enumerator == null)
-			throw new ObjectDisposedException(GetType().FullName);
+			Assert.Fail("Sequence was disposed before completing.");
 	}
 
 	/// <summary>
-	/// Disposes this object and enumerator with which is was
-	/// initialized.
+	/// Disposes this object and enumerator with which it was initialized.
 	/// </summary>
-
-	public virtual void Dispose()
+	public void Dispose()
 	{
 		var e = _enumerator;
 		if (e == null) return;
