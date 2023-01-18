@@ -26,7 +26,7 @@ public class ScanExTest
 	public async Task ScanExDoesNotIterateExtra()
 	{
 		var sequence = AsyncEnumerable.Range(1, 3).Concat(new AsyncBreakingSequence<int>()).ScanEx((a, b) => a + b);
-		await Assert.ThrowsAsync<NotSupportedException>(async () => await sequence.Consume());
+		await Assert.ThrowsAsync<TestException>(async () => await sequence.Consume());
 		await sequence.Take(3).AssertSequenceEqual(1, 3, 6);
 	}
 
@@ -54,7 +54,7 @@ public class ScanExTest
 	public async Task SeededScanExDoesNotIterateExtra()
 	{
 		var sequence = AsyncEnumerable.Range(1, 3).Concat(new AsyncBreakingSequence<int>()).ScanEx(0, (a, b) => a + b);
-		await Assert.ThrowsAsync<NotSupportedException>(async () => await sequence.Consume());
+		await Assert.ThrowsAsync<TestException>(async () => await sequence.Consume());
 		await sequence.Take(4).AssertSequenceEqual(0, 1, 3, 6);
 	}
 }

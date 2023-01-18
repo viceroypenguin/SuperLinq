@@ -22,7 +22,7 @@ public class ConcurrentMergeTest
 		var sequenceB = new AsyncBreakingSequence<int>();
 
 		// Expected and thrown by BreakingSequence
-		await Assert.ThrowsAsync<NotSupportedException>(async () =>
+		await Assert.ThrowsAsync<TestException>(async () =>
 			await sequenceA.ConcurrentMerge(sequenceB).Consume());
 	}
 
@@ -31,10 +31,10 @@ public class ConcurrentMergeTest
 	{
 		await using var sequenceA = TestingSequence.Of<int>();
 		await using var sequenceB = AsyncSuperEnumerable.From<int>(() =>
-			throw new NotSupportedException()).AsTestingSequence();
+			throw new TestException()).AsTestingSequence();
 
 		// Expected and thrown by sequenceB
-		await Assert.ThrowsAsync<NotSupportedException>(async () =>
+		await Assert.ThrowsAsync<TestException>(async () =>
 			await sequenceA.ConcurrentMerge(sequenceB).Consume());
 	}
 

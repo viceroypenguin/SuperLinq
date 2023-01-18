@@ -29,7 +29,7 @@ public class SortedMergeByTests
 		await using var sequenceA = TestingSequence.Of<int>();
 
 		// Expected and thrown by BreakingSequence
-		await Assert.ThrowsAsync<NotSupportedException>(async () =>
+		await Assert.ThrowsAsync<TestException>(async () =>
 			await sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, new AsyncBreakingSequence<int>()).Consume());
 	}
 

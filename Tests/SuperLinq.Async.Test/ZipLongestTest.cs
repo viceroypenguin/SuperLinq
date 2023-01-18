@@ -35,7 +35,7 @@ public class ZipLongestTest
 	{
 		await using var s1 = TestingSequence.Of(1, 2);
 
-		await Assert.ThrowsAsync<NotSupportedException>(async () =>
+		await Assert.ThrowsAsync<TestException>(async () =>
 			await s1.ZipLongest(new AsyncBreakingSequence<int>(), ValueTuple.Create).Consume());
 	}
 }

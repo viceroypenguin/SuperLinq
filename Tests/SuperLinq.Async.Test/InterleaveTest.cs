@@ -35,7 +35,7 @@ public class InterleaveTests
 		var sequenceB = new AsyncBreakingSequence<int>();
 
 		// Expected and thrown by BreakingSequence
-		await Assert.ThrowsAsync<NotSupportedException>(async () => await sequenceA.Interleave(sequenceB).Consume());
+		await Assert.ThrowsAsync<TestException>(async () => await sequenceA.Interleave(sequenceB).Consume());
 	}
 
 	/// <summary>
@@ -46,10 +46,10 @@ public class InterleaveTests
 	public async Task TestInterleaveDisposesOnErrorAtMoveNext()
 	{
 		await using var sequenceA = TestingSequence.Of<int>();
-		await using var sequenceB = AsyncSuperEnumerable.From<int>(() => throw new NotSupportedException()).AsTestingSequence();
+		await using var sequenceB = AsyncSuperEnumerable.From<int>(() => throw new TestException()).AsTestingSequence();
 
 		// Expected and thrown by sequenceB
-		await Assert.ThrowsAsync<NotSupportedException>(async () => await sequenceA.Interleave(sequenceB).Consume());
+		await Assert.ThrowsAsync<TestException>(async () => await sequenceA.Interleave(sequenceB).Consume());
 	}
 
 	/// <summary>

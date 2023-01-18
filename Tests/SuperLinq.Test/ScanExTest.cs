@@ -25,7 +25,7 @@ public class ScanExTest
 	public void ScanExDoesNotIterateExtra()
 	{
 		var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).ScanEx((a, b) => a + b);
-		Assert.Throws<InvalidOperationException>(sequence.Consume);
+		Assert.Throws<TestException>(sequence.Consume);
 		sequence.Take(3).AssertSequenceEqual(1, 3, 6);
 	}
 
@@ -53,7 +53,7 @@ public class ScanExTest
 	public void SeededScanExDoesNotIterateExtra()
 	{
 		var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).ScanEx(0, (a, b) => a + b);
-		Assert.Throws<InvalidOperationException>(sequence.Consume);
+		Assert.Throws<TestException>(sequence.Consume);
 		sequence.Take(4).AssertSequenceEqual(0, 1, 3, 6);
 	}
 }

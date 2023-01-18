@@ -35,7 +35,7 @@ public class InterleaveTests
 		var sequenceB = new BreakingSequence<int>();
 
 		// Expected and thrown by BreakingSequence
-		Assert.Throws<InvalidOperationException>(() => sequenceA.Interleave(sequenceB).Consume());
+		Assert.Throws<TestException>(() => sequenceA.Interleave(sequenceB).Consume());
 	}
 
 	/// <summary>

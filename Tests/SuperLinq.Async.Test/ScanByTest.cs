@@ -103,7 +103,7 @@ public class ScanByTest
 			('b', 1),
 			('d', 0));
 
-		await Assert.ThrowsAsync<NotSupportedException>(async () =>
+		await Assert.ThrowsAsync<TestException>(async () =>
 			await result.ElementAtAsync(5));
 	}
 }
