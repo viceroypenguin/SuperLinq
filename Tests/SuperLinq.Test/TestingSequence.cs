@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
@@ -10,7 +11,7 @@ internal static class TestingSequence
 	internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source) =>
 		source != null
 		? new TestingSequence<T>(source)
-		: throw new ArgumentNullException(nameof(source));
+		: ThrowHelper.ThrowArgumentNullException<TestingSequence<T>>(nameof(source));
 }
 
 /// <summary>

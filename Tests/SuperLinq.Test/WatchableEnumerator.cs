@@ -1,13 +1,14 @@
 ﻿using System.Collections;
+using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
-partial class TestExtensions
+internal partial class TestExtensions
 {
 	public static WatchableEnumerator<T> AsWatchable<T>(this IEnumerator<T> source) => new(source);
 }
 
-sealed class WatchableEnumerator<T> : IEnumerator<T>
+internal sealed class WatchableEnumerator<T> : IEnumerator<T>
 {
 	private readonly IEnumerator<T> _source;
 
@@ -15,8 +16,11 @@ sealed class WatchableEnumerator<T> : IEnumerator<T>
 	public event EventHandler? GetCurrentCalled;
 	public event EventHandler<bool>? MoveNextCalled;
 
-	public WatchableEnumerator(IEnumerator<T> source) =>
-		_source = source ?? throw new ArgumentNullException(nameof(source));
+	public WatchableEnumerator(IEnumerator<T> source)
+	{
+		Guard.IsNotNull(source);
+		_source = source;
+	}
 
 	public T Current
 	{

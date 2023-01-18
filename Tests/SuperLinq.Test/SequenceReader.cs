@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
-static class SequenceReader
+internal static class SequenceReader
 {
 	public static SequenceReader<T> Read<T>(this IEnumerable<T> source)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		Guard.IsNotNull(source);
 		return new SequenceReader<T>(source);
 	}
 }
@@ -17,7 +18,7 @@ static class SequenceReader
 /// "read" operation.
 /// </summary>
 /// <typeparam name="T">Type of elements to read.</typeparam>
-class SequenceReader<T> : IDisposable
+internal sealed class SequenceReader<T> : IDisposable
 {
 	private IEnumerator<T>? _enumerator;
 
@@ -37,12 +38,15 @@ class SequenceReader<T> : IDisposable
 	/// </summary>
 	/// <param name="enumerator">Source enumerator.</param>
 
-	public SequenceReader(IEnumerator<T> enumerator) =>
-		_enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
-
-	static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
+	public SequenceReader(IEnumerator<T> enumerator)
 	{
-		if (source == null) throw new ArgumentNullException(nameof(source));
+		Guard.IsNotNull(enumerator);
+		_enumerator = enumerator;
+	}
+
+	private static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
+	{
+		Guard.IsNotNull(source);
 		return source.GetEnumerator();
 	}
 
