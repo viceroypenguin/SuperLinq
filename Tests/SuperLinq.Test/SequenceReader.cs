@@ -51,84 +51,42 @@ internal sealed class SequenceReader<T> : IDisposable
 	}
 
 	/// <summary>
-	/// Tires to read the next value.
+	/// Reads the next value. If the sequence is already finished, then it fails the unit test.
 	/// </summary>
-	/// <param name="value">
-	/// When this method returns, contains the value read on success.
-	/// </param>
-	/// <returns>
-	/// Returns true if a value was successfully read; otherwise, false.
-	/// </returns>
-
-	public virtual bool TryRead([NotNullWhen(true)] out T? value)
+	public T Read()
 	{
 		EnsureNotDisposed();
 
-		value = default;
+		Assert.True(
+			_enumerator.MoveNext(),
+			"Sequence is expected to have another value.");
 
-		var e = _enumerator;
-		if (!e!.MoveNext())
-			return false;
-
-		value = e.Current!;
-		return true;
+		return _enumerator.Current!;
 	}
 
 	/// <summary>
-	/// Tires to read the next value otherwise return the default.
+	/// Reads the end. If the end has not been reached, then it fails the unit test.
 	/// </summary>
-
-	public T? TryRead() => TryRead(default);
-
-	/// <summary>
-	/// Tires to read the next value otherwise return a given default.
-	/// </summary>
-
-	public T? TryRead(T? defaultValue) =>
-		TryRead(out var result) ? result : defaultValue;
-
-	/// <summary>
-	/// Reads a value otherwise throws <see cref="InvalidOperationException"/>
-	/// if no more values are available.
-	/// </summary>
-	/// <returns>
-	/// Returns the read value;
-	/// </returns>
-
-	public T Read() =>
-		TryRead(out var result) ? result : throw new InvalidOperationException();
-
-	/// <summary>
-	/// Reads the end. If the end has not been reached then it
-	/// throws <see cref="InvalidOperationException"/>.
-	/// </summary>
-
-	public virtual void ReadEnd()
+	public void ReadEnd()
 	{
 		EnsureNotDisposed();
 
-		if (_enumerator.MoveNext())
-			throw new InvalidOperationException();
+		Assert.False(
+			_enumerator.MoveNext(),
+			"Sequence is expected to be completed.");
 	}
-
-	/// <summary>
-	/// Ensures that this object has not been disposed, that
-	/// <see cref="Dispose"/> has not been previously called.
-	/// </summary>
 
 	[MemberNotNull(nameof(_enumerator))]
-	protected void EnsureNotDisposed()
+	private void EnsureNotDisposed()
 	{
 		if (_enumerator == null)
-			throw new ObjectDisposedException(GetType().FullName);
+			Assert.Fail("Sequence was disposed before completing.");
 	}
 
 	/// <summary>
-	/// Disposes this object and enumerator with which is was
-	/// initialized.
+	/// Disposes this object and enumerator with which it was initialized.
 	/// </summary>
-
-	public virtual void Dispose()
+	public void Dispose()
 	{
 		var e = _enumerator;
 		if (e == null) return;

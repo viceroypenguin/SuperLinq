@@ -51,54 +51,42 @@ internal sealed class SequenceReader<T> : IAsyncDisposable
 	}
 
 	/// <summary>
-	/// Reads a value otherwise throws <see cref="InvalidOperationException"/>
-	/// if no more values are available.
+	/// Reads the next value. If the sequence is already finished, then it fails the unit test.
 	/// </summary>
-	/// <returns>
-	/// Returns the read value;
-	/// </returns>
-
 	public async ValueTask<T> Read()
 	{
 		EnsureNotDisposed();
 
-		if (!await _enumerator.MoveNextAsync())
-			throw new InvalidOperationException();
+		Assert.True(
+			await _enumerator.MoveNextAsync(),
+			"Sequence is expected to have another value.");
 
 		return _enumerator.Current!;
 	}
 
 	/// <summary>
-	/// Reads the end. If the end has not been reached then it
-	/// throws <see cref="InvalidOperationException"/>.
+	/// Reads the end. If the end has not been reached, then it fails the unit test.
 	/// </summary>
-
-	public virtual async ValueTask ReadEnd()
+	public async ValueTask ReadEnd()
 	{
 		EnsureNotDisposed();
 
-		if (await _enumerator.MoveNextAsync())
-			throw new InvalidOperationException();
+		Assert.False(
+			await _enumerator.MoveNextAsync(),
+			"Sequence is expected to be completed.");
 	}
-
-	/// <summary>
-	/// Ensures that this object has not been disposed, that
-	/// <see cref="Dispose"/> has not been previously called.
-	/// </summary>
 
 	[MemberNotNull(nameof(_enumerator))]
-	protected void EnsureNotDisposed()
+	private void EnsureNotDisposed()
 	{
 		if (_enumerator == null)
-			throw new ObjectDisposedException(GetType().FullName);
+			Assert.Fail("Sequence was disposed before completing.");
 	}
 
 	/// <summary>
-	/// Disposes this object and enumerator with which is was
-	/// initialized.
+	/// Disposes this object and enumerator with which it was initialized.
 	/// </summary>
-
-	public virtual async ValueTask DisposeAsync()
+	public async ValueTask DisposeAsync()
 	{
 		var e = _enumerator;
 		if (e == null) return;
