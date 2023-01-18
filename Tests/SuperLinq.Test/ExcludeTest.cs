@@ -21,7 +21,7 @@ public class ExcludeTests
 	public void TestExcludeNegativeStartIndexException()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			Enumerable.Range(1, 10).Exclude(-10, 10));
+			new BreakingSequence<int>().Exclude(-10, 10));
 	}
 
 	/// <summary>
@@ -31,7 +31,7 @@ public class ExcludeTests
 	public void TestExcludeNegativeCountException()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			Enumerable.Range(1, 10).Exclude(0, -5));
+			new BreakingSequence<int>().Exclude(0, -5));
 	}
 
 	/// <summary>
@@ -40,10 +40,10 @@ public class ExcludeTests
 	[Fact]
 	public void TestExcludeWithCountEqualsZero()
 	{
-		var sequence = Enumerable.Range(1, 10);
-		var resultA = sequence.Exclude(5, 0);
+		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
 
-		Assert.Equal(sequence, resultA);
+		var result = sequence.Exclude(5, 0);
+		result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
 	/// <summary>
@@ -52,13 +52,14 @@ public class ExcludeTests
 	[Fact]
 	public void TestExcludeEmptySequence()
 	{
-		var sequence = Enumerable.Empty<int>();
-		var resultA = sequence.Exclude(0, 0);
-		var resultB = sequence.Exclude(0, 10); // shouldn't matter how many we ask for past end
-		var resultC = sequence.Exclude(5, 5);  // shouldn't matter where we start
-		Assert.Equal(sequence, resultA);
-		Assert.Equal(sequence, resultB);
-		Assert.Equal(sequence, resultC);
+		using (var sequence = Enumerable.Empty<int>().AsTestingSequence())
+			Assert.Equal(Enumerable.Empty<int>(), sequence.Exclude(0, 0));
+		using (var sequence = Enumerable.Empty<int>().AsTestingSequence())
+			// shouldn't matter how many we ask for past end
+			Assert.Equal(Enumerable.Empty<int>(), sequence.Exclude(0, 10));
+		using (var sequence = Enumerable.Empty<int>().AsTestingSequence())
+			// shouldn't matter where we start
+			Assert.Equal(Enumerable.Empty<int>(), sequence.Exclude(5, 5));
 	}
 
 	/// <summary>
@@ -67,11 +68,10 @@ public class ExcludeTests
 	[Fact]
 	public void TestExcludeSequenceHead()
 	{
-		const int count = 10;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Exclude(0, count / 2);
+		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
 
-		Assert.Equal(sequence.Skip(count / 2), result);
+		var result = sequence.Exclude(0, 5);
+		result.AssertSequenceEqual(Enumerable.Range(6, 5));
 	}
 
 	/// <summary>
@@ -80,11 +80,10 @@ public class ExcludeTests
 	[Fact]
 	public void TestExcludeSequenceTail()
 	{
-		const int count = 10;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Exclude(count / 2, count);
+		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
 
-		Assert.Equal(sequence.Take(count / 2), result);
+		var result = sequence.Exclude(5, 10);
+		result.AssertSequenceEqual(Enumerable.Range(1, 5));
 	}
 
 	/// <summary>
@@ -93,13 +92,10 @@ public class ExcludeTests
 	[Fact]
 	public void TestExcludeSequenceMiddle()
 	{
-		const int count = 10;
-		const int startIndex = 3;
-		const int excludeCount = 5;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Exclude(startIndex, excludeCount);
+		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
 
-		Assert.Equal(sequence.Take(startIndex).Concat(sequence.Skip(startIndex + excludeCount)), result);
+		var result = sequence.Exclude(3, 5);
+		Assert.Equal(Seq(1, 2, 3, 9, 10), result);
 	}
 
 	/// <summary>
@@ -108,10 +104,9 @@ public class ExcludeTests
 	[Fact]
 	public void TestExcludeEntireSequence()
 	{
-		const int count = 10;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Exclude(0, count);
+		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
 
+		var result = sequence.Exclude(0, 10);
 		Assert.Empty(result);
 	}
 
@@ -121,11 +116,10 @@ public class ExcludeTests
 	[Fact]
 	public void TestExcludeCountGreaterThanSequenceLength()
 	{
-		const int count = 10;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Exclude(1, count * 10);
+		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
 
-		Assert.Equal(sequence.Take(1), result);
+		var result = sequence.Exclude(1, 10 * 10);
+		Assert.Equal(Seq(1), result);
 	}
 
 	/// <summary>
@@ -134,10 +128,9 @@ public class ExcludeTests
 	[Fact]
 	public void TestExcludeStartIndexGreaterThanSequenceLength()
 	{
-		const int count = 10;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Exclude(count + 5, count);
+		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
 
-		Assert.Equal(sequence, result);
+		var result = sequence.Exclude(10 + 5, 10);
+		Assert.Equal(Enumerable.Range(1, 10), result);
 	}
 }
