@@ -9,8 +9,6 @@ public enum SourceKind
 	BreakingCollection,
 }
 
-public interface IDisposableEnumerable<T> : IEnumerable<T>, IDisposable { }
-
 internal static partial class TestExtensions
 {
 	internal static IEnumerable<T> Seq<T>(params T[] values) => values;

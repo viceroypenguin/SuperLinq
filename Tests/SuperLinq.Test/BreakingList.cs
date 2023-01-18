@@ -13,12 +13,12 @@ internal sealed class BreakingList<T> : BreakingCollection<T>, IList<T>
 	public BreakingList(IEnumerable<T> source) : base(source) { }
 
 	public int IndexOf(T item) => List.IndexOf(item);
-	public void Insert(int index, T item) => throw new NotImplementedException();
-	public void RemoveAt(int index) => throw new NotImplementedException();
+	public void Insert(int index, T item) => Assert.Fail("LINQ Operators should not be calling this method.");
+	public void RemoveAt(int index) => Assert.Fail("LINQ Operators should not be calling this method.");
 
 	public T this[int index]
 	{
 		get => List[index];
-		set => throw new NotImplementedException();
+		set => Assert.Fail("LINQ Operators should not be calling this method.");
 	}
 }

@@ -52,7 +52,7 @@ public class IndexByTest
 	}
 
 	[Fact]
-	public async Task IndexBytDoesNotIterateUnnecessaryElements()
+	public async Task IndexByDoesNotIterateUnnecessaryElements()
 	{
 		var source = AsyncSuperEnumerable.From(
 			() => Task.FromResult("ana"),
@@ -73,7 +73,7 @@ public class IndexByTest
 			(1, "bob"),
 			(0, "davi"));
 
-		await Assert.ThrowsAsync<NotSupportedException>(async () =>
+		await Assert.ThrowsAsync<TestException>(async () =>
 			await result.ElementAtAsync(5));
 	}
 }

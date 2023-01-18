@@ -8,6 +8,6 @@ namespace Test;
 /// </summary>
 internal class BreakingSequence<T> : IEnumerable<T>
 {
-	public IEnumerator<T> GetEnumerator() => throw new InvalidOperationException();
+	public IEnumerator<T> GetEnumerator() => throw new TestException();
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
