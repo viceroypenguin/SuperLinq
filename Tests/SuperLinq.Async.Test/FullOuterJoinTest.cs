@@ -61,8 +61,8 @@ public class FullOuterJoinTest
 		var quux = (5, "quux");
 		var quuz = (6, "quuz");
 
-		var xs = AsyncSeq(foo, bar1, qux);
-		var ys = AsyncSeq(bar2, bar3, baz, quuz, quux);
+		using var xs = AsyncSeq(foo, bar1, qux).AsTestingSequence();
+		using var ys = AsyncSeq(bar2, bar3, baz, quuz, quux).AsTestingSequence();
 
 		var missing = default((int, string));
 
@@ -97,8 +97,8 @@ public class FullOuterJoinTest
 		var quux = ("five", "quux");
 		var quuz = ("six", "quuz");
 
-		var xs = AsyncSeq(foo, bar1, qux);
-		var ys = AsyncSeq(bar2, bar3, baz, quuz, quux);
+		using var xs = AsyncSeq(foo, bar1, qux).AsTestingSequence();
+		using var ys = AsyncSeq(bar2, bar3, baz, quuz, quux).AsTestingSequence();
 
 		var missing = default((string, string));
 
@@ -129,8 +129,8 @@ public class FullOuterJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = AsyncSeq<(int, string)>();
-		var ys = AsyncSeq(foo, bar, baz);
+		using var xs = AsyncSeq<(int, string)>().AsTestingSequence();
+		using var ys = AsyncSeq(foo, bar, baz).AsTestingSequence();
 
 		var missing = default((int, string));
 
@@ -156,8 +156,8 @@ public class FullOuterJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = AsyncSeq(foo, bar, baz);
-		var ys = AsyncSeq<(int, string)>();
+		using var xs = AsyncSeq(foo, bar, baz).AsTestingSequence();
+		using var ys = AsyncSeq<(int, string)>().AsTestingSequence();
 
 		var missing = default((int, string));
 

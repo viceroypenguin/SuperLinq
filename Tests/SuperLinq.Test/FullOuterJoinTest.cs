@@ -60,8 +60,8 @@ public class FullOuterJoinTest
 		var quux = (5, "quux");
 		var quuz = (6, "quuz");
 
-		var xs = Seq(foo, bar1, qux);
-		var ys = Seq(bar2, bar3, baz, quuz, quux);
+		using var xs = Seq(foo, bar1, qux).AsTestingSequence();
+		using var ys = Seq(bar2, bar3, baz, quuz, quux).AsTestingSequence();
 
 		var missing = default((int, string));
 
@@ -96,8 +96,8 @@ public class FullOuterJoinTest
 		var quux = ("five", "quux");
 		var quuz = ("six", "quuz");
 
-		var xs = Seq(foo, bar1, qux);
-		var ys = Seq(bar2, bar3, baz, quuz, quux);
+		using var xs = Seq(foo, bar1, qux).AsTestingSequence();
+		using var ys = Seq(bar2, bar3, baz, quuz, quux).AsTestingSequence();
 
 		var missing = default((string, string));
 
@@ -128,8 +128,8 @@ public class FullOuterJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = Seq<(int, string)>();
-		var ys = Seq(foo, bar, baz);
+		using var xs = Seq<(int, string)>().AsTestingSequence();
+		using var ys = Seq(foo, bar, baz).AsTestingSequence();
 
 		var missing = default((int, string));
 
@@ -155,8 +155,8 @@ public class FullOuterJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = Seq(foo, bar, baz);
-		var ys = Seq<(int, string)>();
+		using var xs = Seq(foo, bar, baz).AsTestingSequence();
+		using var ys = Seq<(int, string)>().AsTestingSequence();
 
 		var missing = default((int, string));
 
