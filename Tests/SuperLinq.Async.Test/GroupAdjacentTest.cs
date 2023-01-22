@@ -32,7 +32,7 @@ public class GroupAdjacentTest
 		const string nine = "nine";
 		const string ten = "ten";
 
-		var source = AsyncSeq(one, two, three, four, five, six, seven, eight, nine, ten);
+		await using var source = TestingSequence.Of(one, two, three, four, five, six, seven, eight, nine, ten);
 
 		var groupings = source.GroupAdjacent(s => s.Length);
 
@@ -50,7 +50,7 @@ public class GroupAdjacentTest
 	[Fact]
 	public async Task GroupAdjacentSourceSequenceComparer()
 	{
-		var source = AsyncSeq("foo", "FOO", "Foo", "bar", "BAR", "Bar");
+		await using var source = TestingSequence.Of("foo", "FOO", "Foo", "bar", "BAR", "Bar");
 
 		var groupings = source.GroupAdjacent(s => s, StringComparer.OrdinalIgnoreCase);
 
@@ -63,7 +63,7 @@ public class GroupAdjacentTest
 	[Fact]
 	public async Task GroupAdjacentSourceSequenceElementSelector()
 	{
-		var source = AsyncSeq(
+		await using var source = TestingSequence.Of(
 			new { Month = 1, Value = 123 },
 			new { Month = 1, Value = 456 },
 			new { Month = 1, Value = 789 },
@@ -90,7 +90,7 @@ public class GroupAdjacentTest
 	[Fact]
 	public async Task GroupAdjacentSourceSequenceElementSelectorComparer()
 	{
-		var source = AsyncSeq(
+		await using var source = TestingSequence.Of(
 			new { Month = "jan", Value = 123 },
 			new { Month = "Jan", Value = 456 },
 			new { Month = "JAN", Value = 789 },
@@ -117,7 +117,7 @@ public class GroupAdjacentTest
 	[Fact]
 	public async Task GroupAdjacentSourceSequenceResultSelector()
 	{
-		var source = AsyncSeq(
+		await using var source = TestingSequence.Of(
 			new { Month = 1, Value = 123 },
 			new { Month = 1, Value = 456 },
 			new { Month = 1, Value = 789 },
@@ -144,7 +144,7 @@ public class GroupAdjacentTest
 	[Fact]
 	public async Task GroupAdjacentSourceSequenceResultSelectorComparer()
 	{
-		var source = AsyncSeq(
+		await using var source = TestingSequence.Of(
 			new { Month = "jan", Value = 123 },
 			new { Month = "Jan", Value = 456 },
 			new { Month = "JAN", Value = 789 },
@@ -171,10 +171,11 @@ public class GroupAdjacentTest
 	[Fact]
 	public async Task GroupAdjacentSourceSequenceWithSomeNullKeys()
 	{
-		var groupings =
-			AsyncEnumerable.Range(1, 5)
-				.SelectMany(x => Enumerable.Repeat((int?)x, x).Append(null).ToAsyncEnumerable())
-				.GroupAdjacent(x => x);
+		using var source = AsyncEnumerable.Range(1, 5)
+			.SelectMany(x => Enumerable.Repeat((int?)x, x).Append(null).ToAsyncEnumerable())
+			.AsTestingSequence();
+		
+		var groupings = source.GroupAdjacent(x => x);
 
 		int?[] aNull = { null };
 
@@ -193,7 +194,7 @@ public class GroupAdjacentTest
 	}
 
 	private static async Task AssertGrouping<TKey, TElement>(
-		SequenceReader<System.Linq.IGrouping<TKey, TElement>> reader,
+		SequenceReader<IGrouping<TKey, TElement>> reader,
 		TKey key, params TElement[] elements)
 	{
 		var grouping = await reader.Read();

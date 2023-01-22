@@ -32,7 +32,7 @@ public class GroupAdjacentTest
 		const string nine = "nine";
 		const string ten = "ten";
 
-		var source = new[] { one, two, three, four, five, six, seven, eight, nine, ten };
+		using var source = TestingSequence.Of(one, two, three, four, five, six, seven, eight, nine, ten);
 
 		var groupings = source.GroupAdjacent(s => s.Length);
 
@@ -50,7 +50,7 @@ public class GroupAdjacentTest
 	[Fact]
 	public void GroupAdjacentSourceSequenceComparer()
 	{
-		var source = new[] { "foo", "FOO", "Foo", "bar", "BAR", "Bar" };
+		using var source = TestingSequence.Of("foo", "FOO", "Foo", "bar", "BAR", "Bar");
 
 		var groupings = source.GroupAdjacent(s => s, StringComparer.OrdinalIgnoreCase);
 
@@ -63,21 +63,19 @@ public class GroupAdjacentTest
 	[Fact]
 	public void GroupAdjacentSourceSequenceElementSelector()
 	{
-		var source = new[]
-		{
-				new { Month = 1, Value = 123 },
-				new { Month = 1, Value = 456 },
-				new { Month = 1, Value = 789 },
-				new { Month = 2, Value = 987 },
-				new { Month = 2, Value = 654 },
-				new { Month = 2, Value = 321 },
-				new { Month = 3, Value = 789 },
-				new { Month = 3, Value = 456 },
-				new { Month = 3, Value = 123 },
-				new { Month = 1, Value = 123 },
-				new { Month = 1, Value = 456 },
-				new { Month = 1, Value = 781 },
-			};
+		using var source = TestingSequence.Of(
+			new { Month = 1, Value = 123 },
+			new { Month = 1, Value = 456 },
+			new { Month = 1, Value = 789 },
+			new { Month = 2, Value = 987 },
+			new { Month = 2, Value = 654 },
+			new { Month = 2, Value = 321 },
+			new { Month = 3, Value = 789 },
+			new { Month = 3, Value = 456 },
+			new { Month = 3, Value = 123 },
+			new { Month = 1, Value = 123 },
+			new { Month = 1, Value = 456 },
+			new { Month = 1, Value = 781 });
 
 		var groupings = source.GroupAdjacent(e => e.Month, e => e.Value * 2);
 
@@ -92,21 +90,19 @@ public class GroupAdjacentTest
 	[Fact]
 	public void GroupAdjacentSourceSequenceElementSelectorComparer()
 	{
-		var source = new[]
-		{
-				new { Month = "jan", Value = 123 },
-				new { Month = "Jan", Value = 456 },
-				new { Month = "JAN", Value = 789 },
-				new { Month = "feb", Value = 987 },
-				new { Month = "Feb", Value = 654 },
-				new { Month = "FEB", Value = 321 },
-				new { Month = "mar", Value = 789 },
-				new { Month = "Mar", Value = 456 },
-				new { Month = "MAR", Value = 123 },
-				new { Month = "jan", Value = 123 },
-				new { Month = "Jan", Value = 456 },
-				new { Month = "JAN", Value = 781 },
-			};
+		using var source = TestingSequence.Of(
+			new { Month = "jan", Value = 123 },
+			new { Month = "Jan", Value = 456 },
+			new { Month = "JAN", Value = 789 },
+			new { Month = "feb", Value = 987 },
+			new { Month = "Feb", Value = 654 },
+			new { Month = "FEB", Value = 321 },
+			new { Month = "mar", Value = 789 },
+			new { Month = "Mar", Value = 456 },
+			new { Month = "MAR", Value = 123 },
+			new { Month = "jan", Value = 123 },
+			new { Month = "Jan", Value = 456 },
+			new { Month = "JAN", Value = 781 });
 
 		var groupings = source.GroupAdjacent(e => e.Month, e => e.Value * 2, StringComparer.OrdinalIgnoreCase);
 
@@ -121,21 +117,19 @@ public class GroupAdjacentTest
 	[Fact]
 	public void GroupAdjacentSourceSequenceResultSelector()
 	{
-		var source = new[]
-		{
-				new { Month = 1, Value = 123 },
-				new { Month = 1, Value = 456 },
-				new { Month = 1, Value = 789 },
-				new { Month = 2, Value = 987 },
-				new { Month = 2, Value = 654 },
-				new { Month = 2, Value = 321 },
-				new { Month = 3, Value = 789 },
-				new { Month = 3, Value = 456 },
-				new { Month = 3, Value = 123 },
-				new { Month = 1, Value = 123 },
-				new { Month = 1, Value = 456 },
-				new { Month = 1, Value = 781 },
-			};
+		using var source = TestingSequence.Of(
+			new { Month = 1, Value = 123 },
+			new { Month = 1, Value = 456 },
+			new { Month = 1, Value = 789 },
+			new { Month = 2, Value = 987 },
+			new { Month = 2, Value = 654 },
+			new { Month = 2, Value = 321 },
+			new { Month = 3, Value = 789 },
+			new { Month = 3, Value = 456 },
+			new { Month = 3, Value = 123 },
+			new { Month = 1, Value = 123 },
+			new { Month = 1, Value = 456 },
+			new { Month = 1, Value = 781 });
 
 		var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value));
 
@@ -150,21 +144,19 @@ public class GroupAdjacentTest
 	[Fact]
 	public void GroupAdjacentSourceSequenceResultSelectorComparer()
 	{
-		var source = new[]
-		{
-				new { Month = "jan", Value = 123 },
-				new { Month = "Jan", Value = 456 },
-				new { Month = "JAN", Value = 789 },
-				new { Month = "feb", Value = 987 },
-				new { Month = "Feb", Value = 654 },
-				new { Month = "FEB", Value = 321 },
-				new { Month = "mar", Value = 789 },
-				new { Month = "Mar", Value = 456 },
-				new { Month = "MAR", Value = 123 },
-				new { Month = "jan", Value = 123 },
-				new { Month = "Jan", Value = 456 },
-				new { Month = "JAN", Value = 781 },
-			};
+		using var source = TestingSequence.Of(
+			new { Month = "jan", Value = 123 },
+			new { Month = "Jan", Value = 456 },
+			new { Month = "JAN", Value = 789 },
+			new { Month = "feb", Value = 987 },
+			new { Month = "Feb", Value = 654 },
+			new { Month = "FEB", Value = 321 },
+			new { Month = "mar", Value = 789 },
+			new { Month = "Mar", Value = 456 },
+			new { Month = "MAR", Value = 123 },
+			new { Month = "jan", Value = 123 },
+			new { Month = "Jan", Value = 456 },
+			new { Month = "JAN", Value = 781 });
 
 		var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value), StringComparer.OrdinalIgnoreCase);
 
@@ -179,10 +171,11 @@ public class GroupAdjacentTest
 	[Fact]
 	public void GroupAdjacentSourceSequenceWithSomeNullKeys()
 	{
-		var groupings =
-			Enumerable.Range(1, 5)
-					  .SelectMany(x => Enumerable.Repeat((int?)x, x).Append(null))
-					  .GroupAdjacent(x => x);
+		using var source = Enumerable.Range(1, 5)
+			.SelectMany(x => Enumerable.Repeat((int?)x, x).Append(null))
+			.AsTestingSequence();
+
+		var groupings = source.GroupAdjacent(x => x);
 
 		int?[] aNull = { null };
 
@@ -200,7 +193,7 @@ public class GroupAdjacentTest
 		reader.ReadEnd();
 	}
 
-	static void AssertGrouping<TKey, TElement>(SequenceReader<System.Linq.IGrouping<TKey, TElement>> reader,
+	private static void AssertGrouping<TKey, TElement>(SequenceReader<IGrouping<TKey, TElement>> reader,
 		TKey key, params TElement[] elements)
 	{
 		var grouping = reader.Read();
@@ -209,7 +202,7 @@ public class GroupAdjacentTest
 		grouping.AssertSequenceEqual(elements);
 	}
 
-	static void AssertResult<TElement>(SequenceReader<TElement> reader, TElement element)
+	private static void AssertResult<TElement>(SequenceReader<TElement> reader, TElement element)
 	{
 		var result = reader.Read();
 		Assert.NotNull(result);
