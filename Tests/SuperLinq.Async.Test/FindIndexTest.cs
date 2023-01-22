@@ -12,7 +12,7 @@ public class FindIndexTest
 	[Fact]
 	public async Task FindIndexWorksWithEmptySequence()
 	{
-		await using var sequence = AsyncSeq<int>().AsTestingSequence();
+		await using var sequence = TestingSequence.Of<int>();
 		Assert.Equal(-1, await sequence.FindIndex(BreakingFunc.Of<int, bool>()));
 	}
 

@@ -76,11 +76,11 @@ public class SegmentTests
 	[Fact]
 	public void TestSegmentationStartsWithSecondItem()
 	{
-		using (var sequence = Seq(0).AsTestingSequence())
+		using (var sequence = TestingSequence.Of(0))
 			Assert.True(sequence.Segment(BreakingFunc.Of<int, bool>()).Any());
-		using (var sequence = Seq(0).AsTestingSequence())
+		using (var sequence = TestingSequence.Of(0))
 			Assert.True(sequence.Segment(BreakingFunc.Of<int, int, bool>()).Any());
-		using (var sequence = Seq(0).AsTestingSequence())
+		using (var sequence = TestingSequence.Of(0))
 			Assert.True(sequence.Segment(BreakingFunc.Of<int, int, int, bool>()).Any());
 	}
 

@@ -5,8 +5,7 @@ public class CountByTest
 	[Fact]
 	public void CountBySimpleTest()
 	{
-		using var xs = Seq(1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2)
-			.AsTestingSequence();
+		using var xs = TestingSequence.Of(1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2);
 
 		xs.CountBy(c => c)
 			.AssertSequenceEqual(
@@ -46,8 +45,7 @@ public class CountByTest
 	[Fact]
 	public void CountByWithEqualityComparer()
 	{
-		using var xs = Seq("a", "B", "c", "A", "b", "A")
-			.AsTestingSequence();
+		using var xs = TestingSequence.Of("a", "B", "c", "A", "b", "A");
 
 		xs.CountBy(c => c, StringComparer.OrdinalIgnoreCase)
 			.AssertSequenceEqual(
@@ -77,8 +75,7 @@ public class CountByTest
 	[Fact]
 	public void CountByWithSomeNullKeys()
 	{
-		using var ss = Seq("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo")
-			.AsTestingSequence();
+		using var ss = TestingSequence.Of("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
 		ss.CountBy(s => s)
 			.AssertSequenceEqual(
 				("foo", 2),

@@ -54,7 +54,7 @@ public class StartsWithTest
 	public void StartsWithReturnsFalseIfOnlyFirstIsEmpty()
 	{
 		using var f = Array.Empty<int>().AsTestingSequence();
-		using var s = Seq(1, 2, 3).AsTestingSequence();
+		using var s = TestingSequence.Of(1, 2, 3);
 
 		Assert.False(f.StartsWith(s));
 	}

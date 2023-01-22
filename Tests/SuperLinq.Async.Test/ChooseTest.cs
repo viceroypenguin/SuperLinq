@@ -14,7 +14,7 @@ public class ChooseTest
 	[Fact]
 	public async Task WithEmptySource()
 	{
-		await using var xs = Enumerable.Empty<int>().AsTestingSequence();
+		await using var xs = TestingSequence.Of<int>();
 		Assert.Empty(await xs.Choose(BreakingFunc.Of<int, (bool, int)>())
 			.ToListAsync());
 	}
@@ -44,8 +44,7 @@ public class ChooseTest
 	[Fact]
 	public async Task ThoseThatAreIntegers()
 	{
-		await using var xs = AsyncSeq<int?>(0, 1, 2, null, 4, null, 6, null, null, 9)
-			.AsTestingSequence();
+		await using var xs = TestingSequence.Of<int?>(0, 1, 2, null, 4, null, 6, null, null, 9);
 
 		await xs.Choose(e => e is { } n ? (true, n) : (false, default))
 			.AssertSequenceEqual(0, 1, 2, 4, 6, 9);

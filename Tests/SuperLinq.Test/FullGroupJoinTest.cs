@@ -19,8 +19,8 @@ public class FullGroupJoinTest
 	[InlineData(OverloadCase.TupleResult)]
 	public void FullGroupJoinsResults(OverloadCase overloadCase)
 	{
-		using var listA = Seq(1, 2).AsTestingSequence();
-		using var listB = Seq(2, 3).AsTestingSequence();
+		using var listA = TestingSequence.Of(1, 2);
+		using var listB = TestingSequence.Of(2, 3);
 
 		var result = FullGroupJoin(overloadCase, listA, listB, SuperEnumerable.Identity).ToDictionary(a => a.Key);
 
@@ -42,7 +42,7 @@ public class FullGroupJoinTest
 	public void FullGroupJoinsEmptyLeft(OverloadCase overloadCase)
 	{
 		using var listA = Array.Empty<int>().AsTestingSequence();
-		using var listB = Seq(2, 3).AsTestingSequence();
+		using var listB = TestingSequence.Of(2, 3);
 
 		var result = FullGroupJoin(overloadCase, listA, listB, SuperEnumerable.Identity).ToDictionary(a => a.Key);
 
@@ -60,7 +60,7 @@ public class FullGroupJoinTest
 	[InlineData(OverloadCase.TupleResult)]
 	public void FullGroupJoinsEmptyRight(OverloadCase overloadCase)
 	{
-		using var listA = Seq(2, 3).AsTestingSequence();
+		using var listA = TestingSequence.Of(2, 3);
 		using var listB = Array.Empty<int>().AsTestingSequence();
 
 		var result = FullGroupJoin(overloadCase, listA, listB, SuperEnumerable.Identity).ToDictionary(a => a.Key);

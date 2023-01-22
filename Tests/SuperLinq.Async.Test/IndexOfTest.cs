@@ -5,7 +5,7 @@ public class IndexOfTest
 	[Fact]
 	public async Task IndexOfWithNegativeCount()
 	{
-		await using var sequence = AsyncSeq(1).AsTestingSequence();
+		await using var sequence = TestingSequence.Of(1);
 		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await sequence.IndexOf(1, 1, -1));
 	}
@@ -13,7 +13,7 @@ public class IndexOfTest
 	[Fact]
 	public async Task IndexOfWorksWithEmptySequence()
 	{
-		await using var sequence = AsyncSeq<int>().AsTestingSequence();
+		await using var sequence = TestingSequence.Of<int>();
 		Assert.Equal(-1, await sequence.IndexOf(5));
 	}
 

@@ -33,42 +33,42 @@ public class AtLeastTest
 	[Fact]
 	public async Task AtLeastWithSingleElementHasAtLeastZeroElements()
 	{
-		await using var xs = AsyncSeq(1).AsTestingSequence();
+		await using var xs = TestingSequence.Of(1);
 		Assert.True(await xs.AtLeast(0));
 	}
 
 	[Fact]
 	public async Task AtLeastWithSingleElementHasAtLeastOneElement()
 	{
-		await using var xs = AsyncSeq(1).AsTestingSequence();
+		await using var xs = TestingSequence.Of(1);
 		Assert.True(await xs.AtLeast(1));
 	}
 
 	[Fact]
 	public async Task AtLeastWithSingleElementHasAtLeastManyElements()
 	{
-		await using var xs = AsyncSeq(1).AsTestingSequence();
+		await using var xs = TestingSequence.Of(1);
 		Assert.False(await xs.AtLeast(2));
 	}
 
 	[Fact]
 	public async Task AtLeastWithManyElementsHasAtLeastZeroElements()
 	{
-		await using var xs = AsyncSeq(1, 2, 3).AsTestingSequence();
+		await using var xs = TestingSequence.Of(1, 2, 3);
 		Assert.True(await xs.AtLeast(0));
 	}
 
 	[Fact]
 	public async Task AtLeastWithManyElementsHasAtLeastOneElement()
 	{
-		await using var xs = AsyncSeq(1, 2, 3).AsTestingSequence();
+		await using var xs = TestingSequence.Of(1, 2, 3);
 		Assert.True(await xs.AtLeast(1));
 	}
 
 	[Fact]
 	public async Task AtLeastWithManyElementsHasAtLeastManyElements()
 	{
-		await using var xs = AsyncSeq(1, 2, 3).AsTestingSequence();
+		await using var xs = TestingSequence.Of(1, 2, 3);
 		Assert.True(await xs.AtLeast(2));
 	}
 

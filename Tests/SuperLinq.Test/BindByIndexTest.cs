@@ -54,7 +54,7 @@ public class BindByIndexTest
 	public void BindByIndexThrowExceptionInvalidIndex(int index)
 	{
 		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
-		using var seq2 = Seq(index).AsTestingSequence();
+		using var seq2 = TestingSequence.Of(index);
 
 		Assert.Throws<ArgumentOutOfRangeException>("indices", () =>
 			seq1.BindByIndex(seq2).Consume());
@@ -97,7 +97,7 @@ public class BindByIndexTest
 	public void BindByIndexTransformInvalidIndex()
 	{
 		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
-		using var seq2 = Seq(1, 10, 3, 30).AsTestingSequence();
+		using var seq2 = TestingSequence.Of(1, 10, 3, 30);
 
 		seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
 			.AssertSequenceEqual(2, null, 4, null);
@@ -107,7 +107,7 @@ public class BindByIndexTest
 	public void BindByIndexTransformThrowExceptionNegativeIndex()
 	{
 		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
-		using var seq2 = Seq(-1).AsTestingSequence();
+		using var seq2 = TestingSequence.Of(-1);
 
 		Assert.Throws<ArgumentOutOfRangeException>("indices", () =>
 			seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).Consume());

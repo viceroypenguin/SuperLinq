@@ -7,8 +7,7 @@ public class DistinctByTest
 	[Fact]
 	public void DistinctBy()
 	{
-		using var source = Seq("first", "second", "third", "fourth", "fifth")
-			.AsTestingSequence();
+		using var source = TestingSequence.Of("first", "second", "third", "fourth", "fifth");
 		var distinct = SuperEnumerable.DistinctBy(source, word => word.Length);
 		distinct.AssertSequenceEqual("first", "second");
 	}
@@ -22,8 +21,7 @@ public class DistinctByTest
 	[Fact]
 	public void DistinctByWithComparer()
 	{
-		using var source = Seq("first", "FIRST", "second", "second", "third")
-			.AsTestingSequence();
+		using var source = TestingSequence.Of("first", "FIRST", "second", "second", "third");
 		var distinct = SuperEnumerable.DistinctBy(source, word => word, StringComparer.OrdinalIgnoreCase);
 		distinct.AssertSequenceEqual("first", "second", "third");
 	}
@@ -31,8 +29,7 @@ public class DistinctByTest
 	[Fact]
 	public void DistinctByNullComparer()
 	{
-		using var source = Seq("first", "second", "third", "fourth", "fifth")
-			.AsTestingSequence();
+		using var source = TestingSequence.Of("first", "second", "third", "fourth", "fifth");
 		var distinct = SuperEnumerable.DistinctBy(source, word => word.Length, comparer: null);
 		distinct.AssertSequenceEqual("first", "second");
 	}

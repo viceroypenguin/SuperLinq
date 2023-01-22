@@ -174,7 +174,7 @@ public class GroupAdjacentTest
 		using var source = AsyncEnumerable.Range(1, 5)
 			.SelectMany(x => Enumerable.Repeat((int?)x, x).Append(null).ToAsyncEnumerable())
 			.AsTestingSequence();
-		
+
 		var groupings = source.GroupAdjacent(x => x);
 
 		int?[] aNull = { null };

@@ -77,11 +77,11 @@ public class SegmentTests
 	[Fact]
 	public async Task TestSegmentationStartsWithSecondItem()
 	{
-		await using (var sequence = AsyncSeq(0).AsTestingSequence())
+		await using (var sequence = TestingSequence.Of(0))
 			Assert.NotEmpty(await sequence.Segment(BreakingFunc.Of<int, bool>()).FirstAsync());
-		await using (var sequence = AsyncSeq(0).AsTestingSequence())
+		await using (var sequence = TestingSequence.Of(0))
 			Assert.NotEmpty(await sequence.Segment(BreakingFunc.Of<int, int, bool>()).FirstAsync());
-		await using (var sequence = AsyncSeq(0).AsTestingSequence())
+		await using (var sequence = TestingSequence.Of(0))
 			Assert.NotEmpty(await sequence.Segment(BreakingFunc.Of<int, int, int, bool>()).FirstAsync());
 	}
 

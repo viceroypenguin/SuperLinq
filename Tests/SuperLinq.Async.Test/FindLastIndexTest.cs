@@ -12,7 +12,7 @@ public class FindLastIndexTest
 	[Fact]
 	public async Task FindLastIndexWorksWithEmptySequence()
 	{
-		await using var sequence = AsyncSeq<int>().AsTestingSequence();
+		await using var sequence = TestingSequence.Of<int>();
 		Assert.Equal(-1, await sequence.FindLastIndex(i => i == 5));
 	}
 

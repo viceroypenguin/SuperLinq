@@ -87,7 +87,7 @@ public class WindowTests
 	[Fact]
 	public void TestWindowEmptySequence()
 	{
-		using var sequence = Seq<int>().AsTestingSequence();
+		using var sequence = TestingSequence.Of<int>();
 
 		var result = sequence.Window(5);
 		Assert.Empty(result);
@@ -96,7 +96,7 @@ public class WindowTests
 	[Fact]
 	public void TestWindowBufferEmptySequence()
 	{
-		using var sequence = Seq<int>().AsTestingSequence();
+		using var sequence = TestingSequence.Of<int>();
 
 		var result = sequence.Window(5, SuperEnumerable.Identity);
 		Assert.Empty(result);

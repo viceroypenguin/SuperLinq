@@ -68,8 +68,8 @@ public class FullJoinTest
 		var quux = (5, "quux");
 		var quuz = (6, "quuz");
 
-		using var xs = Seq(foo, bar1, qux).AsTestingSequence();
-		using var ys = Seq(quux, bar2, baz, bar3, quuz).AsTestingSequence();
+		using var xs = TestingSequence.Of(foo, bar1, qux);
+		using var ys = TestingSequence.Of(quux, bar2, baz, bar3, quuz);
 
 		var missing = default((int, string));
 
@@ -103,8 +103,8 @@ public class FullJoinTest
 		var quux = ("five", "quux");
 		var quuz = ("six", "quuz");
 
-		using var xs = Seq(foo, bar1, qux).AsTestingSequence();
-		using var ys = Seq(quux, bar2, baz, bar3, quuz).AsTestingSequence();
+		using var xs = TestingSequence.Of(foo, bar1, qux);
+		using var ys = TestingSequence.Of(quux, bar2, baz, bar3, quuz);
 
 		var missing = default((string, string));
 
@@ -135,7 +135,7 @@ public class FullJoinTest
 		var baz = (3, "baz");
 
 		using var xs = Array.Empty<(int, string)>().AsTestingSequence();
-		using var ys = Seq(foo, bar, baz).AsTestingSequence();
+		using var ys = TestingSequence.Of(foo, bar, baz);
 
 		var missing = default((int, string));
 
@@ -160,7 +160,7 @@ public class FullJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		using var xs = Seq(foo, bar, baz).AsTestingSequence();
+		using var xs = TestingSequence.Of(foo, bar, baz);
 		using var ys = Array.Empty<(int, string)>().AsTestingSequence();
 
 		var missing = default((int, string));

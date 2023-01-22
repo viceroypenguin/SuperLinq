@@ -63,8 +63,8 @@ public class ConcurrentMergeTest
 	[Fact]
 	public async Task ConcurrentMergeTwoImbalanceStrategySkip()
 	{
-		await using var sequenceA = AsyncSeq(0, 0, 0, 0, 0, 0).AsTestingSequence();
-		await using var sequenceB = AsyncSeq(1, 1, 1, 1).AsTestingSequence();
+		await using var sequenceA = TestingSequence.Of(0, 0, 0, 0, 0, 0);
+		await using var sequenceB = TestingSequence.Of(1, 1, 1, 1);
 		var result = sequenceA.ConcurrentMerge(sequenceB);
 
 		// if there's no delay, then the result should be the same as .Interleave

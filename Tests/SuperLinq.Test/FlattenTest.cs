@@ -9,10 +9,10 @@ public class FlattenTest
 	[Fact]
 	public void Flatten()
 	{
-		using var l1 = Seq<object>(4, "foo").AsTestingSequence();
-		using var l2 = Seq<object>(3, l1, 5, true).AsTestingSequence();
-		using var l3 = Seq(7, 8, 9, 10).AsTestingSequence();
-		using var source = Seq<object>(1, 2, l2, "bar", 6, l3).AsTestingSequence();
+		using var l1 = TestingSequence.Of<object>(4, "foo");
+		using var l2 = TestingSequence.Of<object>(3, l1, 5, true);
+		using var l3 = TestingSequence.Of(7, 8, 9, 10);
+		using var source = TestingSequence.Of<object>(1, 2, l2, "bar", 6, l3);
 
 		source
 			.Flatten()

@@ -56,7 +56,7 @@ public class BindByIndexTest
 	public async Task BindByIndexThrowExceptionInvalidIndex(int index)
 	{
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
-		await using var seq2 = AsyncSeq(index).AsTestingSequence();
+		await using var seq2 = TestingSequence.Of(index);
 
 		await Assert.ThrowsAsync<ArgumentOutOfRangeException>("indices",
 			async () => await seq1.BindByIndex(seq2).Consume());
@@ -99,7 +99,7 @@ public class BindByIndexTest
 	public async Task BindByIndexTransformInvalidIndex()
 	{
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
-		await using var seq2 = AsyncSeq(1, 10, 3, 30).AsTestingSequence();
+		await using var seq2 = TestingSequence.Of(1, 10, 3, 30);
 
 		await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
 			.AssertSequenceEqual(2, null, 4, null);
@@ -109,7 +109,7 @@ public class BindByIndexTest
 	public async Task BindByIndexTransformThrowExceptionNegativeIndex()
 	{
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
-		await using var seq2 = AsyncSeq(-1).AsTestingSequence();
+		await using var seq2 = TestingSequence.Of(-1);
 
 		await Assert.ThrowsAsync<ArgumentOutOfRangeException>("indices",
 			async () => await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).Consume());

@@ -46,8 +46,8 @@ public class EndsWithTest
 	[Fact]
 	public void EndsWithReturnsFalseIfOnlyFirstIsEmpty()
 	{
-		using var f = Seq<int>().AsTestingSequence();
-		using var s = Seq(1, 2, 3).AsTestingSequence();
+		using var f = TestingSequence.Of<int>();
+		using var s = TestingSequence.Of(1, 2, 3);
 		Assert.False(f.EndsWith(s));
 	}
 

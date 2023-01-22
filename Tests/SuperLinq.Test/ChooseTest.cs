@@ -14,7 +14,7 @@ public class ChooseTest
 	[Fact]
 	public void WithEmptySource()
 	{
-		using var xs = Enumerable.Empty<int>().AsTestingSequence();
+		using var xs = TestingSequence.Of<int>();
 		Assert.Empty(xs.Choose(BreakingFunc.Of<int, (bool, int)>()));
 	}
 
@@ -43,9 +43,7 @@ public class ChooseTest
 	[Fact]
 	public void ThoseThatAreIntegers()
 	{
-		using var xs = new int?[] { 0, 1, 2, null, 4, null, 6, null, null, 9 }
-			.AsTestingSequence();
-
+		using var xs = TestingSequence.Of<int?>(0, 1, 2, null, 4, null, 6, null, null, 9);
 
 		xs.Choose(e => e is { } n ? (true, n) : (false, default))
 			.AssertSequenceEqual(0, 1, 2, 4, 6, 9);

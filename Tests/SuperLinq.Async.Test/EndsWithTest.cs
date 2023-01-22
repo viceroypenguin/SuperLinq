@@ -37,16 +37,16 @@ public class EndsWithTest
 	[Fact]
 	public async Task EndsWithReturnsTrueIfBothEmpty()
 	{
-		await using var f = AsyncSeq<int>().AsTestingSequence();
-		await using var s = AsyncSeq<int>().AsTestingSequence();
+		await using var f = TestingSequence.Of<int>();
+		await using var s = TestingSequence.Of<int>();
 		Assert.True(await f.EndsWith(s));
 	}
 
 	[Fact]
 	public async Task EndsWithReturnsFalseIfOnlyFirstIsEmpty()
 	{
-		await using var f = AsyncSeq<int>().AsTestingSequence();
-		await using var s = AsyncSeq(1, 2, 3).AsTestingSequence();
+		await using var f = TestingSequence.Of<int>();
+		await using var s = TestingSequence.Of(1, 2, 3);
 		Assert.False(await f.EndsWith(s));
 	}
 

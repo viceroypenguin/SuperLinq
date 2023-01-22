@@ -5,8 +5,7 @@ public class DistinctByTest
 	[Fact]
 	public async Task DistinctBy()
 	{
-		await using var source = AsyncSeq("first", "second", "third", "fourth", "fifth")
-			.AsTestingSequence();
+		await using var source = TestingSequence.Of("first", "second", "third", "fourth", "fifth");
 		var distinct = source.DistinctBy(word => word.Length);
 		await distinct.AssertSequenceEqual("first", "second");
 	}
@@ -20,8 +19,7 @@ public class DistinctByTest
 	[Fact]
 	public async Task DistinctByWithComparer()
 	{
-		await using var source = AsyncSeq("first", "FIRST", "second", "second", "third")
-			.AsTestingSequence();
+		await using var source = TestingSequence.Of("first", "FIRST", "second", "second", "third");
 		var distinct = source.DistinctBy(word => word, StringComparer.OrdinalIgnoreCase);
 		await distinct.AssertSequenceEqual("first", "second", "third");
 	}
@@ -29,8 +27,7 @@ public class DistinctByTest
 	[Fact]
 	public async Task DistinctByNullComparer()
 	{
-		await using var source = AsyncSeq("first", "second", "third", "fourth", "fifth")
-			.AsTestingSequence();
+		await using var source = TestingSequence.Of("first", "second", "third", "fourth", "fifth");
 		var distinct = source.DistinctBy(word => word.Length, comparer: null);
 		await distinct.AssertSequenceEqual("first", "second");
 	}

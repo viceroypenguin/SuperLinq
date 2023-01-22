@@ -12,7 +12,7 @@ public class AggregateRightTest
 	[Fact]
 	public void AggregateRightFuncIsNotInvokedOnSingleElementSequence()
 	{
-		using var enumerable = Seq(1).AsTestingSequence();
+		using var enumerable = TestingSequence.Of(1);
 		var result = enumerable.AggregateRight(BreakingFunc.Of<int, int, int>());
 
 		Assert.Equal(1, result);
@@ -33,14 +33,14 @@ public class AggregateRightTest
 	[InlineData(true)]
 	public void AggregateRightSeedWithEmptySequence(object defaultValue)
 	{
-		using var enumerable = Seq<int>().AsTestingSequence();
+		using var enumerable = TestingSequence.Of<int>();
 		Assert.Equal(defaultValue, enumerable.AggregateRight(defaultValue, (a, b) => b));
 	}
 
 	[Fact]
 	public void AggregateRightSeedFuncIsNotInvokedOnEmptySequence()
 	{
-		using var enumerable = Seq<int>().AsTestingSequence();
+		using var enumerable = TestingSequence.Of<int>();
 		var result = enumerable.AggregateRight(1, BreakingFunc.Of<int, int, int>());
 
 		Assert.Equal(1, result);
@@ -61,7 +61,7 @@ public class AggregateRightTest
 	[InlineData(true)]
 	public void AggregateRightResultorWithEmptySequence(object defaultValue)
 	{
-		using var enumerable = Seq<int>().AsTestingSequence();
+		using var enumerable = TestingSequence.Of<int>();
 		var result = enumerable.AggregateRight(defaultValue, (a, b) => b, a => a == defaultValue);
 
 		Assert.True(result);

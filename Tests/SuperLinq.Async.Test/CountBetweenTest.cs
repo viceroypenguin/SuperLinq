@@ -26,7 +26,7 @@ public class CountBetweenTest
 	[Fact]
 	public async Task CountBetweenWithMaxEqualsMin()
 	{
-		await using var xs = AsyncSeq(1).AsTestingSequence();
+		await using var xs = TestingSequence.Of(1);
 		Assert.True(await xs.CountBetween(1, 1));
 	}
 

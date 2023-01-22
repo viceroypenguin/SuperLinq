@@ -13,8 +13,7 @@ public class FillForwardTest
 	[Fact]
 	public async Task FillForward()
 	{
-		await using var input = AsyncSeq<int?>(null, null, 1, 2, null, null, null, 3, 4, null, null)
-			.AsTestingSequence();
+		await using var input = TestingSequence.Of<int?>(null, null, 1, 2, null, null, null, 3, 4, null, null);
 
 		await input
 			.FillForward()

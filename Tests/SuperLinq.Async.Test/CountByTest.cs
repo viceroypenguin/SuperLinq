@@ -5,8 +5,7 @@ public class CountByTest
 	[Fact]
 	public async Task CountBySimpleTest()
 	{
-		await using var xs = AsyncSeq(1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2)
-			.AsTestingSequence();
+		await using var xs = TestingSequence.Of(1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2);
 
 		await xs.CountBy(c => c)
 			.AssertSequenceEqual(
@@ -48,8 +47,7 @@ public class CountByTest
 	[Fact]
 	public async Task CountByWithEqualityComparer()
 	{
-		await using var xs = AsyncSeq("a", "B", "c", "A", "b", "A")
-			.AsTestingSequence();
+		await using var xs = TestingSequence.Of("a", "B", "c", "A", "b", "A");
 
 		await xs
 			.CountBy(c => c, StringComparer.OrdinalIgnoreCase)
@@ -81,8 +79,7 @@ public class CountByTest
 	[Fact]
 	public async Task CountByWithSomeNullKeys()
 	{
-		await using var ss = AsyncSeq("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo")
-			.AsTestingSequence();
+		await using var ss = TestingSequence.Of("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
 
 		await ss.CountBy(s => s)
 			.AssertSequenceEqual(

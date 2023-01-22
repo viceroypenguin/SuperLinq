@@ -11,8 +11,7 @@ public class FillBackwardTest
 	[Fact]
 	public void FillBackward()
 	{
-		using var input = Seq<int?>(null, null, 1, 2, null, null, null, 3, 4, null, null)
-			.AsTestingSequence();
+		using var input = TestingSequence.Of<int?>(null, null, 1, 2, null, null, null, 3, 4, null, null);
 
 		input
 			.FillBackward()

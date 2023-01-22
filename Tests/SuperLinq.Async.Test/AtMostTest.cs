@@ -26,28 +26,28 @@ public class AtMostTest
 	[Fact]
 	public async Task AtMostWithSingleElementHasAtMostZeroElements()
 	{
-		await using var xs = AsyncSeq(1).AsTestingSequence();
+		await using var xs = TestingSequence.Of(1);
 		Assert.False(await xs.AtMost(0));
 	}
 
 	[Fact]
 	public async Task AtMostWithSingleElementHasAtMostOneElement()
 	{
-		await using var xs = AsyncSeq(1).AsTestingSequence();
+		await using var xs = TestingSequence.Of(1);
 		Assert.True(await xs.AtMost(1));
 	}
 
 	[Fact]
 	public async Task AtMostWithSingleElementHasAtMostManyElements()
 	{
-		await using var xs = AsyncSeq(1).AsTestingSequence();
+		await using var xs = TestingSequence.Of(1);
 		Assert.True(await xs.AtMost(2));
 	}
 
 	[Fact]
 	public async Task AtMostWithManyElementsHasAtMostOneElements()
 	{
-		await using var xs = AsyncSeq(1, 2, 3).AsTestingSequence();
+		await using var xs = TestingSequence.Of(1, 2, 3);
 		Assert.False(await xs.AtMost(1));
 	}
 
