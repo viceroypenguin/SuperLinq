@@ -17,7 +17,8 @@ public class IndexTest
 	[Fact]
 	public Task IndexSequence()
 	{
-		var result = AsyncSeq(One, Two, Three).Index();
+		using var seq = TestingSequence.Of(One, Two, Three);
+		var result = seq.Index();
 		return result.AssertSequenceEqual(
 			(0, One),
 			(1, Two),
@@ -27,7 +28,8 @@ public class IndexTest
 	[Fact]
 	public Task IndexSequenceStartIndex()
 	{
-		var result = AsyncSeq(One, Two, Three).Index(10);
+		using var seq = TestingSequence.Of(One, Two, Three);
+		var result = seq.Index(10);
 		return result.AssertSequenceEqual(
 			(10, One),
 			(11, Two),
