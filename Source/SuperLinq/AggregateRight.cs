@@ -27,15 +27,15 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(func);
 
-		using var e = source.Reverse().GetEnumerator();
+		var list = source is IList<TSource> l ? l : source.ToList();
 
-		if (!e.MoveNext())
+		if (list.Count == 0)
 			ThrowHelper.ThrowInvalidOperationException("Sequence contains no elements");
 
-		var seed = e.Current;
+		var seed = list[^1];
 
-		while (e.MoveNext())
-			seed = func(e.Current, seed);
+		for (var i = list.Count - 2; i >= 0; i--)
+			seed = func(list[i], seed);
 
 		return seed;
 	}
@@ -70,8 +70,10 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(func);
 
-		foreach (var i in source.Reverse())
-			seed = func(i, seed);
+		var list = source is IList<TSource> l ? l : source.ToList();
+
+		for (var i = list.Count - 1; i >= 0; i--)
+			seed = func(list[i], seed);
 
 		return seed;
 	}
