@@ -22,7 +22,7 @@ public class LagTests
 	public void TestLagNegativeOffsetException()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			AsyncEnumerable.Repeat(1, 10).Lag(-10, (val, lagVal) => val));
+			new AsyncBreakingSequence<int>().Lag(-10, (val, lagVal) => val));
 	}
 
 	/// <summary>
@@ -32,7 +32,7 @@ public class LagTests
 	public void TestLagZeroOffset()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			AsyncEnumerable.Range(1, 10).Lag(0, (val, lagVal) => val + lagVal));
+			new AsyncBreakingSequence<int>().Lag(0, (val, lagVal) => val + lagVal));
 	}
 
 	/// <summary>
@@ -41,27 +41,22 @@ public class LagTests
 	[Fact]
 	public async Task TestLagExplicitDefaultValue()
 	{
-		const int count = 100;
-		const int lagBy = 10;
-		const int lagDefault = -1;
-		var sequence = AsyncEnumerable.Range(1, count);
-		var result = sequence.Lag(lagBy, lagDefault, (val, lagVal) => lagVal);
+		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, await result.CountAsync());
-		await result.Take(lagBy).AssertSequenceEqual(Enumerable.Repeat(lagDefault, lagBy));
+		var result = await sequence.Lag(10, -1, (val, lagVal) => lagVal).ToListAsync();
+		Assert.Equal(100, result.Count);
+		result.Take(10).AssertSequenceEqual(Enumerable.Repeat(-1, 10));
 	}
 
 	[Fact]
 	public async Task TestLagTuple()
 	{
-		const int Count = 100;
-		const int LagBy = 10;
-		var sequence = Enumerable.Range(1, Count);
-		var result = sequence.ToAsyncEnumerable().Lag(LagBy);
+		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(Count, await result.CountAsync());
-		await result.AssertSequenceEqual(
-			sequence.Select(x => (x, x <= LagBy ? default : x - LagBy)));
+		var result = await sequence.Lag(10).ToListAsync();
+		Assert.Equal(100, result.Count);
+		result.AssertSequenceEqual(
+			Enumerable.Range(1, 100).Select(x => (x, x <= 10 ? default : x - 10)));
 	}
 
 	/// <summary>
@@ -70,13 +65,11 @@ public class LagTests
 	[Fact]
 	public async Task TestLagImplicitDefaultValue()
 	{
-		const int count = 100;
-		const int lagBy = 10;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.ToAsyncEnumerable().Lag(lagBy, (val, lagVal) => lagVal);
+		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, await result.CountAsync());
-		await result.Take(lagBy).AssertSequenceEqual(Enumerable.Repeat(default(int), lagBy));
+		var result = await sequence.Lag(10, (val, lagVal) => lagVal).ToListAsync();
+		Assert.Equal(100, result.Count);
+		result.Take(10).AssertSequenceEqual(Enumerable.Repeat(default(int), 10));
 	}
 
 	/// <summary>
@@ -86,12 +79,11 @@ public class LagTests
 	[Fact]
 	public async Task TestLagOffsetGreaterThanSequenceLength()
 	{
-		const int count = 100;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.ToAsyncEnumerable().Lag(count + 1, (a, b) => a);
+		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, await result.CountAsync());
-		await result.AssertSequenceEqual(sequence);
+		var result = await sequence.Lag(100 + 1, (a, b) => a).ToListAsync();
+		Assert.Equal(100, result.Count);
+		result.AssertSequenceEqual(Enumerable.Range(1, 100));
 	}
 
 	/// <summary>
@@ -101,12 +93,11 @@ public class LagTests
 	[Fact]
 	public async Task TestLagPassesCorrectLagValueOffsetBy1()
 	{
-		const int count = 100;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.ToAsyncEnumerable().Lag(1, (a, b) => new { A = a, B = b });
+		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, await result.CountAsync());
-		Assert.True(await result.AllAsync(x => x.B == (x.A - 1)));
+		var result = await sequence.Lag(1, (a, b) => (A: a, B: b)).ToListAsync();
+		Assert.Equal(100, result.Count);
+		Assert.True(result.All(x => x.B == (x.A - 1)));
 	}
 
 	/// <summary>
@@ -116,21 +107,20 @@ public class LagTests
 	[Fact]
 	public async Task TestLagPassesCorrectLagValuesOffsetBy2()
 	{
-		const int count = 100;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.ToAsyncEnumerable().Lag(2, (a, b) => new { A = a, B = b });
+		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, await result.CountAsync());
-		Assert.True(await result.Skip(2).AllAsync(x => x.B == (x.A - 2)));
-		Assert.True(await result.Take(2).AllAsync(x => (x.A - x.B) == x.A));
+		var result = await sequence.Lag(2, (a, b) => (A: a, B: b)).ToListAsync();
+		Assert.Equal(100, result.Count);
+		Assert.True(result.Skip(2).All(x => x.B == (x.A - 2)));
+		Assert.True(result.Take(2).All(x => (x.A - x.B) == x.A));
 	}
 
 	[Fact]
-	public Task TestLagWithNullableReferences()
+	public async Task TestLagWithNullableReferences()
 	{
-		var words = AsyncSeq("foo", "bar", "baz", "qux");
+		await using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
 		var result = words.Lag(2, (a, b) => new { A = a, B = b });
-		return result.AssertSequenceEqual(
+		await result.AssertSequenceEqual(
 			new { A = "foo", B = (string?)null },
 			new { A = "bar", B = (string?)null },
 			new { A = "baz", B = (string?)"foo" },
@@ -138,12 +128,12 @@ public class LagTests
 	}
 
 	[Fact]
-	public Task TestLagWithNonNullableReferences()
+	public async Task TestLagWithNonNullableReferences()
 	{
-		var words = AsyncSeq("foo", "bar", "baz", "qux");
+		await using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
 		var empty = string.Empty;
 		var result = words.Lag(2, empty, (a, b) => new { A = a, B = b });
-		return result.AssertSequenceEqual(
+		await result.AssertSequenceEqual(
 			new { A = "foo", B = empty },
 			new { A = "bar", B = empty },
 			new { A = "baz", B = "foo" },
