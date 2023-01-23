@@ -3,12 +3,11 @@
 public class InsertTest
 {
 	[Fact]
-	public async Task InsertWithNegativeIndex()
+	public void InsertWithNegativeIndex()
 	{
-		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
-			await AsyncEnumerable.Range(1, 10)
-				.Insert(AsyncSeq(97, 98, 99), -1)
-				.ToListAsync());
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
+			new AsyncBreakingSequence<int>()
+				.Insert(AsyncSeq(97, 98, 99), -1));
 	}
 
 	[Theory]
@@ -20,7 +19,10 @@ public class InsertTest
 		var seq1 = AsyncEnumerable.Range(0, count);
 		var seq2 = AsyncSeq(97, 98, 99);
 
-		var result = seq1.Insert(seq2, count + 1);
+		using var test1 = seq1.AsTestingSequence();
+		using var test2 = seq2.AsTestingSequence();
+
+		var result = test1.Insert(test2, count + 1);
 
 		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await result.ForEachAsync((e, index) =>
@@ -36,7 +38,10 @@ public class InsertTest
 		var seq1 = AsyncEnumerable.Range(0, count);
 		var seq2 = AsyncSeq(97, 98, 99);
 
-		var result = seq1.Insert(seq2, count + 1).Take(count);
+		using var test1 = seq1.AsTestingSequence();
+		using var test2 = seq2.AsTestingSequence();
+
+		var result = test1.Insert(test2, count + 1).Take(count);
 
 		Assert.Equal(await seq1.ToListAsync(), await result.ToListAsync());
 	}
@@ -51,7 +56,10 @@ public class InsertTest
 		var seq1 = AsyncEnumerable.Range(1, count);
 		var seq2 = AsyncSeq(97, 98, 99);
 
-		var result = seq1.Insert(seq2, index);
+		using var test1 = seq1.AsTestingSequence();
+		using var test2 = seq2.AsTestingSequence();
+
+		var result = test1.Insert(test2, index);
 
 		var expectations = seq1.Take(index).Concat(seq2)
 			.Concat(seq1.Skip(index));
@@ -63,14 +71,6 @@ public class InsertTest
 	public void InsertIsLazy()
 	{
 		new AsyncBreakingSequence<int>().Insert(new AsyncBreakingSequence<int>(), 0);
-	}
-
-	[Fact]
-	public async Task InsertDisposesEnumerators()
-	{
-		await using var seq1 = TestingSequence.Of(1);
-		await using var seq2 = TestingSequence.Of(2);
-		await seq1.Insert(seq2, 0).ToListAsync();
 	}
 
 	[Fact]

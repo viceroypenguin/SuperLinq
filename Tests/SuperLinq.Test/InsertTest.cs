@@ -6,7 +6,7 @@ public class InsertTest
 	public void InsertWithNegativeIndex()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			 Enumerable.Range(1, 10).Insert(new[] { 97, 98, 99 }, -1));
+			 new BreakingSequence<int>().Insert(new[] { 97, 98, 99 }, -1));
 	}
 
 	[Theory]
