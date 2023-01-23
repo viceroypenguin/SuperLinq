@@ -1,12 +1,16 @@
 name: Build
 
 on: 
+  workflow_dispatch:
   push:
-    branches-ignore: 
-      - 'dependabot/**'
+    branches: 
+      - 'master'
+    paths-ignore:
+      - '**/readme.md'
     tags:
       - '**'
   pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
