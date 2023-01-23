@@ -17,7 +17,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="func"/> is <see langword="null"/>.</exception>
 	/// <example>
-	/// <code><![CDATA[
+	/// <code><![CDATA[ 
 	/// var result = Enumerable.Range(1, 5).Select(i => i.ToString()).ScanRight((a, b) => $"({a}+{b})");
 	/// ]]></code>
 	/// The <c>result</c> variable will contain <c>[ "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" ]</c>.
@@ -36,18 +36,18 @@ public static partial class SuperEnumerable
 
 		static IEnumerable<TSource> _(IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
 		{
-			using var e = source.Reverse().GetEnumerator();
+			var list = source is IList<TSource> l ? l : source.ToList();
 
-			if (!e.MoveNext())
+			if (list.Count == 0)
 				yield break;
 
-			var seed = e.Current;
-			var stack = new Stack<TSource>();
+			var seed = list[^1];
+			var stack = new Stack<TSource>(list.Count);
 			stack.Push(seed);
 
-			while (e.MoveNext())
+			for (var i = list.Count - 2; i >= 0; i--)
 			{
-				seed = func(e.Current, seed);
+				seed = func(list[i], seed);
 				stack.Push(seed);
 			}
 
@@ -91,12 +91,13 @@ public static partial class SuperEnumerable
 
 		static IEnumerable<TAccumulate> _(IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
 		{
-			var stack = new Stack<TAccumulate>();
+			var list = source is IList<TSource> l ? l : source.ToList();
+			var stack = new Stack<TAccumulate>(list.Count + 1);
 			stack.Push(seed);
 
-			foreach (var i in source.Reverse())
+			for (var i = list.Count - 1; i >= 0; i--)
 			{
-				seed = func(i, seed);
+				seed = func(list[i], seed);
 				stack.Push(seed);
 			}
 
