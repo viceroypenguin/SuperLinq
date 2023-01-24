@@ -22,7 +22,7 @@ public class LeadTests
 	public void TestLeadNegativeOffset()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			AsyncEnumerable.Range(1, 100).Lead(-5, (val, leadVal) => val + leadVal));
+			new AsyncBreakingSequence<int>().Lead(-5, (val, leadVal) => val + leadVal));
 	}
 
 	/// <summary>
@@ -32,7 +32,7 @@ public class LeadTests
 	public void TestLeadZeroOffset()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			AsyncEnumerable.Range(1, 100).Lead(0, (val, leadVal) => val + leadVal));
+			new AsyncBreakingSequence<int>().Lead(0, (val, leadVal) => val + leadVal));
 	}
 
 	/// <summary>
@@ -41,27 +41,22 @@ public class LeadTests
 	[Fact]
 	public async Task TestLeadExplicitDefaultValue()
 	{
-		const int count = 100;
-		const int leadBy = 10;
-		const int leadDefault = -1;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.ToAsyncEnumerable().Lead(leadBy, leadDefault, (val, leadVal) => leadVal);
+		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, await result.CountAsync());
-		await result.Skip(count - leadBy).AssertSequenceEqual(Enumerable.Repeat(leadDefault, leadBy));
+		var result = await sequence.Lead(10, -1, (val, leadVal) => leadVal).ToListAsync();
+		Assert.Equal(100, result.Count);
+		result.Skip(100 - 10).AssertSequenceEqual(Enumerable.Repeat(-1, 10));
 	}
 
 	[Fact]
 	public async Task TestLeadTuple()
 	{
-		const int Count = 100;
-		const int LeadBy = 10;
-		var sequence = Enumerable.Range(1, Count);
-		var result = sequence.ToAsyncEnumerable().Lead(LeadBy);
+		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(Count, await result.CountAsync());
-		await result.AssertSequenceEqual(
-			sequence.Select(x => (x, x <= Count - LeadBy ? x + LeadBy : default)));
+		var result = await sequence.Lead(10).ToListAsync();
+		Assert.Equal(100, result.Count);
+		result.AssertSequenceEqual(
+			Enumerable.Range(1, 100).Select(x => (x, x <= 100 - 10 ? x + 10 : default)));
 	}
 
 	/// <summary>
@@ -70,13 +65,11 @@ public class LeadTests
 	[Fact]
 	public async Task TestLeadImplicitDefaultValue()
 	{
-		const int count = 100;
-		const int leadBy = 10;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.ToAsyncEnumerable().Lead(leadBy, (val, leadVal) => leadVal);
+		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, await result.CountAsync());
-		await result.Skip(count - leadBy).AssertSequenceEqual(Enumerable.Repeat(default(int), leadBy));
+		var result = await sequence.Lead(10, (val, leadVal) => leadVal).ToListAsync();
+		Assert.Equal(100, result.Count);
+		result.Skip(100 - 10).AssertSequenceEqual(Enumerable.Repeat(default(int), 10));
 	}
 
 	/// <summary>
@@ -86,13 +79,13 @@ public class LeadTests
 	[Fact]
 	public async Task TestLeadOffsetGreaterThanSequenceLength()
 	{
-		const int count = 100;
-		const int leadDefault = -1;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.ToAsyncEnumerable().Lead(count + 1, leadDefault, (val, leadVal) => new { A = val, B = leadVal });
+		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, await result.CountAsync());
-		await result.AssertSequenceEqual(sequence.Select(x => new { A = x, B = leadDefault }));
+		var result = await sequence
+			.Lead(101, -1, (val, leadVal) => new { A = val, B = leadVal })
+			.ToListAsync();
+		Assert.Equal(100, result.Count);
+		result.AssertSequenceEqual(Enumerable.Range(1, 100).Select(x => new { A = x, B = -1 }));
 	}
 
 	/// <summary>
@@ -102,12 +95,13 @@ public class LeadTests
 	[Fact]
 	public async Task TestLeadPassesCorrectValueOffsetBy1()
 	{
-		const int count = 100;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.ToAsyncEnumerable().Lead(1, count + 1, (val, leadVal) => new { A = val, B = leadVal });
+		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, await result.CountAsync());
-		Assert.True(await result.AllAsync(x => x.B == (x.A + 1)));
+		var result = await sequence
+			.Lead(1, 101, (val, leadVal) => new { A = val, B = leadVal })
+			.ToListAsync();
+		Assert.Equal(100, result.Count);
+		Assert.True(result.All(x => x.B == (x.A + 1)));
 	}
 
 	/// <summary>
@@ -117,22 +111,23 @@ public class LeadTests
 	[Fact]
 	public async Task TestLeadPassesCorrectValueOffsetBy2()
 	{
-		const int count = 100;
-		const int leadDefault = count + 1;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.ToAsyncEnumerable().Lead(2, leadDefault, (val, leadVal) => new { A = val, B = leadVal });
+		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, await result.CountAsync());
-		Assert.True(await result.Take(count - 2).AllAsync(x => x.B == (x.A + 2)));
-		Assert.True(await result.Skip(count - 2).AllAsync(x => x.B == leadDefault && (x.A == count || x.A == count - 1)));
+		var result = await sequence
+			.Lead(2, 101, (val, leadVal) => new { A = val, B = leadVal })
+			.ToListAsync();
+		Assert.Equal(100, result.Count);
+		Assert.True(result.Take(100 - 2).All(x => x.B == (x.A + 2)));
+		Assert.True(result.Skip(100 - 2).All(x => x.B == 101 && (x.A is 99 or 100)));
 	}
 
 	[Fact]
-	public Task TestLagWithNullableReferences()
+	public async Task TestLagWithNullableReferences()
 	{
-		var words = AsyncSeq("foo", "bar", "baz", "qux");
+		await using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
+
 		var result = words.Lead(2, (a, b) => new { A = a, B = b });
-		return result.AssertSequenceEqual(
+		await result.AssertSequenceEqual(
 			new { A = "foo", B = (string?)"baz" },
 			new { A = "bar", B = (string?)"qux" },
 			new { A = "baz", B = (string?)null },
@@ -140,15 +135,15 @@ public class LeadTests
 	}
 
 	[Fact]
-	public Task TestLagWithNonNullableReferences()
+	public async Task TestLagWithNonNullableReferences()
 	{
-		var words = AsyncSeq("foo", "bar", "baz", "qux");
-		var empty = string.Empty;
-		var result = words.Lead(2, empty, (a, b) => new { A = a, B = b });
-		return result.AssertSequenceEqual(
+		await using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
+
+		var result = words.Lead(2, string.Empty, (a, b) => new { A = a, B = b });
+		await result.AssertSequenceEqual(
 			new { A = "foo", B = "baz" },
 			new { A = "bar", B = "qux" },
-			new { A = "baz", B = empty },
-			new { A = "qux", B = empty });
+			new { A = "baz", B = string.Empty },
+			new { A = "qux", B = string.Empty });
 	}
 }
