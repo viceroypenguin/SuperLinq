@@ -17,7 +17,7 @@ public class WindowTests
 	[Fact]
 	public async Task WindowModifiedBeforeMoveNextDoesNotAffectNextWindow()
 	{
-		var sequence = AsyncEnumerable.Range(0, 3);
+		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
 		await using var e = sequence.Window(2).GetAsyncEnumerator();
 
 		await e.MoveNextAsync();
@@ -32,7 +32,7 @@ public class WindowTests
 	[Fact]
 	public async Task WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
 	{
-		var sequence = AsyncEnumerable.Range(0, 3);
+		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
 		await using var e = sequence.Window(2).GetAsyncEnumerator();
 
 		await e.MoveNextAsync();
@@ -47,7 +47,7 @@ public class WindowTests
 	[Fact]
 	public async Task WindowModifiedDoesNotAffectPreviousWindow()
 	{
-		var sequence = AsyncEnumerable.Range(0, 3);
+		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
 		await using var e = sequence.Window(2).GetAsyncEnumerator();
 
 		await e.MoveNextAsync();
@@ -65,10 +65,8 @@ public class WindowTests
 	[Fact]
 	public void TestWindowNegativeWindowSizeException()
 	{
-		var sequence = AsyncEnumerable.Repeat(1, 10);
-
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			sequence.Window(-5));
+			new AsyncBreakingSequence<int>().Window(-5));
 	}
 
 	/// <summary>
@@ -76,12 +74,12 @@ public class WindowTests
 	/// is an empty sequence
 	/// </summary>
 	[Fact]
-	public Task TestWindowEmptySequence()
+	public async Task TestWindowEmptySequence()
 	{
-		var sequence = AsyncEnumerable.Empty<int>();
-		var result = sequence.Window(5);
+		await using var sequence = TestingSequence.Of<int>();
 
-		return result.AssertEmpty();
+		var result = sequence.Window(5);
+		await result.AssertEmpty();
 	}
 
 	/// <summary>
@@ -91,16 +89,16 @@ public class WindowTests
 	[Fact]
 	public async Task TestWindowOfSingleElement()
 	{
-		const int Count = 100;
-		var sequence = Enumerable.Range(1, Count);
-		var result = sequence.ToAsyncEnumerable().Window(1);
+		await using var sequence = Enumerable.Range(0, 100).AsTestingSequence();
+
+		var result = await sequence.Window(1).ToListAsync();
 
 		// number of windows should be equal to the source sequence length
-		Assert.Equal(Count, await result.CountAsync());
+		Assert.Equal(100, result.Count);
 		// each window should contain single item consistent of element at that offset
 		var index = -1;
-		await foreach (var window in result)
-			Assert.Equal(sequence.ElementAt(++index), window.Single());
+		foreach (var window in result)
+			Assert.Equal(Enumerable.Range(0, 100).ElementAt(++index), window.Single());
 	}
 
 	/// <summary>
@@ -108,15 +106,15 @@ public class WindowTests
 	/// in a empty sequence.
 	/// </summary>
 	[Fact]
-	public Task TestWindowLargerThanSequence()
+	public async Task TestWindowLargerThanSequence()
 	{
-		const int Count = 100;
-		var sequence = AsyncEnumerable.Range(1, Count);
-		var result = sequence.Window(Count + 1);
+		await using var sequence = Enumerable.Range(0, 100).AsTestingSequence();
+
+		var result = sequence.Window(101);
 
 		// there should only be one window whose contents is the same
 		// as the source sequence
-		return result.AssertEmpty();
+		await result.AssertEmpty();
 	}
 
 	/// <summary>
@@ -126,17 +124,16 @@ public class WindowTests
 	[Fact]
 	public async Task TestWindowSmallerThanSequence()
 	{
-		const int Count = 100;
-		const int WindowSize = Count / 3;
-		var sequence = Enumerable.Range(1, Count);
-		var result = sequence.ToAsyncEnumerable().Window(WindowSize);
+		await using var sequence = Enumerable.Range(0, 100).AsTestingSequence();
+
+		var result = await sequence.Window(33).ToListAsync();
 
 		// ensure that the number of windows is correct
-		Assert.Equal(Count - WindowSize + 1, await result.CountAsync());
+		Assert.Equal(100 - 33 + 1, result.Count);
 		// ensure each window contains the correct set of items
 		var index = -1;
-		await foreach (var window in result)
-			Assert.Equal(sequence.Skip(++index).Take(WindowSize), window);
+		foreach (var window in result)
+			Assert.Equal(Enumerable.Range(0, 100).Skip(++index).Take(33), window);
 	}
 
 	/// <summary>
