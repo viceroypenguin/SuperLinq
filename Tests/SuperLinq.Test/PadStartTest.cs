@@ -121,12 +121,14 @@ public class PadStartTest
 	}
 
 
-	static void AssertEqual<T>(ICollection<T> input, Func<IEnumerable<T>, IEnumerable<T>> op, IEnumerable<T> expected)
+	private static void AssertEqual<T>(ICollection<T> input, Func<IEnumerable<T>, IEnumerable<T>> op, IEnumerable<T> expected)
 	{
 		// Test that the behaviour does not change whether a collection
 		// or a sequence is used as the source.
 
 		op(input).AssertSequenceEqual(expected);
-		op(input.Select(SuperEnumerable.Identity)).AssertSequenceEqual(expected);
+
+		using var xs = input.AsTestingSequence();
+		op(xs).AssertSequenceEqual(expected);
 	}
 }
