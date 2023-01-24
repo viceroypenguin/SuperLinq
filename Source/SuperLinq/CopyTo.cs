@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SuperLinq;
+﻿namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {

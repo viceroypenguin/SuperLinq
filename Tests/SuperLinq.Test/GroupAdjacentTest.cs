@@ -52,7 +52,7 @@ public class GroupAdjacentTest
 	{
 		using var source = TestingSequence.Of("foo", "FOO", "Foo", "bar", "BAR", "Bar");
 
-		var groupings = source.GroupAdjacent(s => s, StringComparer.OrdinalIgnoreCase);
+		var groupings = source.GroupAdjacent(SuperEnumerable.Identity, StringComparer.OrdinalIgnoreCase);
 
 		using var reader = groupings.Read();
 		AssertGrouping(reader, "foo", "foo", "FOO", "Foo");
@@ -175,7 +175,7 @@ public class GroupAdjacentTest
 			.SelectMany(x => Enumerable.Repeat((int?)x, x).Append(null))
 			.AsTestingSequence();
 
-		var groupings = source.GroupAdjacent(x => x);
+		var groupings = source.GroupAdjacent(SuperEnumerable.Identity);
 
 		int?[] aNull = { null };
 

@@ -122,7 +122,7 @@ public class PartitionTest
 			new[] { "foo", "bar", "FOO", "Bar" };
 
 		var (foo, etc) =
-			words.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
+			words.GroupBy(SuperEnumerable.Identity, StringComparer.OrdinalIgnoreCase)
 				.Partition("foo", StringComparer.OrdinalIgnoreCase, Tuple.Create);
 
 		Assert.Equal(new[] { "foo", "FOO" }, foo);
@@ -140,7 +140,7 @@ public class PartitionTest
 			new[] { "foo", "bar", "FOO", "Bar", "baz", "QUx", "bAz", "QuX" };
 
 		var (foos, bar, etc) =
-			words.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
+			words.GroupBy(SuperEnumerable.Identity, StringComparer.OrdinalIgnoreCase)
 				 .Partition("foo", "bar", StringComparer.OrdinalIgnoreCase, Tuple.Create);
 
 		Assert.Equal(new[] { "foo", "FOO" }, foos);
@@ -165,7 +165,7 @@ public class PartitionTest
 			new[] { "foo", "bar", "FOO", "Bar", "baz", "QUx", "bAz", "QuX" };
 
 		var (foos, bar, baz, etc) =
-			words.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
+			words.GroupBy(SuperEnumerable.Identity, StringComparer.OrdinalIgnoreCase)
 				.Partition("foo", "bar", "baz", StringComparer.OrdinalIgnoreCase, Tuple.Create);
 
 		Assert.Equal(new[] { "foo", "FOO" }, foos);

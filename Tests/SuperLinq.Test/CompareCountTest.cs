@@ -123,8 +123,8 @@ public class CompareCountTest
 	{
 		// Test that the operator is optimized for collections
 
-		var s1Seq = (s1.Select(x => x), SourceKind.Sequence);
-		var s2Seq = (s2.Select(x => x), SourceKind.Sequence);
+		var s1Seq = (s1.Select(SuperEnumerable.Identity), SourceKind.Sequence);
+		var s2Seq = (s2.Select(SuperEnumerable.Identity), SourceKind.Sequence);
 
 #pragma warning disable CA2000 // don't need to test disposal here
 		var s1Col = (s1.ToSourceKind(SourceKind.BreakingCollection), SourceKind.BreakingCollection);

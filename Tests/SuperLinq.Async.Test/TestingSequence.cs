@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using CommunityToolkit.Diagnostics;
+﻿using CommunityToolkit.Diagnostics;
 using Xunit.Sdk;
 
 namespace Test.Async;

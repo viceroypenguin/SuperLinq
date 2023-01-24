@@ -119,7 +119,7 @@ public class PartitionTest
 		var words = AsyncSeq("foo", "bar", "FOO", "Bar");
 
 		var (foo, etc) = await words
-			.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
+			.GroupBy(SuperEnumerable.Identity, StringComparer.OrdinalIgnoreCase)
 			.Partition("foo", StringComparer.OrdinalIgnoreCase, ValueTuple.Create);
 
 		await foo.AssertSequenceEqual("foo", "FOO");
@@ -136,7 +136,7 @@ public class PartitionTest
 		var words = AsyncSeq("foo", "bar", "FOO", "Bar", "baz", "QUx", "bAz", "QuX");
 
 		var (foos, bar, etc) = await words
-			.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
+			.GroupBy(SuperEnumerable.Identity, StringComparer.OrdinalIgnoreCase)
 			.Partition("foo", "bar", StringComparer.OrdinalIgnoreCase, Tuple.Create);
 
 		await foos.AssertSequenceEqual("foo", "FOO");
@@ -161,7 +161,7 @@ public class PartitionTest
 
 
 		var (foos, bar, baz, etc) = await words
-			.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
+			.GroupBy(SuperEnumerable.Identity, StringComparer.OrdinalIgnoreCase)
 			.Partition("foo", "bar", "baz", StringComparer.OrdinalIgnoreCase, Tuple.Create);
 
 		await foos.AssertSequenceEqual("foo", "FOO");

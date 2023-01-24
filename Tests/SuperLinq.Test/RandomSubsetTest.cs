@@ -214,7 +214,7 @@ public class RandomSubsetTest
 		Assert.NotEqual(result, sequence);
 
 		// ensure random subset returns exactly the same elements of original sequence
-		Assert.Equal(result.OrderBy(x => x), sequence);
+		Assert.Equal(result.OrderBy(SuperEnumerable.Identity), sequence);
 	}
 
 	static double RelativeStandardDeviation(IEnumerable<double> values)

@@ -24,7 +24,7 @@ public class IndexByTest
 	{
 		using var source = "jaffer".AsTestingSequence();
 
-		var result = source.IndexBy(c => c);
+		var result = source.IndexBy(SuperEnumerable.Identity);
 		await result.AssertSequenceEqual((0, 'j'), (0, 'a'), (0, 'f'), (1, 'f'), (0, 'e'), (0, 'r'));
 	}
 
@@ -33,7 +33,7 @@ public class IndexByTest
 	{
 		using var source = TestingSequence.Of("a", "B", "c", "A", "b", "A");
 
-		var result = source.IndexBy(c => c, StringComparer.OrdinalIgnoreCase);
+		var result = source.IndexBy(SuperEnumerable.Identity, StringComparer.OrdinalIgnoreCase);
 		await result.AssertSequenceEqual((0, "a"), (0, "B"), (0, "c"), (1, "A"), (1, "b"), (2, "A"));
 	}
 
@@ -48,7 +48,7 @@ public class IndexByTest
 	{
 		using var source = TestingSequence.Of("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
 
-		var result = source.IndexBy(c => c);
+		var result = source.IndexBy(SuperEnumerable.Identity);
 		await result.AssertSequenceEqual((0, "foo"), (0, null), (0, "bar"), (0, "baz"), (1, null), (2, null), (1, "baz"), (1, "bar"), (3, null), (1, "foo"));
 	}
 

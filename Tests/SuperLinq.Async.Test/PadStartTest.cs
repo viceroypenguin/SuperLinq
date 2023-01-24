@@ -92,7 +92,7 @@ public class PadStartTest
 	public void PadStartWithSelectorWithNegativeWidth()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(
-			() => AsyncSeq<int>().PadStart(-1, x => x));
+			() => AsyncSeq<int>().PadStart(-1, SuperEnumerable.Identity));
 	}
 
 	[Fact]

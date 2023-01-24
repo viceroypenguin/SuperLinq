@@ -1,6 +1,4 @@
-﻿using SuperLinq;
-
-namespace Test.Async;
+﻿namespace Test.Async;
 
 /// <summary>
 /// Tests that verify the behavior of the SortedMergeBy operator.
@@ -117,7 +115,7 @@ public class SortedMergeByTests
 		var sequenceA = AsyncEnumerable.Range(0, 30).Select(x => x * 3 + 0);
 		var sequenceB = AsyncEnumerable.Range(0, 30).Select(x => x * 3 + 1).Take(30 / 2);
 		var sequenceC = AsyncEnumerable.Range(0, 30).Select(x => x * 3 + 2).Take(30 / 3);
-		var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC).OrderBy(x => x);
+		var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC).OrderBy(SuperEnumerable.Identity);
 
 		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);
@@ -155,7 +153,7 @@ public class SortedMergeByTests
 		var sequenceC = AsyncSeq("C", "F", "l", "m", "N", "P", "s", "w");
 		var comparer = StringComparer.InvariantCultureIgnoreCase;
 		var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC)
-									  .OrderBy(a => a, comparer);
+									  .OrderBy(SuperEnumerable.Identity, comparer);
 
 		var result = sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, comparer, sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);

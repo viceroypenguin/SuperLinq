@@ -7,7 +7,7 @@ public class CountByTest
 	{
 		await using var xs = TestingSequence.Of(1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2);
 
-		await xs.CountBy(c => c)
+		await xs.CountBy(SuperEnumerable.Identity)
 			.AssertSequenceEqual(
 				(1, 4),
 				(2, 3),
@@ -22,7 +22,7 @@ public class CountByTest
 	{
 		await using var xs = "jaffer".AsTestingSequence();
 
-		await xs.CountBy(c => c)
+		await xs.CountBy(SuperEnumerable.Identity)
 			.AssertSequenceEqual(
 				('j', 1),
 				('a', 1),
@@ -50,7 +50,7 @@ public class CountByTest
 		await using var xs = TestingSequence.Of("a", "B", "c", "A", "b", "A");
 
 		await xs
-			.CountBy(c => c, StringComparer.OrdinalIgnoreCase)
+			.CountBy(SuperEnumerable.Identity, StringComparer.OrdinalIgnoreCase)
 			.AssertSequenceEqual(
 				("a", 3),
 				("B", 2),
@@ -63,8 +63,8 @@ public class CountByTest
 		var randomSequence = SuperLinq.SuperEnumerable.Random(0, 100).Take(100).ToArray();
 
 		await using var xs = randomSequence.AsTestingSequence();
-		var countByKeys = xs.CountBy(x => x).Select(x => x.key);
-		var groupByKeys = randomSequence.GroupBy(x => x).Select(x => x.Key);
+		var countByKeys = xs.CountBy(SuperEnumerable.Identity).Select(x => x.key);
+		var groupByKeys = randomSequence.GroupBy(SuperEnumerable.Identity).Select(x => x.Key);
 
 		await countByKeys.AssertSequenceEqual(groupByKeys);
 	}
@@ -81,7 +81,7 @@ public class CountByTest
 	{
 		await using var ss = TestingSequence.Of("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
 
-		await ss.CountBy(s => s)
+		await ss.CountBy(SuperEnumerable.Identity)
 			.AssertSequenceEqual(
 				("foo", 2),
 				(default, 4),

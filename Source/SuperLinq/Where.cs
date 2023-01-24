@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace SuperLinq;
+﻿namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {

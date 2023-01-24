@@ -32,7 +32,7 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<TSource> source,
 		TSource separator, int count)
 	{
-		return Split(source, separator, count, s => s);
+		return Split(source, separator, count, SuperEnumerable.Identity);
 	}
 
 	/// <summary>
@@ -119,7 +119,7 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<TSource> source,
 		TSource separator, IEqualityComparer<TSource>? comparer, int count)
 	{
-		return Split(source, separator, comparer, count, s => s);
+		return Split(source, separator, comparer, count, SuperEnumerable.Identity);
 	}
 
 	/// <summary>
@@ -216,7 +216,7 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, bool> separatorFunc, int count)
 	{
-		return Split(source, separatorFunc, count, s => s);
+		return Split(source, separatorFunc, count, SuperEnumerable.Identity);
 	}
 
 	/// <summary>

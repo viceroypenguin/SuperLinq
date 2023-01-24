@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using SuperLinq;
-
-namespace Test;
+﻿namespace Test;
 
 public class DensePartialSortTests
 {

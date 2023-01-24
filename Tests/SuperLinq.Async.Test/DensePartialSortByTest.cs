@@ -1,6 +1,4 @@
-﻿using SuperLinq;
-
-namespace Test.Async;
+﻿namespace Test.Async;
 
 public class DensePartialSortByTests
 {

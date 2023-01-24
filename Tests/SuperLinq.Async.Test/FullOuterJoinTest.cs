@@ -1,5 +1,4 @@
-﻿using SuperLinq;
-using static Test.Async.FullOuterJoinTest.Side;
+﻿using static Test.Async.FullOuterJoinTest.Side;
 
 namespace Test.Async;
 

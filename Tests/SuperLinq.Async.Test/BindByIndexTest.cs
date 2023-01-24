@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Test.Async;
+﻿namespace Test.Async;
 
 public class BindByIndexTest
 {

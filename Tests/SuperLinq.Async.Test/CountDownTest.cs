@@ -1,6 +1,4 @@
-﻿using SuperLinq;
-
-namespace Test.Async;
+﻿namespace Test.Async;
 
 public class CountDownTest
 {
@@ -43,7 +41,7 @@ public class CountDownTest
 	[Theory, MemberData(nameof(SequenceData))]
 	public async Task WithSequence(int[] xs, int count, IEnumerable<(int, int?)> expected)
 	{
-		await using var ts = xs.Select(x => x).AsTestingSequence();
+		await using var ts = xs.Select(SuperEnumerable.Identity).AsTestingSequence();
 		await ts.CountDown(count, ValueTuple.Create).AssertSequenceEqual(expected);
 	}
 }

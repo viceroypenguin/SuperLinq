@@ -170,7 +170,7 @@ public class UpdatableUpdatablePriorityQueueTest
 
 			var expectedPeekPriorities = generatedItems
 				.Select(x => x.priority)
-				.OrderBy(x => x, queue.Comparer)
+				.OrderBy(SuperEnumerable.Identity, queue.Comparer)
 				.ToArray();
 
 			for (var i = 0; i < count; ++i)

@@ -16,7 +16,7 @@ public class ShuffleTest
 		var source = Enumerable.Range(1, 100);
 		var result = source.Shuffle();
 
-		Assert.Equal(source, result.OrderBy(x => x));
+		Assert.Equal(source, result.OrderBy(SuperEnumerable.Identity));
 	}
 
 	[Fact]
@@ -54,7 +54,7 @@ public class ShuffleTest
 		var result = source.Shuffle(seed);
 
 		Assert.NotEqual(source, result);
-		Assert.Equal(source, result.OrderBy(x => x));
+		Assert.Equal(source, result.OrderBy(SuperEnumerable.Identity));
 	}
 
 	[Fact]

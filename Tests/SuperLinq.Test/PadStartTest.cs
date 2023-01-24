@@ -84,7 +84,7 @@ public class PadStartTest
 	public void PadStartWithSelectorWithNegativeWidth()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(
-			() => Array.Empty<int>().PadStart(-1, x => x));
+			() => Array.Empty<int>().PadStart(-1, SuperEnumerable.Identity));
 	}
 
 	[Fact]
@@ -127,6 +127,6 @@ public class PadStartTest
 		// or a sequence is used as the source.
 
 		op(input).AssertSequenceEqual(expected);
-		op(input.Select(x => x)).AssertSequenceEqual(expected);
+		op(input.Select(SuperEnumerable.Identity)).AssertSequenceEqual(expected);
 	}
 }

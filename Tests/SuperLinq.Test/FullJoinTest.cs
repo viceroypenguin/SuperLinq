@@ -12,7 +12,7 @@ public class FullJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		xs.FullJoin(ys, e => e,
+		xs.FullJoin(ys, SuperEnumerable.Identity,
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, int, object>());
@@ -24,7 +24,7 @@ public class FullJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		xs.FullJoin(ys, e => e,
+		xs.FullJoin(ys, SuperEnumerable.Identity,
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, int, object>(),
@@ -37,7 +37,7 @@ public class FullJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		xs.FullJoin(ys, x => x, y => y.GetHashCode(),
+		xs.FullJoin(ys, SuperEnumerable.Identity, y => y.GetHashCode(),
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<object, object>(),
 			BreakingFunc.Of<int, object, object>());
@@ -49,7 +49,7 @@ public class FullJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		xs.FullJoin(ys, x => x, y => y.GetHashCode(),
+		xs.FullJoin(ys, SuperEnumerable.Identity, y => y.GetHashCode(),
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<object, object>(),
 			BreakingFunc.Of<int, object, object>(),

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Xunit;
-
-namespace Test;
+﻿namespace Test;
 
 public class StartsWithTest
 {

@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Diagnostics;
-using SuperLinq;
 
 namespace Test.Async;
 

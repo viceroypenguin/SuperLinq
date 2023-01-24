@@ -75,10 +75,10 @@ public class ToArrayByIndexTest
 		var input = new[] { a, b };
 
 		Assert.Equal(new[] { null, null, b, }, input.ToArrayByIndex(e => e.Index));
-		Assert.Equal(new[] { null, null, b, }, input.ToArrayByIndex(e => e.Index, e => e));
+		Assert.Equal(new[] { null, null, b, }, input.ToArrayByIndex(e => e.Index, SuperEnumerable.Identity));
 
 		Assert.Equal(new[] { null, null, b, null, }, input.ToArrayByIndex(4, e => e.Index));
-		Assert.Equal(new[] { null, null, b, null, }, input.ToArrayByIndex(4, e => e.Index, e => e));
+		Assert.Equal(new[] { null, null, b, null, }, input.ToArrayByIndex(4, e => e.Index, SuperEnumerable.Identity));
 		Assert.Equal(new[] { null, null, b, null, }, input.ToArrayByIndex(4, e => e.Index, (e, _) => e));
 	}
 }

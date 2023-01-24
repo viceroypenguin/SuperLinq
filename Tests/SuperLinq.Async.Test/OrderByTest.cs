@@ -1,6 +1,4 @@
-﻿using SuperLinq;
-
-namespace Test.Async;
+﻿namespace Test.Async;
 
 /// <summary>
 /// Verify the behavior of the OrderBy/ThenBy operators
@@ -16,13 +14,13 @@ public class OrderByTests
 		var sequenceAscending = AsyncEnumerable.Range(1, 100);
 		var sequenceDescending = sequenceAscending.Reverse();
 
-		var resultAsc1 = sequenceAscending.OrderBy(x => x, OrderByDirection.Descending);
-		var resultAsc2 = sequenceAscending.OrderByDescending(x => x);
+		var resultAsc1 = sequenceAscending.OrderBy(SuperEnumerable.Identity, OrderByDirection.Descending);
+		var resultAsc2 = sequenceAscending.OrderByDescending(SuperEnumerable.Identity);
 		// ensure both order by operations produce identical results
 		Assert.Equal(await resultAsc2.ToListAsync(), await resultAsc1.ToListAsync());
 
-		var resultDes1 = sequenceDescending.OrderBy(x => x, OrderByDirection.Ascending);
-		var resultDes2 = sequenceDescending.OrderBy(x => x);
+		var resultDes1 = sequenceDescending.OrderBy(SuperEnumerable.Identity, OrderByDirection.Ascending);
+		var resultDes2 = sequenceDescending.OrderBy(SuperEnumerable.Identity);
 		// ensure both order by operations produce identical results
 		Assert.Equal(await resultDes2.ToListAsync(), await resultDes1.ToListAsync());
 	}
@@ -39,15 +37,15 @@ public class OrderByTests
 
 		var comparer = Comparer<string>.Create((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
 
-		var resultAsc1 = sequenceAscending.OrderBy(x => x, comparer, OrderByDirection.Descending);
-		var resultAsc2 = sequenceAscending.OrderByDescending(x => x, comparer);
+		var resultAsc1 = sequenceAscending.OrderBy(SuperEnumerable.Identity, comparer, OrderByDirection.Descending);
+		var resultAsc2 = sequenceAscending.OrderByDescending(SuperEnumerable.Identity, comparer);
 		// ensure both order by operations produce identical results
 		Assert.Equal(await resultAsc2.ToListAsync(), await resultAsc1.ToListAsync());
 		// ensure comparer was applied in the order by evaluation
 		Assert.Equal(await sequenceDescending.ToListAsync(), await resultAsc1.ToListAsync());
 
-		var resultDes1 = sequenceDescending.OrderBy(x => x, comparer, OrderByDirection.Ascending);
-		var resultDes2 = sequenceDescending.OrderBy(x => x, comparer);
+		var resultDes1 = sequenceDescending.OrderBy(SuperEnumerable.Identity, comparer, OrderByDirection.Ascending);
+		var resultDes2 = sequenceDescending.OrderBy(SuperEnumerable.Identity, comparer);
 		// ensure both order by operations produce identical results
 		Assert.Equal(await resultDes2.ToListAsync(), await resultDes1.ToListAsync());
 		// ensure comparer was applied in the order by evaluation

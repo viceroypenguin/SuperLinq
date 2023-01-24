@@ -44,7 +44,7 @@ public class ScanByTest
 	[Fact]
 	public Task ScanByWithSecondOccurenceImmediatelyAfterFirst()
 	{
-		var result = "jaffer".ToAsyncEnumerable().ScanBy(c => c, k => -1, (i, k, e) => i + 1);
+		var result = "jaffer".ToAsyncEnumerable().ScanBy(SuperEnumerable.Identity, k => -1, (i, k, e) => i + 1);
 
 		return result.AssertSequenceEqual(('j', 0), ('a', 0), ('f', 0), ('f', 1), ('e', 0), ('r', 0));
 	}
@@ -54,7 +54,7 @@ public class ScanByTest
 	{
 		var source = AsyncSeq("a", "B", "c", "A", "b", "A");
 		var result = source.ScanBy(
-			c => c,
+			SuperEnumerable.Identity,
 			k => -1,
 			(i, k, e) => i + 1,
 			StringComparer.OrdinalIgnoreCase);
@@ -66,7 +66,7 @@ public class ScanByTest
 	public Task ScanByWithSomeNullKeys()
 	{
 		var source = AsyncSeq("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
-		var result = source.ScanBy(c => c, k => -1, (i, k, e) => i + 1);
+		var result = source.ScanBy(SuperEnumerable.Identity, k => -1, (i, k, e) => i + 1);
 
 		return result.AssertSequenceEqual(("foo", 0), (null, 0), ("bar", 0), ("baz", 0), (null, 1), (null, 2), ("baz", 1), ("bar", 1), (null, 3), ("foo", 1));
 	}
@@ -76,7 +76,7 @@ public class ScanByTest
 	{
 		var nil = (object?)null;
 		var source = AsyncSeq("foo", null, "bar", null, "baz");
-		var result = source.ScanBy(c => c, k => nil, (i, k, e) => nil);
+		var result = source.ScanBy(SuperEnumerable.Identity, k => nil, (i, k, e) => nil);
 
 		return result.AssertSequenceEqual(("foo", nil), (null, nil), ("bar", nil), (null, nil), ("baz", nil));
 	}

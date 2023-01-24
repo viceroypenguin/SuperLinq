@@ -28,7 +28,7 @@ public class RankTests
 	{
 		await using var sequence = Enumerable.Repeat(1, 10)
 			.AsTestingSequence();
-		await sequence.RankBy(x => x).AssertSequenceEqual(
+		await sequence.RankBy(SuperEnumerable.Identity).AssertSequenceEqual(
 			Enumerable.Repeat((1, 1), 10));
 	}
 
@@ -87,7 +87,7 @@ public class RankTests
 			.AsTestingSequence();
 
 		var result = sequence.Rank();
-		Assert.Equal(1, (await result.OrderBy(x => x).FirstAsync()).rank);
+		Assert.Equal(1, (await result.OrderBy(SuperEnumerable.Identity).FirstAsync()).rank);
 	}
 
 	/// <summary>
@@ -131,7 +131,7 @@ public class RankTests
 		{
 			var resultA = xs.Rank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
 			await resultA.AssertSequenceEqual(sequence
-				.OrderByDescending(x => x)
+				.OrderByDescending(SuperEnumerable.Identity)
 				.Select((x, i) => (x, i + 1)));
 		}
 
