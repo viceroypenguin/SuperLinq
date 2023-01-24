@@ -62,8 +62,8 @@ public class LeftJoinTest
 		var baz = (3, "baz");
 		var qux = (4, "qux");
 
-		var xs = new[] { foo, bar1, qux };
-		var ys = new[] { bar2, baz, bar3 };
+		using var xs = TestingSequence.Of(foo, bar1, qux);
+		using var ys = TestingSequence.Of(bar2, baz, bar3);
 
 		var missing = default((int, string));
 
@@ -91,8 +91,8 @@ public class LeftJoinTest
 		var baz = ("three", "baz");
 		var qux = ("four", "qux");
 
-		var xs = new[] { foo, bar1, qux };
-		var ys = new[] { bar2, baz, bar3 };
+		using var xs = TestingSequence.Of(foo, bar1, qux);
+		using var ys = TestingSequence.Of(bar2, baz, bar3);
 
 		var missing = default((string, string));
 
@@ -118,8 +118,8 @@ public class LeftJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = Array.Empty<(int, string)>();
-		var ys = new[] { foo, bar, baz };
+		using var xs = TestingSequence.Of<(int, string)>();
+		using var ys = TestingSequence.Of(foo, bar, baz);
 
 		var missing = default((int, string));
 
@@ -140,8 +140,8 @@ public class LeftJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = new[] { foo, bar, baz };
-		var ys = Array.Empty<(int, string)>();
+		using var xs = TestingSequence.Of(foo, bar, baz);
+		using var ys = TestingSequence.Of<(int, string)>();
 
 		var missing = default((int, string));
 
