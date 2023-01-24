@@ -24,69 +24,77 @@ public class PadTest
 	public class ValueTypeElements
 	{
 		[Fact]
-		public Task PadWideSourceSequence()
+		public async Task PadWideSourceSequence()
 		{
-			var result = AsyncSeq(123, 456, 789).Pad(2);
-			return result.AssertSequenceEqual(123, 456, 789);
+			await using var sequence = TestingSequence.Of(123, 456, 789);
+			var result = sequence.Pad(2);
+			await result.AssertSequenceEqual(123, 456, 789);
 		}
 
 		[Fact]
-		public Task PadEqualSourceSequence()
+		public async Task PadEqualSourceSequence()
 		{
-			var result = AsyncSeq(123, 456, 789).Pad(3);
-			return result.AssertSequenceEqual(123, 456, 789);
+			await using var sequence = TestingSequence.Of(123, 456, 789);
+			var result = sequence.Pad(3);
+			await result.AssertSequenceEqual(123, 456, 789);
 		}
 
 		[Fact]
-		public Task PadNarrowSourceSequenceWithDefaultPadding()
+		public async Task PadNarrowSourceSequenceWithDefaultPadding()
 		{
-			var result = AsyncSeq(123, 456, 789).Pad(5);
-			return result.AssertSequenceEqual(123, 456, 789, 0, 0);
+			await using var sequence = TestingSequence.Of(123, 456, 789);
+			var result = sequence.Pad(5);
+			await result.AssertSequenceEqual(123, 456, 789, 0, 0);
 		}
 
 		[Fact]
-		public Task PadNarrowSourceSequenceWithNonDefaultPadding()
+		public async Task PadNarrowSourceSequenceWithNonDefaultPadding()
 		{
-			var result = AsyncSeq(123, 456, 789).Pad(5, -1);
-			return result.AssertSequenceEqual(123, 456, 789, -1, -1);
+			await using var sequence = TestingSequence.Of(123, 456, 789);
+			var result = sequence.Pad(5, -1);
+			await result.AssertSequenceEqual(123, 456, 789, -1, -1);
 		}
 
 		[Fact]
-		public Task PadNarrowSourceSequenceWithDynamicPadding()
+		public async Task PadNarrowSourceSequenceWithDynamicPadding()
 		{
 			var result = "hello".ToCharArray().ToAsyncEnumerable().Pad(15, i => i % 2 == 0 ? '+' : '-');
-			return result.AssertSequenceEqual("hello-+-+-+-+-+".ToCharArray());
+			await result.AssertSequenceEqual("hello-+-+-+-+-+".ToCharArray());
 		}
 	}
 
 	public class ReferenceTypeElements
 	{
 		[Fact]
-		public Task PadWideSourceSequence()
+		public async Task PadWideSourceSequence()
 		{
-			var result = AsyncSeq("foo", "bar", "baz").Pad(2);
-			return result.AssertSequenceEqual("foo", "bar", "baz");
+			await using var sequence = TestingSequence.Of("foo", "bar", "baz");
+			var result = sequence.Pad(2);
+			await result.AssertSequenceEqual("foo", "bar", "baz");
 		}
 
 		[Fact]
-		public Task PadEqualSourceSequence()
+		public async Task PadEqualSourceSequence()
 		{
-			var result = AsyncSeq("foo", "bar", "baz").Pad(3);
-			return result.AssertSequenceEqual("foo", "bar", "baz");
+			await using var sequence = TestingSequence.Of("foo", "bar", "baz");
+			var result = sequence.Pad(3);
+			await result.AssertSequenceEqual("foo", "bar", "baz");
 		}
 
 		[Fact]
-		public Task PadNarrowSourceSequenceWithDefaultPadding()
+		public async Task PadNarrowSourceSequenceWithDefaultPadding()
 		{
-			var result = AsyncSeq("foo", "bar", "baz").Pad(5);
-			return result.AssertSequenceEqual("foo", "bar", "baz", null, null);
+			await using var sequence = TestingSequence.Of("foo", "bar", "baz");
+			var result = sequence.Pad(5);
+			await result.AssertSequenceEqual("foo", "bar", "baz", null, null);
 		}
 
 		[Fact]
-		public Task PadNarrowSourceSequenceWithNonDefaultPadding()
+		public async Task PadNarrowSourceSequenceWithNonDefaultPadding()
 		{
-			var result = AsyncSeq("foo", "bar", "baz").Pad(5, string.Empty);
-			return result.AssertSequenceEqual("foo", "bar", "baz", string.Empty, string.Empty);
+			await using var sequence = TestingSequence.Of("foo", "bar", "baz");
+			var result = sequence.Pad(5, string.Empty);
+			await result.AssertSequenceEqual("foo", "bar", "baz", string.Empty, string.Empty);
 		}
 	}
 }
