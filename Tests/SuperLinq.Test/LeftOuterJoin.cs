@@ -57,8 +57,8 @@ public class LeftOuterJoinTest
 		var quux = (5, "quux");
 		var quuz = (6, "quuz");
 
-		var xs = Seq(foo, bar1, qux);
-		var ys = Seq(bar2, bar3, baz, quuz, quux);
+		using var xs = TestingSequence.Of(foo, bar1, qux);
+		using var ys = TestingSequence.Of(bar2, bar3, baz, quuz, quux);
 
 		var missing = default((int, string));
 
@@ -89,8 +89,8 @@ public class LeftOuterJoinTest
 		var quux = ("five", "quux");
 		var quuz = ("six", "quuz");
 
-		var xs = Seq(foo, bar1, qux);
-		var ys = Seq(bar2, bar3, baz, quuz, quux);
+		using var xs = TestingSequence.Of(foo, bar1, qux);
+		using var ys = TestingSequence.Of(bar2, bar3, baz, quuz, quux);
 
 		var missing = default((string, string));
 
@@ -117,8 +117,8 @@ public class LeftOuterJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = Seq<(int, string)>();
-		var ys = Seq(foo, bar, baz);
+		using var xs = TestingSequence.Of<(int, string)>();
+		using var ys = TestingSequence.Of(foo, bar, baz);
 
 		var missing = default((int, string));
 
@@ -140,8 +140,8 @@ public class LeftOuterJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = Seq(foo, bar, baz);
-		var ys = Seq<(int, string)>();
+		using var xs = TestingSequence.Of(foo, bar, baz);
+		using var ys = TestingSequence.Of<(int, string)>();
 
 		var missing = default((int, string));
 
