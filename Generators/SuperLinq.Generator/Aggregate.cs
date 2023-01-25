@@ -10,33 +10,7 @@ internal static class Aggregate
 	public static SourceText Generate()
 	{
 		var template = Template.Parse(ThisAssembly.Resources.Aggregate.Text);
-		var output = template.Render(new
-		{
-			Ordinals = new[]
-			{
-				"zeroth" ,
-				"first"  ,
-				"second" ,
-				"third"  ,
-				"fourth" ,
-				"fifth"  ,
-				"sixth"  ,
-				"seventh",
-				"eighth" ,
-			},
-			Arity = new[]
-			{
-				"zero" ,
-				"one"  ,
-				"two"  ,
-				"three",
-				"four" ,
-				"five" ,
-				"six"  ,
-				"seven",
-				"eight",
-			},
-		});
+		var output = template.Render(ArgumentNames.Instance);
 
 		// Apply formatting since indenting isn't that nice in Scriban when rendering nested 
 		// structures via functions.
