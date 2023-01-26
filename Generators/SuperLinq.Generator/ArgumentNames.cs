@@ -1,6 +1,6 @@
 ﻿namespace SuperLinq;
 
-public record ArgumentNames(string[] Arity, string[] Ordinals)
+public record ArgumentNames(string[] Arity, string[] Ordinals, string[] Cardinals)
 {
 	public static ArgumentNames Instance { get; } = new(
 		Arity: new[]
@@ -26,6 +26,18 @@ public record ArgumentNames(string[] Arity, string[] Ordinals)
 			"sixth"  ,
 			"seventh",
 			"eighth" ,
+		},
+		Cardinals: new[]
+		{
+			"Zeroth" ,
+			"First"  ,
+			"Second" ,
+			"Third"  ,
+			"Fourth" ,
+			"Fifth"  ,
+			"Sixth"  ,
+			"Seventh",
+			"Eighth" ,
 		});
 }
 

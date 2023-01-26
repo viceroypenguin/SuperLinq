@@ -86,6 +86,7 @@ public static partial class SuperEnumerable
     /// <para>
     /// This method uses deferred execution and stream its results.</para>
     /// </remarks>
+    /// <exception cref="global::System.ArgumentNullException">Any of the input sequences is null.</exception>
 	{{~ for $j in 1..$i ~}}
     /// <typeparam name="T{{$j}}">The type of the elements of <paramref name="{{ $ordinals[$j] }}" />.</typeparam>
 	/// <param name="{{ $ordinals[$j] }}">The {{ $ordinals[$j] }} sequence of elements.</param>
