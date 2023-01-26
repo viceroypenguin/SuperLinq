@@ -55,5 +55,30 @@ public static partial class SuperEnumerable
 		    {{~ end ~}}
         );
 	}
+
+    /// <summary>
+    /// Applies {{ $arity[$i] }} accumulators sequentially in a single pass over a
+    /// sequence.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
+    /// <param name="source">The source sequence</param>
+    /// <returns>A 
+	/// <see cref="ValueTuple{ {{~ for $j in 1..$i ~}}T{{$j}}{{ if !for.last }},{{ end }}{{ end }} }" /> 
+    /// containing the result of each accumulator.</returns>
+    /// <remarks>
+    /// This operator executes immediately.
+    /// </remarks>
+	{{~ for $j in 1..$i ~}}
+    /// <typeparam name="TAccumulate{{$j}}">The type of the {{ $ordinals[$j] }} accumulator value.</typeparam>
+	/// <param name="seed{{$j}}">The seed value for the {{ $ordinals[$j] }} accumulator.</param>
+	/// <param name="accumulator{{$j}}">The {{ $ordinals[$j] }} accumulator.</param>
+	{{~ end ~}}
+    public static ({{~ for $j in 1..$i ~}}TAccumulate{{$j}}{{ if !for.last }},{{ end }}{{ end }}) Aggregate<T, {{ for $j in 1..$i }}TAccumulate{{$j}}{{ if !for.last }}, {{ end }}{{ end }}>(
+        this IEnumerable<T> source,
+		{{~ for $j in 1..$i ~}}
+        TAccumulate{{$j}} seed{{$j}}, Func<TAccumulate{{$j}}, T, TAccumulate{{$j}}> accumulator{{$j}}{{ if !for.last }},{{ end }}
+		{{~ end ~}}) =>
+		Aggregate(source, {{~ for $j in 1..$i ~}}seed{{$j}}, accumulator{{$j}}, {{ end }}ValueTuple.Create);
+
 	{{ end ~}}
 }
