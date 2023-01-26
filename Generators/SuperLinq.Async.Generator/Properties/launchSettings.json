@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SuperLinq.Async.Generator": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\..\\Source\\SuperLinq.Async\\SuperLinq.Async.csproj"
+    }
+  }
+}
