@@ -87,7 +87,7 @@ public class WindowRightTest
 	[Fact]
 	public void WindowRightBufferEmptySequence()
 	{
-		using var sequence = Seq<int>().AsTestingSequence();
+		using var sequence = Seq<int>().AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
 
 		var result = sequence.WindowRight(5, SuperEnumerable.Identity);
 		Assert.Empty(result);
@@ -128,7 +128,7 @@ public class WindowRightTest
 	[Fact]
 	public void WindowRightWithWindowSizeLargerThanSequence()
 	{
-		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
+		using var sequence = Enumerable.Range(1, 5).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
 
 		using var reader = sequence.WindowRight(10).Read();
 		reader.Read().AssertSequenceEqual(1);
@@ -142,7 +142,7 @@ public class WindowRightTest
 	[Fact]
 	public void WindowRightBufferWithWindowSizeLargerThanSequence()
 	{
-		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
+		using var sequence = Enumerable.Range(1, 5).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
 
 		using var reader = sequence.WindowRight(10, a => string.Join("", a)).Read();
 		Assert.Equal("1", reader.Read());
