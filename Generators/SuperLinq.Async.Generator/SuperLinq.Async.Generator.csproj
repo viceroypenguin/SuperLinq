@@ -30,4 +30,8 @@
 		<EmbeddedResource Include="*.sbntxt" Kind="Text" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<Compile Include="../SuperLinq.Generator/ArgumentNames.cs" />
+	</ItemGroup>
+
 </Project>
