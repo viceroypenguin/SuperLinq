@@ -11,9 +11,9 @@ public class Generator : IIncrementalGenerator
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"EquiZip.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.EquiZip.Text)));
+			"EquiZip.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.EquiZip.Text)));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"Fold.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Fold.Text)));
+			"Fold.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Fold.Text)));
 	}
 
 	private static SourceText GenerateArgumentNamesTemplate(string template)

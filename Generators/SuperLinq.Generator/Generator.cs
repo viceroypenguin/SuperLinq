@@ -11,15 +11,15 @@ public class Generator : IIncrementalGenerator
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"Aggregate.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Aggregate.Text)));
+			"Aggregate.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Aggregate.Text)));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"Cartesian.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Cartesian.Text)));
+			"Cartesian.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Cartesian.Text)));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"EquiZip.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.EquiZip.Text)));
+			"EquiZip.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.EquiZip.Text)));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"Fold.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Fold.Text)));
+			"Fold.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Fold.Text)));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"ToDelimitedString.g.cs", ToDelimitedString.Generate()));
+			"ToDelimitedString.cs", ToDelimitedString.Generate()));
 	}
 
 	private static SourceText GenerateArgumentNamesTemplate(string template)
