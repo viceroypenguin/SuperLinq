@@ -14,22 +14,22 @@ public static partial class SuperEnumerable
     /// <param name="source">The sequence of items to fold.</param>
     /// <param name="folder">Function to apply to the elements in the sequence.</param>
     /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-    /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="folder"/> is null.</exception>
-    /// <exception cref="InvalidOperationException">
+    /// <exception cref="global::System.ArgumentNullException"><paramref name="source"/> or <paramref name="folder"/> is null.</exception>
+    /// <exception cref="global::System.InvalidOperationException">
 	/// <paramref name="source"/> does not contain exactly {{$i}} element{{if $i != 1}}s{{end}}.
 	/// </exception>
-    public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<
+    public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<
 		{{~ for $j in 1..$i ~}}
 		T,
 		{{~ end ~}}
 		TResult> folder)
     {
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(folder);
+		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
+		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
 
 		var elements = source.Take({{$i}} + 1).ToList();
 		if (elements.Count != {{$i}})
-			ThrowHelper.ThrowInvalidOperationException(
+			global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException(
 				$"Sequence contained an incorrect number of elements. (Expected: {{$i}}, Actual: {elements.Count})");
 
 		return folder(

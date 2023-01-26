@@ -8,23 +8,23 @@ public static partial class SuperEnumerable
 	/// a given delimiter.
 	/// </summary>
 	/// <param name="source">The sequence of items to delimit. Each is converted to a string using the
-	/// simple ToString() conversion.</param>
+	/// simple <c>ToString()</c> conversion.</param>
 	/// <param name="delimiter">The delimiter to inject between elements.</param>
 	/// <returns>
 	/// A string that consists of the elements in <paramref name="source"/>
 	/// delimited by <paramref name="delimiter"/>. If the source sequence
 	/// is empty, the method returns an empty string.
 	/// </returns>
-	/// <exception cref="ArgumentNullException">
+	/// <exception cref="global::System.ArgumentNullException">
 	/// <paramref name="source"/> or <paramref name="delimiter"/> is <see langword="null"/>.
 	/// </exception>
 	/// <remarks>
 	/// This operator uses immediate execution and effectively buffers the sequence.
 	/// </remarks>
-	public static global::System.String ToDelimitedString(this IEnumerable<{{t}}> source, global::System.String delimiter)
+	public static global::System.String ToDelimitedString(this global::System.Collections.Generic.IEnumerable<{{t}}> source, global::System.String delimiter)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(delimiter);
+		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
+		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(delimiter);
 		return ToDelimitedStringImpl(source, delimiter, Builder);
 
 		static global::System.Text.StringBuilder Builder(global::System.Text.StringBuilder sb, {{t}} e) => sb.Append(e);
