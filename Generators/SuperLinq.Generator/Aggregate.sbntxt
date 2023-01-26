@@ -22,6 +22,9 @@ public static partial class SuperEnumerable
     /// <remarks>
     /// This operator executes immediately.
     /// </remarks>
+    /// <exception cref="global::System.ArgumentNullException">
+	/// <paramref name="source"/>, <paramref name="resultSelector"/> or any of the accumulator functions is null.
+	/// </exception>
 	{{~ for $j in 1..$i ~}}
     /// <typeparam name="TAccumulate{{$j}}">The type of the {{ $ordinals[$j] }} accumulator value.</typeparam>
 	/// <param name="seed{{$j}}">The seed value for the {{ $ordinals[$j] }} accumulator.</param>
