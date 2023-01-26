@@ -15,6 +15,8 @@ public class Generator : IIncrementalGenerator
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
 			"Cartesian.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Cartesian.Text)));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
+			"EquiZip.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.EquiZip.Text)));
+		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
 			"Fold.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Fold.Text)));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
 			"ToDelimitedString.g.cs", ToDelimitedString.Generate()));
