@@ -23,6 +23,7 @@ public class AggregateTest
 		from m in typeof(SuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static)
 		where m.Name == nameof(SuperEnumerable.Aggregate)
 		   && m.IsGenericMethodDefinition
+		where !m.ReturnType.Name.Contains(nameof(ValueTuple))
 		select new
 		{
 			Source = source,
