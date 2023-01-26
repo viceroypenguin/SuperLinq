@@ -3,6 +3,9 @@
 	<PropertyGroup>
 		<AssemblyName>SuperLinq.Async</AssemblyName>
 		<RootNamespace>SuperLinq.Async</RootNamespace>
+
+		<!-- CA2007 is bugged for IAsyncEnumerable; unfortunate -->
+		<NoWarn>$(NoWarn);CA2007</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Label="Nuget">
