@@ -34,7 +34,7 @@ public static partial class SuperEnumerable
 
 		return folder(
 			{{~ for $j in 1..$i ~}}
-			elements[{{$j}}]{{ if !for.last }},{{ end }}
+			elements[{{$j-1}}]{{ if !for.last }},{{ end }}
 			{{~ end ~}}
 		);
 	}
