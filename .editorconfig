@@ -215,15 +215,5 @@ dotnet_diagnostic.CS1712.severity = error               # CS1712: Type parameter
 dotnet_diagnostic.CS1998.severity = error               # CS1998: Async method lacks 'await' operators and will run synchronously
 dotnet_diagnostic.CS4014.severity = error               # CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
 
-dotnet_diagnostic.CS8602.severity = error               # CS8602: Dereference of a possibly null reference.
-dotnet_diagnostic.CS8603.severity = error               # CS8603: Possible null reference return
-dotnet_diagnostic.CS8604.severity = error               # CS8604: Possible null reference argument
-dotnet_diagnostic.CS8618.severity = error               # CS8618: Non-nullable field is uninitialized. Consider declaring as nullable.
-
 dotnet_diagnostic.CA2007.severity = none                # CA2007: Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA5394.severity = none                # CA5394: Random is an insecure random number generator. Use cryptographically secure random number generators when randomness is required for security.
-
-dotnet_diagnostic.MA0016.severity = none				# MA0016: Prefer returning collection abstraction instead of implementation
-dotnet_diagnostic.MA0048.severity = none                # MA0048: File name must match type name
-dotnet_diagnostic.MA0051.severity = none				# MA0051: Method is too long
-dotnet_diagnostic.MA0071.severity = silent				# MA0071: Avoid using redundant else
