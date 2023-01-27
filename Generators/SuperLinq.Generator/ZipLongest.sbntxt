@@ -10,12 +10,16 @@ namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
-	private static (bool, T? value) DoRead<T>(bool flag, IEnumerator<T> iter)
+	private static bool DoRead<T>(bool flag, IEnumerator<T> iter, out T? value)
 	{
 		if (!flag || !iter.MoveNext())
-			return (false, default);
+		{
+			value = default;
+			return false;
+		}
 	
-		return (true, iter.Current);
+		value = iter.Current;
+		return true;
 	}
 
 	{{~ for $i in 2..4 ~}}
