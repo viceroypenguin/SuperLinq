@@ -22,6 +22,8 @@ public class Generator : IIncrementalGenerator
 			"ToDelimitedString.g.cs", ToDelimitedString.Generate()));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
 			"ZipLongest.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.ZipLongest.Text)));
+		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
+			"ZipShortest.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.ZipShortest.Text)));
 	}
 
 	private static SourceText GenerateArgumentNamesTemplate(string template)
