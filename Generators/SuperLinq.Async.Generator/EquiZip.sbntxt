@@ -6,6 +6,8 @@
 
 namespace SuperLinq.Async;
 
+#nullable enable
+
 public static partial class AsyncSuperEnumerable
 {
 	{{~ for $i in 2..4 ~}}

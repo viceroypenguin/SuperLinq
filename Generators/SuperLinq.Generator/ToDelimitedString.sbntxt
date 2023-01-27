@@ -1,5 +1,7 @@
 ﻿namespace SuperLinq;
 
+#nullable enable
+
 public static partial class SuperEnumerable
 {
 	{{~ for t in types ~}}
