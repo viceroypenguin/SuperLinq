@@ -96,7 +96,7 @@ public class WindowTests
 	[Fact]
 	public void TestWindowBufferEmptySequence()
 	{
-		using var sequence = Seq<int>().AsTestingSequence();
+		using var sequence = Seq<int>().AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
 
 		var result = sequence.Window(5, SuperEnumerable.Identity);
 		Assert.Empty(result);
@@ -142,7 +142,7 @@ public class WindowTests
 	public void TestWindowLargerThanSequence()
 	{
 		var sequence = Enumerable.Range(1, 10);
-		using var xs = sequence.AsTestingSequence();
+		using var xs = sequence.AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
 		var result = xs.Window(11).ToList();
 
 		// there should only be one window whose contents is the same
@@ -154,7 +154,7 @@ public class WindowTests
 	public void TestWindowBufferLargerThanSequence()
 	{
 		var sequence = Enumerable.Range(1, 10);
-		using var xs = sequence.AsTestingSequence();
+		using var xs = sequence.AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
 		var result = xs.Window(11, l => l.Sum());
 
 		// there should only be one window whose contents is the same
