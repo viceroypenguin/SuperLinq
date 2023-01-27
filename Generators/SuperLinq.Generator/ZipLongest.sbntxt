@@ -10,6 +10,14 @@ namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
+	private static (bool, T? value) DoRead<T>(bool flag, IEnumerator<T> iter)
+	{
+		if (!flag || !iter.MoveNext())
+			return (false, default);
+	
+		return (true, iter.Current);
+	}
+
 	{{~ for $i in 2..4 ~}}
     /// <summary>
 	/// Returns a projection of tuples, where each tuple contains the N-th
@@ -60,16 +68,13 @@ public static partial class SuperEnumerable
 			var f{{ $j }} = true;
 			{{~ end ~}}
 
-			while (true)
-			{
+			while (
 				{{~ for $j in 1..$i ~}}
-				var v{{ $j }} = (f{{ $j }} && (f{{ $j }} = e{{ $j }}.MoveNext()))
-					? e{{ $j }}.Current : default(T{{ $j }});
+				{{ if !for.first }}|{{ end }}
+				(f{{$j}} = DoRead(f{{$j}}, e{{$j}}, out var v{{$j}}))
 				{{~ end ~}}
-
-				if (!f1 {{ for $j in 2..$i }}&& !f{{ $j }}{{ end }})
-					yield break;
-
+				)
+			{
 				yield return resultSelector(
 					{{~ for $j in 1..$i ~}}
 					v{{$j}}{{ if !for.last }},{{ end }}
