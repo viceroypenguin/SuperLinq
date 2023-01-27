@@ -6,6 +6,8 @@
 
 namespace SuperLinq;
 
+#nullable enable
+
 public static partial class SuperEnumerable
 {
 	{{~ for $i in 2..4 ~}}

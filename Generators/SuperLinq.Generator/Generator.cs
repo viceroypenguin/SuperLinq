@@ -20,6 +20,8 @@ public class Generator : IIncrementalGenerator
 			"Fold.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Fold.Text)));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
 			"ToDelimitedString.g.cs", ToDelimitedString.Generate()));
+		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
+			"ZipLongest.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.ZipLongest.Text)));
 	}
 
 	private static SourceText GenerateArgumentNamesTemplate(string template)

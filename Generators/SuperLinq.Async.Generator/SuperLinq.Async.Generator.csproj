@@ -27,11 +27,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="*.sbntxt" />
 		<EmbeddedResource Include="*.sbntxt" Kind="Text" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Compile Include="../SuperLinq.Generator/ArgumentNames.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="ZipLongest.sbntxt">
+	    <Kind>Text</Kind>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

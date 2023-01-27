@@ -1,0 +1,116 @@
+﻿{{ 
+    $arity = arity
+    $ordinals = ordinals
+    $cardinals = cardinals
+}}
+
+namespace SuperLinq;
+
+#nullable enable
+
+public static partial class SuperEnumerable
+{
+	private static bool DoRead<T>(bool flag, IEnumerator<T> iter, out T? value)
+	{
+		if (!flag || !iter.MoveNext())
+		{
+			value = default;
+			return false;
+		}
+	
+		value = iter.Current;
+		return true;
+	}
+
+	{{~ for $i in 2..4 ~}}
+    /// <summary>
+	/// Returns a projection of tuples, where each tuple contains the N-th
+	/// element from each of the argument sequences. The resulting sequence
+	/// will always be as long as the longest of input sequences where the
+	/// default value of each of the shorter sequence element types is used
+	/// for padding.
+    /// </summary>
+    /// <typeparam name="TResult">
+    /// The type of the elements of the result sequence.</typeparam>
+    /// <param name="resultSelector">A projection function that combines
+    /// elements from all of the sequences.</param>
+    /// <returns>A sequence of elements returned by <paramref name="resultSelector"/>.</returns>
+    /// <remarks>
+    /// This method uses deferred execution and streams its results.
+    /// </remarks>
+    /// <exception cref="global::System.ArgumentNullException"><paramref name="resultSelector"/> or any of the input sequences is null.</exception>
+	{{~ for $j in 1..$i ~}}
+    /// <typeparam name="T{{ $j }}">The type of the elements of <paramref name="{{ $ordinals[$j] }}" />.</typeparam>
+	/// <param name="{{ $ordinals[$j] }}">The {{ $ordinals[$j] }} sequence of elements.</param>
+	{{~ end ~}}
+    public static global::System.Collections.Generic.IEnumerable<TResult> ZipLongest<{{ for $j in 1..$i }}T{{ $j }}, {{ end }}TResult>(this 
+		{{~ for $j in 1..$i ~}}
+        global::System.Collections.Generic.IEnumerable<T{{ $j }}> {{ $ordinals[$j] }},
+		{{~ end ~}}
+        global::System.Func<{{ for $j in 1..$i }}T{{ $j }}?, {{ end }}TResult> resultSelector)
+	{
+		{{~ for $j in 1..$i ~}}
+        global::CommunityToolkit.Diagnostics.Guard.IsNotNull({{ $ordinals[$j] }});
+		{{~ end ~}}
+
+        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+
+		return _(
+			{{~ for $j in 1..$i ~}}
+			{{ $ordinals[$j] }},
+			{{~ end ~}}
+			resultSelector);
+
+		static global::System.Collections.Generic.IEnumerable<TResult> _(
+			{{~ for $j in 1..$i ~}}
+			global::System.Collections.Generic.IEnumerable<T{{ $j }}> {{ $ordinals[$j] }},
+			{{~ end ~}}
+			global::System.Func<{{ for $j in 1..$i }}T{{ $j }}?, {{ end }}TResult> resultSelector)
+		{
+			{{~ for $j in 1..$i ~}}
+			using var e{{ $j }} = {{ $ordinals[$j] }}.GetEnumerator();
+			var f{{ $j }} = true;
+			{{~ end ~}}
+
+			while (
+				{{~ for $j in 1..$i ~}}
+				{{ if !for.first }}|{{ end }}
+				(f{{$j}} = DoRead(f{{$j}}, e{{$j}}, out var v{{$j}}))
+				{{~ end ~}}
+				)
+			{
+				yield return resultSelector(
+					{{~ for $j in 1..$i ~}}
+					v{{$j}}{{ if !for.last }},{{ end }}
+					{{~ end ~}}
+				);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Returns a projection of tuples, where each tuple contains the N-th
+	/// element from each of the argument sequences. The resulting sequence
+	/// will always be as long as the longest of input sequences where the
+	/// default value of each of the shorter sequence element types is used
+	/// for padding.
+    /// </summary>
+    /// <returns>A sequence of 
+	/// <see cref="global::System.ValueTuple{ {{~ for $j in 1..$i ~}}T{{$j}}{{ if !for.last }},{{ end }}{{ end }} }" /> 
+    /// containing corresponding elements from each of the sequences.</returns>
+    /// <remarks>
+    /// This method uses deferred execution and streams its results.
+    /// </remarks>
+    /// <exception cref="global::System.ArgumentNullException">Any of the input sequences is null.</exception>
+	{{~ for $j in 1..$i ~}}
+    /// <typeparam name="T{{ $j }}">The type of the elements of <paramref name="{{ $ordinals[$j] }}" />.</typeparam>
+	/// <param name="{{ $ordinals[$j] }}">The {{ $ordinals[$j] }} sequence of elements.</param>
+	{{~ end ~}}
+    public static global::System.Collections.Generic.IEnumerable<({{~ for $j in 1..$i ~}}T{{ $j }}?{{ if !for.last }},{{ end }}{{ end }})> 
+		ZipLongest<{{~ for $j in 1..$i ~}}T{{ $j }}{{ if !for.last }},{{ end }}{{ end }}>(this
+			{{~ for $j in 1..$i ~}}
+			global::System.Collections.Generic.IEnumerable<T{{ $j }}> {{ $ordinals[$j] }}{{ if !for.last }},{{ end }}
+			{{~ end ~}}) =>
+		ZipLongest({{~ for $j in 1..$i ~}}{{ $ordinals[$j] }}, {{ end }}global::System.ValueTuple.Create);
+	{{ end ~}}
+}
