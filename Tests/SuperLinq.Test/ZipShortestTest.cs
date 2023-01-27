@@ -3,82 +3,120 @@
 public class ZipShortestTest
 {
 	[Fact]
-	public void ZipShortestWithEqualLengthSequences()
-	{
-		using var seq1 = TestingSequence.Of(1, 2, 3);
-		using var seq2 = TestingSequence.Of(4, 5, 6);
-
-		var zipped = seq1.ZipShortest(seq2, ValueTuple.Create);
-		zipped.AssertSequenceEqual((1, 4), (2, 5), (3, 6));
-	}
-
-	[Fact]
-	public void ZipShortestWithFirstSequenceShorterThanSecond()
-	{
-		using var seq1 = TestingSequence.Of(1, 2);
-		using var seq2 = TestingSequence.Of(4, 5, 6);
-
-		var zipped = seq1.ZipShortest(seq2, ValueTuple.Create);
-		zipped.AssertSequenceEqual((1, 4), (2, 5));
-	}
-
-	[Fact]
-	public void ZipShortestWithFirstSequnceLongerThanSecond()
-	{
-		using var seq1 = TestingSequence.Of(1, 2, 3);
-		using var seq2 = TestingSequence.Of(4, 5);
-
-		var zipped = seq1.ZipShortest(seq2, ValueTuple.Create);
-		zipped.AssertSequenceEqual((1, 4), (2, 5));
-	}
-
-	[Fact]
 	public void ZipShortestIsLazy()
 	{
 		var bs = new BreakingSequence<int>();
 		bs.ZipShortest(bs, BreakingFunc.Of<int, int, int>());
+		bs.ZipShortest(bs, bs, BreakingFunc.Of<int, int, int, int>());
+		bs.ZipShortest(bs, bs, bs, BreakingFunc.Of<int, int, int, int, int>());
+	}
+
+	[Fact]
+	public void TwoParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
+	{
+		using var s1 = TestingSequence.Of(1, 2);
+
+		Assert.Throws<TestException>(() =>
+			s1.ZipShortest(new BreakingSequence<int>()).Consume());
+	}
+
+	[Theory]
+	[InlineData(1), InlineData(2)]
+	public void TwoParamsWorksProperly(int offset)
+	{
+		var o1 = (offset + 0) % 2 + 2;
+		var o2 = (offset + 1) % 2 + 2;
+
+		using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
+		using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
+
+		ts1.ZipShortest(ts2).AssertSequenceEqual(
+			Enumerable.Range(1, 2)
+				.Select(x => (x, x)));
+	}
+
+	[Fact]
+	public void ThreeParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
+	{
+		using var s1 = TestingSequence.Of(1, 2);
+		using var s2 = TestingSequence.Of(1, 2);
+
+		Assert.Throws<TestException>(() =>
+			s1.ZipShortest(s2, new BreakingSequence<int>()).Consume());
+	}
+
+	[Theory]
+	[InlineData(1), InlineData(2), InlineData(3)]
+	public void ThreeParamsWorksProperly(int offset)
+	{
+		var o1 = (offset + 0) % 3 + 2;
+		var o2 = (offset + 1) % 3 + 2;
+		var o3 = (offset + 2) % 3 + 2;
+
+		using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
+		using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
+		using var ts3 = Enumerable.Range(1, o3).AsTestingSequence();
+
+		ts1.ZipShortest(ts2, ts3).AssertSequenceEqual(
+			Enumerable.Range(1, 2)
+				.Select(x => (x, x, x)));
+	}
+
+	[Fact]
+	public void FourParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
+	{
+		using var s1 = TestingSequence.Of(1, 2);
+		using var s2 = TestingSequence.Of(1, 2);
+		using var s3 = TestingSequence.Of(1, 2);
+
+		Assert.Throws<TestException>(() =>
+			s1.ZipShortest(s2, s3, new BreakingSequence<int>()).Consume());
 	}
 
 	[Theory]
 	[InlineData(1), InlineData(2), InlineData(3), InlineData(4)]
-	public void ZipShortestEndsAtShortestSequence(int shortSequence)
+	public void FourParamsWorksProperly(int offset)
 	{
-		using var seq1 = Enumerable.Range(1, shortSequence == 1 ? 2 : 3).AsTestingSequence();
-		using var seq2 = Enumerable.Range(1, shortSequence == 2 ? 2 : 3).AsTestingSequence();
-		using var seq3 = Enumerable.Range(1, shortSequence == 3 ? 2 : 3).AsTestingSequence();
-		using var seq4 = Enumerable.Range(1, shortSequence == 4 ? 2 : 3).AsTestingSequence();
+		var o1 = (offset + 0) % 4 + 2;
+		var o2 = (offset + 1) % 4 + 2;
+		var o3 = (offset + 2) % 4 + 2;
+		var o4 = (offset + 3) % 4 + 2;
 
-		var seq = seq1.ZipShortest(seq2, seq3, seq4, (a, _, _, _) => a);
-		seq.AssertSequenceEqual(1, 2);
-	}
+		using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
+		using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
+		using var ts3 = Enumerable.Range(1, o3).AsTestingSequence();
+		using var ts4 = Enumerable.Range(1, o4).AsTestingSequence();
 
-	[Fact]
-	public void MoveNextIsNotCalledUnnecessarilyWhenFirstIsShorter()
-	{
-		using var s1 = TestingSequence.Of(1, 2);
-		using var s2 = SeqExceptionAt(3).AsTestingSequence();
-
-		var zipped = s1.ZipShortest(s2, ValueTuple.Create);
-
-		zipped.AssertSequenceEqual((1, 1), (2, 2));
+		ts1.ZipShortest(ts2, ts3, ts4).AssertSequenceEqual(
+			Enumerable.Range(1, 2)
+				.Select(x => (x, x, x, x)));
 	}
 
 	[Fact]
 	public void ZipShortestNotIterateUnnecessaryElements()
 	{
-		using var s1 = SeqExceptionAt(3).AsTestingSequence();
-		using var s2 = TestingSequence.Of(1, 2);
+		using (var s1 = SeqExceptionAt(3).AsTestingSequence())
+		using (var s2 = TestingSequence.Of(1, 2))
+		{
+			var zipped = s1.ZipShortest(s2, ValueTuple.Create);
+			zipped.AssertSequenceEqual((1, 1), (2, 2));
+		}
 
-		var zipped = s1.ZipShortest(s2, ValueTuple.Create);
-		zipped.AssertSequenceEqual((1, 1), (2, 2));
-	}
+		using (var s1 = TestingSequence.Of(1, 2, 3))
+		using (var s2 = TestingSequence.Of(1, 2))
+		using (var s3 = SeqExceptionAt(3).AsTestingSequence())
+		{
+			var zipped = s1.ZipShortest(s2, s3, ValueTuple.Create);
+			zipped.AssertSequenceEqual((1, 1, 1), (2, 2, 2));
+		}
 
-	[Fact]
-	public void ZipShortestDisposesInnerSequencesCaseGetEnumeratorThrows()
-	{
-		using var s1 = TestingSequence.Of(1, 2);
-
-		Assert.Throws<TestException>(() =>
-			s1.ZipShortest(new BreakingSequence<int>(), ValueTuple.Create).Consume());
+		using (var s1 = TestingSequence.Of(1, 2, 3))
+		using (var s2 = TestingSequence.Of(1, 2, 3))
+		using (var s3 = TestingSequence.Of(1, 2))
+		using (var s4 = SeqExceptionAt(3).AsTestingSequence())
+		{
+			var zipped = s1.ZipShortest(s2, s3, s4, ValueTuple.Create);
+			zipped.AssertSequenceEqual((1, 1, 1, 1), (2, 2, 2, 2));
+		}
 	}
 }

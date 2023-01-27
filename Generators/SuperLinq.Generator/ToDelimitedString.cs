@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Text;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using Scriban;
 
 namespace SuperLinq;
 
@@ -8,15 +10,6 @@ internal static class ToDelimitedString
 {
 	public static SourceText Generate()
 	{
-		var sb = new StringBuilder();
-		sb.Append(@"
-using System.Text;
-
-namespace SuperLinq;
-
-public static partial class SuperEnumerable
-{");
-
 		var types =
 			from method in typeof(StringBuilder).GetMethods(BindingFlags.Public | BindingFlags.Instance)
 			where string.Equals("Append", method.Name, StringComparison.Ordinal)
@@ -26,42 +19,18 @@ public static partial class SuperEnumerable
 			where !type.IsGenericType // e.g. ReadOnlySpan<>
 			   && (type.IsValueType || type == typeof(string))
 			orderby type.Name
-			select type;
+			select $"global::{type.FullName}";
 
-		foreach (var type in types)
-		{
-			sb.Append($@"
-	/// <summary>
-	/// Creates a delimited string from a sequence of values and
-	/// a given delimiter.
-	/// </summary>
-	/// <param name=""source"">The sequence of items to delimit. Each is converted to a string using the
-	/// simple ToString() conversion.</param>
-	/// <param name=""delimiter"">The delimiter to inject between elements.</param>
-	/// <returns>
-	/// A string that consists of the elements in <paramref name=""source""/>
-	/// delimited by <paramref name=""delimiter""/>. If the source sequence
-	/// is empty, the method returns an empty string.
-	/// </returns>
-	/// <exception cref=""ArgumentNullException"">
-	/// <paramref name=""source""/> or <paramref name=""delimiter""/> is <see langword=""null""/>.
-	/// </exception>
-	/// <remarks>
-	/// This operator uses immediate execution and effectively buffers the sequence.
-	/// </remarks>
-	public static string ToDelimitedString(this IEnumerable<global::{type.FullName}> source, string delimiter)
-	{{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(delimiter);
-		return ToDelimitedStringImpl(source, delimiter, Builder);
+		var template = Template.Parse(ThisAssembly.Resources.ToDelimitedString.Text);
+		var output = template.Render(new { Types = types.ToList(), });
 
-		static StringBuilder Builder(StringBuilder sb, global::{type.FullName} e) => sb.Append(e);
-    }}");
-		}
+		// Apply formatting since indenting isn't that nice in Scriban when rendering nested 
+		// structures via functions.
+		output = Microsoft.CodeAnalysis.CSharp.SyntaxFactory.ParseCompilationUnit(output)
+			.NormalizeWhitespace()
+			.GetText()
+			.ToString();
 
-		sb.Append(@"
-}");
-
-		return SourceText.From(sb.ToString(), Encoding.UTF8);
+		return SourceText.From(output, Encoding.UTF8);
 	}
 }

@@ -93,18 +93,18 @@ public static partial class AsyncSuperEnumerable
 
 		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, Func<TSource, TSource, CancellationToken, ValueTask<TSource>> func, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			await using var e = source.Reverse().GetConfiguredAsyncEnumerator(cancellationToken);
+			var list = await source.ToListAsync(cancellationToken).ConfigureAwait(false);
 
-			if (!await e.MoveNextAsync())
+			if (list.Count == 0)
 				yield break;
 
-			var seed = e.Current;
-			var stack = new Stack<TSource>();
+			var seed = list[^1];
+			var stack = new Stack<TSource>(list.Count);
 			stack.Push(seed);
 
-			while (await e.MoveNextAsync())
+			for (var i = list.Count - 2; i >= 0; i--)
 			{
-				seed = await func(e.Current, seed, cancellationToken).ConfigureAwait(false);
+				seed = await func(list[i], seed, cancellationToken).ConfigureAwait(false);
 				stack.Push(seed);
 			}
 
@@ -207,12 +207,14 @@ public static partial class AsyncSuperEnumerable
 
 		static async IAsyncEnumerable<TAccumulate> _(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			var stack = new Stack<TAccumulate>();
+			var list = await source.ToListAsync(cancellationToken).ConfigureAwait(false);
+
+			var stack = new Stack<TAccumulate>(list.Count + 1);
 			stack.Push(seed);
 
-			await foreach (var i in source.Reverse().WithCancellation(cancellationToken).ConfigureAwait(false))
+			for (var i = list.Count - 1; i >= 0; i--)
 			{
-				seed = await func(i, seed, cancellationToken).ConfigureAwait(false);
+				seed = await func(list[i], seed, cancellationToken).ConfigureAwait(false);
 				stack.Push(seed);
 			}
 

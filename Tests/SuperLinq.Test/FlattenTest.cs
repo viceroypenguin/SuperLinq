@@ -211,7 +211,7 @@ public class FlattenTest
 				16, 17,
 			},
 			18, 19, 20,
-		}.AsTestingSequence(2);
+		}.AsTestingSequence(maxEnumerations: 2);
 
 		source
 			.Flatten()

@@ -78,7 +78,7 @@ public class MoveTest
 	[Fact]
 	public void MoveIsRepeatable()
 	{
-		using var source = Enumerable.Range(0, 10).AsTestingSequence(2);
+		using var source = Enumerable.Range(0, 10).AsTestingSequence(maxEnumerations: 2);
 
 		var result = source.Move(0, 5, 10);
 		Assert.Equal(result, result.ToArray());

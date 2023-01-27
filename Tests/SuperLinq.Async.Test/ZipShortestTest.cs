@@ -65,19 +65,28 @@ public class ZipShortestTest
 	[Fact]
 	public async Task ZipShortestNotIterateUnnecessaryElements()
 	{
-		await using var s1 = AsyncSeqExceptionAt(3).AsTestingSequence();
-		await using var s2 = TestingSequence.Of(1, 2);
+		await using (var s1 = AsyncSeqExceptionAt(3).AsTestingSequence())
+		await using (var s2 = TestingSequence.Of(1, 2))
+		{
+			var zipped = s1.ZipShortest(s2, ValueTuple.Create);
+			await zipped.AssertSequenceEqual((1, 1), (2, 2));
+		}
 
-		var zipped = s1.ZipShortest(s2, ValueTuple.Create);
-		await zipped.AssertSequenceEqual((1, 1), (2, 2));
-	}
+		await using (var s1 = TestingSequence.Of(1, 2, 3))
+		await using (var s2 = TestingSequence.Of(1, 2))
+		await using (var s3 = AsyncSeqExceptionAt(3).AsTestingSequence())
+		{
+			var zipped = s1.ZipShortest(s2, s3, ValueTuple.Create);
+			await zipped.AssertSequenceEqual((1, 1, 1), (2, 2, 2));
+		}
 
-	[Fact]
-	public async Task ZipShortestDisposesInnerSequencesCaseGetEnumeratorThrows()
-	{
-		await using var s1 = TestingSequence.Of(1, 2);
-
-		await Assert.ThrowsAsync<TestException>(async () =>
-			await s1.ZipShortest(new AsyncBreakingSequence<int>(), ValueTuple.Create).Consume());
+		await using (var s1 = TestingSequence.Of(1, 2, 3))
+		await using (var s2 = TestingSequence.Of(1, 2, 3))
+		await using (var s3 = TestingSequence.Of(1, 2))
+		await using (var s4 = AsyncSeqExceptionAt(3).AsTestingSequence())
+		{
+			var zipped = s1.ZipShortest(s2, s3, s4, ValueTuple.Create);
+			await zipped.AssertSequenceEqual((1, 1, 1, 1), (2, 2, 2, 2));
+		}
 	}
 }

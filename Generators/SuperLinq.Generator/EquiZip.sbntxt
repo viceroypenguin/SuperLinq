@@ -1,0 +1,125 @@
+﻿{{ 
+    $arity = arity
+    $ordinals = ordinals
+    $cardinals = cardinals
+}}
+
+namespace SuperLinq;
+
+#nullable enable
+
+public static partial class SuperEnumerable
+{
+	{{~ for $i in 2..4 ~}}
+    /// <summary>
+	/// <para>
+	/// Applies a specified function to the corresponding elements of {{ $ordinals[$i] }} sequences,
+	/// producing a sequence of the results.</para>
+	/// <para>
+	/// The resulting sequence has the same length as the input sequences.
+	/// If the input sequences are of different lengths, an exception is thrown.</para>
+    /// </summary>
+    /// <typeparam name="TResult">
+    /// The type of the elements of the result sequence.</typeparam>
+    /// <param name="resultSelector">A projection function that combines
+    /// elements from all of the sequences.</param>
+    /// <returns>A sequence of elements returned by <paramref name="resultSelector"/>.</returns>
+    /// <remarks>
+    /// This method uses deferred execution and stream its results.
+    /// </remarks>
+    /// <exception cref="global::System.ArgumentNullException"><paramref name="resultSelector"/> or any of the input sequences is null.</exception>
+    /// <exception cref="global::System.InvalidOperationException">
+	/// Any of the input sequences are shorter than the others.
+	/// </exception>
+	{{~ for $j in 1..$i ~}}
+    /// <typeparam name="T{{ $cardinals[$j] }}">The type of the elements of <paramref name="{{ $ordinals[$j] }}" />.</typeparam>
+	/// <param name="{{ $ordinals[$j] }}">The {{ $ordinals[$j] }} sequence of elements.</param>
+	{{~ end ~}}
+    public static global::System.Collections.Generic.IEnumerable<TResult> EquiZip<{{ for $j in 1..$i }}T{{ $cardinals[$j] }}, {{ end }}TResult>(this 
+		{{~ for $j in 1..$i ~}}
+        global::System.Collections.Generic.IEnumerable<T{{ $cardinals[$j] }}> {{ $ordinals[$j] }},
+		{{~ end ~}}
+        global::System.Func<{{ for $j in 1..$i }}T{{ $cardinals[$j] }}, {{ end }}TResult> resultSelector)
+	{
+		{{~ for $j in 1..$i ~}}
+        global::CommunityToolkit.Diagnostics.Guard.IsNotNull({{ $ordinals[$j] }});
+		{{~ end ~}}
+
+        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+
+		return _(
+			{{~ for $j in 1..$i ~}}
+			{{ $ordinals[$j] }},
+			{{~ end ~}}
+			resultSelector);
+
+		static global::System.Collections.Generic.IEnumerable<TResult> _(
+			{{~ for $j in 1..$i ~}}
+			global::System.Collections.Generic.IEnumerable<T{{ $cardinals[$j] }}> {{ $ordinals[$j] }},
+			{{~ end ~}}
+			global::System.Func<{{ for $j in 1..$i }}T{{ $cardinals[$j] }}, {{ end }}TResult> resultSelector)
+		{
+			{{~ for $j in 1..$i ~}}
+			using var e{{ $j }} = {{ $ordinals[$j] }}.GetEnumerator();
+			{{~ end ~}}
+
+			while (true)
+			{
+				if (!e1.MoveNext())
+				{
+					if (e2.MoveNext()
+						{{~
+							if $i >= 3
+							for $j in 3..$i ~}}
+						|| e{{$j}}.MoveNext()
+						{{~ end
+							end ~}}
+						)
+					{
+                        global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
+ 					}
+
+					yield break;
+				}
+
+				{{~ for $j in 2..$i ~}}
+				if (!e{{$j}}.MoveNext())
+					global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException(
+						"{{ $cardinals[$j] }} sequence too short.");
+				{{~ end ~}}
+
+				yield return resultSelector(
+					{{~ for $j in 1..$i ~}}
+					e{{$j}}.Current{{ if !for.last }},{{ end }}
+					{{~ end ~}}
+				);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Joins the corresponding elements of {{ $ordinals[$i] }} sequences,
+	/// producing a sequence of tuples containing them.
+    /// </summary>
+    /// <returns>A sequence of 
+	/// <see cref="global::System.ValueTuple{ {{~ for $j in 1..$i ~}}T{{$j}}{{ if !for.last }},{{ end }}{{ end }} }" /> 
+    /// containing corresponding elements from each of the sequences.</returns>
+    /// <remarks>
+    /// This method uses deferred execution and stream its results.
+    /// </remarks>
+    /// <exception cref="global::System.ArgumentNullException">Any of the input sequences is null.</exception>
+    /// <exception cref="global::System.InvalidOperationException">
+	/// Any of the input sequences are shorter than the others.
+	/// </exception>
+	{{~ for $j in 1..$i ~}}
+    /// <typeparam name="T{{ $cardinals[$j] }}">The type of the elements of <paramref name="{{ $ordinals[$j] }}" />.</typeparam>
+	/// <param name="{{ $ordinals[$j] }}">The {{ $ordinals[$j] }} sequence of elements.</param>
+	{{~ end ~}}
+    public static global::System.Collections.Generic.IEnumerable<({{~ for $j in 1..$i ~}}T{{ $cardinals[$j] }}{{ if !for.last }},{{ end }}{{ end }})> 
+		EquiZip<{{~ for $j in 1..$i ~}}T{{ $cardinals[$j] }}{{ if !for.last }},{{ end }}{{ end }}>(this
+			{{~ for $j in 1..$i ~}}
+			global::System.Collections.Generic.IEnumerable<T{{ $cardinals[$j] }}> {{ $ordinals[$j] }}{{ if !for.last }},{{ end }}
+			{{~ end ~}}) =>
+		EquiZip({{~ for $j in 1..$i ~}}{{ $ordinals[$j] }}, {{ end }}global::System.ValueTuple.Create);
+	{{ end ~}}
+}

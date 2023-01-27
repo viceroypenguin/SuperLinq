@@ -52,7 +52,7 @@ public class ExcludeTests
 	[Fact]
 	public void TestExcludeEmptySequence()
 	{
-		using var sequence = Enumerable.Empty<int>().AsTestingSequence(3);
+		using var sequence = Enumerable.Empty<int>().AsTestingSequence(maxEnumerations: 3);
 
 		Assert.Equal(Enumerable.Empty<int>(), sequence.Exclude(0, 0));
 		// shouldn't matter how many we ask for past end

@@ -65,7 +65,7 @@ public class IndexByTest
 				() => throw new TestException(),
 				() => "angelo",
 				() => "carlos")
-			.AsTestingSequence(2);
+			.AsTestingSequence(maxEnumerations: 2);
 
 		var result = source.IndexBy(x => x.First());
 

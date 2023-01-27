@@ -46,8 +46,8 @@ public class CartesianTests
 			Assert.Equal(sequenceA, result);
 		}
 
-		using (var tsA = sequenceA.AsTestingSequence())
-		using (var tsB = sequenceB.AsTestingSequence())
+		using (var tsA = sequenceA.AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts))
+		using (var tsB = sequenceB.AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts))
 		{
 			var result = tsB.Cartesian(tsA, (a, b) => a + b);
 			Assert.Equal(sequenceA, result);
@@ -63,8 +63,8 @@ public class CartesianTests
 		const int countA = 100;
 		const int countB = 75;
 		const int expectedCount = countA * countB;
-		using var sequenceA = Enumerable.Range(1, countA).AsTestingSequence();
-		using var sequenceB = Enumerable.Range(1, countB).AsTestingSequence();
+		using var sequenceA = Enumerable.Range(1, countA).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
+		using var sequenceB = Enumerable.Range(1, countB).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
 
 		var result = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
 
@@ -83,10 +83,10 @@ public class CartesianTests
 		const int CountC = 8;
 		const int CountD = 7;
 
-		using var sequenceA = Enumerable.Range(1, CountA).AsTestingSequence();
-		using var sequenceB = Enumerable.Range(1, CountB).AsTestingSequence();
-		using var sequenceC = Enumerable.Range(1, CountC).AsTestingSequence();
-		using var sequenceD = Enumerable.Range(1, CountD).AsTestingSequence();
+		using var sequenceA = Enumerable.Range(1, CountA).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
+		using var sequenceB = Enumerable.Range(1, CountB).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
+		using var sequenceC = Enumerable.Range(1, CountC).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
+		using var sequenceD = Enumerable.Range(1, CountD).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
 
 		var result = sequenceA.Cartesian(sequenceB, sequenceC, sequenceD, (a, b, c, d) => a + b + c + d);
 
@@ -112,8 +112,8 @@ public class CartesianTests
 			Enumerable.Repeat(element: false, 5).ToArray(),
 		};
 
-		using var tsA = sequenceA.AsTestingSequence();
-		using var tsB = sequenceB.AsTestingSequence();
+		using var tsA = sequenceA.AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
+		using var tsB = sequenceB.AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
 
 		var result = tsA.Cartesian(tsB, (a, b) => new { A = a, B = b })
 						.ToArray();

@@ -1,0 +1,44 @@
+﻿namespace SuperLinq;
+
+#nullable enable
+
+public static partial class SuperEnumerable
+{
+	{{~ for $i in 1..16 ~}}
+    /// <summary>
+    /// Returns the result of applying a function to a sequence of {{$i}} element{{if $i != 1}}s{{end}}.
+    /// </summary>
+    /// <remarks>
+    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    /// </remarks>
+    /// <typeparam name="T">Type of element in the source sequence</typeparam>
+    /// <typeparam name="TResult">Type of the result</typeparam>
+    /// <param name="source">The sequence of items to fold.</param>
+    /// <param name="folder">Function to apply to the elements in the sequence.</param>
+    /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
+    /// <exception cref="global::System.ArgumentNullException"><paramref name="source"/> or <paramref name="folder"/> is null.</exception>
+    /// <exception cref="global::System.InvalidOperationException">
+	/// <paramref name="source"/> does not contain exactly {{$i}} element{{if $i != 1}}s{{end}}.
+	/// </exception>
+    public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<
+		{{~ for $j in 1..$i ~}}
+		T,
+		{{~ end ~}}
+		TResult> folder)
+    {
+		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
+		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+
+		var elements = source.Take({{$i}} + 1).ToList();
+		if (elements.Count != {{$i}})
+			global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException(
+				$"Sequence contained an incorrect number of elements. (Expected: {{$i}}, Actual: {elements.Count})");
+
+		return folder(
+			{{~ for $j in 1..$i ~}}
+			elements[{{$j-1}}]{{ if !for.last }},{{ end }}
+			{{~ end ~}}
+		);
+	}
+	{{ end ~}}
+}

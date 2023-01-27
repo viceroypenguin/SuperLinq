@@ -1,41 +1,102 @@
 ﻿namespace Test;
 public class ZipLongestTest
 {
-	public static readonly IEnumerable<object[]> TestData =
-		new[]
-		{
-			new object[] { Seq<int>(  ), Seq("foo", "bar", "baz"), Seq<(int, string?)>((0, "foo"), (0, "bar"), (0, "baz")) },
-			new object[] { Seq(1      ), Seq("foo", "bar", "baz"), Seq<(int, string?)>((1, "foo"), (0, "bar"), (0, "baz")) },
-			new object[] { Seq(1, 2   ), Seq("foo", "bar", "baz"), Seq<(int, string?)>((1, "foo"), (2, "bar"), (0, "baz")) },
-			new object[] { Seq(1, 2, 3), Seq<string>(           ), Seq<(int, string?)>((1, null ), (2, null ), (3, null )) },
-			new object[] { Seq(1, 2, 3), Seq("foo"              ), Seq<(int, string?)>((1, "foo"), (2, null ), (3, null )) },
-			new object[] { Seq(1, 2, 3), Seq("foo", "bar"       ), Seq<(int, string?)>((1, "foo"), (2, "bar"), (3, null )) },
-			new object[] { Seq(1, 2, 3), Seq("foo", "bar", "baz"), Seq<(int, string?)>((1, "foo"), (2, "bar"), (3, "baz")) },
-		};
-
-
-	[Theory]
-	[MemberData(nameof(TestData))]
-	public void ZipLongest(int[] first, string[] second, IEnumerable<(int, string?)> expected)
-	{
-		using var ts1 = TestingSequence.Of(first);
-		using var ts2 = TestingSequence.Of(second);
-		Assert.Equal(expected, ts1.ZipLongest(ts2, ValueTuple.Create).ToArray());
-	}
-
 	[Fact]
 	public void ZipLongestIsLazy()
 	{
 		var bs = new BreakingSequence<int>();
 		bs.ZipLongest(bs, BreakingFunc.Of<int, int, int>());
+		bs.ZipLongest(bs, bs, BreakingFunc.Of<int, int, int, int>());
+		bs.ZipLongest(bs, bs, bs, BreakingFunc.Of<int, int, int, int, int>());
 	}
 
 	[Fact]
-	public void ZipLongestDisposesInnerSequencesCaseGetEnumeratorThrows()
+	public void TwoParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
 
 		Assert.Throws<TestException>(() =>
-			s1.ZipLongest(new BreakingSequence<int>(), ValueTuple.Create).Consume());
+			s1.ZipLongest(new BreakingSequence<int>()).Consume());
+	}
+
+	[Theory]
+	[InlineData(1), InlineData(2)]
+	public void TwoParamsWorksProperly(int offset)
+	{
+		var o1 = (offset + 0) % 2 + 2;
+		var o2 = (offset + 1) % 2 + 2;
+
+		using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
+		using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
+
+		ts1.ZipLongest(ts2).AssertSequenceEqual(
+			Enumerable.Range(1, 3)
+				.Select(x => (
+					x > o1 ? 0 : x,
+					x > o2 ? 0 : x)));
+	}
+
+	[Fact]
+	public void ThreeParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
+	{
+		using var s1 = TestingSequence.Of(1, 2);
+		using var s2 = TestingSequence.Of(1, 2);
+
+		Assert.Throws<TestException>(() =>
+			s1.ZipLongest(s2, new BreakingSequence<int>()).Consume());
+	}
+
+	[Theory]
+	[InlineData(1), InlineData(2), InlineData(3)]
+	public void ThreeParamsWorksProperly(int offset)
+	{
+		var o1 = (offset + 0) % 3 + 2;
+		var o2 = (offset + 1) % 3 + 2;
+		var o3 = (offset + 2) % 3 + 2;
+
+		using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
+		using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
+		using var ts3 = Enumerable.Range(1, o3).AsTestingSequence();
+
+		ts1.ZipLongest(ts2, ts3).AssertSequenceEqual(
+			Enumerable.Range(1, 4)
+				.Select(x => (
+					x > o1 ? 0 : x,
+					x > o2 ? 0 : x,
+					x > o3 ? 0 : x)));
+	}
+
+	[Fact]
+	public void FourParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
+	{
+		using var s1 = TestingSequence.Of(1, 2);
+		using var s2 = TestingSequence.Of(1, 2);
+		using var s3 = TestingSequence.Of(1, 2);
+
+		Assert.Throws<TestException>(() =>
+			s1.ZipLongest(s2, s3, new BreakingSequence<int>()).Consume());
+	}
+
+	[Theory]
+	[InlineData(1), InlineData(2), InlineData(3), InlineData(4)]
+	public void FourParamsWorksProperly(int offset)
+	{
+		var o1 = (offset + 0) % 4 + 2;
+		var o2 = (offset + 1) % 4 + 2;
+		var o3 = (offset + 2) % 4 + 2;
+		var o4 = (offset + 3) % 4 + 2;
+
+		using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
+		using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
+		using var ts3 = Enumerable.Range(1, o3).AsTestingSequence();
+		using var ts4 = Enumerable.Range(1, o4).AsTestingSequence();
+
+		ts1.ZipLongest(ts2, ts3, ts4).AssertSequenceEqual(
+			Enumerable.Range(1, 5)
+				.Select(x => (
+					x > o1 ? 0 : x,
+					x > o2 ? 0 : x,
+					x > o3 ? 0 : x,
+					x > o4 ? 0 : x)));
 	}
 }
