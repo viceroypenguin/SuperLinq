@@ -5,47 +5,63 @@ public static partial class AsyncSuperEnumerable
 	private enum WindowType { Normal, Left, Right, }
 	private static async IAsyncEnumerable<IList<TSource>> WindowImpl<TSource>(IAsyncEnumerable<TSource> source, int size, WindowType type, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
-		await using var iter = source.GetConfiguredAsyncEnumerator(cancellationToken);
+		var window = Array.Empty<TSource>();
 
-		if (!await iter.MoveNextAsync())
-			yield break;
-
-		var window = new TSource[1] { iter.Current };
-		while (window.Length < size && await iter.MoveNextAsync())
+		await foreach (var i in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 		{
-			var newWindow = new TSource[window.Length + 1];
-			window.AsSpan().CopyTo(newWindow);
-			if (type == WindowType.Right)
+			if (window.Length < size)
+			{
+				var newWindow = new TSource[window.Length + 1];
+				window.CopyTo(newWindow, 0);
+
+				if (window.Length > 0
+					&& type == WindowType.Right)
+				{
+					yield return window;
+				}
+
+				window = newWindow;
+				window[^1] = i;
+			}
+			else
+			{
+				var newWindow = new TSource[size];
+				window.AsSpan()[1..].CopyTo(newWindow);
 				yield return window;
-			window = newWindow;
 
-			window[^1] = iter.Current;
+				window = newWindow;
+				window[^1] = i;
+			}
 		}
 
-		while (await iter.MoveNextAsync())
+		// foreach will always return one loop behind, so if necessary, return the last value
+		switch (type)
 		{
-			var newWindow = new TSource[size];
-			window.AsSpan()[1..].CopyTo(newWindow);
-			yield return window;
-			window = newWindow;
+			case WindowType.Normal:
+			{
+				if (window.Length == size)
+					yield return window;
+				yield break;
+			}
 
-			window[^1] = iter.Current;
+			case WindowType.Right:
+			{
+				if (window.Length > 0)
+					yield return window;
+				yield break;
+			}
 		}
 
-		if (type == WindowType.Normal && window.Length < size)
-			yield break;
-		if (type != WindowType.Left)
-		{
-			yield return window;
-			yield break;
-		}
-
-		while (window.Length > 0)
+		while (window.Length > 1)
 		{
 			var newWindow = new TSource[window.Length - 1];
 			window.AsSpan()[1..].CopyTo(newWindow);
 			yield return window;
 			window = newWindow;
 		}
+
+		// intentionally break out length == 1 to remove new TSource[0] allocation 
+		if (window.Length > 0)
+			yield return window;
 	}
 }
