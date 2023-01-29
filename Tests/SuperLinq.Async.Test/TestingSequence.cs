@@ -1,98 +1,141 @@
-﻿using System.Collections;
-using CommunityToolkit.Diagnostics;
-using Xunit.Sdk;
+﻿namespace Test;
 
-namespace Test.Async;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using CommunityToolkit.Diagnostics;
+using SuperLinq;
+using static TestingSequence;
 
 internal static class TestingSequence
 {
-	internal static TestingSequence<T> Of<T>(params T[] elements) => new(elements.ToAsyncEnumerable(), 1);
+	internal static TestingSequence<T> Of<T>(params T[] elements) =>
+		new(elements.ToAsyncEnumerable(), Options.None, maxEnumerations: 1);
 
-	internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source, int numEnumerations = 1) =>
-		source != null
-		? new TestingSequence<T>(source.ToAsyncEnumerable(), numEnumerations)
-		: ThrowHelper.ThrowArgumentNullException<TestingSequence<T>>(nameof(source));
+	internal static TestingSequence<T> Of<T>(Options options, params T[] elements) =>
+		new(elements.ToAsyncEnumerable(), options, maxEnumerations: 1);
 
-	internal static TestingSequence<T> AsTestingSequence<T>(this IAsyncEnumerable<T> source, int numEnumerations = 1) =>
-		source != null
-		? new TestingSequence<T>(source, numEnumerations)
-		: ThrowHelper.ThrowArgumentNullException<TestingSequence<T>>(nameof(source));
+	internal static TestingSequence<T> AsTestingSequence<T>(
+		this IEnumerable<T> source,
+		Options options = Options.None,
+		int maxEnumerations = 1) =>
+			source != null
+			? new TestingSequence<T>(source.ToAsyncEnumerable(), options, maxEnumerations)
+			: throw new ArgumentNullException(nameof(source));
+
+	internal static TestingSequence<T> AsTestingSequence<T>(
+		this IAsyncEnumerable<T> source,
+		Options options = Options.None,
+		int maxEnumerations = 1) =>
+			source != null
+			? new TestingSequence<T>(source, options, maxEnumerations)
+			: throw new ArgumentNullException(nameof(source));
+
+	internal static void AssertTestingSequence([DoesNotReturnIf(false)] bool expectation, string message, [CallerArgumentExpression(nameof(expectation))] string? expr = "")
+	{
+		if (!expectation)
+			throw new TestingSequenceException($"{message}\nExpected `{expr}` to be `true`.");
+	}
 
 	internal const string ExpectedDisposal = "Expected sequence to be disposed.";
 	internal const string TooManyEnumerations = "Sequence should not be enumerated more than expected.";
+	internal const string TooManyDisposals = "Sequence should not be disposed more than once per enumeration.";
 	internal const string SimultaneousEnumerations = "Sequence should not have simultaneous enumeration.";
-	internal const string MoveNextDisposed = "LINQ operators should not call MoveNext() on a disposed sequence.";
-	internal const string CurrentDisposed = "LINQ operators should not attempt to get the Current value on a disposed sequence.";
-	internal const string CurrentCompleted = "LINQ operators should not attempt to get the Current value on a completed sequence.";
+	internal const string MoveNextPostDisposal = "LINQ operators should not call MoveNext() on a disposed sequence.";
+	internal const string MoveNextPostEnumeration = "LINQ operators should not continue iterating a sequence that has terminated.";
+	internal const string CurrentPostDisposal = "LINQ operators should not attempt to get the Current value on a disposed sequence.";
+	internal const string CurrentPostEnumeration = "LINQ operators should not attempt to get the Current value on a completed sequence.";
+
+	[Flags]
+	public enum Options
+	{
+		None,
+		AllowRepeatedDisposals = 0x2,
+		AllowRepeatedMoveNexts = 0x4,
+	}
 }
 
+public class TestingSequenceException : Exception
+{
+	public TestingSequenceException(string message) : base(message) { }
+}
+
+/// <summary>
+/// Sequence that asserts whether its iterator has been disposed
+/// when it is disposed itself and also whether GetAsyncEnumerator() is
+/// called exactly once or not.
+/// </summary>
 internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable, IDisposable
 {
-	private IAsyncEnumerable<T>? _sequence;
-	private readonly int _numEnumerations;
+	private readonly IAsyncEnumerable<T> _sequence;
+	private readonly Options _options;
+	private readonly int _maxEnumerations;
 
-	private bool _hasEnumerated;
-	private bool _currentlyEnumerating;
 	private int _disposedCount;
 	private int _enumerationCount;
 
-	internal TestingSequence(IAsyncEnumerable<T> sequence, int numEnumerations)
+	internal TestingSequence(IAsyncEnumerable<T> sequence, Options options, int maxEnumerations)
 	{
 		_sequence = sequence;
-		_numEnumerations = numEnumerations;
+		_maxEnumerations = maxEnumerations;
+		_options = options;
 	}
 
 	public int MoveNextCallCount { get; private set; }
+	public bool IsDisposed => _enumerationCount > 0 && _disposedCount == _enumerationCount;
 
 	void IDisposable.Dispose()
 	{
-		if (_hasEnumerated)
-			Assert.True(_disposedCount == _enumerationCount, TestingSequence.ExpectedDisposal);
+		if (_enumerationCount > 0)
+			AssertTestingSequence(_disposedCount == _enumerationCount, ExpectedDisposal);
 	}
 
 	ValueTask IAsyncDisposable.DisposeAsync()
 	{
-		if (_hasEnumerated)
-			Assert.True(_disposedCount == _enumerationCount, TestingSequence.ExpectedDisposal);
+		if (_enumerationCount > 0)
+			AssertTestingSequence(_disposedCount == _enumerationCount, ExpectedDisposal);
 		return default;
 	}
 
 	public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
 	{
-		Assert.False(_sequence is null, TestingSequence.TooManyEnumerations);
-		Assert.False(_currentlyEnumerating, TestingSequence.SimultaneousEnumerations);
-
-		_hasEnumerated = true;
+		AssertTestingSequence(_enumerationCount == _disposedCount, SimultaneousEnumerations);
+		AssertTestingSequence(_enumerationCount < _maxEnumerations, TooManyEnumerations);
+		_enumerationCount++;
 
 		var enumerator = _sequence.GetAsyncEnumerator(cancellationToken).AsWatchable();
-		_currentlyEnumerating = true;
-
 		var disposed = false;
 		enumerator.Disposed += delegate
 		{
 			if (!disposed)
 			{
 				_disposedCount++;
-				_currentlyEnumerating = false;
 				disposed = true;
+			}
+			else if (!_options.HasFlag(Options.AllowRepeatedDisposals))
+			{
+				AssertTestingSequence(false, TooManyDisposals);
 			}
 		};
 
 		var ended = false;
 		enumerator.MoveNextCalled += (_, moved) =>
 		{
-			Assert.True(_currentlyEnumerating, TestingSequence.MoveNextDisposed);
+			AssertTestingSequence(disposed == false, MoveNextPostDisposal);
+			if (!_options.HasFlag(Options.AllowRepeatedMoveNexts))
+				AssertTestingSequence(ended == false, MoveNextPostEnumeration);
+
 			ended = !moved;
 			MoveNextCallCount++;
 		};
+
 		enumerator.GetCurrentCalled += delegate
 		{
-			Assert.True(_currentlyEnumerating, TestingSequence.CurrentDisposed);
-			Assert.False(ended, TestingSequence.CurrentCompleted);
+			AssertTestingSequence(disposed == false, CurrentPostDisposal);
+			AssertTestingSequence(ended == false, CurrentPostEnumeration);
 		};
 
-		if (++_enumerationCount == _numEnumerations)
-			_sequence = null;
 		return enumerator;
 	}
 }
@@ -100,22 +143,45 @@ internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
 public class TestingSequenceTest
 {
 	[Fact]
+	public async Task TestingSequencePublicPropertiesTest()
+	{
+		await using var sequence = Of(1, 2, 3, 4);
+		Guard.IsFalse(sequence.IsDisposed);
+		Guard.IsEqualTo(sequence.MoveNextCallCount, 0);
+
+		var iter = sequence.GetAsyncEnumerator();
+		Guard.IsFalse(sequence.IsDisposed);
+		Guard.IsEqualTo(sequence.MoveNextCallCount, 0);
+
+		for (var i = 1; i <= 4; i++)
+		{
+			_ = await iter.MoveNextAsync();
+			Guard.IsFalse(sequence.IsDisposed);
+			Guard.IsEqualTo(sequence.MoveNextCallCount, i);
+		}
+
+		await iter.DisposeAsync();
+		Guard.IsTrue(sequence.IsDisposed);
+	}
+
+	[Fact]
 	public async Task TestingSequenceShouldValidateDisposal()
 	{
 		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
 		{
-			var enumerator = enumerable.GetAsyncEnumerator();
+			var _ = enumerable.GetAsyncEnumerator();
 
 			await Task.Yield();
 			yield break;
 		}
 
-		var ex = await Assert.ThrowsAsync<TrueException>(async () =>
+		static async Task Act()
 		{
-			using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+			await using var xs = Enumerable.Range(1, 10).AsTestingSequence();
 			await InvalidUsage(xs).Consume();
-		});
-		Assert.StartsWith(TestingSequence.ExpectedDisposal, ex.Message);
+		}
+
+		await AssertSequenceBehavior(Act, ExpectedDisposal);
 	}
 
 	[Fact]
@@ -123,23 +189,46 @@ public class TestingSequenceTest
 	{
 		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
 		{
-			await using (var enumerator = enumerable.GetAsyncEnumerator())
+			await using (enumerable.GetAsyncEnumerator())
 				yield return 1;
-			await using (var enumerator = enumerable.GetAsyncEnumerator())
+			await using (enumerable.GetAsyncEnumerator())
 				yield return 2;
-			await using (var enumerator = enumerable.GetAsyncEnumerator())
+			await using (enumerable.GetAsyncEnumerator())
 				yield return 3;
 
 			await Task.Yield();
 			yield break;
 		}
 
-		var ex = await Assert.ThrowsAsync<FalseException>(async () =>
+		static async Task Act()
 		{
-			using var xs = Enumerable.Range(1, 10).AsTestingSequence(2);
+			using var xs = Enumerable.Range(1, 10).AsTestingSequence(maxEnumerations: 2);
 			await InvalidUsage(xs).Consume();
-		});
-		Assert.StartsWith(TestingSequence.TooManyEnumerations, ex.Message);
+		}
+
+		await AssertSequenceBehavior(Act, TooManyEnumerations);
+	}
+
+	[Fact]
+	public async Task TestingSequenceShouldValidateDisposeOnDisposedSequence()
+	{
+		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
+		{
+			var enumerator = enumerable.GetAsyncEnumerator();
+			await enumerator.DisposeAsync();
+			await enumerator.DisposeAsync();
+
+			await Task.Yield();
+			yield break;
+		}
+
+		static async Task Act()
+		{
+			using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+			await InvalidUsage(xs).Consume();
+		}
+
+		await AssertSequenceBehavior(Act, TooManyDisposals);
 	}
 
 	[Fact]
@@ -147,7 +236,7 @@ public class TestingSequenceTest
 	{
 		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
 		{
-			await using var enumerator = enumerable.GetAsyncEnumerator();
+			var enumerator = enumerable.GetAsyncEnumerator();
 			await enumerator.DisposeAsync();
 			await enumerator.MoveNextAsync();
 
@@ -155,12 +244,36 @@ public class TestingSequenceTest
 			yield break;
 		}
 
-		var ex = await Assert.ThrowsAsync<TrueException>(async () =>
+		static async Task Act()
 		{
 			using var xs = Enumerable.Range(1, 10).AsTestingSequence();
 			await InvalidUsage(xs).Consume();
-		});
-		Assert.StartsWith(TestingSequence.MoveNextDisposed, ex.Message);
+		}
+
+		await AssertSequenceBehavior(Act, MoveNextPostDisposal);
+	}
+
+	[Fact]
+	public async Task TestingSequenceShouldValidateMoveNextOnCompletedSequence()
+	{
+		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
+		{
+			await using var enumerator = enumerable.GetAsyncEnumerator();
+			while (await enumerator.MoveNextAsync())
+				yield return enumerator.Current;
+			await enumerator.MoveNextAsync();
+
+			await Task.Yield();
+			yield break;
+		}
+
+		static async Task Act()
+		{
+			using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+			await InvalidUsage(xs).Consume();
+		}
+
+		await AssertSequenceBehavior(Act, MoveNextPostEnumeration);
 	}
 
 	[Fact]
@@ -168,7 +281,7 @@ public class TestingSequenceTest
 	{
 		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
 		{
-			await using var enumerator = enumerable.GetAsyncEnumerator();
+			var enumerator = enumerable.GetAsyncEnumerator();
 			await enumerator.DisposeAsync();
 			yield return enumerator.Current;
 
@@ -176,12 +289,13 @@ public class TestingSequenceTest
 			yield break;
 		}
 
-		var ex = await Assert.ThrowsAsync<TrueException>(async () =>
+		static async Task Act()
 		{
 			using var xs = Enumerable.Range(1, 10).AsTestingSequence();
 			await InvalidUsage(xs).Consume();
-		});
-		Assert.StartsWith(TestingSequence.CurrentDisposed, ex.Message);
+		}
+
+		await AssertSequenceBehavior(Act, CurrentPostDisposal);
 	}
 
 	[Fact]
@@ -198,12 +312,13 @@ public class TestingSequenceTest
 			yield break;
 		}
 
-		var ex = await Assert.ThrowsAsync<FalseException>(async () =>
+		static async Task Act()
 		{
 			using var xs = Enumerable.Range(1, 10).AsTestingSequence();
 			await InvalidUsage(xs).Consume();
-		});
-		Assert.StartsWith(TestingSequence.CurrentCompleted, ex.Message);
+		}
+
+		await AssertSequenceBehavior(Act, CurrentPostEnumeration);
 	}
 
 	[Fact]
@@ -218,11 +333,18 @@ public class TestingSequenceTest
 			yield break;
 		}
 
-		var ex = await Assert.ThrowsAsync<FalseException>(async () =>
+		static async Task Act()
 		{
-			using var xs = Enumerable.Range(1, 10).AsTestingSequence(2);
+			using var xs = Enumerable.Range(1, 10).AsTestingSequence(maxEnumerations: 2);
 			await InvalidUsage(xs).Consume();
-		});
-		Assert.StartsWith(TestingSequence.SimultaneousEnumerations, ex.Message);
+		}
+
+		await AssertSequenceBehavior(Act, SimultaneousEnumerations);
+	}
+
+	private static async Task AssertSequenceBehavior(Func<Task> act, string message)
+	{
+		var ex = await Assert.ThrowsAsync<TestingSequenceException>(act);
+		Assert.StartsWith(message, ex.Message);
 	}
 }
