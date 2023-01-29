@@ -102,18 +102,12 @@ public static partial class SuperEnumerable
 		{
 			if (source.TryGetCollectionCount(out var collectionCount))
 			{
-				return collectionCount >= width
-					? source
-					: Enumerable.Range(0, width - collectionCount)
-						.Select(paddingSelector)
-						.Concat(source);
+				for (var i = 0; i < width - collectionCount; i++)
+					yield return paddingSelector(i);
+				foreach (var item in source)
+					yield return item;
 			}
 			else
-				return _(source, width, paddingSelector);
-
-			static IEnumerable<TSource> _(
-				IEnumerable<TSource> source, int width,
-				Func<int, TSource> paddingSelector)
 			{
 				var array = new TSource[width];
 				var count = 0;
