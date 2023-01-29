@@ -120,8 +120,17 @@ public class PadStartTest
 		}
 	}
 
+	[Fact]
+	public void PadStartUsesCollectionCountAtIterationTime()
+	{
+		var queue = new Queue<int>(Enumerable.Range(1, 3));
+		var result = queue.PadStart(5, -1);
+		result.AssertSequenceEqual(-1, -1, 1, 2, 3);
+		queue.Enqueue(4);
+		result.AssertSequenceEqual(-1, 1, 2, 3, 4);
+	}
 
-	static void AssertEqual<T>(ICollection<T> input, Func<IEnumerable<T>, IEnumerable<T>> op, IEnumerable<T> expected)
+	private static void AssertEqual<T>(ICollection<T> input, Func<IEnumerable<T>, IEnumerable<T>> op, IEnumerable<T> expected)
 	{
 		// Test that the behaviour does not change whether a collection
 		// or a sequence is used as the source.
