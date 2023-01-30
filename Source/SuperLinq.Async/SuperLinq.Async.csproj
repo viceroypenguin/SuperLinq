@@ -118,11 +118,18 @@
 		<PackageReference Include="MinVer" Version="4.2.0" PrivateAssets="All" />
 		<PackageReference Include="System.Interactive.Async" Version="6.0.1" />
 		<PackageReference Include="System.Linq.Async" Version="6.0.1" />
+		<ProjectReference Include="..\SuperLinq\SuperLinq.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
+	<PropertyGroup Label="SourceGenerator">
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup Label="SourceGenerator">
 		<ProjectReference Include="..\..\Generators\SuperLinq.Async.Generator\SuperLinq.Async.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		<ProjectReference Include="..\SuperLinq\SuperLinq.csproj" />
+		<Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
+		<None Include="$(CompilerGeneratedFilesOutputPath)/SuperLinq.Async.Generator/**/*.cs" />
 	</ItemGroup>
 
 	<PropertyGroup Label="MinVer">
