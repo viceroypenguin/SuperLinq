@@ -132,7 +132,7 @@ public class DenseRankTests
 		var ordinals = Enumerable.Range(1, 10);
 		var sequence = ordinals.Select(x => new DateTime(2010, x, 20 - x));
 
-		await using var xs = sequence.AsTestingSequence(2);
+		await using var xs = sequence.AsTestingSequence(maxEnumerations: 2);
 
 		// invert the CompareTo operation to Rank in reverse order
 		var resultA = xs.DenseRank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));

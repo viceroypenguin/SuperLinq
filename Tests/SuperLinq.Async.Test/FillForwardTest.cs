@@ -48,7 +48,7 @@ public class FillForwardTest
 				Value = int.Parse(x[3]),
 			}).AsTestingSequence();
 
-		var fData = data
+		await data
 			.FillForward(e => e.Continent == "-", (e, f) => new { f.Continent, e.Country, e.City, e.Value })
 			.FillForward(e => e.Country == "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value })
 			.AssertSequenceEqual(

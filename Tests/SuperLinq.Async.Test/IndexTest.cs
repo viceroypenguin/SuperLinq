@@ -15,22 +15,22 @@ public class IndexTest
 	private const string Three = "three";
 
 	[Fact]
-	public Task IndexSequence()
+	public async Task IndexSequence()
 	{
-		using var seq = TestingSequence.Of(One, Two, Three);
+		await using var seq = TestingSequence.Of(One, Two, Three);
 		var result = seq.Index();
-		return result.AssertSequenceEqual(
+		await result.AssertSequenceEqual(
 			(0, One),
 			(1, Two),
 			(2, Three));
 	}
 
 	[Fact]
-	public Task IndexSequenceStartIndex()
+	public async Task IndexSequenceStartIndex()
 	{
-		using var seq = TestingSequence.Of(One, Two, Three);
+		await using var seq = TestingSequence.Of(One, Two, Three);
 		var result = seq.Index(10);
-		return result.AssertSequenceEqual(
+		await result.AssertSequenceEqual(
 			(10, One),
 			(11, Two),
 			(12, Three));

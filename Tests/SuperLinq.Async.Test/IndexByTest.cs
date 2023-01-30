@@ -65,7 +65,7 @@ public class IndexByTest
 				AsyncBreakingFunc.Of<string>(),
 				() => Task.FromResult("angelo"),
 				() => Task.FromResult("carlos"))
-			.AsTestingSequence(2);
+			.AsTestingSequence(maxEnumerations: 2);
 
 		var result = source.IndexBy(x => x.First());
 
