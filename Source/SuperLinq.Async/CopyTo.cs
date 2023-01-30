@@ -11,6 +11,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="list">The list that is the destination of the elements copied from <paramref
 	/// name="source"/>.</param>
 	/// <param name="cancellationToken">The <see cref="CancellationToken"/> in use.</param>
+	/// <returns>The number of elements actually copied.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="list"/> is <see langword="null"/>.</exception>
 	/// <remarks>
@@ -21,7 +22,7 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static ValueTask CopyTo<TSource>(this IAsyncEnumerable<TSource> source, IList<TSource> list, CancellationToken cancellationToken = default)
+	public static ValueTask<int> CopyTo<TSource>(this IAsyncEnumerable<TSource> source, IList<TSource> list, CancellationToken cancellationToken = default)
 	{
 		return source.CopyTo(list, 0, cancellationToken);
 	}
@@ -36,6 +37,7 @@ public static partial class AsyncSuperEnumerable
 	/// name="source"/>.</param>
 	/// <param name="index">The position in <paramref name="list"/> at which to start copying data</param>
 	/// <param name="cancellationToken">The <see cref="CancellationToken"/> in use.</param>
+	/// <returns>The number of elements actually copied.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="list"/> is <see langword="null"/>.</exception>
 	/// <remarks>
@@ -47,7 +49,7 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static async ValueTask CopyTo<TSource>(this IAsyncEnumerable<TSource> source, IList<TSource> list, int index, CancellationToken cancellationToken = default)
+	public static async ValueTask<int> CopyTo<TSource>(this IAsyncEnumerable<TSource> source, IList<TSource> list, int index, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(list);
@@ -58,6 +60,8 @@ public static partial class AsyncSuperEnumerable
 			var i = index;
 			await foreach (var el in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 				array[i++] = el;
+
+			return i - index;
 		}
 		else
 		{
@@ -70,6 +74,8 @@ public static partial class AsyncSuperEnumerable
 					list.Add(el);
 				i++;
 			}
+
+			return i - index;
 		}
 	}
 }
