@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace Test;
 
@@ -77,14 +76,17 @@ public class CopyToTest
 	{
 		Span<int> span = stackalloc int[4];
 
-		Seq(1).CopyTo(span);
+		var cnt = Seq(1).CopyTo(span);
 		span.ToArray().AssertSequenceEqual(1, 0, 0, 0);
+		Assert.Equal(1, cnt);
 
-		new List<int> { 2 }.AsEnumerable().CopyTo(span[1..]);
+		cnt = new List<int> { 2 }.AsEnumerable().CopyTo(span[1..]);
 		span.ToArray().AssertSequenceEqual(1, 2, 0, 0);
+		Assert.Equal(1, cnt);
 
-		Enumerable.Range(3, 1).CopyTo(span[2..]);
-		span.ToArray().AssertSequenceEqual(1, 2, 3, 0);
+		cnt = Enumerable.Range(3, 2).CopyTo(span[2..]);
+		span.ToArray().AssertSequenceEqual(1, 2, 3, 4);
+		Assert.Equal(2, cnt);
 	}
 
 	[Fact]
@@ -92,17 +94,21 @@ public class CopyToTest
 	{
 		var array = new int[4];
 
-		Seq(1).CopyTo(array);
+		var cnt = Seq(1).CopyTo(array);
 		array.AssertSequenceEqual(1, 0, 0, 0);
+		Assert.Equal(1, cnt);
 
-		new List<int> { 2 }.AsEnumerable().CopyTo(array, 1);
+		cnt = new List<int> { 2 }.AsEnumerable().CopyTo(array, 1);
 		array.AssertSequenceEqual(1, 2, 0, 0);
+		Assert.Equal(1, cnt);
 
-		new List<int> { 3 }.AsReadOnly().AsEnumerable().CopyTo(array, 2);
+		cnt = new List<int> { 3 }.AsReadOnly().AsEnumerable().CopyTo(array, 2);
 		array.AssertSequenceEqual(1, 2, 3, 0);
+		Assert.Equal(1, cnt);
 
-		Enumerable.Range(4, 1).CopyTo(array, 3);
+		cnt = Enumerable.Range(4, 1).CopyTo(array, 3);
 		array.AssertSequenceEqual(1, 2, 3, 4);
+		Assert.Equal(1, cnt);
 	}
 
 	[Fact]
@@ -110,14 +116,17 @@ public class CopyToTest
 	{
 		var list = new List<int>();
 
-		Seq(1).CopyTo(list);
+		var cnt = Seq(1).CopyTo(list);
 		list.AssertSequenceEqual(1);
+		Assert.Equal(1, cnt);
 
-		Seq(2).CopyTo(list, 1);
+		cnt = Seq(2).CopyTo(list, 1);
 		list.AssertSequenceEqual(1, 2);
+		Assert.Equal(1, cnt);
 
-		Seq(3, 4).CopyTo(list, 1);
+		cnt = Seq(3, 4).CopyTo(list, 1);
 		list.AssertSequenceEqual(1, 3, 4);
+		Assert.Equal(2, cnt);
 	}
 
 	[Fact]
@@ -125,13 +134,16 @@ public class CopyToTest
 	{
 		var list = new Collection<int>();
 
-		Seq(1).CopyTo(list);
+		var cnt = Seq(1).CopyTo(list);
 		list.AssertSequenceEqual(1);
+		Assert.Equal(1, cnt);
 
-		Seq(2).CopyTo(list, 1);
+		cnt = Seq(2).CopyTo(list, 1);
 		list.AssertSequenceEqual(1, 2);
+		Assert.Equal(1, cnt);
 
-		Seq(3, 4).CopyTo(list, 1);
+		cnt = Seq(3, 4).CopyTo(list, 1);
 		list.AssertSequenceEqual(1, 3, 4);
+		Assert.Equal(2, cnt);
 	}
 }
