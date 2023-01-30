@@ -94,7 +94,7 @@ public class WindowTests
 	[Fact]
 	public void TestWindowBufferEmptySequence()
 	{
-		using var sequence = Seq<int>().AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
+		using var sequence = Seq<int>().AsTestingSequence();
 
 		var result = sequence.Window(5, SuperEnumerable.Identity);
 		Assert.Empty(result);

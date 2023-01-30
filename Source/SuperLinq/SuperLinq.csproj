@@ -152,17 +152,24 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.1.0" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-		<PackageReference Include="MinVer" Version="4.2.0" PrivateAssets="All" />
+		<PackageReference Include="MinVer" Version="4.3.0" PrivateAssets="All" />
 		<PackageReference Include="System.Interactive" Version="6.0.1" />
 	</ItemGroup>
 
-	<ItemGroup>
+	<PropertyGroup Label="SourceGenerator">
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup Label="SourceGenerator">
 		<ProjectReference Include="..\..\Generators\SuperLinq.Generator\SuperLinq.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
+		<None Include="$(CompilerGeneratedFilesOutputPath)/SuperLinq.Generator/**/*.cs" />
 	</ItemGroup>
 
 	<PropertyGroup Label="MinVer">
 		<MinVerAutoIncrement>minor</MinVerAutoIncrement>
-		<MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
+		<MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
 		<MinVerTagPrefix>v</MinVerTagPrefix>
 	</PropertyGroup>
 

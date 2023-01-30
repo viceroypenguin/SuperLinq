@@ -90,6 +90,16 @@ public class CountDownTest
 		Assert.True(disposed);
 	}
 
+	[Fact]
+	public void UsesCollectionCountAtIterationTime()
+	{
+		var stack = new Stack<int>(Enumerable.Range(1, 3));
+		var result = stack.CountDown(2, (_, cd) => cd);
+		result.AssertSequenceEqual(default(int?), 1, 0);
+		stack.Push(4);
+		result.AssertSequenceEqual(default(int?), null, 1, 0);
+	}
+
 	private static class TestCollection
 	{
 		public static ICollection<T> Create<T>(

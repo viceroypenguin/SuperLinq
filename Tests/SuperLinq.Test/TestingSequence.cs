@@ -320,6 +320,9 @@ public class TestingSequenceTest
 		AssertSequenceBehavior(Act, SimultaneousEnumerations);
 	}
 
-	private static void AssertSequenceBehavior(Action act, string message) =>
-		Assert.Contains(message, Assert.Throws<TestingSequenceException>(act).Message);
+	private static void AssertSequenceBehavior(Action act, string message)
+	{
+		var ex = Assert.Throws<TestingSequenceException>(act);
+		Assert.StartsWith(message, ex.Message);
+	}
 }
