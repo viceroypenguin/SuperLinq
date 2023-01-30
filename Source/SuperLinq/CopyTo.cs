@@ -33,29 +33,26 @@ public static partial class SuperEnumerable
 		{
 			arr.AsSpan().CopyTo(span);
 		}
+		else if (TryGetCollectionCount(source, out var n))
+		{
+			if (n > span.Length)
+				ThrowHelper.ThrowArgumentException(nameof(span), "Destination is not long enough.");
+
+			var i = 0;
+			foreach (var el in source)
+			{
+				span[i++] = el;
+			}
+		}
 		else
 		{
-			if (TryGetCollectionCount(source, out var n))
+			var i = 0;
+			foreach (var el in source)
 			{
-				if (n > span.Length)
+				if (i >= span.Length)
 					ThrowHelper.ThrowArgumentException(nameof(span), "Destination is not long enough.");
 
-				var i = 0;
-				foreach (var el in source)
-				{
-					span[i++] = el;
-				}
-			}
-			else
-			{
-				var i = 0;
-				foreach (var el in source)
-				{
-					if (i >= span.Length)
-						ThrowHelper.ThrowArgumentException(nameof(span), "Destination is not long enough.");
-
-					span[i++] = el;
-				}
+				span[i++] = el;
 			}
 		}
 	}
@@ -89,7 +86,7 @@ public static partial class SuperEnumerable
 		CopyTo(source, array, 0);
 	}
 
-	private static void CopyTo<TSource>(this IEnumerable<TSource> source, TSource[] array, int index)
+	private static void CopyTo<TSource>(IEnumerable<TSource> source, TSource[] array, int index)
 	{
 		if (source is TSource[] arr)
 		{
@@ -99,29 +96,26 @@ public static partial class SuperEnumerable
 		{
 			coll.CopyTo(array, index);
 		}
+		else if (TryGetCollectionCount(source, out var n))
+		{
+			if (n + index > array.Length)
+				ThrowHelper.ThrowArgumentException(nameof(array), "Destination is not long enough.");
+
+			var i = index;
+			foreach (var el in source)
+			{
+				array[i++] = el;
+			}
+		}
 		else
 		{
-			if (TryGetCollectionCount(source, out var n))
+			var i = index;
+			foreach (var el in source)
 			{
-				if (n + index > array.Length)
+				if (i >= array.Length)
 					ThrowHelper.ThrowArgumentException(nameof(array), "Destination is not long enough.");
 
-				var i = index;
-				foreach (var el in source)
-				{
-					array[i++] = el;
-				}
-			}
-			else
-			{
-				var i = index;
-				foreach (var el in source)
-				{
-					if (i >= array.Length)
-						ThrowHelper.ThrowArgumentException(nameof(array), "Destination is not long enough.");
-
-					array[i++] = el;
-				}
+				array[i++] = el;
 			}
 		}
 	}
@@ -175,31 +169,20 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(list);
 		Guard.IsGreaterThanOrEqualTo(index, 0);
 
-		if (list is List<TSource> l)
-		{
-#if NET6_0_OR_GREATER
-			if (TryGetCollectionCount(source, out var n))
-			{
-				l.EnsureCapacity(n + index);
-			}
-#endif
-
-			var i = index;
-			foreach (var el in source)
-			{
-				if (i < l.Count)
-					l[i] = el;
-				else
-					l.Add(el);
-				i++;
-			}
-		}
-		else if (list is TSource[] array)
+		if (list is TSource[] array)
 		{
 			CopyTo(source, array, index);
 		}
 		else
 		{
+#if NET6_0_OR_GREATER
+			if (list is List<TSource> l
+				&& TryGetCollectionCount(source, out var n))
+			{
+				l.EnsureCapacity(n + index);
+			}
+#endif
+
 			var i = index;
 			foreach (var el in source)
 			{
