@@ -12,6 +12,7 @@ public static partial class SuperEnumerable
 	/// <param name="source">The source sequence.</param>
 	/// <param name="span">The span that is the destination of the elements copied from <paramref
 	/// name="source"/>.</param>
+	/// <returns>The number of elements actually copied.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentException"><paramref name="span"/> is not long enough to hold the data from
 	/// sequence.</exception>
@@ -25,13 +26,14 @@ public static partial class SuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static void CopyTo<TSource>(this IEnumerable<TSource> source, Span<TSource> span)
+	public static int CopyTo<TSource>(this IEnumerable<TSource> source, Span<TSource> span)
 	{
 		Guard.IsNotNull(source);
 
 		if (source is TSource[] arr)
 		{
 			arr.AsSpan().CopyTo(span);
+			return arr.Length;
 		}
 		else if (TryGetCollectionCount(source, out var n))
 		{
@@ -40,9 +42,9 @@ public static partial class SuperEnumerable
 
 			var i = 0;
 			foreach (var el in source)
-			{
 				span[i++] = el;
-			}
+
+			return i;
 		}
 		else
 		{
@@ -54,6 +56,8 @@ public static partial class SuperEnumerable
 
 				span[i++] = el;
 			}
+
+			return i;
 		}
 	}
 
@@ -65,6 +69,7 @@ public static partial class SuperEnumerable
 	/// <param name="source">The source sequence.</param>
 	/// <param name="array">The span that is the destination of the elements copied from <paramref
 	/// name="source"/>.</param>
+	/// <returns>The number of elements actually copied.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentException"><paramref name="array"/> is not long enough to hold the data from
 	/// sequence.</exception>
@@ -78,23 +83,25 @@ public static partial class SuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static void CopyTo<TSource>(this IEnumerable<TSource> source, TSource[] array)
+	public static int CopyTo<TSource>(this IEnumerable<TSource> source, TSource[] array)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(array);
 
-		CopyTo(source, array, 0);
+		return CopyTo(source, array, 0);
 	}
 
-	private static void CopyTo<TSource>(IEnumerable<TSource> source, TSource[] array, int index)
+	private static int CopyTo<TSource>(IEnumerable<TSource> source, TSource[] array, int index)
 	{
 		if (source is TSource[] arr)
 		{
 			arr.CopyTo(array, index);
+			return arr.Length;
 		}
 		else if (source is ICollection<TSource> coll)
 		{
 			coll.CopyTo(array, index);
+			return coll.Count;
 		}
 		else if (TryGetCollectionCount(source, out var n))
 		{
@@ -103,9 +110,9 @@ public static partial class SuperEnumerable
 
 			var i = index;
 			foreach (var el in source)
-			{
 				array[i++] = el;
-			}
+
+			return i - index;
 		}
 		else
 		{
@@ -117,6 +124,8 @@ public static partial class SuperEnumerable
 
 				array[i++] = el;
 			}
+
+			return i - index;
 		}
 	}
 
@@ -128,6 +137,7 @@ public static partial class SuperEnumerable
 	/// <param name="source">The source sequence.</param>
 	/// <param name="list">The list that is the destination of the elements copied from <paramref
 	/// name="source"/>.</param>
+	/// <returns>The number of elements actually copied.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="list"/> is <see langword="null"/>.</exception>
 	/// <remarks>
@@ -138,9 +148,9 @@ public static partial class SuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static void CopyTo<TSource>(this IEnumerable<TSource> source, IList<TSource> list)
+	public static int CopyTo<TSource>(this IEnumerable<TSource> source, IList<TSource> list)
 	{
-		source.CopyTo(list, 0);
+		return source.CopyTo(list, 0);
 	}
 
 	/// <summary>
@@ -152,6 +162,7 @@ public static partial class SuperEnumerable
 	/// <param name="list">The list that is the destination of the elements copied from <paramref
 	/// name="source"/>.</param>
 	/// <param name="index">The position in <paramref name="list"/> at which to start copying data</param>
+	/// <returns>The number of elements actually copied.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="list"/> is <see langword="null"/>.</exception>
 	/// <remarks>
@@ -163,7 +174,7 @@ public static partial class SuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static void CopyTo<TSource>(this IEnumerable<TSource> source, IList<TSource> list, int index)
+	public static int CopyTo<TSource>(this IEnumerable<TSource> source, IList<TSource> list, int index)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(list);
@@ -171,7 +182,7 @@ public static partial class SuperEnumerable
 
 		if (list is TSource[] array)
 		{
-			CopyTo(source, array, index);
+			return CopyTo(source, array, index);
 		}
 		else
 		{
@@ -192,6 +203,8 @@ public static partial class SuperEnumerable
 					list.Add(el);
 				i++;
 			}
+
+			return i - index;
 		}
 	}
 }
