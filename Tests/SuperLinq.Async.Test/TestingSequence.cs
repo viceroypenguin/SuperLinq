@@ -1,4 +1,4 @@
-﻿namespace Test;
+﻿namespace Test.Async;
 
 using System;
 using System.Collections.Generic;
