@@ -169,7 +169,7 @@
 
 	<PropertyGroup Label="MinVer">
 		<MinVerAutoIncrement>minor</MinVerAutoIncrement>
-		<MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
+		<MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
 		<MinVerTagPrefix>v</MinVerTagPrefix>
 	</PropertyGroup>
 
