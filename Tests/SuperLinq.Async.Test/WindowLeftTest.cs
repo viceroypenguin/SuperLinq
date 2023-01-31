@@ -26,7 +26,7 @@ public class WindowLeftTest
 	[Fact]
 	public async Task WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
 	{
-		var sequence = AsyncEnumerable.Range(0, 3);
+		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
 		await using var e = sequence.WindowLeft(2).GetAsyncEnumerator();
 
 		await e.MoveNextAsync();
@@ -41,7 +41,7 @@ public class WindowLeftTest
 	[Fact]
 	public async Task WindowModifiedDoesNotAffectPreviousWindow()
 	{
-		var sequence = AsyncEnumerable.Range(0, 3);
+		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
 		await using var e = sequence.WindowLeft(2).GetAsyncEnumerator();
 
 		await e.MoveNextAsync();
