@@ -15,18 +15,22 @@ public class TraverseTest
 	}
 
 	[Fact]
-	public Task TraverseDepthFirstPreservesChildrenOrder()
+	public async Task TraverseDepthFirstPreservesChildrenOrder()
 	{
-		var res = AsyncSuperEnumerable.TraverseDepthFirst(0, i => i == 0 ? AsyncEnumerable.Range(1, 10) : AsyncEnumerable.Empty<int>());
-		return res.AssertSequenceEqual(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		await using var root = Enumerable.Range(1, 10).AsTestingSequence();
+		await using var child = Enumerable.Empty<int>().AsTestingSequence(maxEnumerations: 10);
+		var res = AsyncSuperEnumerable.TraverseDepthFirst(0, i => i == 0 ? root : child);
+		await res.AssertSequenceEqual(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 	}
 
 
 	[Fact]
-	public Task TraverseBreadthFirstPreservesChildrenOrder()
+	public async Task TraverseBreadthFirstPreservesChildrenOrder()
 	{
-		var res = AsyncSuperEnumerable.TraverseBreadthFirst(0, i => i == 0 ? AsyncEnumerable.Range(1, 10) : AsyncEnumerable.Empty<int>());
-		return res.AssertSequenceEqual(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		await using var root = Enumerable.Range(1, 10).AsTestingSequence();
+		await using var child = Enumerable.Empty<int>().AsTestingSequence(maxEnumerations: 10);
+		var res = AsyncSuperEnumerable.TraverseBreadthFirst(0, i => i == 0 ? root : child);
+		await res.AssertSequenceEqual(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 	}
 
 	private class Tree<T>
