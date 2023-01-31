@@ -100,28 +100,26 @@ public class WindowRightTest
 	[Fact]
 	public void WindowRightSingleElement()
 	{
-		var sequence = Enumerable.Range(1, 100);
-		using var xs = sequence.AsTestingSequence();
+		using var xs = Enumerable.Range(1, 100).AsTestingSequence();
 		var result = xs.WindowRight(1).ToList();
 
 		// number of windows should be equal to the source sequence length
 		Assert.Equal(100, result.Count);
 		// each window should contain single item consistent of element at that offset
-		foreach (var (actual, expected) in result.Zip(sequence))
+		foreach (var (actual, expected) in result.Zip(Enumerable.Range(1, 100)))
 			Assert.Equal(SuperEnumerable.Return(expected), actual);
 	}
 
 	[Fact]
 	public void WindowRightBufferSingleElement()
 	{
-		var sequence = Enumerable.Range(1, 100);
-		using var xs = sequence.AsTestingSequence();
+		using var xs = Enumerable.Range(1, 100).AsTestingSequence();
 		var result = xs.WindowRight(1, l => l[0]).ToList();
 
 		// number of windows should be equal to the source sequence length
 		Assert.Equal(100, result.Count);
 		// each window should contain single item consistent of element at that offset
-		foreach (var (actual, expected) in result.Zip(sequence))
+		foreach (var (actual, expected) in result.Zip(Enumerable.Range(1, 100)))
 			Assert.Equal(expected, actual);
 	}
 
