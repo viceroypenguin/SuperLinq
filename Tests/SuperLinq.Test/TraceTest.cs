@@ -8,21 +8,39 @@ public class TraceTest
 	[Fact]
 	public void TraceSequence()
 	{
-		var trace = Lines(CaptureTrace(() => "the quick brown fox".Split().Trace().Consume()));
+		var trace = CaptureTrace(() =>
+		{
+			using var seq = "the quick brown fox".Split().AsTestingSequence();
+			seq
+				.Trace()
+				.Consume();
+		});
 		trace.AssertSequenceEqual("the", "quick", "brown", "fox");
 	}
 
 	[Fact]
 	public void TraceSequenceWithSomeNullElements()
 	{
-		var trace = Lines(CaptureTrace(() => new int?[] { 1, null, 2, null, 3 }.Trace().Consume()));
+		var trace = CaptureTrace(() =>
+		{
+			using var seq = TestingSequence.Of<int?>(1, null, 2, null, 3);
+			seq
+				.Trace()
+				.Consume();
+		});
 		trace.AssertSequenceEqual("1", string.Empty, "2", string.Empty, "3");
 	}
 
 	[Fact]
 	public void TraceSequenceWithSomeNullReferences()
 	{
-		var trace = Lines(CaptureTrace(() => new[] { "the", null, "quick", null, "brown", null, "fox" }.Trace().Consume()));
+		var trace = CaptureTrace(() =>
+		{
+			using var seq = TestingSequence.Of("the", null, "quick", null, "brown", null, "fox");
+			seq
+				.Trace()
+				.Consume();
+		});
 
 		trace.AssertSequenceEqual("the", string.Empty, "quick", string.Empty, "brown", string.Empty, "fox");
 	}
@@ -30,11 +48,16 @@ public class TraceTest
 	[Fact]
 	public void TraceSequenceWithFormatting()
 	{
-		var trace = Lines(CaptureTrace(delegate
+		var trace = CaptureTrace(delegate
 		{
 			using (new CurrentThreadCultureScope(CultureInfo.InvariantCulture))
-				new[] { 1234, 5678 }.Trace("{0:N0}").Consume();
-		}));
+			{
+				using var seq = TestingSequence.Of(1234, 5678);
+				seq
+					.Trace("{0:N0}")
+					.Consume();
+			}
+		});
 
 		trace.AssertSequenceEqual("1,234", "5,678");
 	}
@@ -42,19 +65,18 @@ public class TraceTest
 	[Fact]
 	public void TraceSequenceWithFormatter()
 	{
-		var trace = Lines(CaptureTrace(delegate
+		var trace = CaptureTrace(delegate
 		{
-			var formatter = CultureInfo.InvariantCulture;
-			new int?[] { 1234, null, 5678 }.Trace(n => n.HasValue
-													   ? n.Value.ToString("N0", formatter)
-													   : "#NULL")
-										   .Consume();
-		}));
+			using var seq = TestingSequence.Of<int?>(1234, null, 5678);
+			seq
+				.Trace(n => n.HasValue ? n.Value.ToString("N0", CultureInfo.InvariantCulture) : "#NULL")
+				.Consume();
+		});
 
 		trace.AssertSequenceEqual("1,234", "#NULL", "5,678");
 	}
 
-	static IEnumerable<string> Lines(string str)
+	private static IEnumerable<string> Lines(string str)
 	{
 		using (var e = _(string.IsNullOrEmpty(str)
 					 ? TextReader.Null
@@ -73,7 +95,7 @@ public class TraceTest
 		}
 	}
 
-	static string CaptureTrace(Action action)
+	private static IEnumerable<string> CaptureTrace(Action action)
 	{
 		var writer = new StringWriter();
 		var listener = new TextWriterTraceListener(writer);
@@ -87,6 +109,6 @@ public class TraceTest
 		{
 			Trace.Listeners.Remove(listener);
 		}
-		return writer.ToString();
+		return Lines(writer.ToString());
 	}
 }
