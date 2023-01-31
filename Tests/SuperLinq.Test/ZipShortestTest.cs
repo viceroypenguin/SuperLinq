@@ -95,7 +95,14 @@ public class ZipShortestTest
 	[Fact]
 	public void ZipShortestNotIterateUnnecessaryElements()
 	{
-		using (var s1 = SeqExceptionAt(3).AsTestingSequence())
+		using (var s1 = TestingSequence.Of(1, 2))
+		using (var s2 = SeqExceptionAt(3).AsTestingSequence())
+		{
+			var zipped = s1.ZipShortest(s2, ValueTuple.Create);
+			zipped.AssertSequenceEqual((1, 1), (2, 2));
+		}
+
+		using (var s1 = SeqExceptionAt(4).AsTestingSequence())
 		using (var s2 = TestingSequence.Of(1, 2))
 		{
 			var zipped = s1.ZipShortest(s2, ValueTuple.Create);
@@ -110,10 +117,27 @@ public class ZipShortestTest
 			zipped.AssertSequenceEqual((1, 1, 1), (2, 2, 2));
 		}
 
+		using (var s1 = SeqExceptionAt(4).AsTestingSequence())
+		using (var s2 = TestingSequence.Of(1, 2, 3))
+		using (var s3 = TestingSequence.Of(1, 2))
+		{
+			var zipped = s1.ZipShortest(s2, s3, ValueTuple.Create);
+			zipped.AssertSequenceEqual((1, 1, 1), (2, 2, 2));
+		}
+
 		using (var s1 = TestingSequence.Of(1, 2, 3))
 		using (var s2 = TestingSequence.Of(1, 2, 3))
 		using (var s3 = TestingSequence.Of(1, 2))
 		using (var s4 = SeqExceptionAt(3).AsTestingSequence())
+		{
+			var zipped = s1.ZipShortest(s2, s3, s4, ValueTuple.Create);
+			zipped.AssertSequenceEqual((1, 1, 1, 1), (2, 2, 2, 2));
+		}
+
+		using (var s1 = SeqExceptionAt(4).AsTestingSequence())
+		using (var s2 = TestingSequence.Of(1, 2, 3))
+		using (var s3 = TestingSequence.Of(1, 2, 3))
+		using (var s4 = TestingSequence.Of(1, 2))
 		{
 			var zipped = s1.ZipShortest(s2, s3, s4, ValueTuple.Create);
 			zipped.AssertSequenceEqual((1, 1, 1, 1), (2, 2, 2, 2));

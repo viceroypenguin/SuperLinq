@@ -15,7 +15,7 @@ internal static partial class TestExtensions
 
 	public static IEnumerable<int> SeqExceptionAt(int index) =>
 		SuperEnumerable.From(
-			Enumerable.Range(1, index)
+			Enumerable.Range(1, index - 1)
 				.Select(i => Func(() => i))
 				.Append(BreakingFunc.Of<int>())
 				.ToArray());
