@@ -29,14 +29,14 @@ public static class GetShortestPathTest
 		return map;
 	}
 
-	private static IEnumerable<T> AddTestingSequenceToList<T>(this IEnumerable<T> source, List<TestingSequence<T>> list)
+	internal static IEnumerable<T> AddTestingSequenceToList<T>(this IEnumerable<T> source, List<TestingSequence<T>> list)
 	{
 		var seq = source.AsTestingSequence();
 		list.Add(seq);
 		return seq;
 	}
 
-	private static void VerifySequences<T>(this List<TestingSequence<T>> list)
+	internal static void VerifySequences<T>(this List<TestingSequence<T>> list)
 	{
 		foreach (IDisposable s in list)
 			s.Dispose();
