@@ -45,8 +45,8 @@ public class ConcurrentMergeTest
 		await using var sequenceB = AsyncEnumerable.Range(1, 10).AsTestingSequence();
 		var result = sequenceA.ConcurrentMerge(sequenceB);
 
-		// if there's no delay, then the result should be the same as .Interleave
-		await result.AssertSequenceEqual(
+		// variability of `Task.Yield()` means no "perfect" order can be asserted
+		await result.AssertCollectionEqual(
 			Enumerable.Range(1, 10).SelectMany(x => Enumerable.Repeat(x, 2)));
 	}
 
@@ -67,8 +67,8 @@ public class ConcurrentMergeTest
 		await using var sequenceB = TestingSequence.Of(1, 1, 1, 1);
 		var result = sequenceA.ConcurrentMerge(sequenceB);
 
-		// if there's no delay, then the result should be the same as .Interleave
-		await result.AssertSequenceEqual(0, 1, 0, 1, 0, 1, 0, 1, 0, 0);
+		// variability of `Task.Yield()` means no "perfect" order can be asserted
+		await result.AssertCollectionEqual(0, 1, 0, 1, 0, 1, 0, 1, 0, 0);
 	}
 
 	[Fact]
@@ -179,9 +179,7 @@ public class ConcurrentMergeTest
 			.AsTestingSequence();
 		var result = new[] { seqA, seqB, seqC, seqD }.ConcurrentMerge();
 
-		Assert.True(
-			(await result.ToHashSetAsync())
-				.SetEquals(Seq(11, 12, 13, 14, 21, 22, 23, 24, 31, 32, 33, 34, 41, 42, 43, 44)));
+		await result.AssertCollectionEqual(11, 12, 13, 14, 21, 22, 23, 24, 31, 32, 33, 34, 41, 42, 43, 44);
 	}
 
 	[Fact]
@@ -217,9 +215,7 @@ public class ConcurrentMergeTest
 			.AsTestingSequence();
 		var result = new[] { seqA, seqB, seqC, seqD }.ConcurrentMerge(2);
 
-		Assert.True(
-			(await result.ToHashSetAsync())
-				.SetEquals(Seq(11, 12, 13, 14, 21, 22, 23, 24, 31, 32, 33, 34, 41, 42, 43, 44)));
+		await result.AssertCollectionEqual(11, 12, 13, 14, 21, 22, 23, 24, 31, 32, 33, 34, 41, 42, 43, 44);
 	}
 
 	[Fact]
