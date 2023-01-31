@@ -5,46 +5,48 @@ public class PartialSortByTests
 	[Fact]
 	public void PartialSortBy()
 	{
-		var ns = SuperEnumerable.RandomDouble().Take(10).ToArray();
+		var ns = SuperEnumerable.RandomDouble()
+			.Take(10).ToArray();
+		using var sequence = ns.Index()
+			.Reverse().AsTestingSequence();
 
-		const int count = 5;
-		var sorted = ns.Select((n, i) => KeyValuePair.Create(i, n))
-					   .Reverse()
-					   .PartialSortBy(count, e => e.Key);
-
-		sorted.Select(e => e.Value).AssertSequenceEqual(ns.Take(count));
+		sequence
+			.PartialSortBy(5, e => e.index)
+			.Select(e => e.item)
+			.AssertSequenceEqual(ns.Take(5));
 	}
 
 	[Fact]
 	public void PartialSortWithOrder()
 	{
-		var ns = SuperEnumerable.RandomDouble().Take(10).ToArray();
+		var ns = SuperEnumerable.RandomDouble()
+			.Take(10).ToArray();
+		using var sequence = ns.Index()
+			.Reverse().AsTestingSequence(maxEnumerations: 5);
 
-		const int count = 5;
-		var sorted = ns.Select((n, i) => KeyValuePair.Create(i, n))
-						.Reverse()
-						.PartialSortBy(count, e => e.Key, OrderByDirection.Ascending);
+		sequence
+			.PartialSortBy(5, e => e.index, OrderByDirection.Ascending)
+			.Select(e => e.item)
+			.AssertSequenceEqual(ns.Take(5));
 
-		sorted.Select(e => e.Value).AssertSequenceEqual(ns.Take(count));
-
-		sorted = ns.Select((n, i) => KeyValuePair.Create(i, n))
-					.Reverse()
-					.PartialSortBy(count, e => e.Key, OrderByDirection.Descending);
-
-		sorted.Select(e => e.Value).AssertSequenceEqual(ns.Reverse().Take(count));
+		sequence
+			.PartialSortBy(5, e => e.index, OrderByDirection.Descending)
+			.Select(e => e.item)
+			.AssertSequenceEqual(ns.Reverse().Take(5));
 	}
 
 	[Fact]
 	public void PartialSortWithComparer()
 	{
-		var alphabet = Enumerable.Range(0, 26)
-								 .Select((n, i) => ((char)((i % 2 == 0 ? 'A' : 'a') + n)).ToString())
-								 .ToArray();
+		using var alphabet = Enumerable.Range(0, 26)
+			.Select((n, i) => ((char)((i % 2 == 0 ? 'A' : 'a') + n)).ToString())
+			.Zip(SuperEnumerable.RandomDouble())
+			.AsTestingSequence();
 
-		var ns = alphabet.Zip(SuperEnumerable.RandomDouble(), KeyValuePair.Create).ToArray();
-		var sorted = ns.PartialSortBy(5, e => e.Key, StringComparer.Ordinal);
-
-		sorted.Select(e => e.Key[0]).AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
+		alphabet
+			.PartialSortBy(5, e => e.First, StringComparer.Ordinal)
+			.Select(x => x.First[0])
+			.AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
 	}
 
 	[Fact]
@@ -56,7 +58,7 @@ public class PartialSortByTests
 	[Fact]
 	public void PartialSortByIsStable()
 	{
-		var list = new[]
+		using var list = new[]
 		{
 			(key: 5, text: "1"),
 			(key: 5, text: "2"),
@@ -68,7 +70,7 @@ public class PartialSortByTests
 			(key: 2, text: "8"),
 			(key: 1, text: "9"),
 			(key: 1, text: "10"),
-		};
+		}.AsTestingSequence(maxEnumerations: 10);
 
 		var stableSort = new[]
 		{
