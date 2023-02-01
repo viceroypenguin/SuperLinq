@@ -37,11 +37,11 @@ public class SortedMergeTests
 	[Fact]
 	public async Task TestSortedMergeComparerNull()
 	{
-		var sequenceA = AsyncEnumerable.Range(1, 3);
-		var sequenceB = AsyncEnumerable.Range(4, 3);
-		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, (IComparer<int>?)null, sequenceB);
+		await using var sequenceA = Enumerable.Range(1, 3).AsTestingSequence();
+		await using var sequenceB = Enumerable.Range(4, 3).AsTestingSequence();
 
-		await result.AssertSequenceEqual(sequenceA.Concat(sequenceB));
+		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, (IComparer<int>?)null, sequenceB);
+		await result.AssertSequenceEqual(Enumerable.Range(1, 6));
 	}
 
 	/// <summary>
@@ -50,10 +50,10 @@ public class SortedMergeTests
 	[Fact]
 	public async Task TestSortedMergeOtherSequencesEmpty()
 	{
-		var sequenceA = AsyncEnumerable.Range(1, 10);
-		var result = sequenceA.SortedMerge(OrderByDirection.Ascending);
+		await using var sequenceA = Enumerable.Range(1, 10).AsTestingSequence();
 
-		await result.AssertSequenceEqual(sequenceA);
+		var result = sequenceA.SortedMerge(OrderByDirection.Ascending);
+		await result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
 	/// <summary>
@@ -62,12 +62,12 @@ public class SortedMergeTests
 	[Fact]
 	public async Task TestSortedMergeAllSequencesEmpty()
 	{
-		var sequenceA = AsyncEnumerable.Empty<int>();
-		var sequenceB = AsyncEnumerable.Empty<int>();
-		var sequenceC = AsyncEnumerable.Empty<int>();
-		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
+		await using var sequenceA = TestingSequence.Of<int>();
+		await using var sequenceB = TestingSequence.Of<int>();
+		await using var sequenceC = TestingSequence.Of<int>();
 
-		await result.AssertSequenceEqual(sequenceA);
+		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
+		await result.AssertSequenceEqual();
 	}
 
 	/// <summary>
@@ -76,16 +76,12 @@ public class SortedMergeTests
 	[Fact]
 	public async Task TestSortedMergeFirstSequenceEmpty()
 	{
-		var sequenceA = AsyncSeq<int>();
-		var sequenceB = AsyncSeq<int>(1, 3, 5, 7, 9, 11);
-		var sequenceC = AsyncSeq<int>(2, 4, 6, 8, 10, 12);
-		var expectedResult = Enumerable.Range(1, 12);
+		await using var sequenceA = TestingSequence.Of<int>();
+		await using var sequenceB = TestingSequence.Of(1, 3, 5, 7, 9, 11);
+		await using var sequenceC = TestingSequence.Of(2, 4, 6, 8, 10, 12);
 
-		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
-		await result.AssertSequenceEqual(expectedResult);
-
-		result = sequenceA.SortedMerge(sequenceB, sequenceC);
-		await result.AssertSequenceEqual(expectedResult);
+		var result = sequenceA.SortedMerge(sequenceB, sequenceC);
+		await result.AssertSequenceEqual(Enumerable.Range(1, 12));
 	}
 
 	/// <summary>
@@ -94,16 +90,12 @@ public class SortedMergeTests
 	[Fact]
 	public async Task TestSortedMergeEqualLengthSequences()
 	{
-		var sequenceA = AsyncEnumerable.Range(0, 10).Select(x => x * 3 + 0);
-		var sequenceB = AsyncEnumerable.Range(0, 10).Select(x => x * 3 + 1);
-		var sequenceC = AsyncEnumerable.Range(0, 10).Select(x => x * 3 + 2);
-		var expectedResult = Enumerable.Range(0, 10 * 3);
+		await using var sequenceA = Enumerable.Range(0, 10).Select(x => x * 3 + 0).AsTestingSequence();
+		await using var sequenceB = Enumerable.Range(0, 10).Select(x => x * 3 + 1).AsTestingSequence();
+		await using var sequenceC = Enumerable.Range(0, 10).Select(x => x * 3 + 2).AsTestingSequence();
 
-		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
-		await result.AssertSequenceEqual(expectedResult);
-
-		result = sequenceA.SortedMerge(sequenceB, sequenceC);
-		await result.AssertSequenceEqual(expectedResult);
+		var result = sequenceA.SortedMerge(sequenceB, sequenceC);
+		await result.AssertSequenceEqual(Enumerable.Range(0, 10 * 3));
 	}
 
 	/// <summary>
@@ -112,15 +104,12 @@ public class SortedMergeTests
 	[Fact]
 	public async Task TestSortedMergeUnequalLengthSequences()
 	{
-		var sequenceA = AsyncEnumerable.Range(0, 30).Select(x => x * 3 + 0);
-		var sequenceB = AsyncEnumerable.Range(0, 30).Select(x => x * 3 + 1).Take(30 / 2);
-		var sequenceC = AsyncEnumerable.Range(0, 30).Select(x => x * 3 + 2).Take(30 / 3);
+		await using var sequenceA = Enumerable.Range(0, 30).Select(x => x * 3 + 0).AsTestingSequence(maxEnumerations: 2);
+		await using var sequenceB = Enumerable.Range(0, 30).Select(x => x * 3 + 1).Take(30 / 2).AsTestingSequence(maxEnumerations: 2);
+		await using var sequenceC = Enumerable.Range(0, 30).Select(x => x * 3 + 2).Take(30 / 3).AsTestingSequence(maxEnumerations: 2);
+
 		var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC).OrderBy(SuperEnumerable.Identity);
-
-		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
-		await result.AssertSequenceEqual(expectedResult);
-
-		result = sequenceA.SortedMerge(sequenceB, sequenceC);
+		var result = sequenceA.SortedMerge(sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);
 	}
 
@@ -130,16 +119,12 @@ public class SortedMergeTests
 	[Fact]
 	public async Task TestSortedMergeDescendingOrder()
 	{
-		var sequenceA = AsyncEnumerable.Range(0, 10).Select(x => x * 3 + 0).Reverse();
-		var sequenceB = AsyncEnumerable.Range(0, 10).Select(x => x * 3 + 1).Reverse();
-		var sequenceC = AsyncEnumerable.Range(0, 10).Select(x => x * 3 + 2).Reverse();
-		var expectedResult = Enumerable.Range(0, 10 * 3).Reverse();
+		await using var sequenceA = Enumerable.Range(0, 10).Select(x => x * 3 + 0).Reverse().AsTestingSequence();
+		await using var sequenceB = Enumerable.Range(0, 10).Select(x => x * 3 + 1).Reverse().AsTestingSequence();
+		await using var sequenceC = Enumerable.Range(0, 10).Select(x => x * 3 + 2).Reverse().AsTestingSequence();
 
-		var result = sequenceA.SortedMerge(OrderByDirection.Descending, sequenceB, sequenceC);
-		await result.AssertSequenceEqual(expectedResult);
-
-		result = sequenceA.SortedMergeDescending(sequenceB, sequenceC);
-		await result.AssertSequenceEqual(expectedResult);
+		var result = sequenceA.SortedMergeDescending(sequenceB, sequenceC);
+		await result.AssertSequenceEqual(Enumerable.Range(0, 10 * 3).Reverse());
 	}
 
 	/// <summary>
@@ -148,33 +133,16 @@ public class SortedMergeTests
 	[Fact]
 	public async Task TestSortedMergeCustomComparer()
 	{
-		var sequenceA = AsyncSeq("a", "D", "G", "h", "i", "J", "O", "t", "z");
-		var sequenceB = AsyncSeq("b", "E", "k", "q", "r", "u", "V", "x", "Y");
-		var sequenceC = AsyncSeq("C", "F", "l", "m", "N", "P", "s", "w");
+		await using var sequenceA = new[] { "a", "D", "G", "h", "i", "J", "O", "t", "z" }.AsTestingSequence(maxEnumerations: 2);
+		await using var sequenceB = new[] { "b", "E", "k", "q", "r", "u", "V", "x", "Y" }.AsTestingSequence(maxEnumerations: 2);
+		await using var sequenceC = new[] { "C", "F", "l", "m", "N", "P", "s", "w" }.AsTestingSequence(maxEnumerations: 2);
+
 		var comparer = StringComparer.InvariantCultureIgnoreCase;
-		var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC)
-									  .OrderBy(SuperEnumerable.Identity, comparer);
+		var result = sequenceA.SortedMerge(comparer, sequenceB, sequenceC);
+		var expectedResult = sequenceA
+			.Concat(sequenceB).Concat(sequenceC)
+			.OrderBy(SuperEnumerable.Identity, comparer);
 
-		var result = sequenceA.SortedMerge(OrderByDirection.Ascending, comparer, sequenceB, sequenceC);
 		await result.AssertSequenceEqual(expectedResult);
-
-		result = sequenceA.SortedMerge(comparer, sequenceB, sequenceC);
-		await result.AssertSequenceEqual(expectedResult);
-	}
-
-	/// <summary>
-	/// Verify that sorted merge disposes enumerators of all sequences that are passed to it.
-	/// </summary>
-	[Fact]
-	public async Task TestSortedMergeAllSequencesDisposed()
-	{
-		await using var sequenceA = AsyncEnumerable.Range(1, 10).AsTestingSequence();
-		await using var sequenceB = AsyncEnumerable.Range(1, 10 - 1).AsTestingSequence();
-		await using var sequenceC = AsyncEnumerable.Range(1, 10 - 5).AsTestingSequence();
-		await using var sequenceD = AsyncEnumerable.Range(1, 0).AsTestingSequence();
-
-		await sequenceA
-			.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC, sequenceD)
-			.Consume(); // ensures the sequences are actually merged and iterators are obtained
 	}
 }
