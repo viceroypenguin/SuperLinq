@@ -43,7 +43,7 @@ public class LeadTests
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		var result = await sequence.Lead(10, -1, (val, leadVal) => leadVal).ToListAsync();
+		var result = await sequence.Lead(10, -1, async (val, leadVal) => { await Task.Yield(); return leadVal; }).ToListAsync();
 		Assert.Equal(100, result.Count);
 		result.Skip(100 - 10).AssertSequenceEqual(Enumerable.Repeat(-1, 10));
 	}

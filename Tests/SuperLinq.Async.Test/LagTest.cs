@@ -43,7 +43,7 @@ public class LagTests
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		var result = await sequence.Lag(10, -1, (val, lagVal) => lagVal).ToListAsync();
+		var result = await sequence.Lag(10, -1, async (val, lagVal) => { await Task.Yield(); return lagVal; }).ToListAsync();
 		Assert.Equal(100, result.Count);
 		result.Take(10).AssertSequenceEqual(Enumerable.Repeat(-1, 10));
 	}
