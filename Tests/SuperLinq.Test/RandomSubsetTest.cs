@@ -22,7 +22,7 @@ public class RandomSubsetTest
 	public void TestRandomSubsetNegativeSubsetSize()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			Enumerable.Range(1, 10).RandomSubset(-5));
+			new BreakingSequence<int>().RandomSubset(-5));
 	}
 
 	/// <summary>
@@ -32,7 +32,7 @@ public class RandomSubsetTest
 	public void TestRandomSubsetNegativeSubsetSize2()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			Enumerable.Range(1, 10).RandomSubset(-1, new Random()));
+			new BreakingSequence<int>().RandomSubset(-1, new Random()));
 	}
 
 	/// <summary>
@@ -41,9 +41,9 @@ public class RandomSubsetTest
 	[Fact]
 	public void TestRandomSubsetOfEmptySequence()
 	{
-		var sequence = Enumerable.Empty<int>();
-		var result = sequence.RandomSubset(0); // we can only get subsets <= sequence.Count()
+		using var sequence = TestingSequence.Of<int>();
 
+		var result = sequence.RandomSubset(0); // we can only get subsets <= sequence.Count()
 		Assert.Empty(result);
 	}
 
@@ -53,14 +53,13 @@ public class RandomSubsetTest
 	[Fact]
 	public void TestRandomSubsetSameLengthAsSequence()
 	{
-		const int count = 100;
-		var sequence = Enumerable.Range(1, count);
-		var resultA = sequence.RandomSubset(count);
-		var resultB = sequence.RandomSubset(count, new Random(12345));
+		using var sequence = Enumerable.Range(1, 100).AsTestingSequence(maxEnumerations: 2);
 
-		// ensure random subset is always a complete reordering of original sequence
-		Assert.Equal(count, resultA.Distinct().Count());
-		Assert.Equal(count, resultB.Distinct().Count());
+		var resultA = sequence.RandomSubset(100);
+		Assert.Equal(100, resultA.Distinct().Count());
+
+		var resultB = sequence.RandomSubset(100, new Random(12345));
+		Assert.Equal(100, resultB.Distinct().Count());
 	}
 
 	/// <summary>
@@ -69,15 +68,13 @@ public class RandomSubsetTest
 	[Fact]
 	public void TestRandomSubsetShorterThanSequence()
 	{
-		const int count = 100;
-		const int subsetSize = 20;
-		var sequence = Enumerable.Range(1, count);
-		var resultA = sequence.RandomSubset(subsetSize);
-		var resultB = sequence.RandomSubset(subsetSize, new Random(12345));
+		using var sequence = Enumerable.Range(1, 100).AsTestingSequence(maxEnumerations: 2);
 
-		// ensure random subset is always a distinct subset of original sequence
-		Assert.Equal(subsetSize, resultA.Distinct().Count());
-		Assert.Equal(subsetSize, resultB.Distinct().Count());
+		var resultA = sequence.RandomSubset(20);
+		Assert.Equal(20, resultA.Distinct().Count());
+
+		var resultB = sequence.RandomSubset(20, new Random(12345));
+		Assert.Equal(20, resultB.Distinct().Count());
 	}
 
 	/// <summary>
@@ -87,14 +84,10 @@ public class RandomSubsetTest
 	[Fact]
 	public void TestRandomSubsetLongerThanSequence()
 	{
-		const int count = 100;
-		const int subsetSize = count + 5;
-		var sequence = Enumerable.Range(1, count);
+		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-		{
-			sequence.RandomSubset(subsetSize).Consume();
-		});
+			sequence.RandomSubset(100 + 5).Consume());
 	}
 
 	/// <summary>
@@ -104,14 +97,10 @@ public class RandomSubsetTest
 	[Fact]
 	public void TestRandomSubsetLongerThanSequence2()
 	{
-		const int count = 100;
-		const int subsetSize = count + 5;
-		var sequence = Enumerable.Range(1, count);
+		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-		{
-			sequence.RandomSubset(subsetSize, new Random(1234)).Consume();
-		});
+			sequence.RandomSubset(100 + 5, new Random(1234)).Consume());
 	}
 
 	/// <summary>
@@ -139,8 +128,7 @@ public class RandomSubsetTest
 	[Fact(Skip = "Explicit")]
 	public void TestRandomSubsetIsUnbiased()
 	{
-		const int count = 20;
-		var sequence = Enumerable.Range(1, count);
+		using var sequence = Enumerable.Range(1, 20).AsTestingSequence();
 
 		var rsdTrials = new[] { 1000, 10000, 100000, 500000, 10000000 };
 		var rsdResults = new[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -148,12 +136,12 @@ public class RandomSubsetTest
 		var trialIndex = 0;
 		foreach (var trialSize in rsdTrials)
 		{
-			var biasAccumulator = Enumerable.Repeat(0.0, count).ToArray();
+			var biasAccumulator = Enumerable.Repeat(0.0, 20).ToArray();
 
 			for (var i = 0; i < trialSize; i++)
 			{
 				var index = 0;
-				var result = sequence.RandomSubset(count);
+				var result = sequence.RandomSubset(20);
 				foreach (var itemA in result)
 					biasAccumulator[index++] += itemA;
 			}
@@ -185,19 +173,14 @@ public class RandomSubsetTest
 	[Fact]
 	public void TestRandomSubsetIsIdempotent()
 	{
-		const int count = 100;
-		const int subsetSize = count;
-		var sequence = Enumerable.Range(1, count).ToArray();
-		var sequenceClone = sequence.ToArray();
-		var resultA = sequence.RandomSubset(subsetSize);
-		var resultB = sequence.RandomSubset(subsetSize);
+		var sequence = Enumerable.Range(1, 100).ToArray();
 
 		// force complete enumeration of random subsets
-		resultA.Consume();
-		resultB.Consume();
+		sequence.RandomSubset(100).Consume();
+		sequence.RandomSubset(100).Consume();
 
 		// verify the original sequence is untouched
-		Assert.Equal(sequenceClone, sequence);
+		sequence.AssertSequenceEqual(Enumerable.Range(1, 100));
 	}
 
 	/// <summary>
@@ -206,25 +189,27 @@ public class RandomSubsetTest
 	[Fact]
 	public void TestRandomSubsetReturnsOriginalSequenceElements()
 	{
-		const int count = 100;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.RandomSubset(count, new Random(12345));
+		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
+
+		var result = sequence
+			.RandomSubset(100, new Random(12345))
+			.ToList();
 
 		// we do not test overload without seed because it can return original sequence
-		Assert.NotEqual(result, sequence);
+		Assert.NotEqual(result, Enumerable.Range(1, 100));
 
 		// ensure random subset returns exactly the same elements of original sequence
-		Assert.Equal(result.OrderBy(SuperEnumerable.Identity), sequence);
+		result.AssertCollectionEqual(Enumerable.Range(1, 100));
 	}
 
-	static double RelativeStandardDeviation(IEnumerable<double> values)
+	private static double RelativeStandardDeviation(IEnumerable<double> values)
 	{
 		var average = values.Average();
 		var standardDeviation = StandardDeviationInternal(values, average);
 		return (standardDeviation * 100.0) / average;
 	}
 
-	static double StandardDeviationInternal(IEnumerable<double> values, double average)
+	private static double StandardDeviationInternal(IEnumerable<double> values, double average)
 	{
 		return Math.Sqrt(values.Select(value => Math.Pow(value - average, 2.0)).Average());
 	}
