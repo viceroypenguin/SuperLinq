@@ -12,33 +12,41 @@ public class TagFirstLastTest
 	[Fact]
 	public async Task TagFirstLastEmptySequence()
 	{
-		await AsyncSeq<int>().TagFirstLast().AssertSequenceEqual();
+		await using var sequence = TestingSequence.Of<int>();
+
+		var result = sequence.TagFirstLast();
+		await result.AssertSequenceEqual();
 	}
 
 	[Fact]
-	public Task TagFirstLastWithSourceSequenceOfOne()
+	public async Task TagFirstLastWithSourceSequenceOfOne()
 	{
-		return AsyncSeq(123)
-			.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
-			.AssertSequenceEqual(new { Item = 123, IsFirst = true, IsLast = true });
+		await using var sequence = TestingSequence.Of(123);
+
+		var result = sequence.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast });
+		await result.AssertSequenceEqual(new { Item = 123, IsFirst = true, IsLast = true });
 	}
 
 	[Fact]
-	public Task TagFirstLastWithSourceSequenceOfTwo()
+	public async Task TagFirstLastWithSourceSequenceOfTwo()
 	{
-		return AsyncSeq(123, 456)
-			.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
-			.AssertSequenceEqual(new { Item = 123, IsFirst = true, IsLast = false },
-								 new { Item = 456, IsFirst = false, IsLast = true });
+		await using var sequence = TestingSequence.Of(123, 456);
+
+		var result = sequence.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast });
+		await result.AssertSequenceEqual(
+			new { Item = 123, IsFirst = true, IsLast = false },
+			new { Item = 456, IsFirst = false, IsLast = true });
 	}
 
 	[Fact]
-	public Task TagFirstLastWithSourceSequenceOfThree()
+	public async Task TagFirstLastWithSourceSequenceOfThree()
 	{
-		return AsyncSeq(123, 456, 789)
-			.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
-			.AssertSequenceEqual(new { Item = 123, IsFirst = true, IsLast = false },
-								 new { Item = 456, IsFirst = false, IsLast = false },
-								 new { Item = 789, IsFirst = false, IsLast = true });
+		await using var sequence = TestingSequence.Of(123, 456, 789);
+
+		var result = sequence.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast });
+		await result.AssertSequenceEqual(
+			new { Item = 123, IsFirst = true, IsLast = false },
+			new { Item = 456, IsFirst = false, IsLast = false },
+			new { Item = 789, IsFirst = false, IsLast = true });
 	}
 }
