@@ -9,45 +9,51 @@ public class PreScanTest
 	}
 
 	[Fact]
-	public Task PreScanWithEmptySequence()
+	public async Task PreScanWithEmptySequence()
 	{
-		var source = AsyncEnumerable.Empty<int>();
+		await using var source = TestingSequence.Of<int>();
+
 		var result = source.PreScan(BreakingFunc.Of<int, int, int>(), 0);
-
-		return result.AssertEmpty();
+		await result.AssertSequenceEqual();
 	}
 
 	[Fact]
-	public Task PreScanWithSingleElement()
+	public async Task PreScanWithSingleElement()
 	{
-		var source = AsyncSeq(111);
+		await using var source = TestingSequence.Of(111);
+
 		var result = source.PreScan(BreakingFunc.Of<int, int, int>(), 999);
-		return result.AssertSequenceEqual(999);
+		await result.AssertSequenceEqual(999);
 	}
 
 	[Fact]
-	public Task PreScanSum()
+	public async Task PreScanSum()
 	{
-		var result = AsyncSeq(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).PreScan((a, b) => a + b, 0);
-		return result.AssertSequenceEqual(0, 1, 3, 6, 10, 15, 21, 28, 36, 45);
+		await using var source = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+		var result = source.PreScan((a, b) => a + b, 0);
+		await result.AssertSequenceEqual(0, 1, 3, 6, 10, 15, 21, 28, 36, 45);
 	}
 
 	[Fact]
-	public Task PreScanMul()
+	public async Task PreScanMul()
 	{
-		var seq = AsyncSeq(1, 2, 3);
-		var result = seq.PreScan((a, b) => a * b, 1);
-		return result.AssertSequenceEqual(1, 1, 2);
+		await using var source = TestingSequence.Of(1, 2, 3);
+
+		var result = source.PreScan((a, b) => a * b, 1);
+		await result.AssertSequenceEqual(1, 1, 2);
 	}
 
 	[Fact]
-	public Task PreScanFuncIsNotInvokedUnnecessarily()
+	public async Task PreScanFuncIsNotInvokedUnnecessarily()
 	{
+		await using var source = Enumerable.Range(1, 3).AsTestingSequence();
+
 		var count = 0;
-		var gold = new[] { 0, 1, 3 };
-		var sequence = AsyncEnumerable.Range(1, 3).PreScan((a, b) =>
-			++count == gold.Length ? throw new NotSupportedException() : a + b, 0);
-
-		return sequence.AssertSequenceEqual(gold);
+		var sequence = source
+			.PreScan(
+				(a, b) => ++count == 3 ? throw new TestException() : a + b,
+				0);
+		await sequence.AssertSequenceEqual(0, 1, 3);
 	}
 }
