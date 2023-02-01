@@ -21,11 +21,8 @@ public class SubsetTest
 	[Fact]
 	public void TestNegativeSubsetSize()
 	{
-		const int count = 10;
-		var sequence = Enumerable.Range(1, count);
-
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			sequence.Subsets(-5));
+			new BreakingSequence<int>().Subsets(-5));
 	}
 
 	/// <summary>
@@ -34,13 +31,12 @@ public class SubsetTest
 	[Fact]
 	public void TestSubsetLargerThanSequence()
 	{
-		var sequence = Enumerable.Range(1, 10);
+		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
 
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-		{
-			sequence.Subsets(15)
-				.Consume();
-		});
+			sequence
+				.Subsets(15)
+				.Consume());
 	}
 
 	/// <summary>
@@ -49,10 +45,10 @@ public class SubsetTest
 	[Fact]
 	public void TestEmptySequenceSubsets()
 	{
-		var sequence = Enumerable.Repeat(0, 0);
-		var result = sequence.Subsets();
+		using var sequence = TestingSequence.Of<int>();
 
-		Assert.Equal(sequence, result.Single());
+		var result = sequence.Subsets();
+		result.Single().AssertSequenceEqual();
 	}
 
 	/// <summary>
@@ -61,15 +57,14 @@ public class SubsetTest
 	[Fact]
 	public void TestSubsetsInIncreasingOrder()
 	{
-		const int count = 10;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Subsets();
+		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
 
-		var prevSubset = Enumerable.Empty<int>();
+		var result = sequence.Subsets();
+		var prevSubsetCount = -1;
 		foreach (var subset in result)
 		{
-			Assert.True(subset.Count >= prevSubset.Count());
-			prevSubset = subset;
+			Assert.True(subset.Count >= prevSubsetCount);
+			prevSubsetCount = subset.Count;
 		}
 	}
 
@@ -79,13 +74,10 @@ public class SubsetTest
 	[Fact]
 	public void TestAllSubsetsExpectedCount()
 	{
-		const int count = 20;
-		var sequence = Enumerable.Range(1, count);
+		using var sequence = Enumerable.Range(1, 20).AsTestingSequence();
+
 		var result = sequence.Subsets();
-
-		var expectedCount = Math.Pow(2, count);
-
-		Assert.Equal(expectedCount, result.Count());
+		Assert.Equal(Math.Pow(2, 20), result.Count());
 	}
 
 	/// <summary>
@@ -94,38 +86,37 @@ public class SubsetTest
 	[Fact]
 	public void TestAllSubsetsExpectedResults()
 	{
-		var sequence = Enumerable.Range(1, 4);
+		using var sequence = Enumerable.Range(1, 4).AsTestingSequence();
+
 		var result = sequence.Subsets();
-
 		var expectedSubsets = new[]
-								  {
-										  Array.Empty<int>(),
-										  new[] {1}, new[] {2}, new[] {3}, new[] {4},
-										  new[] {1,2}, new[] {1,3}, new[] {1,4}, new[] {2,3}, new[] {2,4}, new[] {3,4},
-										  new[] {1,2,3}, new[] {1,2,4}, new[] {1,3,4}, new[] {2,3,4},
-										  new[] {1,2,3,4}
-									  };
+		{
+			Array.Empty<int>(),
+			new[] {1}, new[] {2}, new[] {3}, new[] {4},
+			new[] {1,2}, new[] {1,3}, new[] {1,4}, new[] {2,3}, new[] {2,4}, new[] {3,4},
+			new[] {1,2,3}, new[] {1,2,4}, new[] {1,3,4}, new[] {2,3,4},
+			new[] {1,2,3,4}
+		};
 
-		var index = 0;
-		foreach (var subset in result)
-			Assert.Equal(expectedSubsets[index++], subset);
+		foreach (var (actual, expected) in result.Zip(expectedSubsets))
+			expected.AssertSequenceEqual(actual);
 	}
+
+	public static IEnumerable<object[]> SubsetSizes() =>
+		Enumerable.Range(1, 20).Select(i => new object[] { i, });
 
 	/// <summary>
 	/// Verify that the number of subsets for a given subset-size is correct.
 	/// </summary>
-	[Fact]
-	public void TestKSubsetExpectedCount()
+	[Theory, MemberData(nameof(SubsetSizes))]
+	public void TestKSubsetExpectedCount(int subsetSize)
 	{
-		const int count = 20;
-		const int subsetSize = 10;
-		var sequence = Enumerable.Range(1, count);
+		using var sequence = Enumerable.Range(1, 20).AsTestingSequence();
+
 		var result = sequence.Subsets(subsetSize);
 
 		// number of subsets of a given size is defined by the binomial coefficient: c! / ((c-s)!*s!)
-		var expectedSubsetCount = Combinatorics.Binomial(count, subsetSize);
-
-		Assert.Equal(expectedSubsetCount, result.Count());
+		Assert.Equal(Combinatorics.Binomial(20, subsetSize), result.Count());
 	}
 
 	/// <summary>
@@ -134,30 +125,30 @@ public class SubsetTest
 	[Fact]
 	public void TestKSubsetExpectedResult()
 	{
-		var sequence = Enumerable.Range(1, 6);
+		using var sequence = Enumerable.Range(1, 6).AsTestingSequence();
+
 		var result = sequence.Subsets(4);
 
 		var expectedSubsets = new[]
-								  {
-										  new[] {1,2,3,4},
-										  new[] {1,2,3,5},
-										  new[] {1,2,3,6},
-										  new[] {1,2,4,5},
-										  new[] {1,2,4,6},
-										  new[] {1,2,5,6},
-										  new[] {1,3,4,5},
-										  new[] {1,3,4,6},
-										  new[] {1,3,5,6},
-										  new[] {1,4,5,6},
-										  new[] {2,3,4,5},
-										  new[] {2,3,4,6},
-										  new[] {2,3,5,6},
-										  new[] {2,4,5,6},
-										  new[] {3,4,5,6},
-									  };
+		{
+			new[] {1,2,3,4},
+			new[] {1,2,3,5},
+			new[] {1,2,3,6},
+			new[] {1,2,4,5},
+			new[] {1,2,4,6},
+			new[] {1,2,5,6},
+			new[] {1,3,4,5},
+			new[] {1,3,4,6},
+			new[] {1,3,5,6},
+			new[] {1,4,5,6},
+			new[] {2,3,4,5},
+			new[] {2,3,4,6},
+			new[] {2,3,5,6},
+			new[] {2,4,5,6},
+			new[] {3,4,5,6},
+		};
 
-		var index = 0;
-		foreach (var subset in result)
-			Assert.Equal(expectedSubsets[index++], subset);
+		foreach (var (actual, expected) in result.Zip(expectedSubsets))
+			expected.AssertSequenceEqual(actual);
 	}
 }
