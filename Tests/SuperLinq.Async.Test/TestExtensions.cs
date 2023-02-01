@@ -11,7 +11,7 @@ internal static partial class TestExtensions
 
 	public static IAsyncEnumerable<int> AsyncSeqExceptionAt(int index) =>
 		AsyncSuperEnumerable.From(
-			Enumerable.Range(1, index)
+			Enumerable.Range(1, index - 1)
 				.Select(i => Func(() => Task.FromResult(i)))
 				.Append(AsyncBreakingFunc.Of<int>())
 				.ToArray());

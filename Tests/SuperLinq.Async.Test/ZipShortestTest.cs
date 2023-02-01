@@ -3,87 +3,141 @@
 public class ZipShortestTest
 {
 	[Fact]
-	public async Task ZipShortestWithEqualLengthSequences()
-	{
-		await using var seq1 = TestingSequence.Of(1, 2, 3);
-		await using var seq2 = TestingSequence.Of(4, 5, 6);
-
-		var zipped = seq1.ZipShortest(seq2, ValueTuple.Create);
-		await zipped.AssertSequenceEqual((1, 4), (2, 5), (3, 6));
-	}
-
-	[Fact]
-	public async Task ZipShortestWithFirstSequenceShorterThanSecond()
-	{
-		await using var seq1 = TestingSequence.Of(1, 2);
-		await using var seq2 = TestingSequence.Of(4, 5, 6);
-
-		var zipped = seq1.ZipShortest(seq2, ValueTuple.Create);
-		await zipped.AssertSequenceEqual((1, 4), (2, 5));
-	}
-
-	[Fact]
-	public async Task ZipShortestWithFirstSequnceLongerThanSecond()
-	{
-		await using var seq1 = TestingSequence.Of(1, 2, 3);
-		await using var seq2 = TestingSequence.Of(4, 5);
-
-		var zipped = seq1.ZipShortest(seq2, ValueTuple.Create);
-		await zipped.AssertSequenceEqual((1, 4), (2, 5));
-	}
-
-	[Fact]
 	public void ZipShortestIsLazy()
 	{
 		var bs = new AsyncBreakingSequence<int>();
 		bs.ZipShortest(bs, BreakingFunc.Of<int, int, int>());
+		bs.ZipShortest(bs, bs, BreakingFunc.Of<int, int, int, int>());
+		bs.ZipShortest(bs, bs, bs, BreakingFunc.Of<int, int, int, int, int>());
+	}
+
+	[Fact]
+	public async Task TwoParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
+	{
+		await using var s1 = TestingSequence.Of(1, 2);
+
+		await Assert.ThrowsAsync<TestException>(async () =>
+			await s1.ZipShortest(new AsyncBreakingSequence<int>()).Consume());
+	}
+
+	[Theory]
+	[InlineData(1), InlineData(2)]
+	public async Task TwoParamsWorksProperly(int offset)
+	{
+		var o1 = (offset + 0) % 2 + 2;
+		var o2 = (offset + 1) % 2 + 2;
+
+		await using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
+		await using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
+
+		await ts1.ZipShortest(ts2).AssertSequenceEqual(
+			Enumerable.Range(1, 2)
+				.Select(x => (x, x)));
+	}
+
+	[Fact]
+	public async Task ThreeParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
+	{
+		await using var s1 = TestingSequence.Of(1, 2);
+		await using var s2 = TestingSequence.Of(1, 2);
+
+		await Assert.ThrowsAsync<TestException>(async () =>
+			await s1.ZipShortest(s2, new AsyncBreakingSequence<int>()).Consume());
+	}
+
+	[Theory]
+	[InlineData(1), InlineData(2), InlineData(3)]
+	public async Task ThreeParamsWorksProperly(int offset)
+	{
+		var o1 = (offset + 0) % 3 + 2;
+		var o2 = (offset + 1) % 3 + 2;
+		var o3 = (offset + 2) % 3 + 2;
+
+		await using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
+		await using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
+		await using var ts3 = Enumerable.Range(1, o3).AsTestingSequence();
+
+		await ts1.ZipShortest(ts2, ts3).AssertSequenceEqual(
+			Enumerable.Range(1, 2)
+				.Select(x => (x, x, x)));
+	}
+
+	[Fact]
+	public async Task FourParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
+	{
+		await using var s1 = TestingSequence.Of(1, 2);
+		await using var s2 = TestingSequence.Of(1, 2);
+		await using var s3 = TestingSequence.Of(1, 2);
+
+		await Assert.ThrowsAsync<TestException>(async () =>
+			await s1.ZipShortest(s2, s3, new AsyncBreakingSequence<int>()).Consume());
 	}
 
 	[Theory]
 	[InlineData(1), InlineData(2), InlineData(3), InlineData(4)]
-	public async Task ZipShortestEndsAtShortestSequence(int shortSequence)
+	public async Task FourParamsWorksProperly(int offset)
 	{
-		await using var seq1 = Enumerable.Range(1, shortSequence == 1 ? 2 : 3).AsTestingSequence();
-		await using var seq2 = Enumerable.Range(1, shortSequence == 2 ? 2 : 3).AsTestingSequence();
-		await using var seq3 = Enumerable.Range(1, shortSequence == 3 ? 2 : 3).AsTestingSequence();
-		await using var seq4 = Enumerable.Range(1, shortSequence == 4 ? 2 : 3).AsTestingSequence();
+		var o1 = (offset + 0) % 4 + 2;
+		var o2 = (offset + 1) % 4 + 2;
+		var o3 = (offset + 2) % 4 + 2;
+		var o4 = (offset + 3) % 4 + 2;
 
-		var seq = seq1.ZipShortest(seq2, seq3, seq4, (a, _, _, _) => a);
-		await seq.AssertSequenceEqual(1, 2);
-	}
+		await using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
+		await using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
+		await using var ts3 = Enumerable.Range(1, o3).AsTestingSequence();
+		await using var ts4 = Enumerable.Range(1, o4).AsTestingSequence();
 
-	[Fact]
-	public async Task MoveNextIsNotCalledUnnecessarilyWhenFirstIsShorter()
-	{
-		await using var s1 = TestingSequence.Of(1, 2);
-		await using var s2 = AsyncSeqExceptionAt(3).AsTestingSequence();
-
-		var zipped = s1.ZipShortest(s2, ValueTuple.Create);
-		await zipped.AssertSequenceEqual((1, 1), (2, 2));
+		await ts1.ZipShortest(ts2, ts3, ts4).AssertSequenceEqual(
+			Enumerable.Range(1, 2)
+				.Select(x => (x, x, x, x)));
 	}
 
 	[Fact]
 	public async Task ZipShortestNotIterateUnnecessaryElements()
 	{
-		await using (var s1 = AsyncSeqExceptionAt(3).AsTestingSequence())
-		await using (var s2 = TestingSequence.Of(1, 2))
+		using (var s1 = TestingSequence.Of(1, 2))
+		using (var s2 = AsyncSeqExceptionAt(3).AsTestingSequence())
 		{
 			var zipped = s1.ZipShortest(s2, ValueTuple.Create);
 			await zipped.AssertSequenceEqual((1, 1), (2, 2));
 		}
 
-		await using (var s1 = TestingSequence.Of(1, 2, 3))
-		await using (var s2 = TestingSequence.Of(1, 2))
-		await using (var s3 = AsyncSeqExceptionAt(3).AsTestingSequence())
+		using (var s1 = AsyncSeqExceptionAt(4).AsTestingSequence())
+		using (var s2 = TestingSequence.Of(1, 2))
+		{
+			var zipped = s1.ZipShortest(s2, ValueTuple.Create);
+			await zipped.AssertSequenceEqual((1, 1), (2, 2));
+		}
+
+		using (var s1 = TestingSequence.Of(1, 2, 3))
+		using (var s2 = TestingSequence.Of(1, 2))
+		using (var s3 = AsyncSeqExceptionAt(3).AsTestingSequence())
 		{
 			var zipped = s1.ZipShortest(s2, s3, ValueTuple.Create);
 			await zipped.AssertSequenceEqual((1, 1, 1), (2, 2, 2));
 		}
 
-		await using (var s1 = TestingSequence.Of(1, 2, 3))
-		await using (var s2 = TestingSequence.Of(1, 2, 3))
-		await using (var s3 = TestingSequence.Of(1, 2))
-		await using (var s4 = AsyncSeqExceptionAt(3).AsTestingSequence())
+		using (var s1 = AsyncSeqExceptionAt(4).AsTestingSequence())
+		using (var s2 = TestingSequence.Of(1, 2, 3))
+		using (var s3 = TestingSequence.Of(1, 2))
+		{
+			var zipped = s1.ZipShortest(s2, s3, ValueTuple.Create);
+			await zipped.AssertSequenceEqual((1, 1, 1), (2, 2, 2));
+		}
+
+		using (var s1 = TestingSequence.Of(1, 2, 3))
+		using (var s2 = TestingSequence.Of(1, 2, 3))
+		using (var s3 = TestingSequence.Of(1, 2))
+		using (var s4 = AsyncSeqExceptionAt(3).AsTestingSequence())
+		{
+			var zipped = s1.ZipShortest(s2, s3, s4, ValueTuple.Create);
+			await zipped.AssertSequenceEqual((1, 1, 1, 1), (2, 2, 2, 2));
+		}
+
+		using (var s1 = AsyncSeqExceptionAt(4).AsTestingSequence())
+		using (var s2 = TestingSequence.Of(1, 2, 3))
+		using (var s3 = TestingSequence.Of(1, 2, 3))
+		using (var s4 = TestingSequence.Of(1, 2))
 		{
 			var zipped = s1.ZipShortest(s2, s3, s4, ValueTuple.Create);
 			await zipped.AssertSequenceEqual((1, 1, 1, 1), (2, 2, 2, 2));
