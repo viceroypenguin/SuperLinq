@@ -2,7 +2,7 @@
 
 public class ShuffleTest
 {
-	static Random seed = new Random(12345);
+	private static readonly Random s_seed = new(12345);
 
 	[Fact]
 	public void ShuffleIsLazy()
@@ -13,69 +13,66 @@ public class ShuffleTest
 	[Fact]
 	public void Shuffle()
 	{
-		var source = Enumerable.Range(1, 100);
-		var result = source.Shuffle();
+		using var source = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(source, result.OrderBy(SuperEnumerable.Identity));
+		var result = source.Shuffle();
+		result.AssertCollectionEqual(Enumerable.Range(1, 100));
 	}
 
 	[Fact]
 	public void ShuffleWithEmptySequence()
 	{
-		var source = Enumerable.Empty<int>();
-		var result = source.Shuffle();
+		using var source = Enumerable.Empty<int>().AsTestingSequence();
 
-		Assert.Empty(result);
+		var result = source.Shuffle();
+		result.AssertSequenceEqual();
 	}
 
 	[Fact]
 	public void ShuffleIsIdempotent()
 	{
 		var sequence = Enumerable.Range(1, 100).ToArray();
-		var sequenceClone = sequence.ToArray();
 
 		// force complete enumeration of random subsets
 		sequence.Shuffle().Consume();
 
 		// verify the original sequence is untouched
-		Assert.Equal(sequenceClone, sequence);
+		sequence.AssertSequenceEqual(Enumerable.Range(1, 100));
 	}
 
 	[Fact]
 	public void ShuffleSeedIsLazy()
 	{
-		new BreakingSequence<int>().Shuffle(seed);
+		new BreakingSequence<int>().Shuffle(s_seed);
 	}
 
 	[Fact]
 	public void ShuffleSeed()
 	{
-		var source = Enumerable.Range(1, 100);
-		var result = source.Shuffle(seed);
+		using var source = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.NotEqual(source, result);
-		Assert.Equal(source, result.OrderBy(SuperEnumerable.Identity));
+		var result = source.Shuffle(s_seed).ToList();
+		result.AssertCollectionEqual(Enumerable.Range(1, 100));
 	}
 
 	[Fact]
 	public void ShuffleSeedWithEmptySequence()
 	{
-		var source = Enumerable.Empty<int>();
-		var result = source.Shuffle(seed);
+		using var source = Enumerable.Empty<int>().AsTestingSequence();
 
-		Assert.Empty(result);
+		var result = source.Shuffle(s_seed);
+		result.AssertSequenceEqual();
 	}
 
 	[Fact]
 	public void ShuffleSeedIsIdempotent()
 	{
 		var sequence = Enumerable.Range(1, 100).ToArray();
-		var sequenceClone = sequence.ToArray();
 
 		// force complete enumeration of random subsets
-		sequence.Shuffle(seed).Consume();
+		sequence.Shuffle(s_seed).Consume();
 
 		// verify the original sequence is untouched
-		Assert.Equal(sequenceClone, sequence);
+		sequence.AssertSequenceEqual(Enumerable.Range(1, 100));
 	}
 }
