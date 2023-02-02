@@ -39,10 +39,10 @@ public class ToArrayByIndexTest
 	[Fact]
 	public void ToArrayByIndexWithBadIndexSelectorThrows()
 	{
-		Assert.Throws<InvalidOperationException>(() =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Seq(42).ToArrayByIndex(_ => -1));
 
-		Assert.Throws<InvalidOperationException>(() =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Seq(42).ToArrayByIndex(_ => -1, BreakingFunc.Of<int, object>()));
 	}
 
@@ -51,10 +51,10 @@ public class ToArrayByIndexTest
 	[InlineData(10, 10)]
 	public void ToArrayByIndexWithLengthWithBadIndexSelectorThrows(int length, int badIndex)
 	{
-		Assert.Throws<InvalidOperationException>(() =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Seq(42).ToArrayByIndex(length, _ => badIndex));
 
-		Assert.Throws<InvalidOperationException>(() =>
+		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Seq(42).ToArrayByIndex(length, _ => badIndex, BreakingFunc.Of<int, object>()));
 	}
 
