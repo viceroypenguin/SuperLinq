@@ -27,6 +27,15 @@ public class AggregateRightTest
 		Assert.Equal("(1+(2+(3+(4+5))))", result);
 	}
 
+	[Fact]
+	public void AggregateRightWithList()
+	{
+		var list = Enumerable.Range(1, 5).Select(x => x.ToString()).ToList();
+		var result = list.AggregateRight((a, b) => string.Format("({0}+{1})", a, b));
+
+		Assert.Equal("(1+(2+(3+(4+5))))", result);
+	}
+
 	[Theory]
 	[InlineData(5)]
 	[InlineData("c")]
@@ -72,6 +81,15 @@ public class AggregateRightTest
 	{
 		using var enumerable = Enumerable.Range(1, 4).AsTestingSequence();
 		var result = enumerable.AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b), a => a.Length);
+
+		Assert.Equal("(1+(2+(3+(4+5))))".Length, result);
+	}
+
+	[Fact]
+	public void AggregateRightResultorWithList()
+	{
+		var list = Enumerable.Range(1, 4).ToList();
+		var result = list.AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b), a => a.Length);
 
 		Assert.Equal("(1+(2+(3+(4+5))))".Length, result);
 	}
