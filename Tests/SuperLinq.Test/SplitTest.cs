@@ -10,6 +10,22 @@ public class SplitTest
 	}
 
 	[Fact]
+	public void SplitWithComparer()
+	{
+		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
+		var result = sequence.Split(2, EqualityComparer.Create<int>((x, y) => x % 2 == y % 2));
+		result.AssertSequenceEqual(Enumerable.Range(1, 5).Select(x => new[] { x * 2 - 1, }));
+	}
+
+	[Fact]
+	public void SplitWithComparerUptoMaxCount()
+	{
+		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
+		var result = sequence.Split(2, EqualityComparer.Create<int>((x, y) => x % 2 == y % 2), 2).ToList();
+		result.AssertSequenceEqual(new[] { 1 }, new[] { 3 }, Enumerable.Range(5, 6));
+	}
+
+	[Fact]
 	public void SplitWithSeparatorAndResultTransformation()
 	{
 		using var sequence = "the quick brown fox".AsTestingSequence();
