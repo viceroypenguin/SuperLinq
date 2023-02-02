@@ -25,10 +25,11 @@ public class ScanRightTest
 	[Fact]
 	public void ScanRight()
 	{
-		using var seq = Enumerable.Range(1, 5).AsTestingSequence();
+		using var seq = Enumerable.Range(1, 5)
+			.Select(x => x.ToString())
+			.AsTestingSequence();
 
 		var result = seq
-			.Select(x => x.ToString())
 			.ScanRight((a, b) => string.Format("({0}+{1})", a, b));
 
 		result.AssertSequenceEqual(
@@ -38,10 +39,11 @@ public class ScanRightTest
 	[Fact]
 	public void ScanRightWithList()
 	{
-		var list = Enumerable.Range(1, 5).ToList();
+		var list = Enumerable.Range(1, 5)
+			.Select(x => x.ToString())
+			.ToList();
 
 		var result = list
-			.Select(x => x.ToString())
 			.ScanRight((a, b) => string.Format("({0}+{1})", a, b));
 
 		result.AssertSequenceEqual(
