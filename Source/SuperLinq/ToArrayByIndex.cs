@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 	/// resulting array.
 	/// </remarks>
 
-	public static T[] ToArrayByIndex<T>(this IEnumerable<T> source,
+	public static T?[] ToArrayByIndex<T>(this IEnumerable<T> source,
 		Func<T, int> indexSelector)
 	{
 		return source.ToArrayByIndex(indexSelector, (e, _) => e);
@@ -58,7 +58,7 @@ public static partial class SuperEnumerable
 	/// resulting array.
 	/// </remarks>
 
-	public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
+	public static TResult?[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
 		Func<T, int> indexSelector, Func<T, TResult> resultSelector)
 	{
 		Guard.IsNotNull(resultSelector);
@@ -93,7 +93,7 @@ public static partial class SuperEnumerable
 	/// resulting array.
 	/// </remarks>
 
-	public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
+	public static TResult?[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
 		Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
 	{
 		Guard.IsNotNull(source);
@@ -141,7 +141,7 @@ public static partial class SuperEnumerable
 	/// resulting array.
 	/// </remarks>
 
-	public static T[] ToArrayByIndex<T>(this IEnumerable<T> source, int length,
+	public static T?[] ToArrayByIndex<T>(this IEnumerable<T> source, int length,
 		Func<T, int> indexSelector)
 	{
 		return source.ToArrayByIndex(length, indexSelector, (e, _) => e);
@@ -175,7 +175,7 @@ public static partial class SuperEnumerable
 	/// resulting array.
 	/// </remarks>
 
-	public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
+	public static TResult?[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
 		Func<T, int> indexSelector, Func<T, TResult> resultSelector)
 	{
 		Guard.IsNotNull(resultSelector);
@@ -210,7 +210,7 @@ public static partial class SuperEnumerable
 	/// resulting array.
 	/// </remarks>
 
-	public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
+	public static TResult?[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
 		Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
 	{
 		Guard.IsNotNull(source);
@@ -218,7 +218,7 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(indexSelector);
 		Guard.IsNotNull(resultSelector);
 
-		var array = new TResult[length];
+		var array = new TResult?[length];
 		foreach (var e in source)
 		{
 			var i = indexSelector(e);
