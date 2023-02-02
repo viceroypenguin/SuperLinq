@@ -105,8 +105,7 @@ public static partial class SuperEnumerable
 		foreach (var e in source)
 		{
 			var i = indexSelector(e);
-			if (i < 0)
-				throw new InvalidOperationException("'indexSelector' returned an invalid index for the current object.");
+			Guard.IsGreaterThanOrEqualTo(i, 0, "indexSelector(e)");
 			lastIndex = Math.Max(i, lastIndex);
 			Indexed().Add(new KeyValuePair<int, T>(i, e));
 		}
@@ -226,8 +225,7 @@ public static partial class SuperEnumerable
 		foreach (var e in source)
 		{
 			var i = indexSelector(e);
-			if (i < 0 || i >= array.Length)
-				throw new InvalidOperationException("'indexSelector' returned an invalid index for the current object.");
+			Guard.IsBetween(i, -1, array.Length, "indexSelector(e)");
 			array[i] = resultSelector(e, i);
 		}
 		return array;
