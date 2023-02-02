@@ -99,21 +99,26 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(resultSelector);
 
 		var lastIndex = -1;
-		var indexed = (List<KeyValuePair<int, T>>?)null;
-		List<KeyValuePair<int, T>> Indexed() => indexed ??= new List<KeyValuePair<int, T>>();
+		var indexed = new List<(int, T)>();
 
 		foreach (var e in source)
 		{
 			var i = indexSelector(e);
 			Guard.IsGreaterThanOrEqualTo(i, 0, "indexSelector(e)");
 			lastIndex = Math.Max(i, lastIndex);
-			Indexed().Add(new KeyValuePair<int, T>(i, e));
+			indexed.Add((i, e));
 		}
 
+		if (lastIndex == -1)
+			return Array.Empty<TResult>();
+
 		var length = lastIndex + 1;
-		return length == 0
-			 ? Array.Empty<TResult>()
-			 : Indexed().ToArrayByIndex(length, e => e.Key, e => resultSelector(e.Value, e.Key));
+		var array = new TResult?[length];
+
+		foreach (var (idx, el) in indexed)
+			array[idx] = resultSelector(el, idx);
+
+		return array;
 	}
 
 	/// <summary>
