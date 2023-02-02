@@ -36,6 +36,19 @@ public class ScanRightTest
 	}
 
 	[Fact]
+	public void ScanRightWithList()
+	{
+		var list = Enumerable.Range(1, 5).ToList();
+
+		var result = list
+			.Select(x => x.ToString())
+			.ScanRight((a, b) => string.Format("({0}+{1})", a, b));
+
+		result.AssertSequenceEqual(
+			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
+	}
+
+	[Fact]
 	public void ScanRightIsLazy()
 	{
 		new BreakingSequence<int>().ScanRight(BreakingFunc.Of<int, int, int>());
@@ -70,6 +83,18 @@ public class ScanRightTest
 		using var seq = Enumerable.Range(1, 4).AsTestingSequence();
 
 		var result = seq
+			.ScanRight("5", (a, b) => string.Format("({0}+{1})", a, b));
+
+		result.AssertSequenceEqual(
+			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
+	}
+
+	[Fact]
+	public void ScanRightSeedWithList()
+	{
+		var list = Enumerable.Range(1, 4).ToList();
+
+		var result = list
 			.ScanRight("5", (a, b) => string.Format("({0}+{1})", a, b));
 
 		result.AssertSequenceEqual(
