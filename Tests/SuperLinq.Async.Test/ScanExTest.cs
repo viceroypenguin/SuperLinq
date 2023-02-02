@@ -3,17 +3,21 @@
 public class ScanExTest
 {
 	[Fact]
-	public Task ScanExEmpty()
+	public async Task ScanExEmpty()
 	{
-		return AsyncEnumerable.Empty<int>().ScanEx((a, b) => a + b)
-			.AssertEmpty();
+		await using var seq = TestingSequence.Of<int>();
+
+		var result = seq.ScanEx((a, b) => a + b);
+		await result.AssertSequenceEqual();
 	}
 
 	[Fact]
-	public Task ScanExSum()
+	public async Task ScanExSum()
 	{
-		var result = AsyncEnumerable.Range(1, 10).ScanEx((a, b) => a + b);
-		return result.AssertSequenceEqual(1, 3, 6, 10, 15, 21, 28, 36, 45, 55);
+		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
+
+		var result = seq.ScanEx((a, b) => a + b);
+		await result.AssertSequenceEqual(1, 3, 6, 10, 15, 21, 28, 36, 45, 55);
 	}
 
 	[Fact]
@@ -25,22 +29,31 @@ public class ScanExTest
 	[Fact]
 	public async Task ScanExDoesNotIterateExtra()
 	{
-		var sequence = AsyncEnumerable.Range(1, 3).Concat(new AsyncBreakingSequence<int>()).ScanEx((a, b) => a + b);
-		await Assert.ThrowsAsync<TestException>(async () => await sequence.Consume());
-		await sequence.Take(3).AssertSequenceEqual(1, 3, 6);
+		await using var seq = AsyncSeqExceptionAt(4).AsTestingSequence(maxEnumerations: 2);
+
+		var result = seq.ScanEx((a, b) => a + b);
+
+		await Assert.ThrowsAsync<TestException>(
+			async () => await result.Consume());
+		await result.Take(3).AssertSequenceEqual(1, 3, 6);
 	}
 
 	[Fact]
 	public async Task SeededScanExEmpty()
 	{
-		Assert.Equal(-1, await AsyncEnumerable.Empty<int>().ScanEx(-1, (a, b) => a + b).SingleAsync());
+		await using var seq = TestingSequence.Of<int>();
+
+		var result = seq.ScanEx(-1, (a, b) => a + b);
+		Assert.Equal(-1, await result.SingleAsync());
 	}
 
 	[Fact]
-	public Task SeededScanExSum()
+	public async Task SeededScanExSum()
 	{
-		var result = AsyncEnumerable.Range(1, 10).ScanEx(0, (a, b) => a + b);
-		return result.AssertSequenceEqual(0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55);
+		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
+
+		var result = seq.ScanEx(0, (a, b) => a + b);
+		await result.AssertSequenceEqual(0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55);
 	}
 
 	[Fact]
@@ -53,8 +66,11 @@ public class ScanExTest
 	[Fact]
 	public async Task SeededScanExDoesNotIterateExtra()
 	{
-		var sequence = AsyncEnumerable.Range(1, 3).Concat(new AsyncBreakingSequence<int>()).ScanEx(0, (a, b) => a + b);
-		await Assert.ThrowsAsync<TestException>(async () => await sequence.Consume());
-		await sequence.Take(4).AssertSequenceEqual(0, 1, 3, 6);
+		await using var seq = AsyncSeqExceptionAt(4).AsTestingSequence(maxEnumerations: 2);
+
+		var result = seq.ScanEx(0, (a, b) => a + b);
+
+		await Assert.ThrowsAsync<TestException>(async () => await result.Consume());
+		await result.Take(4).AssertSequenceEqual(0, 1, 3, 6);
 	}
 }
