@@ -12,9 +12,9 @@ public class ScanByTest
 	}
 
 	[Fact]
-	public Task ScanBy()
+	public async Task ScanBy()
 	{
-		var source = AsyncSeq(
+		await using var source = TestingSequence.Of(
 			"ana",
 			"beatriz",
 			"carla",
@@ -24,13 +24,13 @@ public class ScanByTest
 			"angelo",
 			"carlos");
 
-		var result =
-			source.ScanBy(
+		var result = source
+			.ScanBy(
 				item => item.First(),
 				key => (Element: default(string), Key: key, State: key - 1),
 				(state, key, item) => (item, char.ToUpperInvariant(key), state.State + 1));
 
-		return result.AssertSequenceEqual(
+		await result.AssertSequenceEqual(
 			('a', ("ana", 'A', 97)),
 			('b', ("beatriz", 'B', 98)),
 			('c', ("carla", 'C', 99)),
@@ -42,57 +42,64 @@ public class ScanByTest
 	}
 
 	[Fact]
-	public Task ScanByWithSecondOccurenceImmediatelyAfterFirst()
+	public async Task ScanByWithSecondOccurenceImmediatelyAfterFirst()
 	{
-		var result = "jaffer".ToAsyncEnumerable().ScanBy(SuperEnumerable.Identity, k => -1, (i, k, e) => i + 1);
+		await using var source = "jaffer".AsTestingSequence();
 
-		return result.AssertSequenceEqual(('j', 0), ('a', 0), ('f', 0), ('f', 1), ('e', 0), ('r', 0));
-	}
-
-	[Fact]
-	public Task ScanByWithEqualityComparer()
-	{
-		var source = AsyncSeq("a", "B", "c", "A", "b", "A");
-		var result = source.ScanBy(
-			SuperEnumerable.Identity,
-			k => -1,
-			(i, k, e) => i + 1,
-			StringComparer.OrdinalIgnoreCase);
-
-		return result.AssertSequenceEqual(("a", 0), ("B", 0), ("c", 0), ("A", 1), ("b", 1), ("A", 2));
-	}
-
-	[Fact]
-	public Task ScanByWithSomeNullKeys()
-	{
-		var source = AsyncSeq("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
 		var result = source.ScanBy(SuperEnumerable.Identity, k => -1, (i, k, e) => i + 1);
 
-		return result.AssertSequenceEqual(("foo", 0), (null, 0), ("bar", 0), ("baz", 0), (null, 1), (null, 2), ("baz", 1), ("bar", 1), (null, 3), ("foo", 1));
+		await result.AssertSequenceEqual(('j', 0), ('a', 0), ('f', 0), ('f', 1), ('e', 0), ('r', 0));
 	}
 
 	[Fact]
-	public Task ScanByWithNullSeed()
+	public async Task ScanByWithEqualityComparer()
 	{
+		await using var source = TestingSequence.Of("a", "B", "c", "A", "b", "A");
+
+		var result = source
+			.ScanBy(
+				SuperEnumerable.Identity,
+				k => -1,
+				(i, k, e) => i + 1,
+				StringComparer.OrdinalIgnoreCase);
+
+		await result.AssertSequenceEqual(("a", 0), ("B", 0), ("c", 0), ("A", 1), ("b", 1), ("A", 2));
+	}
+
+	[Fact]
+	public async Task ScanByWithSomeNullKeys()
+	{
+		await using var source = TestingSequence.Of("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
+
+		var result = source.ScanBy(SuperEnumerable.Identity, k => -1, (i, k, e) => i + 1);
+		await result.AssertSequenceEqual(("foo", 0), (null, 0), ("bar", 0), ("baz", 0), (null, 1), (null, 2), ("baz", 1), ("bar", 1), (null, 3), ("foo", 1));
+	}
+
+	[Fact]
+	public async Task ScanByWithNullSeed()
+	{
+		await using var source = TestingSequence.Of("foo", null, "bar", null, "baz");
+
 		var nil = (object?)null;
-		var source = AsyncSeq("foo", null, "bar", null, "baz");
 		var result = source.ScanBy(SuperEnumerable.Identity, k => nil, (i, k, e) => nil);
 
-		return result.AssertSequenceEqual(("foo", nil), (null, nil), ("bar", nil), (null, nil), ("baz", nil));
+		await result.AssertSequenceEqual(("foo", nil), (null, nil), ("bar", nil), (null, nil), ("baz", nil));
 	}
 
 	[Fact]
 	public async Task ScanByDoesNotIterateUnnecessaryElements()
 	{
-		var source = AsyncSuperEnumerable.From(
-			() => Task.FromResult("ana"),
-			() => Task.FromResult("beatriz"),
-			() => Task.FromResult("carla"),
-			() => Task.FromResult("bob"),
-			() => Task.FromResult("davi"),
-			AsyncBreakingFunc.Of<string>(),
-			() => Task.FromResult("angelo"),
-			() => Task.FromResult("carlos"));
+		await using var source = SuperEnumerable
+			.From(
+				() => "ana",
+				() => "beatriz",
+				() => "carla",
+				() => "bob",
+				() => "davi",
+				() => throw new TestException(),
+				() => "angelo",
+				() => "carlos")
+			.AsTestingSequence(maxEnumerations: 2);
 
 		var result = source.ScanBy(c => c.First(), k => -1, (i, k, e) => i + 1);
 
