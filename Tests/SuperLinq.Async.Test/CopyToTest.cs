@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Test.Async;
 
@@ -41,13 +42,19 @@ public class CopyToTest
 	{
 		var array = new int[4];
 
-		var cnt = await AsyncSeq(1).CopyTo(array);
-		array.AssertSequenceEqual(1, 0, 0, 0);
-		Assert.Equal(1, cnt);
+		await using (var xs = TestingSequence.Of(1))
+		{
+			var cnt = await xs.CopyTo(array);
+			array.AssertSequenceEqual(1, 0, 0, 0);
+			Assert.Equal(1, cnt);
+		}
 
-		cnt = await AsyncSeq(2).CopyTo(array, 1);
-		array.AssertSequenceEqual(1, 2, 0, 0);
-		Assert.Equal(1, cnt);
+		await using (var xs = TestingSequence.Of(2))
+		{
+			var cnt = await xs.CopyTo(array, 1);
+			array.AssertSequenceEqual(1, 2, 0, 0);
+			Assert.Equal(1, cnt);
+		}
 	}
 
 	[Fact]
@@ -55,17 +62,26 @@ public class CopyToTest
 	{
 		var list = new List<int>();
 
-		var cnt = await AsyncSeq(1).CopyTo(list);
-		list.AssertSequenceEqual(1);
-		Assert.Equal(1, cnt);
+		await using (var xs = TestingSequence.Of(1))
+		{
+			var cnt = await xs.CopyTo(list);
+			list.AssertSequenceEqual(1);
+			Assert.Equal(1, cnt);
+		}
 
-		cnt = await AsyncSeq(2).CopyTo(list, 1);
-		list.AssertSequenceEqual(1, 2);
-		Assert.Equal(1, cnt);
+		await using (var xs = TestingSequence.Of(2))
+		{
+			var cnt = await xs.CopyTo(list, 1);
+			list.AssertSequenceEqual(1, 2);
+			Assert.Equal(1, cnt);
+		}
 
-		cnt = await AsyncSeq(3, 4).CopyTo(list, 1);
-		list.AssertSequenceEqual(1, 3, 4);
-		Assert.Equal(2, cnt);
+		await using (var xs = TestingSequence.Of(3, 4))
+		{
+			var cnt = await xs.CopyTo(list, 1);
+			list.AssertSequenceEqual(1, 3, 4);
+			Assert.Equal(2, cnt);
+		}
 	}
 
 	[Fact]
@@ -73,16 +89,25 @@ public class CopyToTest
 	{
 		var list = new Collection<int>();
 
-		var cnt = await AsyncSeq(1).CopyTo(list);
-		list.AssertSequenceEqual(1);
-		Assert.Equal(1, cnt);
+		await using (var xs = TestingSequence.Of(1))
+		{
+			var cnt = await xs.CopyTo(list);
+			list.AssertSequenceEqual(1);
+			Assert.Equal(1, cnt);
+		}
 
-		cnt = await AsyncSeq(2).CopyTo(list, 1);
-		list.AssertSequenceEqual(1, 2);
-		Assert.Equal(1, cnt);
+		await using (var xs = TestingSequence.Of(2))
+		{
+			var cnt = await xs.CopyTo(list, 1);
+			list.AssertSequenceEqual(1, 2);
+			Assert.Equal(1, cnt);
+		}
 
-		cnt = await AsyncSeq(3, 4).CopyTo(list, 1);
-		list.AssertSequenceEqual(1, 3, 4);
-		Assert.Equal(2, cnt);
+		await using (var xs = TestingSequence.Of(3, 4))
+		{
+			var cnt = await xs.CopyTo(list, 1);
+			list.AssertSequenceEqual(1, 3, 4);
+			Assert.Equal(2, cnt);
+		}
 	}
 }

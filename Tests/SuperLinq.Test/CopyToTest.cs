@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 namespace Test;
 
@@ -76,7 +77,8 @@ public class CopyToTest
 	{
 		Span<int> span = stackalloc int[4];
 
-		var cnt = Seq(1).CopyTo(span);
+		using var xs = Seq(1).AsTestingSequence();
+		var cnt = xs.CopyTo(span);
 		span.ToArray().AssertSequenceEqual(1, 0, 0, 0);
 		Assert.Equal(1, cnt);
 
@@ -94,7 +96,8 @@ public class CopyToTest
 	{
 		var array = new int[4];
 
-		var cnt = Seq(1).CopyTo(array);
+		using var xs = Seq(1).AsTestingSequence();
+		var cnt = xs.CopyTo(array);
 		array.AssertSequenceEqual(1, 0, 0, 0);
 		Assert.Equal(1, cnt);
 
@@ -116,17 +119,26 @@ public class CopyToTest
 	{
 		var list = new List<int>();
 
-		var cnt = Seq(1).CopyTo(list);
-		list.AssertSequenceEqual(1);
-		Assert.Equal(1, cnt);
+		using (var xs = TestingSequence.Of(1))
+		{
+			var cnt = xs.CopyTo(list);
+			list.AssertSequenceEqual(1);
+			Assert.Equal(1, cnt);
+		}
 
-		cnt = Seq(2).CopyTo(list, 1);
-		list.AssertSequenceEqual(1, 2);
-		Assert.Equal(1, cnt);
+		using (var xs = TestingSequence.Of(2))
+		{
+			var cnt = xs.CopyTo(list, 1);
+			list.AssertSequenceEqual(1, 2);
+			Assert.Equal(1, cnt);
+		}
 
-		cnt = Seq(3, 4).CopyTo(list, 1);
-		list.AssertSequenceEqual(1, 3, 4);
-		Assert.Equal(2, cnt);
+		using (var xs = TestingSequence.Of(3, 4))
+		{
+			var cnt = xs.CopyTo(list, 1);
+			list.AssertSequenceEqual(1, 3, 4);
+			Assert.Equal(2, cnt);
+		}
 	}
 
 	[Fact]
@@ -134,16 +146,25 @@ public class CopyToTest
 	{
 		var list = new Collection<int>();
 
-		var cnt = Seq(1).CopyTo(list);
-		list.AssertSequenceEqual(1);
-		Assert.Equal(1, cnt);
+		using (var xs = TestingSequence.Of(1))
+		{
+			var cnt = xs.CopyTo(list);
+			list.AssertSequenceEqual(1);
+			Assert.Equal(1, cnt);
+		}
 
-		cnt = Seq(2).CopyTo(list, 1);
-		list.AssertSequenceEqual(1, 2);
-		Assert.Equal(1, cnt);
+		using (var xs = TestingSequence.Of(2))
+		{
+			var cnt = xs.CopyTo(list, 1);
+			list.AssertSequenceEqual(1, 2);
+			Assert.Equal(1, cnt);
+		}
 
-		cnt = Seq(3, 4).CopyTo(list, 1);
-		list.AssertSequenceEqual(1, 3, 4);
-		Assert.Equal(2, cnt);
+		using (var xs = TestingSequence.Of(3, 4))
+		{
+			var cnt = xs.CopyTo(list, 1);
+			list.AssertSequenceEqual(1, 3, 4);
+			Assert.Equal(2, cnt);
+		}
 	}
 }
