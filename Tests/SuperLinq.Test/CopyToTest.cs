@@ -105,7 +105,7 @@ public class CopyToTest
 		array.AssertSequenceEqual(1, 2, 0, 0);
 		Assert.Equal(1, cnt);
 
-		cnt = new List<int> { 3 }.AsReadOnly().AsEnumerable().CopyTo(array, 2);
+		cnt = Enumerable.Range(3, 1).CopyTo(array, 2);
 		array.AssertSequenceEqual(1, 2, 3, 0);
 		Assert.Equal(1, cnt);
 
