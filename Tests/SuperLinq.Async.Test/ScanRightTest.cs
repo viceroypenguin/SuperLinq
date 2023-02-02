@@ -5,40 +5,34 @@ public class ScanRightTest
 	// ScanRight(source, func)
 
 	[Fact]
-	public Task ScanRightWithEmptySequence()
+	public async Task ScanRightWithEmptySequence()
 	{
-		var result = AsyncEnumerable.Empty<int>().ScanRight((a, b) => a + b);
+		await using var seq = TestingSequence.Of<int>();
 
-		return result.AssertEmpty();
-	}
-
-	[Fact]
-	public async Task ScanRightDisposesEnumerator()
-	{
-		await using var result = TestingSequence.Of<int>();
-
-		await result.ScanRight((a, b) => a + b).AssertEmpty();
+		var result = seq.ScanRight((a, b) => a + b);
+		await result.AssertSequenceEqual();
 	}
 
 	[Fact]
 	public async Task ScanRightFuncIsNotInvokedOnSingleElementSequence()
 	{
-		var result = AsyncSeq(1).ScanRight(BreakingFunc.Of<int, int, int>());
+		await using var seq = TestingSequence.Of(1);
 
+		var result = seq.ScanRight(BreakingFunc.Of<int, int, int>());
 		await result.AssertSequenceEqual(1);
 	}
 
 	[Fact]
 	public async Task ScanRight()
 	{
-		var result = AsyncEnumerable
-			.Range(1, 5)
+		await using var seq = Enumerable.Range(1, 5).AsTestingSequence();
+
+		var result = seq
 			.Select(x => x.ToString())
 			.ScanRight((a, b) => string.Format("({0}+{1})", a, b));
 
-		var expectations = new[] { "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" };
-
-		await result.AssertSequenceEqual(expectations);
+		await result.AssertSequenceEqual(
+			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
 	}
 
 	[Fact]
@@ -53,29 +47,33 @@ public class ScanRightTest
 	[InlineData(5)]
 	[InlineData("c")]
 	[InlineData(true)]
-	public Task ScanRightSeedWithEmptySequence(object defaultValue)
+	public async Task ScanRightSeedWithEmptySequence(object defaultValue)
 	{
-		return AsyncEnumerable.Empty<int>().ScanRight(defaultValue, (a, b) => b).AssertSequenceEqual(defaultValue);
+		await using var seq = TestingSequence.Of<int>();
+
+		var result = seq.ScanRight(defaultValue, (a, b) => b);
+		await result.AssertSequenceEqual(defaultValue);
 	}
 
 	[Fact]
-	public Task ScanRightSeedFuncIsNotInvokedOnEmptySequence()
+	public async Task ScanRightSeedFuncIsNotInvokedOnEmptySequence()
 	{
-		var result = AsyncEnumerable.Empty<int>().ScanRight(1, BreakingFunc.Of<int, int, int>());
+		await using var seq = TestingSequence.Of<int>();
 
-		return result.AssertSequenceEqual(1);
+		var result = seq.ScanRight(1, BreakingFunc.Of<int, int, int>());
+		await result.AssertSequenceEqual(1);
 	}
 
 	[Fact]
-	public Task ScanRightSeed()
+	public async Task ScanRightSeed()
 	{
-		var result = AsyncEnumerable
-			.Range(1, 4)
+		await using var seq = Enumerable.Range(1, 4).AsTestingSequence();
+
+		var result = seq
 			.ScanRight("5", (a, b) => string.Format("({0}+{1})", a, b));
 
-		var expectations = new[] { "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" };
-
-		return result.AssertSequenceEqual(expectations);
+		await result.AssertSequenceEqual(
+			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
 	}
 
 	[Fact]
