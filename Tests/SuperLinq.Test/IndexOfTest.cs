@@ -5,7 +5,7 @@ public class IndexOfTest
 	[Fact]
 	public void IndexOfWithNegativeCount()
 	{
-		using var sequence = Seq(1).AsTestingSequence();
+		using var sequence = TestingSequence.Of(1);
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			sequence.IndexOf(1, 1, -1));
 	}

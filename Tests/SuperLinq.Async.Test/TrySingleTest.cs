@@ -5,7 +5,7 @@ public class TrySingleTest
 	[Fact]
 	public async Task TrySingleWithEmptySource()
 	{
-		var source = AsyncEnumerable.Empty<int?>();
+		await using var source = AsyncEnumerable.Empty<int?>().AsTestingSequence();
 
 		var (cardinality, value) = await source.TrySingle("zero", "one", "many");
 
@@ -16,7 +16,7 @@ public class TrySingleTest
 	[Fact]
 	public async Task TrySingleWithSingleton()
 	{
-		var source = AsyncSeq<int?>(10);
+		await using var source = AsyncSeq<int?>(10).AsTestingSequence();
 
 		var (cardinality, value) = await source.TrySingle("zero", "one", "many");
 
@@ -27,7 +27,7 @@ public class TrySingleTest
 	[Fact]
 	public async Task TrySingleWithMoreThanOne()
 	{
-		var source = AsyncSeq<int?>(10, 20);
+		await using var source = AsyncSeq<int?>(10, 20).AsTestingSequence();
 
 		var (cardinality, value) = await source.TrySingle("zero", "one", "many");
 
@@ -38,10 +38,12 @@ public class TrySingleTest
 	[Fact]
 	public async Task TrySingleDoesNotConsumeMoreThanTwoElementsFromTheSequence()
 	{
-		var seq = AsyncSuperEnumerable.From(
-			() => Task.FromResult(1),
-			() => Task.FromResult(2),
-			AsyncBreakingFunc.Of<int>());
+		await using var seq = AsyncSuperEnumerable
+			.From(
+				() => Task.FromResult(1),
+				() => Task.FromResult(2),
+				AsyncBreakingFunc.Of<int>())
+			.AsTestingSequence();
 
 		var (cardinality, value) = await seq.TrySingle("zero", "one", "many");
 

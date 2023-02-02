@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Diagnostics;
-using SuperLinq;
 
 namespace Test.Async;
 
@@ -12,8 +11,9 @@ internal static partial class TestExtensions
 
 	public static IAsyncEnumerable<int> AsyncSeqExceptionAt(int index) =>
 		AsyncSuperEnumerable.From(
-			Enumerable.Range(1, index).Select(i => Func(() => Task.FromResult(i)))
-				.Append(() => Task.FromException<int>(new NotSupportedException()))
+			Enumerable.Range(1, index - 1)
+				.Select(i => Func(() => Task.FromResult(i)))
+				.Append(AsyncBreakingFunc.Of<int>())
 				.ToArray());
 
 	internal static async Task AssertEmpty<T>(this IAsyncEnumerable<T> actual) =>

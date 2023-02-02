@@ -1,5 +1,4 @@
-﻿using SuperLinq;
-using static Test.Async.FullOuterJoinTest.Side;
+﻿using static Test.Async.FullOuterJoinTest.Side;
 
 namespace Test.Async;
 
@@ -56,8 +55,8 @@ public class InnerJoinTest
 		var quux = (5, "quux");
 		var quuz = (6, "quuz");
 
-		var xs = AsyncSeq(foo, bar1, qux);
-		var ys = AsyncSeq(bar2, bar3, baz, quuz, quux);
+		using var xs = TestingSequence.Of(foo, bar1, qux);
+		using var ys = TestingSequence.Of(bar2, bar3, baz, quuz, quux);
 
 		var result = xs
 			.InnerJoin(ys,
@@ -83,8 +82,8 @@ public class InnerJoinTest
 		var quux = ("five", "quux");
 		var quuz = ("six", "quuz");
 
-		var xs = AsyncSeq(foo, bar1, qux);
-		var ys = AsyncSeq(bar2, bar3, baz, quuz, quux);
+		using var xs = TestingSequence.Of(foo, bar1, qux);
+		using var ys = TestingSequence.Of(bar2, bar3, baz, quuz, quux);
 
 		var result = xs
 			.InnerJoin(ys,
@@ -106,8 +105,8 @@ public class InnerJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = AsyncSeq<(int, string)>();
-		var ys = AsyncSeq(foo, bar, baz);
+		using var xs = TestingSequence.Of<(int, string)>();
+		using var ys = TestingSequence.Of(foo, bar, baz);
 
 		var result = xs
 			.InnerJoin(ys,
@@ -126,8 +125,8 @@ public class InnerJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = AsyncSeq(foo, bar, baz);
-		var ys = AsyncSeq<(int, string)>();
+		using var xs = TestingSequence.Of(foo, bar, baz);
+		using var ys = TestingSequence.Of<(int, string)>();
 
 		var result = xs
 			.InnerJoin(ys,

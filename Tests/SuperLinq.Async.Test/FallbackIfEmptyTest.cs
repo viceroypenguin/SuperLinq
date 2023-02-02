@@ -5,7 +5,7 @@ public class FallbackIfEmptyTest
 	[Fact]
 	public async Task FallbackIfEmptyWithEmptySequence()
 	{
-		var source = AsyncEnumerable.Empty<int>().Select(x => x);
+		await using var source = AsyncEnumerable.Empty<int>().AsTestingSequence(maxEnumerations: 2);
 		await source.FallbackIfEmpty(12).AssertSequenceEqual(12);
 		await source.FallbackIfEmpty(12, 23).AssertSequenceEqual(12, 23);
 	}
@@ -13,8 +13,8 @@ public class FallbackIfEmptyTest
 	[Fact]
 	public async Task FallbackIfEmptyWithNotEmptySequence()
 	{
-		var source = Seq(1);
-		Assert.Equal(source, await source.ToAsyncEnumerable().FallbackIfEmpty(12).ToListAsync());
-		Assert.Equal(source, await source.ToAsyncEnumerable().FallbackIfEmpty(12, 23).ToListAsync());
+		await using var source = AsyncSeq(1).AsTestingSequence(maxEnumerations: 2);
+		await source.FallbackIfEmpty(12).AssertSequenceEqual(1);
+		await source.FallbackIfEmpty(12, 23).AssertSequenceEqual(1);
 	}
 }

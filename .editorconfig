@@ -207,13 +207,19 @@ csharp_preserve_single_line_statements = true:silent
 # For ScanEx()
 dotnet_code_quality.ca1711.allowed_suffixes = Ex
 
+# XML Documentation
 dotnet_diagnostic.CS0105.severity = error               # CS0105: Using directive is unnecessary.
 dotnet_diagnostic.CS1573.severity = error               # CS1573: Missing XML comment for parameter
 dotnet_diagnostic.CS1591.severity = error               # CS1591: Missing XML comment for publicly visible type or member
 dotnet_diagnostic.CS1712.severity = error               # CS1712: Type parameter has no matching typeparam tag in the XML comment (but other type parameters do)
 
+# Async
 dotnet_diagnostic.CS1998.severity = error               # CS1998: Async method lacks 'await' operators and will run synchronously
 dotnet_diagnostic.CS4014.severity = error               # CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
 
+# Dispose things need disposing
+dotnet_diagnostic.CA2000.severity = error               # CA2000: Dispose objects before losing scope
+
+# Overly strict checks
 dotnet_diagnostic.CA2007.severity = none                # CA2007: Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA5394.severity = none                # CA5394: Random is an insecure random number generator. Use cryptographically secure random number generators when randomness is required for security.

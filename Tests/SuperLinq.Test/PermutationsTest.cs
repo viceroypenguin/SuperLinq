@@ -1,4 +1,7 @@
-﻿namespace Test;
+﻿using System.Collections;
+using CommunityToolkit.Diagnostics;
+
+namespace Test;
 
 /// <summary>
 /// Tests that verify the behavior of the Permutations() operator.
@@ -11,11 +14,12 @@ public class PermutationsTest
 	[Fact]
 	public void TestCardinalityZeroPermutation()
 	{
-		var emptySet = Array.Empty<int>();
+		using var emptySet = TestingSequence.Of<int>();
+
 		var permutations = emptySet.Permutations();
 
 		// should contain a single result: the empty set itself
-		Assert.Equal(emptySet, permutations.Single());
+		permutations.Single().AssertSequenceEqual();
 	}
 
 	/// <summary>
@@ -24,11 +28,12 @@ public class PermutationsTest
 	[Fact]
 	public void TestCardinalityOnePermutation()
 	{
-		var set = new[] { 42 };
+		using var set = TestingSequence.Of(42);
+
 		var permutations = set.Permutations();
 
 		// should contain a single result: the set itself
-		Assert.Equal(set, permutations.Single());
+		permutations.Single().AssertSequenceEqual(42);
 	}
 
 	/// <summary>
@@ -38,13 +43,14 @@ public class PermutationsTest
 	[Fact]
 	public void TestCardinalityTwoPermutation()
 	{
-		var set = new[] { 42, 37 };
-		var permutations = set.Permutations();
+		using var set = TestingSequence.Of(42, 37);
+
+		var permutations = set.Permutations().ToList();
 
 		// should contain two results: the set itself and its reverse
-		Assert.True(permutations.Count() == 2);
-		Assert.Equal(set, permutations.First());
-		Assert.Equal(set.Reverse(), permutations.Last());
+		Assert.Equal(2, permutations.Count);
+		permutations[0].AssertSequenceEqual(42, 37);
+		permutations[1].AssertSequenceEqual(37, 42);
 	}
 
 	/// <summary>
@@ -54,22 +60,25 @@ public class PermutationsTest
 	[Fact]
 	public void TestCardinalityThreePermutation()
 	{
-		var set = new[] { 42, 11, 100 };
-		var permutations = set.Permutations();
+		using var set = TestingSequence.Of(42, 11, 100);
 
+		var permutations = set.Permutations();
 		var expectedPermutations = new[]
-									   {
-											   new[] {42, 11, 100},
-											   new[] {42, 100, 11},
-											   new[] {11, 100, 42},
-											   new[] {11, 42, 100},
-											   new[] {100, 11, 42},
-											   new[] {100, 42, 11},
-										   };
+		{
+			new[] { 42, 11, 100, },
+			new[] { 42, 100, 11, },
+			new[] { 11, 100, 42, },
+			new[] { 11, 42, 100, },
+			new[] { 100, 11, 42, },
+			new[] { 100, 42, 11, },
+		};
 
 		// should contain six permutations (as defined above)
-		Assert.Equal(expectedPermutations.Length, permutations.Count());
-		Assert.True(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
+		permutations.AssertCollectionEqual(
+			expectedPermutations,
+			EqualityComparer.Create<IList<int>>(
+				(x, y) => x.SequenceEqual(y),
+				StructuralComparisons.StructuralEqualityComparer.GetHashCode));
 	}
 
 	/// <summary>
@@ -79,40 +88,42 @@ public class PermutationsTest
 	[Fact]
 	public void TestCardinalityFourPermutation()
 	{
-		var set = new[] { 42, 11, 100, 89 };
+		using var set = TestingSequence.Of(42, 11, 100, 89);
+
 		var permutations = set.Permutations();
-
 		var expectedPermutations = new[]
-									   {
-											   new[] {42, 11, 100, 89},
-											   new[] {42, 100, 11, 89},
-											   new[] {11, 100, 42, 89},
-											   new[] {11, 42, 100, 89},
-											   new[] {100, 11, 42, 89},
-											   new[] {100, 42, 11, 89},
-											   new[] {42, 11, 89, 100},
-											   new[] {42, 100, 89, 11},
-											   new[] {11, 100, 89, 42},
-											   new[] {11, 42, 89, 100},
-											   new[] {100, 11, 89, 42},
-											   new[] {100, 42, 89, 11},
-											   new[] {42, 89, 11, 100},
-											   new[] {42, 89, 100, 11},
-											   new[] {11, 89, 100, 42},
-											   new[] {11, 89, 42, 100},
-											   new[] {100, 89, 11, 42},
-											   new[] {100, 89, 42, 11},
-											   new[] {89, 42, 11, 100},
-											   new[] {89, 42, 100, 11},
-											   new[] {89, 11, 100, 42},
-											   new[] {89, 11, 42, 100},
-											   new[] {89, 100, 11, 42},
-											   new[] {89, 100, 42, 11},
-										   };
+		{
+			new[] { 42, 11, 100, 89, },
+			new[] { 42, 100, 11, 89, },
+			new[] { 11, 100, 42, 89, },
+			new[] { 11, 42, 100, 89, },
+			new[] { 100, 11, 42, 89, },
+			new[] { 100, 42, 11, 89, },
+			new[] { 42, 11, 89, 100, },
+			new[] { 42, 100, 89, 11, },
+			new[] { 11, 100, 89, 42, },
+			new[] { 11, 42, 89, 100, },
+			new[] { 100, 11, 89, 42, },
+			new[] { 100, 42, 89, 11, },
+			new[] { 42, 89, 11, 100, },
+			new[] { 42, 89, 100, 11, },
+			new[] { 11, 89, 100, 42, },
+			new[] { 11, 89, 42, 100, },
+			new[] { 100, 89, 11, 42, },
+			new[] { 100, 89, 42, 11, },
+			new[] { 89, 42, 11, 100, },
+			new[] { 89, 42, 100, 11, },
+			new[] { 89, 11, 100, 42, },
+			new[] { 89, 11, 42, 100, },
+			new[] { 89, 100, 11, 42, },
+			new[] { 89, 100, 42, 11, },
+		};
 
-		// should contain six permutations (as defined above)
-		Assert.Equal(expectedPermutations.Length, permutations.Count());
-		Assert.True(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
+		permutations.AssertCollectionEqual(
+			expectedPermutations,
+			EqualityComparer.Create<IList<int>>(
+				(x, y) => x.SequenceEqual(y),
+				StructuralComparisons.StructuralEqualityComparer.GetHashCode));
 	}
 
 	/// <summary>
@@ -136,9 +147,11 @@ public class PermutationsTest
 
 		foreach (var set in setsToPermute)
 		{
-			var permutedSet = set.Permutations();
-			var permutationCount = permutedSet.Count();
-			Assert.Equal(Combinatorics.Factorial(set.Count()), permutationCount);
+			using var xs = set.AsTestingSequence();
+			var permutedSet = xs.Permutations();
+			Assert.Equal(
+				Combinatorics.Factorial(set.Count()),
+				permutedSet.Count());
 		}
 	}
 
@@ -159,19 +172,15 @@ public class PermutationsTest
 	[Fact]
 	public void TestPermutationsAreIndependent()
 	{
-		var set = new[] { 10, 20, 30, 40, };
-		var permutedSets = set.Permutations();
+		using var set = Enumerable.Range(1, 4).Select(i => i * 10).AsTestingSequence();
 
-		var listPermutations = new List<IList<int>>();
-		listPermutations.AddRange(permutedSets);
-		Assert.NotEmpty(listPermutations);
+		var permutedSets = set.Permutations().ToList();
 
-		for (var i = 0; i < listPermutations.Count; i++)
+		for (var i = 0; i < permutedSets.Count; i++)
 		{
-			for (var j = 1; j < listPermutations.Count; j++)
+			for (var j = i + 1; j < permutedSets.Count; j++)
 			{
-				if (j == i) continue;
-				Assert.NotEqual(listPermutations[i], listPermutations[j]);
+				Guard.IsFalse(permutedSets[i].SequenceEqual(permutedSets[j]));
 			}
 		}
 	}

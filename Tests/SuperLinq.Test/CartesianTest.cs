@@ -124,7 +124,7 @@ public class CartesianTests
 		// ensure that all "cells" were visited by the cartesian product
 		foreach (var coord in result)
 			expectedSet[coord.A][coord.B] = true;
-		Assert.True(expectedSet.SelectMany(x => x).All(z => z));
+		Assert.True(expectedSet.SelectMany(SuperEnumerable.Identity).All(SuperEnumerable.Identity));
 	}
 
 	/// <summary>

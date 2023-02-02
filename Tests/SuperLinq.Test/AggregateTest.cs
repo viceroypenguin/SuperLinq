@@ -112,7 +112,7 @@ public class AggregateTest
 		Assert.Equal(5.5, result.Average);
 		Assert.Equal(1, result.Min);
 		Assert.Equal(10, result.Max);
-		result.UniqueLengths.OrderBy(n => n).AssertSequenceEqual(1, 2);
+		result.UniqueLengths.OrderBy(SuperEnumerable.Identity).AssertSequenceEqual(1, 2);
 		result.Items
 			  .Select(e => new { e.Num, e.Str })
 			  .OrderBy(e => e.Num)

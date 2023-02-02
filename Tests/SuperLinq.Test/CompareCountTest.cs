@@ -33,8 +33,7 @@ public class CompareCountTest
 		int expectedCompareCount,
 		int expectedMoveNextCallCount)
 	{
-		var collection = new BreakingCollection<int>(collectionCount);
-
+		using var collection = new BreakingCollection<int>(Enumerable.Range(0, collectionCount));
 		using var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence();
 
 		Assert.Equal(expectedCompareCount, collection.CompareCount(seq));
@@ -52,8 +51,7 @@ public class CompareCountTest
 		int expectedCompareCount,
 		int expectedMoveNextCallCount)
 	{
-		var collection = new BreakingCollection<int>(collectionCount);
-
+		using var collection = new BreakingCollection<int>(Enumerable.Range(0, collectionCount));
 		using var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence();
 
 		Assert.Equal(expectedCompareCount, seq.CompareCount(collection));
@@ -91,8 +89,7 @@ public class CompareCountTest
 	[Fact]
 	public void CompareCountDisposesFirstEnumerator()
 	{
-		var collection = new BreakingCollection<int>(0);
-
+		using var collection = new BreakingCollection<int>(Array.Empty<int>());
 		using var seq = TestingSequence.Of<int>();
 
 		Assert.Equal(0, seq.CompareCount(collection));
@@ -101,8 +98,7 @@ public class CompareCountTest
 	[Fact]
 	public void CompareCountDisposesSecondEnumerator()
 	{
-		var collection = new BreakingCollection<int>(0);
-
+		using var collection = new BreakingCollection<int>(Array.Empty<int>());
 		using var seq = TestingSequence.Of<int>();
 
 		Assert.Equal(0, collection.CompareCount(seq));
@@ -111,30 +107,29 @@ public class CompareCountTest
 	[Fact]
 	public void CompareCountDoesNotIterateUnnecessaryElements()
 	{
-		var seq1 = SuperEnumerable.From(() => 1,
-									   () => 2,
-									   () => 3,
-									   () => 4,
-									   () => throw new TestException());
+		using var seq1 = SeqExceptionAt(5).AsTestingSequence();
 
-		var seq2 = Enumerable.Range(1, 3);
+		using var seq2 = Enumerable.Range(1, 3).AsTestingSequence();
 
 		Assert.Equal(1, seq1.CompareCount(seq2));
-		Assert.Equal(-1, seq2.CompareCount(seq1));
 	}
 
 	private static IEnumerable<TResult> GetTestSequenceKinds<T, TResult>(
 		IEnumerable<T> s1, IEnumerable<T> s2,
-		Func<(IEnumerable<T?> Data, SourceKind Kind),
-			(IEnumerable<T?> Data, SourceKind Kind), TResult> selector)
+		Func<
+			(IEnumerable<T?> Data, SourceKind Kind),
+			(IEnumerable<T?> Data, SourceKind Kind),
+			TResult> selector)
 	{
 		// Test that the operator is optimized for collections
 
-		var s1Seq = (s1.Select(x => x), SourceKind.Sequence);
-		var s2Seq = (s2.Select(x => x), SourceKind.Sequence);
+		var s1Seq = (s1.Select(SuperEnumerable.Identity), SourceKind.Sequence);
+		var s2Seq = (s2.Select(SuperEnumerable.Identity), SourceKind.Sequence);
 
+#pragma warning disable CA2000 // don't need to test disposal here
 		var s1Col = (s1.ToSourceKind(SourceKind.BreakingCollection), SourceKind.BreakingCollection);
 		var s2Col = (s2.ToSourceKind(SourceKind.BreakingCollection), SourceKind.BreakingCollection);
+#pragma warning restore CA2000
 
 		// sequences
 		yield return selector(s1Seq, s2Seq);

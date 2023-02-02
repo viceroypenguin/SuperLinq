@@ -14,7 +14,7 @@ public class ChooseTest
 	[Fact]
 	public async Task WithEmptySource()
 	{
-		await using var xs = Enumerable.Empty<int>().AsTestingSequence();
+		await using var xs = TestingSequence.Of<int>();
 		Assert.Empty(await xs.Choose(BreakingFunc.Of<int, (bool, int)>())
 			.ToListAsync());
 	}
@@ -32,40 +32,31 @@ public class ChooseTest
 		await using var xs =
 			"O,l,2,3,4,S,6,7,B,9"
 			   .Split(',')
-			   .ToAsyncEnumerable()
-			   .Choose(s => (int.TryParse(s, NumberStyles.Integer,
-										  CultureInfo.InvariantCulture,
-										  out var n), n))
 			   .AsTestingSequence();
 
-		await xs.AssertSequenceEqual(2, 3, 4, 6, 7, 9);
-	}
-
-	// A cheap trick to masquerade a tuple as an option
-
-	private static class Option
-	{
-		public static (bool IsSome, T Value) Some<T>(T value) => (true, value);
-	}
-
-	private static class Option<T>
-	{
-		public static readonly (bool IsSome, T? Value) None = (false, default);
+		await xs
+			.Choose(s => (int.TryParse(s, NumberStyles.Integer,
+										  CultureInfo.InvariantCulture,
+										  out var n), n))
+			.AssertSequenceEqual(2, 3, 4, 6, 7, 9);
 	}
 
 	[Fact]
-	public Task ThoseThatAreIntegers()
+	public async Task ThoseThatAreIntegers()
 	{
-		return AsyncSeq<int?>(0, 1, 2, null, 4, null, 6, null, null, 9)
-			.Choose(e => e is { } n ? Option.Some(n) : Option<int>.None)
-			.AssertSequenceEqual(0, 1, 2, 4, 6, 9);
+		await using var xs = TestingSequence.Of<int?>(4, 1, 2, null, 4, null, 6, null, null, 9);
+
+		await xs.Choose(e => e is { } n ? (true, n) : (false, default))
+			.AssertSequenceEqual(4, 1, 2, 4, 6, 9);
 	}
 
 	[Fact]
-	public Task ThoseEven()
+	public async Task ThoseEven()
 	{
-		return AsyncEnumerable.Range(1, 10)
-			.Choose(x => x % 2 is 0 ? Option.Some(x) : Option<int>.None)
+		await using var xs = AsyncEnumerable.Range(1, 10)
+			.AsTestingSequence();
+
+		await xs.Choose(x => x % 2 is 0 ? (true, x) : (false, default))
 			.AssertSequenceEqual(2, 4, 6, 8, 10);
 	}
 }

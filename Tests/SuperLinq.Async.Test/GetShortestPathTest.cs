@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class GetShortestPathTest
+public static class GetShortestPathTest
 {
 	private static ILookup<string, (string to, int cost)> BuildStringIntMap(IEqualityComparer<string>? stateComparer)
 	{
@@ -29,6 +29,19 @@ public class GetShortestPathTest
 		return map;
 	}
 
+	private static IAsyncEnumerable<T> AddTestingSequenceToList<T>(this IEnumerable<T> source, List<TestingSequence<T>> list)
+	{
+		var seq = source.AsTestingSequence();
+		list.Add(seq);
+		return seq;
+	}
+
+	private static void VerifySequences<T>(this List<TestingSequence<T>> list)
+	{
+		foreach (IDisposable s in list)
+			s.Dispose();
+	}
+
 	public class Dijkstra
 	{
 		public static IEnumerable<object?[]> GetStringIntCostData { get; } =
@@ -50,13 +63,15 @@ public class GetShortestPathTest
 		{
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
+
+			var sequences = new List<TestingSequence<(string, int)>>();
 			var actualCost = await AsyncSuperEnumerable.GetShortestPathCost(
 				"start",
 				(x, c) =>
 				{
 					count++;
 					return map[x].Select(y => (y.to, c + y.cost))
-						.ToAsyncEnumerable();
+						.AddTestingSequenceToList(sequences);
 				},
 				"end",
 				stateComparer,
@@ -64,6 +79,8 @@ public class GetShortestPathTest
 
 			Assert.Equal(expectedCost, actualCost);
 			Assert.Equal(expectedCount, count);
+
+			sequences.VerifySequences();
 		}
 
 		[Theory]
@@ -78,13 +95,15 @@ public class GetShortestPathTest
 
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
+
+			var sequences = new List<TestingSequence<(string, int)>>();
 			var actualCost = await AsyncSuperEnumerable.GetShortestPathCost(
 				"start",
 				(x, c) =>
 				{
 					count++;
 					return map[x].Select(y => (y.to, c + y.cost))
-						.ToAsyncEnumerable();
+						.AddTestingSequenceToList(sequences);
 				},
 				s => new ValueTask<bool>(stateComparer.Equals(s[..1], "e")),
 				stateComparer,
@@ -92,6 +111,8 @@ public class GetShortestPathTest
 
 			Assert.Equal(expectedCost, actualCost);
 			Assert.Equal(expectedCount, count);
+
+			sequences.VerifySequences();
 		}
 
 		public static IEnumerable<object?[]> GetStringIntPathData { get; } =
@@ -115,13 +136,15 @@ public class GetShortestPathTest
 
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
+
+			var sequences = new List<TestingSequence<(string, int)>>();
 			var path = await AsyncSuperEnumerable.GetShortestPath(
 				"start",
 				(x, c) =>
 				{
 					count++;
 					return map[x].Select(y => (y.to, c + y.cost))
-						.ToAsyncEnumerable();
+						.AddTestingSequenceToList(sequences);
 				},
 				s => new ValueTask<bool>(stateComparer.Equals(s[..1], "e")),
 				stateComparer,
@@ -129,6 +152,8 @@ public class GetShortestPathTest
 
 			path.AssertSequenceEqual(expectedPath);
 			Assert.Equal(expectedCount, count);
+
+			sequences.VerifySequences();
 		}
 
 		[Theory]
@@ -141,13 +166,15 @@ public class GetShortestPathTest
 		{
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
+
+			var sequences = new List<TestingSequence<(string, int)>>();
 			var path = await AsyncSuperEnumerable.GetShortestPath(
 				"start",
 				(x, c) =>
 				{
 					count++;
 					return map[x].Select(y => (y.to, c + y.cost))
-						.ToAsyncEnumerable();
+						.AddTestingSequenceToList(sequences);
 				},
 				"end",
 				stateComparer,
@@ -155,6 +182,8 @@ public class GetShortestPathTest
 
 			path.AssertSequenceEqual(expectedPath);
 			Assert.Equal(expectedCount, count);
+
+			sequences.VerifySequences();
 		}
 
 		public static IEnumerable<object?[]> GetStringIntPathsData { get; } =
@@ -213,13 +242,15 @@ public class GetShortestPathTest
 		{
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
+
+			var sequences = new List<TestingSequence<(string, int)>>();
 			var paths = await AsyncSuperEnumerable.GetShortestPaths(
 				"start",
 				(x, c) =>
 				{
 					count++;
 					return map[x].Select(y => (y.to, c + y.cost))
-						.ToAsyncEnumerable();
+						.AddTestingSequenceToList(sequences);
 				},
 				stateComparer,
 				costComparer);
@@ -234,16 +265,16 @@ public class GetShortestPathTest
 				Assert.Equal(ev.prevState, av.previousState, stateComparer!);
 				Assert.Equal(ev.cost, av.cost);
 			}
+
+			sequences.VerifySequences();
 		}
 
 		[Fact]
 		public async Task GetRegularMapCost()
 		{
 			var count = 0;
-			async IAsyncEnumerable<((int x, int y) p, double cost)> GetNeighbors((int x, int y) p, double cost)
+			IEnumerable<((int x, int y) p, double cost)> GetNeighbors((int x, int y) p, double cost)
 			{
-				await Task.Yield();
-
 				count++;
 				yield return ((p.x + 1, p.y), cost + 1.001d);
 				yield return ((p.x, p.y + 1), cost + 1.002d);
@@ -251,13 +282,17 @@ public class GetShortestPathTest
 				yield return ((p.x, p.y - 1), cost + 1.004d);
 			}
 
+			var sequences = new List<TestingSequence<((int, int), double)>>();
 			var actualCost = await AsyncSuperEnumerable.GetShortestPathCost<(int, int), double>(
 				(0, 0),
-				GetNeighbors,
+				(x, c) => GetNeighbors(x, c)
+					.AddTestingSequenceToList(sequences),
 				(2, 2));
 
 			Assert.Equal(4.006d, actualCost, 3);
 			Assert.Equal(27, count);
+
+			sequences.VerifySequences();
 		}
 
 		[Fact]
@@ -275,6 +310,7 @@ public class GetShortestPathTest
 				yield return ((p.x, p.y - 1), cost + 1.004d);
 			}
 
+			var sequences = new List<TestingSequence<((int, int), double)>>();
 			var path = await AsyncSuperEnumerable.GetShortestPath<(int, int), double>(
 				(0, 0),
 				GetNeighbors,
@@ -288,6 +324,8 @@ public class GetShortestPathTest
 				(nextState: (2, 1), cost: 3.004d),
 				(nextState: (2, 2), cost: 4.006d));
 			Assert.Equal(27, count);
+
+			sequences.VerifySequences();
 		}
 
 		[Fact]
@@ -324,13 +362,15 @@ public class GetShortestPathTest
 		{
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
+
+			var sequences = new List<TestingSequence<(string, int, int)>>();
 			var actualCost = await AsyncSuperEnumerable.GetShortestPathCost(
 				"start",
 				(x, c) =>
 				{
 					count++;
 					return map[x].Select(y => (y.to, c + y.cost, c + y.cost))
-						.ToAsyncEnumerable();
+						.AddTestingSequenceToList(sequences);
 				},
 				"end",
 				stateComparer,
@@ -338,6 +378,8 @@ public class GetShortestPathTest
 
 			Assert.Equal(expectedCost, actualCost);
 			Assert.Equal(expectedCount, count);
+
+			sequences.VerifySequences();
 		}
 
 		[Theory]
@@ -352,13 +394,15 @@ public class GetShortestPathTest
 
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
+
+			var sequences = new List<TestingSequence<(string, int, int)>>();
 			var actualCost = await AsyncSuperEnumerable.GetShortestPathCost(
 				"start",
 				(x, c) =>
 				{
 					count++;
 					return map[x].Select(y => (y.to, c + y.cost, c + y.cost))
-						.ToAsyncEnumerable();
+						.AddTestingSequenceToList(sequences);
 				},
 				s => new ValueTask<bool>(stateComparer.Equals(s[..1], "e")),
 				stateComparer,
@@ -366,6 +410,8 @@ public class GetShortestPathTest
 
 			Assert.Equal(expectedCost, actualCost);
 			Assert.Equal(expectedCount, count);
+
+			sequences.VerifySequences();
 		}
 
 		public static IEnumerable<object?[]> GetStringIntPathData { get; } =
@@ -390,13 +436,15 @@ public class GetShortestPathTest
 		{
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
+
+			var sequences = new List<TestingSequence<(string, int, int)>>();
 			var path = await AsyncSuperEnumerable.GetShortestPath(
 				"start",
 				(x, c) =>
 				{
 					count++;
 					return map[x].Select(y => (y.to, c + y.cost, c + y.cost))
-						.ToAsyncEnumerable();
+						.AddTestingSequenceToList(sequences);
 				},
 				"end",
 				stateComparer,
@@ -404,6 +452,8 @@ public class GetShortestPathTest
 
 			path.AssertSequenceEqual(expectedPath);
 			Assert.Equal(expectedCount, count);
+
+			sequences.VerifySequences();
 		}
 
 		[Theory]
@@ -418,13 +468,15 @@ public class GetShortestPathTest
 
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
+
+			var sequences = new List<TestingSequence<(string, int, int)>>();
 			var path = await AsyncSuperEnumerable.GetShortestPath(
 				"start",
 				(x, c) =>
 				{
 					count++;
 					return map[x].Select(y => (y.to, c + y.cost, c + y.cost))
-						.ToAsyncEnumerable();
+						.AddTestingSequenceToList(sequences);
 				},
 				s => new ValueTask<bool>(stateComparer.Equals(s[..1], "e")),
 				stateComparer,
@@ -432,6 +484,8 @@ public class GetShortestPathTest
 
 			path.AssertSequenceEqual(expectedPath);
 			Assert.Equal(expectedCount, count);
+
+			sequences.VerifySequences();
 		}
 
 		[Fact]
@@ -448,10 +502,8 @@ public class GetShortestPathTest
 			}
 
 			var count = 0;
-			async IAsyncEnumerable<((int x, int y) p, double cost, double bestGuess)> GetNeighbors((int x, int y) p, double cost)
+			IEnumerable<((int x, int y) p, double cost, double bestGuess)> GetNeighbors((int x, int y) p, double cost)
 			{
-				await Task.Yield();
-
 				count++;
 				yield return GetNeighbor((p.x + 1, p.y), cost + 1.001d);
 				yield return GetNeighbor((p.x, p.y + 1), cost + 1.002d);
@@ -459,13 +511,17 @@ public class GetShortestPathTest
 				yield return GetNeighbor((p.x, p.y - 1), cost + 1.004d);
 			}
 
+			var sequences = new List<TestingSequence<((int, int), double, double)>>();
 			var actualCost = await AsyncSuperEnumerable.GetShortestPathCost<(int, int), double>(
 				start,
-				GetNeighbors,
+				(x, c) => GetNeighbors(x, c)
+					.AddTestingSequenceToList(sequences),
 				end);
 
 			Assert.Equal(4.006d, actualCost, 3);
 			Assert.Equal(8, count);
+
+			sequences.VerifySequences();
 		}
 
 		[Fact]
@@ -482,10 +538,8 @@ public class GetShortestPathTest
 			}
 
 			var count = 0;
-			async IAsyncEnumerable<((int x, int y) p, double cost, double bestGuess)> GetNeighbors((int x, int y) p, double cost)
+			IEnumerable<((int x, int y) p, double cost, double bestGuess)> GetNeighbors((int x, int y) p, double cost)
 			{
-				await Task.Yield();
-
 				count++;
 				yield return GetNeighbor((p.x + 1, p.y), cost + 1.001d);
 				yield return GetNeighbor((p.x, p.y + 1), cost + 1.002d);
@@ -493,9 +547,11 @@ public class GetShortestPathTest
 				yield return GetNeighbor((p.x, p.y - 1), cost + 1.004d);
 			}
 
+			var sequences = new List<TestingSequence<((int, int), double, double)>>();
 			var actualPath = await AsyncSuperEnumerable.GetShortestPath<(int, int), double>(
 				start,
-				GetNeighbors,
+				(x, c) => GetNeighbors(x, c)
+					.AddTestingSequenceToList(sequences),
 				end);
 
 			actualPath.AssertSequenceEqual(
@@ -506,6 +562,8 @@ public class GetShortestPathTest
 				(nextState: (2, 1), cost: 3.004d),
 				(nextState: (2, 2), cost: 4.006d));
 			Assert.Equal(8, count);
+
+			sequences.VerifySequences();
 		}
 
 		[Fact]

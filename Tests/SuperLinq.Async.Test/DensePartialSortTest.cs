@@ -1,6 +1,4 @@
-﻿using SuperLinq;
-
-namespace Test.Async;
+﻿namespace Test.Async;
 
 public class DensePartialSortTests
 {
@@ -11,46 +9,51 @@ public class DensePartialSortTests
 	}
 
 	[Fact]
-	public Task DensePartialSort()
+	public async Task DensePartialSort()
 	{
-		var sorted = AsyncEnumerable.Range(1, 10)
+		await using var xs = AsyncEnumerable.Range(1, 10)
 			.Repeat(2)
 			.Reverse()
 			.Append(0)
-			.DensePartialSort(3);
+			.AsTestingSequence();
 
-		return sorted.AssertSequenceEqual(0, 1, 1, 2, 2);
+		await xs
+			.DensePartialSort(3)
+			.AssertSequenceEqual(0, 1, 1, 2, 2);
+	}
+
+	[Theory]
+	[InlineData(OrderByDirection.Ascending)]
+	[InlineData(OrderByDirection.Descending)]
+	public async Task DensePartialSortWithOrder(OrderByDirection direction)
+	{
+		await using var xs = AsyncEnumerable.Range(1, 10)
+			.Repeat(2)
+			.Reverse()
+			.Append(0)
+			.AsTestingSequence();
+
+		var sorted = xs.DensePartialSort(3, direction);
+		if (direction == OrderByDirection.Descending)
+			await sorted.AssertSequenceEqual(10, 10, 9, 9, 8, 8);
+		else
+			await sorted.AssertSequenceEqual(0, 1, 1, 2, 2);
 	}
 
 	[Fact]
-	public async Task DensePartialSortWithOrder()
-	{
-		var sorted = AsyncEnumerable.Range(1, 10)
-			.Repeat(2)
-			.Reverse()
-			.Append(0)
-			.DensePartialSort(3, OrderByDirection.Ascending);
-		await sorted.AssertSequenceEqual(0, 1, 1, 2, 2);
-
-		sorted = AsyncEnumerable.Range(1, 10)
-			.Repeat(2)
-			.Reverse()
-			.Append(0)
-			.DensePartialSort(3, OrderByDirection.Descending);
-		await sorted.AssertSequenceEqual(10, 10, 9, 9, 8, 8);
-	}
-
-	[Fact]
-	public Task DensePartialSortWithComparer()
+	public async Task DensePartialSortWithComparer()
 	{
 		var alphabet = Enumerable.Range(0, 26)
 			.Repeat(2)
 			.Select((n, i) => ((char)((i % 2 == 0 ? 'A' : 'a') + n)).ToString())
 			.ToArray();
 
-		var sorted = alphabet.ToAsyncEnumerable()
-			.DensePartialSort(3, StringComparer.Ordinal);
+		await using var xs = alphabet
+			.AsTestingSequence();
 
-		return sorted.Select(s => s[0]).AssertSequenceEqual('A', 'A', 'C', 'C', 'E', 'E');
+		await xs
+			.DensePartialSort(3, StringComparer.Ordinal)
+			.Select(s => s[0])
+			.AssertSequenceEqual('A', 'A', 'C', 'C', 'E', 'E');
 	}
 }

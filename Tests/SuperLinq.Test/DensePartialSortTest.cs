@@ -11,31 +11,33 @@ public class DensePartialSortTests
 	[Fact]
 	public void DensePartialSort()
 	{
-		var sorted = Enumerable.Range(1, 10)
+		using var xs = Enumerable.Range(1, 10)
 			.Repeat(2)
 			.Reverse()
 			.Append(0)
-			.DensePartialSort(3);
+			.AsTestingSequence();
 
-		sorted.AssertSequenceEqual(0, 1, 1, 2, 2);
+		xs
+			.DensePartialSort(3)
+			.AssertSequenceEqual(0, 1, 1, 2, 2);
 	}
 
-	[Fact]
-	public void DensePartialSortWithOrder()
+	[Theory]
+	[InlineData(OrderByDirection.Ascending)]
+	[InlineData(OrderByDirection.Descending)]
+	public void DensePartialSortWithOrder(OrderByDirection direction)
 	{
-		var sorted = Enumerable.Range(1, 10)
+		using var xs = Enumerable.Range(1, 10)
 			.Repeat(2)
 			.Reverse()
 			.Append(0)
-			.DensePartialSort(3, OrderByDirection.Ascending);
-		sorted.AssertSequenceEqual(0, 1, 1, 2, 2);
+			.AsTestingSequence();
 
-		sorted = Enumerable.Range(1, 10)
-			.Repeat(2)
-			.Reverse()
-			.Append(0)
-			.DensePartialSort(3, OrderByDirection.Descending);
-		sorted.AssertSequenceEqual(10, 10, 9, 9, 8, 8);
+		var sorted = xs.DensePartialSort(3, direction);
+		if (direction == OrderByDirection.Descending)
+			sorted.AssertSequenceEqual(10, 10, 9, 9, 8, 8);
+		else
+			sorted.AssertSequenceEqual(0, 1, 1, 2, 2);
 	}
 
 	[Fact]
@@ -46,8 +48,12 @@ public class DensePartialSortTests
 			.Select((n, i) => ((char)((i % 2 == 0 ? 'A' : 'a') + n)).ToString())
 			.ToArray();
 
-		var sorted = alphabet.DensePartialSort(3, StringComparer.Ordinal);
+		using var xs = alphabet
+			.AsTestingSequence();
 
-		sorted.Select(s => s[0]).AssertSequenceEqual('A', 'A', 'C', 'C', 'E', 'E');
+		xs
+			.DensePartialSort(3, StringComparer.Ordinal)
+			.Select(s => s[0])
+			.AssertSequenceEqual('A', 'A', 'C', 'C', 'E', 'E');
 	}
 }

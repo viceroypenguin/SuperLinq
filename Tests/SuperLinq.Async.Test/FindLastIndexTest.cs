@@ -5,15 +5,14 @@ public class FindLastIndexTest
 	[Fact]
 	public async Task FindLastIndexWithNegativeCount()
 	{
-		await using var sequence = AsyncSeq(1).AsTestingSequence();
 		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
-			await sequence.FindLastIndex(i => i == 1, 1, -1));
+			await new AsyncBreakingSequence<int>().FindLastIndex(i => i == 1, 1, -1));
 	}
 
 	[Fact]
 	public async Task FindLastIndexWorksWithEmptySequence()
 	{
-		await using var sequence = AsyncSeq<int>().AsTestingSequence();
+		await using var sequence = TestingSequence.Of<int>();
 		Assert.Equal(-1, await sequence.FindLastIndex(i => i == 5));
 	}
 

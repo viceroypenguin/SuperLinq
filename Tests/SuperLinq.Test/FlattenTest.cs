@@ -9,36 +9,14 @@ public class FlattenTest
 	[Fact]
 	public void Flatten()
 	{
-		var source = new object[]
-		{
-				1,
-				2,
-				new object[]
-				{
-					3,
-					new object[]
-					{
-						4,
-						"foo"
-					},
-					5,
-					true,
-				},
-				"bar",
-				6,
-				new[]
-				{
-					7,
-					8,
-					9,
-					10
-				},
-		};
+		using var l1 = TestingSequence.Of<object>(4, "foo");
+		using var l2 = TestingSequence.Of<object>(3, l1, 5, true);
+		using var l3 = TestingSequence.Of(7, 8, 9, 10);
+		using var source = TestingSequence.Of<object>(1, 2, l2, "bar", 6, l3);
 
-		var result = source.Flatten();
-
-		var expectations = new object[]
-		{
+		source
+			.Flatten()
+			.AssertSequenceEqual(
 				1,
 				2,
 				3,
@@ -51,39 +29,36 @@ public class FlattenTest
 				7,
 				8,
 				9,
-				10
-		};
-
-		Assert.Equal(expectations, result);
+				10);
 	}
 
 	[Fact]
 	public void FlattenCast()
 	{
-		var source = new object[]
+		using var source = new object[]
 		{
-				1, 2, 3, 4, 5,
+			1, 2, 3, 4, 5,
+			new object[]
+			{
+				6, 7,
 				new object[]
 				{
-					6, 7,
+					8, 9,
 					new object[]
 					{
-						8, 9,
-						new object[]
-						{
-							10, 11, 12,
-						},
-						13, 14, 15,
+						10, 11, 12,
 					},
-					16, 17,
+					13, 14, 15,
 				},
-				18, 19, 20,
-		};
+				16, 17,
+			},
+			18, 19, 20,
+		}.AsTestingSequence();
 
-		var result = source.Flatten().Cast<int>();
-		var expectations = Enumerable.Range(1, 20);
-
-		Assert.Equal(expectations, result);
+		source
+			.Flatten()
+			.Cast<int>()
+			.AssertSequenceEqual(Enumerable.Range(1, 20));
 	}
 
 	[Fact]
@@ -92,34 +67,31 @@ public class FlattenTest
 		new BreakingSequence<int>().Flatten();
 	}
 
-	// Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
-
 	[Fact]
 	public void FlattenPredicate()
 	{
-		var source = new object[]
+		using var source = new object[]
 		{
-				1,
-				2,
-				3,
-				"bar",
-				new object[]
+			1,
+			2,
+			3,
+			"bar",
+			new object[]
+			{
+				4,
+				new[]
 				{
-					4,
-					new[]
-					{
-						true, false
-					},
-					5,
+					true, false
 				},
-				6,
-				7,
-		};
+				5,
+			},
+			6,
+			7,
+		}.AsTestingSequence();
 
-		var result = source.Flatten(obj => !(obj is IEnumerable<bool>));
-
-		var expectations = new object[]
-		{
+		source
+			.Flatten(obj => obj is not IEnumerable<bool>)
+			.AssertSequenceEqual(
 				1,
 				2,
 				3,
@@ -134,55 +106,52 @@ public class FlattenTest
 				},
 				5,
 				6,
-				7,
-		};
-
-		Assert.Equal(expectations, result);
+				7);
 	}
 
 	[Fact]
 	public void FlattenPredicateAlwaysFalse()
 	{
-		var source = new object[]
+		var orig = new object[]
 		{
-				1,
-				2,
-				3,
-				"bar",
-				new[]
-				{
-					true,
-					false,
-				},
-				6
+			1,
+			2,
+			3,
+			"bar",
+			new[]
+			{
+				true,
+				false,
+			},
+			6
 		};
 
-		var result = source.Flatten(_ => false);
-
-		Assert.Equal(source, result);
+		using var source = orig.AsTestingSequence();
+		source
+			.Flatten(_ => false)
+			.AssertSequenceEqual(orig);
 	}
 
 	[Fact]
 	public void FlattenPredicateAlwaysTrue()
 	{
-		var source = new object[]
+		using var source = new object[]
 		{
-				1,
-				2,
-				"bar",
-				3,
-				new[]
-				{
-					4,
-					5,
-				},
-				6
-		};
+			1,
+			2,
+			"bar",
+			3,
+			new[]
+			{
+				4,
+				5,
+			},
+			6
+		}.AsTestingSequence();
 
-		var result = source.Flatten(_ => true);
-
-		var expectations = new object[]
-		{
+		source
+			.Flatten(_ => true)
+			.AssertSequenceEqual(
 				1,
 				2,
 				'b',
@@ -191,10 +160,7 @@ public class FlattenTest
 				3,
 				4,
 				5,
-				6
-		};
-
-		Assert.Equal(expectations, result);
+				6);
 	}
 
 	[Fact]
@@ -206,32 +172,20 @@ public class FlattenTest
 	[Fact]
 	public void FlattenFullIteratedDisposesInnerSequences()
 	{
-		var expectations = new object[]
-		{
-				4,
-				5,
-				6,
-				true,
-				false,
-				7,
-		};
-
 		using var inner1 = TestingSequence.Of(4, 5);
 		using var inner2 = TestingSequence.Of(true, false);
 		using var inner3 = TestingSequence.Of<object>(6, inner2, 7);
 		using var source = TestingSequence.Of<object>(inner1, inner3);
 
-		Assert.Equal(expectations, source.Flatten());
+		source.Flatten()
+			.AssertSequenceEqual(4, 5, 6, true, false, 7);
 	}
 
 	[Fact]
 	public void FlattenInterruptedIterationDisposesInnerSequences()
 	{
 		using var inner1 = TestingSequence.Of(4, 5);
-		using var inner2 = SuperEnumerable.From(() => true,
-											   () => false,
-											   () => throw new TestException())
-										 .AsTestingSequence();
+		using var inner2 = SeqExceptionAt(3).AsTestingSequence();
 		using var inner3 = TestingSequence.Of<object>(6, inner2, 7);
 		using var source = TestingSequence.Of<object>(inner1, inner3);
 
@@ -242,32 +196,28 @@ public class FlattenTest
 	[Fact]
 	public void FlattenEvaluatesInnerSequencesLazily()
 	{
-		var source = new object[]
+		using var source = new object[]
 		{
-				1, 2, 3, 4, 5,
+			1, 2, 3, 4, 5,
+			new object[]
+			{
+				6, 7,
 				new object[]
 				{
-					6, 7,
-					new object[]
-					{
-						8, 9,
-						SuperEnumerable.From
-						(
-							() => 10,
-							() => throw new TestException(),
-							() => 12
-						),
-						13, 14, 15,
-					},
-					16, 17,
+					8, 9,
+					SeqExceptionAt(2).Select(x => x + 9),
+					13, 14, 15,
 				},
-				18, 19, 20,
-		};
+				16, 17,
+			},
+			18, 19, 20,
+		}.AsTestingSequence(maxEnumerations: 2);
 
-		var result = source.Flatten().Cast<int>();
-		var expectations = Enumerable.Range(1, 10);
-
-		Assert.Equal(expectations, result.Take(10));
+		source
+			.Flatten()
+			.Take(10)
+			.Cast<int>()
+			.AssertSequenceEqual(Enumerable.Range(1, 10));
 
 		Assert.Throws<TestException>(() =>
 			source.Flatten().ElementAt(11));
@@ -284,74 +234,70 @@ public class FlattenTest
 	[Fact]
 	public void FlattenSelector()
 	{
-		var source = new[]
+		using var source = new[]
 		{
-				new Series
-				{
-					Name = "series1",
-					Attributes = new[]
-					{
-						new Attribute { Values = new[] { 1, 2 } },
-						new Attribute { Values = new[] { 3, 4 } },
-					},
-				},
-				new Series
-				{
-					Name = "series2",
-					Attributes = new[]
-					{
-						new Attribute { Values = new[] { 5, 6 } },
-					},
-				},
-			};
-
-		var result = source.Flatten(obj =>
-			obj switch
+			new Series
 			{
-				string => null,
-				IEnumerable inner => inner,
-				Series s => new object[] { s.Name, s.Attributes },
-				Attribute a => a.Values,
-				_ => null,
-			});
+				Name = "series1",
+				Attributes = new[]
+				{
+					new Attribute { Values = new[] { 1, 2 } },
+					new Attribute { Values = new[] { 3, 4 } },
+				},
+			},
+			new Series
+			{
+				Name = "series2",
+				Attributes = new[]
+				{
+					new Attribute { Values = new[] { 5, 6 } },
+				},
+			},
+		}.AsTestingSequence();
 
-		var expectations = new object[] { "series1", 1, 2, 3, 4, "series2", 5, 6 };
-
-		Assert.Equal(expectations, result);
+		source
+			.Flatten(obj =>
+				obj switch
+				{
+					string => null,
+					IEnumerable inner => inner,
+					Series s => new object[] { s.Name, s.Attributes },
+					Attribute a => a.Values,
+					_ => null,
+				})
+			.AssertSequenceEqual("series1", 1, 2, 3, 4, "series2", 5, 6);
 	}
 
 	[Fact]
 	public void FlattenSelectorFilteringOnlyIntegers()
 	{
-		var source = new object[]
+		using var source = new object[]
 		{
-				true,
-				false,
-				1,
-				"bar",
-				new object[]
-				{
-					2,
-					new[]
-					{
-						3,
-					},
-				},
-				'c',
-				4,
-		};
-
-		var result = source.Flatten(obj =>
-			obj switch
+			true,
+			false,
+			1,
+			"bar",
+			new object[]
 			{
-				int => null,
-				IEnumerable inner => inner,
-				_ => Enumerable.Empty<object>(),
-			});
+				2,
+				new[]
+				{
+					3,
+				},
+			},
+			'c',
+			4,
+		}.AsTestingSequence();
 
-		var expectations = new object[] { 1, 2, 3, 4 };
-
-		Assert.Equal(expectations, result);
+		source
+			.Flatten(obj =>
+				obj switch
+				{
+					int => null,
+					IEnumerable inner => inner,
+					_ => Enumerable.Empty<object>(),
+				})
+			.AssertSequenceEqual(Enumerable.Range(1, 4).Cast<object>());
 	}
 
 	[Fact]
@@ -374,32 +320,30 @@ public class FlattenTest
 			)
 		);
 
-		var result = new[] { source }.Flatten(obj =>
-			obj switch
-			{
-				int => null,
-				Tree<int> tree => new object?[] { tree.Left, tree.Value, tree.Right },
-				IEnumerable inner => inner,
-				_ => Enumerable.Empty<object>(),
-			});
-
-		var expectations = Enumerable.Range(1, 7).Cast<object?>();
-
-		Assert.Equal(expectations, result);
+		new[] { source }
+			.Flatten(obj =>
+				obj switch
+				{
+					int => null,
+					Tree<int> tree => new object?[] { tree.Left, tree.Value, tree.Right },
+					IEnumerable inner => inner,
+					_ => Enumerable.Empty<object>(),
+				})
+			.AssertSequenceEqual(Enumerable.Range(1, 7).Cast<object>());
 	}
 
-	class Series
+	private class Series
 	{
 		public string Name { get; init; } = string.Empty;
 		public Attribute[] Attributes { get; init; } = Array.Empty<Attribute>();
 	}
 
-	class Attribute
+	private class Attribute
 	{
 		public int[] Values { get; init; } = Array.Empty<int>();
 	}
 
-	class Tree<T>
+	private class Tree<T>
 	{
 		public readonly T Value;
 		public readonly Tree<T>? Left;

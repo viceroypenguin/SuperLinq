@@ -17,7 +17,7 @@ public class CountDownTest
 	public void ExceptionOnNegativeCount(int param)
 	{
 		Assert.Throws<ArgumentOutOfRangeException>("count", () =>
-			Seq(1).CountDown(param));
+			new BreakingSequence<int>().CountDown(param));
 	}
 
 	public static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)
@@ -44,7 +44,7 @@ public class CountDownTest
 	[Theory, MemberData(nameof(SequenceData))]
 	public void WithSequence(int[] xs, int count, IEnumerable<(int, int?)> expected)
 	{
-		using var ts = xs.Select(x => x).AsTestingSequence();
+		using var ts = xs.Select(SuperEnumerable.Identity).AsTestingSequence();
 		Assert.Equal(expected, ts.CountDown(count, ValueTuple.Create));
 	}
 

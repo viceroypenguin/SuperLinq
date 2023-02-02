@@ -6,7 +6,7 @@ public class PadTest
 	public void PadNegativeWidth()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			Array.Empty<object>().Pad(-1));
+			new BreakingSequence<object>().Pad(-1));
 	}
 
 	[Fact]
@@ -26,35 +26,40 @@ public class PadTest
 		[Fact]
 		public void PadWideSourceSequence()
 		{
-			var result = new[] { 123, 456, 789 }.Pad(2);
+			using var sequence = TestingSequence.Of(123, 456, 789);
+			var result = sequence.Pad(2);
 			result.AssertSequenceEqual(123, 456, 789);
 		}
 
 		[Fact]
 		public void PadEqualSourceSequence()
 		{
-			var result = new[] { 123, 456, 789 }.Pad(3);
+			using var sequence = TestingSequence.Of(123, 456, 789);
+			var result = sequence.Pad(3);
 			result.AssertSequenceEqual(123, 456, 789);
 		}
 
 		[Fact]
 		public void PadNarrowSourceSequenceWithDefaultPadding()
 		{
-			var result = new[] { 123, 456, 789 }.Pad(5);
+			using var sequence = TestingSequence.Of(123, 456, 789);
+			var result = sequence.Pad(5);
 			result.AssertSequenceEqual(123, 456, 789, 0, 0);
 		}
 
 		[Fact]
 		public void PadNarrowSourceSequenceWithNonDefaultPadding()
 		{
-			var result = new[] { 123, 456, 789 }.Pad(5, -1);
+			using var sequence = TestingSequence.Of(123, 456, 789);
+			var result = sequence.Pad(5, -1);
 			result.AssertSequenceEqual(123, 456, 789, -1, -1);
 		}
 
 		[Fact]
 		public void PadNarrowSourceSequenceWithDynamicPadding()
 		{
-			var result = "hello".ToCharArray().Pad(15, i => i % 2 == 0 ? '+' : '-');
+			using var sequence = "hello".AsTestingSequence();
+			var result = sequence.Pad(15, i => i % 2 == 0 ? '+' : '-');
 			result.AssertSequenceEqual("hello-+-+-+-+-+".ToCharArray());
 		}
 	}
@@ -64,28 +69,32 @@ public class PadTest
 		[Fact]
 		public void PadWideSourceSequence()
 		{
-			var result = new[] { "foo", "bar", "baz" }.Pad(2);
+			using var sequence = TestingSequence.Of("foo", "bar", "baz");
+			var result = sequence.Pad(2);
 			result.AssertSequenceEqual("foo", "bar", "baz");
 		}
 
 		[Fact]
 		public void PadEqualSourceSequence()
 		{
-			var result = new[] { "foo", "bar", "baz" }.Pad(3);
+			using var sequence = TestingSequence.Of("foo", "bar", "baz");
+			var result = sequence.Pad(3);
 			result.AssertSequenceEqual("foo", "bar", "baz");
 		}
 
 		[Fact]
 		public void PadNarrowSourceSequenceWithDefaultPadding()
 		{
-			var result = new[] { "foo", "bar", "baz" }.Pad(5);
+			using var sequence = TestingSequence.Of("foo", "bar", "baz");
+			var result = sequence.Pad(5);
 			result.AssertSequenceEqual("foo", "bar", "baz", null, null);
 		}
 
 		[Fact]
 		public void PadNarrowSourceSequenceWithNonDefaultPadding()
 		{
-			var result = new[] { "foo", "bar", "baz" }.Pad(5, string.Empty);
+			using var sequence = TestingSequence.Of("foo", "bar", "baz");
+			var result = sequence.Pad(5, string.Empty);
 			result.AssertSequenceEqual("foo", "bar", "baz", string.Empty, string.Empty);
 		}
 	}

@@ -22,7 +22,7 @@ public class LagTests
 	public void TestLagNegativeOffsetException()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			Enumerable.Repeat(1, 10).Lag(-10, (val, lagVal) => val));
+			new BreakingSequence<int>().Lag(-10, (val, lagVal) => val));
 	}
 
 	/// <summary>
@@ -32,7 +32,7 @@ public class LagTests
 	public void TestLagZeroOffset()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			Enumerable.Range(1, 10).Lag(0, (val, lagVal) => val + lagVal));
+			new BreakingSequence<int>().Lag(0, (val, lagVal) => val + lagVal));
 	}
 
 	/// <summary>
@@ -41,27 +41,22 @@ public class LagTests
 	[Fact]
 	public void TestLagExplicitDefaultValue()
 	{
-		const int count = 100;
-		const int lagBy = 10;
-		const int lagDefault = -1;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Lag(lagBy, lagDefault, (val, lagVal) => lagVal);
+		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, result.Count());
-		Assert.Equal(Enumerable.Repeat(lagDefault, lagBy), result.Take(lagBy));
+		var result = sequence.Lag(10, -1, (val, lagVal) => lagVal).ToList();
+		Assert.Equal(100, result.Count);
+		Assert.Equal(Enumerable.Repeat(-1, 10), result.Take(10));
 	}
 
 	[Fact]
 	public void TestLagTuple()
 	{
-		const int Count = 100;
-		const int LagBy = 10;
-		var sequence = Enumerable.Range(1, Count);
-		var result = sequence.Lag(LagBy);
+		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(Count, result.Count());
+		var result = sequence.Lag(10).ToList();
+		Assert.Equal(100, result.Count);
 		result.AssertSequenceEqual(
-			sequence.Select(x => (x, x <= LagBy ? default : x - LagBy)));
+			Enumerable.Range(1, 100).Select(x => (x, x <= 10 ? default : x - 10)));
 	}
 
 	/// <summary>
@@ -70,13 +65,11 @@ public class LagTests
 	[Fact]
 	public void TestLagImplicitDefaultValue()
 	{
-		const int count = 100;
-		const int lagBy = 10;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Lag(lagBy, (val, lagVal) => lagVal);
+		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, result.Count());
-		Assert.Equal(Enumerable.Repeat(default(int), lagBy), result.Take(lagBy));
+		var result = sequence.Lag(10, (val, lagVal) => lagVal).ToList();
+		Assert.Equal(100, result.Count);
+		Assert.Equal(Enumerable.Repeat(default(int), 10), result.Take(10));
 	}
 
 	/// <summary>
@@ -86,12 +79,11 @@ public class LagTests
 	[Fact]
 	public void TestLagOffsetGreaterThanSequenceLength()
 	{
-		const int count = 100;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Lag(count + 1, (a, b) => a);
+		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, result.Count());
-		Assert.Equal(sequence, result);
+		var result = sequence.Lag(100 + 1, (a, b) => a).ToList();
+		Assert.Equal(100, result.Count);
+		Assert.Equal(Enumerable.Range(1, 100), result);
 	}
 
 	/// <summary>
@@ -101,11 +93,10 @@ public class LagTests
 	[Fact]
 	public void TestLagPassesCorrectLagValueOffsetBy1()
 	{
-		const int count = 100;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Lag(1, (a, b) => new { A = a, B = b });
+		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, result.Count());
+		var result = sequence.Lag(1, (a, b) => new { A = a, B = b }).ToList();
+		Assert.Equal(100, result.Count);
 		Assert.True(result.All(x => x.B == (x.A - 1)));
 	}
 
@@ -116,11 +107,10 @@ public class LagTests
 	[Fact]
 	public void TestLagPassesCorrectLagValuesOffsetBy2()
 	{
-		const int count = 100;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Lag(2, (a, b) => new { A = a, B = b });
+		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Equal(count, result.Count());
+		var result = sequence.Lag(2, (a, b) => new { A = a, B = b }).ToList();
+		Assert.Equal(100, result.Count);
 		Assert.True(result.Skip(2).All(x => x.B == (x.A - 2)));
 		Assert.True(result.Take(2).All(x => (x.A - x.B) == x.A));
 	}
@@ -128,7 +118,7 @@ public class LagTests
 	[Fact]
 	public void TestLagWithNullableReferences()
 	{
-		var words = new[] { "foo", "bar", "baz", "qux" };
+		using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
 		var result = words.Lag(2, (a, b) => new { A = a, B = b });
 		result.AssertSequenceEqual(
 			new { A = "foo", B = (string?)null },
@@ -140,7 +130,7 @@ public class LagTests
 	[Fact]
 	public void TestLagWithNonNullableReferences()
 	{
-		var words = new[] { "foo", "bar", "baz", "qux" };
+		using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
 		var empty = string.Empty;
 		var result = words.Lag(2, empty, (a, b) => new { A = a, B = b });
 		result.AssertSequenceEqual(

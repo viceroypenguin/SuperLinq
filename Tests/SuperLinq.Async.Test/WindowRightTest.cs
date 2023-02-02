@@ -1,6 +1,4 @@
-﻿using SuperLinq;
-
-namespace Test.Async;
+﻿namespace Test.Async;
 
 public class WindowRightTest
 {
@@ -28,7 +26,7 @@ public class WindowRightTest
 	[Fact]
 	public async Task WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
 	{
-		var sequence = AsyncEnumerable.Range(0, 3);
+		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
 		await using var e = sequence.WindowRight(2).GetAsyncEnumerator();
 
 		await e.MoveNextAsync();
@@ -43,7 +41,7 @@ public class WindowRightTest
 	[Fact]
 	public async Task WindowModifiedDoesNotAffectPreviousWindow()
 	{
-		var sequence = AsyncEnumerable.Range(0, 3);
+		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
 		await using var e = sequence.WindowRight(2).GetAsyncEnumerator();
 
 		await e.MoveNextAsync();
@@ -75,19 +73,16 @@ public class WindowRightTest
 	[Fact]
 	public async Task WindowRightWithSingleElement()
 	{
-		const int count = 100;
-		var sequence = Enumerable.Range(1, count).ToArray();
-
 		IList<int>[] result;
-		await using (var ts = sequence.AsTestingSequence())
+		await using (var ts = Enumerable.Range(1, 100).AsTestingSequence())
 			result = await ts.WindowRight(1).ToArrayAsync();
 
 		// number of windows should be equal to the source sequence length
-		Assert.Equal(count, result.Length);
+		Assert.Equal(100, result.Length);
 
 		// each window should contain single item consistent of element at that offset
 		foreach (var (index, item) in result.Index())
-			Assert.Equal(item.Single(), sequence[index]);
+			Assert.Equal(item.Single(), index + 1);
 	}
 
 	[Fact]

@@ -58,7 +58,7 @@ public class InterleaveTests
 	[Fact]
 	public void TestInterleaveDoNoCallMoveNextEagerly()
 	{
-		var sequenceA = Enumerable.Range(1, 1);
+		using var sequenceA = Enumerable.Range(1, 1).AsTestingSequence();
 		var sequenceB = SuperEnumerable.From<int>(() => throw new TestException());
 
 		sequenceA.Interleave(sequenceB).Take(1).Consume();
@@ -70,11 +70,11 @@ public class InterleaveTests
 	[Fact]
 	public void TestInterleaveTwoBalancedSequences()
 	{
-		var sequenceA = Enumerable.Range(1, 10);
-		var sequenceB = Enumerable.Range(1, 10);
-		var result = sequenceA.Interleave(sequenceB);
+		using var sequenceA = Enumerable.Range(1, 10).AsTestingSequence();
+		using var sequenceB = Enumerable.Range(1, 10).AsTestingSequence();
 
-		Assert.Equal(Enumerable.Range(1, 10).Select(x => new[] { x, x }).SelectMany(z => z), result);
+		var result = sequenceA.Interleave(sequenceB);
+		result.AssertSequenceEqual(Enumerable.Range(1, 10).SelectMany(x => Enumerable.Repeat(x, 2)));
 	}
 
 	/// <summary>
@@ -83,10 +83,10 @@ public class InterleaveTests
 	[Fact]
 	public void TestInterleaveTwoEmptySequences()
 	{
-		var sequenceA = Enumerable.Empty<int>();
-		var sequenceB = Enumerable.Empty<int>();
-		var result = sequenceA.Interleave(sequenceB);
+		using var sequenceA = TestingSequence.Of<int>();
+		using var sequenceB = TestingSequence.Of<int>();
 
+		var result = sequenceA.Interleave(sequenceB);
 		Assert.Equal(Enumerable.Empty<int>(), result);
 	}
 
@@ -97,13 +97,11 @@ public class InterleaveTests
 	[Fact]
 	public void TestInterleaveTwoImbalanceStrategySkip()
 	{
-		var sequenceA = new[] { 0, 0, 0, 0, 0, 0 };
-		var sequenceB = new[] { 1, 1, 1, 1 };
+		using var sequenceA = TestingSequence.Of(0, 0, 0, 0, 0, 0);
+		using var sequenceB = TestingSequence.Of(1, 1, 1, 1);
+
 		var result = sequenceA.Interleave(sequenceB);
-
-		var expectedResult = new[] { 0, 1, 0, 1, 0, 1, 0, 1, 0, 0 };
-
-		Assert.Equal(expectedResult, result);
+		result.AssertSequenceEqual(0, 1, 0, 1, 0, 1, 0, 1, 0, 0);
 	}
 
 	/// <summary>
@@ -112,13 +110,13 @@ public class InterleaveTests
 	[Fact]
 	public void TestInterleaveManyEmptySequences()
 	{
-		var sequenceA = Enumerable.Empty<int>();
-		var sequenceB = Enumerable.Empty<int>();
-		var sequenceC = Enumerable.Empty<int>();
-		var sequenceD = Enumerable.Empty<int>();
-		var sequenceE = Enumerable.Empty<int>();
-		var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD, sequenceE);
+		using var sequenceA = TestingSequence.Of<int>();
+		using var sequenceB = TestingSequence.Of<int>();
+		using var sequenceC = TestingSequence.Of<int>();
+		using var sequenceD = TestingSequence.Of<int>();
+		using var sequenceE = TestingSequence.Of<int>();
 
+		var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD, sequenceE);
 		Assert.Empty(result);
 	}
 
@@ -129,32 +127,13 @@ public class InterleaveTests
 	[Fact]
 	public void TestInterleaveManyImbalanceStrategySkip()
 	{
-		var sequenceA = new[] { 1, 5, 8, 11, 14, 16, };
-		var sequenceB = new[] { 2, 6, 9, 12, };
-		var sequenceC = Array.Empty<int>();
-		var sequenceD = new[] { 3 };
-		var sequenceE = new[] { 4, 7, 10, 13, 15, 17, };
+		using var sequenceA = TestingSequence.Of(1, 5, 8, 11, 14, 16);
+		using var sequenceB = TestingSequence.Of(2, 6, 9, 12);
+		using var sequenceC = TestingSequence.Of<int>();
+		using var sequenceD = TestingSequence.Of(3);
+		using var sequenceE = TestingSequence.Of(4, 7, 10, 13, 15, 17);
+
 		var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD, sequenceE);
-
-		var expectedResult = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
-
-		Assert.Equal(expectedResult, result);
-	}
-
-	/// <summary>
-	/// Verify that Interleave disposes of all iterators it creates regardless of which strategy
-	/// is used to interleave the sequences
-	/// </summary>
-	[Fact]
-	public void TestInterleaveDisposesAllIterators()
-	{
-
-		using var sequenceA = Enumerable.Range(1, 10).AsTestingSequence();
-		using var sequenceB = Enumerable.Range(1, 10 - 1).AsTestingSequence();
-		using var sequenceC = Enumerable.Range(1, 10 - 5).AsTestingSequence();
-		using var sequenceD = Enumerable.Range(1, 0).AsTestingSequence();
-
-		sequenceA.Interleave(sequenceB, sequenceC, sequenceD)
-				 .Consume();
+		result.AssertSequenceEqual(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
 	}
 }

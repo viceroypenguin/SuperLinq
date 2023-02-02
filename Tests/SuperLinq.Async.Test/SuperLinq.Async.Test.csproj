@@ -22,6 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Using Include="SuperLinq" />
 		<Using Include="SuperLinq.Async" />
 		<Using Include="Xunit" />
 		<Using Include="Test.FuncModule" Static="true" />

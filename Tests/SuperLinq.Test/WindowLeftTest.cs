@@ -78,7 +78,7 @@ public class WindowLeftTest
 	[Fact]
 	public void WindowLeftEmptySequence()
 	{
-		using var sequence = Seq<int>().AsTestingSequence();
+		using var sequence = TestingSequence.Of<int>();
 
 		var result = sequence.WindowLeft(5).ToList();
 		Assert.Empty(result);
@@ -100,28 +100,26 @@ public class WindowLeftTest
 	[Fact]
 	public void WindowLeftSingleElement()
 	{
-		var sequence = Enumerable.Range(1, 100);
-		using var xs = sequence.AsTestingSequence();
+		using var xs = Enumerable.Range(1, 100).AsTestingSequence();
 		var result = xs.WindowLeft(1).ToList();
 
 		// number of windows should be equal to the source sequence length
 		Assert.Equal(100, result.Count);
 		// each window should contain single item consistent of element at that offset
-		foreach (var (actual, expected) in result.Zip(sequence))
+		foreach (var (actual, expected) in result.Zip(Enumerable.Range(1, 100)))
 			Assert.Equal(SuperEnumerable.Return(expected), actual);
 	}
 
 	[Fact]
 	public void WindowLeftBufferSingleElement()
 	{
-		var sequence = Enumerable.Range(1, 100);
-		using var xs = sequence.AsTestingSequence();
+		using var xs = Enumerable.Range(1, 100).AsTestingSequence();
 		var result = xs.WindowLeft(1, l => l[0]).ToList();
 
 		// number of windows should be equal to the source sequence length
 		Assert.Equal(100, result.Count);
 		// each window should contain single item consistent of element at that offset
-		foreach (var (actual, expected) in result.Zip(sequence))
+		foreach (var (actual, expected) in result.Zip(Enumerable.Range(1, 100)))
 			Assert.Equal(expected, actual);
 	}
 

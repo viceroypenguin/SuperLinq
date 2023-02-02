@@ -12,7 +12,7 @@ public class FullJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		xs.FullJoin(ys, e => e,
+		xs.FullJoin(ys, SuperEnumerable.Identity,
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, int, object>());
@@ -24,7 +24,7 @@ public class FullJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		xs.FullJoin(ys, e => e,
+		xs.FullJoin(ys, SuperEnumerable.Identity,
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, int, object>(),
@@ -37,7 +37,7 @@ public class FullJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		xs.FullJoin(ys, x => x, y => y.GetHashCode(),
+		xs.FullJoin(ys, SuperEnumerable.Identity, y => y.GetHashCode(),
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<object, object>(),
 			BreakingFunc.Of<int, object, object>());
@@ -49,7 +49,7 @@ public class FullJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		xs.FullJoin(ys, x => x, y => y.GetHashCode(),
+		xs.FullJoin(ys, SuperEnumerable.Identity, y => y.GetHashCode(),
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<object, object>(),
 			BreakingFunc.Of<int, object, object>(),
@@ -68,8 +68,8 @@ public class FullJoinTest
 		var quux = (5, "quux");
 		var quuz = (6, "quuz");
 
-		var xs = new[] { foo, bar1, qux };
-		var ys = new[] { quux, bar2, baz, bar3, quuz };
+		using var xs = TestingSequence.Of(foo, bar1, qux);
+		using var ys = TestingSequence.Of(quux, bar2, baz, bar3, quuz);
 
 		var missing = default((int, string));
 
@@ -103,8 +103,8 @@ public class FullJoinTest
 		var quux = ("five", "quux");
 		var quuz = ("six", "quuz");
 
-		var xs = new[] { foo, bar1, qux };
-		var ys = new[] { quux, bar2, baz, bar3, quuz };
+		using var xs = TestingSequence.Of(foo, bar1, qux);
+		using var ys = TestingSequence.Of(quux, bar2, baz, bar3, quuz);
 
 		var missing = default((string, string));
 
@@ -134,8 +134,8 @@ public class FullJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = Array.Empty<(int, string)>();
-		var ys = new[] { foo, bar, baz };
+		using var xs = Array.Empty<(int, string)>().AsTestingSequence();
+		using var ys = TestingSequence.Of(foo, bar, baz);
 
 		var missing = default((int, string));
 
@@ -160,8 +160,8 @@ public class FullJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = new[] { foo, bar, baz };
-		var ys = Array.Empty<(int, string)>();
+		using var xs = TestingSequence.Of(foo, bar, baz);
+		using var ys = Array.Empty<(int, string)>().AsTestingSequence();
 
 		var missing = default((int, string));
 

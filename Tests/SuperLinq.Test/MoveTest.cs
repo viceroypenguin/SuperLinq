@@ -41,19 +41,19 @@ public class MoveTest
 		var slice = source.Take(fromIndex..(fromIndex + count));
 		var exclude = source.Exclude(fromIndex, count);
 		var expectations = exclude.Take(toIndex).Concat(slice).Concat(exclude.Skip(toIndex));
-		Assert.Equal(expectations, result);
+		result.AssertSequenceEqual(expectations);
 	}
 
 	public static IEnumerable<object[]> MoveSource()
 	{
-		const int length = 10;
+		const int Length = 10;
 		return
-			from index in Enumerable.Range(0, length)
-			from count in Enumerable.Range(0, length + 1)
+			from index in Enumerable.Range(0, Length)
+			from count in Enumerable.Range(0, Length + 1)
 			from tcd in new[]
 			{
-				new object[] { length, index, count, Math.Max(0, index - 1), },
-				new object[] { length, index, count, index + 1, },
+				new object[] { Length, index, count, Math.Max(0, index - 1), },
+				new object[] { Length, index, count, index + 1, },
 			}
 			select tcd;
 	}
@@ -78,27 +78,27 @@ public class MoveTest
 	[Fact]
 	public void MoveIsRepeatable()
 	{
-		var source = Enumerable.Range(0, 10);
-		var result = source.Move(0, 5, 10);
+		using var source = Enumerable.Range(0, 10).AsTestingSequence(maxEnumerations: 2);
 
+		var result = source.Move(0, 5, 10);
 		Assert.Equal(result, result.ToArray());
 	}
 
 	[Fact]
 	public void MoveWithFromIndexEqualsToIndex()
 	{
-		var source = Enumerable.Range(0, 10);
-		var result = source.Move(5, 999, 5);
+		using var source = Enumerable.Range(0, 10).AsTestingSequence();
 
-		Assert.Equal(result, source);
+		var result = source.Move(5, 999, 5);
+		result.AssertSequenceEqual(Enumerable.Range(0, 10));
 	}
 
 	[Fact]
 	public void MoveWithCountEqualsZero()
 	{
-		var source = Enumerable.Range(0, 10);
-		var result = source.Move(5, 0, 999);
+		using var source = Enumerable.Range(0, 10).AsTestingSequence();
 
-		Assert.Equal(source, result);
+		var result = source.Move(5, 0, 999);
+		result.AssertSequenceEqual(Enumerable.Range(0, 10));
 	}
 }

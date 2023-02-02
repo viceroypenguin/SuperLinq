@@ -8,7 +8,9 @@ public class EndsWithTest
 	[InlineData(new[] { 1, 2, 3 }, new[] { 0, 1, 2, 3 }, false)]
 	public void EndsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second, bool expected)
 	{
-		Assert.Equal(expected, first.EndsWith(second));
+		using var f = first.AsTestingSequence();
+		using var s = second.AsTestingSequence();
+		Assert.Equal(expected, f.EndsWith(s));
 	}
 
 	[Theory]
@@ -17,7 +19,9 @@ public class EndsWithTest
 	[InlineData(new[] { '1', '2', '3' }, new[] { '0', '1', '2', '3' }, false)]
 	public void EndsWithWithChars(IEnumerable<char> first, IEnumerable<char> second, bool expected)
 	{
-		Assert.Equal(expected, first.EndsWith(second));
+		using var f = first.AsTestingSequence();
+		using var s = second.AsTestingSequence();
+		Assert.Equal(expected, f.EndsWith(s));
 	}
 
 	[Theory]
@@ -26,20 +30,25 @@ public class EndsWithTest
 	[InlineData("123", "0123", false)]
 	public void EndsWithWithStrings(string first, string second, bool expected)
 	{
-		// Conflict with String.EndsWith(), which has precedence in this case
-		Assert.Equal(expected, SuperEnumerable.EndsWith(first, second));
+		using var f = first.AsTestingSequence();
+		using var s = second.AsTestingSequence();
+		Assert.Equal(expected, f.EndsWith(s));
 	}
 
 	[Fact]
 	public void EndsWithReturnsTrueIfBothEmpty()
 	{
-		Assert.True(Array.Empty<int>().EndsWith(Array.Empty<int>()));
+		using var f = Array.Empty<int>().AsTestingSequence();
+		using var s = Array.Empty<int>().AsTestingSequence();
+		Assert.True(f.EndsWith(s));
 	}
 
 	[Fact]
 	public void EndsWithReturnsFalseIfOnlyFirstIsEmpty()
 	{
-		Assert.False(Array.Empty<int>().EndsWith(new[] { 1, 2, 3 }));
+		using var f = TestingSequence.Of<int>();
+		using var s = TestingSequence.Of(1, 2, 3);
+		Assert.False(f.EndsWith(s));
 	}
 
 	[Theory]
@@ -47,24 +56,16 @@ public class EndsWithTest
 	[InlineData("1", "", true)]
 	public void EndsWithReturnsTrueIfSecondIsEmpty(string first, string second, bool expected)
 	{
-		// Conflict with String.EndsWith(), which has precedence in this case
-		Assert.Equal(expected, SuperEnumerable.EndsWith(first, second));
-	}
-
-	[Fact]
-	public void EndsWithDisposesBothSequenceEnumerators()
-	{
-		using var first = TestingSequence.Of(1, 2, 3);
-		using var second = TestingSequence.Of(1);
-
-		first.EndsWith(second);
+		using var f = first.AsTestingSequence();
+		using var s = second.AsTestingSequence();
+		Assert.Equal(expected, f.EndsWith(s));
 	}
 
 	[Fact]
 	public void EndsWithUsesSpecifiedEqualityComparerOrDefault()
 	{
-		var first = new[] { 1, 2, 3 };
-		var second = new[] { 4, 5, 6 };
+		var first = Seq(1, 2, 3);
+		var second = Seq(4, 5, 6);
 
 		Assert.False(first.EndsWith(second));
 		Assert.False(first.EndsWith(second, null));
@@ -72,12 +73,11 @@ public class EndsWithTest
 		Assert.True(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
 	}
 
-	[Theory]
-	[InlineData(SourceKind.BreakingCollection)]
-	public void EndsWithUsesCollectionsCountToAvoidUnnecessaryIteration(SourceKind sourceKind)
+	[Fact]
+	public void EndsWithUsesCollectionsCountToAvoidUnnecessaryIteration()
 	{
-		var first = new[] { 1, 2 }.ToSourceKind(sourceKind);
-		var second = new[] { 1, 2, 3 }.ToSourceKind(sourceKind);
+		using var first = new BreakingCollection<int>(1, 2);
+		using var second = new BreakingCollection<int>(1, 2, 3);
 
 		Assert.False(first.EndsWith(second));
 	}

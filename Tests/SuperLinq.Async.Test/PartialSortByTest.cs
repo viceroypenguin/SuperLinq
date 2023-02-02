@@ -1,57 +1,52 @@
-﻿using SuperLinq;
-
-namespace Test.Async;
+﻿namespace Test.Async;
 
 public class PartialSortByTests
 {
 	[Fact]
 	public async Task PartialSortBy()
 	{
-		var ns = SuperLinq.SuperEnumerable.RandomDouble().Take(10).ToArray();
+		var ns = SuperEnumerable.RandomDouble()
+			.Take(10).ToArray();
+		await using var sequence = ns.Index()
+			.Reverse().AsTestingSequence();
 
-		const int Count = 5;
-		var sorted = ns
-			.ToAsyncEnumerable()
-			.Select((n, i) => KeyValuePair.Create(i, n))
-			.Reverse()
-			.PartialSortBy(Count, e => e.Key);
-
-		await sorted.Select(e => e.Value).AssertSequenceEqual(ns.Take(Count));
+		await sequence
+			.PartialSortBy(5, e => e.index)
+			.Select(e => e.item)
+			.AssertSequenceEqual(ns.Take(5));
 	}
 
 	[Fact]
 	public async Task PartialSortWithOrder()
 	{
-		var ns = SuperLinq.SuperEnumerable.RandomDouble().Take(10).ToArray();
+		var ns = SuperEnumerable.RandomDouble()
+			.Take(10).ToArray();
+		await using var sequence = ns.Index()
+			.Reverse().AsTestingSequence(maxEnumerations: 5);
 
-		const int Count = 5;
-		var sorted = ns
-			.ToAsyncEnumerable()
-			.Select((n, i) => KeyValuePair.Create(i, n))
-			.Reverse()
-			.PartialSortBy(Count, e => e.Key, OrderByDirection.Ascending);
+		await sequence
+			.PartialSortBy(5, e => e.index, OrderByDirection.Ascending)
+			.Select(e => e.item)
+			.AssertSequenceEqual(ns.Take(5));
 
-		await sorted.Select(e => e.Value).AssertSequenceEqual(ns.Take(Count));
-
-		sorted = ns
-			.ToAsyncEnumerable()
-			.Select((n, i) => KeyValuePair.Create(i, n))
-			.Reverse()
-			.PartialSortBy(Count, e => e.Key, OrderByDirection.Descending);
-
-		await sorted.Select(e => e.Value).AssertSequenceEqual(ns.Reverse().Take(Count));
+		await sequence
+			.PartialSortBy(5, e => e.index, OrderByDirection.Descending)
+			.Select(e => e.item)
+			.AssertSequenceEqual(ns.Reverse().Take(5));
 	}
 
 	[Fact]
 	public async Task PartialSortWithComparer()
 	{
-		var alphabet = AsyncEnumerable.Range(0, 26)
-			.Select((n, i) => ((char)((i % 2 == 0 ? 'A' : 'a') + n)).ToString());
+		await using var alphabet = Enumerable.Range(0, 26)
+			.Select((n, i) => ((char)((i % 2 == 0 ? 'A' : 'a') + n)).ToString())
+			.Zip(SuperEnumerable.RandomDouble())
+			.AsTestingSequence();
 
-		var ns = alphabet.Zip(AsyncSuperEnumerable.RandomDouble(), KeyValuePair.Create);
-		var sorted = ns.PartialSortBy(5, e => e.Key, StringComparer.Ordinal);
-
-		await sorted.Select(e => e.Key[0]).AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
+		await alphabet
+			.PartialSortBy(5, e => e.First, StringComparer.Ordinal)
+			.Select(x => x.First[0])
+			.AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
 	}
 
 	[Fact]
@@ -63,7 +58,8 @@ public class PartialSortByTests
 	[Fact]
 	public async Task PartialSortByIsStable()
 	{
-		var list = AsyncSeq(
+		await using var list = new[]
+		{
 			(key: 5, text: "1"),
 			(key: 5, text: "2"),
 			(key: 4, text: "3"),
@@ -73,7 +69,8 @@ public class PartialSortByTests
 			(key: 2, text: "7"),
 			(key: 2, text: "8"),
 			(key: 1, text: "9"),
-			(key: 1, text: "10"));
+			(key: 1, text: "10"),
+		}.AsTestingSequence(maxEnumerations: 10);
 
 		var stableSort = new[]
 		{

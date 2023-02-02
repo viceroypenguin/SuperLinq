@@ -12,45 +12,55 @@ public class ReplaceTest
 	[Fact]
 	public void ReplaceEmptySequence()
 	{
-		Assert.Empty(Enumerable.Empty<int>().Replace(0, 10));
-		Assert.Empty(Enumerable.Empty<int>().Replace(10, 10));
-		Assert.Empty(Enumerable.Empty<int>().Replace(^0, 10));
-		Assert.Empty(Enumerable.Empty<int>().Replace(^10, 10));
+		using var seq = Enumerable.Empty<int>().AsTestingSequence(maxEnumerations: 4);
+		seq.Replace(0, 10).AssertSequenceEqual();
+		seq.Replace(10, 10).AssertSequenceEqual();
+		seq.Replace(^0, 10).AssertSequenceEqual();
+		seq.Replace(^10, 10).AssertSequenceEqual();
 	}
 
-	[Fact]
-	public void ReplaceStartIndex()
+	public static IEnumerable<object[]> Indices() =>
+		Enumerable.Range(0, 10).Select(i => new object[] { i, });
+
+	[Theory, MemberData(nameof(Indices))]
+	public void ReplaceStartIndex(int index)
 	{
-		for (var i = 0; i < 10; i++)
-			Enumerable.Range(1, 10).Replace(i, 30)
-				.AssertSequenceEqual(
-					Enumerable.Range(1, i)
-						.Append(30)
-						.Concat(Enumerable.Range(i + 2, 9 - i)));
+		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
+
+		var result = seq.Replace(index, 30);
+		result.AssertSequenceEqual(
+			Enumerable.Range(1, index)
+				.Append(30)
+				.Concat(Enumerable.Range(index + 2, 9 - index)));
 	}
 
-	[Fact]
-	public void ReplaceEndIndex()
+	[Theory, MemberData(nameof(Indices))]
+	public void ReplaceEndIndex(int index)
 	{
-		for (var i = 0; i < 10; i++)
-			Enumerable.Range(1, 10).Replace(^i, 30)
-				.AssertSequenceEqual(
-					Enumerable.Range(1, 9 - i)
-						.Append(30)
-						.Concat(Enumerable.Range(11 - i, i)));
+		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
+
+		var result = seq.Replace(^index, 30);
+		result.AssertSequenceEqual(
+			Enumerable.Range(1, 9 - index)
+				.Append(30)
+				.Concat(Enumerable.Range(11 - index, index)));
 	}
 
 	[Fact]
 	public void ReplaceStartIndexPastSequenceLength()
 	{
-		Enumerable.Range(1, 10).Replace(10, 30)
-			.AssertSequenceEqual(Enumerable.Range(1, 10));
+		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
+
+		var result = seq.Replace(10, 30);
+		result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
 	[Fact]
 	public void ReplaceEndIndexPastSequenceLength()
 	{
-		Enumerable.Range(1, 10).Replace(^10, 30)
-			.AssertSequenceEqual(Enumerable.Range(1, 10));
+		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
+
+		var result = seq.Replace(^10, 30);
+		result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 }

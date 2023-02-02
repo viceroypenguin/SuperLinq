@@ -5,15 +5,14 @@ public class FindIndexTest
 	[Fact]
 	public async Task FindIndexWithNegativeCount()
 	{
-		await using var sequence = AsyncSeq(1).AsTestingSequence();
 		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
-			await sequence.FindIndex(BreakingFunc.Of<int, bool>(), 1, -1));
+			await new AsyncBreakingSequence<int>().FindIndex(BreakingFunc.Of<int, bool>(), 1, -1));
 	}
 
 	[Fact]
 	public async Task FindIndexWorksWithEmptySequence()
 	{
-		await using var sequence = AsyncSeq<int>().AsTestingSequence();
+		await using var sequence = TestingSequence.Of<int>();
 		Assert.Equal(-1, await sequence.FindIndex(BreakingFunc.Of<int, bool>()));
 	}
 
@@ -91,5 +90,41 @@ public class FindIndexTest
 		Assert.Equal(
 			-1,
 			await sequence.FindIndex(i => i == 104, ^5, 4));
+	}
+
+	[Fact]
+	public async Task FindIndexDoesNotIterateUnnecessaryElements()
+	{
+		using var source = AsyncSuperEnumerable
+			.From(
+				() => Task.FromResult("ana"),
+				() => Task.FromResult("beatriz"),
+				() => Task.FromResult("carla"),
+				() => Task.FromResult("bob"),
+				() => Task.FromResult("davi"),
+				AsyncBreakingFunc.Of<string>(),
+				() => Task.FromResult("angelo"),
+				() => Task.FromResult("carlos"))
+			.AsTestingSequence();
+
+		Assert.Equal(4, await source.FindIndex(i => i == "davi"));
+	}
+
+	[Fact]
+	public async Task FindIndexDoesNotIterateUnnecessaryElementsCount()
+	{
+		using var source = AsyncSuperEnumerable
+			.From(
+				() => Task.FromResult("ana"),
+				() => Task.FromResult("beatriz"),
+				() => Task.FromResult("carla"),
+				() => Task.FromResult("bob"),
+				() => Task.FromResult("davi"),
+				AsyncBreakingFunc.Of<string>(),
+				() => Task.FromResult("angelo"),
+				() => Task.FromResult("carlos"))
+			.AsTestingSequence();
+
+		Assert.Equal(-1, await source.FindIndex(i => i == "carlos", 0, 5));
 	}
 }

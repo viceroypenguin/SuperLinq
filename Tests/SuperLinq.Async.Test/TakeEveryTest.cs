@@ -3,49 +3,58 @@
 public class TakeEveryTest
 {
 	[Fact]
+	public void TakeEveryIsLazy()
+	{
+		new AsyncBreakingSequence<object>().TakeEvery(1);
+	}
+
+	[Fact]
 	public void TakeEveryNegativeSkip()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			AsyncEnumerable.Empty<object>().TakeEvery(-1));
+			new AsyncBreakingSequence<int>().TakeEvery(-1));
 	}
 
 	[Fact]
 	public void TakeEveryOutOfRangeZeroStep()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			AsyncEnumerable.Empty<object>().TakeEvery(0));
+			new AsyncBreakingSequence<int>().TakeEvery(0));
 	}
 
 	[Fact]
-	public Task TakeEveryEmptySequence()
+	public async Task TakeEveryEmptySequence()
 	{
-		return AsyncEnumerable.Empty<object>().TakeEvery(1).AssertEmpty();
+		await using var sequence = TestingSequence.Of<object>();
+
+		var result = sequence.TakeEvery(1);
+		await result.AssertSequenceEqual();
 	}
 
 	[Fact]
-	public Task TakeEveryNonEmptySequence()
+	public async Task TakeEveryNonEmptySequence()
 	{
-		var result = AsyncSeq(1, 2, 3, 4, 5).TakeEvery(1);
-		return result.AssertSequenceEqual(1, 2, 3, 4, 5);
+		await using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
+
+		var result = sequence.TakeEvery(1);
+		await result.AssertSequenceEqual(1, 2, 3, 4, 5);
 	}
 
 	[Fact]
-	public Task TakeEveryOtherOnNonEmptySequence()
+	public async Task TakeEveryOtherOnNonEmptySequence()
 	{
-		var result = AsyncSeq(1, 2, 3, 4, 5).TakeEvery(2);
-		return result.AssertSequenceEqual(1, 3, 5);
+		await using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
+
+		var result = sequence.TakeEvery(2);
+		await result.AssertSequenceEqual(1, 3, 5);
 	}
 
 	[Fact]
-	public Task TakeEveryThirdOnNonEmptySequence()
+	public async Task TakeEveryThirdOnNonEmptySequence()
 	{
-		var result = AsyncSeq(1, 2, 3, 4, 5).TakeEvery(3);
-		return result.AssertSequenceEqual(1, 4);
-	}
+		await using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
 
-	[Fact]
-	public void TakeEveryIsLazy()
-	{
-		new AsyncBreakingSequence<object>().TakeEvery(1);
+		var result = sequence.TakeEvery(3);
+		await result.AssertSequenceEqual(1, 4);
 	}
 }

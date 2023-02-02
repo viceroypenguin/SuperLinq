@@ -6,8 +6,10 @@ public class ConsumeTest
 	public void ConsumeReallyConsumes()
 	{
 		var counter = 0;
-		var sequence = Enumerable.Range(0, 10).Pipe(x => counter++);
-		sequence.Consume();
+		using var xs = Enumerable.Range(0, 10)
+			.Pipe(x => counter++)
+			.AsTestingSequence();
+		xs.Consume();
 		Assert.Equal(10, counter);
 	}
 }

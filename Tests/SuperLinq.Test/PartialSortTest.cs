@@ -5,51 +5,56 @@ public class PartialSortTests
 	[Fact]
 	public void PartialSort()
 	{
-		var sorted = Enumerable.Range(1, 10)
-							   .Reverse()
-							   .Append(0)
-							   .PartialSort(5);
+		using var sequence = Enumerable.Range(1, 10)
+			.Reverse()
+			.Append(0)
+			.AsTestingSequence();
 
-		sorted.AssertSequenceEqual(Enumerable.Range(0, 5));
+		sequence
+			.PartialSort(5)
+			.AssertSequenceEqual(Enumerable.Range(0, 5));
 	}
 
 	[Fact]
 	public void PartialSortWithOrder()
 	{
-		var sorted = Enumerable.Range(1, 10)
-								.Reverse()
-								.Append(0)
-								.PartialSort(5, OrderByDirection.Ascending);
+		using var sequence = Enumerable.Range(1, 10)
+			.Reverse()
+			.Append(0)
+			.AsTestingSequence(maxEnumerations: 2);
 
-		sorted.AssertSequenceEqual(Enumerable.Range(0, 5));
-		sorted = Enumerable.Range(1, 10)
-							.Reverse()
-							.Append(0)
-							.PartialSort(5, OrderByDirection.Descending);
-		sorted.AssertSequenceEqual(Enumerable.Range(6, 5).Reverse());
+		sequence
+			.PartialSort(5, OrderByDirection.Ascending)
+			.AssertSequenceEqual(Enumerable.Range(0, 5));
+		sequence
+			.PartialSort(5, OrderByDirection.Descending)
+			.AssertSequenceEqual(Enumerable.Range(6, 5).Reverse());
 	}
 
 	[Fact]
 	public void PartialSortWithDuplicates()
 	{
-		var sorted = Enumerable.Range(1, 10)
-							   .Reverse()
-							   .Concat(Enumerable.Repeat(3, 3))
-							   .PartialSort(5);
+		using var sequence = Enumerable.Range(1, 10)
+			.Reverse()
+			.Concat(Enumerable.Repeat(3, 3))
+			.AsTestingSequence();
 
-		sorted.AssertSequenceEqual(1, 2, 3, 3, 3);
+		sequence
+			.PartialSort(5)
+			.AssertSequenceEqual(1, 2, 3, 3, 3);
 	}
 
 	[Fact]
 	public void PartialSortWithComparer()
 	{
-		var alphabet = Enumerable.Range(0, 26)
-								 .Select((n, i) => ((char)((i % 2 == 0 ? 'A' : 'a') + n)).ToString())
-								 .ToArray();
+		using var sequence = Enumerable.Range(0, 26)
+			.Select((n, i) => ((char)((i % 2 == 0 ? 'A' : 'a') + n)).ToString())
+			.AsTestingSequence();
 
-		var sorted = alphabet.PartialSort(5, StringComparer.Ordinal);
-
-		sorted.Select(s => s[0]).AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
+		sequence
+			.PartialSort(5, StringComparer.Ordinal)
+			.Select(s => s[0])
+			.AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
 	}
 
 	[Fact]
@@ -61,7 +66,7 @@ public class PartialSortTests
 	[Fact]
 	public void PartialSortIsStable()
 	{
-		var list = new[]
+		using var list = new[]
 		{
 			(key: 5, text: "1"),
 			(key: 5, text: "2"),
@@ -73,7 +78,7 @@ public class PartialSortTests
 			(key: 2, text: "8"),
 			(key: 1, text: "9"),
 			(key: 1, text: "10"),
-		};
+		}.AsTestingSequence(maxEnumerations: 10);
 
 		var stableSort = new[]
 		{

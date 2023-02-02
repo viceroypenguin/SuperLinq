@@ -5,9 +5,8 @@ public class FindIndexTest
 	[Fact]
 	public void FindIndexWithNegativeCount()
 	{
-		using var sequence = Seq(1).AsTestingSequence();
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			sequence.FindIndex(BreakingFunc.Of<int, bool>(), 1, -1));
+			new BreakingSequence<int>().FindIndex(BreakingFunc.Of<int, bool>(), 1, -1));
 	}
 
 	[Fact]
@@ -20,7 +19,8 @@ public class FindIndexTest
 	[Fact]
 	public void FindIndexFromStart()
 	{
-		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
+		using var sequence = Enumerable.Range(100, 5)
+			.AsTestingSequence();
 		Assert.Equal(
 			2,
 			sequence.FindIndex(i => i == 102));
@@ -29,7 +29,8 @@ public class FindIndexTest
 	[Fact]
 	public void FindIndexFromStartCount()
 	{
-		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
+		using var sequence = Enumerable.Range(100, 5)
+			.AsTestingSequence();
 		Assert.Equal(
 			2,
 			sequence.FindIndex(i => i == 102, 0, 3));
@@ -38,7 +39,9 @@ public class FindIndexTest
 	[Fact]
 	public void FindIndexFromStartIndex()
 	{
-		using var sequence = Enumerable.Range(100, 5).Concat(Enumerable.Range(100, 5)).AsTestingSequence();
+		using var sequence = Enumerable.Range(100, 5)
+			.Concat(Enumerable.Range(100, 5))
+			.AsTestingSequence();
 		Assert.Equal(
 			7,
 			sequence.FindIndex(i => i == 102, 5));
@@ -47,14 +50,16 @@ public class FindIndexTest
 	[Fact]
 	public void FindIndexFromEndIndex()
 	{
-		using var sequence = Enumerable.Range(100, 5).Concat(Enumerable.Range(100, 5)).AsTestingSequence();
+		using var sequence = Enumerable.Range(100, 5)
+			.Concat(Enumerable.Range(100, 5))
+			.AsTestingSequence();
 		Assert.Equal(
 			7,
 			sequence.FindIndex(i => i == 102, ^5));
 	}
 
 	[Fact]
-	public void FindIndexFromEndOfArray()
+	public void FindIndexUsesCollectionLengthCorrectly()
 	{
 		var array = new int[20];
 		array[^1] = 3;
@@ -66,7 +71,8 @@ public class FindIndexTest
 	[Fact]
 	public void FindIndexMissingValueFromStart()
 	{
-		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
+		using var sequence = Enumerable.Range(100, 5)
+			.AsTestingSequence();
 		Assert.Equal(
 			-1,
 			sequence.FindIndex(i => i == 95));
@@ -75,7 +81,8 @@ public class FindIndexTest
 	[Fact]
 	public void FindIndexMissingValueFromEnd()
 	{
-		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
+		using var sequence = Enumerable.Range(100, 5)
+			.AsTestingSequence();
 		Assert.Equal(
 			-1,
 			sequence.FindIndex(i => i == 95, ^5));
@@ -84,7 +91,8 @@ public class FindIndexTest
 	[Fact]
 	public void FindIndexMissingValueFromStartCount()
 	{
-		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
+		using var sequence = Enumerable.Range(100, 5)
+			.AsTestingSequence();
 		Assert.Equal(
 			-1,
 			sequence.FindIndex(i => i == 104, 0, 4));
@@ -93,7 +101,8 @@ public class FindIndexTest
 	[Fact]
 	public void FindIndexMissingValueFromEndCount()
 	{
-		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
+		using var sequence = Enumerable.Range(100, 5)
+			.AsTestingSequence();
 		Assert.Equal(
 			-1,
 			sequence.FindIndex(i => i == 104, ^5, 4));
@@ -109,7 +118,7 @@ public class FindIndexTest
 				() => "carla",
 				() => "bob",
 				() => "davi",
-				() => throw new TestException(),
+				BreakingFunc.Of<string>(),
 				() => "angelo",
 				() => "carlos")
 			.AsTestingSequence();
@@ -127,7 +136,7 @@ public class FindIndexTest
 				() => "carla",
 				() => "bob",
 				() => "davi",
-				() => throw new TestException(),
+				BreakingFunc.Of<string>(),
 				() => "angelo",
 				() => "carlos")
 			.AsTestingSequence();

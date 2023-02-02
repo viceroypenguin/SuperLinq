@@ -22,11 +22,10 @@ public class SegmentTests
 	[Fact]
 	public void TestIdentitySegment()
 	{
-		const int count = 5;
-		var sequence = Enumerable.Range(1, count);
-		var result = sequence.Segment(x => false);
-
-		Assert.Equal(sequence, result.Single());
+		using var sequence = Enumerable.Range(1, 5)
+			.AsTestingSequence();
+		sequence.Segment(x => false).Single()
+			.AssertSequenceEqual(Enumerable.Range(1, 5));
 	}
 
 	/// <summary>
@@ -35,9 +34,8 @@ public class SegmentTests
 	[Fact]
 	public void TestEmptySequence()
 	{
-		var sequence = Enumerable.Repeat(-1, 0);
-		var result = sequence.Segment(x => true);
-		Assert.Empty(result);
+		using var sequence = Array.Empty<int>().AsTestingSequence();
+		Assert.Empty(sequence.Segment(x => true));
 	}
 
 	/// <summary>
@@ -46,14 +44,14 @@ public class SegmentTests
 	[Fact]
 	public void TestSegmentIsIdempotent()
 	{
-		const int value = -1;
-		var sequence = Enumerable.Repeat(value, 10);
-		var result = sequence.Segment(x => true);
+		using var sequence = Enumerable.Repeat(-1, 10)
+			.AsTestingSequence();
 
+		var result = sequence.Segment(x => true);
 		foreach (var segment in result)
 		{
 			Assert.True(segment.Any());
-			Assert.Equal(value, segment.Single());
+			Assert.Equal(-1, segment.Single());
 		}
 	}
 
@@ -64,14 +62,12 @@ public class SegmentTests
 	[Fact]
 	public void TestFirstSegmentNeverEmpty()
 	{
-		var sequence = Enumerable.Repeat(-1, 10);
-		var resultA = sequence.Segment(x => true);
-		var resultB = sequence.Segment((x, index) => true);
-		var resultC = sequence.Segment((x, prevX, index) => true);
-
-		Assert.True(resultA.First().Any());
-		Assert.True(resultB.First().Any());
-		Assert.True(resultC.First().Any());
+		using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
+			Assert.True(sequence.Segment(x => true).First().Any());
+		using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
+			Assert.True(sequence.Segment((x, index) => true).First().Any());
+		using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
+			Assert.True(sequence.Segment((x, prevX, index) => true).First().Any());
 	}
 
 	/// <summary>
@@ -80,14 +76,12 @@ public class SegmentTests
 	[Fact]
 	public void TestSegmentationStartsWithSecondItem()
 	{
-		var sequence = new[] { 0 };
-		var resultA = sequence.Segment(BreakingFunc.Of<int, bool>());
-		var resultB = sequence.Segment(BreakingFunc.Of<int, int, bool>());
-		var resultC = sequence.Segment(BreakingFunc.Of<int, int, int, bool>());
-
-		Assert.True(resultA.Any());
-		Assert.True(resultB.Any());
-		Assert.True(resultC.Any());
+		using (var sequence = TestingSequence.Of(0))
+			Assert.True(sequence.Segment(BreakingFunc.Of<int, bool>()).Any());
+		using (var sequence = TestingSequence.Of(0))
+			Assert.True(sequence.Segment(BreakingFunc.Of<int, int, bool>()).Any());
+		using (var sequence = TestingSequence.Of(0))
+			Assert.True(sequence.Segment(BreakingFunc.Of<int, int, int, bool>()).Any());
 	}
 
 	/// <summary>
@@ -96,17 +90,13 @@ public class SegmentTests
 	[Fact]
 	public void VerifyCanSegmentByIndex()
 	{
-		const int count = 100;
-		const int segmentSize = 2;
 
-		var sequence = Enumerable.Repeat(1, count);
-		var result = sequence.Segment((x, i) => i % segmentSize == 0);
+		using var sequence = Enumerable.Repeat(1, 100)
+			.AsTestingSequence();
 
-		Assert.Equal(count / segmentSize, result.Count());
-		foreach (var segment in result)
-		{
-			Assert.Equal(segmentSize, segment.Count());
-		}
+		var result = sequence.Segment((x, i) => i % 2 == 0).ToList();
+		Assert.Equal(100 / 2, result.Count);
+		Assert.True(result.All(s => s.Count() == 2));
 	}
 
 	/// <summary>
@@ -116,14 +106,16 @@ public class SegmentTests
 	public void VerifyCanSegmentByPrevious()
 	{
 		var sequence = Enumerable.Range(1, 3)
-								 .SelectMany(x => Enumerable.Repeat(x, 5));
-		var result = sequence.Segment((curr, prev, i) => curr != prev);
+			.SelectMany(x => Enumerable.Repeat(x, 5));
 
-		Assert.Equal(sequence.Distinct().Count(), result.Count());
+		using var xs = sequence.AsTestingSequence();
+		var result = xs
+			.Segment((curr, prev, i) => curr != prev)
+			.ToList();
+
+		Assert.Equal(sequence.Distinct().Count(), result.Count);
 		Assert.True(result.All(s => s.Count() == 5));
 	}
-
-	static IEnumerable<T> Seq<T>(params T[] values) => values;
 
 	public static readonly IEnumerable<object[]> TestData =
 		from e in new[]
@@ -145,7 +137,8 @@ public class SegmentTests
 	[MemberData(nameof(TestData))]
 	public void TestSegment(IEnumerable<int> source, IEnumerable<IEnumerable<int>> expected)
 	{
-		source.AsTestingSequence().Segment(v => v % 3 == 0)
+		using var sequence = source.AsTestingSequence();
+		sequence.Segment(v => v % 3 == 0)
 			.Zip(expected)
 			.ForEach(x => Assert.Equal(x.Second, x.First));
 	}

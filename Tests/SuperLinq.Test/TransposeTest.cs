@@ -61,27 +61,32 @@ public class TransposeTest
 	[Fact]
 	public void TransposeMaintainsCornerElements()
 	{
-		var matrix = new[]
+		var sequences = new List<TestingSequence<int>>()
 		{
-				new[] { 10, 11 },
-				new[] { 20 },
-				Array.Empty<int>(),
-				new[] { 30, 31, 32 }
-			};
+			TestingSequence.Of<int>(10, 11),
+			TestingSequence.Of<int>(20),
+			TestingSequence.Of<int>(),
+			TestingSequence.Of<int>(30, 31, 32),
+		};
+		using var matrix = sequences.AsTestingSequence();
 
-		var traspose = matrix.Transpose();
+		var transpose = matrix.Transpose().ToList();
 
-		Assert.Equal(traspose.Last().Last(), matrix.Last().Last());
-		Assert.Equal(traspose.First().First(), matrix.First().First());
+		Assert.Equal(10, transpose.First().First());
+		Assert.Equal(32, transpose.Last().Last());
+		sequences.VerifySequences();
 	}
 
 	[Fact]
 	public void TransposeWithAllRowsAsInfiniteSequences()
 	{
-		var matrix = SuperEnumerable.Generate(1, x => x + 1)
-								   .Where(IsPrime)
-								   .Take(3)
-								   .Select(x => SuperEnumerable.Generate(x, n => n * x));
+		var sequences = new List<TestingSequence<int>>();
+		using var matrix = SuperEnumerable.Generate(1, x => x + 1)
+			.Where(IsPrime)
+			.Take(3)
+			.Select(x => SuperEnumerable.Generate(x, n => n * x)
+				.AddTestingSequenceToList(sequences))
+			.AsTestingSequence();
 
 		var result = matrix.Transpose().Take(5);
 
@@ -95,16 +100,20 @@ public class TransposeTest
 			};
 
 		AssertMatrix(expectations, result);
+		sequences.VerifySequences();
 	}
 
 	[Fact]
 	public void TransposeWithSomeRowsAsInfiniteSequences()
 	{
-		var matrix = SuperEnumerable.Generate(1, x => x + 1)
-								   .Where(IsPrime)
-								   .Take(3)
-								   .Select((x, i) => i == 1 ? SuperEnumerable.Generate(x, n => n * x).Take(2)
-															: SuperEnumerable.Generate(x, n => n * x));
+		var sequences = new List<TestingSequence<int>>();
+		using var matrix = SuperEnumerable.Generate(1, x => x + 1)
+			.Where(IsPrime)
+			.Take(3)
+			.Select((x, i) => i == 1
+				? SuperEnumerable.Generate(x, n => n * x).Take(2).AddTestingSequenceToList(sequences)
+				: SuperEnumerable.Generate(x, n => n * x).AddTestingSequenceToList(sequences))
+			.AsTestingSequence();
 
 		var result = matrix.Transpose().Take(5);
 
@@ -118,35 +127,39 @@ public class TransposeTest
 			};
 
 		AssertMatrix(expectations, result);
+		sequences.VerifySequences();
 	}
 
 	[Fact]
 	public void TransposeColumnTraversalOrderIsIrrelevant()
 	{
-		var matrix = new[]
+		var sequences = new List<TestingSequence<int>>()
 		{
-				new[] { 10, 11 },
-				new[] { 20 },
-				Array.Empty<int>(),
-				new[] { 30, 31, 32 }
-			};
+			TestingSequence.Of<int>(10, 11),
+			TestingSequence.Of<int>(20),
+			TestingSequence.Of<int>(),
+			TestingSequence.Of<int>(30, 31, 32),
+		};
+		using var matrix = sequences.AsTestingSequence();
 
 		var transpose = matrix.Transpose().ToList();
 
-		transpose[1].AssertSequenceEqual(11, 31);
 		transpose[0].AssertSequenceEqual(10, 20, 30);
+		transpose[1].AssertSequenceEqual(11, 31);
 		transpose[2].AssertSequenceEqual(32);
+		sequences.VerifySequences();
 	}
 
 	[Fact]
 	public void TransposeConsumesRowsLazily()
 	{
-		var matrix = new[]
+		var sequences = new List<TestingSequence<int>>()
 		{
-				SuperEnumerable.From(() => 10, () => 11),
-				SuperEnumerable.From(() => 20, () => 22),
-				SuperEnumerable.From(() => 30, () => throw new TestException(), () => 31),
-			};
+			Enumerable.Range(10, 3).AsTestingSequence(maxEnumerations: 2),
+			Enumerable.Range(20, 3).AsTestingSequence(maxEnumerations: 2),
+			SeqExceptionAt(2).Select(x => x + 29).AsTestingSequence(maxEnumerations: 2),
+		};
+		using var matrix = sequences.AsTestingSequence(maxEnumerations: 2);
 
 		var result = matrix.Transpose();
 
@@ -154,15 +167,14 @@ public class TransposeTest
 
 		Assert.Throws<TestException>(() =>
 			result.ElementAt(1));
+		sequences.VerifySequences();
 	}
 
 	[Fact]
 	public void TransposeWithErroneousRowDisposesRowIterators()
 	{
 		using var row1 = TestingSequence.Of(10, 11);
-		using var row2 = SuperEnumerable.From(() => 20,
-											 () => throw new TestException())
-									   .AsTestingSequence();
+		using var row2 = SeqExceptionAt(2).Select(x => x + 20).AsTestingSequence();
 		using var row3 = TestingSequence.Of(30, 32);
 		using var matrix = TestingSequence.Of(row1, row2, row3);
 
@@ -170,7 +182,7 @@ public class TransposeTest
 			matrix.Transpose().Consume());
 	}
 
-	static bool IsPrime(int number)
+	private static bool IsPrime(int number)
 	{
 		if (number == 1) return false;
 		if (number == 2) return true;
@@ -186,16 +198,15 @@ public class TransposeTest
 		return true;
 	}
 
-	static void AssertMatrix<T>(IEnumerable<IEnumerable<T>> expectation, IEnumerable<IEnumerable<T>> result)
+	private static void AssertMatrix<T>(IEnumerable<IEnumerable<T>> expectation, IEnumerable<IEnumerable<T>> result)
 	{
-		// necessary because NUnitLite 3.6.1 (.NET 4.5) for Mono don't assert nested enumerables
-
 		var resultList = result.ToList();
 		var expectationList = expectation.ToList();
 
 		Assert.Equal(expectationList.Count, resultList.Count);
 
-		expectationList.Zip(resultList, ValueTuple.Create)
-					   .ForEach(t => t.Item1.AssertSequenceEqual(t.Item2));
+		expectationList
+			.Zip(resultList)
+			.ForEach(t => t.First.AssertSequenceEqual(t.Second));
 	}
 }

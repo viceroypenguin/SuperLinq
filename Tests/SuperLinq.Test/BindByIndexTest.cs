@@ -20,28 +20,31 @@ public class BindByIndexTest
 	[Fact]
 	public void BindByIndexInOrder()
 	{
-		var seq1 = Enumerable.Range(1, 10);
-		var seq2 = Seq(1, 3, 5, 7, 9);
+		var indexes = Seq(1, 3, 5, 7, 9);
+		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
+		using var seq2 = indexes.AsTestingSequence();
 
-		seq1.BindByIndex(seq2).AssertSequenceEqual(seq2.Select(x => x + 1));
+		seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
 	[Fact]
 	public void BindByIndexOutOfOrder()
 	{
-		var seq1 = Enumerable.Range(1, 10);
-		var seq2 = Seq(9, 7, 5, 3, 1);
+		var indexes = Seq(9, 7, 5, 3, 1);
+		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
+		using var seq2 = indexes.AsTestingSequence();
 
-		seq1.BindByIndex(seq2).AssertSequenceEqual(seq2.Select(x => x + 1));
+		seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
 	[Fact]
 	public void BindByIndexComplex()
 	{
-		var seq1 = Enumerable.Range(1, 10);
-		var seq2 = Seq(0, 1, 8, 9, 3, 4, 2);
+		var indexes = Seq(0, 1, 8, 9, 3, 4, 2);
+		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
+		using var seq2 = indexes.AsTestingSequence();
 
-		seq1.BindByIndex(seq2).AssertSequenceEqual(seq2.Select(x => x + 1));
+		seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
 	[Theory]
@@ -50,54 +53,63 @@ public class BindByIndexTest
 	[InlineData(100)]
 	public void BindByIndexThrowExceptionInvalidIndex(int index)
 	{
-		var seq1 = Enumerable.Range(1, 10);
-		var seq2 = Seq(index);
+		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
+		using var seq2 = TestingSequence.Of(index);
 
-		Assert.Throws<ArgumentOutOfRangeException>("indices", () => seq1.BindByIndex(seq2).Consume());
+		Assert.Throws<ArgumentOutOfRangeException>("indices", () =>
+			seq1.BindByIndex(seq2).Consume());
 	}
 
 	[Fact]
 	public void BindByIndexTransformInOrder()
 	{
-		var seq1 = Enumerable.Range(1, 10);
-		var seq2 = Seq(1, 3, 5, 7, 9);
+		var indexes = Seq(1, 3, 5, 7, 9);
+		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
+		using var seq2 = indexes.AsTestingSequence();
 
-		seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).AssertSequenceEqual(seq2.Select(x => (int?)(x + 1)));
+		seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
+			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
 	[Fact]
 	public void BindByIndexTransformOutOfOrder()
 	{
-		var seq1 = Enumerable.Range(1, 10);
-		var seq2 = Seq(9, 7, 5, 3, 1);
+		var indexes = Seq(9, 7, 5, 3, 1);
+		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
+		using var seq2 = indexes.AsTestingSequence();
 
-		seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).AssertSequenceEqual(seq2.Select(x => (int?)(x + 1)));
+		seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
+			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
 	[Fact]
 	public void BindByIndexTransformComplex()
 	{
-		var seq1 = Enumerable.Range(1, 10);
-		var seq2 = Seq(0, 1, 8, 9, 3, 4, 2);
+		var indexes = Seq(0, 1, 8, 9, 3, 4, 2);
+		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
+		using var seq2 = indexes.AsTestingSequence();
 
-		seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).AssertSequenceEqual(seq2.Select(x => (int?)(x + 1)));
+		seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
+			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
 	[Fact]
 	public void BindByIndexTransformInvalidIndex()
 	{
-		var seq1 = Enumerable.Range(1, 10);
-		var seq2 = Seq(1, 10, 3, 30);
+		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
+		using var seq2 = TestingSequence.Of(1, 10, 3, 30);
 
-		seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).AssertSequenceEqual(2, null, 4, null);
+		seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
+			.AssertSequenceEqual(2, null, 4, null);
 	}
 
 	[Fact]
 	public void BindByIndexTransformThrowExceptionNegativeIndex()
 	{
-		var seq1 = Enumerable.Range(1, 10);
-		var seq2 = Seq(-1);
+		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
+		using var seq2 = TestingSequence.Of(-1);
 
-		Assert.Throws<ArgumentOutOfRangeException>("indices", () => seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).Consume());
+		Assert.Throws<ArgumentOutOfRangeException>("indices", () =>
+			seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).Consume());
 	}
 }

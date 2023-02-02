@@ -3,24 +3,31 @@
 public class SkipUntilTest
 {
 	[Fact]
-	public Task SkipUntilPredicateNeverFalse()
+	public async Task SkipUntilPredicateNeverFalse()
 	{
-		var sequence = AsyncEnumerable.Range(0, 5).SkipUntil(x => x != 100);
-		return sequence.AssertSequenceEqual(1, 2, 3, 4);
+		await using var sequence = AsyncEnumerable.Range(0, 5)
+			.AsTestingSequence();
+		await sequence
+			.SkipUntil(x => x != 100)
+			.AssertSequenceEqual(1, 2, 3, 4);
 	}
 
 	[Fact]
 	public async Task SkipUntilPredicateNeverTrue()
 	{
-		var sequence = AsyncEnumerable.Range(0, 5).SkipUntil(x => x == 100);
-		Assert.Empty(await sequence.ToListAsync());
+		await using var sequence = AsyncEnumerable.Range(0, 5)
+			.AsTestingSequence();
+		Assert.Empty(await sequence.SkipUntil(x => x == 100).ToListAsync());
 	}
 
 	[Fact]
-	public Task SkipUntilPredicateBecomesTrueHalfWay()
+	public async Task SkipUntilPredicateBecomesTrueHalfWay()
 	{
-		var sequence = AsyncEnumerable.Range(0, 5).SkipUntil(x => x == 2);
-		return sequence.AssertSequenceEqual(3, 4);
+		await using var sequence = AsyncEnumerable.Range(0, 5)
+			.AsTestingSequence();
+		await sequence
+			.SkipUntil(x => x == 2)
+			.AssertSequenceEqual(3, 4);
 	}
 
 	[Fact]
@@ -30,19 +37,16 @@ public class SkipUntilTest
 	}
 
 	[Fact]
-	public Task SkipUntilEvaluatesPredicateLazily()
+	public async Task SkipUntilEvaluatesPredicateLazily()
 	{
+		await using var sequence = AsyncEnumerable.Range(-2, 5)
+			.AsTestingSequence();
+
 		// Predicate would explode at x == 0, but we never need to evaluate it as we've
 		// started returning items after -1.
-		var sequence = AsyncEnumerable.Range(-2, 5).SkipUntil(x => 1 / x == -1);
-		return sequence.AssertSequenceEqual(0, 1, 2);
-	}
-
-	[Fact]
-	public async Task SkipUntilDisposesEnumerator()
-	{
-		await using var seq1 = TestingSequence.Of<int>();
-		await seq1.SkipUntil(x => true).ToListAsync();
+		await sequence
+			.SkipUntil(x => 1 / x == -1)
+			.AssertSequenceEqual(0, 1, 2);
 	}
 
 	public static readonly IEnumerable<object[]> TestData =
@@ -61,6 +65,11 @@ public class SkipUntilTest
 	[Theory, MemberData(nameof(TestData))]
 	public async Task TestSkipUntil(int[] source, int min, int[] expected)
 	{
-		Assert.Equal(expected, await source.ToAsyncEnumerable().SkipUntil(v => v >= min).ToListAsync());
+		await using var xs = source
+			.ToAsyncEnumerable()
+			.AsTestingSequence();
+		Assert.Equal(expected, await xs
+			.SkipUntil(v => v >= min)
+			.ToListAsync());
 	}
 }

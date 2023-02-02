@@ -7,39 +7,47 @@ public class ScanRightTest
 	[Fact]
 	public void ScanRightWithEmptySequence()
 	{
-		var result = Array.Empty<int>().ScanRight((a, b) => a + b);
+		using var seq = TestingSequence.Of<int>();
 
-		Assert.Equal(Array.Empty<int>(), result);
-	}
-
-	[Fact]
-	public void ScanRightDisposesEnumerator()
-	{
-		using var result = TestingSequence.Of<int>();
-
-		Assert.Equal(Array.Empty<int>(), result.ScanRight((a, b) => a + b));
+		var result = seq.ScanRight((a, b) => a + b);
+		result.AssertSequenceEqual();
 	}
 
 	[Fact]
 	public void ScanRightFuncIsNotInvokedOnSingleElementSequence()
 	{
-		const int value = 1;
+		using var seq = TestingSequence.Of(1);
 
-		var result = new[] { value }.ScanRight(BreakingFunc.Of<int, int, int>());
-
-		Assert.Equal(new[] { value }, result);
+		var result = seq.ScanRight(BreakingFunc.Of<int, int, int>());
+		result.AssertSequenceEqual(1);
 	}
 
 	[Fact]
 	public void ScanRight()
 	{
-		var result = Enumerable.Range(1, 5)
-							   .Select(x => x.ToString())
-							   .ScanRight((a, b) => string.Format("({0}+{1})", a, b));
+		using var seq = Enumerable.Range(1, 5)
+			.Select(x => x.ToString())
+			.AsTestingSequence();
 
-		var expectations = new[] { "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" };
+		var result = seq
+			.ScanRight((a, b) => string.Format("({0}+{1})", a, b));
 
-		Assert.Equal(expectations, result);
+		result.AssertSequenceEqual(
+			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
+	}
+
+	[Fact]
+	public void ScanRightWithList()
+	{
+		var list = Enumerable.Range(1, 5)
+			.Select(x => x.ToString())
+			.ToList();
+
+		var result = list
+			.ScanRight((a, b) => string.Format("({0}+{1})", a, b));
+
+		result.AssertSequenceEqual(
+			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
 	}
 
 	[Fact]
@@ -56,28 +64,43 @@ public class ScanRightTest
 	[InlineData(true)]
 	public void ScanRightSeedWithEmptySequence(object defaultValue)
 	{
-		Assert.Equal(new[] { defaultValue }, Array.Empty<int>().ScanRight(defaultValue, (a, b) => b));
+		using var seq = TestingSequence.Of<int>();
+
+		var result = seq.ScanRight(defaultValue, (a, b) => b);
+		result.AssertSequenceEqual(defaultValue);
 	}
 
 	[Fact]
 	public void ScanRightSeedFuncIsNotInvokedOnEmptySequence()
 	{
-		const int value = 1;
+		using var seq = TestingSequence.Of<int>();
 
-		var result = Array.Empty<int>().ScanRight(value, BreakingFunc.Of<int, int, int>());
-
-		Assert.Equal(new[] { value }, result);
+		var result = seq.ScanRight(1, BreakingFunc.Of<int, int, int>());
+		result.AssertSequenceEqual(1);
 	}
 
 	[Fact]
 	public void ScanRightSeed()
 	{
-		var result = Enumerable.Range(1, 4)
-							   .ScanRight("5", (a, b) => string.Format("({0}+{1})", a, b));
+		using var seq = Enumerable.Range(1, 4).AsTestingSequence();
 
-		var expectations = new[] { "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" };
+		var result = seq
+			.ScanRight("5", (a, b) => string.Format("({0}+{1})", a, b));
 
-		Assert.Equal(expectations, result);
+		result.AssertSequenceEqual(
+			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
+	}
+
+	[Fact]
+	public void ScanRightSeedWithList()
+	{
+		var list = Enumerable.Range(1, 4).ToList();
+
+		var result = list
+			.ScanRight("5", (a, b) => string.Format("({0}+{1})", a, b));
+
+		result.AssertSequenceEqual(
+			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
 	}
 
 	[Fact]

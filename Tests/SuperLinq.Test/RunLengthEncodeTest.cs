@@ -21,10 +21,10 @@ public class RunLengthEncodeTests
 	[Fact]
 	public void TestRunLengthEncodeEmptySequence()
 	{
-		var sequence = Enumerable.Empty<int>();
-		var result = sequence.RunLengthEncode();
+		using var sequence = TestingSequence.Of<int>();
 
-		Assert.Empty(result);
+		var result = sequence.RunLengthEncode();
+		result.AssertSequenceEqual();
 	}
 
 	/// <summary>
@@ -33,17 +33,16 @@ public class RunLengthEncodeTests
 	[Fact]
 	public void TestRunLengthEncodeCustomComparer()
 	{
-		var sequence = new[] { "a", "A", "a", "b", "b", "B", "B" };
+		using var sequence = TestingSequence.Of("a", "A", "a", "b", "b", "B", "B");
 
-		var result = sequence.RunLengthEncode(StringComparer.InvariantCultureIgnoreCase)
-							 .Select(kvp => (kvp.value.ToLowerInvariant(), kvp.count));
-		var expectedResult = new[]
-		{
-			("a", 3),
-			("b", 4)
-		};
+		var result = sequence
+			.RunLengthEncode(StringComparer.InvariantCultureIgnoreCase);
 
-		Assert.Equal(expectedResult, result);
+		result
+			.Select(kvp => (kvp.value.ToLowerInvariant(), kvp.count))
+			.AssertSequenceEqual(
+				("a", 3),
+				("b", 4));
 	}
 
 	/// <summary>
@@ -52,11 +51,11 @@ public class RunLengthEncodeTests
 	[Fact]
 	public void TestRunLengthEncodeResults()
 	{
-		var sequence = new[] { 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6 };
-		var expectedResult = Enumerable.Range(1, 6).Select(x => (x, x));
-		var result = sequence.RunLengthEncode();
+		using var sequence = TestingSequence.Of(1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6);
 
-		Assert.Equal(expectedResult, result);
+		var result = sequence.RunLengthEncode();
+		result.AssertSequenceEqual(
+			Enumerable.Range(1, 6).Select(x => (x, x)));
 	}
 
 	/// <summary>
@@ -65,11 +64,11 @@ public class RunLengthEncodeTests
 	[Fact]
 	public void TestRunLengthEncodeNoRuns()
 	{
-		var sequence = Enumerable.Range(1, 10);
-		var result = sequence.RunLengthEncode();
-		var expectedResult = sequence.Select(x => (x, 1));
+		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
 
-		Assert.Equal(expectedResult, result);
+		var result = sequence.RunLengthEncode();
+		result.AssertSequenceEqual(
+			Enumerable.Range(1, 10).Select(x => (x, 1)));
 	}
 
 	/// <summary>
@@ -79,12 +78,9 @@ public class RunLengthEncodeTests
 	[Fact]
 	public void TestRunLengthEncodeOneRun()
 	{
-		const char value = 'q';
-		const int repeatCount = 10;
-		var sequence = Enumerable.Repeat(value, repeatCount);
-		var result = sequence.RunLengthEncode();
-		var expectedResult = new[] { (value, repeatCount) };
+		using var sequence = Enumerable.Repeat('q', 10).AsTestingSequence();
 
-		Assert.Equal(expectedResult, result);
+		var result = sequence.RunLengthEncode();
+		result.AssertSequenceEqual(('q', 10));
 	}
 }

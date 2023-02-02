@@ -18,88 +18,98 @@ public class BindByIndexTest
 	}
 
 	[Fact]
-	public Task BindByIndexInOrder()
+	public async Task BindByIndexInOrder()
 	{
-		var seq1 = AsyncEnumerable.Range(1, 10);
-		var seq2 = AsyncSeq(1, 3, 5, 7, 9);
+		var indexes = AsyncSeq(1, 3, 5, 7, 9);
+		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
+		await using var seq2 = indexes.AsTestingSequence();
 
-		return seq1.BindByIndex(seq2).AssertSequenceEqual(seq2.Select(x => x + 1));
+		await seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
 	[Fact]
-	public Task BindByIndexOutOfOrder()
+	public async Task BindByIndexOutOfOrder()
 	{
-		var seq1 = AsyncEnumerable.Range(1, 10);
-		var seq2 = AsyncSeq(9, 7, 5, 3, 1);
+		var indexes = AsyncSeq(9, 7, 5, 3, 1);
+		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
+		await using var seq2 = indexes.AsTestingSequence();
 
-		return seq1.BindByIndex(seq2).AssertSequenceEqual(seq2.Select(x => x + 1));
+		await seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
 	[Fact]
-	public Task BindByIndexComplex()
+	public async Task BindByIndexComplex()
 	{
-		var seq1 = AsyncEnumerable.Range(1, 10);
-		var seq2 = AsyncSeq(0, 1, 8, 9, 3, 4, 2);
+		var indexes = AsyncSeq(0, 1, 8, 9, 3, 4, 2);
+		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
+		await using var seq2 = indexes.AsTestingSequence();
 
-		return seq1.BindByIndex(seq2).AssertSequenceEqual(seq2.Select(x => x + 1));
+		await seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
 	[Theory]
 	[InlineData(-1)]
 	[InlineData(10)]
 	[InlineData(100)]
-	public Task BindByIndexThrowExceptionInvalidIndex(int index)
+	public async Task BindByIndexThrowExceptionInvalidIndex(int index)
 	{
-		var seq1 = AsyncEnumerable.Range(1, 10);
-		var seq2 = AsyncSeq(index);
+		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
+		await using var seq2 = TestingSequence.Of(index);
 
-		return Assert.ThrowsAsync<ArgumentOutOfRangeException>("indices",
+		await Assert.ThrowsAsync<ArgumentOutOfRangeException>("indices",
 			async () => await seq1.BindByIndex(seq2).Consume());
 	}
 
 	[Fact]
-	public Task BindByIndexTransformInOrder()
+	public async Task BindByIndexTransformInOrder()
 	{
-		var seq1 = AsyncEnumerable.Range(1, 10);
-		var seq2 = AsyncSeq(1, 3, 5, 7, 9);
+		var indexes = AsyncSeq(1, 3, 5, 7, 9);
+		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
+		await using var seq2 = indexes.AsTestingSequence();
 
-		return seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).AssertSequenceEqual(seq2.Select(x => (int?)(x + 1)));
+		await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
+			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
 	[Fact]
-	public Task BindByIndexTransformOutOfOrder()
+	public async Task BindByIndexTransformOutOfOrder()
 	{
-		var seq1 = AsyncEnumerable.Range(1, 10);
-		var seq2 = AsyncSeq(9, 7, 5, 3, 1);
+		var indexes = AsyncSeq(9, 7, 5, 3, 1);
+		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
+		await using var seq2 = indexes.AsTestingSequence();
 
-		return seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).AssertSequenceEqual(seq2.Select(x => (int?)(x + 1)));
+		await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
+			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
 	[Fact]
-	public Task BindByIndexTransformComplex()
+	public async Task BindByIndexTransformComplex()
 	{
-		var seq1 = AsyncEnumerable.Range(1, 10);
-		var seq2 = AsyncSeq(0, 1, 8, 9, 3, 4, 2);
+		var indexes = AsyncSeq(0, 1, 8, 9, 3, 4, 2);
+		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
+		await using var seq2 = indexes.AsTestingSequence();
 
-		return seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).AssertSequenceEqual(seq2.Select(x => (int?)(x + 1)));
+		await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
+			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
 	[Fact]
-	public Task BindByIndexTransformInvalidIndex()
+	public async Task BindByIndexTransformInvalidIndex()
 	{
-		var seq1 = AsyncEnumerable.Range(1, 10);
-		var seq2 = AsyncSeq(1, 10, 3, 30);
+		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
+		await using var seq2 = TestingSequence.Of(1, 10, 3, 30);
 
-		return seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).AssertSequenceEqual(2, null, 4, null);
+		await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?))
+			.AssertSequenceEqual(2, null, 4, null);
 	}
 
 	[Fact]
-	public Task BindByIndexTransformThrowExceptionNegativeIndex()
+	public async Task BindByIndexTransformThrowExceptionNegativeIndex()
 	{
-		var seq1 = AsyncEnumerable.Range(1, 10);
-		var seq2 = AsyncSeq(-1);
+		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
+		await using var seq2 = TestingSequence.Of(-1);
 
-		return Assert.ThrowsAsync<ArgumentOutOfRangeException>("indices",
+		await Assert.ThrowsAsync<ArgumentOutOfRangeException>("indices",
 			async () => await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).Consume());
 	}
 }

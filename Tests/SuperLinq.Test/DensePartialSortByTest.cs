@@ -13,35 +13,38 @@ public class DensePartialSortByTests
 	{
 		var ns = SuperEnumerable.RandomDouble().Take(10).ToArray();
 
-		var sorted = ns.Select((n, i) => KeyValuePair.Create(i, n))
+		using var xs = ns.Select((n, i) => KeyValuePair.Create(i, n))
 			.Repeat(2)
 			.Reverse()
-			.DensePartialSortBy(3, e => e.Key);
+			.AsTestingSequence();
+
+		var sorted = xs.DensePartialSortBy(3, e => e.Key);
 
 		sorted.Select(e => e.Value).AssertSequenceEqual(
 			ns.Take(3).SelectMany(x => new[] { x, x, }));
 	}
 
-	[Fact]
-	public void DensePartialSortWithOrder()
+	[Theory]
+	[InlineData(OrderByDirection.Ascending)]
+	[InlineData(OrderByDirection.Descending)]
+	public void DensePartialSortWithOrder(OrderByDirection direction)
 	{
-		var ns = SuperEnumerable.RandomDouble().Take(10).ToArray();
+		var ns = SuperEnumerable.RandomDouble()
+			.Take(10)
+			.ToArray().AsEnumerable();
 
-		var sorted = ns.Select((n, i) => KeyValuePair.Create(i, n))
+		using var xs = ns.Select((n, i) => KeyValuePair.Create(i, n))
 			.Repeat(2)
 			.Reverse()
-			.DensePartialSortBy(3, e => e.Key, OrderByDirection.Ascending);
+			.AsTestingSequence();
+
+		var sorted = xs.DensePartialSortBy(3, e => e.Key, direction);
+
+		if (direction == OrderByDirection.Descending)
+			ns = ns.Reverse();
 
 		sorted.Select(e => e.Value).AssertSequenceEqual(
 			ns.Take(3).SelectMany(x => new[] { x, x, }));
-
-		sorted = ns.Select((n, i) => KeyValuePair.Create(i, n))
-			.Repeat(2)
-			.Reverse()
-			.DensePartialSortBy(3, e => e.Key, OrderByDirection.Descending);
-
-		sorted.Select(e => e.Value).AssertSequenceEqual(
-			ns.Reverse().Take(3).SelectMany(x => new[] { x, x, }));
 	}
 
 	[Fact]
@@ -52,9 +55,13 @@ public class DensePartialSortByTests
 			.Select((n, i) => ((char)((i % 2 == 0 ? 'A' : 'a') + n)).ToString())
 			.ToArray();
 
-		var ns = alphabet.Zip(SuperEnumerable.RandomDouble(), KeyValuePair.Create).ToArray();
-		var sorted = ns.DensePartialSortBy(3, e => e.Key, StringComparer.Ordinal);
+		using var ns = alphabet
+			.Zip(SuperEnumerable.RandomDouble(), KeyValuePair.Create)
+			.AsTestingSequence();
 
-		sorted.Select(e => e.Key[0]).AssertSequenceEqual('A', 'A', 'C', 'C', 'E', 'E');
+		ns
+			.DensePartialSortBy(3, e => e.Key, StringComparer.Ordinal)
+			.Select(e => e.Key[0])
+			.AssertSequenceEqual('A', 'A', 'C', 'C', 'E', 'E');
 	}
 }

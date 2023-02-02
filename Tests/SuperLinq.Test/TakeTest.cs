@@ -206,12 +206,12 @@ public class TakeTest
 		var source = new[] { 2, 5, 9, 1 };
 		int[] expected = { 2, 5, 9 };
 
-		Assert.Equal(expected, source.AsTestingSequence().Take(3));
+		Assert.Equal(expected, source.Take(3));
 
-		Assert.Equal(expected, source.AsTestingSequence().Take(0..3));
-		Assert.Equal(expected, source.AsTestingSequence().Take(^4..3));
-		Assert.Equal(expected, source.AsTestingSequence().Take(0..^1));
-		Assert.Equal(expected, source.AsTestingSequence().Take(^4..^1));
+		Assert.Equal(expected, source.Take(0..3));
+		Assert.Equal(expected, source.Take(^4..3));
+		Assert.Equal(expected, source.Take(0..^1));
+		Assert.Equal(expected, source.Take(^4..^1));
 	}
 
 	[Fact]
@@ -220,12 +220,12 @@ public class TakeTest
 		var source = Seq(2, 5, 9, 1);
 		int[] expected = { 2, 5, 9 };
 
-		Assert.Equal(expected, source.AsTestingSequence().Take(3));
+		Assert.Equal(expected, source.Take(3));
 
-		Assert.Equal(expected, source.AsTestingSequence().Take(0..3));
-		Assert.Equal(expected, source.AsTestingSequence().Take(^4..3));
-		Assert.Equal(expected, source.AsTestingSequence().Take(0..^1));
-		Assert.Equal(expected, source.AsTestingSequence().Take(^4..^1));
+		Assert.Equal(expected, source.Take(0..3));
+		Assert.Equal(expected, source.Take(^4..3));
+		Assert.Equal(expected, source.Take(0..^1));
+		Assert.Equal(expected, source.Take(^4..^1));
 	}
 
 	[Fact]
@@ -1130,8 +1130,8 @@ public class TakeTest
 		int totalCount = 100;
 		var partition1 = Enumerable.Range(1, totalCount).Skip(skip).Take(take);
 		Assert.Equal(expected, partition1.Count());
-		Assert.Equal(expected, partition1.Select(i => i).Count());
-		Assert.Equal(expected, partition1.Select(i => i).ToArray().Length);
+		Assert.Equal(expected, partition1.Select(SuperEnumerable.Identity).Count());
+		Assert.Equal(expected, partition1.Select(SuperEnumerable.Identity).ToArray().Length);
 
 		int end;
 		try
@@ -1145,23 +1145,23 @@ public class TakeTest
 
 		var partition2 = Enumerable.Range(1, totalCount).Take(skip..end);
 		Assert.Equal(expected, partition2.Count());
-		Assert.Equal(expected, partition2.Select(i => i).Count());
-		Assert.Equal(expected, partition2.Select(i => i).ToArray().Length);
+		Assert.Equal(expected, partition2.Select(SuperEnumerable.Identity).Count());
+		Assert.Equal(expected, partition2.Select(SuperEnumerable.Identity).ToArray().Length);
 
 		var partition3 = Enumerable.Range(1, totalCount).Take(^Math.Max(totalCount - skip, 0)..end);
 		Assert.Equal(expected, partition3.Count());
-		Assert.Equal(expected, partition3.Select(i => i).Count());
-		Assert.Equal(expected, partition3.Select(i => i).ToArray().Length);
+		Assert.Equal(expected, partition3.Select(SuperEnumerable.Identity).Count());
+		Assert.Equal(expected, partition3.Select(SuperEnumerable.Identity).ToArray().Length);
 
 		var partition4 = Enumerable.Range(1, totalCount).Take(skip..^Math.Max(totalCount - end, 0));
 		Assert.Equal(expected, partition4.Count());
-		Assert.Equal(expected, partition4.Select(i => i).Count());
-		Assert.Equal(expected, partition4.Select(i => i).ToArray().Length);
+		Assert.Equal(expected, partition4.Select(SuperEnumerable.Identity).Count());
+		Assert.Equal(expected, partition4.Select(SuperEnumerable.Identity).ToArray().Length);
 
 		var partition5 = Enumerable.Range(1, totalCount).Take(^Math.Max(totalCount - skip, 0)..^Math.Max(totalCount - end, 0));
 		Assert.Equal(expected, partition5.Count());
-		Assert.Equal(expected, partition5.Select(i => i).Count());
-		Assert.Equal(expected, partition5.Select(i => i).ToArray().Length);
+		Assert.Equal(expected, partition5.Select(SuperEnumerable.Identity).Count());
+		Assert.Equal(expected, partition5.Select(SuperEnumerable.Identity).ToArray().Length);
 	}
 
 	[Theory]
@@ -1375,25 +1375,25 @@ public class TakeTest
 	public void MutableSourceNotList()
 	{
 		var source1 = new List<int>() { 0, 1, 2, 3, 4 };
-		var query1 = ForceNotCollection(source1).Select(i => i).Take(3);
+		var query1 = ForceNotCollection(source1).Select(SuperEnumerable.Identity).Take(3);
 		source1.RemoveAt(0);
 		source1.InsertRange(2, new[] { -1, -2 });
 		Assert.Equal(new[] { 1, 2, -1 }, query1);
 
 		var source2 = new List<int>() { 0, 1, 2, 3, 4 };
-		var query2 = ForceNotCollection(source2).Select(i => i).Take(0..3);
+		var query2 = ForceNotCollection(source2).Select(SuperEnumerable.Identity).Take(0..3);
 		source2.RemoveAt(0);
 		source2.InsertRange(2, new[] { -1, -2 });
 		Assert.Equal(new[] { 1, 2, -1 }, query2);
 
 		var source3 = new List<int>() { 0, 1, 2, 3, 4 };
-		var query3 = ForceNotCollection(source3).Select(i => i).Take(^6..3);
+		var query3 = ForceNotCollection(source3).Select(SuperEnumerable.Identity).Take(^6..3);
 		source3.RemoveAt(0);
 		source3.InsertRange(2, new[] { -1, -2 });
 		Assert.Equal(new[] { 1, 2, -1 }, query3);
 
 		var source4 = new List<int>() { 0, 1, 2, 3, 4 };
-		var query4 = ForceNotCollection(source4).Select(i => i).Take(^6..^3);
+		var query4 = ForceNotCollection(source4).Select(SuperEnumerable.Identity).Take(^6..^3);
 		source4.RemoveAt(0);
 		source4.InsertRange(2, new[] { -1, -2 });
 		Assert.Equal(new[] { 1, 2, -1 }, query4);

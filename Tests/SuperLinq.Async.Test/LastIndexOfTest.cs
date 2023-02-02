@@ -5,7 +5,7 @@ public class LastIndexOfTest
 	[Fact]
 	public async Task LastIndexOfWithNegativeCount()
 	{
-		await using var sequence = AsyncSeq(1).AsTestingSequence();
+		await using var sequence = TestingSequence.Of(1);
 		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await sequence.LastIndexOf(1, 1, -1));
 	}

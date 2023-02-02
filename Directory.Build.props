@@ -1,7 +1,10 @@
 <Project>
 	<PropertyGroup>
 		<LangVersion>latest</LangVersion>
+
 		<Nullable>enable</Nullable>
+		<WarningsAsErrors>nullable</WarningsAsErrors>
+
 		<ImplicitUsings>enable</ImplicitUsings>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
 
@@ -9,6 +12,9 @@
 		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 		<AnalysisLevel>latest-all</AnalysisLevel>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+		<!-- Don't care that PolySharp has nothing to do on net7... -->
+		<NoWarn>CS8033;$(NoWarn)</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

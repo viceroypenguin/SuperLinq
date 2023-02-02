@@ -12,7 +12,7 @@ public class RightJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		xs.RightJoin(ys, e => e,
+		xs.RightJoin(ys, SuperEnumerable.Identity,
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, int, object>());
 	}
@@ -23,7 +23,7 @@ public class RightJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		xs.RightJoin(ys, e => e,
+		xs.RightJoin(ys, SuperEnumerable.Identity,
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, int, object>(),
 			comparer: null);
@@ -35,7 +35,7 @@ public class RightJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		xs.RightJoin(ys, x => x.GetHashCode(), y => y,
+		xs.RightJoin(ys, x => x.GetHashCode(), SuperEnumerable.Identity,
 			BreakingFunc.Of<object, object>(),
 			BreakingFunc.Of<int, object, object>());
 	}
@@ -46,7 +46,7 @@ public class RightJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		xs.RightJoin(ys, x => x.GetHashCode(), y => y,
+		xs.RightJoin(ys, x => x.GetHashCode(), SuperEnumerable.Identity,
 			BreakingFunc.Of<object, object>(),
 			BreakingFunc.Of<int, object, object>(),
 			comparer: null);
@@ -62,8 +62,8 @@ public class RightJoinTest
 		var baz = (3, "baz");
 		var qux = (4, "qux");
 
-		var xs = new[] { bar2, baz, bar3 };
-		var ys = new[] { foo, bar1, qux };
+		using var xs = TestingSequence.Of(bar2, baz, bar3);
+		using var ys = TestingSequence.Of(foo, bar1, qux);
 
 		var missing = default((int, string));
 
@@ -91,8 +91,8 @@ public class RightJoinTest
 		var baz = ("three", "baz");
 		var qux = ("four", "qux");
 
-		var xs = new[] { bar2, baz, bar3 };
-		var ys = new[] { foo, bar1, qux };
+		using var xs = TestingSequence.Of(bar2, baz, bar3);
+		using var ys = TestingSequence.Of(foo, bar1, qux);
 
 		var missing = default((string, string));
 
@@ -118,8 +118,8 @@ public class RightJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = Array.Empty<(int, string)>();
-		var ys = new[] { foo, bar, baz };
+		using var xs = TestingSequence.Of<(int, string)>();
+		using var ys = TestingSequence.Of(foo, bar, baz);
 
 		var missing = default((int, string));
 
@@ -143,8 +143,8 @@ public class RightJoinTest
 		var bar = (2, "bar");
 		var baz = (3, "baz");
 
-		var xs = new[] { foo, bar, baz };
-		var ys = Array.Empty<(int, string)>();
+		using var xs = TestingSequence.Of(foo, bar, baz);
+		using var ys = TestingSequence.Of<(int, string)>();
 
 		var missing = default((int, string));
 

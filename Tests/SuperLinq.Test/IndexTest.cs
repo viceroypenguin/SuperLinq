@@ -10,29 +10,29 @@ public class IndexTest
 		bs.Index(0);
 	}
 
+	private const string One = "one";
+	private const string Two = "two";
+	private const string Three = "three";
+
 	[Fact]
 	public void IndexSequence()
 	{
-		const string one = "one";
-		const string two = "two";
-		const string three = "three";
-		var result = new[] { one, two, three }.Index();
+		using var seq = TestingSequence.Of(One, Two, Three);
+		var result = seq.Index();
 		result.AssertSequenceEqual(
-			(0, one),
-			(1, two),
-			(2, three));
+			(0, One),
+			(1, Two),
+			(2, Three));
 	}
 
 	[Fact]
 	public void IndexSequenceStartIndex()
 	{
-		const string one = "one";
-		const string two = "two";
-		const string three = "three";
-		var result = new[] { one, two, three }.Index(10);
+		using var seq = TestingSequence.Of(One, Two, Three);
+		var result = seq.Index(10);
 		result.AssertSequenceEqual(
-			(10, one),
-			(11, two),
-			(12, three));
+			(10, One),
+			(11, Two),
+			(12, Three));
 	}
 }

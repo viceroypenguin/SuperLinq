@@ -24,9 +24,10 @@ public class PadStartTest
 		[InlineData(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
 		[InlineData(new[] { 123, 456, 789 }, 4, new[] { 0, 123, 456, 789 })]
 		[InlineData(new[] { 123, 456, 789 }, 5, new[] { 0, 0, 123, 456, 789 })]
-		public Task ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
+		public async Task ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
 		{
-			return source.ToAsyncEnumerable()
+			await using var xs = source.AsTestingSequence();
+			await xs
 				.PadStart(width)
 				.AssertSequenceEqual(expected);
 		}
@@ -36,9 +37,10 @@ public class PadStartTest
 		[InlineData(new[] { "foo", "bar", "baz" }, 3, new[] { "foo", "bar", "baz" })]
 		[InlineData(new[] { "foo", "bar", "baz" }, 4, new[] { null, "foo", "bar", "baz" })]
 		[InlineData(new[] { "foo", "bar", "baz" }, 5, new[] { null, null, "foo", "bar", "baz" })]
-		public Task ReferenceTypeElements(ICollection<string?> source, int width, IEnumerable<string?> expected)
+		public async Task ReferenceTypeElements(ICollection<string?> source, int width, IEnumerable<string?> expected)
 		{
-			return source.ToAsyncEnumerable()
+			await using var xs = source.AsTestingSequence();
+			await xs
 				.PadStart(width)
 				.AssertSequenceEqual(expected);
 		}
@@ -50,7 +52,7 @@ public class PadStartTest
 	public void PadStartWithPaddingWithNegativeWidth()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(
-			() => AsyncSeq<int>().PadStart(-1, 1));
+			() => new AsyncBreakingSequence<int>().PadStart(-1, 1));
 	}
 
 	[Fact]
@@ -66,9 +68,10 @@ public class PadStartTest
 		[InlineData(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
 		[InlineData(new[] { 123, 456, 789 }, 4, new[] { -1, 123, 456, 789 })]
 		[InlineData(new[] { 123, 456, 789 }, 5, new[] { -1, -1, 123, 456, 789 })]
-		public Task ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
+		public async Task ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
 		{
-			return source.ToAsyncEnumerable()
+			await using var xs = source.AsTestingSequence();
+			await xs
 				.PadStart(width, -1)
 				.AssertSequenceEqual(expected);
 		}
@@ -78,9 +81,10 @@ public class PadStartTest
 		[InlineData(new[] { "foo", "bar", "baz" }, 3, new[] { "foo", "bar", "baz" })]
 		[InlineData(new[] { "foo", "bar", "baz" }, 4, new[] { "", "foo", "bar", "baz" })]
 		[InlineData(new[] { "foo", "bar", "baz" }, 5, new[] { "", "", "foo", "bar", "baz" })]
-		public Task ReferenceTypeElements(ICollection<string> source, int width, IEnumerable<string> expected)
+		public async Task ReferenceTypeElements(ICollection<string> source, int width, IEnumerable<string> expected)
 		{
-			return source.ToAsyncEnumerable()
+			await using var xs = source.AsTestingSequence();
+			await xs
 				.PadStart(width, string.Empty)
 				.AssertSequenceEqual(expected);
 		}
@@ -92,7 +96,7 @@ public class PadStartTest
 	public void PadStartWithSelectorWithNegativeWidth()
 	{
 		Assert.Throws<ArgumentOutOfRangeException>(
-			() => AsyncSeq<int>().PadStart(-1, x => x));
+			() => new AsyncBreakingSequence<int>().PadStart(-1, SuperEnumerable.Identity));
 	}
 
 	[Fact]
@@ -110,9 +114,10 @@ public class PadStartTest
 		[InlineData(new[] { 123, 456, 789 }, 5, new[] { 0, -1, 123, 456, 789 })]
 		[InlineData(new[] { 123, 456, 789 }, 6, new[] { 0, -1, -4, 123, 456, 789 })]
 		[InlineData(new[] { 123, 456, 789 }, 7, new[] { 0, -1, -4, -9, 123, 456, 789 })]
-		public Task ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
+		public async Task ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
 		{
-			return source.ToAsyncEnumerable()
+			await using var xs = source.AsTestingSequence();
+			await xs
 				.PadStart(width, y => y * -y)
 				.AssertSequenceEqual(expected);
 		}
@@ -124,9 +129,10 @@ public class PadStartTest
 		[InlineData(new[] { "foo", "bar", "baz" }, 5, new[] { "+", "++", "foo", "bar", "baz" })]
 		[InlineData(new[] { "foo", "bar", "baz" }, 6, new[] { "+", "++", "+++", "foo", "bar", "baz" })]
 		[InlineData(new[] { "foo", "bar", "baz" }, 7, new[] { "+", "++", "+++", "++++", "foo", "bar", "baz" })]
-		public Task ReferenceTypeElements(ICollection<string> source, int width, IEnumerable<string> expected)
+		public async Task ReferenceTypeElements(ICollection<string> source, int width, IEnumerable<string> expected)
 		{
-			return source.ToAsyncEnumerable()
+			await using var xs = source.AsTestingSequence();
+			await xs
 				.PadStart(width, y => new string('+', y + 1))
 				.AssertSequenceEqual(expected);
 		}
