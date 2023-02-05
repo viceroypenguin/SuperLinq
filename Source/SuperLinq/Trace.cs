@@ -14,7 +14,7 @@ public static partial class SuperEnumerable
 	/// This a pass-through operator that uses deferred execution and
 	/// streams the results.
 	/// </remarks>
-
+	[Obsolete("Will be removed in v5.0.0")]
 	public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source)
 	{
 		return Trace(source, (string?)null);
@@ -37,7 +37,7 @@ public static partial class SuperEnumerable
 	/// This a pass-through operator that uses deferred execution and
 	/// streams the results.
 	/// </remarks>
-
+	[Obsolete("Will be removed in v5.0.0")]
 	public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, string? format)
 	{
 		Guard.IsNotNull(source);
@@ -62,7 +62,7 @@ public static partial class SuperEnumerable
 	/// This a pass-through operator that uses deferred execution and
 	/// streams the results.
 	/// </remarks>
-
+	[Obsolete("Will be removed in v5.0.0")]
 	public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, Func<TSource, string> formatter)
 	{
 		Guard.IsNotNull(source);
@@ -70,7 +70,7 @@ public static partial class SuperEnumerable
 		return TraceImpl(source, formatter);
 	}
 
-	static IEnumerable<TSource> TraceImpl<TSource>(IEnumerable<TSource> source, Func<TSource, string> formatter)
+	private static IEnumerable<TSource> TraceImpl<TSource>(IEnumerable<TSource> source, Func<TSource, string> formatter)
 	{
 		return source
 			.Pipe(x => System.Diagnostics.Trace.WriteLine(formatter(x)));
