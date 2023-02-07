@@ -5,25 +5,22 @@ public class FoldTest
 	[Fact]
 	public async Task FoldWithTooFewItems()
 	{
-		var ex = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+		await Assert.ThrowsAsync<ArgumentException>(async () =>
 			await AsyncEnumerable.Range(1, 3).Fold(AsyncBreakingFunc.Of<int, int, int, int, int>()));
-		Assert.Equal("Sequence contained an incorrect number of elements. (Expected: 4, Actual: 3)", ex.Message);
 	}
 
 	[Fact]
 	public async Task FoldWithEmptySequence()
 	{
-		var ex = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+		await Assert.ThrowsAsync<ArgumentException>(async () =>
 			await AsyncEnumerable.Empty<int>().Fold(AsyncBreakingFunc.Of<int, int>()));
-		Assert.Equal("Sequence contained an incorrect number of elements. (Expected: 1, Actual: 0)", ex.Message);
 	}
 
 	[Fact]
 	public async Task FoldWithTooManyItems()
 	{
-		var ex = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+		await Assert.ThrowsAsync<ArgumentException>(async () =>
 			await AsyncEnumerable.Range(1, 3).Fold(AsyncBreakingFunc.Of<int, int, int>()));
-		Assert.Equal("Sequence contained an incorrect number of elements. (Expected: 2, Actual: 3)", ex.Message);
 	}
 
 	[Fact]

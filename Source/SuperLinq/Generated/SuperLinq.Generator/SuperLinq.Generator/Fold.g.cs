@@ -21,9 +21,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(1 + 1).ToList();
-        if (elements.Count != 1)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 1, Actual: {elements.Count})");
+        var elements = source.AssertCount(1).ToList();
         return folder(elements[0]);
     }
 
@@ -46,9 +44,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(2 + 1).ToList();
-        if (elements.Count != 2)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 2, Actual: {elements.Count})");
+        var elements = source.AssertCount(2).ToList();
         return folder(elements[0], elements[1]);
     }
 
@@ -71,9 +67,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(3 + 1).ToList();
-        if (elements.Count != 3)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 3, Actual: {elements.Count})");
+        var elements = source.AssertCount(3).ToList();
         return folder(elements[0], elements[1], elements[2]);
     }
 
@@ -96,9 +90,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(4 + 1).ToList();
-        if (elements.Count != 4)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 4, Actual: {elements.Count})");
+        var elements = source.AssertCount(4).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3]);
     }
 
@@ -121,9 +113,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(5 + 1).ToList();
-        if (elements.Count != 5)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 5, Actual: {elements.Count})");
+        var elements = source.AssertCount(5).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4]);
     }
 
@@ -146,9 +136,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(6 + 1).ToList();
-        if (elements.Count != 6)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 6, Actual: {elements.Count})");
+        var elements = source.AssertCount(6).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5]);
     }
 
@@ -171,9 +159,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(7 + 1).ToList();
-        if (elements.Count != 7)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 7, Actual: {elements.Count})");
+        var elements = source.AssertCount(7).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6]);
     }
 
@@ -196,9 +182,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(8 + 1).ToList();
-        if (elements.Count != 8)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 8, Actual: {elements.Count})");
+        var elements = source.AssertCount(8).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7]);
     }
 
@@ -221,9 +205,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(9 + 1).ToList();
-        if (elements.Count != 9)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 9, Actual: {elements.Count})");
+        var elements = source.AssertCount(9).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8]);
     }
 
@@ -246,9 +228,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(10 + 1).ToList();
-        if (elements.Count != 10)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 10, Actual: {elements.Count})");
+        var elements = source.AssertCount(10).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9]);
     }
 
@@ -271,9 +251,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(11 + 1).ToList();
-        if (elements.Count != 11)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 11, Actual: {elements.Count})");
+        var elements = source.AssertCount(11).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10]);
     }
 
@@ -296,9 +274,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(12 + 1).ToList();
-        if (elements.Count != 12)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 12, Actual: {elements.Count})");
+        var elements = source.AssertCount(12).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11]);
     }
 
@@ -321,9 +297,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(13 + 1).ToList();
-        if (elements.Count != 13)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 13, Actual: {elements.Count})");
+        var elements = source.AssertCount(13).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12]);
     }
 
@@ -346,9 +320,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(14 + 1).ToList();
-        if (elements.Count != 14)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 14, Actual: {elements.Count})");
+        var elements = source.AssertCount(14).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13]);
     }
 
@@ -371,9 +343,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(15 + 1).ToList();
-        if (elements.Count != 15)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 15, Actual: {elements.Count})");
+        var elements = source.AssertCount(15).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14]);
     }
 
@@ -396,9 +366,7 @@ public static partial class SuperEnumerable
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
-        var elements = source.Take(16 + 1).ToList();
-        if (elements.Count != 16)
-            global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException($"Sequence contained an incorrect number of elements. (Expected: 16, Actual: {elements.Count})");
+        var elements = source.AssertCount(16).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14], elements[15]);
     }
 }

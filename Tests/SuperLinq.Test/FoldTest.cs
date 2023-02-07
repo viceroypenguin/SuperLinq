@@ -5,25 +5,22 @@ public class FoldTest
 	[Fact]
 	public void FoldWithTooFewItems()
 	{
-		var ex = Assert.Throws<InvalidOperationException>(() =>
+		Assert.Throws<ArgumentException>(() =>
 			Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int, int, int>()));
-		Assert.Equal("Sequence contained an incorrect number of elements. (Expected: 4, Actual: 3)", ex.Message);
 	}
 
 	[Fact]
 	public void FoldWithEmptySequence()
 	{
-		var ex = Assert.Throws<InvalidOperationException>(() =>
+		Assert.Throws<ArgumentException>(() =>
 			Enumerable.Empty<int>().Fold(BreakingFunc.Of<int, int>()));
-		Assert.Equal("Sequence contained an incorrect number of elements. (Expected: 1, Actual: 0)", ex.Message);
 	}
 
 	[Fact]
 	public void FoldWithTooManyItems()
 	{
-		var ex = Assert.Throws<InvalidOperationException>(() =>
+		Assert.Throws<ArgumentException>(() =>
 			Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int>()));
-		Assert.Equal("Sequence contained an incorrect number of elements. (Expected: 2, Actual: 3)", ex.Message);
 	}
 
 	[Fact]
