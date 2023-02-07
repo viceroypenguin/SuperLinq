@@ -29,10 +29,7 @@ public static partial class SuperEnumerable
 		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
 		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
 
-		var elements = source.Take({{$i}} + 1).ToList();
-		if (elements.Count != {{$i}})
-			global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException(
-				$"Sequence contained an incorrect number of elements. (Expected: {{$i}}, Actual: {elements.Count})");
+		var elements = source.AssertCount({{$i}}).ToList();
 
 		return folder(
 			{{~ for $j in 1..$i ~}}
