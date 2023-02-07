@@ -26,9 +26,9 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(generator);
 
-		return _(initial, generator);
+		return Core(initial, generator);
 
-		static IEnumerable<TResult> _(TResult current, Func<TResult, TResult> generator)
+		static IEnumerable<TResult> Core(TResult current, Func<TResult, TResult> generator)
 		{
 			while (true)
 			{

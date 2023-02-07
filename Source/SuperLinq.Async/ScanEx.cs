@@ -30,9 +30,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(transformation);
 
-		return _(source, transformation);
+		return Core(source, transformation);
 
-		static async IAsyncEnumerable<TSource> _(
+		static async IAsyncEnumerable<TSource> Core(
 			IAsyncEnumerable<TSource> source,
 			Func<TSource, TSource, TSource> transformation,
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -78,9 +78,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(transformation);
 
-		return _(source, seed, transformation);
+		return Core(source, seed, transformation);
 
-		static async IAsyncEnumerable<TState> _(
+		static async IAsyncEnumerable<TState> Core(
 			IAsyncEnumerable<TSource> source,
 			TState state,
 			Func<TState, TSource, TState> transformation,

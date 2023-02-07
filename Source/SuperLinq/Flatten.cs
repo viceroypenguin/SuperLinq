@@ -73,7 +73,7 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(selector);
 
-		return _(); IEnumerable<object?> _()
+		return Core(); IEnumerable<object?> Core()
 		{
 			var e = source.GetEnumerator();
 			var stack = new Stack<IEnumerator>();

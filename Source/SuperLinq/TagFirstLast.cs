@@ -66,9 +66,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(resultSelector);
 
-		return _(source, resultSelector);
+		return Core(source, resultSelector);
 
-		static IEnumerable<TResult> _(IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
+		static IEnumerable<TResult> Core(IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
 		{
 			using var iter = source.GetEnumerator();
 

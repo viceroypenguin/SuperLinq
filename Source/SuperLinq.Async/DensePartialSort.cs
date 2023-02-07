@@ -244,9 +244,9 @@ public static partial class AsyncSuperEnumerable
 		if (direction == OrderByDirection.Descending)
 			comparer = new ReverseComparer<TKey>(comparer);
 
-		return _(source, count, keySelector, comparer);
+		return Core(source, count, keySelector, comparer);
 
-		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TSource> Core(IAsyncEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var top = new SortedSet<TKey>(comparer);
 			var dic = new Dictionary<(TKey Key, int Index), List<TSource>>(count);

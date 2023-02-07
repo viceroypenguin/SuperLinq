@@ -26,9 +26,9 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(sequence);
 
-		return _(sequence);
+		return Core(sequence);
 
-		static IEnumerable<IList<T>> _(IEnumerable<T> sequence)
+		static IEnumerable<IList<T>> Core(IEnumerable<T> sequence)
 		{
 			var sequenceAsList = sequence.ToList();
 			var sequenceLength = sequenceAsList.Count;

@@ -70,9 +70,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(resultSelector);
 		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
-		return _(source, offset, defaultLagValue, resultSelector);
+		return Core(source, offset, defaultLagValue, resultSelector);
 
-		static IEnumerable<TResult> _(IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
+		static IEnumerable<TResult> Core(IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
 		{
 			var lagQueue = new Queue<TSource>(offset + 1);
 			foreach (var item in source)

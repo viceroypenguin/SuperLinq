@@ -32,9 +32,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(func);
 
-		return _(source, func);
+		return Core(source, func);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
 		{
 			var list = source is IList<TSource> l ? l : source.ToList();
 
@@ -87,9 +87,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(func);
 
-		return _(source, seed, func);
+		return Core(source, seed, func);
 
-		static IEnumerable<TAccumulate> _(IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
+		static IEnumerable<TAccumulate> Core(IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
 		{
 			var list = source is IList<TSource> l ? l : source.ToList();
 			var stack = new Stack<TAccumulate>(list.Count + 1);

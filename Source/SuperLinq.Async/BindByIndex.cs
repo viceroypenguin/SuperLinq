@@ -56,9 +56,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(resultSelector);
 		Guard.IsNotNull(missingSelector);
 
-		return _(source, indices, resultSelector, missingSelector);
+		return Core(source, indices, resultSelector, missingSelector);
 
-		static async IAsyncEnumerable<TResult> _(
+		static async IAsyncEnumerable<TResult> Core(
 			IAsyncEnumerable<TSource> source, IAsyncEnumerable<int> indices, Func<TSource, int, TResult> resultSelector, Func<int, TResult> missingSelector,
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{

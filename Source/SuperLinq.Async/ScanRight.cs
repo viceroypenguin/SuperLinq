@@ -89,9 +89,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(func);
 
-		return _(source, func);
+		return Core(source, func);
 
-		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, Func<TSource, TSource, CancellationToken, ValueTask<TSource>> func, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TSource> Core(IAsyncEnumerable<TSource> source, Func<TSource, TSource, CancellationToken, ValueTask<TSource>> func, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var list = await source.ToListAsync(cancellationToken).ConfigureAwait(false);
 
@@ -203,9 +203,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(func);
 
-		return _(source, seed, func);
+		return Core(source, seed, func);
 
-		static async IAsyncEnumerable<TAccumulate> _(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TAccumulate> Core(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var list = await source.ToListAsync(cancellationToken).ConfigureAwait(false);
 

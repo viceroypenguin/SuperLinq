@@ -24,9 +24,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 
-		return _(source, count);
+		return Core(source, count);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, int count)
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, int count)
 		{
 			if (source.TryGetCollectionCount(out var c))
 			{

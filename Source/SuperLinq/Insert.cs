@@ -34,9 +34,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(second);
 		Guard.IsGreaterThanOrEqualTo(index, 0);
 
-		return _(first, second, index);
+		return Core(first, second, index);
 
-		static IEnumerable<T> _(IEnumerable<T> first, IEnumerable<T> second, int index)
+		static IEnumerable<T> Core(IEnumerable<T> first, IEnumerable<T> second, int index)
 		{
 			var i = -1;
 
@@ -91,9 +91,9 @@ public static partial class SuperEnumerable
 
 		return !index.IsFromEnd ? Insert(first, second, index.Value) :
 			index.Value == 0 ? first.Concat(second) :
-			_(first, second, index.Value);
+			Core(first, second, index.Value);
 
-		static IEnumerable<T> _(IEnumerable<T> first, IEnumerable<T> second, int index)
+		static IEnumerable<T> Core(IEnumerable<T> first, IEnumerable<T> second, int index)
 		{
 			using var e = first.CountDown(index, ValueTuple.Create).GetEnumerator();
 

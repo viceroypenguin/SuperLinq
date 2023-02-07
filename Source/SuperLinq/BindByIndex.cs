@@ -56,9 +56,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(resultSelector);
 		Guard.IsNotNull(missingSelector);
 
-		return _(source, indices, resultSelector, missingSelector);
+		return Core(source, indices, resultSelector, missingSelector);
 
-		static IEnumerable<TResult> _(IEnumerable<TSource> source, IEnumerable<int> indices, Func<TSource, int, TResult> resultSelector, Func<int, TResult> missingSelector)
+		static IEnumerable<TResult> Core(IEnumerable<TSource> source, IEnumerable<int> indices, Func<TSource, int, TResult> resultSelector, Func<int, TResult> missingSelector)
 		{
 			// keeps track of the order of indices to know what order items should be output in
 			var lookup = indices.Index().ToDictionary(x => { Guard.IsGreaterThanOrEqualTo(x.item, 0, nameof(indices)); return x.item; }, x => x.index);

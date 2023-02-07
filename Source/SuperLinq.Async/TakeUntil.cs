@@ -37,9 +37,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(predicate);
 
-		return _(source, predicate);
+		return Core(source, predicate);
 
-		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TSource> Core(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{

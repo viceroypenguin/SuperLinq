@@ -62,9 +62,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(fallback);
 
-		return _(source, fallback);
+		return Core(source, fallback);
 
-		static async IAsyncEnumerable<T> _(IAsyncEnumerable<T> source, IAsyncEnumerable<T> fallback, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(IAsyncEnumerable<T> source, IAsyncEnumerable<T> fallback, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			await using (var e = source.GetConfiguredAsyncEnumerator(cancellationToken))
 			{

@@ -30,9 +30,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(transformation);
 
-		return _(source, transformation);
+		return Core(source, transformation);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, Func<TSource, TSource, TSource> transformation)
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Func<TSource, TSource, TSource> transformation)
 		{
 			using var e = source.GetEnumerator();
 
@@ -75,9 +75,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(transformation);
 
-		return _(source, seed, transformation);
+		return Core(source, seed, transformation);
 
-		static IEnumerable<TState> _(
+		static IEnumerable<TState> Core(
 			IEnumerable<TSource> source,
 			TState state,
 			Func<TState, TSource, TState> transformation)

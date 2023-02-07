@@ -22,9 +22,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(selector);
 
-		return _(source, selector);
+		return Core(source, selector);
 
-		static IEnumerable<(TSource, TResult)> _(IEnumerable<TSource> source, Func<TSource, TResult> selector)
+		static IEnumerable<(TSource, TResult)> Core(IEnumerable<TSource> source, Func<TSource, TResult> selector)
 		{
 			foreach (var item in source)
 				yield return (item, selector(item));

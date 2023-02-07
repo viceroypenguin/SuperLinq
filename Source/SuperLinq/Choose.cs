@@ -36,9 +36,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(chooser);
 
-		return _(source, chooser);
+		return Core(source, chooser);
 
-		static IEnumerable<TResult> _(IEnumerable<T> source, Func<T, (bool, TResult)> chooser)
+		static IEnumerable<TResult> Core(IEnumerable<T> source, Func<T, (bool, TResult)> chooser)
 		{
 			foreach (var item in source)
 			{

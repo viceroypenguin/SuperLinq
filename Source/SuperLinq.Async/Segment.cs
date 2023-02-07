@@ -106,9 +106,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(newSegmentPredicate);
 
-		return _(source, newSegmentPredicate);
+		return Core(source, newSegmentPredicate);
 
-		static async IAsyncEnumerable<IEnumerable<T>> _(IAsyncEnumerable<T> source, Func<T, T, int, ValueTask<bool>> newSegmentPredicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<IEnumerable<T>> Core(IAsyncEnumerable<T> source, Func<T, T, int, ValueTask<bool>> newSegmentPredicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
 

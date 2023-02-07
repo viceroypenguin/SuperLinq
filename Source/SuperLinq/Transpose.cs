@@ -35,9 +35,9 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(source);
 
-		return _(source);
+		return Core(source);
 
-		static IEnumerable<IEnumerable<T>> _(IEnumerable<IEnumerable<T>> source)
+		static IEnumerable<IEnumerable<T>> Core(IEnumerable<IEnumerable<T>> source)
 		{
 			using var list = new EnumeratorList<T>(source);
 

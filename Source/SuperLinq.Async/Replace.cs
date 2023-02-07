@@ -24,9 +24,9 @@ public static partial class AsyncSuperEnumerable
 	{
 		Guard.IsNotNull(source);
 
-		return _(source, value, index);
+		return Core(source, value, index);
 
-		static async IAsyncEnumerable<TSource> _(
+		static async IAsyncEnumerable<TSource> Core(
 			IAsyncEnumerable<TSource> source, TSource value, int index,
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
@@ -58,9 +58,9 @@ public static partial class AsyncSuperEnumerable
 	{
 		Guard.IsNotNull(source);
 
-		return _(source, value, index);
+		return Core(source, value, index);
 
-		static async IAsyncEnumerable<TSource> _(
+		static async IAsyncEnumerable<TSource> Core(
 			IAsyncEnumerable<TSource> source, TSource value, Index index,
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{

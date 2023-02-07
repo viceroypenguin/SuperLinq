@@ -43,13 +43,13 @@ public static partial class AsyncSuperEnumerable
 
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
 
-		return _(
+		return Core(
 			{{~ for $j in 1..$i ~}}
 			{{ $ordinals[$j] }},
 			{{~ end ~}}
 			resultSelector);
 
-		static async global::System.Collections.Generic.IAsyncEnumerable<TResult> _(
+		static async global::System.Collections.Generic.IAsyncEnumerable<TResult> Core(
 			{{~ for $j in 1..$i ~}}
 			global::System.Collections.Generic.IAsyncEnumerable<T{{ $j }}> {{ $ordinals[$j] }},
 			{{~ end ~}}

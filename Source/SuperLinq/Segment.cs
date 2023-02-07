@@ -54,9 +54,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(newSegmentPredicate);
 
-		return _(source, newSegmentPredicate);
+		return Core(source, newSegmentPredicate);
 
-		static IEnumerable<IEnumerable<T>> _(IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
+		static IEnumerable<IEnumerable<T>> Core(IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
 		{
 			using var e = source.GetEnumerator();
 

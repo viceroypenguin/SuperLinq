@@ -45,9 +45,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(transformation);
 
-		return _(source, transformation, identity);
+		return Core(source, transformation, identity);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, Func<TSource, TSource, TSource> transformation, TSource identity)
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Func<TSource, TSource, TSource> transformation, TSource identity)
 		{
 			var aggregator = identity;
 			using var e = source.GetEnumerator();

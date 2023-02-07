@@ -53,9 +53,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		return _(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
+		return Core(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 
-		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TSource> Core(IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var knownKeys = new HashSet<TKey>(comparer);
 			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))

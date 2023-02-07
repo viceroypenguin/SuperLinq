@@ -58,9 +58,9 @@ public static partial class SuperEnumerable
 		if (sources.Any(s => s == null))
 			throw new ArgumentNullException(nameof(sources), "One or more sequences passed to Interleave was null.");
 
-		return _(sources);
+		return Core(sources);
 
-		static IEnumerable<T> _(IEnumerable<IEnumerable<T>> sources)
+		static IEnumerable<T> Core(IEnumerable<IEnumerable<T>> sources)
 		{
 			using var list = new EnumeratorList<T>(sources);
 

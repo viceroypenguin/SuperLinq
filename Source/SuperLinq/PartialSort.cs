@@ -115,9 +115,9 @@ public static partial class SuperEnumerable
 		if (direction == OrderByDirection.Descending)
 			comparer = new ReverseComparer<T>(comparer);
 
-		return _(source, count, comparer);
+		return Core(source, count, comparer);
 
-		static IEnumerable<T> _(IEnumerable<T> source, int count, IComparer<T> comparer)
+		static IEnumerable<T> Core(IEnumerable<T> source, int count, IComparer<T> comparer)
 		{
 			var top = new SortedSet<(T Item, int Index)>(
 				ValueTupleComparer.Create<T, int>(comparer, default));
@@ -278,9 +278,9 @@ public static partial class SuperEnumerable
 		if (direction == OrderByDirection.Descending)
 			comparer = new ReverseComparer<TKey>(comparer);
 
-		return _(source, count, keySelector, comparer);
+		return Core(source, count, keySelector, comparer);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
 		{
 			var top = new SortedSet<(TKey Key, int Index)>(
 				ValueTupleComparer.Create<TKey, int>(comparer, default));

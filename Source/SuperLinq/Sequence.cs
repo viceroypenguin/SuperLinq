@@ -19,9 +19,9 @@ public static partial class SuperEnumerable
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 		var max = start + (count - 1) * (long)step;
 		Guard.IsBetweenOrEqualTo(max, int.MinValue, int.MaxValue, name: nameof(count));
-		return _(start, count, step);
+		return Core(start, count, step);
 
-		static IEnumerable<int> _(int start, int count, int step)
+		static IEnumerable<int> Core(int start, int count, int step)
 		{
 			var value = start;
 			for (var i = 0; i < count; i++)

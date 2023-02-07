@@ -27,9 +27,9 @@ public partial class AsyncSuperEnumerable
 	{
 		Guard.IsNotNull(childrenSelector);
 
-		return _(root, childrenSelector);
+		return Core(root, childrenSelector);
 
-		static async IAsyncEnumerable<T> _(
+		static async IAsyncEnumerable<T> Core(
 			T root,
 			Func<T, IAsyncEnumerable<T>> childrenSelector,
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -74,9 +74,9 @@ public partial class AsyncSuperEnumerable
 	{
 		Guard.IsNotNull(childrenSelector);
 
-		return _(root, childrenSelector);
+		return Core(root, childrenSelector);
 
-		static async IAsyncEnumerable<T> _(
+		static async IAsyncEnumerable<T> Core(
 			T root,
 			Func<T, IAsyncEnumerable<T>> childrenSelector,
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)

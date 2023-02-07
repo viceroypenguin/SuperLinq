@@ -58,9 +58,9 @@ public static partial class AsyncSuperEnumerable
 		foreach (var s in sources)
 			Guard.IsNotNull(s, nameof(sources));
 
-		return _(sources);
+		return Core(sources);
 
-		static async IAsyncEnumerable<T> _(IEnumerable<IAsyncEnumerable<T>> sources, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(IEnumerable<IAsyncEnumerable<T>> sources, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var list = await EnumeratorList<T>.Create(sources, cancellationToken).ConfigureAwait(false);
 			await using var ignored_ = list.ConfigureAwait(false);

@@ -126,9 +126,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(secondKeySelector);
 		Guard.IsNotNull(resultSelector);
 
-		return _(comparer ?? EqualityComparer<TKey>.Default);
+		return Core(comparer ?? EqualityComparer<TKey>.Default);
 
-		IEnumerable<TResult> _(IEqualityComparer<TKey> comparer)
+		IEnumerable<TResult> Core(IEqualityComparer<TKey> comparer)
 		{
 			var alookup = Lookup<TKey, TFirst>.CreateForJoin(first, firstKeySelector, comparer);
 			var blookup = Lookup<TKey, TSecond>.CreateForJoin(second, secondKeySelector, comparer);

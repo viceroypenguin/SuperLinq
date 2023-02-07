@@ -29,9 +29,9 @@ public static partial class AsyncSuperEnumerable
 	{
 		Guard.IsNotNull(sequence);
 
-		return _(sequence, comparer ?? EqualityComparer<T>.Default);
+		return Core(sequence, comparer ?? EqualityComparer<T>.Default);
 
-		static async IAsyncEnumerable<(T value, int count)> _(IAsyncEnumerable<T> sequence, IEqualityComparer<T> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<(T value, int count)> Core(IAsyncEnumerable<T> sequence, IEqualityComparer<T> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			// This implementation could also have been written using a foreach loop,
 			// but it proved to be easier to deal with edge certain cases that occur

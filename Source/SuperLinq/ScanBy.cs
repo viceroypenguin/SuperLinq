@@ -73,9 +73,9 @@ public static partial class SuperEnumerable
 
 		comparer ??= EqualityComparer<TKey>.Default;
 
-		return _(source, keySelector, seedSelector, accumulator, comparer);
+		return Core(source, keySelector, seedSelector, accumulator, comparer);
 
-		static IEnumerable<(TKey key, TState state)> _(
+		static IEnumerable<(TKey key, TState state)> Core(
 			IEnumerable<TSource> source,
 			Func<TSource, TKey> keySelector,
 			Func<TKey, TState> seedSelector,

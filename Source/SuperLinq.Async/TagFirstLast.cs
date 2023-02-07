@@ -66,9 +66,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(resultSelector);
 
-		return _(source, resultSelector);
+		return Core(source, resultSelector);
 
-		static async IAsyncEnumerable<TResult> _(IAsyncEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TResult> Core(IAsyncEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			await using var iter = source.GetConfiguredAsyncEnumerator(cancellationToken);
 

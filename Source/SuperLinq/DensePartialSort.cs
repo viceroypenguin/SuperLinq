@@ -244,9 +244,9 @@ public static partial class SuperEnumerable
 		if (direction == OrderByDirection.Descending)
 			comparer = new ReverseComparer<TKey>(comparer);
 
-		return _(source, count, keySelector, comparer);
+		return Core(source, count, keySelector, comparer);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
 		{
 			var top = new SortedSet<TKey>(comparer);
 			var dic = new Dictionary<(TKey Key, int Index), List<TSource>>(count);
