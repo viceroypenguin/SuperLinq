@@ -28,6 +28,7 @@
 			This project enhances Async LINQ to Objects with the following methods:
 
 			- AggregateRight
+			- AssertCount
 			- AtLeast
 			- AtMost
 			- Choose

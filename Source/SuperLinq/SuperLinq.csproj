@@ -28,6 +28,7 @@
 			This project enhances LINQ to Objects with the following methods:
 
 			- AggregateRight
+			- AssertCount
 			- AtLeast
 			- AtMost
 			- Cartesian
