@@ -32,6 +32,10 @@ This operator is the right-associative version of the Aggregate LINQ operator.
 
 This method has 9 overloads.
 
+### AssertCount
+
+Asserts that a source sequence contains a given count of elements.
+
 ### AtLeast
 
 Determines whether or not the number of elements in the sequence is greater

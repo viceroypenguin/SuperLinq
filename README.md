@@ -39,6 +39,7 @@ The documentation for the SuperLinq.Async methods can be found [here](Source/Sup
 |-|:-:|:-:|
 | Acquire                         | ❌<br/>(Removed[^1]) | ❌ |
 | AggregateRight				  | ✔️ | ✔️ |
+| AssertCount					  | ✔️ | ✔️ |
 | AtLeast						  | ✔️ | ✔️ |
 | AtMost						  | ✔️ | ✔️ |
 | Backsert						  | ⚠️[^2] | ❌[^2] |
