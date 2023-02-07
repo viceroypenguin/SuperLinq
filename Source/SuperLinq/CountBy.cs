@@ -35,9 +35,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		return _(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
+		return Core(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 
-		static IEnumerable<(TKey key, int count)> _(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+		static IEnumerable<(TKey key, int count)> Core(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
 		{
 			// Avoid the temptation to inline the Loop method, which
 			// exists solely to separate the scope & lifetimes of the

@@ -110,9 +110,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(chooser);
 
-		return _(source, chooser);
+		return Core(source, chooser);
 
-		static async IAsyncEnumerable<TResult> _(IAsyncEnumerable<T> source, Func<T, CancellationToken, ValueTask<(bool, TResult)>> chooser, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TResult> Core(IAsyncEnumerable<T> source, Func<T, CancellationToken, ValueTask<(bool, TResult)>> chooser, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{

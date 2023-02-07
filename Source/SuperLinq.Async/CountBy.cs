@@ -35,9 +35,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		return _(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
+		return Core(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 
-		static async IAsyncEnumerable<(TKey key, int count)> _(IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<(TKey key, int count)> Core(IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			// Avoid the temptation to inline the Loop method, which
 			// exists solely to separate the scope & lifetimes of the

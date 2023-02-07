@@ -37,9 +37,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(predicate);
 
-		return _(source, predicate);
+		return Core(source, predicate);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, Func<TSource, bool> predicate)
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Func<TSource, bool> predicate)
 		{
 			using var enumerator = source.GetEnumerator();
 

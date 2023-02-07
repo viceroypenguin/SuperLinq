@@ -45,9 +45,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(transformation);
 
-		return _(source, transformation, identity);
+		return Core(source, transformation, identity);
 
-		static async IAsyncEnumerable<TSource> _(
+		static async IAsyncEnumerable<TSource> Core(
 			IAsyncEnumerable<TSource> source,
 			Func<TSource, TSource, TSource> transformation,
 			TSource identity,

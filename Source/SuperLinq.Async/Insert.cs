@@ -34,9 +34,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(second);
 		Guard.IsGreaterThanOrEqualTo(index, 0);
 
-		return _(first, second, index);
+		return Core(first, second, index);
 
-		static async IAsyncEnumerable<T> _(IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, int index, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, int index, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var i = -1;
 
@@ -91,9 +91,9 @@ public static partial class AsyncSuperEnumerable
 
 		return !index.IsFromEnd ? Insert(first, second, index) :
 			index.Value == 0 ? first.Concat(second) :
-			_(first, second, index.Value);
+			Core(first, second, index.Value);
 
-		static async IAsyncEnumerable<T> _(IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, int index, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, int index, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			await using var e = first.CountDown(index, ValueTuple.Create).GetConfiguredAsyncEnumerator(cancellationToken);
 

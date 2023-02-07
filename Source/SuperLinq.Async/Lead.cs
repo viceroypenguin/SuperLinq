@@ -85,9 +85,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(resultSelector);
 		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
-		return _(source, offset, defaultLeadValue, resultSelector);
+		return Core(source, offset, defaultLeadValue, resultSelector);
 
-		static async IAsyncEnumerable<TResult> _(IAsyncEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, ValueTask<TResult>> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TResult> Core(IAsyncEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, ValueTask<TResult>> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var queue = new Queue<TSource>(offset + 1);
 

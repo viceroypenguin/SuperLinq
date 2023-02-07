@@ -274,9 +274,9 @@ public static partial class SuperEnumerable
 		Guard.IsGreaterThanOrEqualTo(count, 1);
 		Guard.IsNotNull(resultSelector);
 
-		return _(source, separatorFunc, count, resultSelector);
+		return Core(source, separatorFunc, count, resultSelector);
 
-		static IEnumerable<TResult> _(IEnumerable<TSource> source, Func<TSource, bool> separatorFunc, int count, Func<IEnumerable<TSource>, TResult> resultSelector)
+		static IEnumerable<TResult> Core(IEnumerable<TSource> source, Func<TSource, bool> separatorFunc, int count, Func<IEnumerable<TSource>, TResult> resultSelector)
 		{
 			var items = new List<TSource>();
 

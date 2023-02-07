@@ -39,8 +39,8 @@ public static partial class SuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
-        return _(first, second, resultSelector);
-        static global::System.Collections.Generic.IEnumerable<TResult> _(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Func<T1?, T2?, TResult> resultSelector)
+        return Core(first, second, resultSelector);
+        static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Func<T1?, T2?, TResult> resultSelector)
         {
             using var e1 = first.GetEnumerator();
             var f1 = true;
@@ -100,8 +100,8 @@ public static partial class SuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
-        return _(first, second, third, resultSelector);
-        static global::System.Collections.Generic.IEnumerable<TResult> _(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Func<T1?, T2?, T3?, TResult> resultSelector)
+        return Core(first, second, third, resultSelector);
+        static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Func<T1?, T2?, T3?, TResult> resultSelector)
         {
             using var e1 = first.GetEnumerator();
             var f1 = true;
@@ -168,8 +168,8 @@ public static partial class SuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
-        return _(first, second, third, fourth, resultSelector);
-        static global::System.Collections.Generic.IEnumerable<TResult> _(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Func<T1?, T2?, T3?, T4?, TResult> resultSelector)
+        return Core(first, second, third, fourth, resultSelector);
+        static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Func<T1?, T2?, T3?, T4?, TResult> resultSelector)
         {
             using var e1 = first.GetEnumerator();
             var f1 = true;

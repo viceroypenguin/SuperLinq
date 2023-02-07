@@ -84,9 +84,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(resultSelector);
 		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
-		return _(source, offset, defaultLagValue, resultSelector);
+		return Core(source, offset, defaultLagValue, resultSelector);
 
-		static async IAsyncEnumerable<TResult> _(IAsyncEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, ValueTask<TResult>> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TResult> Core(IAsyncEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, ValueTask<TResult>> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var lagQueue = new Queue<TSource>(offset + 1);
 			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))

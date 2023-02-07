@@ -63,9 +63,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(second);
 		Guard.IsNotNull(keySelector);
 
-		return _(first, second, keySelector, keyComparer);
+		return Core(first, second, keySelector, keyComparer);
 
-		static async IAsyncEnumerable<TSource> _(
+		static async IAsyncEnumerable<TSource> Core(
 			IAsyncEnumerable<TSource> first, IAsyncEnumerable<TSource> second,
 			Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? keyComparer,
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)

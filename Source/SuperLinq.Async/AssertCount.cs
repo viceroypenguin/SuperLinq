@@ -24,9 +24,12 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 
-		return _(source, count);
+		return Core(source, count);
 
-		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, int count, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TSource> Core(
+			IAsyncEnumerable<TSource> source,
+			int count,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var c = 0;
 			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))

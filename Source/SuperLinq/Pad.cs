@@ -93,9 +93,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(paddingSelector);
 		Guard.IsGreaterThanOrEqualTo(width, 0);
 
-		return _(source, width, paddingSelector);
+		return Core(source, width, paddingSelector);
 
-		static IEnumerable<TSource> _(
+		static IEnumerable<TSource> Core(
 			IEnumerable<TSource> source, int width,
 			Func<int, TSource> paddingSelector)
 		{

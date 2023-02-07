@@ -31,8 +31,8 @@ public static partial class AsyncSuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
-        return _(first, second, resultSelector);
-        static async global::System.Collections.Generic.IAsyncEnumerable<TResult> _(global::System.Collections.Generic.IAsyncEnumerable<TFirst> first, global::System.Collections.Generic.IAsyncEnumerable<TSecond> second, global::System.Func<TFirst, TSecond, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        return Core(first, second, resultSelector);
+        static async global::System.Collections.Generic.IAsyncEnumerable<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<TFirst> first, global::System.Collections.Generic.IAsyncEnumerable<TSecond> second, global::System.Func<TFirst, TSecond, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             await using var e1 = first.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
             await using var e2 = second.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
@@ -106,8 +106,8 @@ public static partial class AsyncSuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
-        return _(first, second, third, resultSelector);
-        static async global::System.Collections.Generic.IAsyncEnumerable<TResult> _(global::System.Collections.Generic.IAsyncEnumerable<TFirst> first, global::System.Collections.Generic.IAsyncEnumerable<TSecond> second, global::System.Collections.Generic.IAsyncEnumerable<TThird> third, global::System.Func<TFirst, TSecond, TThird, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        return Core(first, second, third, resultSelector);
+        static async global::System.Collections.Generic.IAsyncEnumerable<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<TFirst> first, global::System.Collections.Generic.IAsyncEnumerable<TSecond> second, global::System.Collections.Generic.IAsyncEnumerable<TThird> third, global::System.Func<TFirst, TSecond, TThird, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             await using var e1 = first.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
             await using var e2 = second.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
@@ -189,8 +189,8 @@ public static partial class AsyncSuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
-        return _(first, second, third, fourth, resultSelector);
-        static async global::System.Collections.Generic.IAsyncEnumerable<TResult> _(global::System.Collections.Generic.IAsyncEnumerable<TFirst> first, global::System.Collections.Generic.IAsyncEnumerable<TSecond> second, global::System.Collections.Generic.IAsyncEnumerable<TThird> third, global::System.Collections.Generic.IAsyncEnumerable<TFourth> fourth, global::System.Func<TFirst, TSecond, TThird, TFourth, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        return Core(first, second, third, fourth, resultSelector);
+        static async global::System.Collections.Generic.IAsyncEnumerable<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<TFirst> first, global::System.Collections.Generic.IAsyncEnumerable<TSecond> second, global::System.Collections.Generic.IAsyncEnumerable<TThird> third, global::System.Collections.Generic.IAsyncEnumerable<TFourth> fourth, global::System.Func<TFirst, TSecond, TThird, TFourth, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             await using var e1 = first.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
             await using var e2 = second.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();

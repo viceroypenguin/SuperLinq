@@ -75,9 +75,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(resultSelector);
 		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
-		return _(source, offset, defaultLeadValue, resultSelector);
+		return Core(source, offset, defaultLeadValue, resultSelector);
 
-		static IEnumerable<TResult> _(IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
+		static IEnumerable<TResult> Core(IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
 		{
 			var queue = new Queue<TSource>(offset + 1);
 

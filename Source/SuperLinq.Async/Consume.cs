@@ -12,9 +12,9 @@ public static partial class AsyncSuperEnumerable
 	public static ValueTask Consume<T>(this IAsyncEnumerable<T> source, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
-		return _(source, cancellationToken);
+		return Core(source, cancellationToken);
 
-		static async ValueTask _(IAsyncEnumerable<T> source, CancellationToken cancellationToken)
+		static async ValueTask Core(IAsyncEnumerable<T> source, CancellationToken cancellationToken)
 		{
 			await foreach (var _ in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{

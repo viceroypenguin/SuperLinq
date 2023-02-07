@@ -17,9 +17,9 @@ partial class SuperEnumerable
 	public static IEnumerable<T> From<T>(Func<T> function)
 	{
 		Guard.IsNotNull(function);
-		return _(function);
+		return Core(function);
 
-		static IEnumerable<T> _(Func<T> function)
+		static IEnumerable<T> Core(Func<T> function)
 		{
 			yield return function();
 		}
@@ -42,9 +42,9 @@ partial class SuperEnumerable
 	{
 		Guard.IsNotNull(function1);
 		Guard.IsNotNull(function2);
-		return _(function1, function2);
+		return Core(function1, function2);
 
-		static IEnumerable<T> _(Func<T> function1, Func<T> function2)
+		static IEnumerable<T> Core(Func<T> function1, Func<T> function2)
 		{
 			yield return function1();
 			yield return function2();
@@ -70,9 +70,9 @@ partial class SuperEnumerable
 		Guard.IsNotNull(function1);
 		Guard.IsNotNull(function2);
 		Guard.IsNotNull(function3);
-		return _(function1, function2, function3);
+		return Core(function1, function2, function3);
 
-		static IEnumerable<T> _(Func<T> function1, Func<T> function2, Func<T> function3)
+		static IEnumerable<T> Core(Func<T> function1, Func<T> function2, Func<T> function3)
 		{
 			yield return function1();
 			yield return function2();

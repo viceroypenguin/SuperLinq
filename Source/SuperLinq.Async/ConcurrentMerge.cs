@@ -79,9 +79,9 @@ public static partial class AsyncSuperEnumerable
 		foreach (var s in sources)
 			Guard.IsNotNull(s, nameof(sources));
 
-		return _(sources, maxConcurrency);
+		return Core(sources, maxConcurrency);
 
-		static async IAsyncEnumerable<TSource> _(
+		static async IAsyncEnumerable<TSource> Core(
 			IEnumerable<IAsyncEnumerable<TSource>> sources,
 			int maxConcurrency,
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)

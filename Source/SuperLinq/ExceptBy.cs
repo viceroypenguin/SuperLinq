@@ -80,9 +80,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(second);
 		Guard.IsNotNull(keySelector);
 
-		return _(first, second, keySelector, keyComparer);
+		return Core(first, second, keySelector, keyComparer);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? keyComparer)
+		static IEnumerable<TSource> Core(IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? keyComparer)
 		{
 			var keys = second.Select(keySelector).ToHashSet(keyComparer);
 			foreach (var element in first)

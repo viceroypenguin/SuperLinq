@@ -19,9 +19,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(filter);
 
-		return _(source, filter);
+		return Core(source, filter);
 
-		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, IAsyncEnumerable<bool> filter, [EnumeratorCancellation] CancellationToken cancellation = default)
+		static async IAsyncEnumerable<TSource> Core(IAsyncEnumerable<TSource> source, IAsyncEnumerable<bool> filter, [EnumeratorCancellation] CancellationToken cancellation = default)
 		{
 			await using var sIter = source.GetConfiguredAsyncEnumerator(cancellation);
 			await using var fIter = filter.GetConfiguredAsyncEnumerator(cancellation);

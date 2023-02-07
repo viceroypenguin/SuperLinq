@@ -93,9 +93,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(paddingSelector);
 		Guard.IsGreaterThanOrEqualTo(width, 0);
 
-		return _(source, width, paddingSelector);
+		return Core(source, width, paddingSelector);
 
-		static async IAsyncEnumerable<TSource> _(
+		static async IAsyncEnumerable<TSource> Core(
 			IAsyncEnumerable<TSource> source, int width,
 			Func<int, TSource> paddingSelector,
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)

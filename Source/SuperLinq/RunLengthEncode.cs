@@ -29,9 +29,9 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(sequence);
 
-		return _(sequence, comparer ?? EqualityComparer<T>.Default);
+		return Core(sequence, comparer ?? EqualityComparer<T>.Default);
 
-		static IEnumerable<(T value, int count)> _(IEnumerable<T> sequence, IEqualityComparer<T> comparer)
+		static IEnumerable<(T value, int count)> Core(IEnumerable<T> sequence, IEqualityComparer<T> comparer)
 		{
 			// This implementation could also have been written using a foreach loop,
 			// but it proved to be easier to deal with edge certain cases that occur

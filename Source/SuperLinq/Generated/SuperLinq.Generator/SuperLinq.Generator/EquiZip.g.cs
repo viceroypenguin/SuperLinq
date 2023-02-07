@@ -31,8 +31,8 @@ public static partial class SuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
-        return _(first, second, resultSelector);
-        static global::System.Collections.Generic.IEnumerable<TResult> _(global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Func<TFirst, TSecond, TResult> resultSelector)
+        return Core(first, second, resultSelector);
+        static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Func<TFirst, TSecond, TResult> resultSelector)
         {
             using var e1 = first.GetEnumerator();
             using var e2 = second.GetEnumerator();
@@ -106,8 +106,8 @@ public static partial class SuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
-        return _(first, second, third, resultSelector);
-        static global::System.Collections.Generic.IEnumerable<TResult> _(global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Collections.Generic.IEnumerable<TThird> third, global::System.Func<TFirst, TSecond, TThird, TResult> resultSelector)
+        return Core(first, second, third, resultSelector);
+        static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Collections.Generic.IEnumerable<TThird> third, global::System.Func<TFirst, TSecond, TThird, TResult> resultSelector)
         {
             using var e1 = first.GetEnumerator();
             using var e2 = second.GetEnumerator();
@@ -189,8 +189,8 @@ public static partial class SuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
-        return _(first, second, third, fourth, resultSelector);
-        static global::System.Collections.Generic.IEnumerable<TResult> _(global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Collections.Generic.IEnumerable<TThird> third, global::System.Collections.Generic.IEnumerable<TFourth> fourth, global::System.Func<TFirst, TSecond, TThird, TFourth, TResult> resultSelector)
+        return Core(first, second, third, fourth, resultSelector);
+        static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Collections.Generic.IEnumerable<TThird> third, global::System.Collections.Generic.IEnumerable<TFourth> fourth, global::System.Func<TFirst, TSecond, TThird, TFourth, TResult> resultSelector)
         {
             using var e1 = first.GetEnumerator();
             using var e2 = second.GetEnumerator();

@@ -274,9 +274,9 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsGreaterThanOrEqualTo(count, 1);
 		Guard.IsNotNull(resultSelector);
 
-		return _(source, separatorFunc, count, resultSelector);
+		return Core(source, separatorFunc, count, resultSelector);
 
-		static async IAsyncEnumerable<TResult> _(
+		static async IAsyncEnumerable<TResult> Core(
 			IAsyncEnumerable<TSource> source,
 			Func<TSource, bool> separatorFunc, int count,
 			Func<IEnumerable<TSource>, TResult> resultSelector,

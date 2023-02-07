@@ -67,9 +67,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		return _(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
+		return Core(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
 		{
 			var knownKeys = new HashSet<TKey>(comparer);
 			foreach (var element in source)

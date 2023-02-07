@@ -41,13 +41,13 @@ public static partial class SuperEnumerable
 
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
 
-		return _(
+		return Core(
 			{{~ for $j in 1..$i ~}}
 			{{ $ordinals[$j] }},
 			{{~ end ~}}
 			resultSelector);
 
-		static global::System.Collections.Generic.IEnumerable<TResult> _(
+		static global::System.Collections.Generic.IEnumerable<TResult> Core(
 			{{~ for $j in 1..$i ~}}
 			global::System.Collections.Generic.IEnumerable<T{{ $cardinals[$j] }}> {{ $ordinals[$j] }},
 			{{~ end ~}}

@@ -81,7 +81,7 @@ public class TraceTest
 
 	private static IEnumerable<string> Lines(string str)
 	{
-		using (var e = _(string.IsNullOrEmpty(str)
+		using (var e = Core(string.IsNullOrEmpty(str)
 					 ? TextReader.Null
 					 : new StringReader(str)))
 		{
@@ -89,7 +89,7 @@ public class TraceTest
 				yield return e.Current;
 		}
 
-		static IEnumerator<string> _(TextReader reader)
+		static IEnumerator<string> Core(TextReader reader)
 		{
 			Debug.Assert(reader != null);
 			string? line;

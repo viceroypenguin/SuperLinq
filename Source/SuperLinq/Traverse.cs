@@ -27,9 +27,9 @@ public partial class SuperEnumerable
 	{
 		Guard.IsNotNull(childrenSelector);
 
-		return _(root, childrenSelector);
+		return Core(root, childrenSelector);
 
-		static IEnumerable<T> _(T root, Func<T, IEnumerable<T>> childrenSelector)
+		static IEnumerable<T> Core(T root, Func<T, IEnumerable<T>> childrenSelector)
 		{
 			var queue = new Queue<T>();
 			queue.Enqueue(root);
@@ -69,9 +69,9 @@ public partial class SuperEnumerable
 	{
 		Guard.IsNotNull(childrenSelector);
 
-		return _(root, childrenSelector);
+		return Core(root, childrenSelector);
 
-		static IEnumerable<T> _(T root, Func<T, IEnumerable<T>> childrenSelector)
+		static IEnumerable<T> Core(T root, Func<T, IEnumerable<T>> childrenSelector)
 		{
 			var stack = new Stack<T>();
 			stack.Push(root);

@@ -222,9 +222,9 @@ public static partial class AsyncSuperEnumerable
 
 		comparer ??= EqualityComparer<TKey>.Default;
 
-		return _(source, keySelector, seedSelector, accumulator, comparer);
+		return Core(source, keySelector, seedSelector, accumulator, comparer);
 
-		static async IAsyncEnumerable<(TKey key, TState state)> _(
+		static async IAsyncEnumerable<(TKey key, TState state)> Core(
 			IAsyncEnumerable<TSource> source,
 			Func<TSource, CancellationToken, ValueTask<TKey>> keySelector,
 			Func<TKey, CancellationToken, ValueTask<TState>> seedSelector,

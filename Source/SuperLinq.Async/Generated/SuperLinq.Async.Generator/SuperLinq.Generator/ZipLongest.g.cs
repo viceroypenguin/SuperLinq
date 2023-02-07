@@ -27,8 +27,8 @@ public static partial class AsyncSuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
-        return _(first, second, resultSelector);
-        static async global::System.Collections.Generic.IAsyncEnumerable<TResult> _(global::System.Collections.Generic.IAsyncEnumerable<T1> first, global::System.Collections.Generic.IAsyncEnumerable<T2> second, global::System.Func<T1?, T2?, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        return Core(first, second, resultSelector);
+        static async global::System.Collections.Generic.IAsyncEnumerable<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T1> first, global::System.Collections.Generic.IAsyncEnumerable<T2> second, global::System.Func<T1?, T2?, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             await using var e1 = first.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
             var f1 = true;
@@ -92,8 +92,8 @@ public static partial class AsyncSuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
-        return _(first, second, third, resultSelector);
-        static async global::System.Collections.Generic.IAsyncEnumerable<TResult> _(global::System.Collections.Generic.IAsyncEnumerable<T1> first, global::System.Collections.Generic.IAsyncEnumerable<T2> second, global::System.Collections.Generic.IAsyncEnumerable<T3> third, global::System.Func<T1?, T2?, T3?, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        return Core(first, second, third, resultSelector);
+        static async global::System.Collections.Generic.IAsyncEnumerable<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T1> first, global::System.Collections.Generic.IAsyncEnumerable<T2> second, global::System.Collections.Generic.IAsyncEnumerable<T3> third, global::System.Func<T1?, T2?, T3?, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             await using var e1 = first.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
             var f1 = true;
@@ -165,8 +165,8 @@ public static partial class AsyncSuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
-        return _(first, second, third, fourth, resultSelector);
-        static async global::System.Collections.Generic.IAsyncEnumerable<TResult> _(global::System.Collections.Generic.IAsyncEnumerable<T1> first, global::System.Collections.Generic.IAsyncEnumerable<T2> second, global::System.Collections.Generic.IAsyncEnumerable<T3> third, global::System.Collections.Generic.IAsyncEnumerable<T4> fourth, global::System.Func<T1?, T2?, T3?, T4?, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        return Core(first, second, third, fourth, resultSelector);
+        static async global::System.Collections.Generic.IAsyncEnumerable<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T1> first, global::System.Collections.Generic.IAsyncEnumerable<T2> second, global::System.Collections.Generic.IAsyncEnumerable<T3> third, global::System.Collections.Generic.IAsyncEnumerable<T4> fourth, global::System.Func<T1?, T2?, T3?, T4?, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             await using var e1 = first.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
             var f1 = true;

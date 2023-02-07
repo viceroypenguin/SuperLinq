@@ -23,9 +23,9 @@ public static partial class SuperEnumerable
 		if (count == 0)
 			return sequence;
 
-		return _(sequence, startIndex, count);
+		return Core(sequence, startIndex, count);
 
-		static IEnumerable<T> _(IEnumerable<T> sequence, int startIndex, int count)
+		static IEnumerable<T> Core(IEnumerable<T> sequence, int startIndex, int count)
 		{
 			var index = 0;
 			var endIndex = startIndex + count;

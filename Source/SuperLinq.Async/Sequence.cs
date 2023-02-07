@@ -19,10 +19,10 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 		var max = start + (count - 1) * (long)step;
 		Guard.IsBetweenOrEqualTo(max, int.MinValue, int.MaxValue, name: nameof(count));
-		return _(start, count, step);
+		return Core(start, count, step);
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-		static async IAsyncEnumerable<int> _(int start, int count, int step)
+		static async IAsyncEnumerable<int> Core(int start, int count, int step)
 		{
 			var value = start;
 			for (var i = 0; i < count; i++)

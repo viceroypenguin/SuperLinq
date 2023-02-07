@@ -24,9 +24,9 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(source);
 
-		return _(source, index, value);
+		return Core(source, index, value);
 
-		static IEnumerable<TSource> _(
+		static IEnumerable<TSource> Core(
 			IEnumerable<TSource> source,
 			int index,
 			TSource value)
@@ -59,9 +59,9 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(source);
 
-		return _(source, value, index);
+		return Core(source, value, index);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, TSource value, Index index)
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, TSource value, Index index)
 		{
 			if (index.IsFromEnd
 				&& source.TryGetCollectionCount(out var count))

@@ -50,9 +50,9 @@ public static partial class AsyncSuperEnumerable
 	{
 		Guard.IsNotNull(generator);
 
-		return _(initial, generator);
+		return Core(initial, generator);
 
-		static async IAsyncEnumerable<TResult> _(TResult current, Func<TResult, CancellationToken, ValueTask<TResult>> generator, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TResult> Core(TResult current, Func<TResult, CancellationToken, ValueTask<TResult>> generator, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			while (true)
 			{

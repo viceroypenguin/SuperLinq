@@ -19,9 +19,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(filter);
 
-		return _(source, filter);
+		return Core(source, filter);
 
-		static IEnumerable<TSource> _(IEnumerable<TSource> source, IEnumerable<bool> filter)
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, IEnumerable<bool> filter)
 		{
 			using var sIter = source.GetEnumerator();
 			using var fIter = filter.GetEnumerator();

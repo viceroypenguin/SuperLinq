@@ -115,9 +115,9 @@ public static partial class AsyncSuperEnumerable
 		if (direction == OrderByDirection.Descending)
 			comparer = new ReverseComparer<T>(comparer);
 
-		return _(source, count, comparer);
+		return Core(source, count, comparer);
 
-		static async IAsyncEnumerable<T> _(IAsyncEnumerable<T> source, int count, IComparer<T> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(IAsyncEnumerable<T> source, int count, IComparer<T> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var top = new SortedSet<(T item, int index)>(
 				ValueTupleComparer.Create<T, int>(comparer, default));
@@ -278,9 +278,9 @@ public static partial class AsyncSuperEnumerable
 		if (direction == OrderByDirection.Descending)
 			comparer = new ReverseComparer<TKey>(comparer);
 
-		return _(source, count, keySelector, comparer);
+		return Core(source, count, keySelector, comparer);
 
-		static async IAsyncEnumerable<TSource> _(IAsyncEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TSource> Core(IAsyncEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var top = new SortedSet<(TKey Key, int Index)>(
 				ValueTupleComparer.Create<TKey, int>(comparer, default));

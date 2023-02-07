@@ -40,9 +40,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(fallback);
 
-		return _(source, fallback);
+		return Core(source, fallback);
 
-		static IEnumerable<T> _(IEnumerable<T> source, IEnumerable<T> fallback)
+		static IEnumerable<T> Core(IEnumerable<T> source, IEnumerable<T> fallback)
 		{
 			using (var e = source.GetEnumerator())
 			{
