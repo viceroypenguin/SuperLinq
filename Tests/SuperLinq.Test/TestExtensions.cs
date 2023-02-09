@@ -5,7 +5,6 @@ namespace Test;
 public enum SourceKind
 {
 	Sequence,
-	BreakingList,
 	BreakingCollection,
 }
 
@@ -53,4 +52,12 @@ internal static partial class TestExtensions
 		yield return input.AsTestingSequence(maxEnumerations: 2);
 		yield return new BreakingCollection<T>(input);
 	}
+
+	internal static IDisposableEnumerable<T> ToSourceKind<T>(this IList<T> input, SourceKind sourceKind) =>
+		sourceKind switch
+		{
+			SourceKind.Sequence => input.AsTestingSequence(),
+			SourceKind.BreakingCollection => new BreakingCollection<T>(input),
+			_ => ThrowHelper.ThrowArgumentException<IDisposableEnumerable<T>>(nameof(sourceKind)),
+		};
 }
