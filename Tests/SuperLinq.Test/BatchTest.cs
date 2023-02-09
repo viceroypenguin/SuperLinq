@@ -62,4 +62,20 @@ public class BatchTest
 		Assert.Equal("9", reader.Read());
 		reader.ReadEnd();
 	}
+
+	[Fact]
+	public void BatchWithCollectionSmallerThanBatchSize()
+	{
+		using var seq = new BreakingCollection<int>(Enumerable.Range(1, 9));
+		seq.Batch(10, i => i.Sum()).Consume();
+	}
+
+	[Fact]
+	public void BatchCollectionSizeNotEvaluatedEarly()
+	{
+		var stack = new Stack<int>(Enumerable.Range(1, 3));
+		var result = stack.Batch(3);
+		stack.Push(4);
+		result.AssertCount(2).Consume();
+	}
 }
