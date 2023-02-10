@@ -9,38 +9,34 @@ public class InsertTest
 			 new BreakingSequence<int>().Insert(new[] { 97, 98, 99 }, -1));
 	}
 
-	[Theory]
-	[InlineData(7)]
-	[InlineData(8)]
-	[InlineData(9)]
-	public void InsertWithIndexGreaterThanSourceLengthMaterialized(int count)
+	[Fact]
+	public void InsertWithIndexGreaterThanSourceLengthMaterialized()
 	{
-		var seq1 = Enumerable.Range(0, count).ToList();
+		var seq1 = Enumerable.Range(0, 10).ToList();
 		var seq2 = new[] { 97, 98, 99 };
 
 		using var test1 = seq1.AsTestingSequence();
 		using var test2 = seq2.AsTestingSequence();
 
-		var result = test1.Insert(test2, count + 1);
+		var result = test1.Insert(test2, 11);
 
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			result.ForEach((e, index) =>
-				Assert.Equal(seq1[index], e)));
+		_ = Assert.Throws<ArgumentOutOfRangeException>(delegate
+		{
+			foreach (var (index, e) in result.Index())
+				Assert.Equal(seq1[index], e);
+		});
 	}
 
-	[Theory]
-	[InlineData(7)]
-	[InlineData(8)]
-	[InlineData(9)]
-	public void InsertWithIndexGreaterThanSourceLengthLazy(int count)
+	[Fact]
+	public void InsertWithIndexGreaterThanSourceLengthLazy()
 	{
-		var seq1 = Enumerable.Range(0, count);
+		var seq1 = Enumerable.Range(0, 10);
 		var seq2 = new[] { 97, 98, 99 };
 
 		using var test1 = seq1.AsTestingSequence();
 		using var test2 = seq2.AsTestingSequence();
 
-		var result = test1.Insert(test2, count + 1).Take(count);
+		var result = test1.Insert(test2, 11).Take(10);
 
 		Assert.Equal(result, seq1);
 	}

@@ -135,11 +135,12 @@ public class SegmentTests
 
 	[Theory]
 	[MemberData(nameof(TestData))]
-	public void TestSegment(IEnumerable<int> source, IEnumerable<IEnumerable<int>> expected)
+	public void TestSegment(IEnumerable<int> source, IEnumerable<IEnumerable<int>> expectedSegments)
 	{
 		using var sequence = source.AsTestingSequence();
-		sequence.Segment(v => v % 3 == 0)
-			.Zip(expected)
-			.ForEach(x => Assert.Equal(x.Second, x.First));
+
+		var result = sequence.Segment(v => v % 3 == 0);
+		foreach (var (actual, expected) in result.Zip(expectedSegments))
+			actual.AssertSequenceEqual(expected);
 	}
 }

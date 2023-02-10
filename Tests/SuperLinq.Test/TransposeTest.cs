@@ -205,8 +205,7 @@ public class TransposeTest
 
 		Assert.Equal(expectationList.Count, resultList.Count);
 
-		expectationList
-			.Zip(resultList)
-			.ForEach(t => t.First.AssertSequenceEqual(t.Second));
+		foreach (var (expected, actual) in expectationList.Zip(resultList))
+			actual.AssertSequenceEqual(expected);
 	}
 }
