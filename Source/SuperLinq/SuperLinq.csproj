@@ -154,7 +154,6 @@
 		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.1.0" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
 		<PackageReference Include="MinVer" Version="4.3.0" PrivateAssets="All" />
-		<PackageReference Include="System.Interactive" Version="6.0.1" />
 	</ItemGroup>
 
 	<PropertyGroup Label="SourceGenerator">

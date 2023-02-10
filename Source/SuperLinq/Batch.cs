@@ -28,12 +28,10 @@ public static partial class SuperEnumerable
 	/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements the input sequence split into chunks of size size.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="size"/> is below 1.</exception>
-	public static IEnumerable<IList<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size) =>
-#if NET6_0_OR_GREATER
-		source.Chunk(size);
-#else
-		source.Buffer(size);
-#endif
+	public static IEnumerable<IList<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
+	{
+		throw new NotImplementedException();
+	}
 
 	/// <summary>
 	/// Split the elements of a sequence into chunks of size at most <paramref name="size"/>.
