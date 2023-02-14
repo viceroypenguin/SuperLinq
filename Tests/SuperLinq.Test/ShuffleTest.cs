@@ -7,7 +7,7 @@ public class ShuffleTest
 	[Fact]
 	public void ShuffleIsLazy()
 	{
-		new BreakingSequence<int>().Shuffle();
+		_ = new BreakingSequence<int>().Shuffle();
 	}
 
 	[Fact]
@@ -43,7 +43,7 @@ public class ShuffleTest
 	[Fact]
 	public void ShuffleSeedIsLazy()
 	{
-		new BreakingSequence<int>().Shuffle(s_seed);
+		_ = new BreakingSequence<int>().Shuffle(s_seed);
 	}
 
 	[Fact]

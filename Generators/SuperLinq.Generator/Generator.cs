@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Scriban;
 
-namespace SuperLinq;
+namespace SuperLinq.Generator;
 
 [Generator]
 public class Generator : IIncrementalGenerator

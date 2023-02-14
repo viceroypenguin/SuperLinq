@@ -89,7 +89,7 @@ public static partial class AsyncSuperEnumerable
 						while (lookback.TryGetValue(outputIndex, out var e))
 						{
 							yield return resultSelector(e, outputIndex);
-							lookback.Remove(outputIndex);
+							_ = lookback.Remove(outputIndex);
 							outputIndex++;
 						}
 					}
@@ -111,7 +111,7 @@ public static partial class AsyncSuperEnumerable
 				{
 					// return it
 					yield return resultSelector(e, outputIndex);
-					lookback.Remove(outputIndex);
+					_ = lookback.Remove(outputIndex);
 				}
 				else
 				{

@@ -5,7 +5,7 @@ public class ExactlyTest
 	[Fact]
 	public async Task ExactlyWithNegativeCount()
 	{
-		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await new AsyncBreakingSequence<int>().Exactly(-1));
 	}
 

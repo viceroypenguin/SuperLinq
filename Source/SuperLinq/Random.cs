@@ -184,7 +184,7 @@ public static partial class SuperEnumerable
 	/// <param name="nextValue">Generator function that actually produces the next value - specific to T</param>
 	/// <returns>An infinite sequence of random numbers of type T</returns>
 
-	static IEnumerable<T> RandomImpl<T>(Random rand, Func<Random, T> nextValue)
+	private static IEnumerable<T> RandomImpl<T>(Random rand, Func<Random, T> nextValue)
 	{
 		while (true)
 			yield return nextValue(rand);
@@ -209,8 +209,9 @@ public static partial class SuperEnumerable
 	{
 		private static int s_seed = Environment.TickCount;
 
-		[ThreadStatic] static Random? s_threadRandom;
-		static Random ThreadRandom => s_threadRandom ??= new Random(Interlocked.Increment(ref s_seed));
+		[ThreadStatic] private static Random? s_threadRandom;
+
+		private static Random ThreadRandom => s_threadRandom ??= new Random(Interlocked.Increment(ref s_seed));
 
 		public override int Next() => ThreadRandom.Next();
 		public override int Next(int minValue, int maxValue) => ThreadRandom.Next(minValue, maxValue);

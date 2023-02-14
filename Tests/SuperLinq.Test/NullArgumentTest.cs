@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
+using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
@@ -22,7 +23,7 @@ public class NullArgumentTest
 
 			try
 			{
-				method.Invoke(null, args);
+				_ = method.Invoke(null, args);
 			}
 			catch (TargetInvocationException tie)
 			{
@@ -30,7 +31,7 @@ public class NullArgumentTest
 			}
 
 			Assert.NotNull(e);
-			Assert.IsAssignableFrom<ArgumentNullException>(e);
+			_ = Assert.IsAssignableFrom<ArgumentNullException>(e);
 			var ane = (ArgumentNullException)e!;
 			Assert.Equal(paramName, ane.ParamName);
 		});
@@ -90,13 +91,21 @@ public class NullArgumentTest
 			var constraints = typeParameter.GetGenericParameterConstraints();
 
 			if (constraints.Length == 0)
+			{
 				return s_joinMethods.Contains(definition.Name)
 					? typeof(string)
 					: typeof(int);
+			}
+
 			if (constraints.Length == 1) return constraints.Single();
-			if (constraints.Select(c => c.GetGenericTypeDefinition())
+
+			if (constraints
+					.Select(c => c.GetGenericTypeDefinition())
 					.CollectionEqual(Seq(typeof(IEqualityComparer<>), typeof(IComparer<>))))
+			{
+				// for join methods
 				return typeof(StringComparer);
+			}
 
 			throw new NotImplementedException("NullArgumentTest.InstantiateType");
 		}
@@ -113,7 +122,9 @@ public class NullArgumentTest
 		if (Seq(typeof(IEqualityComparer<>), typeof(IComparer<>))
 				.Select(t => t.GetTypeInfo())
 				.Contains(type))
+		{
 			return true;
+		}
 
 		var nullableParameters = new[]
 		{
@@ -202,7 +213,7 @@ public class NullArgumentTest
 		{
 			public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool descending)
 			{
-				if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+				Guard.IsNotNull(keySelector);
 				return this;
 			}
 		}

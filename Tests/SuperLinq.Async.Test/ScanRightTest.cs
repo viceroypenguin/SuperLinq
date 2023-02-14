@@ -38,7 +38,7 @@ public class ScanRightTest
 	[Fact]
 	public void ScanRightIsLazy()
 	{
-		new AsyncBreakingSequence<int>().ScanRight(BreakingFunc.Of<int, int, int>());
+		_ = new AsyncBreakingSequence<int>().ScanRight(BreakingFunc.Of<int, int, int>());
 	}
 
 	// ScanRight(source, seed, func)
@@ -79,6 +79,6 @@ public class ScanRightTest
 	[Fact]
 	public void ScanRightSeedIsLazy()
 	{
-		new AsyncBreakingSequence<int>().ScanRight(string.Empty, BreakingFunc.Of<int, string, string>());
+		_ = new AsyncBreakingSequence<int>().ScanRight(string.Empty, BreakingFunc.Of<int, string, string>());
 	}
 }

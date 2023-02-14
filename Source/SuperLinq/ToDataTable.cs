@@ -107,7 +107,7 @@ public static partial class SuperEnumerable
 		return table;
 	}
 
-	static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
+	private static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
 	{
 		//
 		// If no lambda expressions supplied then reflect them off the source element type.
@@ -117,7 +117,7 @@ public static partial class SuperEnumerable
 		{
 			return from m in typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
 				   where m.MemberType == MemberTypes.Field
-					  || m is PropertyInfo { CanRead: true } p && p.GetIndexParameters().Length == 0
+					  || (m is PropertyInfo { CanRead: true } p && p.GetIndexParameters().Length == 0)
 				   select m;
 		}
 
@@ -141,7 +141,7 @@ public static partial class SuperEnumerable
 			var body = lambda.Body;
 
 			// If it's a field access, boxing was used, we need the field
-			if (body.NodeType == ExpressionType.Convert || body.NodeType == ExpressionType.ConvertChecked)
+			if (body.NodeType is ExpressionType.Convert or ExpressionType.ConvertChecked)
 				body = ((UnaryExpression)body).Operand;
 
 			// Check if the member expression is valid and is a "first level"
@@ -158,7 +158,7 @@ public static partial class SuperEnumerable
 	/// columns for which there is no source member supplying a value.
 	/// </remarks>
 
-	static MemberInfo[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
+	private static MemberInfo[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
 	{
 		//
 		// Retrieve member information needed to
@@ -213,7 +213,7 @@ public static partial class SuperEnumerable
 		return members;
 	}
 
-	static Func<T, object[]> CreateShredder<T>(IEnumerable<MemberInfo> members)
+	private static Func<T, object[]> CreateShredder<T>(IEnumerable<MemberInfo> members)
 	{
 		var parameter = Expression.Parameter(typeof(T), "e");
 

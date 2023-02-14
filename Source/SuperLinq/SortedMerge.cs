@@ -390,7 +390,7 @@ public static partial class SuperEnumerable
 				yield return nextValue; // next value in precedence order
 
 				// advance iterator that yielded element, excluding it when consumed
-				list.MoveNextOnce(nextIndex);
+				_ = list.MoveNextOnce(nextIndex);
 			}
 		}
 	}

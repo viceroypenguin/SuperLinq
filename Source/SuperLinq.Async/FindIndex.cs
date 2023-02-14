@@ -151,7 +151,7 @@ public static partial class AsyncSuperEnumerable
 				{
 					if (queue.Count == indexFromEnd)
 					{
-						queue.Dequeue();
+						_ = queue.Dequeue();
 						i++;
 					}
 

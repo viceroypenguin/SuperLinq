@@ -104,7 +104,7 @@ public static partial class SuperEnumerable
 				while (e.MoveNext())
 				{
 					if (count >= startCount)
-						queue.Dequeue();
+						_ = queue.Dequeue();
 
 					queue.Enqueue(e.Current);
 					checked { ++count; }

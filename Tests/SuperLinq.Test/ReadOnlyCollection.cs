@@ -2,15 +2,15 @@
 
 namespace Test;
 
-static class ReadOnlyCollection
+internal static class ReadOnlyCollection
 {
 	public static IReadOnlyCollection<T> From<T>(params T[] items) =>
 		new ListCollection<T[], T>(items);
 
-	sealed class ListCollection<TList, T> : IReadOnlyCollection<T>
+	private sealed class ListCollection<TList, T> : IReadOnlyCollection<T>
 		where TList : IList<T>
 	{
-		readonly TList _list;
+		private readonly TList _list;
 
 		public ListCollection(TList list) => _list = list;
 

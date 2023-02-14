@@ -2,15 +2,15 @@
 
 public class ReturnTest
 {
-	static class SomeSingleton
+	private static class SomeSingleton
 	{
-		public static readonly object Item = new object();
+		public static readonly object Item = new();
 		public static readonly IEnumerable<object> Sequence = SuperEnumerable.Return(Item);
 		public static IList<object> List => (IList<object>)Sequence;
 		public static ICollection<object> Collection => (ICollection<object>)Sequence;
 	}
 
-	static class NullSingleton
+	private static class NullSingleton
 	{
 		public static readonly IEnumerable<object?> Sequence = SuperEnumerable.Return<object?>(null);
 		public static IList<object?> List => (IList<object?>)Sequence;
@@ -19,7 +19,7 @@ public class ReturnTest
 	[Fact]
 	public void TestResultingSequenceContainsSingle()
 	{
-		Assert.Single(SomeSingleton.Sequence);
+		_ = Assert.Single(SomeSingleton.Sequence);
 	}
 
 	[Fact]
@@ -90,6 +90,7 @@ public class ReturnTest
 		Assert.Equal(-1, SomeSingleton.List.IndexOf(new object()));
 	}
 
+#pragma warning disable IDE0200 // Remove unnecessary lambda expression
 	public static IEnumerable<object[]> UnsupportedActions() =>
 		new[]
 		{
@@ -100,16 +101,17 @@ public class ReturnTest
 			new Action[] { () => SomeSingleton.List.Insert(0, new object()), },
 			new Action[] { () => SomeSingleton.List[0] = new object(), },
 		};
+#pragma warning restore IDE0200 // Remove unnecessary lambda expression
 
 	[Theory, MemberData(nameof(UnsupportedActions))]
 	public void TestUnsupportedMethodShouldThrow(Action unsupportedAction)
 	{
-		Assert.Throws<NotSupportedException>(unsupportedAction);
+		_ = Assert.Throws<NotSupportedException>(unsupportedAction);
 	}
 
 	[Fact]
 	public void TestIndexingPastZeroShouldThrow()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() => SomeSingleton.List[1]);
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() => SomeSingleton.List[1]);
 	}
 }

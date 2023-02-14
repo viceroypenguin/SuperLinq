@@ -5,8 +5,8 @@ public class TagFirstLastTest
 	[Fact]
 	public void TagFirstLastIsLazy()
 	{
-		new AsyncBreakingSequence<object>().TagFirstLast();
-		new AsyncBreakingSequence<object>().TagFirstLast(BreakingFunc.Of<object, bool, bool, object>());
+		_ = new AsyncBreakingSequence<object>().TagFirstLast();
+		_ = new AsyncBreakingSequence<object>().TagFirstLast(BreakingFunc.Of<object, bool, bool, object>());
 	}
 
 	[Fact]

@@ -5,7 +5,7 @@ public class DensePartialSortTests
 	[Fact]
 	public void DensePartialSortIsLazy()
 	{
-		new BreakingSequence<object>().DensePartialSort(1);
+		_ = new BreakingSequence<object>().DensePartialSort(1);
 	}
 
 	[Fact]

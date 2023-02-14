@@ -5,7 +5,7 @@ public class WhereTest
 	[Fact]
 	public void WhereIsLazy()
 	{
-		new BreakingSequence<int>().Where(new BreakingSequence<bool>());
+		_ = new BreakingSequence<int>().Where(new BreakingSequence<bool>());
 	}
 
 	[Theory]
@@ -13,7 +13,7 @@ public class WhereTest
 	[InlineData(3, 2)]
 	public void WhereRequiresEqualLengths(int sLength, int fLength)
 	{
-		Assert.Throws<ArgumentException>(() =>
+		_ = Assert.Throws<ArgumentException>(() =>
 			Enumerable.Repeat(1, sLength).Where(Enumerable.Repeat(false, fLength)).Consume());
 	}
 

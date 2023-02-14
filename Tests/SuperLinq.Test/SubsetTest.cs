@@ -11,8 +11,8 @@ public class SubsetTest
 	[Fact]
 	public void TestSubsetsIsLazy()
 	{
-		new BreakingSequence<int>().Subsets();
-		new BreakingSequence<int>().Subsets(5);
+		_ = new BreakingSequence<int>().Subsets();
+		_ = new BreakingSequence<int>().Subsets(5);
 	}
 
 	/// <summary>
@@ -21,7 +21,7 @@ public class SubsetTest
 	[Fact]
 	public void TestNegativeSubsetSize()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Subsets(-5));
 	}
 
@@ -33,7 +33,7 @@ public class SubsetTest
 	{
 		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
 
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			sequence
 				.Subsets(15)
 				.Consume());

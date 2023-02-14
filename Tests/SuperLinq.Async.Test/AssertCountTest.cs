@@ -11,7 +11,7 @@ public class AssertCountTest
 	[Fact]
 	public void AssertCountNegativeCount()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>("count",
+		_ = Assert.Throws<ArgumentOutOfRangeException>("count",
 			() => new AsyncBreakingSequence<int>().AssertCount(-1));
 	}
 
@@ -26,7 +26,7 @@ public class AssertCountTest
 	public async Task AssertCountShortSequence()
 	{
 		await using var data = TestingSequence.Of("foo", "bar", "baz");
-		await Assert.ThrowsAsync<ArgumentException>("source.Count()", async () =>
+		_ = await Assert.ThrowsAsync<ArgumentException>("source.Count()", async () =>
 			await data.AssertCount(4).Consume());
 	}
 
@@ -34,7 +34,7 @@ public class AssertCountTest
 	public async Task AssertCountLongSequence()
 	{
 		await using var data = TestingSequence.Of("foo", "bar", "baz");
-		await Assert.ThrowsAsync<ArgumentException>("source.Count()", async () =>
+		_ = await Assert.ThrowsAsync<ArgumentException>("source.Count()", async () =>
 			await data.AssertCount(2).Consume());
 	}
 }

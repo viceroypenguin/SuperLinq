@@ -5,7 +5,7 @@ public class ScanByTest
 	[Fact]
 	public void ScanByIsLazy()
 	{
-		new AsyncBreakingSequence<string>().ScanBy(
+		_ = new AsyncBreakingSequence<string>().ScanBy(
 			BreakingFunc.Of<string, int>(),
 			BreakingFunc.Of<int, char>(),
 			BreakingFunc.Of<char, int, string, char>());
@@ -110,7 +110,7 @@ public class ScanByTest
 			('b', 1),
 			('d', 0));
 
-		await Assert.ThrowsAsync<TestException>(async () =>
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
 			await result.ElementAtAsync(5));
 	}
 }

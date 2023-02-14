@@ -11,8 +11,8 @@ public class RandomSubsetTest
 	[Fact]
 	public void TestRandomSubsetIsLazy()
 	{
-		new BreakingSequence<int>().RandomSubset(10);
-		new BreakingSequence<int>().RandomSubset(10, new Random());
+		_ = new BreakingSequence<int>().RandomSubset(10);
+		_ = new BreakingSequence<int>().RandomSubset(10, new Random());
 	}
 
 	/// <summary>
@@ -21,7 +21,7 @@ public class RandomSubsetTest
 	[Fact]
 	public void TestRandomSubsetNegativeSubsetSize()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().RandomSubset(-5));
 	}
 
@@ -31,7 +31,7 @@ public class RandomSubsetTest
 	[Fact]
 	public void TestRandomSubsetNegativeSubsetSize2()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().RandomSubset(-1, new Random()));
 	}
 
@@ -86,7 +86,7 @@ public class RandomSubsetTest
 	{
 		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			sequence.RandomSubset(100 + 5).Consume());
 	}
 
@@ -99,7 +99,7 @@ public class RandomSubsetTest
 	{
 		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
 
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			sequence.RandomSubset(100 + 5, new Random(1234)).Consume());
 	}
 
@@ -206,7 +206,7 @@ public class RandomSubsetTest
 	{
 		var average = values.Average();
 		var standardDeviation = StandardDeviationInternal(values, average);
-		return (standardDeviation * 100.0) / average;
+		return standardDeviation * 100.0 / average;
 	}
 
 	private static double StandardDeviationInternal(IEnumerable<double> values, double average)

@@ -7,24 +7,24 @@ public class BatchTest
 	[Fact]
 	public void BatchIsLazy()
 	{
-		new BreakingSequence<int>()
+		_ = new BreakingSequence<int>()
 			.Batch(1, BreakingFunc.Of<IReadOnlyList<int>, int>());
-		new BreakingSequence<int>()
+		_ = new BreakingSequence<int>()
 			.Batch(new int[2], BreakingFunc.Of<IReadOnlyList<int>, int>());
-		new BreakingSequence<int>()
+		_ = new BreakingSequence<int>()
 			.Batch(new int[2], 1, BreakingFunc.Of<IReadOnlyList<int>, int>());
 	}
 
 	[Fact]
 	public void BatchValidatesSize()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>("size",
+		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
 			() => new BreakingSequence<int>()
 				.Batch(0, BreakingFunc.Of<IReadOnlyList<int>, int>()));
-		Assert.Throws<ArgumentOutOfRangeException>("size",
+		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
 			() => new BreakingSequence<int>()
 				.Batch(new int[2], 0, BreakingFunc.Of<IReadOnlyList<int>, int>()));
-		Assert.Throws<ArgumentOutOfRangeException>("size",
+		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
 			() => new BreakingSequence<int>()
 				.Batch(new int[2], 3, BreakingFunc.Of<IReadOnlyList<int>, int>()));
 	}

@@ -5,7 +5,7 @@
 /// </summary>
 public class RandomTest
 {
-	const int RandomTrials = 10000;
+	private const int RandomTrials = 10000;
 
 	/// <summary>
 	/// Verify that passing a negative maximum value yields an exception
@@ -13,7 +13,7 @@ public class RandomTest
 	[Fact]
 	public void TestNegativeMaxValueException()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			SuperEnumerable.Random(-10));
 	}
 
@@ -24,7 +24,7 @@ public class RandomTest
 	[Fact]
 	public void TestMinValueGreaterThanMaxValueException()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			SuperEnumerable.Random(100, 10));
 	}
 
@@ -40,8 +40,8 @@ public class RandomTest
 		// NOTE: Unclear what should actually be verified here... some additional thought needed.
 		Assert.Equal(RandomTrials, resultA.Count());
 		Assert.Equal(RandomTrials, resultB.Count());
-		Assert.True(resultA.All(x => x >= 0.0 && x < 1.0));
-		Assert.True(resultB.All(x => x >= 0.0 && x < 1.0));
+		Assert.True(resultA.All(x => x is >= 0.0 and < 1.0));
+		Assert.True(resultB.All(x => x is >= 0.0 and < 1.0));
 	}
 
 	/// <summary>
@@ -50,14 +50,13 @@ public class RandomTest
 	[Fact]
 	public void TestRandomMaxConstraint()
 	{
-		const int max = 100;
-		var resultA = SuperEnumerable.Random(max).Take(RandomTrials);
-		var resultB = SuperEnumerable.Random(new Random(), max).Take(RandomTrials);
+		var resultA = SuperEnumerable.Random(100).Take(RandomTrials);
+		var resultB = SuperEnumerable.Random(new Random(), 100).Take(RandomTrials);
 
 		Assert.Equal(RandomTrials, resultA.Count());
 		Assert.Equal(RandomTrials, resultB.Count());
-		Assert.True(resultA.All(x => x < max));
-		Assert.True(resultB.All(x => x < max));
+		Assert.True(resultA.All(x => x < 100));
+		Assert.True(resultB.All(x => x < 100));
 	}
 
 	/// <summary>
@@ -66,15 +65,13 @@ public class RandomTest
 	[Fact]
 	public void TestRandomMinMaxConstraint()
 	{
-		const int min = 0;
-		const int max = 100;
-		var resultA = SuperEnumerable.Random(min, max).Take(RandomTrials);
-		var resultB = SuperEnumerable.Random(new Random(), min, max).Take(RandomTrials);
+		var resultA = SuperEnumerable.Random(0, 100).Take(RandomTrials);
+		var resultB = SuperEnumerable.Random(new Random(), 0, 100).Take(RandomTrials);
 
 		Assert.Equal(RandomTrials, resultA.Count());
 		Assert.Equal(RandomTrials, resultB.Count());
-		Assert.True(resultA.All(x => x >= min && x < max));
-		Assert.True(resultB.All(x => x >= min && x < max));
+		Assert.True(resultA.All(x => x is >= 0 and < 100));
+		Assert.True(resultB.All(x => x is >= 0 and < 100));
 	}
 
 	/// <summary>
@@ -84,10 +81,9 @@ public class RandomTest
 	[Fact]
 	public void TestRandomEquivalence()
 	{
-		const int seed = 12345;
 		// must use a specific seed to ensure sequences will be identical
-		var randA = new Random(seed);
-		var randB = new Random(seed);
+		var randA = new Random(12345);
+		var randB = new Random(12345);
 
 		var valuesA = new List<int>();
 		for (var i = 0; i < RandomTrials; i++)

@@ -2,8 +2,9 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Scriban;
+using SuperLinq.Generator;
 
-namespace SuperLinq;
+namespace SuperLinq.Async.Generator;
 
 [Generator]
 public class Generator : IIncrementalGenerator

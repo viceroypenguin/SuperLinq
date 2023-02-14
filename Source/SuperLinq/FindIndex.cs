@@ -150,7 +150,7 @@ public static partial class SuperEnumerable
 				{
 					if (queue.Count == indexFromEnd)
 					{
-						queue.Dequeue();
+						_ = queue.Dequeue();
 						i++;
 					}
 

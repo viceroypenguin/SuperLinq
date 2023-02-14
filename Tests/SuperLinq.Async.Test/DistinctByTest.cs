@@ -13,7 +13,7 @@ public class DistinctByTest
 	[Fact]
 	public void DistinctByIsLazy()
 	{
-		new AsyncBreakingSequence<string>().DistinctBy(BreakingFunc.Of<string, int>());
+		_ = new AsyncBreakingSequence<string>().DistinctBy(BreakingFunc.Of<string, int>());
 	}
 
 	[Fact]
@@ -35,6 +35,6 @@ public class DistinctByTest
 	[Fact]
 	public void DistinctByIsLazyWithComparer()
 	{
-		new AsyncBreakingSequence<string>().DistinctBy(BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
+		_ = new AsyncBreakingSequence<string>().DistinctBy(BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
 	}
 }

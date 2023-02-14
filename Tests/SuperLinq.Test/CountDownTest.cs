@@ -8,7 +8,7 @@ public class CountDownTest
 	[Fact]
 	public void IsLazy()
 	{
-		new BreakingSequence<object>()
+		_ = new BreakingSequence<object>()
 			.CountDown(42, BreakingFunc.Of<object, int?, object>());
 	}
 
@@ -16,7 +16,7 @@ public class CountDownTest
 	[InlineData(0), InlineData(-1)]
 	public void ExceptionOnNegativeCount(int param)
 	{
-		Assert.Throws<ArgumentOutOfRangeException>("count", () =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>("count", () =>
 			new BreakingSequence<int>().CountDown(param));
 	}
 

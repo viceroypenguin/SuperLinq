@@ -89,7 +89,7 @@ public static partial class AsyncSuperEnumerable
 				if (queue.Count == cnt)
 				{
 					yield return value;
-					queue.Dequeue();
+					_ = queue.Dequeue();
 				}
 
 				while (queue.Count != 0)

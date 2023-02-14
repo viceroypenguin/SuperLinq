@@ -5,7 +5,7 @@ public class PreScanTest
 	[Fact]
 	public void PreScanIsLazy()
 	{
-		new AsyncBreakingSequence<int>().PreScan(BreakingFunc.Of<int, int, int>(), 0);
+		_ = new AsyncBreakingSequence<int>().PreScan(BreakingFunc.Of<int, int, int>(), 0);
 	}
 
 	[Fact]

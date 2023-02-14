@@ -391,7 +391,7 @@ public static partial class AsyncSuperEnumerable
 				yield return nextValue; // next value in precedence order
 
 				// advance iterator that yielded element, excluding it when consumed
-				await list.MoveNextOnce(nextIndex).ConfigureAwait(false);
+				_ = await list.MoveNextOnce(nextIndex).ConfigureAwait(false);
 			}
 		}
 	}

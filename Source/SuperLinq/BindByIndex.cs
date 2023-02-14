@@ -87,7 +87,7 @@ public static partial class SuperEnumerable
 						while (lookback.TryGetValue(outputIndex, out var e))
 						{
 							yield return resultSelector(e, outputIndex);
-							lookback.Remove(outputIndex);
+							_ = lookback.Remove(outputIndex);
 							outputIndex++;
 						}
 					}
@@ -109,7 +109,7 @@ public static partial class SuperEnumerable
 				{
 					// return it
 					yield return resultSelector(e, outputIndex);
-					lookback.Remove(outputIndex);
+					_ = lookback.Remove(outputIndex);
 				}
 				else
 				{

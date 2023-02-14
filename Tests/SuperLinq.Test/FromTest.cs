@@ -6,10 +6,10 @@ public class FromTest
 	public void TestFromIsLazy()
 	{
 		var breakingFunc = BreakingFunc.Of<int>();
-		SuperEnumerable.From(breakingFunc);
-		SuperEnumerable.From(breakingFunc, breakingFunc);
-		SuperEnumerable.From(breakingFunc, breakingFunc, breakingFunc);
-		SuperEnumerable.From(breakingFunc, breakingFunc, breakingFunc, breakingFunc);
+		_ = SuperEnumerable.From(breakingFunc);
+		_ = SuperEnumerable.From(breakingFunc, breakingFunc);
+		_ = SuperEnumerable.From(breakingFunc, breakingFunc, breakingFunc);
+		_ = SuperEnumerable.From(breakingFunc, breakingFunc, breakingFunc, breakingFunc);
 	}
 
 	[Theory]

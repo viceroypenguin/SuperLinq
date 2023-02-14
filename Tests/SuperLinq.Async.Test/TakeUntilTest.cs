@@ -5,7 +5,7 @@ public class TakeUntilTest
 	[Fact]
 	public void TakeUntilEvaluatesSourceLazily()
 	{
-		new AsyncBreakingSequence<string>().TakeUntil(x => x.Length == 0);
+		_ = new AsyncBreakingSequence<string>().TakeUntil(x => x.Length == 0);
 	}
 
 	[Fact]

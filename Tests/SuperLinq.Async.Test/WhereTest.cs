@@ -5,7 +5,7 @@ public class WhereTest
 	[Fact]
 	public void WhereIsLazy()
 	{
-		new AsyncBreakingSequence<int>().Where(new AsyncBreakingSequence<bool>());
+		_ = new AsyncBreakingSequence<int>().Where(new AsyncBreakingSequence<bool>());
 	}
 
 	[Theory]
@@ -13,7 +13,7 @@ public class WhereTest
 	[InlineData(3, 2)]
 	public async Task WhereRequiresEqualLengths(int sLength, int fLength)
 	{
-		await Assert.ThrowsAsync<ArgumentException>(async () =>
+		_ = await Assert.ThrowsAsync<ArgumentException>(async () =>
 			await AsyncEnumerable.Repeat(1, sLength).Where(AsyncEnumerable.Repeat(false, fLength)).Consume());
 	}
 

@@ -7,13 +7,13 @@ public class BacksertTest
 	[Fact]
 	public void BacksertIsLazy()
 	{
-		new BreakingSequence<int>().Backsert(new BreakingSequence<int>(), 0);
+		_ = new BreakingSequence<int>().Backsert(new BreakingSequence<int>(), 0);
 	}
 
 	[Fact]
 	public void BacksertWithNegativeIndex()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			 new BreakingSequence<int>().Backsert(new[] { 97, 98, 99 }, -1));
 	}
 
@@ -26,7 +26,7 @@ public class BacksertTest
 
 		var result = test1.Backsert(test2, index);
 
-		Assert.Throws<ArgumentOutOfRangeException>(() => result.ElementAt(0));
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() => result.ElementAt(0));
 	}
 
 	[Theory]

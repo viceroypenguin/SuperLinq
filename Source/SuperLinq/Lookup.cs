@@ -17,9 +17,8 @@ namespace SuperLinq;
 internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 {
 	private readonly IEqualityComparer<TKey> _comparer;
-	private Grouping<TKey, TElement>[] _groupings;
-	private Grouping<TKey, TElement>? _lastGrouping;
-	private int _count;
+	private Grouping[] _groupings;
+	private Grouping? _lastGrouping;
 
 	internal static Lookup<TKey, TElement> Create<TSource>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey>? comparer)
 	{
@@ -73,10 +72,10 @@ internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 	private Lookup(IEqualityComparer<TKey>? comparer)
 	{
 		_comparer = comparer ?? EqualityComparer<TKey>.Default;
-		_groupings = new Grouping<TKey, TElement>[7];
+		_groupings = new Grouping[7];
 	}
 
-	public int Count => _count;
+	public int Count { get; private set; }
 
 	public IEnumerable<TElement> this[TKey key]
 	{
@@ -109,25 +108,27 @@ internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 		// Handle comparer implementations that throw when passed null
 		key is null ? 0 : _comparer.GetHashCode(key) & 0x7FFFFFFF;
 
-	internal Grouping<TKey, TElement>? GetGrouping(TKey key, bool create)
+	private Grouping? GetGrouping(TKey key, bool create)
 	{
 		var hashCode = InternalGetHashCode(key);
 		for (var g = _groupings[hashCode % _groupings.Length]; g is not null; g = g._hashNext)
 		{
-			if (g._hashCode == hashCode && _comparer.Equals(g._key, key))
+			if (g.HashCode == hashCode && _comparer.Equals(g.Key, key))
 				return g;
 		}
 
 		if (create)
 		{
-			if (_count == _groupings.Length)
+			if (Count == _groupings.Length)
 			{
 				Resize();
 			}
 
 			var index = hashCode % _groupings.Length;
-			var g = new Grouping<TKey, TElement>(key, hashCode);
-			g._hashNext = _groupings[index];
+			var g = new Grouping(key, hashCode)
+			{
+				_hashNext = _groupings[index]
+			};
 			_groupings[index] = g;
 			if (_lastGrouping is null)
 			{
@@ -140,7 +141,7 @@ internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 			}
 
 			_lastGrouping = g;
-			_count++;
+			Count++;
 			return g;
 		}
 
@@ -149,13 +150,13 @@ internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 
 	private void Resize()
 	{
-		var newSize = checked((_count * 2) + 1);
-		var newGroupings = new Grouping<TKey, TElement>[newSize];
+		var newSize = checked((Count * 2) + 1);
+		var newGroupings = new Grouping[newSize];
 		var g = Debug.AssertNotNull(_lastGrouping);
 		do
 		{
 			g = Debug.AssertNotNull(g._next);
-			var index = g._hashCode % newSize;
+			var index = g.HashCode % newSize;
 			g._hashNext = newGroupings[index];
 			newGroupings[index] = g;
 		}
@@ -163,83 +164,80 @@ internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 
 		_groupings = newGroupings;
 	}
-}
 
-// Modified from:
-// https://github.com/dotnet/runtime/blob/v7.0.0/src/libraries/System.Linq/src/System/Linq/Grouping.cs#L48-L141
-[DebuggerDisplay("Key = {Key}")]
-[ExcludeFromCodeCoverage]
-internal sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IList<TElement>
-{
-	internal readonly TKey _key;
-	internal readonly int _hashCode;
-	internal TElement[] _elements;
-	internal int _count;
-	internal Grouping<TKey, TElement>? _hashNext;
-	internal Grouping<TKey, TElement>? _next;
-
-	internal Grouping(TKey key, int hashCode)
+	// Modified from:
+	// https://github.com/dotnet/runtime/blob/v7.0.0/src/libraries/System.Linq/src/System/Linq/Grouping.cs#L48-L141
+	[DebuggerDisplay("Key = {Key}")]
+	[ExcludeFromCodeCoverage]
+	private sealed class Grouping : IGrouping<TKey, TElement>, IList<TElement>
 	{
-		_key = key;
-		_hashCode = hashCode;
-		_elements = new TElement[1];
-	}
+		internal TElement[] _elements;
+		internal int _count;
+		internal Grouping? _hashNext;
+		internal Grouping? _next;
 
-	internal void Add(TElement element)
-	{
-		if (_elements.Length == _count)
-			Array.Resize(ref _elements, checked(_count * 2));
-
-		_elements[_count] = element;
-		_count++;
-	}
-
-	internal void Trim()
-	{
-		if (_elements.Length != _count)
-			Array.Resize(ref _elements, _count);
-	}
-
-	public IEnumerator<TElement> GetEnumerator()
-	{
-		for (var i = 0; i < _count; i++)
-			yield return _elements[i];
-	}
-
-	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-	// DDB195907: implement IGrouping<>.Key implicitly
-	// so that WPF binding works on this property.
-	public TKey Key => _key;
-
-	int ICollection<TElement>.Count => _count;
-
-	bool ICollection<TElement>.IsReadOnly => true;
-
-	bool ICollection<TElement>.Contains(TElement item) => Array.IndexOf(_elements, item, 0, _count) >= 0;
-
-	void ICollection<TElement>.CopyTo(TElement[] array, int arrayIndex) =>
-		Array.Copy(_elements, 0, array, arrayIndex, _count);
-
-	int IList<TElement>.IndexOf(TElement item) => Array.IndexOf(_elements, item, 0, _count);
-
-	TElement IList<TElement>.this[int index]
-	{
-		get
+		internal Grouping(TKey key, int hashCode)
 		{
-			Guard.IsBetween(index, -1, _count);
-			return _elements[index];
+			Key = key;
+			HashCode = hashCode;
+			_elements = new TElement[1];
 		}
 
-		set => ThrowModificationNotSupportedException();
+		internal void Add(TElement element)
+		{
+			if (_elements.Length == _count)
+				Array.Resize(ref _elements, checked(_count * 2));
+
+			_elements[_count] = element;
+			_count++;
+		}
+
+		internal void Trim()
+		{
+			if (_elements.Length != _count)
+				Array.Resize(ref _elements, _count);
+		}
+
+		public IEnumerator<TElement> GetEnumerator()
+		{
+			for (var i = 0; i < _count; i++)
+				yield return _elements[i];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		public TKey Key { get; }
+		public int HashCode { get; }
+
+		int ICollection<TElement>.Count => _count;
+
+		bool ICollection<TElement>.IsReadOnly => true;
+
+		bool ICollection<TElement>.Contains(TElement item) => Array.IndexOf(_elements, item, 0, _count) >= 0;
+
+		void ICollection<TElement>.CopyTo(TElement[] array, int arrayIndex) =>
+			Array.Copy(_elements, 0, array, arrayIndex, _count);
+
+		int IList<TElement>.IndexOf(TElement item) => Array.IndexOf(_elements, item, 0, _count);
+
+		TElement IList<TElement>.this[int index]
+		{
+			get
+			{
+				Guard.IsBetween(index, -1, _count);
+				return _elements[index];
+			}
+
+			set => ThrowModificationNotSupportedException();
+		}
+
+		void ICollection<TElement>.Add(TElement item) => ThrowModificationNotSupportedException();
+		void ICollection<TElement>.Clear() => ThrowModificationNotSupportedException();
+		bool ICollection<TElement>.Remove(TElement item) { ThrowModificationNotSupportedException(); return false; }
+		void IList<TElement>.Insert(int index, TElement item) => ThrowModificationNotSupportedException();
+		void IList<TElement>.RemoveAt(int index) => ThrowModificationNotSupportedException();
+
+		[DoesNotReturn]
+		private static void ThrowModificationNotSupportedException() => throw new NotSupportedException("Grouping is immutable.");
 	}
-
-	void ICollection<TElement>.Add(TElement item) => ThrowModificationNotSupportedException();
-	void ICollection<TElement>.Clear() => ThrowModificationNotSupportedException();
-	bool ICollection<TElement>.Remove(TElement item) { ThrowModificationNotSupportedException(); return false; }
-	void IList<TElement>.Insert(int index, TElement item) => ThrowModificationNotSupportedException();
-	void IList<TElement>.RemoveAt(int index) => ThrowModificationNotSupportedException();
-
-	[DoesNotReturn]
-	private static void ThrowModificationNotSupportedException() => throw new NotSupportedException("Grouping is immutable.");
 }

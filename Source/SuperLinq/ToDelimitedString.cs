@@ -31,15 +31,15 @@ public static partial class SuperEnumerable
 		return ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e));
 	}
 
-	static string ToDelimitedStringImpl<T>(IEnumerable<T> source, string delimiter, Func<StringBuilder, T, StringBuilder> append)
+	private static string ToDelimitedStringImpl<T>(IEnumerable<T> source, string delimiter, Func<StringBuilder, T, StringBuilder> append)
 	{
 		var sb = new StringBuilder();
 		var i = 0;
 
 		foreach (var value in source)
 		{
-			if (i++ > 0) sb.Append(delimiter);
-			append(sb, value);
+			if (i++ > 0) _ = sb.Append(delimiter);
+			_ = append(sb, value);
 		}
 
 		return sb.ToString();

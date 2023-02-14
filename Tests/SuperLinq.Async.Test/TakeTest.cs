@@ -130,11 +130,11 @@ public class TakeTest
 	public void ThrowsOnNullSource()
 	{
 		IAsyncEnumerable<int> source = null!;
-		Assert.Throws<ArgumentNullException>("source", () => source.Take(5));
-		Assert.Throws<ArgumentNullException>("source", () => source.Take(0..5));
-		Assert.Throws<ArgumentNullException>("source", () => source.Take(^5..5));
-		Assert.Throws<ArgumentNullException>("source", () => source.Take(0..^0));
-		Assert.Throws<ArgumentNullException>("source", () => source.Take(^5..^0));
+		_ = Assert.Throws<ArgumentNullException>("source", () => source.Take(5));
+		_ = Assert.Throws<ArgumentNullException>("source", () => source.Take(0..5));
+		_ = Assert.Throws<ArgumentNullException>("source", () => source.Take(^5..5));
+		_ = Assert.Throws<ArgumentNullException>("source", () => source.Take(0..^0));
+		_ = Assert.Throws<ArgumentNullException>("source", () => source.Take(^5..^0));
 	}
 
 	[Fact]

@@ -59,7 +59,7 @@ public class PartitionTest
 
 		await lt5.AssertSequenceEqual(1, 2, 3);
 		await gte5.AssertSequenceEqual(5, 6, 7, 9, 10);
-		await nils.AssertSequenceEqual(default(int?), null);
+		await nils.AssertSequenceEqual(default, null);
 	}
 
 	[Fact]

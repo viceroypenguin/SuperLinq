@@ -69,7 +69,7 @@ public class CountByTest
 	[Fact]
 	public void CountByIsLazy()
 	{
-		new BreakingSequence<string>().CountBy(BreakingFunc.Of<string, int>());
+		_ = new BreakingSequence<string>().CountBy(BreakingFunc.Of<string, int>());
 	}
 
 	[Fact]

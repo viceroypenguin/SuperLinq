@@ -5,21 +5,21 @@ public class CountBetweenTest
 	[Fact]
 	public void CountBetweenWithNegativeMin()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().CountBetween(-1, 0));
 	}
 
 	[Fact]
 	public void CountBetweenWithNegativeMax()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 		   new BreakingSequence<int>().CountBetween(0, -1));
 	}
 
 	[Fact]
 	public void CountBetweenWithMaxLesserThanMin()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().CountBetween(1, 0));
 	}
 
@@ -27,8 +27,10 @@ public class CountBetweenTest
 	public void CountBetweenWithMaxEqualsMin()
 	{
 		foreach (var xs in Seq(1).ArrangeCollectionInlineDatas())
+		{
 			using (xs)
 				Assert.True(xs.CountBetween(1, 1));
+		}
 	}
 
 	[Theory]
@@ -40,8 +42,10 @@ public class CountBetweenTest
 	public void CountBetweenRangeTests(int count, int min, int max, bool expecting)
 	{
 		foreach (var xs in Enumerable.Range(1, count).ArrangeCollectionInlineDatas())
+		{
 			using (xs)
 				Assert.Equal(expecting, xs.CountBetween(min, max));
+		}
 	}
 
 	[Fact]

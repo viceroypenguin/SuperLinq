@@ -40,7 +40,7 @@ public class IndexByTest
 	[Fact]
 	public void IndexByIsLazy()
 	{
-		new BreakingSequence<string>().IndexBy(BreakingFunc.Of<string, char>());
+		_ = new BreakingSequence<string>().IndexBy(BreakingFunc.Of<string, char>());
 	}
 
 	[Fact]
@@ -77,7 +77,7 @@ public class IndexByTest
 				(1, "bob"),
 				(0, "davi"));
 
-		Assert.Throws<TestException>(() =>
+		_ = Assert.Throws<TestException>(() =>
 			result.ElementAt(5));
 	}
 }

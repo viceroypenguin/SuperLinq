@@ -9,7 +9,7 @@ public class SequenceTest
 	[InlineData(int.MaxValue - 1, 2, 2)]
 	public void RangeThrowsOutOfRange(int start, int count, int step)
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			AsyncSuperEnumerable.Range(start, count, step));
 	}
 
@@ -26,7 +26,7 @@ public class SequenceTest
 	{
 		var result = AsyncSuperEnumerable.Range(start, count, step);
 		var expectations = Enumerable.Range(0, count)
-			.Select(i => start + step * i);
+			.Select(i => start + (step * i));
 
 		return result.AssertSequenceEqual(expectations);
 	}

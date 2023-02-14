@@ -12,7 +12,7 @@ public static partial class SuperEnumerable
 	public static void Consume<T>(this IEnumerable<T> source)
 	{
 		Guard.IsNotNull(source);
-		foreach (var element in source)
+		foreach (var _ in source)
 		{
 		}
 	}

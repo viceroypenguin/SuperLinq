@@ -1,8 +1,8 @@
 ﻿namespace Test;
 
-abstract class Scope<T> : IDisposable
+internal abstract class Scope<T> : IDisposable
 {
-	readonly T _old;
+	private readonly T _old;
 
 	protected Scope(T current)
 	{

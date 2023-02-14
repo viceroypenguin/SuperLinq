@@ -10,40 +10,40 @@ public class GroupAdjacentTest
 		var bfo = BreakingFunc.Of<object, object>();
 		var bfg = BreakingFunc.Of<int, IEnumerable<object>, IEnumerable<object>>();
 
-		bs.GroupAdjacent(bf);
-		bs.GroupAdjacent(bf, bfo);
-		bs.GroupAdjacent(bf, bfo, EqualityComparer<int>.Default);
-		bs.GroupAdjacent(bf, EqualityComparer<int>.Default);
-		bs.GroupAdjacent(bf, bfg);
-		bs.GroupAdjacent(bf, bfg, EqualityComparer<int>.Default);
+		_ = bs.GroupAdjacent(bf);
+		_ = bs.GroupAdjacent(bf, bfo);
+		_ = bs.GroupAdjacent(bf, bfo, EqualityComparer<int>.Default);
+		_ = bs.GroupAdjacent(bf, EqualityComparer<int>.Default);
+		_ = bs.GroupAdjacent(bf, bfg);
+		_ = bs.GroupAdjacent(bf, bfg, EqualityComparer<int>.Default);
 	}
 
 	[Fact]
 	public void GroupAdjacentSourceSequence()
 	{
-		const string one = "one";
-		const string two = "two";
-		const string three = "three";
-		const string four = "four";
-		const string five = "five";
-		const string six = "six";
-		const string seven = "seven";
-		const string eight = "eight";
-		const string nine = "nine";
-		const string ten = "ten";
+		const string One = "one";
+		const string Two = "two";
+		const string Three = "three";
+		const string Four = "four";
+		const string Five = "five";
+		const string Six = "six";
+		const string Seven = "seven";
+		const string Eight = "eight";
+		const string Nine = "nine";
+		const string Ten = "ten";
 
-		using var source = TestingSequence.Of(one, two, three, four, five, six, seven, eight, nine, ten);
+		using var source = TestingSequence.Of(One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten);
 
 		var groupings = source.GroupAdjacent(s => s.Length);
 
 		using var reader = groupings.Read();
-		AssertGrouping(reader, 3, one, two);
-		AssertGrouping(reader, 5, three);
-		AssertGrouping(reader, 4, four, five);
-		AssertGrouping(reader, 3, six);
-		AssertGrouping(reader, 5, seven, eight);
-		AssertGrouping(reader, 4, nine);
-		AssertGrouping(reader, 3, ten);
+		AssertGrouping(reader, 3, One, Two);
+		AssertGrouping(reader, 5, Three);
+		AssertGrouping(reader, 4, Four, Five);
+		AssertGrouping(reader, 3, Six);
+		AssertGrouping(reader, 5, Seven, Eight);
+		AssertGrouping(reader, 4, Nine);
+		AssertGrouping(reader, 3, Ten);
 		reader.ReadEnd();
 	}
 

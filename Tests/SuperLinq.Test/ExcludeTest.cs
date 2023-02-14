@@ -11,7 +11,7 @@ public class ExcludeTests
 	[Fact]
 	public void TestExcludeIsLazy()
 	{
-		new BreakingSequence<int>().Exclude(0, 10);
+		_ = new BreakingSequence<int>().Exclude(0, 10);
 	}
 
 	/// <summary>
@@ -20,7 +20,7 @@ public class ExcludeTests
 	[Fact]
 	public void TestExcludeNegativeStartIndexException()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Exclude(-10, 10));
 	}
 
@@ -30,7 +30,7 @@ public class ExcludeTests
 	[Fact]
 	public void TestExcludeNegativeCountException()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Exclude(0, -5));
 	}
 

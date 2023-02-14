@@ -19,18 +19,18 @@ public class FullOuterJoinTest
 		var xs = new AsyncBreakingSequence<int>();
 		var ys = new AsyncBreakingSequence<double>();
 
-		xs.FullOuterJoin(
+		_ = xs.FullOuterJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>());
 
-		xs.FullOuterJoin(
+		_ = xs.FullOuterJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>(),
 			StringComparer.Ordinal);
 
-		xs.FullOuterJoin(
+		_ = xs.FullOuterJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>(),
@@ -38,7 +38,7 @@ public class FullOuterJoinTest
 			BreakingFunc.Of<double, object>(),
 			BreakingFunc.Of<int, double, object>());
 
-		xs.FullOuterJoin(
+		_ = xs.FullOuterJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>(),

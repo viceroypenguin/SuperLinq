@@ -5,9 +5,9 @@ public class ReplaceTest
 	[Fact]
 	public void ReplaceIsLazy()
 	{
-		new BreakingSequence<int>().Replace(0, 10);
-		new BreakingSequence<int>().Replace(new Index(10), 10);
-		new BreakingSequence<int>().Replace(^0, 10);
+		_ = new BreakingSequence<int>().Replace(0, 10);
+		_ = new BreakingSequence<int>().Replace(new Index(10), 10);
+		_ = new BreakingSequence<int>().Replace(^0, 10);
 	}
 
 	[Fact]

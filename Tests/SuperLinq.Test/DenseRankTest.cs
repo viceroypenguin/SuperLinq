@@ -5,13 +5,13 @@ public class DenseRankTests
 	[Fact]
 	public void TestDenseRankIsLazy()
 	{
-		new BreakingSequence<int>().DenseRank();
+		_ = new BreakingSequence<int>().DenseRank();
 	}
 
 	[Fact]
 	public void TestDenseRankByIsLazy()
 	{
-		new BreakingSequence<int>().DenseRankBy(BreakingFunc.Of<int, int>());
+		_ = new BreakingSequence<int>().DenseRankBy(BreakingFunc.Of<int, int>());
 	}
 
 	[Fact]

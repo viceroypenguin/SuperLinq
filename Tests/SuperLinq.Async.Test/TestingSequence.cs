@@ -1,12 +1,9 @@
-﻿namespace Test.Async;
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Diagnostics;
-using SuperLinq;
-using static TestingSequence;
+using static Test.Async.TestingSequence;
+
+namespace Test.Async;
 
 internal static class TestingSequence
 {
@@ -238,7 +235,7 @@ public class TestingSequenceTest
 		{
 			var enumerator = enumerable.GetAsyncEnumerator();
 			await enumerator.DisposeAsync();
-			await enumerator.MoveNextAsync();
+			_ = await enumerator.MoveNextAsync();
 
 			await Task.Yield();
 			yield break;
@@ -261,7 +258,7 @@ public class TestingSequenceTest
 			await using var enumerator = enumerable.GetAsyncEnumerator();
 			while (await enumerator.MoveNextAsync())
 				yield return enumerator.Current;
-			await enumerator.MoveNextAsync();
+			_ = await enumerator.MoveNextAsync();
 
 			await Task.Yield();
 			yield break;

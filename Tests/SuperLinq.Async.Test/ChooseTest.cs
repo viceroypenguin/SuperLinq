@@ -7,7 +7,7 @@ public class ChooseTest
 	[Fact]
 	public void IsLazy()
 	{
-		new AsyncBreakingSequence<object>()
+		_ = new AsyncBreakingSequence<object>()
 			.Choose(BreakingFunc.Of<object, (bool, object)>());
 	}
 

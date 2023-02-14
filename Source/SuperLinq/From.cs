@@ -1,6 +1,6 @@
 ﻿namespace SuperLinq;
 
-partial class SuperEnumerable
+public partial class SuperEnumerable
 {
 	/// <summary>
 	/// Returns a single-element sequence containing the result of invoking the function.

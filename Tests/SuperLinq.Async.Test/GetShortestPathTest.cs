@@ -317,7 +317,7 @@ public static class GetShortestPathTest
 				(2, 2));
 
 			path.AssertSequenceEqual(
-				(a, b) => (a.nextState == b.nextState && Math.Abs(a.cost - b.cost) < 0.001d),
+				(a, b) => a.nextState == b.nextState && Math.Abs(a.cost - b.cost) < 0.001d,
 				(nextState: (0, 0), cost: 0d),
 				(nextState: (1, 0), cost: 1.001d),
 				(nextState: (2, 0), cost: 2.002d),
@@ -331,9 +331,9 @@ public static class GetShortestPathTest
 		[Fact]
 		public async Task InvalidMapThrowsException()
 		{
-			await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+			_ = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
 				await AsyncSuperEnumerable.GetShortestPathCost<int, int>(1, (a, b) => AsyncSeq<(int, int)>(), 2));
-			await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+			_ = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
 				await AsyncSuperEnumerable.GetShortestPath<int, int>(1, (a, b) => AsyncSeq<(int, int)>(), 2));
 		}
 	}
@@ -497,7 +497,7 @@ public static class GetShortestPathTest
 			{
 				var xD = p.x - end.x;
 				var yD = p.y - end.y;
-				var dist = Math.Sqrt(xD * xD + yD * yD);
+				var dist = Math.Sqrt((xD * xD) + (yD * yD));
 				return (p, newCost, newCost + dist);
 			}
 
@@ -533,7 +533,7 @@ public static class GetShortestPathTest
 			{
 				var xD = p.x - end.x;
 				var yD = p.y - end.y;
-				var dist = Math.Sqrt(xD * xD + yD * yD);
+				var dist = Math.Sqrt((xD * xD) + (yD * yD));
 				return (p, newCost, newCost + dist);
 			}
 
@@ -569,9 +569,9 @@ public static class GetShortestPathTest
 		[Fact]
 		public async Task InvalidMapThrowsException()
 		{
-			await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+			_ = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
 				await AsyncSuperEnumerable.GetShortestPathCost<int, int>(1, (a, b) => AsyncSeq<(int, int, int)>(), 2));
-			await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+			_ = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
 				await AsyncSuperEnumerable.GetShortestPath<int, int>(1, (a, b) => AsyncSeq<(int, int, int)>(), 2));
 		}
 	}

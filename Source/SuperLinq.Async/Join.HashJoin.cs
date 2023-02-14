@@ -17,7 +17,7 @@ public static partial class AsyncSuperEnumerable
 		var rLookup = await right.ToLookupAsync(rightKeySelector, comparer, cancellationToken).ConfigureAwait(false);
 		await foreach (var result in HashJoin(
 			left, rLookup, joinOperation,
-			leftKeySelector, rightKeySelector,
+			leftKeySelector,
 			leftResultSelector, rightResultSelector,
 			bothResultSelector,
 			comparer, cancellationToken).WithCancellation(cancellationToken).ConfigureAwait(false))
@@ -31,7 +31,6 @@ public static partial class AsyncSuperEnumerable
 		ILookup<TKey, TRight> right,
 		JoinOperation joinOperation,
 		Func<TLeft, TKey> leftKeySelector,
-		Func<TRight, TKey> rightKeySelector,
 		Func<TLeft, TResult>? leftResultSelector,
 		Func<TRight, TResult>? rightResultSelector,
 		Func<TLeft, TRight, TResult> bothResultSelector,
@@ -50,7 +49,7 @@ public static partial class AsyncSuperEnumerable
 				continue;
 			}
 
-			used.Add(lKey);
+			_ = used.Add(lKey);
 			foreach (var r in right[lKey])
 				yield return bothResultSelector(l, r);
 		}

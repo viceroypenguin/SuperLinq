@@ -34,16 +34,16 @@ public static partial class SuperEnumerable
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 		Guard.IsGreaterThanOrEqualTo(toIndex, 0);
 
-		if (toIndex == fromIndex || count == 0)
-			return source;
-
-		return toIndex < fromIndex
-			 ? Core(source, toIndex, fromIndex - toIndex, count)
-			 : Core(source, fromIndex, count, toIndex - fromIndex);
+		return
+			toIndex == fromIndex || count == 0
+				? source :
+			toIndex < fromIndex
+				 ? Core(source, toIndex, fromIndex - toIndex, count)
+				 : Core(source, fromIndex, count, toIndex - fromIndex);
 
 		static IEnumerable<T> Core(IEnumerable<T> source, int bufferStartIndex, int bufferSize, int bufferYieldIndex)
 		{
-			bool hasMore = true;
+			var hasMore = true;
 			bool MoveNext(IEnumerator<T> e) => hasMore && (hasMore = e.MoveNext());
 
 			using var e = source.GetEnumerator();

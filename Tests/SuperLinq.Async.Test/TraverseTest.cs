@@ -5,13 +5,13 @@ public class TraverseTest
 	[Fact]
 	public void TraverseDepthFirstIsStreaming()
 	{
-		AsyncSuperEnumerable.TraverseDepthFirst(new object(), o => new AsyncBreakingSequence<object>());
+		_ = AsyncSuperEnumerable.TraverseDepthFirst(new object(), o => new AsyncBreakingSequence<object>());
 	}
 
 	[Fact]
 	public void TraverseBreadthFirstIsStreaming()
 	{
-		AsyncSuperEnumerable.TraverseBreadthFirst(new object(), o => new AsyncBreakingSequence<object>());
+		_ = AsyncSuperEnumerable.TraverseBreadthFirst(new object(), o => new AsyncBreakingSequence<object>());
 	}
 
 	[Fact]
@@ -47,8 +47,7 @@ public class TraverseTest
 
 	private static class Tree
 	{
-		public static Tree<T> New<T>(T value, params Tree<T>[] children) =>
-			new Tree<T>(value, children);
+		public static Tree<T> New<T>(T value, params Tree<T>[] children) => new(value, children);
 	}
 
 	[Fact]

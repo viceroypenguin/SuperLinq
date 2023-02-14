@@ -5,8 +5,8 @@ public class SplitTest
 	[Fact]
 	public void SplitIsLazy()
 	{
-		new AsyncBreakingSequence<int>().Split(1);
-		new AsyncBreakingSequence<int>().Split(1, 2);
+		_ = new AsyncBreakingSequence<int>().Split(1);
+		_ = new AsyncBreakingSequence<int>().Split(1, 2);
 	}
 
 	[Fact]
@@ -14,7 +14,7 @@ public class SplitTest
 	{
 		await using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
 		var result = sequence.Split(2, EqualityComparer.Create<int>((x, y) => x % 2 == y % 2));
-		await result.AssertSequenceEqual(Enumerable.Range(1, 5).Select(x => new[] { x * 2 - 1, }));
+		await result.AssertSequenceEqual(Enumerable.Range(1, 5).Select(x => new[] { (x * 2) - 1, }));
 	}
 
 	[Fact]

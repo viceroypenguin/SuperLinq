@@ -12,7 +12,7 @@ public class RightJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		xs.RightJoin(ys, SuperEnumerable.Identity,
+		_ = xs.RightJoin(ys, SuperEnumerable.Identity,
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, int, object>());
 	}
@@ -23,7 +23,7 @@ public class RightJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		xs.RightJoin(ys, SuperEnumerable.Identity,
+		_ = xs.RightJoin(ys, SuperEnumerable.Identity,
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, int, object>(),
 			comparer: null);
@@ -35,7 +35,7 @@ public class RightJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		xs.RightJoin(ys, x => x.GetHashCode(), SuperEnumerable.Identity,
+		_ = xs.RightJoin(ys, x => x.GetHashCode(), SuperEnumerable.Identity,
 			BreakingFunc.Of<object, object>(),
 			BreakingFunc.Of<int, object, object>());
 	}
@@ -46,7 +46,7 @@ public class RightJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		xs.RightJoin(ys, x => x.GetHashCode(), SuperEnumerable.Identity,
+		_ = xs.RightJoin(ys, x => x.GetHashCode(), SuperEnumerable.Identity,
 			BreakingFunc.Of<object, object>(),
 			BreakingFunc.Of<int, object, object>(),
 			comparer: null);

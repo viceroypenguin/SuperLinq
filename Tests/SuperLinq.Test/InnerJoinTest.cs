@@ -18,24 +18,24 @@ public class InnerJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<double>();
 
-		xs.InnerJoin(
+		_ = xs.InnerJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>());
 
-		xs.InnerJoin(
+		_ = xs.InnerJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>(),
 			StringComparer.Ordinal);
 
-		xs.InnerJoin(
+		_ = xs.InnerJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>(),
 			BreakingFunc.Of<int, double, object>());
 
-		xs.InnerJoin(
+		_ = xs.InnerJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>(),

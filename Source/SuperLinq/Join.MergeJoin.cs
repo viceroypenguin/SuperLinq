@@ -43,22 +43,31 @@ public static partial class SuperEnumerable
 			if (comparison < 0)
 			{
 				if (joinOperation.HasFlag(JoinOperation.LeftOuter))
+				{
 					foreach (var e in l)
 						yield return Debug.AssertNotNull(leftResultSelector)(e);
+				}
+
 				gotLeft = e1.MoveNext();
 			}
 			else if (comparison > 0)
 			{
 				if (joinOperation.HasFlag(JoinOperation.RightOuter))
+				{
 					foreach (var e in r)
 						yield return Debug.AssertNotNull(rightResultSelector)(e);
+				}
+
 				gotRight = e2.MoveNext();
 			}
 			else
 			{
 				foreach (var el in l)
+				{
 					foreach (var er in r)
 						yield return bothResultSelector(el, er);
+				}
+
 				gotLeft = e1.MoveNext();
 				gotRight = e2.MoveNext();
 			}

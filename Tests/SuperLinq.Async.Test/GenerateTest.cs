@@ -21,7 +21,7 @@ public class GenerateTest
 	[Fact]
 	public void GenerateIsLazy()
 	{
-		AsyncSuperEnumerable.Generate(0, async i => await AsyncBreakingFunc.Of<int, int>()(i));
+		_ = AsyncSuperEnumerable.Generate(0, async i => await AsyncBreakingFunc.Of<int, int>()(i));
 	}
 
 	[Fact]

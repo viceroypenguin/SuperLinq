@@ -21,7 +21,7 @@ public class GenerateTest
 	[Fact]
 	public void GenerateIsLazy()
 	{
-		SuperEnumerable.Generate(0, BreakingFunc.Of<int, int>());
+		_ = SuperEnumerable.Generate(0, BreakingFunc.Of<int, int>());
 	}
 
 	[Fact]
@@ -35,7 +35,7 @@ public class GenerateTest
 	[Fact]
 	public void GenerateByIndexIsLazy()
 	{
-		SuperEnumerable.GenerateByIndex(BreakingFunc.Of<int, int>());
+		_ = SuperEnumerable.GenerateByIndex(BreakingFunc.Of<int, int>());
 	}
 
 	[Fact]

@@ -129,15 +129,15 @@ public static partial class SuperEnumerable
 
 				if (top.Count < count)
 				{
-					top.Add((item, index));
+					_ = top.Add((item, index));
 					continue;
 				}
 
 				if (comparer.Compare(item, top.Max.Item) >= 0)
 					continue;
 
-				top.Remove(top.Max);
-				top.Add((item, index));
+				_ = top.Remove(top.Max);
+				_ = top.Add((item, index));
 			}
 
 			foreach (var (item, _) in top)
@@ -292,7 +292,7 @@ public static partial class SuperEnumerable
 				var key = (key: keySelector(item), index++);
 				if (top.Count < count)
 				{
-					top.Add(key);
+					_ = top.Add(key);
 					dic[key] = item;
 					continue;
 				}
@@ -300,9 +300,9 @@ public static partial class SuperEnumerable
 				if (comparer.Compare(key.key, top.Max.Key) >= 0)
 					continue;
 
-				dic.Remove(top.Max);
-				top.Remove(top.Max);
-				top.Add(key);
+				_ = dic.Remove(top.Max);
+				_ = top.Remove(top.Max);
+				_ = top.Add(key);
 				dic[key] = item;
 			}
 

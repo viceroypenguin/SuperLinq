@@ -94,7 +94,7 @@ public static partial class SuperEnumerable
 				if (queue.Count == cnt)
 				{
 					yield return value;
-					queue.Dequeue();
+					_ = queue.Dequeue();
 				}
 
 				while (queue.Count != 0)

@@ -17,7 +17,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<int> Range(int start, int count, int step)
 	{
 		Guard.IsGreaterThanOrEqualTo(count, 0);
-		var max = start + (count - 1) * (long)step;
+		var max = start + ((count - 1) * (long)step);
 		Guard.IsBetweenOrEqualTo(max, int.MinValue, int.MaxValue, name: nameof(count));
 		return Core(start, count, step);
 

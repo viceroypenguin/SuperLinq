@@ -276,7 +276,7 @@ public partial class AsyncSuperEnumerable
 		var totalCost = new Dictionary<TState, TCost?>(stateComparer);
 		var queue = new UpdatablePriorityQueue<TState, TCost>(16, costComparer, stateComparer);
 
-		TState? current = start;
+		var current = start;
 		TCost? cost = default;
 		do
 		{
@@ -288,8 +288,10 @@ public partial class AsyncSuperEnumerable
 
 			var newStates = getNeighbors(current, cost);
 			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
+			{
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, p);
+			}
 
 			if (!queue.TryDequeue(out current, out cost))
 				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
@@ -582,7 +584,7 @@ public partial class AsyncSuperEnumerable
 				(x, y) => costComparer.Compare(x.cost, y.cost)),
 			stateComparer);
 
-		TState? current = start;
+		var current = start;
 		TState? end = default;
 		(TState? parent, TCost cost) from = default;
 		do
@@ -599,8 +601,10 @@ public partial class AsyncSuperEnumerable
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
 			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
+			{
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, (current, p));
+			}
 
 			if (!queue.TryDequeue(out current, out from))
 				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
@@ -776,7 +780,7 @@ public partial class AsyncSuperEnumerable
 				(x, y) => costComparer.Compare(x.cost, y.cost)),
 			stateComparer);
 
-		TState? current = start;
+		var current = start;
 		(TState? parent, TCost? cost) from = default;
 		do
 		{
@@ -787,8 +791,10 @@ public partial class AsyncSuperEnumerable
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
 			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
+			{
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, (current, p));
+			}
 		} while (queue.TryDequeue(out current, out from));
 
 		return totalCost;
@@ -1094,7 +1100,7 @@ public partial class AsyncSuperEnumerable
 				}),
 			stateComparer);
 
-		TState? current = start;
+		var current = start;
 		(TCost bestGuess, TCost traversed) costs = default;
 		do
 		{
@@ -1429,7 +1435,7 @@ public partial class AsyncSuperEnumerable
 				}),
 			stateComparer);
 
-		TState? current = start;
+		var current = start;
 		TState? end = default;
 		(TState? parent, TCost bestGuess, TCost traversed) from = default;
 		do

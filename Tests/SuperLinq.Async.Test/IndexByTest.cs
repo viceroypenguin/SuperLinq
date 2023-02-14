@@ -40,7 +40,7 @@ public class IndexByTest
 	[Fact]
 	public void IndexByIsLazy()
 	{
-		new AsyncBreakingSequence<string>().IndexBy(BreakingFunc.Of<string, char>());
+		_ = new AsyncBreakingSequence<string>().IndexBy(BreakingFunc.Of<string, char>());
 	}
 
 	[Fact]
@@ -76,7 +76,7 @@ public class IndexByTest
 			(1, "bob"),
 			(0, "davi"));
 
-		await Assert.ThrowsAsync<TestException>(async () =>
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
 			await result.ElementAtAsync(5));
 	}
 }

@@ -5,7 +5,7 @@ public class FindLastIndexTest
 	[Fact]
 	public async Task FindLastIndexWithNegativeCount()
 	{
-		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await new AsyncBreakingSequence<int>().FindLastIndex(i => i == 1, 1, -1));
 	}
 

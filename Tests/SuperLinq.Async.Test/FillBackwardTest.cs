@@ -5,7 +5,7 @@ public class FillBackwardTest
 	[Fact]
 	public void FillBackwardIsLazy()
 	{
-		new AsyncBreakingSequence<object>().FillBackward();
+		_ = new AsyncBreakingSequence<object>().FillBackward();
 	}
 
 	[Fact]

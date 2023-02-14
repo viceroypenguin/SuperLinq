@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace SuperLinq;
+﻿namespace SuperLinq;
 
 /// <summary>
 /// Provides a set of static methods for querying objects that
@@ -16,7 +14,7 @@ public static partial class SuperEnumerable
 		{
 			null => ThrowHelper.ThrowArgumentNullException<int?>(nameof(source)),
 			ICollection<T> collection => collection.Count,
-			ICollection collection => collection.Count,
+			System.Collections.ICollection collection => collection.Count,
 			_ => null
 		};
 #endif
@@ -32,7 +30,7 @@ public static partial class SuperEnumerable
 			case ICollection<T> collection:
 				count = collection.Count;
 				return true;
-			case ICollection collection:
+			case System.Collections.ICollection collection:
 				count = collection.Count;
 				return true;
 			default:

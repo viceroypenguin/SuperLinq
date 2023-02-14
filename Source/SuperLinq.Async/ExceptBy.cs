@@ -77,7 +77,7 @@ public static partial class AsyncSuperEnumerable
 				if (keys.Contains(key))
 					continue;
 				yield return element;
-				keys.Add(key);
+				_ = keys.Add(key);
 			}
 		}
 	}

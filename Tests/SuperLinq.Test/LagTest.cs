@@ -11,8 +11,8 @@ public class LagTests
 	[Fact]
 	public void TestLagIsLazy()
 	{
-		new BreakingSequence<int>().Lag(5, BreakingFunc.Of<int, int, int>());
-		new BreakingSequence<int>().Lag(5, -1, BreakingFunc.Of<int, int, int>());
+		_ = new BreakingSequence<int>().Lag(5, BreakingFunc.Of<int, int, int>());
+		_ = new BreakingSequence<int>().Lag(5, -1, BreakingFunc.Of<int, int, int>());
 	}
 
 	/// <summary>
@@ -21,7 +21,7 @@ public class LagTests
 	[Fact]
 	public void TestLagNegativeOffsetException()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Lag(-10, (val, lagVal) => val));
 	}
 
@@ -31,7 +31,7 @@ public class LagTests
 	[Fact]
 	public void TestLagZeroOffset()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Lag(0, (val, lagVal) => val + lagVal));
 	}
 

@@ -315,7 +315,7 @@ public static class GetShortestPathTest
 				(2, 2));
 
 			path.AssertSequenceEqual(
-				(a, b) => (a.nextState == b.nextState && Math.Abs(a.cost - b.cost) < 0.001d),
+				(a, b) => a.nextState == b.nextState && Math.Abs(a.cost - b.cost) < 0.001d,
 				(nextState: (0, 0), cost: 0d),
 				(nextState: (1, 0), cost: 1.001d),
 				(nextState: (2, 0), cost: 2.002d),
@@ -329,9 +329,9 @@ public static class GetShortestPathTest
 		[Fact]
 		public void InvalidMapThrowsException()
 		{
-			Assert.Throws<InvalidOperationException>(() =>
+			_ = Assert.Throws<InvalidOperationException>(() =>
 				SuperEnumerable.GetShortestPathCost<int, int>(1, (a, b) => Array.Empty<(int, int)>(), 2));
-			Assert.Throws<InvalidOperationException>(() =>
+			_ = Assert.Throws<InvalidOperationException>(() =>
 				SuperEnumerable.GetShortestPath<int, int>(1, (a, b) => Array.Empty<(int, int)>(), 2));
 		}
 	}
@@ -463,7 +463,7 @@ public static class GetShortestPathTest
 			{
 				var xD = p.x - end.x;
 				var yD = p.y - end.y;
-				var dist = Math.Sqrt(xD * xD + yD * yD);
+				var dist = Math.Sqrt((xD * xD) + (yD * yD));
 				return (p, newCost, newCost + dist);
 			}
 
@@ -499,7 +499,7 @@ public static class GetShortestPathTest
 			{
 				var xD = p.x - end.x;
 				var yD = p.y - end.y;
-				var dist = Math.Sqrt(xD * xD + yD * yD);
+				var dist = Math.Sqrt((xD * xD) + (yD * yD));
 				return (p, newCost, newCost + dist);
 			}
 
@@ -535,9 +535,9 @@ public static class GetShortestPathTest
 		[Fact]
 		public void InvalidMapThrowsException()
 		{
-			Assert.Throws<InvalidOperationException>(() =>
+			_ = Assert.Throws<InvalidOperationException>(() =>
 				SuperEnumerable.GetShortestPathCost<int, int>(1, (a, b) => Array.Empty<(int, int, int)>(), 2));
-			Assert.Throws<InvalidOperationException>(() =>
+			_ = Assert.Throws<InvalidOperationException>(() =>
 				SuperEnumerable.GetShortestPath<int, int>(1, (a, b) => Array.Empty<(int, int, int)>(), 2));
 		}
 	}

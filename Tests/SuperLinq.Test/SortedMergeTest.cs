@@ -14,7 +14,7 @@ public class SortedMergeTests
 		var sequenceA = new BreakingSequence<int>();
 		var sequenceB = new BreakingSequence<int>();
 
-		sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
+		_ = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
 	}
 
 	/// <summary>
@@ -27,7 +27,7 @@ public class SortedMergeTests
 		using var sequenceA = TestingSequence.Of<int>();
 
 		// Expected and thrown by BreakingSequence
-		Assert.Throws<TestException>(() =>
+		_ = Assert.Throws<TestException>(() =>
 			sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>()).Consume());
 	}
 
@@ -90,9 +90,9 @@ public class SortedMergeTests
 	[Fact]
 	public void TestSortedMergeEqualLengthSequences()
 	{
-		using var sequenceA = Enumerable.Range(0, 10).Select(x => x * 3 + 0).AsTestingSequence();
-		using var sequenceB = Enumerable.Range(0, 10).Select(x => x * 3 + 1).AsTestingSequence();
-		using var sequenceC = Enumerable.Range(0, 10).Select(x => x * 3 + 2).AsTestingSequence();
+		using var sequenceA = Enumerable.Range(0, 10).Select(x => (x * 3) + 0).AsTestingSequence();
+		using var sequenceB = Enumerable.Range(0, 10).Select(x => (x * 3) + 1).AsTestingSequence();
+		using var sequenceC = Enumerable.Range(0, 10).Select(x => (x * 3) + 2).AsTestingSequence();
 
 		var result = sequenceA.SortedMerge(sequenceB, sequenceC);
 		result.AssertSequenceEqual(Enumerable.Range(0, 10 * 3));
@@ -104,9 +104,9 @@ public class SortedMergeTests
 	[Fact]
 	public void TestSortedMergeUnequalLengthSequences()
 	{
-		using var sequenceA = Enumerable.Range(0, 30).Select(x => x * 3 + 0).AsTestingSequence(maxEnumerations: 2);
-		using var sequenceB = Enumerable.Range(0, 30).Select(x => x * 3 + 1).Take(30 / 2).AsTestingSequence(maxEnumerations: 2);
-		using var sequenceC = Enumerable.Range(0, 30).Select(x => x * 3 + 2).Take(30 / 3).AsTestingSequence(maxEnumerations: 2);
+		using var sequenceA = Enumerable.Range(0, 30).Select(x => (x * 3) + 0).AsTestingSequence(maxEnumerations: 2);
+		using var sequenceB = Enumerable.Range(0, 30).Select(x => (x * 3) + 1).Take(30 / 2).AsTestingSequence(maxEnumerations: 2);
+		using var sequenceC = Enumerable.Range(0, 30).Select(x => (x * 3) + 2).Take(30 / 3).AsTestingSequence(maxEnumerations: 2);
 
 		var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC).OrderBy(SuperEnumerable.Identity);
 		var result = sequenceA.SortedMerge(sequenceB, sequenceC);
@@ -119,9 +119,9 @@ public class SortedMergeTests
 	[Fact]
 	public void TestSortedMergeDescendingOrder()
 	{
-		using var sequenceA = Enumerable.Range(0, 10).Select(x => x * 3 + 0).Reverse().AsTestingSequence();
-		using var sequenceB = Enumerable.Range(0, 10).Select(x => x * 3 + 1).Reverse().AsTestingSequence();
-		using var sequenceC = Enumerable.Range(0, 10).Select(x => x * 3 + 2).Reverse().AsTestingSequence();
+		using var sequenceA = Enumerable.Range(0, 10).Select(x => (x * 3) + 0).Reverse().AsTestingSequence();
+		using var sequenceB = Enumerable.Range(0, 10).Select(x => (x * 3) + 1).Reverse().AsTestingSequence();
+		using var sequenceC = Enumerable.Range(0, 10).Select(x => (x * 3) + 2).Reverse().AsTestingSequence();
 
 		var result = sequenceA.SortedMergeDescending(sequenceB, sequenceC);
 		result.AssertSequenceEqual(Enumerable.Range(0, 10 * 3).Reverse());

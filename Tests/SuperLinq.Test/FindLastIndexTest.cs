@@ -5,7 +5,7 @@ public class FindLastIndexTest
 	[Fact]
 	public void FindLastIndexWithNegativeCount()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().FindLastIndex(i => i == 1, 1, -1));
 	}
 

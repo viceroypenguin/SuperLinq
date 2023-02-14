@@ -153,7 +153,9 @@ public static partial class AsyncSuperEnumerable
 								i = i + 1 >= list.Count ? 0 : i + 1;
 							}
 							else
+							{
 								DisposeAsync(e);
+							}
 						}
 						else
 						{
@@ -185,7 +187,7 @@ public static partial class AsyncSuperEnumerable
 					{
 						// go to sleep until we hear from someone
 						// (don't care who woke us up, we'll cover that with the loop below)
-						await Task.WhenAny(pendingTaskList).ConfigureAwait(false);
+						_ = await Task.WhenAny(pendingTaskList).ConfigureAwait(false);
 					}
 
 					// clear out all completed tasks
@@ -208,8 +210,10 @@ public static partial class AsyncSuperEnumerable
 								yield return it.Current;
 							}
 							else
+							{
 								// no, so dispose it
 								DisposeAsync(it);
+							}
 						}
 
 						// iterator or dispose task, we need to get rid of it

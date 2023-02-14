@@ -5,7 +5,7 @@ public class FindIndexTest
 	[Fact]
 	public void FindIndexWithNegativeCount()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().FindIndex(BreakingFunc.Of<int, bool>(), 1, -1));
 	}
 

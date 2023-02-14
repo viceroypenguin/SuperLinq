@@ -81,7 +81,7 @@ public static partial class AsyncSuperEnumerable
 				while (await e.MoveNextAsync())
 				{
 					if (count >= startCount)
-						queue.Dequeue();
+						_ = queue.Dequeue();
 
 					queue.Enqueue(e.Current);
 					checked { ++count; }

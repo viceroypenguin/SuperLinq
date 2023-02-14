@@ -11,8 +11,8 @@ public class RunLengthEncodeTests
 	[Fact]
 	public void TestRunLengthEncodeIsLazy()
 	{
-		new BreakingSequence<int>().RunLengthEncode();
-		new BreakingSequence<int>().RunLengthEncode(EqualityComparer<int>.Default);
+		_ = new BreakingSequence<int>().RunLengthEncode();
+		_ = new BreakingSequence<int>().RunLengthEncode(EqualityComparer<int>.Default);
 	}
 
 	/// <summary>

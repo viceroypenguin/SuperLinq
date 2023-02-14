@@ -18,25 +18,25 @@ public class LeftOuterJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<double>();
 
-		xs.LeftOuterJoin(
+		_ = xs.LeftOuterJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>());
 
-		xs.LeftOuterJoin(
+		_ = xs.LeftOuterJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>(),
 			StringComparer.Ordinal);
 
-		xs.LeftOuterJoin(
+		_ = xs.LeftOuterJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>(),
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, double, object>());
 
-		xs.LeftOuterJoin(
+		_ = xs.LeftOuterJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>(),

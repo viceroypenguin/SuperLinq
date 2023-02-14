@@ -5,7 +5,7 @@ public class TransposeTest
 	[Fact]
 	public void TransposeIsLazy()
 	{
-		new BreakingSequence<BreakingSequence<int>>().Transpose();
+		_ = new BreakingSequence<BreakingSequence<int>>().Transpose();
 	}
 
 	[Fact]
@@ -16,7 +16,7 @@ public class TransposeTest
 		using var seq3 = TestingSequence.Of(30, 31, 32);
 		using var matrix = TestingSequence.Of(seq1, seq2, seq3, null);
 
-		Assert.Throws<NullReferenceException>(() =>
+		_ = Assert.Throws<NullReferenceException>(() =>
 			matrix!.Transpose().FirstOrDefault());
 	}
 
@@ -165,7 +165,7 @@ public class TransposeTest
 
 		result.ElementAt(0).AssertSequenceEqual(10, 20, 30);
 
-		Assert.Throws<TestException>(() =>
+		_ = Assert.Throws<TestException>(() =>
 			result.ElementAt(1));
 		sequences.VerifySequences();
 	}
@@ -178,7 +178,7 @@ public class TransposeTest
 		using var row3 = TestingSequence.Of(30, 32);
 		using var matrix = TestingSequence.Of(row1, row2, row3);
 
-		Assert.Throws<TestException>(() =>
+		_ = Assert.Throws<TestException>(() =>
 			matrix.Transpose().Consume());
 	}
 

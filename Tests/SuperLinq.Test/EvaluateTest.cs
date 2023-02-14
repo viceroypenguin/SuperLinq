@@ -5,7 +5,7 @@ public class EvaluateTest
 	[Fact]
 	public void TestEvaluateIsLazy()
 	{
-		new BreakingSequence<Func<int>>().Evaluate();
+		_ = new BreakingSequence<Func<int>>().Evaluate();
 	}
 
 	[Fact]

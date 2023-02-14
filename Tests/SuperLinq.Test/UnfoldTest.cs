@@ -32,7 +32,7 @@ public class UnfoldTest
 	[Fact]
 	public void UnfoldIsLazy()
 	{
-		SuperEnumerable.Unfold(0, BreakingFunc.Of<int, (int, int)>(),
+		_ = SuperEnumerable.Unfold(0, BreakingFunc.Of<int, (int, int)>(),
 								 BreakingFunc.Of<(int, int), bool>(),
 								 BreakingFunc.Of<(int, int), int>(),
 								 BreakingFunc.Of<(int, int), int>());

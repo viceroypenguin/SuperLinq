@@ -7,7 +7,7 @@ public class FillForwardTest
 	[Fact]
 	public void FillForwardIsLazy()
 	{
-		new BreakingSequence<object>().FillForward();
+		_ = new BreakingSequence<object>().FillForward();
 	}
 
 	[Fact]

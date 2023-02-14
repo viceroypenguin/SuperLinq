@@ -5,13 +5,13 @@ public class ConcurrentMergeTest
 	[Fact]
 	public void ConcurrentMergeIsLazy()
 	{
-		new AsyncBreakingSequence<int>().ConcurrentMerge(new AsyncBreakingSequence<int>());
+		_ = new AsyncBreakingSequence<int>().ConcurrentMerge(new AsyncBreakingSequence<int>());
 	}
 
 	[Fact]
 	public void ConcurrentMergeNegativeMaxConcurrency()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>("maxConcurrency", () =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>("maxConcurrency", () =>
 			new[] { new AsyncBreakingSequence<int>() }.ConcurrentMerge(-1));
 	}
 
@@ -22,7 +22,7 @@ public class ConcurrentMergeTest
 		var sequenceB = new AsyncBreakingSequence<int>();
 
 		// Expected and thrown by BreakingSequence
-		await Assert.ThrowsAsync<TestException>(async () =>
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
 			await sequenceA.ConcurrentMerge(sequenceB).Consume());
 	}
 
@@ -34,7 +34,7 @@ public class ConcurrentMergeTest
 			throw new TestException()).AsTestingSequence();
 
 		// Expected and thrown by sequenceB
-		await Assert.ThrowsAsync<TestException>(async () =>
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
 			await sequenceA.ConcurrentMerge(sequenceB).Consume());
 	}
 

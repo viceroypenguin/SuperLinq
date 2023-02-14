@@ -72,7 +72,7 @@ public class CountByTest
 	[Fact]
 	public void CountByIsLazy()
 	{
-		new AsyncBreakingSequence<string>()
+		_ = new AsyncBreakingSequence<string>()
 			.CountBy(AsyncBreakingFunc.Of<string, int>());
 	}
 
