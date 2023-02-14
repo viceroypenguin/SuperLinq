@@ -17,7 +17,7 @@ public class FillForwardTest
 
 		await input
 			.FillForward()
-			.AssertSequenceEqual(default(int?), null, 1, 2, 2, 2, 2, 3, 4, 4, 4);
+			.AssertSequenceEqual(default, null, 1, 2, 2, 2, 2, 3, 4, 4, 4);
 	}
 
 	[Fact]

@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace Test;
+
+#pragma warning disable IDE0034
 
 public class CopyToTest
 {
