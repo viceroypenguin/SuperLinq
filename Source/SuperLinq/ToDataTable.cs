@@ -201,10 +201,10 @@ public static partial class SuperEnumerable
 				var column = info.Column;
 
 				if (column == null)
-					throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));
+					ThrowHelper.ThrowArgumentException(nameof(table), $"Column named '{member.Name}' is missing.");
 
 				if (info.Type != column.DataType)
-					throw new ArgumentException($"Column named '{member.Name}' has wrong data type. It should be {info.Type} when it is {column.DataType}.", nameof(table));
+					ThrowHelper.ThrowArgumentException(nameof(table), $"Column named '{member.Name}' has wrong data type. It should be {info.Type} when it is {column.DataType}.");
 
 				members[column.Ordinal] = member;
 			}
