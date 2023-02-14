@@ -1272,38 +1272,38 @@ public class TakeTest
 	[Fact]
 	public void OutOfBoundNoException()
 	{
-		Func<int[]> source = () => new[] { 1, 2, 3, 4, 5 };
+		static int[] Source() => new[] { 1, 2, 3, 4, 5 };
 
-		Assert.Equal(source(), source().Take(0..6));
-		Assert.Equal(source(), source().Take(0..int.MaxValue));
+		Assert.Equal(Source(), Source().Take(0..6));
+		Assert.Equal(Source(), Source().Take(0..int.MaxValue));
 
-		Assert.Equal(new int[] { 1, 2, 3, 4 }, source().Take(^10..4));
-		Assert.Equal(new int[] { 1, 2, 3, 4 }, source().Take(^int.MaxValue..4));
-		Assert.Equal(source(), source().Take(^10..6));
-		Assert.Equal(source(), source().Take(^int.MaxValue..6));
-		Assert.Equal(source(), source().Take(^10..int.MaxValue));
-		Assert.Equal(source(), source().Take(^int.MaxValue..int.MaxValue));
+		Assert.Equal(new int[] { 1, 2, 3, 4 }, Source().Take(^10..4));
+		Assert.Equal(new int[] { 1, 2, 3, 4 }, Source().Take(^int.MaxValue..4));
+		Assert.Equal(Source(), Source().Take(^10..6));
+		Assert.Equal(Source(), Source().Take(^int.MaxValue..6));
+		Assert.Equal(Source(), Source().Take(^10..int.MaxValue));
+		Assert.Equal(Source(), Source().Take(^int.MaxValue..int.MaxValue));
 
-		Assert.Empty(source().Take(0..^6));
-		Assert.Empty(source().Take(0..^int.MaxValue));
-		Assert.Empty(source().Take(4..^6));
-		Assert.Empty(source().Take(4..^int.MaxValue));
-		Assert.Empty(source().Take(6..^6));
-		Assert.Empty(source().Take(6..^int.MaxValue));
-		Assert.Empty(source().Take(int.MaxValue..^6));
-		Assert.Empty(source().Take(int.MaxValue..^int.MaxValue));
+		Assert.Empty(Source().Take(0..^6));
+		Assert.Empty(Source().Take(0..^int.MaxValue));
+		Assert.Empty(Source().Take(4..^6));
+		Assert.Empty(Source().Take(4..^int.MaxValue));
+		Assert.Empty(Source().Take(6..^6));
+		Assert.Empty(Source().Take(6..^int.MaxValue));
+		Assert.Empty(Source().Take(int.MaxValue..^6));
+		Assert.Empty(Source().Take(int.MaxValue..^int.MaxValue));
 
-		Assert.Equal(new int[] { 1, 2, 3, 4 }, source().Take(^10..^1));
-		Assert.Equal(new int[] { 1, 2, 3, 4 }, source().Take(^int.MaxValue..^1));
-		Assert.Empty(source().Take(^0..^6));
-		Assert.Empty(source().Take(^1..^6));
-		Assert.Empty(source().Take(^6..^6));
-		Assert.Empty(source().Take(^10..^6));
-		Assert.Empty(source().Take(^int.MaxValue..^6));
-		Assert.Empty(source().Take(^0..^int.MaxValue));
-		Assert.Empty(source().Take(^1..^int.MaxValue));
-		Assert.Empty(source().Take(^6..^int.MaxValue));
-		Assert.Empty(source().Take(^int.MaxValue..^int.MaxValue));
+		Assert.Equal(new int[] { 1, 2, 3, 4 }, Source().Take(^10..^1));
+		Assert.Equal(new int[] { 1, 2, 3, 4 }, Source().Take(^int.MaxValue..^1));
+		Assert.Empty(Source().Take(^0..^6));
+		Assert.Empty(Source().Take(^1..^6));
+		Assert.Empty(Source().Take(^6..^6));
+		Assert.Empty(Source().Take(^10..^6));
+		Assert.Empty(Source().Take(^int.MaxValue..^6));
+		Assert.Empty(Source().Take(^0..^int.MaxValue));
+		Assert.Empty(Source().Take(^1..^int.MaxValue));
+		Assert.Empty(Source().Take(^6..^int.MaxValue));
+		Assert.Empty(Source().Take(^int.MaxValue..^int.MaxValue));
 	}
 
 	[Fact]
@@ -1402,47 +1402,47 @@ public class TakeTest
 	[Fact]
 	public void NonEmptySourceConsistencyWithCountable()
 	{
-		Func<int[]> source = () => new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		static int[] Source() => new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
 		// Multiple elements in the middle.
-		Assert.Equal(source()[^9..5], source().Take(^9..5));
-		Assert.Equal(source()[2..7], source().Take(2..7));
-		Assert.Equal(source()[2..^4], source().Take(2..^4));
-		Assert.Equal(source()[^7..^4], source().Take(^7..^4));
+		Assert.Equal(Source()[^9..5], Source().Take(^9..5));
+		Assert.Equal(Source()[2..7], Source().Take(2..7));
+		Assert.Equal(Source()[2..^4], Source().Take(2..^4));
+		Assert.Equal(Source()[^7..^4], Source().Take(^7..^4));
 
 		// Range with default index.
-		Assert.Equal(source()[^9..], source().Take(^9..));
-		Assert.Equal(source()[2..], source().Take(2..));
-		Assert.Equal(source()[..^4], source().Take(..^4));
-		Assert.Equal(source()[..6], source().Take(..6));
+		Assert.Equal(Source()[^9..], Source().Take(^9..));
+		Assert.Equal(Source()[2..], Source().Take(2..));
+		Assert.Equal(Source()[..^4], Source().Take(..^4));
+		Assert.Equal(Source()[..6], Source().Take(..6));
 
 		// All.
-		Assert.Equal(source()[..], source().Take(..));
+		Assert.Equal(Source()[..], Source().Take(..));
 
 		// Single element in the middle.
-		Assert.Equal(source()[^9..2], source().Take(^9..2));
-		Assert.Equal(source()[2..3], source().Take(2..3));
-		Assert.Equal(source()[2..^7], source().Take(2..^7));
-		Assert.Equal(source()[^5..^4], source().Take(^5..^4));
+		Assert.Equal(Source()[^9..2], Source().Take(^9..2));
+		Assert.Equal(Source()[2..3], Source().Take(2..3));
+		Assert.Equal(Source()[2..^7], Source().Take(2..^7));
+		Assert.Equal(Source()[^5..^4], Source().Take(^5..^4));
 
 		// Single element at start.
-		Assert.Equal(source()[^10..1], source().Take(^10..1));
-		Assert.Equal(source()[0..1], source().Take(0..1));
-		Assert.Equal(source()[0..^9], source().Take(0..^9));
-		Assert.Equal(source()[^10..^9], source().Take(^10..^9));
+		Assert.Equal(Source()[^10..1], Source().Take(^10..1));
+		Assert.Equal(Source()[0..1], Source().Take(0..1));
+		Assert.Equal(Source()[0..^9], Source().Take(0..^9));
+		Assert.Equal(Source()[^10..^9], Source().Take(^10..^9));
 
 		// Single element at end.
-		Assert.Equal(source()[^1..10], source().Take(^1..10));
-		Assert.Equal(source()[9..10], source().Take(9..10));
-		Assert.Equal(source()[9..^0], source().Take(9..^0));
-		Assert.Equal(source()[^1..^0], source().Take(^1..^0));
+		Assert.Equal(Source()[^1..10], Source().Take(^1..10));
+		Assert.Equal(Source()[9..10], Source().Take(9..10));
+		Assert.Equal(Source()[9..^0], Source().Take(9..^0));
+		Assert.Equal(Source()[^1..^0], Source().Take(^1..^0));
 
 		// No element.
-		Assert.Equal(source()[3..3], source().Take(3..3));
-		Assert.Equal(source()[6..^4], source().Take(6..^4));
-		Assert.Equal(source()[3..^7], source().Take(3..^7));
-		Assert.Equal(source()[^3..7], source().Take(^3..7));
-		Assert.Equal(source()[^6..^6], source().Take(^6..^6));
+		Assert.Equal(Source()[3..3], Source().Take(3..3));
+		Assert.Equal(Source()[6..^4], Source().Take(6..^4));
+		Assert.Equal(Source()[3..^7], Source().Take(3..^7));
+		Assert.Equal(Source()[^3..7], Source().Take(^3..7));
+		Assert.Equal(Source()[^6..^6], Source().Take(^6..^6));
 	}
 
 	[Fact]
@@ -1494,12 +1494,12 @@ public class TakeTest
 	[Fact]
 	public void NonEmptySourceDoNotThrowException()
 	{
-		Func<int[]> source = () => new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		static int[] Source() => new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-		Assert.Empty(source().Take(3..2));
-		Assert.Empty(source().Take(6..^5));
-		Assert.Empty(source().Take(3..^8));
-		Assert.Empty(source().Take(^6..^7));
+		Assert.Empty(Source().Take(3..2));
+		Assert.Empty(Source().Take(6..^5));
+		Assert.Empty(Source().Take(3..^8));
+		Assert.Empty(Source().Take(^6..^7));
 	}
 
 	[Fact]
@@ -1516,53 +1516,53 @@ public class TakeTest
 	[Fact]
 	public void EmptySourceDoNotThrowException()
 	{
-		Func<int[]> source = () => Array.Empty<int>();
+		static int[] Source() => Array.Empty<int>();
 
 		// Multiple elements in the middle.
-		Assert.Empty(source().Take(^9..5));
-		Assert.Empty(source().Take(2..7));
-		Assert.Empty(source().Take(2..^4));
-		Assert.Empty(source().Take(^7..^4));
+		Assert.Empty(Source().Take(^9..5));
+		Assert.Empty(Source().Take(2..7));
+		Assert.Empty(Source().Take(2..^4));
+		Assert.Empty(Source().Take(^7..^4));
 
 		// Range with default index.
-		Assert.Empty(source().Take(^9..));
-		Assert.Empty(source().Take(2..));
-		Assert.Empty(source().Take(..^4));
-		Assert.Empty(source().Take(..6));
+		Assert.Empty(Source().Take(^9..));
+		Assert.Empty(Source().Take(2..));
+		Assert.Empty(Source().Take(..^4));
+		Assert.Empty(Source().Take(..6));
 
 		// All.
-		Assert.Equal(source()[..], source().Take(..));
+		Assert.Equal(Source()[..], Source().Take(..));
 
 		// Single element in the middle.
-		Assert.Empty(source().Take(^9..2));
-		Assert.Empty(source().Take(2..3));
-		Assert.Empty(source().Take(2..^7));
-		Assert.Empty(source().Take(^5..^4));
+		Assert.Empty(Source().Take(^9..2));
+		Assert.Empty(Source().Take(2..3));
+		Assert.Empty(Source().Take(2..^7));
+		Assert.Empty(Source().Take(^5..^4));
 
 		// Single element at start.
-		Assert.Empty(source().Take(^10..1));
-		Assert.Empty(source().Take(0..1));
-		Assert.Empty(source().Take(0..^9));
-		Assert.Empty(source().Take(^10..^9));
+		Assert.Empty(Source().Take(^10..1));
+		Assert.Empty(Source().Take(0..1));
+		Assert.Empty(Source().Take(0..^9));
+		Assert.Empty(Source().Take(^10..^9));
 
 		// Single element at end.
-		Assert.Empty(source().Take(^1..^10));
-		Assert.Empty(source().Take(9..10));
-		Assert.Empty(source().Take(9..^9));
-		Assert.Empty(source().Take(^1..^9));
+		Assert.Empty(Source().Take(^1..^10));
+		Assert.Empty(Source().Take(9..10));
+		Assert.Empty(Source().Take(9..^9));
+		Assert.Empty(Source().Take(^1..^9));
 
 		// No element.
-		Assert.Empty(source().Take(3..3));
-		Assert.Empty(source().Take(6..^4));
-		Assert.Empty(source().Take(3..^7));
-		Assert.Empty(source().Take(^3..7));
-		Assert.Empty(source().Take(^6..^6));
+		Assert.Empty(Source().Take(3..3));
+		Assert.Empty(Source().Take(6..^4));
+		Assert.Empty(Source().Take(3..^7));
+		Assert.Empty(Source().Take(^3..7));
+		Assert.Empty(Source().Take(^6..^6));
 
 		// Invalid range.
-		Assert.Empty(source().Take(3..2));
-		Assert.Empty(source().Take(6..^5));
-		Assert.Empty(source().Take(3..^8));
-		Assert.Empty(source().Take(^6..^7));
+		Assert.Empty(Source().Take(3..2));
+		Assert.Empty(Source().Take(6..^5));
+		Assert.Empty(Source().Take(3..^8));
+		Assert.Empty(Source().Take(^6..^7));
 	}
 
 	[Fact]
