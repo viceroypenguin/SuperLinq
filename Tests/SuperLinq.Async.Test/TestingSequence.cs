@@ -1,12 +1,9 @@
-﻿namespace Test.Async;
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Diagnostics;
-using SuperLinq;
-using static TestingSequence;
+using static Test.Async.TestingSequence;
+
+namespace Test.Async;
 
 internal static class TestingSequence
 {

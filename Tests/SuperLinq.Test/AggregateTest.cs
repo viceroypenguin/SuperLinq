@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Test;
-using static FuncModule;
 
 public class AggregateTest
 {

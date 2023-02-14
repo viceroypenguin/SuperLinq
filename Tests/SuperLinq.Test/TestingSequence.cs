@@ -1,12 +1,10 @@
-﻿namespace Test;
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Diagnostics;
-using static TestingSequence;
+using static Test.TestingSequence;
+
+namespace Test;
 
 internal static class TestingSequence
 {

@@ -1,7 +1,5 @@
 ﻿namespace Test;
 
-using System;
-
 // This type is designed to be imported statically.
 //
 // Its members enable replacing explicit instantiations of `Func<...>`,
