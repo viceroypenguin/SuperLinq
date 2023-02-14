@@ -11,20 +11,16 @@ insert_final_newline = true
 indent_style = spaces
 indent_size = 2
 
-# Code files
-[*.{cs,csx,vb,vbx}]
-indent_size = 4
-charset = utf-8-bom
-
 # XML project files
 [*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj,props,targets,ruleset,config,nuspec,resx,vsixmanifest,vsct}]
 indent_size = 2
 
-# Dotnet code style settings:
-[*.{cs,tt}]
+# Code files
+[*.cs]
+indent_size = 4
+charset = utf-8-bom
 
-# IDE0055: Fix formatting
-dotnet_diagnostic.IDE0055.severity = warning
+## Dotnet code style settings:
 
 # Sort using and Import directives with System.* appearing first
 dotnet_sort_system_directives_first = true
@@ -131,8 +127,8 @@ dotnet_naming_symbols.all_members.applicable_kinds = *
 
 dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 
-# CSharp code style settings:
-[*.cs]
+## C# style settings:
+
 # Newline settings
 csharp_new_line_before_open_brace = all
 csharp_new_line_before_else = true
@@ -156,9 +152,12 @@ csharp_style_var_when_type_is_apparent = true:suggestion
 csharp_style_var_elsewhere = true:suggestion
 
 # Prefer method-like constructs to have a block body
-csharp_style_expression_bodied_methods = true:suggestion
+csharp_style_expression_bodied_methods = false:none
 csharp_style_expression_bodied_constructors = false:none
 csharp_style_expression_bodied_operators = false:none
+
+# Prefer local method constructs to have a block body
+csharp_style_expression_bodied_local_functions = true:suggestion
 
 # Prefer property-like constructs to have an expression-body
 csharp_style_expression_bodied_properties = true:suggestion
@@ -200,9 +199,12 @@ csharp_space_between_parentheses = false
 csharp_space_between_square_brackets = false
 
 # Blocks are allowed
-csharp_prefer_braces = true:silent
+csharp_prefer_braces = when_multiline:silent
 csharp_preserve_single_line_blocks = true:silent
 csharp_preserve_single_line_statements = true:silent
+
+# Style Analytics
+dotnet_analyzer_diagnostic.category-Style.severity = warning
 
 # For ScanEx()
 dotnet_code_quality.ca1711.allowed_suffixes = Ex
