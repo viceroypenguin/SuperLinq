@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
+using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
@@ -97,9 +98,12 @@ public class NullArgumentTest
 			}
 
 			if (constraints.Length == 1) return constraints.Single();
-			if (constraints.Select(c => c.GetGenericTypeDefinition())
+
+			if (constraints
+					.Select(c => c.GetGenericTypeDefinition())
 					.CollectionEqual(Seq(typeof(IEqualityComparer<>), typeof(IComparer<>))))
 			{
+				// for join methods
 				return typeof(StringComparer);
 			}
 
@@ -209,7 +213,7 @@ public class NullArgumentTest
 		{
 			public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool descending)
 			{
-				if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+				Guard.IsNotNull(keySelector);
 				return this;
 			}
 		}

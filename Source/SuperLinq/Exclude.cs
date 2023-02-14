@@ -20,10 +20,11 @@ public static partial class SuperEnumerable
 		Guard.IsGreaterThanOrEqualTo(startIndex, 0);
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 
-		if (count == 0)
-			return sequence;
-
-		return Core(sequence, startIndex, count);
+		return count switch
+		{
+			0 => sequence,
+			_ => Core(sequence, startIndex, count)
+		};
 
 		static IEnumerable<T> Core(IEnumerable<T> sequence, int startIndex, int count)
 		{

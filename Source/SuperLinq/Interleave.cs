@@ -55,8 +55,9 @@ public static partial class SuperEnumerable
 	public static IEnumerable<T> Interleave<T>(this IEnumerable<IEnumerable<T>> sources)
 	{
 		Guard.IsNotNull(sources);
+
 		if (sources.Any(s => s == null))
-			throw new ArgumentNullException(nameof(sources), "One or more sequences passed to Interleave was null.");
+			ThrowHelper.ThrowArgumentNullException(nameof(sources), "One or more sequences passed to Interleave was null.");
 
 		return Core(sources);
 
