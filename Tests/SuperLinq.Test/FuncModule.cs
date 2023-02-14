@@ -16,7 +16,7 @@ using System;
 // The `new` is no longer required and the return type can be omitted
 // as it can be inferred through the type of the lambda expression.
 
-static class FuncModule
+internal static class FuncModule
 {
 	public static Func<TResult> Func<TResult>(Func<TResult> f) => f;
 	public static Func<T, TResult> Func<T, TResult>(Func<T, TResult> f) => f;

@@ -2,7 +2,7 @@
 
 public class ReturnTest
 {
-	static class SomeSingleton
+	private static class SomeSingleton
 	{
 		public static readonly object Item = new object();
 		public static readonly IEnumerable<object> Sequence = SuperEnumerable.Return(Item);
@@ -10,7 +10,7 @@ public class ReturnTest
 		public static ICollection<object> Collection => (ICollection<object>)Sequence;
 	}
 
-	static class NullSingleton
+	private static class NullSingleton
 	{
 		public static readonly IEnumerable<object?> Sequence = SuperEnumerable.Return<object?>(null);
 		public static IList<object?> List => (IList<object?>)Sequence;

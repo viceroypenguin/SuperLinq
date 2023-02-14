@@ -107,7 +107,7 @@ public static partial class SuperEnumerable
 		return table;
 	}
 
-	static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
+	private static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
 	{
 		//
 		// If no lambda expressions supplied then reflect them off the source element type.
@@ -158,7 +158,7 @@ public static partial class SuperEnumerable
 	/// columns for which there is no source member supplying a value.
 	/// </remarks>
 
-	static MemberInfo[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
+	private static MemberInfo[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
 	{
 		//
 		// Retrieve member information needed to
@@ -213,7 +213,7 @@ public static partial class SuperEnumerable
 		return members;
 	}
 
-	static Func<T, object[]> CreateShredder<T>(IEnumerable<MemberInfo> members)
+	private static Func<T, object[]> CreateShredder<T>(IEnumerable<MemberInfo> members)
 	{
 		var parameter = Expression.Parameter(typeof(T), "e");
 

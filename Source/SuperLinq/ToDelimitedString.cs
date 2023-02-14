@@ -31,7 +31,7 @@ public static partial class SuperEnumerable
 		return ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e));
 	}
 
-	static string ToDelimitedStringImpl<T>(IEnumerable<T> source, string delimiter, Func<StringBuilder, T, StringBuilder> append)
+	private static string ToDelimitedStringImpl<T>(IEnumerable<T> source, string delimiter, Func<StringBuilder, T, StringBuilder> append)
 	{
 		var sb = new StringBuilder();
 		var i = 0;

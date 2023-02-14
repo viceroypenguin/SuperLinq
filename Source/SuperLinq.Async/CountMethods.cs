@@ -120,7 +120,7 @@ public static partial class AsyncSuperEnumerable
 		return QuantityIterator(source, limit: max + 1, min: min, max: max, cancellationToken);
 	}
 
-	static async ValueTask<bool> QuantityIterator<T>(IAsyncEnumerable<T> source, int limit, int min, int max, CancellationToken cancellationToken)
+	private static async ValueTask<bool> QuantityIterator<T>(IAsyncEnumerable<T> source, int limit, int min, int max, CancellationToken cancellationToken)
 	{
 		var count = 0;
 		await foreach (var i in source.WithCancellation(cancellationToken).ConfigureAwait(false))

@@ -2,7 +2,7 @@
 
 namespace Test;
 
-sealed class CurrentThreadCultureScope : Scope<CultureInfo>
+internal sealed class CurrentThreadCultureScope : Scope<CultureInfo>
 {
 	public CurrentThreadCultureScope(CultureInfo @new) :
 		base(CultureInfo.CurrentCulture)
@@ -15,7 +15,7 @@ sealed class CurrentThreadCultureScope : Scope<CultureInfo>
 		Install(old);
 	}
 
-	static void Install(CultureInfo value)
+	private static void Install(CultureInfo value)
 	{
 		CultureInfo.CurrentCulture = value;
 	}

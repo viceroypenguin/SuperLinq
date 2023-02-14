@@ -214,8 +214,9 @@ public static partial class AsyncSuperEnumerable
 	{
 		private static int s_seed = Environment.TickCount;
 
-		[ThreadStatic] static Random? s_threadRandom;
-		static Random ThreadRandom => s_threadRandom ??= new Random(Interlocked.Increment(ref s_seed));
+		[ThreadStatic] private static Random? s_threadRandom;
+
+		private static Random ThreadRandom => s_threadRandom ??= new Random(Interlocked.Increment(ref s_seed));
 
 		public override int Next() => ThreadRandom.Next();
 		public override int Next(int minValue, int maxValue) => ThreadRandom.Next(minValue, maxValue);

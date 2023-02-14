@@ -1,6 +1,6 @@
 ﻿namespace SuperLinq;
 
-partial class SuperEnumerable
+public partial class SuperEnumerable
 {
 	/// <summary>
 	/// Returns a sequence containing the values resulting from invoking (in order) each function in the source sequence of functions.

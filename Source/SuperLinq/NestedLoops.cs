@@ -13,7 +13,7 @@ public static partial class SuperEnumerable
 	/// <param name="loopCounts">A sequence of loop repetition counts</param>
 	/// <returns>A sequence of Action representing the expansion of a set of nested loops</returns>
 
-	static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
+	private static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
 	{
 		var count = loopCounts.DefaultIfEmpty().Aggregate((acc, x) => acc * x);
 

@@ -5,7 +5,7 @@
 /// </summary>
 public class RandomTest
 {
-	const int RandomTrials = 10000;
+	private const int RandomTrials = 10000;
 
 	/// <summary>
 	/// Verify that passing a negative maximum value yields an exception
