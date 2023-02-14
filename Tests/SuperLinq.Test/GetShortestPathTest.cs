@@ -329,9 +329,9 @@ public static class GetShortestPathTest
 		[Fact]
 		public void InvalidMapThrowsException()
 		{
-			Assert.Throws<InvalidOperationException>(() =>
+			_ = Assert.Throws<InvalidOperationException>(() =>
 				SuperEnumerable.GetShortestPathCost<int, int>(1, (a, b) => Array.Empty<(int, int)>(), 2));
-			Assert.Throws<InvalidOperationException>(() =>
+			_ = Assert.Throws<InvalidOperationException>(() =>
 				SuperEnumerable.GetShortestPath<int, int>(1, (a, b) => Array.Empty<(int, int)>(), 2));
 		}
 	}
@@ -535,9 +535,9 @@ public static class GetShortestPathTest
 		[Fact]
 		public void InvalidMapThrowsException()
 		{
-			Assert.Throws<InvalidOperationException>(() =>
+			_ = Assert.Throws<InvalidOperationException>(() =>
 				SuperEnumerable.GetShortestPathCost<int, int>(1, (a, b) => Array.Empty<(int, int, int)>(), 2));
-			Assert.Throws<InvalidOperationException>(() =>
+			_ = Assert.Throws<InvalidOperationException>(() =>
 				SuperEnumerable.GetShortestPath<int, int>(1, (a, b) => Array.Empty<(int, int, int)>(), 2));
 		}
 	}

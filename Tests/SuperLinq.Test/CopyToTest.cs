@@ -9,25 +9,25 @@ public class CopyToTest
 	[Fact]
 	public void NullArgumentTest()
 	{
-		Assert.Throws<ArgumentNullException>(
+		_ = Assert.Throws<ArgumentNullException>(
 			"source",
 			() => default(IEnumerable<int>)!.CopyTo(Array.Empty<int>()));
-		Assert.Throws<ArgumentNullException>(
+		_ = Assert.Throws<ArgumentNullException>(
 			"source",
 			() => default(IEnumerable<int>)!.CopyTo((IList<int>)Array.Empty<int>()));
-		Assert.Throws<ArgumentNullException>(
+		_ = Assert.Throws<ArgumentNullException>(
 			"source",
 			() => default(IEnumerable<int>)!.CopyTo(Array.Empty<int>(), 1));
-		Assert.Throws<ArgumentNullException>(
+		_ = Assert.Throws<ArgumentNullException>(
 			"source",
 			() => default(IEnumerable<int>)!.CopyTo(Array.Empty<int>().AsSpan()));
-		Assert.Throws<ArgumentNullException>(
+		_ = Assert.Throws<ArgumentNullException>(
 			"array",
 			() => Seq<int>().CopyTo(default(int[])!));
-		Assert.Throws<ArgumentNullException>(
+		_ = Assert.Throws<ArgumentNullException>(
 			"list",
 			() => Seq<int>().CopyTo(default(IList<int>)!));
-		Assert.Throws<ArgumentNullException>(
+		_ = Assert.Throws<ArgumentNullException>(
 			"list",
 			() => Seq<int>().CopyTo(default(IList<int>)!, 1));
 	}
@@ -35,7 +35,7 @@ public class CopyToTest
 	[Fact]
 	public void ThrowsOnNegativeIndex()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(
+		_ = Assert.Throws<ArgumentOutOfRangeException>(
 			"index",
 			() => Seq<int>().CopyTo(Array.Empty<int>(), -1));
 	}
@@ -43,33 +43,33 @@ public class CopyToTest
 	[Fact]
 	public void ThrowsOnTooMuchDataForArray()
 	{
-		Assert.Throws<ArgumentException>(
+		_ = Assert.Throws<ArgumentException>(
 			() => Seq(1).CopyTo(Array.Empty<int>()));
-		Assert.Throws<ArgumentException>(
+		_ = Assert.Throws<ArgumentException>(
 			() => new List<int> { 1 }.AsEnumerable().CopyTo(Array.Empty<int>()));
-		Assert.Throws<ArgumentException>(
+		_ = Assert.Throws<ArgumentException>(
 			() => new List<int> { 1 }.AsReadOnly().AsEnumerable().CopyTo(Array.Empty<int>()));
 	}
 
 	[Fact]
 	public void ThrowsOnTooMuchDataForIListArray()
 	{
-		Assert.Throws<ArgumentException>(
+		_ = Assert.Throws<ArgumentException>(
 			() => Seq(1).CopyTo((IList<int>)Array.Empty<int>()));
-		Assert.Throws<ArgumentException>(
+		_ = Assert.Throws<ArgumentException>(
 			() => Enumerable.Range(1, 1).CopyTo((IList<int>)Array.Empty<int>()));
-		Assert.Throws<ArgumentException>(
+		_ = Assert.Throws<ArgumentException>(
 			() => new List<int> { 1 }.AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
-		Assert.Throws<ArgumentException>(
+		_ = Assert.Throws<ArgumentException>(
 			() => new List<int> { 1 }.AsReadOnly().AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
 	}
 
 	[Fact]
 	public void ThrowsOnTooMuchDataForSpan()
 	{
-		Assert.Throws<ArgumentException>(
+		_ = Assert.Throws<ArgumentException>(
 			() => Seq(1).CopyTo(Array.Empty<int>().AsSpan()));
-		Assert.Throws<ArgumentException>(
+		_ = Assert.Throws<ArgumentException>(
 			() => new List<int> { 1 }.AsEnumerable().CopyTo(Array.Empty<int>().AsSpan()));
 	}
 

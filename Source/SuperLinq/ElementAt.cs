@@ -74,7 +74,7 @@ public static partial class SuperEnumerable
 			return Enumerable.ElementAt(source, count - index.Value);
 		}
 
-		TryGetElementFromEnd(source, index.Value, out var element);
+		_ = TryGetElementFromEnd(source, index.Value, out var element);
 		return element;
 	}
 
@@ -91,7 +91,7 @@ public static partial class SuperEnumerable
 				{
 					if (queue.Count == indexFromEnd)
 					{
-						queue.Dequeue();
+						_ = queue.Dequeue();
 					}
 
 					queue.Enqueue(e.Current);

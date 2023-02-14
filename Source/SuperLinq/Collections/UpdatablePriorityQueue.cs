@@ -423,7 +423,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 		if (Count != 0)
 		{
 			var (rootElement, rootPriority) = _nodes[0];
-			_elementIndex.Remove(rootElement);
+			_ = _elementIndex.Remove(rootElement);
 
 			if (_priorityComparer == null)
 			{
@@ -771,7 +771,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 		var lastNodeIndex = --Count;
 		_version++;
 
-		_elementIndex.Remove(_nodes[0].Element);
+		_ = _elementIndex.Remove(_nodes[0].Element);
 
 		if (lastNodeIndex > 0)
 		{

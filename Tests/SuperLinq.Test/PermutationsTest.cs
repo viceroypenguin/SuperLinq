@@ -162,7 +162,7 @@ public class PermutationsTest
 	[Fact]
 	public void TestPermutationsIsLazy()
 	{
-		new BreakingSequence<int>().Permutations();
+		_ = new BreakingSequence<int>().Permutations();
 	}
 
 	/// <summary>

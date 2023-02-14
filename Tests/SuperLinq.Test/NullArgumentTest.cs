@@ -23,7 +23,7 @@ public class NullArgumentTest
 
 			try
 			{
-				method.Invoke(null, args);
+				_ = method.Invoke(null, args);
 			}
 			catch (TargetInvocationException tie)
 			{
@@ -31,7 +31,7 @@ public class NullArgumentTest
 			}
 
 			Assert.NotNull(e);
-			Assert.IsAssignableFrom<ArgumentNullException>(e);
+			_ = Assert.IsAssignableFrom<ArgumentNullException>(e);
 			var ane = (ArgumentNullException)e!;
 			Assert.Equal(paramName, ane.ParamName);
 		});

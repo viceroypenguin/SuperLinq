@@ -23,7 +23,7 @@ public class ScanExTest
 	[Fact]
 	public void ScanExIsLazy()
 	{
-		new BreakingSequence<object>().ScanEx(BreakingFunc.Of<object, object, object>());
+		_ = new BreakingSequence<object>().ScanEx(BreakingFunc.Of<object, object, object>());
 	}
 
 	[Fact]
@@ -33,7 +33,7 @@ public class ScanExTest
 
 		var result = seq.ScanEx((a, b) => a + b);
 
-		Assert.Throws<TestException>(result.Consume);
+		_ = Assert.Throws<TestException>(result.Consume);
 		result.Take(3).AssertSequenceEqual(1, 3, 6);
 	}
 
@@ -58,7 +58,7 @@ public class ScanExTest
 	[Fact]
 	public void SeededScanExIsLazy()
 	{
-		new BreakingSequence<object>().ScanEx(seed: null,
+		_ = new BreakingSequence<object>().ScanEx(seed: null,
 			BreakingFunc.Of<object?, object, object>());
 	}
 
@@ -69,7 +69,7 @@ public class ScanExTest
 
 		var result = seq.ScanEx(0, (a, b) => a + b);
 
-		Assert.Throws<TestException>(result.Consume);
+		_ = Assert.Throws<TestException>(result.Consume);
 		result.Take(4).AssertSequenceEqual(0, 1, 3, 6);
 	}
 }

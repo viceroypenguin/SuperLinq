@@ -5,28 +5,28 @@ public class MoveTest
 	[Fact]
 	public void MoveWithNegativeFromIndex()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new[] { 1 }.Move(-1, 0, 0));
 	}
 
 	[Fact]
 	public void MoveWithNegativeCount()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new[] { 1 }.Move(0, -1, 0));
 	}
 
 	[Fact]
 	public void MoveWithNegativeToIndex()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new[] { 1 }.Move(0, 0, -1));
 	}
 
 	[Fact]
 	public void MoveIsLazy()
 	{
-		new BreakingSequence<int>().Move(0, 0, 0);
+		_ = new BreakingSequence<int>().Move(0, 0, 0);
 	}
 
 	[Theory, MemberData(nameof(MoveSource))]

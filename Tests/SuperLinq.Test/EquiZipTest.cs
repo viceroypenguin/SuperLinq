@@ -24,7 +24,7 @@ public class EquiZipTest
 			.AsTestingSequence();
 
 		// `TestException` from `BreakingFunc` should not be thrown
-		Assert.Throws<InvalidOperationException>(() =>
+		_ = Assert.Throws<InvalidOperationException>(() =>
 			s1.EquiZip(s2, s3).Consume());
 	}
 
@@ -42,7 +42,7 @@ public class EquiZipTest
 		using var s4 = TestingSequence.Of(1, 2, 3);
 
 		// `TestException` from `BreakingFunc` should not be thrown
-		Assert.Throws<InvalidOperationException>(() =>
+		_ = Assert.Throws<InvalidOperationException>(() =>
 			s1.EquiZip(s2, s3, s4).Consume());
 	}
 
@@ -132,7 +132,7 @@ public class EquiZipTest
 	{
 		using var s1 = TestingSequence.Of(1, 2);
 
-		Assert.Throws<TestException>(() =>
+		_ = Assert.Throws<TestException>(() =>
 			s1.EquiZip(new BreakingSequence<int>(), Tuple.Create).Consume());
 	}
 }

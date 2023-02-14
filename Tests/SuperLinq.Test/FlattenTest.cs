@@ -64,7 +64,7 @@ public class FlattenTest
 	[Fact]
 	public void FlattenIsLazy()
 	{
-		new BreakingSequence<int>().Flatten();
+		_ = new BreakingSequence<int>().Flatten();
 	}
 
 	[Fact]
@@ -166,7 +166,7 @@ public class FlattenTest
 	[Fact]
 	public void FlattenPredicateIsLazy()
 	{
-		new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, bool>());
+		_ = new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, bool>());
 	}
 
 	[Fact]
@@ -189,7 +189,7 @@ public class FlattenTest
 		using var inner3 = TestingSequence.Of<object>(6, inner2, 7);
 		using var source = TestingSequence.Of<object>(inner1, inner3);
 
-		Assert.Throws<TestException>(() =>
+		_ = Assert.Throws<TestException>(() =>
 			source.Flatten().Consume());
 	}
 
@@ -219,7 +219,7 @@ public class FlattenTest
 			.Cast<int>()
 			.AssertSequenceEqual(Enumerable.Range(1, 10));
 
-		Assert.Throws<TestException>(() =>
+		_ = Assert.Throws<TestException>(() =>
 			source.Flatten().ElementAt(11));
 	}
 
@@ -228,7 +228,7 @@ public class FlattenTest
 	[Fact]
 	public void FlattenSelectorIsLazy()
 	{
-		new BreakingSequence<int>().Flatten(BreakingFunc.Of<object?, IEnumerable>());
+		_ = new BreakingSequence<int>().Flatten(BreakingFunc.Of<object?, IEnumerable>());
 	}
 
 	[Fact]

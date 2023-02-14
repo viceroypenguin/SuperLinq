@@ -14,7 +14,7 @@ public class SortedMergeTests
 		var sequenceA = new AsyncBreakingSequence<int>();
 		var sequenceB = new AsyncBreakingSequence<int>();
 
-		sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
+		_ = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
 	}
 
 	/// <summary>
@@ -27,7 +27,7 @@ public class SortedMergeTests
 		await using var sequenceA = TestingSequence.Of<int>();
 
 		// Expected and thrown by BreakingSequence
-		await Assert.ThrowsAsync<TestException>(async () =>
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
 			await sequenceA.SortedMerge(OrderByDirection.Ascending, new AsyncBreakingSequence<int>()).Consume());
 	}
 

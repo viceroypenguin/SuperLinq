@@ -17,7 +17,7 @@ public class ExceptByTest
 	public void ExceptByIsLazy()
 	{
 		var bs = new BreakingSequence<string>();
-		SuperEnumerable.ExceptBy(bs, bs, BreakingFunc.Of<string, int>());
+		_ = SuperEnumerable.ExceptBy(bs, bs, BreakingFunc.Of<string, int>());
 	}
 
 	[Fact]
@@ -51,7 +51,7 @@ public class ExceptByTest
 	public void ExceptByIsLazyWithComparer()
 	{
 		var bs = new BreakingSequence<string>();
-		SuperEnumerable.ExceptBy(bs, bs, BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
+		_ = SuperEnumerable.ExceptBy(bs, bs, BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
 	}
 }
 

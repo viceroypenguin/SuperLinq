@@ -5,20 +5,20 @@ public class PadTest
 	[Fact]
 	public void PadNegativeWidth()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<object>().Pad(-1));
 	}
 
 	[Fact]
 	public void PadIsLazy()
 	{
-		new BreakingSequence<object>().Pad(0);
+		_ = new BreakingSequence<object>().Pad(0);
 	}
 
 	[Fact]
 	public void PadWithFillerIsLazy()
 	{
-		new BreakingSequence<object>().Pad(0, new object());
+		_ = new BreakingSequence<object>().Pad(0, new object());
 	}
 
 	public class ValueTypeElements

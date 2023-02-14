@@ -5,7 +5,7 @@ public class AggregateRightTest
 	[Fact]
 	public void AggregateRightWithEmptySequence()
 	{
-		Assert.Throws<InvalidOperationException>(
+		_ = Assert.Throws<InvalidOperationException>(
 			() => Array.Empty<int>().AggregateRight((a, b) => a + b));
 	}
 

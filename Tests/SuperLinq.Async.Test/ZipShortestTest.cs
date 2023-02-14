@@ -6,9 +6,9 @@ public class ZipShortestTest
 	public void ZipShortestIsLazy()
 	{
 		var bs = new AsyncBreakingSequence<int>();
-		bs.ZipShortest(bs, BreakingFunc.Of<int, int, int>());
-		bs.ZipShortest(bs, bs, BreakingFunc.Of<int, int, int, int>());
-		bs.ZipShortest(bs, bs, bs, BreakingFunc.Of<int, int, int, int, int>());
+		_ = bs.ZipShortest(bs, BreakingFunc.Of<int, int, int>());
+		_ = bs.ZipShortest(bs, bs, BreakingFunc.Of<int, int, int, int>());
+		_ = bs.ZipShortest(bs, bs, bs, BreakingFunc.Of<int, int, int, int, int>());
 	}
 
 	[Fact]
@@ -16,7 +16,7 @@ public class ZipShortestTest
 	{
 		await using var s1 = TestingSequence.Of(1, 2);
 
-		await Assert.ThrowsAsync<TestException>(async () =>
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
 			await s1.ZipShortest(new AsyncBreakingSequence<int>()).Consume());
 	}
 
@@ -41,7 +41,7 @@ public class ZipShortestTest
 		await using var s1 = TestingSequence.Of(1, 2);
 		await using var s2 = TestingSequence.Of(1, 2);
 
-		await Assert.ThrowsAsync<TestException>(async () =>
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
 			await s1.ZipShortest(s2, new AsyncBreakingSequence<int>()).Consume());
 	}
 
@@ -69,7 +69,7 @@ public class ZipShortestTest
 		await using var s2 = TestingSequence.Of(1, 2);
 		await using var s3 = TestingSequence.Of(1, 2);
 
-		await Assert.ThrowsAsync<TestException>(async () =>
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
 			await s1.ZipShortest(s2, s3, new AsyncBreakingSequence<int>()).Consume());
 	}
 

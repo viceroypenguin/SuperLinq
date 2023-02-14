@@ -11,7 +11,7 @@ public class InterleaveTests
 	[Fact]
 	public void TestInterleaveIsLazy()
 	{
-		new AsyncBreakingSequence<int>().Interleave(new AsyncBreakingSequence<int>());
+		_ = new AsyncBreakingSequence<int>().Interleave(new AsyncBreakingSequence<int>());
 	}
 
 	/// <summary>
@@ -20,7 +20,7 @@ public class InterleaveTests
 	[Fact]
 	public void TestInterleaveTestsSourcesForNull()
 	{
-		Assert.Throws<ArgumentNullException>("sources", () =>
+		_ = Assert.Throws<ArgumentNullException>("sources", () =>
 			new[] { new AsyncBreakingSequence<int>(), default!, }.Interleave<int>());
 	}
 
@@ -35,7 +35,7 @@ public class InterleaveTests
 		var sequenceB = new AsyncBreakingSequence<int>();
 
 		// Expected and thrown by BreakingSequence
-		await Assert.ThrowsAsync<TestException>(async () => await sequenceA.Interleave(sequenceB).Consume());
+		_ = await Assert.ThrowsAsync<TestException>(async () => await sequenceA.Interleave(sequenceB).Consume());
 	}
 
 	/// <summary>
@@ -49,7 +49,7 @@ public class InterleaveTests
 		await using var sequenceB = AsyncSuperEnumerable.From<int>(() => throw new TestException()).AsTestingSequence();
 
 		// Expected and thrown by sequenceB
-		await Assert.ThrowsAsync<TestException>(async () => await sequenceA.Interleave(sequenceB).Consume());
+		_ = await Assert.ThrowsAsync<TestException>(async () => await sequenceA.Interleave(sequenceB).Consume());
 	}
 
 	/// <summary>

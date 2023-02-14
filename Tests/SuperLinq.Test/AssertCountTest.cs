@@ -11,7 +11,7 @@ public class AssertCountTest
 	[Fact]
 	public void AssertCountNegativeCount()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>("count",
+		_ = Assert.Throws<ArgumentOutOfRangeException>("count",
 			() => new BreakingSequence<int>().AssertCount(-1));
 	}
 
@@ -27,7 +27,7 @@ public class AssertCountTest
 			// expect a `TestException` as we try to enumerate the list
 			// but should _not_ get an `ArgumentException` as the 
 			// count is correct for the sequence
-			Assert.Throws<TestException>(
+			_ = Assert.Throws<TestException>(
 				() => xs.AssertCount(3).Consume());
 		}
 	}
@@ -40,7 +40,7 @@ public class AssertCountTest
 		{
 			using (xs)
 			{
-				Assert.Throws<ArgumentException>("source.Count()",
+				_ = Assert.Throws<ArgumentException>("source.Count()",
 					() => xs.AssertCount(4).Consume());
 			}
 		}
@@ -54,7 +54,7 @@ public class AssertCountTest
 		{
 			using (xs)
 			{
-				Assert.Throws<ArgumentException>("source.Count()",
+				_ = Assert.Throws<ArgumentException>("source.Count()",
 					() => xs.AssertCount(2).Consume());
 			}
 		}

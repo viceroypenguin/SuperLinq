@@ -5,7 +5,7 @@ public class InsertTest
 	[Fact]
 	public void InsertWithNegativeIndex()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			 new BreakingSequence<int>().Insert(new[] { 97, 98, 99 }, -1));
 	}
 
@@ -23,7 +23,7 @@ public class InsertTest
 
 		var result = test1.Insert(test2, count + 1);
 
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			result.ForEach((e, index) =>
 				Assert.Equal(seq1[index], e)));
 	}
@@ -67,6 +67,6 @@ public class InsertTest
 	[Fact]
 	public void InsertIsLazy()
 	{
-		new BreakingSequence<int>().Insert(new BreakingSequence<int>(), 0);
+		_ = new BreakingSequence<int>().Insert(new BreakingSequence<int>(), 0);
 	}
 }

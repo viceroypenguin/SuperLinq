@@ -12,7 +12,7 @@ public class LeftJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		xs.LeftJoin(ys, SuperEnumerable.Identity,
+		_ = xs.LeftJoin(ys, SuperEnumerable.Identity,
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, int, object>());
 	}
@@ -23,7 +23,7 @@ public class LeftJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<int>();
 
-		xs.LeftJoin(ys, SuperEnumerable.Identity,
+		_ = xs.LeftJoin(ys, SuperEnumerable.Identity,
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, int, object>(),
 			comparer: null);
@@ -35,7 +35,7 @@ public class LeftJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		xs.LeftJoin(ys, SuperEnumerable.Identity, y => y.GetHashCode(),
+		_ = xs.LeftJoin(ys, SuperEnumerable.Identity, y => y.GetHashCode(),
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, object, object>());
 	}
@@ -46,7 +46,7 @@ public class LeftJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<object>();
 
-		xs.LeftJoin(ys, SuperEnumerable.Identity, y => y.GetHashCode(),
+		_ = xs.LeftJoin(ys, SuperEnumerable.Identity, y => y.GetHashCode(),
 			BreakingFunc.Of<int, object>(),
 			BreakingFunc.Of<int, object, object>(),
 			comparer: null);

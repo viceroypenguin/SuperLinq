@@ -45,10 +45,10 @@ public class ToDataTableTest
 	public void ToDataTableTableWithWrongColumnNames()
 	{
 		using var dt = new DataTable();
-		dt.Columns.Add("Test");
+		_ = dt.Columns.Add("Test");
 
 		using var xs = _testObjects.AsTestingSequence();
-		Assert.Throws<ArgumentException>(() =>
+		_ = Assert.Throws<ArgumentException>(() =>
 			xs.ToDataTable(dt));
 	}
 
@@ -56,10 +56,10 @@ public class ToDataTableTest
 	public void ToDataTableTableWithWrongColumnDataType()
 	{
 		using var dt = new DataTable();
-		dt.Columns.Add("AString", typeof(int));
+		_ = dt.Columns.Add("AString", typeof(int));
 
 		using var xs = _testObjects.AsTestingSequence();
-		Assert.Throws<ArgumentException>(() =>
+		_ = Assert.Throws<ArgumentException>(() =>
 			xs.ToDataTable(dt, t => t.AString));
 	}
 
@@ -67,7 +67,7 @@ public class ToDataTableTest
 	public void ToDataTableMemberExpressionMethod()
 	{
 		using var xs = _testObjects.AsTestingSequence();
-		Assert.Throws<ArgumentException>(() =>
+		_ = Assert.Throws<ArgumentException>(() =>
 			xs.ToDataTable(t => t.ToString()!));
 	}
 
@@ -75,7 +75,7 @@ public class ToDataTableTest
 	public void ToDataTableMemberExpressionNonMember()
 	{
 		using var xs = _testObjects.AsTestingSequence();
-		Assert.Throws<ArgumentException>(() =>
+		_ = Assert.Throws<ArgumentException>(() =>
 			xs.ToDataTable(t => t.ToString()!.Length));
 	}
 
@@ -83,7 +83,7 @@ public class ToDataTableTest
 	public void ToDataTableMemberExpressionIndexer()
 	{
 		using var xs = _testObjects.AsTestingSequence();
-		Assert.Throws<ArgumentException>(() =>
+		_ = Assert.Throws<ArgumentException>(() =>
 			xs.ToDataTable(t => t[0]));
 	}
 
@@ -128,7 +128,7 @@ public class ToDataTableTest
 		Assert.Equal("AString", dt.Columns[0].Caption);
 		Assert.Equal(typeof(string), dt.Columns[0].DataType);
 
-		Assert.Single(dt.Columns);
+		_ = Assert.Single(dt.Columns);
 	}
 
 	[Fact]
@@ -136,10 +136,10 @@ public class ToDataTableTest
 	{
 		using var dt = new DataTable();
 		var columns = dt.Columns;
-		columns.Add("Column1", typeof(int));
-		columns.Add("Value", typeof(string));
-		columns.Add("Column3", typeof(int));
-		columns.Add("Name", typeof(string));
+		_ = columns.Add("Column1", typeof(int));
+		_ = columns.Add("Value", typeof(string));
+		_ = columns.Add("Column3", typeof(int));
+		_ = columns.Add("Name", typeof(string));
 
 		var vars = Environment.GetEnvironmentVariables()
 			.Cast<DictionaryEntry>()
@@ -148,7 +148,7 @@ public class ToDataTableTest
 			.Select(e => new { Name = e.Key.ToString()!, Value = e.Value!.ToString()! })
 			.AsTestingSequence();
 
-		xs.ToDataTable(dt, e => e.Name, e => e.Value);
+		_ = xs.ToDataTable(dt, e => e.Name, e => e.Value);
 
 		var rows = dt.Rows.Cast<DataRow>().ToArray();
 		Assert.Equal(vars.Length, rows.Length);

@@ -11,7 +11,7 @@ public class CartesianTests
 	[Fact]
 	public void TestCartesianIsLazy()
 	{
-		new BreakingSequence<string>()
+		_ = new BreakingSequence<string>()
 			.Cartesian(new BreakingSequence<int>(),
 					   BreakingFunc.Of<string, int, bool>());
 	}

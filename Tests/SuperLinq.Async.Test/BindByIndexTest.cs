@@ -5,8 +5,8 @@ public class BindByIndexTest
 	[Fact]
 	public void BindByIndexIsLazy()
 	{
-		new AsyncBreakingSequence<int>().BindByIndex(new AsyncBreakingSequence<int>());
-		new AsyncBreakingSequence<int>().BindByIndex(new AsyncBreakingSequence<int>(), BreakingFunc.Of<int, int, int>(), BreakingFunc.Of<int, int>());
+		_ = new AsyncBreakingSequence<int>().BindByIndex(new AsyncBreakingSequence<int>());
+		_ = new AsyncBreakingSequence<int>().BindByIndex(new AsyncBreakingSequence<int>(), BreakingFunc.Of<int, int, int>(), BreakingFunc.Of<int, int>());
 	}
 
 	[Fact]
@@ -56,7 +56,7 @@ public class BindByIndexTest
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
 		await using var seq2 = TestingSequence.Of(index);
 
-		await Assert.ThrowsAsync<ArgumentOutOfRangeException>("indices",
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>("indices",
 			async () => await seq1.BindByIndex(seq2).Consume());
 	}
 
@@ -109,7 +109,7 @@ public class BindByIndexTest
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
 		await using var seq2 = TestingSequence.Of(-1);
 
-		await Assert.ThrowsAsync<ArgumentOutOfRangeException>("indices",
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>("indices",
 			async () => await seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).Consume());
 	}
 }

@@ -7,14 +7,14 @@ public class PadStartTest
 	[Fact]
 	public void PadStartWithNegativeWidth()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			AsyncSeq<int>().PadStart(-1));
 	}
 
 	[Fact]
 	public void PadStartIsLazy()
 	{
-		new AsyncBreakingSequence<int>().PadStart(0);
+		_ = new AsyncBreakingSequence<int>().PadStart(0);
 	}
 
 	public class PadStartWithDefaultPadding
@@ -51,14 +51,14 @@ public class PadStartTest
 	[Fact]
 	public void PadStartWithPaddingWithNegativeWidth()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(
+		_ = Assert.Throws<ArgumentOutOfRangeException>(
 			() => new AsyncBreakingSequence<int>().PadStart(-1, 1));
 	}
 
 	[Fact]
 	public void PadStartWithPaddingIsLazy()
 	{
-		new AsyncBreakingSequence<int>().PadStart(0, -1);
+		_ = new AsyncBreakingSequence<int>().PadStart(0, -1);
 	}
 
 	public class PadStartWithPadding
@@ -95,14 +95,14 @@ public class PadStartTest
 	[Fact]
 	public void PadStartWithSelectorWithNegativeWidth()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(
+		_ = Assert.Throws<ArgumentOutOfRangeException>(
 			() => new AsyncBreakingSequence<int>().PadStart(-1, SuperEnumerable.Identity));
 	}
 
 	[Fact]
 	public void PadStartWithSelectorIsLazy()
 	{
-		new AsyncBreakingSequence<int>().PadStart(0, BreakingFunc.Of<int, int>());
+		_ = new AsyncBreakingSequence<int>().PadStart(0, BreakingFunc.Of<int, int>());
 	}
 
 	public class PadStartWithSelector

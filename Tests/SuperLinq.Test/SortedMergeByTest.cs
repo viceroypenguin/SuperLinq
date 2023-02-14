@@ -14,7 +14,7 @@ public class SortedMergeByTests
 		var sequenceA = new BreakingSequence<int>();
 		var sequenceB = new BreakingSequence<int>();
 
-		sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, sequenceB);
+		_ = sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, sequenceB);
 	}
 
 	/// <summary>
@@ -27,7 +27,7 @@ public class SortedMergeByTests
 		using var sequenceA = TestingSequence.Of<int>();
 
 		// Expected and thrown by BreakingSequence
-		Assert.Throws<TestException>(() =>
+		_ = Assert.Throws<TestException>(() =>
 			sequenceA.SortedMergeBy(SuperEnumerable.Identity, OrderByDirection.Ascending, new BreakingSequence<int>()).Consume());
 	}
 

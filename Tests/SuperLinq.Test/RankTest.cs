@@ -5,13 +5,13 @@ public class RankTests
 	[Fact]
 	public void TestRankIsLazy()
 	{
-		new BreakingSequence<int>().Rank();
+		_ = new BreakingSequence<int>().Rank();
 	}
 
 	[Fact]
 	public void TestRankByIsLazy()
 	{
-		new BreakingSequence<int>().RankBy(BreakingFunc.Of<int, int>());
+		_ = new BreakingSequence<int>().RankBy(BreakingFunc.Of<int, int>());
 	}
 
 	[Fact]

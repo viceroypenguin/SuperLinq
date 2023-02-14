@@ -13,7 +13,7 @@ public class RandomTest
 	[Fact]
 	public void TestNegativeMaxValueException()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			SuperEnumerable.Random(-10));
 	}
 
@@ -24,7 +24,7 @@ public class RandomTest
 	[Fact]
 	public void TestMinValueGreaterThanMaxValueException()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			SuperEnumerable.Random(100, 10));
 	}
 

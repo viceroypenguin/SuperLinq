@@ -10,12 +10,12 @@ public class GroupAdjacentTest
 		var bfo = BreakingFunc.Of<object, object>();
 		var bfg = BreakingFunc.Of<int, IEnumerable<object>, IEnumerable<object>>();
 
-		bs.GroupAdjacent(bf);
-		bs.GroupAdjacent(bf, bfo);
-		bs.GroupAdjacent(bf, bfo, EqualityComparer<int>.Default);
-		bs.GroupAdjacent(bf, EqualityComparer<int>.Default);
-		bs.GroupAdjacent(bf, bfg);
-		bs.GroupAdjacent(bf, bfg, EqualityComparer<int>.Default);
+		_ = bs.GroupAdjacent(bf);
+		_ = bs.GroupAdjacent(bf, bfo);
+		_ = bs.GroupAdjacent(bf, bfo, EqualityComparer<int>.Default);
+		_ = bs.GroupAdjacent(bf, EqualityComparer<int>.Default);
+		_ = bs.GroupAdjacent(bf, bfg);
+		_ = bs.GroupAdjacent(bf, bfg, EqualityComparer<int>.Default);
 	}
 
 	[Fact]

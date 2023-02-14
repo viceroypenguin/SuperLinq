@@ -331,9 +331,9 @@ public static class GetShortestPathTest
 		[Fact]
 		public async Task InvalidMapThrowsException()
 		{
-			await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+			_ = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
 				await AsyncSuperEnumerable.GetShortestPathCost<int, int>(1, (a, b) => AsyncSeq<(int, int)>(), 2));
-			await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+			_ = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
 				await AsyncSuperEnumerable.GetShortestPath<int, int>(1, (a, b) => AsyncSeq<(int, int)>(), 2));
 		}
 	}
@@ -569,9 +569,9 @@ public static class GetShortestPathTest
 		[Fact]
 		public async Task InvalidMapThrowsException()
 		{
-			await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+			_ = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
 				await AsyncSuperEnumerable.GetShortestPathCost<int, int>(1, (a, b) => AsyncSeq<(int, int, int)>(), 2));
-			await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+			_ = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
 				await AsyncSuperEnumerable.GetShortestPath<int, int>(1, (a, b) => AsyncSeq<(int, int, int)>(), 2));
 		}
 	}

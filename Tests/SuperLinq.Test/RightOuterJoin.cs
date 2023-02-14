@@ -17,25 +17,25 @@ public class RightOuterJoinTest
 		var xs = new BreakingSequence<int>();
 		var ys = new BreakingSequence<double>();
 
-		xs.RightOuterJoin(
+		_ = xs.RightOuterJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>());
 
-		xs.RightOuterJoin(
+		_ = xs.RightOuterJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>(),
 			StringComparer.Ordinal);
 
-		xs.RightOuterJoin(
+		_ = xs.RightOuterJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>(),
 			BreakingFunc.Of<double, object>(),
 			BreakingFunc.Of<int, double, object>());
 
-		xs.RightOuterJoin(
+		_ = xs.RightOuterJoin(
 			ys, joinType,
 			BreakingFunc.Of<int, string>(),
 			BreakingFunc.Of<double, string>(),

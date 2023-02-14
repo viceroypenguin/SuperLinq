@@ -5,13 +5,13 @@ public class TraverseTest
 	[Fact]
 	public void TraverseDepthFirstIsStreaming()
 	{
-		AsyncSuperEnumerable.TraverseDepthFirst(new object(), o => new AsyncBreakingSequence<object>());
+		_ = AsyncSuperEnumerable.TraverseDepthFirst(new object(), o => new AsyncBreakingSequence<object>());
 	}
 
 	[Fact]
 	public void TraverseBreadthFirstIsStreaming()
 	{
-		AsyncSuperEnumerable.TraverseBreadthFirst(new object(), o => new AsyncBreakingSequence<object>());
+		_ = AsyncSuperEnumerable.TraverseBreadthFirst(new object(), o => new AsyncBreakingSequence<object>());
 	}
 
 	[Fact]

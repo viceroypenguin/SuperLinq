@@ -50,7 +50,7 @@ public static partial class AsyncSuperEnumerable
 				continue;
 			}
 
-			used.Add(lKey);
+			_ = used.Add(lKey);
 			foreach (var r in right[lKey])
 				yield return bothResultSelector(l, r);
 		}

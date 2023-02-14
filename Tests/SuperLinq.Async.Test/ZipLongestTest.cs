@@ -6,9 +6,9 @@ public class ZipLongestTest
 	public void ZipLongestIsLazy()
 	{
 		var bs = new AsyncBreakingSequence<int>();
-		bs.ZipLongest(bs, BreakingFunc.Of<int, int, int>());
-		bs.ZipLongest(bs, bs, BreakingFunc.Of<int, int, int, int>());
-		bs.ZipLongest(bs, bs, bs, BreakingFunc.Of<int, int, int, int, int>());
+		_ = bs.ZipLongest(bs, BreakingFunc.Of<int, int, int>());
+		_ = bs.ZipLongest(bs, bs, BreakingFunc.Of<int, int, int, int>());
+		_ = bs.ZipLongest(bs, bs, bs, BreakingFunc.Of<int, int, int, int, int>());
 	}
 
 	[Fact]
@@ -16,7 +16,7 @@ public class ZipLongestTest
 	{
 		using var s1 = TestingSequence.Of(1, 2);
 
-		await Assert.ThrowsAsync<TestException>(async () =>
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
 			await s1.ZipLongest(new AsyncBreakingSequence<int>()).Consume());
 	}
 
@@ -43,7 +43,7 @@ public class ZipLongestTest
 		using var s1 = TestingSequence.Of(1, 2);
 		using var s2 = TestingSequence.Of(1, 2);
 
-		await Assert.ThrowsAsync<TestException>(async () =>
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
 			await s1.ZipLongest(s2, new AsyncBreakingSequence<int>()).Consume());
 	}
 
@@ -74,7 +74,7 @@ public class ZipLongestTest
 		using var s2 = TestingSequence.Of(1, 2);
 		using var s3 = TestingSequence.Of(1, 2);
 
-		await Assert.ThrowsAsync<TestException>(async () =>
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
 			await s1.ZipLongest(s2, s3, new AsyncBreakingSequence<int>()).Consume());
 	}
 

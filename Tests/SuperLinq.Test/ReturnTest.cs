@@ -19,7 +19,7 @@ public class ReturnTest
 	[Fact]
 	public void TestResultingSequenceContainsSingle()
 	{
-		Assert.Single(SomeSingleton.Sequence);
+		_ = Assert.Single(SomeSingleton.Sequence);
 	}
 
 	[Fact]
@@ -104,12 +104,12 @@ public class ReturnTest
 	[Theory, MemberData(nameof(UnsupportedActions))]
 	public void TestUnsupportedMethodShouldThrow(Action unsupportedAction)
 	{
-		Assert.Throws<NotSupportedException>(unsupportedAction);
+		_ = Assert.Throws<NotSupportedException>(unsupportedAction);
 	}
 
 	[Fact]
 	public void TestIndexingPastZeroShouldThrow()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() => SomeSingleton.List[1]);
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() => SomeSingleton.List[1]);
 	}
 }

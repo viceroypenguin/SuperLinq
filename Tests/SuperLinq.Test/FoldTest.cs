@@ -5,21 +5,21 @@ public class FoldTest
 	[Fact]
 	public void FoldWithTooFewItems()
 	{
-		Assert.Throws<ArgumentException>(() =>
+		_ = Assert.Throws<ArgumentException>(() =>
 			Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int, int, int>()));
 	}
 
 	[Fact]
 	public void FoldWithEmptySequence()
 	{
-		Assert.Throws<ArgumentException>(() =>
+		_ = Assert.Throws<ArgumentException>(() =>
 			Enumerable.Empty<int>().Fold(BreakingFunc.Of<int, int>()));
 	}
 
 	[Fact]
 	public void FoldWithTooManyItems()
 	{
-		Assert.Throws<ArgumentException>(() =>
+		_ = Assert.Throws<ArgumentException>(() =>
 			Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int>()));
 	}
 

@@ -9,7 +9,7 @@ public class SequenceTest
 	[InlineData(int.MaxValue - 1, 2, 2)]
 	public void RangeThrowsOutOfRange(int start, int count, int step)
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			SuperEnumerable.Range(start, count, step));
 	}
 

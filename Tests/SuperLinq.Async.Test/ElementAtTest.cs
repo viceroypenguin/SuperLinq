@@ -19,7 +19,7 @@ public class ElementAtTest
 	{
 		var q = AsyncSeq(9999, 0, 888, -1, 66, -777, 1, 2, -12345);
 
-		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await q.ElementAtAsync(new Index(10)));
 		Assert.Equal(default, await q.ElementAtOrDefaultAsync(new Index(10)));
 	}
@@ -38,7 +38,7 @@ public class ElementAtTest
 	{
 		var q = AsyncSeq(9999, 0, 888, -1, 66, -777, 1, 2, -12345);
 
-		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await q.ElementAtAsync(^10));
 		Assert.Equal(default, await q.ElementAtOrDefaultAsync(^10));
 	}
@@ -57,7 +57,7 @@ public class ElementAtTest
 	{
 		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", string.Empty);
 
-		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await q.ElementAtAsync(new Index(10)));
 		Assert.Equal(default, await q.ElementAtOrDefaultAsync(new Index(10)));
 	}
@@ -76,7 +76,7 @@ public class ElementAtTest
 	{
 		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", string.Empty);
 
-		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await q.ElementAtAsync(^10));
 		Assert.Equal(default, await q.ElementAtOrDefaultAsync(^10));
 	}

@@ -52,7 +52,7 @@ public class PartialSortByTests
 	[Fact]
 	public void PartialSortByIsLazy()
 	{
-		new AsyncBreakingSequence<object>().PartialSortBy(1, BreakingFunc.Of<object, object>());
+		_ = new AsyncBreakingSequence<object>().PartialSortBy(1, BreakingFunc.Of<object, object>());
 	}
 
 	[Fact]

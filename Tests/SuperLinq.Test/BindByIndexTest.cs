@@ -5,8 +5,8 @@ public class BindByIndexTest
 	[Fact]
 	public void BindByIndexIsLazy()
 	{
-		new BreakingSequence<int>().BindByIndex(new BreakingSequence<int>());
-		new BreakingSequence<int>().BindByIndex(new BreakingSequence<int>(), BreakingFunc.Of<int, int, int>(), BreakingFunc.Of<int, int>());
+		_ = new BreakingSequence<int>().BindByIndex(new BreakingSequence<int>());
+		_ = new BreakingSequence<int>().BindByIndex(new BreakingSequence<int>(), BreakingFunc.Of<int, int, int>(), BreakingFunc.Of<int, int>());
 	}
 
 	[Fact]
@@ -56,7 +56,7 @@ public class BindByIndexTest
 		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
 		using var seq2 = TestingSequence.Of(index);
 
-		Assert.Throws<ArgumentOutOfRangeException>("indices", () =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>("indices", () =>
 			seq1.BindByIndex(seq2).Consume());
 	}
 
@@ -109,7 +109,7 @@ public class BindByIndexTest
 		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
 		using var seq2 = TestingSequence.Of(-1);
 
-		Assert.Throws<ArgumentOutOfRangeException>("indices", () =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>("indices", () =>
 			seq1.BindByIndex(seq2, (e, i) => e, i => default(int?)).Consume());
 	}
 }

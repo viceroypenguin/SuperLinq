@@ -5,7 +5,7 @@ public class WindowLeftTest
 	[Fact]
 	public void WindowLeftIsLazy()
 	{
-		new AsyncBreakingSequence<int>().WindowLeft(1);
+		_ = new AsyncBreakingSequence<int>().WindowLeft(1);
 	}
 
 	[Fact]
@@ -14,10 +14,10 @@ public class WindowLeftTest
 		var sequence = AsyncEnumerable.Range(0, 3);
 		await using var e = sequence.WindowLeft(2).GetAsyncEnumerator();
 
-		await e.MoveNextAsync();
+		_ = await e.MoveNextAsync();
 		var window1 = e.Current;
 		window1[1] = -1;
-		await e.MoveNextAsync();
+		_ = await e.MoveNextAsync();
 		var window2 = e.Current;
 
 		Assert.Equal(1, window2[0]);
@@ -29,9 +29,9 @@ public class WindowLeftTest
 		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
 		await using var e = sequence.WindowLeft(2).GetAsyncEnumerator();
 
-		await e.MoveNextAsync();
+		_ = await e.MoveNextAsync();
 		var window1 = e.Current;
-		await e.MoveNextAsync();
+		_ = await e.MoveNextAsync();
 		window1[1] = -1;
 		var window2 = e.Current;
 
@@ -44,9 +44,9 @@ public class WindowLeftTest
 		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
 		await using var e = sequence.WindowLeft(2).GetAsyncEnumerator();
 
-		await e.MoveNextAsync();
+		_ = await e.MoveNextAsync();
 		var window1 = e.Current;
-		await e.MoveNextAsync();
+		_ = await e.MoveNextAsync();
 		var window2 = e.Current;
 		window2[0] = -1;
 
@@ -56,7 +56,7 @@ public class WindowLeftTest
 	[Fact]
 	public void WindowLeftWithNegativeWindowSize()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			AsyncEnumerable.Repeat(1, 10).WindowLeft(-5));
 	}
 

@@ -11,8 +11,8 @@ public class LeadTests
 	[Fact]
 	public void TestLeadIsLazy()
 	{
-		new BreakingSequence<int>().Lead(5, BreakingFunc.Of<int, int, int>());
-		new BreakingSequence<int>().Lead(5, -1, BreakingFunc.Of<int, int, int>());
+		_ = new BreakingSequence<int>().Lead(5, BreakingFunc.Of<int, int, int>());
+		_ = new BreakingSequence<int>().Lead(5, -1, BreakingFunc.Of<int, int, int>());
 	}
 
 	/// <summary>
@@ -21,7 +21,7 @@ public class LeadTests
 	[Fact]
 	public void TestLeadNegativeOffset()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Lead(-5, (val, leadVal) => val + leadVal));
 	}
 
@@ -31,7 +31,7 @@ public class LeadTests
 	[Fact]
 	public void TestLeadZeroOffset()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Lead(0, (val, leadVal) => val + leadVal));
 	}
 

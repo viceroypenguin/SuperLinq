@@ -213,7 +213,7 @@ public class UpdatableUpdatablePriorityQueueTest
 
 			foreach ((var element, var priority) in itemsToEnqueue.Skip(count))
 			{
-				queue.EnqueueDequeue(element, priority);
+				_ = queue.EnqueueDequeue(element, priority);
 			}
 
 			var expectedItems = itemsToEnqueue.OrderByDescending(x => x.Priority, queue.Comparer).Take(count);
@@ -517,22 +517,22 @@ public class UpdatableUpdatablePriorityQueueTest
 		[Fact]
 		public void UpdatablePriorityQueue_Constructor_int_Negative_ThrowsArgumentOutOfRangeException()
 		{
-			Assert.Throws<ArgumentOutOfRangeException>("initialCapacity", () => new UpdatablePriorityQueue<int, int>(-1));
-			Assert.Throws<ArgumentOutOfRangeException>("initialCapacity", () => new UpdatablePriorityQueue<int, int>(int.MinValue));
+			_ = Assert.Throws<ArgumentOutOfRangeException>("initialCapacity", () => new UpdatablePriorityQueue<int, int>(-1));
+			_ = Assert.Throws<ArgumentOutOfRangeException>("initialCapacity", () => new UpdatablePriorityQueue<int, int>(int.MinValue));
 		}
 
 		[Fact]
 		public void UpdatablePriorityQueue_Constructor_Enumerable_null_ThrowsArgumentNullException()
 		{
-			Assert.Throws<ArgumentNullException>("items", () => new UpdatablePriorityQueue<int, int>(items: null!));
-			Assert.Throws<ArgumentNullException>("items", () => new UpdatablePriorityQueue<int, int>(items: null!, priorityComparer: Comparer<int>.Default, elementComparer: EqualityComparer<int>.Default));
+			_ = Assert.Throws<ArgumentNullException>("items", () => new UpdatablePriorityQueue<int, int>(items: null!));
+			_ = Assert.Throws<ArgumentNullException>("items", () => new UpdatablePriorityQueue<int, int>(items: null!, priorityComparer: Comparer<int>.Default, elementComparer: EqualityComparer<int>.Default));
 		}
 
 		[Fact]
 		public void UpdatablePriorityQueue_EnqueueRange_null_ThrowsArgumentNullException()
 		{
 			var queue = new UpdatablePriorityQueue<int, int>();
-			Assert.Throws<ArgumentNullException>("items", () => queue.EnqueueRange(null!));
+			_ = Assert.Throws<ArgumentNullException>("items", () => queue.EnqueueRange(null!));
 		}
 
 		[Fact]
@@ -542,7 +542,7 @@ public class UpdatableUpdatablePriorityQueueTest
 
 			Assert.Equal(0, queue.Count);
 			Assert.False(queue.TryDequeue(out _, out _));
-			Assert.Throws<InvalidOperationException>(() => queue.Dequeue());
+			_ = Assert.Throws<InvalidOperationException>(() => queue.Dequeue());
 		}
 
 		[Fact]
@@ -551,7 +551,7 @@ public class UpdatableUpdatablePriorityQueueTest
 			var queue = new UpdatablePriorityQueue<int, int>();
 
 			Assert.False(queue.TryPeek(out _, out _));
-			Assert.Throws<InvalidOperationException>(() => queue.Peek());
+			_ = Assert.Throws<InvalidOperationException>(() => queue.Peek());
 		}
 
 		#region EnsureCapacity, TrimExcess
@@ -560,8 +560,8 @@ public class UpdatableUpdatablePriorityQueueTest
 		public void UpdatablePriorityQueue_EnsureCapacity_Negative_ShouldThrowException()
 		{
 			var queue = new UpdatablePriorityQueue<int, int>();
-			Assert.Throws<ArgumentOutOfRangeException>("capacity", () => queue.EnsureCapacity(-1));
-			Assert.Throws<ArgumentOutOfRangeException>("capacity", () => queue.EnsureCapacity(int.MinValue));
+			_ = Assert.Throws<ArgumentOutOfRangeException>("capacity", () => queue.EnsureCapacity(-1));
+			_ = Assert.Throws<ArgumentOutOfRangeException>("capacity", () => queue.EnsureCapacity(int.MinValue));
 		}
 
 		[Theory]
@@ -622,7 +622,7 @@ public class UpdatableUpdatablePriorityQueueTest
 
 			while (expectedCount > 0)
 			{
-				queue.Dequeue();
+				_ = queue.Dequeue();
 				TrimAndEnsureCapacity();
 				expectedCount--;
 				Assert.Equal(expectedCount, queue.Count);
@@ -651,7 +651,7 @@ public class UpdatableUpdatablePriorityQueueTest
 			var queue = CreateUpdatablePriorityQueue(initialCapacity: count, count: count);
 			using var enumerator = queue.UnorderedItems.GetEnumerator();
 			nonModifyingOperation(queue);
-			enumerator.MoveNext();
+			_ = enumerator.MoveNext();
 		}
 
 		[Theory]
@@ -661,7 +661,7 @@ public class UpdatableUpdatablePriorityQueueTest
 			var queue = CreateUpdatablePriorityQueue(initialCapacity: count, count: count);
 			using var enumerator = queue.UnorderedItems.GetEnumerator();
 			modifyingOperation(queue);
-			Assert.Throws<InvalidOperationException>(() => enumerator.MoveNext());
+			_ = Assert.Throws<InvalidOperationException>(() => enumerator.MoveNext());
 		}
 
 		public static IEnumerable<object[]> GetModifyingOperations()

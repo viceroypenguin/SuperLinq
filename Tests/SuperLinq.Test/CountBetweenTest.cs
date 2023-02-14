@@ -5,21 +5,21 @@ public class CountBetweenTest
 	[Fact]
 	public void CountBetweenWithNegativeMin()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().CountBetween(-1, 0));
 	}
 
 	[Fact]
 	public void CountBetweenWithNegativeMax()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 		   new BreakingSequence<int>().CountBetween(0, -1));
 	}
 
 	[Fact]
 	public void CountBetweenWithMaxLesserThanMin()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().CountBetween(1, 0));
 	}
 

@@ -24,7 +24,7 @@ public class EquiZipTest
 			.AsTestingSequence();
 
 		// `TestException` from `BreakingFunc` should not be thrown
-		await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+		_ = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
 			await s1.EquiZip(s2, s3).Consume());
 	}
 
@@ -42,7 +42,7 @@ public class EquiZipTest
 		await using var s4 = TestingSequence.Of(1, 2, 3);
 
 		// `TestException` from `BreakingFunc` should not be thrown
-		await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+		_ = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
 			await s1.EquiZip(s2, s3, s4).Consume());
 	}
 
@@ -132,7 +132,7 @@ public class EquiZipTest
 	{
 		await using var s1 = TestingSequence.Of(1, 2);
 
-		await Assert.ThrowsAsync<TestException>(async () =>
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
 			await s1.EquiZip(new AsyncBreakingSequence<int>(), Tuple.Create).Consume());
 	}
 }

@@ -6,8 +6,8 @@ public class IndexTest
 	public void IndexIsLazy()
 	{
 		var bs = new AsyncBreakingSequence<object>();
-		bs.Index();
-		bs.Index(0);
+		_ = bs.Index();
+		_ = bs.Index(0);
 	}
 
 	private const string One = "one";

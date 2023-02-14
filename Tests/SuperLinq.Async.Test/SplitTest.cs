@@ -5,8 +5,8 @@ public class SplitTest
 	[Fact]
 	public void SplitIsLazy()
 	{
-		new AsyncBreakingSequence<int>().Split(1);
-		new AsyncBreakingSequence<int>().Split(1, 2);
+		_ = new AsyncBreakingSequence<int>().Split(1);
+		_ = new AsyncBreakingSequence<int>().Split(1, 2);
 	}
 
 	[Fact]

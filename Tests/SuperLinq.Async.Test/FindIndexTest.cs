@@ -5,7 +5,7 @@ public class FindIndexTest
 	[Fact]
 	public async Task FindIndexWithNegativeCount()
 	{
-		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await new AsyncBreakingSequence<int>().FindIndex(BreakingFunc.Of<int, bool>(), 1, -1));
 	}
 

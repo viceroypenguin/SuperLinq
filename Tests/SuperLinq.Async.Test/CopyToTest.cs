@@ -8,16 +8,16 @@ public class CopyToTest
 	[Fact]
 	public async Task NullArgumentTest()
 	{
-		await Assert.ThrowsAsync<ArgumentNullException>(
+		_ = await Assert.ThrowsAsync<ArgumentNullException>(
 			"source",
 			async () => await default(IAsyncEnumerable<int>)!.CopyTo(Array.Empty<int>()));
-		await Assert.ThrowsAsync<ArgumentNullException>(
+		_ = await Assert.ThrowsAsync<ArgumentNullException>(
 			"source",
 			async () => await default(IAsyncEnumerable<int>)!.CopyTo(Array.Empty<int>(), 1));
-		await Assert.ThrowsAsync<ArgumentNullException>(
+		_ = await Assert.ThrowsAsync<ArgumentNullException>(
 			"list",
 			async () => await AsyncSeq<int>().CopyTo(default(int[])!));
-		await Assert.ThrowsAsync<ArgumentNullException>(
+		_ = await Assert.ThrowsAsync<ArgumentNullException>(
 			"list",
 			async () => await AsyncSeq<int>().CopyTo(default(int[])!, 1));
 	}

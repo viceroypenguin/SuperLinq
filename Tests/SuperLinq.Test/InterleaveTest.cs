@@ -11,7 +11,7 @@ public class InterleaveTests
 	[Fact]
 	public void TestInterleaveIsLazy()
 	{
-		new BreakingSequence<int>().Interleave(new BreakingSequence<int>());
+		_ = new BreakingSequence<int>().Interleave(new BreakingSequence<int>());
 	}
 
 	/// <summary>
@@ -20,7 +20,7 @@ public class InterleaveTests
 	[Fact]
 	public void TestInterleaveTestsSourcesForNull()
 	{
-		Assert.Throws<ArgumentNullException>("sources", () =>
+		_ = Assert.Throws<ArgumentNullException>("sources", () =>
 			new[] { new BreakingSequence<int>(), default!, }.Interleave<int>());
 	}
 
@@ -35,7 +35,7 @@ public class InterleaveTests
 		var sequenceB = new BreakingSequence<int>();
 
 		// Expected and thrown by BreakingSequence
-		Assert.Throws<TestException>(() => sequenceA.Interleave(sequenceB).Consume());
+		_ = Assert.Throws<TestException>(() => sequenceA.Interleave(sequenceB).Consume());
 	}
 
 	/// <summary>
@@ -49,7 +49,7 @@ public class InterleaveTests
 		using var sequenceB = SuperEnumerable.From<int>(() => throw new TestException()).AsTestingSequence();
 
 		// Expected and thrown by sequenceB
-		Assert.Throws<TestException>(() => sequenceA.Interleave(sequenceB).Consume());
+		_ = Assert.Throws<TestException>(() => sequenceA.Interleave(sequenceB).Consume());
 	}
 
 	/// <summary>

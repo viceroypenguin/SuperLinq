@@ -60,7 +60,7 @@ public class PartialSortTests
 	[Fact]
 	public void PartialSortIsLazy()
 	{
-		new BreakingSequence<object>().PartialSort(1);
+		_ = new BreakingSequence<object>().PartialSort(1);
 	}
 
 	[Fact]

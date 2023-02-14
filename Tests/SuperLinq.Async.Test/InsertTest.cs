@@ -5,7 +5,7 @@ public class InsertTest
 	[Fact]
 	public void InsertWithNegativeIndex()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new AsyncBreakingSequence<int>()
 				.Insert(AsyncSeq(97, 98, 99), -1));
 	}
@@ -24,7 +24,7 @@ public class InsertTest
 
 		var result = test1.Insert(test2, count + 1);
 
-		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await result.ForEachAsync((e, index) =>
 				Assert.Equal(index, e)));
 	}
@@ -70,13 +70,13 @@ public class InsertTest
 	[Fact]
 	public void InsertIsLazy()
 	{
-		new AsyncBreakingSequence<int>().Insert(new AsyncBreakingSequence<int>(), 0);
+		_ = new AsyncBreakingSequence<int>().Insert(new AsyncBreakingSequence<int>(), 0);
 	}
 
 	[Fact]
 	public void BacksertIsLazy()
 	{
-		new AsyncBreakingSequence<int>().Insert(new AsyncBreakingSequence<int>(), ^0);
+		_ = new AsyncBreakingSequence<int>().Insert(new AsyncBreakingSequence<int>(), ^0);
 	}
 
 	[Theory]
@@ -88,7 +88,7 @@ public class InsertTest
 
 		var result = test1.Insert(test2, ^index);
 
-		await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await result.ElementAtAsync(0));
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await result.ElementAtAsync(0));
 	}
 
 	[Theory]

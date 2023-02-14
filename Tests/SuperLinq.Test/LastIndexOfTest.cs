@@ -6,7 +6,7 @@ public class LastIndexOfTest
 	public void LastIndexOfWithNegativeCount()
 	{
 		using var sequence = TestingSequence.Of(1);
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			sequence.LastIndexOf(1, 1, -1));
 	}
 

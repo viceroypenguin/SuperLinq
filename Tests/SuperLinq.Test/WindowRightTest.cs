@@ -5,10 +5,10 @@ public class WindowRightTest
 	[Fact]
 	public void WindowRightIsLazy()
 	{
-		new BreakingSequence<int>().WindowRight(1);
-		new BreakingSequence<int>().WindowRight(1, BreakingFunc.Of<IReadOnlyList<int>, int>());
-		new BreakingSequence<int>().WindowRight(new int[3], BreakingFunc.Of<IReadOnlyList<int>, int>());
-		new BreakingSequence<int>().WindowRight(new int[3], 1, BreakingFunc.Of<IReadOnlyList<int>, int>());
+		_ = new BreakingSequence<int>().WindowRight(1);
+		_ = new BreakingSequence<int>().WindowRight(1, BreakingFunc.Of<IReadOnlyList<int>, int>());
+		_ = new BreakingSequence<int>().WindowRight(new int[3], BreakingFunc.Of<IReadOnlyList<int>, int>());
+		_ = new BreakingSequence<int>().WindowRight(new int[3], 1, BreakingFunc.Of<IReadOnlyList<int>, int>());
 	}
 
 	[Fact]
@@ -16,13 +16,13 @@ public class WindowRightTest
 	{
 		var sequence = Enumerable.Repeat(1, 10);
 
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			sequence.WindowRight(-5));
 
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			sequence.WindowRight(Array.Empty<int>(), -5, SuperEnumerable.Identity));
 
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			sequence.WindowRight(-5, SuperEnumerable.Identity));
 	}
 
@@ -32,10 +32,10 @@ public class WindowRightTest
 		using var sequence = Enumerable.Range(0, 3).AsTestingSequence();
 		using var e = sequence.WindowRight(2).GetEnumerator();
 
-		e.MoveNext();
+		_ = e.MoveNext();
 		var window1 = e.Current;
 		window1[0] = -1;
-		e.MoveNext();
+		_ = e.MoveNext();
 		var window2 = e.Current;
 
 		Assert.Equal(0, window2[0]);
@@ -47,9 +47,9 @@ public class WindowRightTest
 		using var sequence = Enumerable.Range(0, 3).AsTestingSequence();
 		using var e = sequence.WindowRight(2).GetEnumerator();
 
-		e.MoveNext();
+		_ = e.MoveNext();
 		var window1 = e.Current;
-		e.MoveNext();
+		_ = e.MoveNext();
 		window1[0] = -1;
 		var window2 = e.Current;
 
@@ -62,9 +62,9 @@ public class WindowRightTest
 		using var sequence = Enumerable.Range(0, 3).AsTestingSequence();
 		using var e = sequence.WindowRight(2).GetEnumerator();
 
-		e.MoveNext();
+		_ = e.MoveNext();
 		var window1 = e.Current;
-		e.MoveNext();
+		_ = e.MoveNext();
 		var window2 = e.Current;
 		window2[0] = -1;
 

@@ -11,9 +11,9 @@ public class SegmentTests
 	[Fact]
 	public void TestSegmentIsLazy()
 	{
-		new AsyncBreakingSequence<int>().Segment(BreakingFunc.Of<int, bool>());
-		new AsyncBreakingSequence<int>().Segment(BreakingFunc.Of<int, int, bool>());
-		new AsyncBreakingSequence<int>().Segment(BreakingFunc.Of<int, int, int, bool>());
+		_ = new AsyncBreakingSequence<int>().Segment(BreakingFunc.Of<int, bool>());
+		_ = new AsyncBreakingSequence<int>().Segment(BreakingFunc.Of<int, int, bool>());
+		_ = new AsyncBreakingSequence<int>().Segment(BreakingFunc.Of<int, int, int, bool>());
 	}
 
 	/// <summary>

@@ -15,7 +15,7 @@ public class DistinctByTest
 	[Fact]
 	public void DistinctByIsLazy()
 	{
-		SuperEnumerable.DistinctBy(new BreakingSequence<string>(), BreakingFunc.Of<string, int>());
+		_ = SuperEnumerable.DistinctBy(new BreakingSequence<string>(), BreakingFunc.Of<string, int>());
 	}
 
 	[Fact]
@@ -37,7 +37,7 @@ public class DistinctByTest
 	[Fact]
 	public void DistinctByIsLazyWithComparer()
 	{
-		SuperEnumerable.DistinctBy(new BreakingSequence<string>(), BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
+		_ = SuperEnumerable.DistinctBy(new BreakingSequence<string>(), BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
 	}
 }
 

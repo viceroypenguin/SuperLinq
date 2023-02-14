@@ -5,7 +5,7 @@ public class AtMostTest
 	[Fact]
 	public void AtMostWithNegativeCount()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().AtMost(-1));
 	}
 

@@ -262,7 +262,7 @@ public static partial class AsyncSuperEnumerable
 
 				if (top.Count < count)
 				{
-					top.Add(key);
+					_ = top.Add(key);
 					dic[(key, 1)] = new() { item, };
 					continue;
 				}
@@ -271,9 +271,9 @@ public static partial class AsyncSuperEnumerable
 				if (comparer.Compare(key, max) > 0)
 					continue;
 
-				dic.Remove((max, 1));
-				top.Remove(max);
-				top.Add(key);
+				_ = dic.Remove((max, 1));
+				_ = top.Remove(max);
+				_ = top.Add(key);
 				dic[(key, 1)] = new() { item, };
 			}
 

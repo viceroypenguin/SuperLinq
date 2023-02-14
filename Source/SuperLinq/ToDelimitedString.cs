@@ -38,8 +38,8 @@ public static partial class SuperEnumerable
 
 		foreach (var value in source)
 		{
-			if (i++ > 0) sb.Append(delimiter);
-			append(sb, value);
+			if (i++ > 0) _ = sb.Append(delimiter);
+			_ = append(sb, value);
 		}
 
 		return sb.ToString();

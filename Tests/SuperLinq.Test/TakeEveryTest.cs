@@ -5,20 +5,20 @@ public class TakeEveryTest
 	[Fact]
 	public void TakeEveryIsLazy()
 	{
-		new BreakingSequence<object>().TakeEvery(1);
+		_ = new BreakingSequence<object>().TakeEvery(1);
 	}
 
 	[Fact]
 	public void TakeEveryNegativeSkip()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().TakeEvery(-1));
 	}
 
 	[Fact]
 	public void TakeEveryOutOfRangeZeroStep()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() =>
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().TakeEvery(0));
 	}
 

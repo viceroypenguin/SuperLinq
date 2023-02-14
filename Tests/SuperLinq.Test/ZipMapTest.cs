@@ -38,6 +38,6 @@ public class ZipMapTest
 	public void ZipMapIsLazy()
 	{
 		var bs = new BreakingSequence<int>();
-		bs.ZipMap(BreakingFunc.Of<int, int>());
+		_ = bs.ZipMap(BreakingFunc.Of<int, int>());
 	}
 }

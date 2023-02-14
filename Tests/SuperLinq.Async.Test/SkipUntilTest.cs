@@ -33,7 +33,7 @@ public class SkipUntilTest
 	[Fact]
 	public void SkipUntilEvaluatesSourceLazily()
 	{
-		new AsyncBreakingSequence<string>().SkipUntil(x => x.Length == 0);
+		_ = new AsyncBreakingSequence<string>().SkipUntil(x => x.Length == 0);
 	}
 
 	[Fact]

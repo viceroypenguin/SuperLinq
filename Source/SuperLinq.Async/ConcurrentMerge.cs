@@ -187,7 +187,7 @@ public static partial class AsyncSuperEnumerable
 					{
 						// go to sleep until we hear from someone
 						// (don't care who woke us up, we'll cover that with the loop below)
-						await Task.WhenAny(pendingTaskList).ConfigureAwait(false);
+						_ = await Task.WhenAny(pendingTaskList).ConfigureAwait(false);
 					}
 
 					// clear out all completed tasks
