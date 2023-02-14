@@ -5,15 +5,15 @@ public class CompareCountTest
 	public static IEnumerable<object[]> CompareCountData { get; } =
 		from e in new[]
 		{
-				new { Count1 = 0, Count2 = 0, Comparison =  0 },
-				new { Count1 = 0, Count2 = 1, Comparison = -1 },
-				new { Count1 = 1, Count2 = 0, Comparison =  1 },
-				new { Count1 = 1, Count2 = 1, Comparison =  0 },
+			new { Count1 = 0, Count2 = 0, Comparison =  0 },
+			new { Count1 = 0, Count2 = 1, Comparison = -1 },
+			new { Count1 = 1, Count2 = 0, Comparison =  1 },
+			new { Count1 = 1, Count2 = 1, Comparison =  0 },
 		}
 		from s in GetTestSequenceKinds(
-					  Enumerable.Range(1, e.Count1),
-					  Enumerable.Range(1, e.Count2),
-					  (xs, ys) => new { First = xs, Second = ys })
+			Enumerable.Range(1, e.Count1),
+			Enumerable.Range(1, e.Count2),
+			(xs, ys) => new { First = xs, Second = ys })
 		select new object[] { s.First.Data, s.Second.Data, e.Comparison, };
 
 	[Theory, MemberData(nameof(CompareCountData))]
@@ -127,8 +127,8 @@ public class CompareCountTest
 		var s2Seq = (s2.Select(SuperEnumerable.Identity), SourceKind.Sequence);
 
 #pragma warning disable CA2000 // don't need to test disposal here
-		var s1Col = (s1.ToSourceKind(SourceKind.BreakingCollection), SourceKind.BreakingCollection);
-		var s2Col = (s2.ToSourceKind(SourceKind.BreakingCollection), SourceKind.BreakingCollection);
+		var s1Col = (new BreakingCollection<T>(s1), SourceKind.BreakingCollection);
+		var s2Col = (new BreakingCollection<T>(s2), SourceKind.BreakingCollection);
 #pragma warning restore CA2000
 
 		// sequences

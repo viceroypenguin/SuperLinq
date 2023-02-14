@@ -9,44 +9,73 @@ public class ExactlyTest
 			new BreakingSequence<int>().Exactly(-1));
 	}
 
-	[Fact]
-	public void ExactlyWithEmptySequenceHasExactlyZeroElements()
+	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
+		seq
+			.ArrangeCollectionInlineDatas()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { })]
+	public void ExactlyWithEmptySequenceHasExactlyZeroElements(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.True(xs.Exactly(0));
-		}
+		using (seq)
+			Assert.True(seq.Exactly(0));
 	}
 
-	[Fact]
-	public void ExactlyWithEmptySequenceHasExactlyOneElement()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { })]
+	public void ExactlyWithEmptySequenceHasExactlyOneElement(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.False(xs.Exactly(1));
-		}
+		using (seq)
+			Assert.False(seq.Exactly(1));
 	}
 
-	[Fact]
-	public void ExactlyWithSingleElementHasExactlyOneElements()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	public void ExactlyWithSingleElementHasExactlyZeroElements(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in new[] { 1 }.ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.True(xs.Exactly(1));
-		}
+		using (seq)
+			Assert.False(seq.Exactly(0));
 	}
 
-	[Fact]
-	public void ExactlyWithManyElementHasExactlyOneElement()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	public void ExactlyWithSingleElementHasExactlyOneElements(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.False(xs.Exactly(1));
-		}
+		using (seq)
+			Assert.True(seq.Exactly(1));
+	}
+
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	public void ExactlyWithSingleElementHasExactlyTwoElements(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+			Assert.False(seq.Exactly(2));
+	}
+
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	public void ExactlyWithThreeElementsHasExactlyTwoElements(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+			Assert.False(seq.Exactly(2));
+	}
+
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	public void ExactlyWithThreeElementsHasExactlyThreeElements(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+			Assert.True(seq.Exactly(3));
+	}
+
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	public void ExactlyWithThreeElementsHasExactlyFourElements(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+			Assert.False(seq.Exactly(4));
 	}
 
 	[Fact]

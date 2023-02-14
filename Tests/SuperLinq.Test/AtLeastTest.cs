@@ -9,94 +9,73 @@ public class AtLeastTest
 			new BreakingSequence<int>().AtLeast(-1));
 	}
 
-	[Fact]
-	public void AtLeastWithEmptySequenceHasAtLeastZeroElements()
+	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
+		seq
+			.ArrangeCollectionInlineDatas()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { })]
+	public void AtLeastWithEmptySequenceHasAtLeastZeroElements(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.True(xs.AtLeast(0));
-		}
+		using (seq)
+			Assert.True(seq.AtLeast(0));
 	}
 
-	[Fact]
-	public void AtLeastWithEmptySequenceHasAtLeastOneElement()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { })]
+	public void AtLeastWithEmptySequenceHasAtLeastOneElement(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.False(xs.AtLeast(1));
-		}
+		using (seq)
+			Assert.False(seq.AtLeast(1));
 	}
 
-	[Fact]
-	public void AtLeastWithEmptySequenceHasAtLeastManyElements()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	public void AtLeastWithSingleElementHasAtLeastZeroElements(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.False(xs.AtLeast(2));
-		}
+		using (seq)
+			Assert.True(seq.AtLeast(0));
 	}
 
-	[Fact]
-	public void AtLeastWithSingleElementHasAtLeastZeroElements()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	public void AtLeastWithSingleElementHasAtLeastOneElement(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Seq(1).ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.True(xs.AtLeast(0));
-		}
+		using (seq)
+			Assert.True(seq.AtLeast(1));
 	}
 
-	[Fact]
-	public void AtLeastWithSingleElementHasAtLeastOneElement()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	public void AtLeastWithSingleElementHasAtLeastManyElements(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Seq(1).ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.True(xs.AtLeast(1));
-		}
+		using (seq)
+			Assert.False(seq.AtLeast(2));
 	}
 
-	[Fact]
-	public void AtLeastWithSingleElementHasAtLeastManyElements()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	public void AtLeastWithManyElementsHasAtLeastZeroElements(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Seq(1).ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.False(xs.AtLeast(2));
-		}
+		using (seq)
+			Assert.True(seq.AtLeast(0));
 	}
 
-	[Fact]
-	public void AtLeastWithManyElementsHasAtLeastZeroElements()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	public void AtLeastWithManyElementsHasAtLeastOneElement(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Seq(1, 2, 3).ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.True(xs.AtLeast(0));
-		}
+		using (seq)
+			Assert.True(seq.AtLeast(1));
 	}
 
-	[Fact]
-	public void AtLeastWithManyElementsHasAtLeastOneElement()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	public void AtLeastWithManyElementsHasAtLeastManyElement(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Seq(1, 2, 3).ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.True(xs.AtLeast(1));
-		}
-	}
-
-	[Fact]
-	public void AtLeastWithManyElementsHasAtLeastManyElements()
-	{
-		foreach (var xs in Seq(1, 2, 3).ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.True(xs.AtLeast(2));
-		}
+		using (seq)
+			Assert.False(seq.AtLeast(4));
 	}
 
 	[Fact]
