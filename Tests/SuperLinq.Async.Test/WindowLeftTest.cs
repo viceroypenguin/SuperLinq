@@ -73,15 +73,14 @@ public class WindowLeftTest
 	[Fact]
 	public async Task WindowLeftWithSingleElement()
 	{
-		const int count = 100;
-		var sequence = Enumerable.Range(1, count).ToArray();
+		var sequence = Enumerable.Range(1, 100).ToArray();
 
 		IList<int>[] result;
 		await using (var ts = sequence.AsTestingSequence())
 			result = await ts.WindowLeft(1).ToArrayAsync();
 
 		// number of windows should be equal to the source sequence length
-		Assert.Equal(count, result.Length);
+		Assert.Equal(100, result.Length);
 
 		// each window should contain single item consistent of element at that offset
 		foreach (var (index, item) in result.Index())

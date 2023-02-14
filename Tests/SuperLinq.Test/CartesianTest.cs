@@ -60,15 +60,12 @@ public class CartesianTests
 	[Fact]
 	public void TestCartesianProductCount()
 	{
-		const int countA = 100;
-		const int countB = 75;
-		const int expectedCount = countA * countB;
-		using var sequenceA = Enumerable.Range(1, countA).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
-		using var sequenceB = Enumerable.Range(1, countB).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
+		using var sequenceA = Enumerable.Range(1, 100).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
+		using var sequenceB = Enumerable.Range(1, 75).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
 
 		var result = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
 
-		Assert.Equal(expectedCount, result.Count());
+		Assert.Equal(100 * 75, result.Count());
 	}
 
 	/// <summary>

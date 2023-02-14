@@ -21,29 +21,29 @@ public class GroupAdjacentTest
 	[Fact]
 	public async Task GroupAdjacentSourceSequence()
 	{
-		const string one = "one";
-		const string two = "two";
-		const string three = "three";
-		const string four = "four";
-		const string five = "five";
-		const string six = "six";
-		const string seven = "seven";
-		const string eight = "eight";
-		const string nine = "nine";
-		const string ten = "ten";
+		const string One = "one";
+		const string Two = "two";
+		const string Three = "three";
+		const string Four = "four";
+		const string Five = "five";
+		const string Six = "six";
+		const string Seven = "seven";
+		const string Eight = "eight";
+		const string Nine = "nine";
+		const string Ten = "ten";
 
-		await using var source = TestingSequence.Of(one, two, three, four, five, six, seven, eight, nine, ten);
+		await using var source = TestingSequence.Of(One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten);
 
 		var groupings = source.GroupAdjacent(s => s.Length);
 
 		await using var reader = groupings.Read();
-		await AssertGrouping(reader, 3, one, two);
-		await AssertGrouping(reader, 5, three);
-		await AssertGrouping(reader, 4, four, five);
-		await AssertGrouping(reader, 3, six);
-		await AssertGrouping(reader, 5, seven, eight);
-		await AssertGrouping(reader, 4, nine);
-		await AssertGrouping(reader, 3, ten);
+		await AssertGrouping(reader, 3, One, Two);
+		await AssertGrouping(reader, 5, Three);
+		await AssertGrouping(reader, 4, Four, Five);
+		await AssertGrouping(reader, 3, Six);
+		await AssertGrouping(reader, 5, Seven, Eight);
+		await AssertGrouping(reader, 4, Nine);
+		await AssertGrouping(reader, 3, Ten);
 		await reader.ReadEnd();
 	}
 

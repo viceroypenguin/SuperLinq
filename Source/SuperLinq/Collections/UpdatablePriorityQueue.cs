@@ -1058,12 +1058,12 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	[DebuggerTypeProxy(typeof(PriorityQueueDebugView<,>))]
 	internal sealed class UnorderedItemsCollection : IReadOnlyCollection<(TElement Element, TPriority Priority)>, ICollection
 	{
-		internal readonly UpdatablePriorityQueue<TElement, TPriority> _queue;
+		internal readonly UpdatablePriorityQueue<TElement, TPriority> Queue;
 
-		internal UnorderedItemsCollection(UpdatablePriorityQueue<TElement, TPriority> queue) => _queue = queue;
+		internal UnorderedItemsCollection(UpdatablePriorityQueue<TElement, TPriority> queue) => Queue = queue;
 
 		/// <inheritdoc />
-		public int Count => _queue.Count;
+		public int Count => Queue.Count;
 		object ICollection.SyncRoot => this;
 		bool ICollection.IsSynchronized => false;
 
@@ -1073,7 +1073,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 
 			try
 			{
-				Array.Copy(_queue._nodes, 0, array, index, _queue.Count);
+				Array.Copy(Queue._nodes, 0, array, index, Queue.Count);
 			}
 			catch (ArrayTypeMismatchException)
 			{
@@ -1159,7 +1159,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 		/// Returns an enumerator that iterates through the <see cref="UnorderedItems"/>.
 		/// </summary>
 		/// <returns>An <see cref="Enumerator"/> for the <see cref="UnorderedItems"/>.</returns>
-		public Enumerator GetEnumerator() => new(_queue);
+		public Enumerator GetEnumerator() => new(Queue);
 
 		IEnumerator<(TElement Element, TPriority Priority)> IEnumerable<(TElement Element, TPriority Priority)>.GetEnumerator() => GetEnumerator();
 
@@ -1182,7 +1182,7 @@ internal sealed class PriorityQueueDebugView<TElement, TPriority>
 
 	public PriorityQueueDebugView(UpdatablePriorityQueue<TElement, TPriority>.UnorderedItemsCollection collection)
 	{
-		_queue = collection?._queue ?? throw new ArgumentNullException(nameof(collection));
+		_queue = collection?.Queue ?? throw new ArgumentNullException(nameof(collection));
 	}
 
 	[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
