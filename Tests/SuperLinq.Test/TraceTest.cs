@@ -81,13 +81,13 @@ public class TraceTest
 
 	private static IEnumerable<string> Lines(string str)
 	{
-		using (var e = Core(string.IsNullOrEmpty(str)
-					 ? TextReader.Null
-					 : new StringReader(str)))
-		{
-			while (e.MoveNext())
-				yield return e.Current;
-		}
+		using var e = Core(
+			string.IsNullOrEmpty(str)
+				? TextReader.Null
+				: new StringReader(str));
+
+		while (e.MoveNext())
+			yield return e.Current;
 
 		static IEnumerator<string> Core(TextReader reader)
 		{
