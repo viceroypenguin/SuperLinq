@@ -1,4 +1,6 @@
-﻿namespace SuperLinq.Async;
+﻿using System.Diagnostics;
+
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -50,18 +52,25 @@ public static partial class AsyncSuperEnumerable
 					yield return window;
 				yield break;
 			}
-		}
 
-		while (window.Length > 1)
-		{
-			var newWindow = new TSource[window.Length - 1];
-			window.AsSpan()[1..].CopyTo(newWindow);
-			yield return window;
-			window = newWindow;
-		}
+			case WindowType.Left:
+			{
+				while (window.Length > 1)
+				{
+					var newWindow = new TSource[window.Length - 1];
+					window.AsSpan()[1..].CopyTo(newWindow);
+					yield return window;
+					window = newWindow;
+				}
 
-		// intentionally break out length == 1 to remove new TSource[0] allocation 
-		if (window.Length > 0)
-			yield return window;
+				// intentionally break out length == 1 to remove new TSource[0] allocation 
+				if (window.Length > 0)
+					yield return window;
+				yield break;
+			}
+
+			default:
+				throw new UnreachableException();
+		}
 	}
 }

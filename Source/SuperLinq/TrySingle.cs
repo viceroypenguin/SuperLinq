@@ -100,15 +100,18 @@ public static partial class SuperEnumerable
 			}
 			case > 1:
 				return resultSelector(many, default);
+
+			default:
+			{
+				using var e = source.GetEnumerator();
+				if (!e.MoveNext())
+					return resultSelector(zero, default);
+
+				var current = e.Current;
+				return !e.MoveNext()
+					? resultSelector(one, current)
+					: resultSelector(many, default);
+			}
 		}
-
-		using var e = source.GetEnumerator();
-		if (!e.MoveNext())
-			return resultSelector(zero, default);
-
-		var current = e.Current;
-		return !e.MoveNext()
-			? resultSelector(one, current)
-			: resultSelector(many, default);
 	}
 }
