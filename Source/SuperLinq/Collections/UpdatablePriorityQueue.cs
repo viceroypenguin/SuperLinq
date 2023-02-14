@@ -422,25 +422,25 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	{
 		if (Count != 0)
 		{
-			var root = _nodes[0];
-			_elementIndex.Remove(root.Element);
+			var (rootElement, rootPriority) = _nodes[0];
+			_elementIndex.Remove(rootElement);
 
 			if (_priorityComparer == null)
 			{
-				if (Comparer<TPriority>.Default.Compare(priority, root.Priority) > 0)
+				if (Comparer<TPriority>.Default.Compare(priority, rootPriority) > 0)
 				{
 					MoveDownDefaultComparer((element, priority), 0);
 					_version++;
-					return root.Element;
+					return rootElement;
 				}
 			}
 			else
 			{
-				if (_priorityComparer.Compare(priority, root.Priority) > 0)
+				if (_priorityComparer.Compare(priority, rootPriority) > 0)
 				{
 					MoveDownCustomComparer((element, priority), 0);
 					_version++;
-					return root.Element;
+					return rootElement;
 				}
 			}
 		}
