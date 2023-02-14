@@ -123,9 +123,7 @@ public static partial class SuperEnumerable
 				k--;
 
 			// interchange m_Permutation[j] and m_Permutation[k]
-			var oldValue = _permutation[k];
-			_permutation[k] = _permutation[j];
-			_permutation[j] = oldValue;
+			(_permutation[j], _permutation[k]) = (_permutation[k], _permutation[j]);
 
 			// move the tail of the permutation after the jth position in increasing order
 			var x = _permutation.Length - 1;
@@ -133,9 +131,7 @@ public static partial class SuperEnumerable
 
 			while (x > y)
 			{
-				oldValue = _permutation[y];
-				_permutation[y] = _permutation[x];
-				_permutation[x] = oldValue;
+				(_permutation[x], _permutation[y]) = (_permutation[y], _permutation[x]);
 				x--;
 				y++;
 			}

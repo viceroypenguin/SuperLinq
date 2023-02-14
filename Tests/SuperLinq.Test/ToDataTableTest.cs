@@ -16,7 +16,7 @@ public class ToDataTableTest
 
 		public object this[int index]
 		{
-			get => new object();
+			get => new();
 			set { }
 		}
 

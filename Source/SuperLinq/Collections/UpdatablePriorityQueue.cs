@@ -1159,7 +1159,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 		/// Returns an enumerator that iterates through the <see cref="UnorderedItems"/>.
 		/// </summary>
 		/// <returns>An <see cref="Enumerator"/> for the <see cref="UnorderedItems"/>.</returns>
-		public Enumerator GetEnumerator() => new Enumerator(_queue);
+		public Enumerator GetEnumerator() => new(_queue);
 
 		IEnumerator<(TElement Element, TPriority Priority)> IEnumerable<(TElement Element, TPriority Priority)>.GetEnumerator() => GetEnumerator();
 
