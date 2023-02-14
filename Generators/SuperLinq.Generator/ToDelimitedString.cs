@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Scriban;
 
-namespace SuperLinq;
+namespace SuperLinq.Generator;
 
 internal static class ToDelimitedString
 {

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+﻿namespace SuperLinq.Generator;
 
 public record ArgumentNames(string[] Arity, string[] Ordinals, string[] Cardinals)
 {
