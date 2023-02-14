@@ -347,7 +347,7 @@ public class UpdatableUpdatablePriorityQueueTest
 		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueDequeue_LargerThanMin()
 		{
-			var queue = CreateSmallUpdatablePriorityQueue(out var enqueuedItems);
+			var queue = CreateSmallUpdatablePriorityQueue(out var _);
 
 			var actualElement = queue.EnqueueDequeue("four", 4);
 
