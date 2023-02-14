@@ -1127,7 +1127,7 @@ public class TakeTest
 	[InlineData(10, 100, 90)]
 	public void CountOfLazySkipTakeChain(int skip, int take, int expected)
 	{
-		int totalCount = 100;
+		var totalCount = 100;
 		var partition1 = Enumerable.Range(1, totalCount).Skip(skip).Take(take);
 		Assert.Equal(expected, partition1.Count());
 		Assert.Equal(expected, partition1.Select(SuperEnumerable.Identity).Count());
@@ -1229,7 +1229,7 @@ public class TakeTest
 		var partition1 = ForceNotCollection(source).Skip(skip).Take(take);
 
 		Assert.Equal(indices.Length, expectedValues.Length);
-		for (int i = 0; i < indices.Length; i++)
+		for (var i = 0; i < indices.Length; i++)
 		{
 			Assert.Equal(expectedValues[i], partition1.ElementAtOrDefault(indices[i]));
 		}
@@ -1245,25 +1245,25 @@ public class TakeTest
 		}
 
 		var partition2 = ForceNotCollection(source).Take(skip..end);
-		for (int i = 0; i < indices.Length; i++)
+		for (var i = 0; i < indices.Length; i++)
 		{
 			Assert.Equal(expectedValues[i], partition2.ElementAtOrDefault(indices[i]));
 		}
 
 		var partition3 = ForceNotCollection(source).Take(^Math.Max(source.Length - skip, 0)..end);
-		for (int i = 0; i < indices.Length; i++)
+		for (var i = 0; i < indices.Length; i++)
 		{
 			Assert.Equal(expectedValues[i], partition3.ElementAtOrDefault(indices[i]));
 		}
 
 		var partition4 = ForceNotCollection(source).Take(skip..^Math.Max(source.Length - end, 0));
-		for (int i = 0; i < indices.Length; i++)
+		for (var i = 0; i < indices.Length; i++)
 		{
 			Assert.Equal(expectedValues[i], partition4.ElementAtOrDefault(indices[i]));
 		}
 
 		var partition5 = ForceNotCollection(source).Take(^Math.Max(source.Length - skip, 0)..^Math.Max(source.Length - end, 0));
-		for (int i = 0; i < indices.Length; i++)
+		for (var i = 0; i < indices.Length; i++)
 		{
 			Assert.Equal(expectedValues[i], partition5.ElementAtOrDefault(indices[i]));
 		}
@@ -1568,7 +1568,7 @@ public class TakeTest
 	[Fact]
 	public void EmptySourceDoNotThrowExceptionNotList()
 	{
-		int[] source = Array.Empty<int>();
+		var source = Array.Empty<int>();
 
 		// Multiple elements in the middle.
 		Assert.Empty(ForceNotCollection(source).Take(^9..5));

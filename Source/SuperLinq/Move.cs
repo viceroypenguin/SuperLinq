@@ -43,7 +43,7 @@ public static partial class SuperEnumerable
 
 		static IEnumerable<T> Core(IEnumerable<T> source, int bufferStartIndex, int bufferSize, int bufferYieldIndex)
 		{
-			bool hasMore = true;
+			var hasMore = true;
 			bool MoveNext(IEnumerator<T> e) => hasMore && (hasMore = e.MoveNext());
 
 			using var e = source.GetEnumerator();
