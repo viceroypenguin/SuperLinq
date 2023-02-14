@@ -91,12 +91,7 @@ public static partial class SuperEnumerable
 				return resultSelector(zero, default);
 			case 1:
 			{
-				var item = source switch
-				{
-					IList<T> list => list[0],
-					_ => source.First(),
-				};
-				return resultSelector(one, item);
+				return resultSelector(one, source.First());
 			}
 			case > 1:
 				return resultSelector(many, default);
