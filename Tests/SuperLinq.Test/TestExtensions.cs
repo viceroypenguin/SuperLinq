@@ -40,18 +40,11 @@ internal static partial class TestExtensions
 
 	internal static IEnumerable<IDisposableEnumerable<T>> ArrangeCollectionInlineDatas<T>(this IEnumerable<T> input)
 	{
-		yield return input.ToSourceKind(SourceKind.Sequence);
-		yield return input.ToSourceKind(SourceKind.BreakingCollection);
+		// UI will consume one enumeration
+		yield return input.AsTestingSequence(maxEnumerations: 2);
+		yield return new BreakingCollection<T>(input);
+		yield return new BreakingList<T>(input);
 	}
-
-	internal static IDisposableEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind) =>
-		sourceKind switch
-		{
-			SourceKind.Sequence => input.AsTestingSequence(),
-			SourceKind.BreakingList => new BreakingList<T>(input),
-			SourceKind.BreakingCollection => new BreakingCollection<T>(input),
-			_ => ThrowHelper.ThrowArgumentException<IDisposableEnumerable<T>>(nameof(sourceKind)),
-		};
 
 	internal static void AssertCollectionEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
 		Assert.True(actual.CollectionEqual(expected, comparer: default));

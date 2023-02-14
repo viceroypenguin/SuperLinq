@@ -23,29 +23,34 @@ public class CountBetweenTest
 			new BreakingSequence<int>().CountBetween(1, 0));
 	}
 
-	[Fact]
-	public void CountBetweenWithMaxEqualsMin()
-	{
-		foreach (var xs in Seq(1).ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.True(xs.CountBetween(1, 1));
-		}
-	}
+	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
+		seq
+			.ArrangeCollectionInlineDatas()
+			.Select(x => new object[] { x });
 
 	[Theory]
-	[InlineData(1, 2, 4, false)]
-	[InlineData(2, 2, 4, true)]
-	[InlineData(3, 2, 4, true)]
-	[InlineData(4, 2, 4, true)]
-	[InlineData(5, 2, 4, false)]
-	public void CountBetweenRangeTests(int count, int min, int max, bool expecting)
+	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	public void CountBetweenWithMaxEqualsMin(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Enumerable.Range(1, count).ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.Equal(expecting, xs.CountBetween(min, max));
-		}
+		using (seq)
+			Assert.True(seq.CountBetween(1, 1));
+	}
+
+	public static IEnumerable<object[]> GetTestData(int count, int min, int max, bool expecting) =>
+		Enumerable.Range(1, count)
+			.ArrangeCollectionInlineDatas()
+			.Select(x => new object[] { x, min, max, expecting });
+
+	[Theory]
+	[MemberData(nameof(GetTestData), 1, 2, 4, false)]
+	[MemberData(nameof(GetTestData), 2, 2, 4, true)]
+	[MemberData(nameof(GetTestData), 3, 2, 4, true)]
+	[MemberData(nameof(GetTestData), 4, 2, 4, true)]
+	[MemberData(nameof(GetTestData), 5, 2, 4, false)]
+	public void CountBetweenRangeTests(IDisposableEnumerable<int> seq, int min, int max, bool expecting)
+	{
+		using (seq)
+			Assert.Equal(expecting, seq.CountBetween(min, max));
 	}
 
 	[Fact]

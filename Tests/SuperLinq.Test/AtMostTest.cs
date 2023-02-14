@@ -9,64 +9,73 @@ public class AtMostTest
 			new BreakingSequence<int>().AtMost(-1));
 	}
 
-	[Fact]
-	public void AtMostWithEmptySequenceHasAtMostZeroElements()
+	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
+		seq
+			.ArrangeCollectionInlineDatas()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { })]
+	public void AtMostWithEmptySequenceHasAtMostZeroElements(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.True(xs.AtMost(0));
-		}
+		using (seq)
+			Assert.True(seq.AtMost(0));
 	}
 
-	[Fact]
-	public void AtMostWithEmptySequenceHasAtMostOneElement()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { })]
+	public void AtMostWithEmptySequenceHasAtMostOneElement(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.True(xs.AtMost(1));
-		}
+		using (seq)
+			Assert.True(seq.AtMost(1));
 	}
 
-	[Fact]
-	public void AtMostWithSingleElementHasAtMostZeroElements()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	public void AtMostWithSingleElementHasAtMostZeroElements(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Seq(1).ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.False(xs.AtMost(0));
-		}
+		using (seq)
+			Assert.False(seq.AtMost(0));
 	}
 
-	[Fact]
-	public void AtMostWithSingleElementHasAtMostOneElement()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	public void AtMostWithSingleElementHasAtMostOneElement(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Seq(1).ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.True(xs.AtMost(1));
-		}
+		using (seq)
+			Assert.True(seq.AtMost(1));
 	}
 
-	[Fact]
-	public void AtMostWithSingleElementHasAtMostManyElements()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	public void AtMostWithSingleElementHasAtMostManyElements(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in new[] { 1 }.ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.True(xs.AtMost(2));
-		}
+		using (seq)
+			Assert.True(seq.AtMost(2));
 	}
 
-	[Fact]
-	public void AtMostWithManyElementsHasAtMostOneElements()
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	public void AtMostWithManyElementsHasAtMostZeroElements(IDisposableEnumerable<int> seq)
 	{
-		foreach (var xs in Seq(1, 2, 3).ArrangeCollectionInlineDatas())
-		{
-			using (xs)
-				Assert.False(xs.AtMost(1));
-		}
+		using (seq)
+			Assert.False(seq.AtMost(0));
+	}
+
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	public void AtMostWithManyElementsHasAtMostOneElement(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+			Assert.False(seq.AtMost(1));
+	}
+
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	public void AtMostWithManyElementsHasAtMostManyElement(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+			Assert.True(seq.AtMost(4));
 	}
 
 	[Fact]

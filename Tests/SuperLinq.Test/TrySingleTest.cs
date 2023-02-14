@@ -4,31 +4,41 @@ namespace Test;
 
 public class TrySingleTest
 {
+	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
+		seq.Select(x => (int?)x)
+			.ArrangeCollectionInlineDatas()
+			.Select(x => new object[] { x });
+
 	[Theory]
-	[InlineData(SourceKind.Sequence)]
-	[InlineData(SourceKind.BreakingList)]
-	[InlineData(SourceKind.BreakingCollection)]
-	public void TrySingleWithEmptySource(SourceKind kind)
+	[MemberData(nameof(GetSequences), new int[] { })]
+	public void TrySingleWithEmptySource(IDisposableEnumerable<int?> seq)
 	{
-		using var source = Array.Empty<int?>().ToSourceKind(kind);
+		using (seq)
+		{
+			var (cardinality, value) = seq.TrySingle("zero", "one", "many");
 
-		var (cardinality, value) = source.TrySingle("zero", "one", "many");
-
-		Assert.Equal("zero", cardinality);
-		Assert.Null(value);
+			Assert.Equal("zero", cardinality);
+			Assert.Null(value);
+		}
 	}
 
+	public static IEnumerable<object[]> GetSingletonSequences(IEnumerable<int> seq) =>
+		seq.Select(x => (int?)x)
+			.ArrangeCollectionInlineDatas()
+			.Where(x => x is not BreakingCollection<int?>)
+			.Select(x => new object[] { x });
+
 	[Theory]
-	[InlineData(SourceKind.Sequence)]
-	[InlineData(SourceKind.BreakingList)]
-	public void TrySingleWithSingleton(SourceKind kind)
+	[MemberData(nameof(GetSingletonSequences), new int[] { 10, })]
+	public void TrySingleWithSingleton(IDisposableEnumerable<int?> seq)
 	{
-		using var source = new int?[] { 10 }.ToSourceKind(kind);
+		using (seq)
+		{
+			var (cardinality, value) = seq.TrySingle("zero", "one", "many");
 
-		var (cardinality, value) = source.TrySingle("zero", "one", "many");
-
-		Assert.Equal("one", cardinality);
-		Assert.Equal(10, value);
+			Assert.Equal("one", cardinality);
+			Assert.Equal(10, value);
+		}
 	}
 
 	[Fact]
@@ -67,17 +77,16 @@ public class TrySingleTest
 	}
 
 	[Theory]
-	[InlineData(SourceKind.Sequence)]
-	[InlineData(SourceKind.BreakingList)]
-	[InlineData(SourceKind.BreakingCollection)]
-	public void TrySingleWithMoreThanOne(SourceKind kind)
+	[MemberData(nameof(GetSequences), new int[] { 10, 20, })]
+	public void TrySingleWithMoreThanOne(IDisposableEnumerable<int?> seq)
 	{
-		using var source = new int?[] { 10, 20 }.ToSourceKind(kind);
+		using (seq)
+		{
+			var (cardinality, value) = seq.TrySingle("zero", "one", "many");
 
-		var (cardinality, value) = source.TrySingle("zero", "one", "many");
-
-		Assert.Equal("many", cardinality);
-		Assert.Null(value);
+			Assert.Equal("many", cardinality);
+			Assert.Null(value);
+		}
 	}
 
 	[Fact]

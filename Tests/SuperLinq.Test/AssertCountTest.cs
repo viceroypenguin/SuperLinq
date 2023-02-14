@@ -32,31 +32,30 @@ public class AssertCountTest
 		}
 	}
 
-	[Fact]
-	public void AssertCountShortSequence()
+	public static IEnumerable<object[]> GetSequences() =>
+		Enumerable.Range(1, 10)
+			.ArrangeCollectionInlineDatas()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void AssertCountShortSequence(IDisposableEnumerable<int> seq)
 	{
-		var data = new[] { "foo", "bar", "baz" };
-		foreach (var xs in data.ArrangeCollectionInlineDatas())
+		using (seq)
 		{
-			using (xs)
-			{
-				_ = Assert.Throws<ArgumentException>("source.Count()",
-					() => xs.AssertCount(4).Consume());
-			}
+			_ = Assert.Throws<ArgumentException>("source.Count()",
+				() => seq.AssertCount(11).Consume());
 		}
 	}
 
-	[Fact]
-	public void AssertCountLongSequence()
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void AssertCountLongSequence(IDisposableEnumerable<int> seq)
 	{
-		var data = new[] { "foo", "bar", "baz" };
-		foreach (var xs in data.ArrangeCollectionInlineDatas())
+		using (seq)
 		{
-			using (xs)
-			{
-				_ = Assert.Throws<ArgumentException>("source.Count()",
-					() => xs.AssertCount(2).Consume());
-			}
+			_ = Assert.Throws<ArgumentException>("source.Count()",
+				() => seq.AssertCount(9).Consume());
 		}
 	}
 
