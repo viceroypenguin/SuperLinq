@@ -153,7 +153,9 @@ public static partial class AsyncSuperEnumerable
 								i = i + 1 >= list.Count ? 0 : i + 1;
 							}
 							else
+							{
 								DisposeAsync(e);
+							}
 						}
 						else
 						{
@@ -208,8 +210,10 @@ public static partial class AsyncSuperEnumerable
 								yield return it.Current;
 							}
 							else
+							{
 								// no, so dispose it
 								DisposeAsync(it);
+							}
 						}
 
 						// iterator or dispose task, we need to get rid of it

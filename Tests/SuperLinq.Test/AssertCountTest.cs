@@ -23,11 +23,13 @@ public class AssertCountTest
 		using (var xs = data.AsTestingSequence())
 			xs.AssertCount(3).Consume();
 		using (var xs = new BreakingCollection<string>(data))
+		{
 			// expect a `TestException` as we try to enumerate the list
 			// but should _not_ get an `ArgumentException` as the 
 			// count is correct for the sequence
 			Assert.Throws<TestException>(
 				() => xs.AssertCount(3).Consume());
+		}
 	}
 
 	[Fact]
@@ -35,9 +37,13 @@ public class AssertCountTest
 	{
 		var data = new[] { "foo", "bar", "baz" };
 		foreach (var xs in data.ArrangeCollectionInlineDatas())
+		{
 			using (xs)
+			{
 				Assert.Throws<ArgumentException>("source.Count()",
 					() => xs.AssertCount(4).Consume());
+			}
+		}
 	}
 
 	[Fact]
@@ -45,9 +51,13 @@ public class AssertCountTest
 	{
 		var data = new[] { "foo", "bar", "baz" };
 		foreach (var xs in data.ArrangeCollectionInlineDatas())
+		{
 			using (xs)
+			{
 				Assert.Throws<ArgumentException>("source.Count()",
 					() => xs.AssertCount(2).Consume());
+			}
+		}
 	}
 
 	[Fact]

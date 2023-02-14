@@ -121,9 +121,11 @@ public static partial class SuperEnumerable
 			{
 				// precondition: subsetSize <= set.Count
 				if (subsetSize > set.Count)
+				{
 					ThrowHelper.ThrowArgumentOutOfRangeException(
 						nameof(subsetSize),
 						"Subset size must be <= sequence.Count()");
+				}
 
 				// initialize set arrays...
 				_set = set;

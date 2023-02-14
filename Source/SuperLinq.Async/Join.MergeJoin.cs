@@ -44,22 +44,31 @@ public static partial class AsyncSuperEnumerable
 			if (comparison < 0)
 			{
 				if (joinOperation.HasFlag(JoinOperation.LeftOuter))
+				{
 					foreach (var e in l)
 						yield return Debug.AssertNotNull(leftResultSelector)(e);
+				}
+
 				gotLeft = await e1.MoveNextAsync();
 			}
 			else if (comparison > 0)
 			{
 				if (joinOperation.HasFlag(JoinOperation.RightOuter))
+				{
 					foreach (var e in r)
 						yield return Debug.AssertNotNull(rightResultSelector)(e);
+				}
+
 				gotRight = await e2.MoveNextAsync();
 			}
 			else
 			{
 				foreach (var el in l)
+				{
 					foreach (var er in r)
 						yield return bothResultSelector(el, er);
+				}
+
 				gotLeft = await e1.MoveNextAsync();
 				gotRight = await e2.MoveNextAsync();
 			}

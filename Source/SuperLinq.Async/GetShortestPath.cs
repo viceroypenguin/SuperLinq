@@ -288,8 +288,10 @@ public partial class AsyncSuperEnumerable
 
 			var newStates = getNeighbors(current, cost);
 			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
+			{
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, p);
+			}
 
 			if (!queue.TryDequeue(out current, out cost))
 				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
@@ -599,8 +601,10 @@ public partial class AsyncSuperEnumerable
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
 			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
+			{
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, (current, p));
+			}
 
 			if (!queue.TryDequeue(out current, out from))
 				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
@@ -787,8 +791,10 @@ public partial class AsyncSuperEnumerable
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
 			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
+			{
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, (current, p));
+			}
 		} while (queue.TryDequeue(out current, out from));
 
 		return totalCost;

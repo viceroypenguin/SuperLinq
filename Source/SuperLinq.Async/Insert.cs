@@ -46,9 +46,11 @@ public static partial class AsyncSuperEnumerable
 				yield return iter.Current;
 
 			if (i < index)
+			{
 				ThrowHelper.ThrowArgumentOutOfRangeException(
 					nameof(index),
 					"Insertion index is greater than the length of the first sequence.");
+			}
 
 			await foreach (var item in second.WithCancellation(cancellationToken).ConfigureAwait(false))
 				yield return item;
@@ -101,9 +103,11 @@ public static partial class AsyncSuperEnumerable
 			{
 				var (_, countdown) = e.Current;
 				if (countdown is { } n && n != index - 1)
+				{
 					ThrowHelper.ThrowArgumentOutOfRangeException(
 						nameof(index),
 						"Insertion index is greater than the length of the first sequence.");
+				}
 
 				do
 				{

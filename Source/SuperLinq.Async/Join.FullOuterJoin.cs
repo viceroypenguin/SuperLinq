@@ -39,9 +39,11 @@ public static partial class AsyncSuperEnumerable
 		Func<TRight, TKey> rightKeySelector)
 	{
 		if (joinType == JoinType.Loop)
+		{
 			ThrowHelper.ThrowArgumentException(
 				nameof(joinType),
 				$"Parameter joinType (JoinType) must not be equal to JoinType.Loop, was {joinType}.");
+		}
 
 		return Join<TLeft, TRight, TKey, (TLeft?, TRight?)>(
 			left,
@@ -99,9 +101,11 @@ public static partial class AsyncSuperEnumerable
 		where TComparer : notnull, IComparer<TKey>, IEqualityComparer<TKey>
 	{
 		if (joinType == JoinType.Loop)
+		{
 			ThrowHelper.ThrowArgumentException(
 				nameof(joinType),
 				$"Parameter joinType (JoinType) must not be equal to JoinType.Loop, was {joinType}.");
+		}
 
 		return Join<TLeft, TRight, TKey, TComparer, (TLeft?, TRight?)>(
 			left,
@@ -174,9 +178,11 @@ public static partial class AsyncSuperEnumerable
 		Func<TLeft, TRight, TResult> bothResultSelector)
 	{
 		if (joinType == JoinType.Loop)
+		{
 			ThrowHelper.ThrowArgumentException(
 				nameof(joinType),
 				$"Parameter joinType (JoinType) must not be equal to JoinType.Loop, was {joinType}.");
+		}
 
 		return Join(
 			left,
@@ -254,9 +260,11 @@ public static partial class AsyncSuperEnumerable
 		where TComparer : notnull, IComparer<TKey>, IEqualityComparer<TKey>
 	{
 		if (joinType == JoinType.Loop)
+		{
 			ThrowHelper.ThrowArgumentException(
 				nameof(joinType),
 				$"Parameter joinType (JoinType) must not be equal to JoinType.Loop, was {joinType}.");
+		}
 
 		return Join(
 			left,

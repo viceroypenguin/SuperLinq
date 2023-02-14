@@ -280,8 +280,10 @@ public partial class SuperEnumerable
 
 			var newStates = getNeighbors(current, cost);
 			foreach (var (s, p) in newStates)
+			{
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, p);
+			}
 
 			if (!queue.TryDequeue(out current, out cost))
 				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
@@ -583,8 +585,10 @@ public partial class SuperEnumerable
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
 			foreach (var (s, p) in newStates)
+			{
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, (current, p));
+			}
 
 			if (!queue.TryDequeue(out current, out from))
 				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
@@ -764,8 +768,10 @@ public partial class SuperEnumerable
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
 			foreach (var (s, p) in newStates)
+			{
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, (current, p));
+			}
 		} while (queue.TryDequeue(out current, out from));
 
 		return totalCost;

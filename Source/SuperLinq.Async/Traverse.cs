@@ -96,7 +96,9 @@ public partial class AsyncSuperEnumerable
 						.Reverse()
 						.WithCancellation(cancellationToken)
 						.ConfigureAwait(false))
+				{
 					stack.Push(child);
+				}
 			}
 		}
 	}

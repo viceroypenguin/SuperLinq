@@ -831,7 +831,9 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 				index--;
 			}
 			else
+			{
 				_elementIndex[nodes[index].Element] = index;
+			}
 		}
 
 		// Leaves of the tree are in fact 1-element heaps, for which there

@@ -278,8 +278,10 @@ public static partial class SuperEnumerable
 			}
 
 			foreach (var entry in top)
+			{
 				foreach (var i in dic[(entry, 1)])
 					yield return i;
+			}
 		}
 	}
 }

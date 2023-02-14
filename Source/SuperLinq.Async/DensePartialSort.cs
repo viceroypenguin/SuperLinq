@@ -278,8 +278,10 @@ public static partial class AsyncSuperEnumerable
 			}
 
 			foreach (var entry in top)
+			{
 				foreach (var i in dic[(entry, 1)])
 					yield return i;
+			}
 		}
 	}
 }

@@ -90,13 +90,18 @@ public class NullArgumentTest
 			var constraints = typeParameter.GetGenericParameterConstraints();
 
 			if (constraints.Length == 0)
+			{
 				return s_joinMethods.Contains(definition.Name)
 					? typeof(string)
 					: typeof(int);
+			}
+
 			if (constraints.Length == 1) return constraints.Single();
 			if (constraints.Select(c => c.GetGenericTypeDefinition())
 					.CollectionEqual(Seq(typeof(IEqualityComparer<>), typeof(IComparer<>))))
+			{
 				return typeof(StringComparer);
+			}
 
 			throw new NotImplementedException("NullArgumentTest.InstantiateType");
 		}
@@ -113,7 +118,9 @@ public class NullArgumentTest
 		if (Seq(typeof(IEqualityComparer<>), typeof(IComparer<>))
 				.Select(t => t.GetTypeInfo())
 				.Contains(type))
+		{
 			return true;
+		}
 
 		var nullableParameters = new[]
 		{

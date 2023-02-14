@@ -27,8 +27,10 @@ public class CountBetweenTest
 	public void CountBetweenWithMaxEqualsMin()
 	{
 		foreach (var xs in Seq(1).ArrangeCollectionInlineDatas())
+		{
 			using (xs)
 				Assert.True(xs.CountBetween(1, 1));
+		}
 	}
 
 	[Theory]
@@ -40,8 +42,10 @@ public class CountBetweenTest
 	public void CountBetweenRangeTests(int count, int min, int max, bool expecting)
 	{
 		foreach (var xs in Enumerable.Range(1, count).ArrangeCollectionInlineDatas())
+		{
 			using (xs)
 				Assert.Equal(expecting, xs.CountBetween(min, max));
+		}
 	}
 
 	[Fact]

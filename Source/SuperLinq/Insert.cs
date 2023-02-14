@@ -46,9 +46,11 @@ public static partial class SuperEnumerable
 				yield return iter.Current;
 
 			if (i < index)
+			{
 				ThrowHelper.ThrowArgumentOutOfRangeException(
 					nameof(index),
 					"Insertion index is greater than the length of the first sequence.");
+			}
 
 			foreach (var item in second)
 				yield return item;
@@ -101,9 +103,11 @@ public static partial class SuperEnumerable
 			{
 				var (_, countdown) = e.Current;
 				if (countdown is { } n && n != index - 1)
+				{
 					ThrowHelper.ThrowArgumentOutOfRangeException(
 						nameof(index),
 						"Insertion index is greater than the length of the first sequence.");
+				}
 
 				do
 				{

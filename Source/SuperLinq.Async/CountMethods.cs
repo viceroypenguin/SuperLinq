@@ -124,8 +124,10 @@ public static partial class AsyncSuperEnumerable
 	{
 		var count = 0;
 		await foreach (var i in source.WithCancellation(cancellationToken).ConfigureAwait(false))
+		{
 			if (++count >= limit)
 				break;
+		}
 
 		return count >= min && count <= max;
 	}
