@@ -40,8 +40,8 @@ public class RandomTest
 		// NOTE: Unclear what should actually be verified here... some additional thought needed.
 		Assert.Equal(RandomTrials, await resultA.CountAsync());
 		Assert.Equal(RandomTrials, await resultB.CountAsync());
-		Assert.True(await resultA.AllAsync(x => x >= 0.0 && x < 1.0));
-		Assert.True(await resultB.AllAsync(x => x >= 0.0 && x < 1.0));
+		Assert.True(await resultA.AllAsync(x => x is >= 0.0 and < 1.0));
+		Assert.True(await resultB.AllAsync(x => x is >= 0.0 and < 1.0));
 	}
 
 	/// <summary>
@@ -70,8 +70,8 @@ public class RandomTest
 
 		Assert.Equal(RandomTrials, await resultA.CountAsync());
 		Assert.Equal(RandomTrials, await resultB.CountAsync());
-		Assert.True(await resultA.AllAsync(x => x >= 0 && x < 100));
-		Assert.True(await resultB.AllAsync(x => x >= 0 && x < 100));
+		Assert.True(await resultA.AllAsync(x => x is >= 0 and < 100));
+		Assert.True(await resultB.AllAsync(x => x is >= 0 and < 100));
 	}
 
 	/// <summary>

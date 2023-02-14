@@ -40,8 +40,8 @@ public class RandomTest
 		// NOTE: Unclear what should actually be verified here... some additional thought needed.
 		Assert.Equal(RandomTrials, resultA.Count());
 		Assert.Equal(RandomTrials, resultB.Count());
-		Assert.True(resultA.All(x => x >= 0.0 && x < 1.0));
-		Assert.True(resultB.All(x => x >= 0.0 && x < 1.0));
+		Assert.True(resultA.All(x => x is >= 0.0 and < 1.0));
+		Assert.True(resultB.All(x => x is >= 0.0 and < 1.0));
 	}
 
 	/// <summary>
@@ -73,8 +73,8 @@ public class RandomTest
 
 		Assert.Equal(RandomTrials, resultA.Count());
 		Assert.Equal(RandomTrials, resultB.Count());
-		Assert.True(resultA.All(x => x >= min && x < max));
-		Assert.True(resultB.All(x => x >= min && x < max));
+		Assert.True(resultA.All(x => x is >= min and < max));
+		Assert.True(resultB.All(x => x is >= min and < max));
 	}
 
 	/// <summary>
