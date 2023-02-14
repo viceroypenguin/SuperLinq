@@ -315,7 +315,7 @@ public static class GetShortestPathTest
 				(2, 2));
 
 			path.AssertSequenceEqual(
-				(a, b) => (a.nextState == b.nextState && Math.Abs(a.cost - b.cost) < 0.001d),
+				(a, b) => a.nextState == b.nextState && Math.Abs(a.cost - b.cost) < 0.001d,
 				(nextState: (0, 0), cost: 0d),
 				(nextState: (1, 0), cost: 1.001d),
 				(nextState: (2, 0), cost: 2.002d),

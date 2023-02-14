@@ -206,7 +206,7 @@ public class RandomSubsetTest
 	{
 		var average = values.Average();
 		var standardDeviation = StandardDeviationInternal(values, average);
-		return (standardDeviation * 100.0) / average;
+		return standardDeviation * 100.0 / average;
 	}
 
 	private static double StandardDeviationInternal(IEnumerable<double> values, double average)
