@@ -463,7 +463,7 @@ public static class GetShortestPathTest
 			{
 				var xD = p.x - end.x;
 				var yD = p.y - end.y;
-				var dist = Math.Sqrt(xD * xD + yD * yD);
+				var dist = Math.Sqrt((xD * xD) + (yD * yD));
 				return (p, newCost, newCost + dist);
 			}
 
@@ -499,7 +499,7 @@ public static class GetShortestPathTest
 			{
 				var xD = p.x - end.x;
 				var yD = p.y - end.y;
-				var dist = Math.Sqrt(xD * xD + yD * yD);
+				var dist = Math.Sqrt((xD * xD) + (yD * yD));
 				return (p, newCost, newCost + dist);
 			}
 

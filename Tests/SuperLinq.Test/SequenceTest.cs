@@ -26,7 +26,7 @@ public class SequenceTest
 	{
 		var result = SuperEnumerable.Range(start, count, step);
 		var expectations = Enumerable.Range(0, count)
-			.Select(i => start + step * i);
+			.Select(i => start + (step * i));
 
 		result.AssertSequenceEqual(expectations);
 	}

@@ -26,7 +26,7 @@ public class SequenceTest
 	{
 		var result = AsyncSuperEnumerable.Range(start, count, step);
 		var expectations = Enumerable.Range(0, count)
-			.Select(i => start + step * i);
+			.Select(i => start + (step * i));
 
 		return result.AssertSequenceEqual(expectations);
 	}

@@ -90,9 +90,9 @@ public class SortedMergeTests
 	[Fact]
 	public async Task TestSortedMergeEqualLengthSequences()
 	{
-		await using var sequenceA = Enumerable.Range(0, 10).Select(x => x * 3 + 0).AsTestingSequence();
-		await using var sequenceB = Enumerable.Range(0, 10).Select(x => x * 3 + 1).AsTestingSequence();
-		await using var sequenceC = Enumerable.Range(0, 10).Select(x => x * 3 + 2).AsTestingSequence();
+		await using var sequenceA = Enumerable.Range(0, 10).Select(x => (x * 3) + 0).AsTestingSequence();
+		await using var sequenceB = Enumerable.Range(0, 10).Select(x => (x * 3) + 1).AsTestingSequence();
+		await using var sequenceC = Enumerable.Range(0, 10).Select(x => (x * 3) + 2).AsTestingSequence();
 
 		var result = sequenceA.SortedMerge(sequenceB, sequenceC);
 		await result.AssertSequenceEqual(Enumerable.Range(0, 10 * 3));
@@ -104,9 +104,9 @@ public class SortedMergeTests
 	[Fact]
 	public async Task TestSortedMergeUnequalLengthSequences()
 	{
-		await using var sequenceA = Enumerable.Range(0, 30).Select(x => x * 3 + 0).AsTestingSequence(maxEnumerations: 2);
-		await using var sequenceB = Enumerable.Range(0, 30).Select(x => x * 3 + 1).Take(30 / 2).AsTestingSequence(maxEnumerations: 2);
-		await using var sequenceC = Enumerable.Range(0, 30).Select(x => x * 3 + 2).Take(30 / 3).AsTestingSequence(maxEnumerations: 2);
+		await using var sequenceA = Enumerable.Range(0, 30).Select(x => (x * 3) + 0).AsTestingSequence(maxEnumerations: 2);
+		await using var sequenceB = Enumerable.Range(0, 30).Select(x => (x * 3) + 1).Take(30 / 2).AsTestingSequence(maxEnumerations: 2);
+		await using var sequenceC = Enumerable.Range(0, 30).Select(x => (x * 3) + 2).Take(30 / 3).AsTestingSequence(maxEnumerations: 2);
 
 		var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC).OrderBy(SuperEnumerable.Identity);
 		var result = sequenceA.SortedMerge(sequenceB, sequenceC);
@@ -119,9 +119,9 @@ public class SortedMergeTests
 	[Fact]
 	public async Task TestSortedMergeDescendingOrder()
 	{
-		await using var sequenceA = Enumerable.Range(0, 10).Select(x => x * 3 + 0).Reverse().AsTestingSequence();
-		await using var sequenceB = Enumerable.Range(0, 10).Select(x => x * 3 + 1).Reverse().AsTestingSequence();
-		await using var sequenceC = Enumerable.Range(0, 10).Select(x => x * 3 + 2).Reverse().AsTestingSequence();
+		await using var sequenceA = Enumerable.Range(0, 10).Select(x => (x * 3) + 0).Reverse().AsTestingSequence();
+		await using var sequenceB = Enumerable.Range(0, 10).Select(x => (x * 3) + 1).Reverse().AsTestingSequence();
+		await using var sequenceC = Enumerable.Range(0, 10).Select(x => (x * 3) + 2).Reverse().AsTestingSequence();
 
 		var result = sequenceA.SortedMergeDescending(sequenceB, sequenceC);
 		await result.AssertSequenceEqual(Enumerable.Range(0, 10 * 3).Reverse());

@@ -24,8 +24,8 @@ public class ZipShortestTest
 	[InlineData(1), InlineData(2)]
 	public async Task TwoParamsWorksProperly(int offset)
 	{
-		var o1 = (offset + 0) % 2 + 2;
-		var o2 = (offset + 1) % 2 + 2;
+		var o1 = ((offset + 0) % 2) + 2;
+		var o2 = ((offset + 1) % 2) + 2;
 
 		await using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
 		await using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
@@ -49,9 +49,9 @@ public class ZipShortestTest
 	[InlineData(1), InlineData(2), InlineData(3)]
 	public async Task ThreeParamsWorksProperly(int offset)
 	{
-		var o1 = (offset + 0) % 3 + 2;
-		var o2 = (offset + 1) % 3 + 2;
-		var o3 = (offset + 2) % 3 + 2;
+		var o1 = ((offset + 0) % 3) + 2;
+		var o2 = ((offset + 1) % 3) + 2;
+		var o3 = ((offset + 2) % 3) + 2;
 
 		await using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
 		await using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
@@ -77,10 +77,10 @@ public class ZipShortestTest
 	[InlineData(1), InlineData(2), InlineData(3), InlineData(4)]
 	public async Task FourParamsWorksProperly(int offset)
 	{
-		var o1 = (offset + 0) % 4 + 2;
-		var o2 = (offset + 1) % 4 + 2;
-		var o3 = (offset + 2) % 4 + 2;
-		var o4 = (offset + 3) % 4 + 2;
+		var o1 = ((offset + 0) % 4) + 2;
+		var o2 = ((offset + 1) % 4) + 2;
+		var o3 = ((offset + 2) % 4) + 2;
+		var o4 = ((offset + 3) % 4) + 2;
 
 		await using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
 		await using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();

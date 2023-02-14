@@ -14,7 +14,7 @@ public class SplitTest
 	{
 		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
 		var result = sequence.Split(2, EqualityComparer.Create<int>((x, y) => x % 2 == y % 2));
-		result.AssertSequenceEqual(Enumerable.Range(1, 5).Select(x => new[] { x * 2 - 1, }));
+		result.AssertSequenceEqual(Enumerable.Range(1, 5).Select(x => new[] { (x * 2) - 1, }));
 	}
 
 	[Fact]
