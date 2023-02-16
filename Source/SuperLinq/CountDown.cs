@@ -77,7 +77,7 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(resultSelector);
 		Guard.IsGreaterThanOrEqualTo(count, 1);
 
-		return source.TryGetCollectionCount(out var _)
+		return source.TryGetCollectionCount() is int
 			? IterateCollection(source, count, resultSelector)
 			: IterateSequence(source, count, resultSelector);
 
@@ -88,7 +88,7 @@ public static partial class SuperEnumerable
 			// Enumerable counts can change over time, so it is very
 			// important that this check happens at enumeration time;
 			// do not move it outside of the iterator method.
-			_ = source.TryGetCollectionCount(out var i);
+			var i = source.TryGetCollectionCount()!.Value;
 			foreach (var item in source)
 				yield return resultSelector(item, i-- <= count ? i : null);
 		}

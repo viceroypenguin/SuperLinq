@@ -115,7 +115,7 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(predicate);
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 
-		if (TryGetCollectionCount(source, out var length))
+		if (source.TryGetCollectionCount() is int length)
 		{
 			index = index.GetOffset(length);
 		}

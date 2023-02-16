@@ -28,7 +28,7 @@ public static partial class SuperEnumerable
 
 		static IEnumerable<TSource> Core(IEnumerable<TSource> source, int count)
 		{
-			if (source.TryGetCollectionCount(out var c))
+			if (source.TryGetCollectionCount() is int c)
 			{
 				Guard.IsEqualTo(c, count, $"{nameof(source)}.Count()");
 
