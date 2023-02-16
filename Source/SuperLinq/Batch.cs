@@ -30,7 +30,51 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="size"/> is below 1.</exception>
 	public static IEnumerable<IList<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
 	{
-		throw new NotImplementedException();
+		// yes this operator duplicates on net6+; but no name overlap, so leave alone
+		Guard.IsNotNull(source);
+		Guard.IsGreaterThanOrEqualTo(size, 1);
+
+		return Core(source, size);
+
+		static IEnumerable<IList<TSource>> Core(IEnumerable<TSource> source, int size)
+		{
+			TSource[]? array = null;
+
+			if (source is ICollection<TSource> coll)
+			{
+				if (coll.Count == 0)
+					yield break;
+
+				if (coll.Count <= size)
+				{
+					array = new TSource[coll.Count];
+					coll.CopyTo(array, 0);
+					yield return array;
+					yield break;
+				}
+			}
+			else if (source.TryGetCollectionCount() == 0)
+			{
+				yield break;
+			}
+
+			var n = 0;
+			foreach (var item in source)
+			{
+				(array ??= new TSource[size])[n++] = item;
+				if (n == size)
+				{
+					yield return array;
+					n = 0;
+				}
+			}
+
+			if (n != 0)
+			{
+				Array.Resize(ref array, n);
+				yield return array;
+			}
+		}
 	}
 
 	/// <summary>
@@ -154,7 +198,7 @@ public static partial class SuperEnumerable
 		Func<IReadOnlyList<TSource>, TResult> resultSelector)
 	{
 		if (source is ICollection<TSource> coll
-			&& coll.Count < size)
+			&& coll.Count <= size)
 		{
 			coll.CopyTo(array, 0);
 			yield return resultSelector(new ArraySegment<TSource>(array, 0, coll.Count));
