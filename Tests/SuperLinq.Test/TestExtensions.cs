@@ -38,14 +38,6 @@ internal static partial class TestExtensions
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, Func<T, T, bool> comparer, params T[] expected) =>
 		Assert.Equal(expected, actual, EqualityComparer.Create(comparer));
 
-	internal static IEnumerable<IDisposableEnumerable<T>> ArrangeCollectionInlineDatas<T>(this IEnumerable<T> input)
-	{
-		// UI will consume one enumeration
-		yield return input.AsTestingSequence(maxEnumerations: 2);
-		yield return new BreakingCollection<T>(input);
-		yield return new BreakingList<T>(input);
-	}
-
 	internal static void AssertCollectionEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
 		Assert.True(actual.CollectionEqual(expected, comparer: default));
 
@@ -54,4 +46,11 @@ internal static partial class TestExtensions
 
 	internal static void AssertCollectionEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected, IEqualityComparer<T>? comparer) =>
 		Assert.True(actual.CollectionEqual(expected, comparer));
+
+	internal static IEnumerable<IDisposableEnumerable<T>> ArrangeCollectionInlineDatas<T>(this IEnumerable<T> input)
+	{
+		// UI will consume one enumeration
+		yield return input.AsTestingSequence(maxEnumerations: 2);
+		yield return new BreakingCollection<T>(input);
+	}
 }
