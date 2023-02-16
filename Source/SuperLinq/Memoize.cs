@@ -56,7 +56,7 @@ public static partial class SuperEnumerable
 	{
 		private readonly object _lock = new();
 
-		private readonly IEnumerable<T> _source;
+		private IEnumerable<T>? _source;
 
 		private IEnumerator<T>? _enumerator;
 		private List<T> _buffer = new();
@@ -106,6 +106,9 @@ public static partial class SuperEnumerable
 				if (_disposed)
 					ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
 
+				if (_source == null)
+					ThrowHelper.ThrowInvalidOperationException();
+
 				if (_exceptionIndex == -1)
 				{
 					Guard.IsNotNull(_exception);
@@ -114,6 +117,11 @@ public static partial class SuperEnumerable
 
 				if (_initialized)
 					return;
+
+#if NET6_0_OR_GREATER
+				if (_source.TryGetCollectionCount() is int n)
+					_buffer.EnsureCapacity(n);
+#endif
 
 				try
 				{
@@ -203,6 +211,7 @@ public static partial class SuperEnumerable
 				_buffer.Clear();
 				_enumerator?.Dispose();
 				_enumerator = null;
+				_source = null;
 			}
 		}
 	}
@@ -216,7 +225,7 @@ public static partial class SuperEnumerable
 			Initialized,
 			Disposed,
 			Error,
-	}
+		}
 
 		private sealed record CmbHelper(State State, T[]? Buffer = null, ExceptionDispatchInfo? Exception = null);
 
@@ -228,7 +237,7 @@ public static partial class SuperEnumerable
 		{
 			_source = source;
 			_state = new(State.Uninitialized, null);
-}
+		}
 
 		public int Count
 		{
