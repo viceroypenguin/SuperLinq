@@ -50,8 +50,8 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(first);
 		Guard.IsNotNull(second);
 
-		if (first.TryGetCollectionCount(out var firstCount) &&
-			second.TryGetCollectionCount(out var secondCount) &&
+		if (first.TryGetCollectionCount() is int firstCount &&
+			second.TryGetCollectionCount() is int secondCount &&
 			secondCount > firstCount)
 		{
 			return false;

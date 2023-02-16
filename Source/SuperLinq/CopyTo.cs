@@ -33,7 +33,7 @@ public static partial class SuperEnumerable
 			arr.AsSpan().CopyTo(span);
 			return arr.Length;
 		}
-		else if (TryGetCollectionCount(source, out var n))
+		else if (source.TryGetCollectionCount() is int n)
 		{
 			if (n > span.Length)
 				ThrowHelper.ThrowArgumentException(nameof(span), "Destination is not long enough.");
@@ -101,7 +101,7 @@ public static partial class SuperEnumerable
 			coll.CopyTo(array, index);
 			return coll.Count;
 		}
-		else if (TryGetCollectionCount(source, out var n))
+		else if (source.TryGetCollectionCount() is int n)
 		{
 			if (n + index > array.Length)
 				ThrowHelper.ThrowArgumentException(nameof(array), "Destination is not long enough.");
@@ -186,7 +186,7 @@ public static partial class SuperEnumerable
 		{
 #if NET6_0_OR_GREATER
 			if (list is List<TSource> l
-				&& TryGetCollectionCount(source, out var n))
+				&& source.TryGetCollectionCount() is int n)
 			{
 				l.EnsureCapacity(n + index);
 			}

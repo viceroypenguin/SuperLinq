@@ -100,7 +100,7 @@ public static partial class SuperEnumerable
 			IEnumerable<TSource> source, int width,
 			Func<int, TSource> paddingSelector)
 		{
-			if (source.TryGetCollectionCount(out var collectionCount))
+			if (source.TryGetCollectionCount() is int collectionCount)
 			{
 				for (var i = 0; i < width - collectionCount; i++)
 					yield return paddingSelector(i);

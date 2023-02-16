@@ -69,7 +69,7 @@ public static partial class SuperEnumerable
 			return Enumerable.ElementAt(source, index.Value);
 		}
 
-		if (source.TryGetCollectionCount(out var count))
+		if (source.TryGetCollectionCount() is int count)
 		{
 			return Enumerable.ElementAt(source, count - index.Value);
 		}

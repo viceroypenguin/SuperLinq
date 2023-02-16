@@ -64,7 +64,7 @@ public static partial class SuperEnumerable
 		static IEnumerable<TSource> Core(IEnumerable<TSource> source, TSource value, Index index)
 		{
 			if (index.IsFromEnd
-				&& source.TryGetCollectionCount(out var count))
+				&& source.TryGetCollectionCount() is int count)
 			{
 				index = index.GetOffset(count);
 			}
