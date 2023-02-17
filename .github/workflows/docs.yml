@@ -40,7 +40,7 @@ jobs:
         find -type f -name "*.html" ! -name "index.html" | while read fname; do
           dirname=`dirname "$fname"`
           filename=`basename "$fname" .html`
-          mv "${dirname}/${filename}" "${dirname}/${filename^^}.html"
+          mv "${dirname}/${filename}.html" "${dirname}/${filename^^}.html"
         done
           
     - name: Setup Pages
