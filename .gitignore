@@ -23,6 +23,7 @@ build/
 
 # Visual Studio 2015 cache/options directory
 .vs/
+.vscode/
 
 # TestResults
 [Tt]est[Rr]esults/
@@ -34,11 +35,10 @@ build/
 # except build/, which is used as an MSBuild target.
 !**/packages/build/
 
-docs/
-
-.vscode/
-*.lock.json
-tools/
-
 # Generated files
 PolySharp.SourceGenerators
+
+# docs
+output
+cache
+

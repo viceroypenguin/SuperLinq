@@ -1,0 +1,3 @@
+[submodule "Docs/SuperLinq.Docs/theme"]
+	path = Docs/SuperLinq.Docs/theme
+	url = https://github.com/statiqdev/Docable/
