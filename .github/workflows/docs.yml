@@ -31,9 +31,18 @@ jobs:
         dotnet-version: '7.0.x'
 
     - name: Build documentation
-      run: dotnet run -f net7.0
       working-directory: Docs/SuperLinq.Docs
+      run: dotnet run -f net7.0
 
+    - name: Upper-case Method files
+      working-directory: Docs/SuperLinq.Docs/output
+      run: |
+        find -type f -name "*.html" ! -name "index.html" | while read fname; do
+          dirname=`dirname "$fname"`
+          filename=`basename "$fname"`
+          mv "${dirname}/${filename}" "${dirname}/${filename^^}"
+        done
+          
     - name: Setup Pages
       uses: actions/configure-pages@v3
     - name: Upload artifact
