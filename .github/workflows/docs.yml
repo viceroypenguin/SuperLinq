@@ -27,7 +27,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v1
       with:
-        path: 'docs/SuperLinq.Docs/output'
+        path: 'Docs/SuperLinq.Docs/output'
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v1
