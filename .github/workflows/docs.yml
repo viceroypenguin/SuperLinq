@@ -33,9 +33,11 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore
+    - name: Build
+      run: dotnet build -c Release --no-restore
 
     - name: Build documentation
-      run: dotnet run -f net7.0
+      run: dotnet run -f net7.0 --no-build
       working-directory: Docs/SuperLinq.Docs
 
     - name: Setup Pages
