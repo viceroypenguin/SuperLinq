@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net7.0</TargetFrameworks>
+		<NoWarn>$(NoWarn);CA1852;NU1701</NoWarn>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.DocAsCode.App" Version="2.60.2" />
+		<PackageReference Include="Microsoft.DocAsCode.Build.MemberLevelManagedReference" Version="2.60.2" />
+	</ItemGroup>
+
+</Project>

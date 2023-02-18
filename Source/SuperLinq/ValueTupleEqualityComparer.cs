@@ -4,7 +4,7 @@
 /// A utility class to easily compose a custom <see cref="IEqualityComparer{T}"/>
 /// for <see cref="ValueTuple{T1}"/>s and <see cref="ValueTuple{T1, T2}"/>s.
 /// </summary>
-public static class ValueTupleEqualityComparer
+internal static class ValueTupleEqualityComparer
 {
 	/// <summary>
 	/// Creates a custom <see cref="IEqualityComparer{T}"/> for a <see cref="ValueTuple{T1}"/> based on custom comparers
