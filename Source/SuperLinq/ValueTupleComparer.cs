@@ -6,7 +6,7 @@ namespace SuperLinq;
 /// A utility class to easily compose a custom <see cref="IComparer{T}"/>
 /// for <see cref="ValueTuple{T1, T2}"/>s.
 /// </summary>
-public static class ValueTupleComparer
+internal static class ValueTupleComparer
 {
 	/// <summary>
 	/// Creates a custom <see cref="IComparer{T}"/> for a <see cref="ValueTuple{T1, T2}"/>
