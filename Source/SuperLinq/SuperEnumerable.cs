@@ -19,26 +19,5 @@ public static partial class SuperEnumerable
 		};
 #endif
 
-	internal static bool TryGetCollectionCount<T>(this IEnumerable<T> source, out int count)
-	{
-		Guard.IsNotNull(source);
-#if NET6_0_OR_GREATER
-		return source.TryGetNonEnumeratedCount(out count);
-#else
-		switch (source)
-		{
-			case ICollection<T> collection:
-				count = collection.Count;
-				return true;
-			case System.Collections.ICollection collection:
-				count = collection.Count;
-				return true;
-			default:
-				count = default;
-				return false;
-		}
-#endif
-	}
-
 	internal static (bool HasValue, T Value) Some<T>(T value) => (true, value);
 }

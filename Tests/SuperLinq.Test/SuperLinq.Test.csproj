@@ -11,6 +11,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Source\SuperLinq\SuperLinq.csproj" />
+		<Compile Include="..\..\Source\SuperLinq\ValueTupleEqualityComparer.cs" Link="ValueTupleEqualityComparer.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

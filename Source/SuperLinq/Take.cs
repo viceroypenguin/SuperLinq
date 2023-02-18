@@ -68,7 +68,7 @@ public static partial class SuperEnumerable
 		// Enumerable counts can change over time, so it is very
 		// important that this check happens at enumeration time;
 		// do not move it outside of the iterator method.
-		if (source.TryGetCollectionCount(out var count))
+		if (source.TryGetCollectionCount() is int count)
 		{
 			var startIndex = start.GetOffset(count);
 			var endIndex = end.GetOffset(count);
@@ -126,6 +126,7 @@ public static partial class SuperEnumerable
 
 			var startCount = start.Value;
 			var endCount = end.Value;
+			count = 0;
 			while (count < startCount && e.MoveNext())
 			{
 				++count;

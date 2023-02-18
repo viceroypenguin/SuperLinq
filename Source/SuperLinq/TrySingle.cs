@@ -85,28 +85,25 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(resultSelector);
 
-		switch (source.TryGetCollectionCount())
+		if (source.TryGetCollectionCount() is int n)
 		{
-			case 0:
+			return n switch
+			{
+				0 => resultSelector(zero, default),
+				1 => resultSelector(one, source.First()),
+				_ => resultSelector(many, default),
+			};
+		}
+		else
+		{
+			using var e = source.GetEnumerator();
+			if (!e.MoveNext())
 				return resultSelector(zero, default);
-			case 1:
-			{
-				return resultSelector(one, source.First());
-			}
-			case > 1:
-				return resultSelector(many, default);
 
-			default:
-			{
-				using var e = source.GetEnumerator();
-				if (!e.MoveNext())
-					return resultSelector(zero, default);
-
-				var current = e.Current;
-				return !e.MoveNext()
-					? resultSelector(one, current)
-					: resultSelector(many, default);
-			}
+			var current = e.Current;
+			return !e.MoveNext()
+				? resultSelector(one, current)
+				: resultSelector(many, default);
 		}
 	}
 }

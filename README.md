@@ -23,7 +23,7 @@ SuperLinq is available for download and installation as a
 [NuGet package](https://www.nuget.org/packages/superlinq/).
 [![NuGet Badge](https://buildstats.info/nuget/SuperLinq)](https://www.nuget.org/packages/SuperLinq/)
 
-The documentation for the SuperLinq methods can be found [here](Source/SuperLinq/readme.md).
+The documentation for the SuperLinq methods can be found [here](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.html).
 
 ## SuperLinq.Async
 
@@ -31,7 +31,7 @@ SuperLinq.Async is available for download and installation as a
 [NuGet package](https://www.nuget.org/packages/superlinq.async/). 
 [![NuGet Badge](https://buildstats.info/nuget/SuperLinq.Async)](https://www.nuget.org/packages/SuperLinq.Async/)
 
-The documentation for the SuperLinq.Async methods can be found [here](Source/SuperLinq.Async/readme.md).
+The documentation for the SuperLinq.Async methods can be found [here](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.html).
 
 ## Operator Support
 

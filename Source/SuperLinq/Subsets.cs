@@ -195,7 +195,7 @@ public static partial class SuperEnumerable
 			_sequence = sequence;
 
 			Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
-			if (sequence.TryGetCollectionCount(out var cnt))
+			if (sequence.TryGetCollectionCount() is int cnt)
 				Guard.IsLessThanOrEqualTo(subsetSize, cnt - 1);
 
 			_subsetSize = subsetSize;

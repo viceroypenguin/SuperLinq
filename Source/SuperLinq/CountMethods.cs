@@ -147,11 +147,11 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(first);
 		Guard.IsNotNull(second);
 
-		if (first.TryGetCollectionCount(out var firstCount))
+		if (first.TryGetCollectionCount() is int firstCount)
 		{
 			return firstCount.CompareTo(second.TryGetCollectionCount() ?? second.CountUpTo(firstCount + 1));
 		}
-		else if (second.TryGetCollectionCount(out var secondCount))
+		else if (second.TryGetCollectionCount() is int secondCount)
 		{
 			return first.CountUpTo(secondCount + 1).CompareTo(secondCount);
 		}

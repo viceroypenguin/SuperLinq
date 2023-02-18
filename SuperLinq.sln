@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{835F8FFA
 		.github\workflows\build.yml = .github\workflows\build.yml
 		.github\dependabot.yml = .github\dependabot.yml
 		Directory.Build.props = Directory.Build.props
+		.github\workflows\docs.yml = .github\workflows\docs.yml
 		license.txt = license.txt
 		README.md = README.md
 	EndProjectSection
@@ -30,6 +31,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Generator", "Generators\SuperLinq.Generator\SuperLinq.Generator.csproj", "{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Async.Generator", "Generators\SuperLinq.Async.Generator\SuperLinq.Async.Generator.csproj", "{B6503F7F-B3DE-47E5-922E-3A6108E75970}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{210A4922-6BBE-47D6-901E-38127E15C4C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLinq.Docs", "Docs\SuperLinq.Docs\SuperLinq.Docs.csproj", "{33BCC44C-84B3-4C0A-9643-1530B5B65C11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +66,10 @@ Global
 		{B6503F7F-B3DE-47E5-922E-3A6108E75970}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6503F7F-B3DE-47E5-922E-3A6108E75970}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6503F7F-B3DE-47E5-922E-3A6108E75970}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33BCC44C-84B3-4C0A-9643-1530B5B65C11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33BCC44C-84B3-4C0A-9643-1530B5B65C11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33BCC44C-84B3-4C0A-9643-1530B5B65C11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33BCC44C-84B3-4C0A-9643-1530B5B65C11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +81,7 @@ Global
 		{1A4F94C6-2143-486B-B787-271506C327FC} = {99F4CCA1-C24D-4C5C-85B9-79CC6A30FAD2}
 		{41ECAC75-34E3-4C8A-A7BA-DF2C186FF7DE} = {7805222E-6CD5-41FE-9945-0D9FD7DFA24C}
 		{B6503F7F-B3DE-47E5-922E-3A6108E75970} = {7805222E-6CD5-41FE-9945-0D9FD7DFA24C}
+		{33BCC44C-84B3-4C0A-9643-1530B5B65C11} = {210A4922-6BBE-47D6-901E-38127E15C4C4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A8EBCB0-B3EB-4D85-AD02-D349122C1D8E}
