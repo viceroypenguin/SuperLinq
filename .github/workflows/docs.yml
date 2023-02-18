@@ -26,18 +26,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: |
-          3.1.x
-          6.0.x
-          7.0.x
+        dotnet-version: 7.0.x
 
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
-      run: dotnet build -c Release --no-restore
 
     - name: Build documentation
-      run: dotnet run -f net7.0 -c Release --no-build
+      run: dotnet run -f net7.0 -c Release
       working-directory: Docs/SuperLinq.Docs
 
     - name: Setup Pages
