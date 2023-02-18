@@ -6,6 +6,7 @@ public class BatchTest
 	public void BatchIsLazy()
 	{
 		_ = new BreakingSequence<int>().Batch(1);
+		_ = new BreakingSequence<int>().Buffer(1);
 	}
 
 	[Fact]
