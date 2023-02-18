@@ -3,13 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFrameworks>net7.0</TargetFrameworks>
-		<NoWarn>CA1852</NoWarn>
+		<NoWarn>$(NoWarn);CA1852;NU1701</NoWarn>
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.DocAsCode.App" Version="2.60.2" NoWarn="NU1701" />
-		<PackageReference Include="Microsoft.DocAsCode.Build.MemberLevelManagedReference" Version="2.60.2" NoWarn="NU1701" />
-		<PackageReference Include="Nuget.Frameworks" Version="6.4.0" />
+		<PackageReference Include="Microsoft.DocAsCode.App" Version="2.60.2" />
+		<PackageReference Include="Microsoft.DocAsCode.Build.MemberLevelManagedReference" Version="2.60.2" />
 	</ItemGroup>
 
 </Project>
