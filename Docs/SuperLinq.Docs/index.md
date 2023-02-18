@@ -1,5 +1,3 @@
-<div class="article">
-
 # SuperLinq
 
 ## Summary
@@ -13,5 +11,3 @@ Here are some additonal links to get you started:
 
 - [API Documentation](api/index.md) - Browse the fully documented API here.
 - [Github Repo](https://github.com/viceroypenguin/SuperLinq) - File issues, contribute pull requests or check out the code for yourself!
-
-</div>
