@@ -7,8 +7,6 @@ on:
       - 'master'
     paths-ignore:
       - '**/readme.md'
-    tags:
-      - '**'
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -45,10 +43,3 @@ jobs:
       
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
-
-    - name: Package 
-      run: dotnet pack -c Release --no-build -o nupkgs
-      if: startsWith(github.ref, 'refs/tags/')
-    - name: Push to Nuget
-      run: dotnet nuget push "./nupkgs/*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGETPUBLISHKEY }}
-      if: startsWith(github.ref, 'refs/tags/')
