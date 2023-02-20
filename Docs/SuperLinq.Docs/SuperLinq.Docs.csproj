@@ -9,7 +9,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.DocAsCode.App" Version="2.60.2" />
-		<PackageReference Include="Microsoft.DocAsCode.Build.MemberLevelManagedReference" Version="2.60.2" />
+		<PackageReference Include="Microsoft.DocAsCode.Build.MemberLevelManagedReference" Version="2.62.1" />
 	</ItemGroup>
 
 </Project>
