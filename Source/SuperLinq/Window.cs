@@ -18,7 +18,36 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsGreaterThanOrEqualTo(size, 1);
 
-		return WindowImpl(source, size, WindowType.Normal);
+		return Core(source, size);
+
+		static IEnumerable<IList<TSource>> Core(IEnumerable<TSource> source, int size)
+		{
+			using var e = source.GetEnumerator();
+			if (!e.MoveNext())
+				yield break;
+
+			var window = new TSource[size];
+			window[0] = e.Current;
+
+			for (var i = 1; i < size; i++)
+			{
+				if (!e.MoveNext())
+					yield break;
+				window[i] = e.Current;
+			}
+
+			while (e.MoveNext())
+			{
+				var newWindow = new TSource[size];
+				window.AsSpan()[1..].CopyTo(newWindow);
+				newWindow[^1] = e.Current;
+
+				yield return window;
+				window = newWindow;
+			}
+
+			yield return window;
+		}
 	}
 
 	/// <summary>
