@@ -10,8 +10,7 @@ public static partial class SuperEnumerable
 	/// </summary>
 	/// <typeparam name="TResult">Result sequence element type.</typeparam>
 	/// <param name="enumerableFactory">Enumerable factory function.</param>
-	/// <returns>Sequence that will invoke the enumerable factory upon a call to <see
-	/// cref="IEnumerable{T}.GetEnumerator"/>.</returns>
+	/// <returns>Sequence that will invoke the enumerable factory upon iteration.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="enumerableFactory"/> is <see
 	/// langword="null"/>.</exception>
 	public static IEnumerable<TResult> Defer<TResult>(Func<IEnumerable<TResult>> enumerableFactory)
