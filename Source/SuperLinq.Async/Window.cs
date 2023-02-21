@@ -18,6 +18,37 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsGreaterThanOrEqualTo(size, 1);
 
-		return WindowImpl(source, size, WindowType.Normal);
+		return Core(source, size);
+
+		static async IAsyncEnumerable<IList<TSource>> Core(
+			IAsyncEnumerable<TSource> source, int size,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default)
+		{
+			await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
+			if (!await e.MoveNextAsync())
+				yield break;
+
+			var window = new TSource[size];
+			window[0] = e.Current;
+
+			for (var i = 1; i < size; i++)
+			{
+				if (!await e.MoveNextAsync())
+					yield break;
+				window[i] = e.Current;
+			}
+
+			while (await e.MoveNextAsync())
+			{
+				var newWindow = new TSource[size];
+				window.AsSpan()[1..].CopyTo(newWindow);
+				newWindow[^1] = e.Current;
+
+				yield return window;
+				window = newWindow;
+			}
+
+			yield return window;
+		}
 	}
 }
