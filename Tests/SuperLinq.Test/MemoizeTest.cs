@@ -403,6 +403,10 @@ public class MemoizeTest
 
 		buffer.AssertSequenceEqual(Enumerable.Range(1, 10));
 		Assert.Equal(10, buffer.Count);
+
+		buffer.Reset();
+		buffer.AssertSequenceEqual(Enumerable.Range(1, 10));
+		Assert.Equal(10, buffer.Count);
 	}
 
 	[Fact]
