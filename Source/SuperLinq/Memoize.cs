@@ -81,9 +81,6 @@ public static partial class SuperEnumerable
 				if (_disposed)
 					ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
 
-				if (_exceptionIndex == -1)
-					return;
-
 				_buffer = new();
 				_initialized = false;
 				_enumerator?.Dispose();
@@ -392,8 +389,11 @@ public static partial class SuperEnumerable
 		private ICollection<T> Source =>
 			_source ?? ThrowHelper.ThrowObjectDisposedException<ICollection<T>>(nameof(IBuffer<T>));
 
-		// nothing to do here
-		public void Reset() { }
+		public void Reset()
+		{
+			if (_source == null)
+				ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+		}
 
 		public int Count => Source.Count;
 

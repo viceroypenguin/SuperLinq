@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using CommunityToolkit.Diagnostics;
 
 namespace Test;
@@ -23,6 +24,7 @@ public class MemoizeTest
 		using (seq)
 		{
 			using var buffer = seq.Memoize();
+			Assert.Equal(0, buffer.Count);
 
 			buffer.AssertSequenceEqual(Enumerable.Range(1, 10));
 			Assert.Equal(10, buffer.Count);
@@ -99,12 +101,31 @@ public class MemoizeTest
 			using var buffer = seq.Memoize();
 
 			using var reader = buffer.Read();
-			Assert.Equal(1, reader.Read());
 
+			Assert.Equal(1, reader.Read());
 			buffer.Dispose();
 
 			_ = Assert.Throws<ObjectDisposedException>(
 				() => reader.Read());
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public static void MemoizeThrowsWhenResetDuringIteration(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			using var buffer = seq.Memoize();
+
+			using var reader = buffer.Read();
+			Assert.Equal(1, reader.Read());
+
+			buffer.Reset();
+
+			var ex = Assert.Throws<InvalidOperationException>(
+				() => reader.Read());
+			Assert.Equal("Buffer reset during iteration.", ex.Message);
 		}
 	}
 
@@ -124,12 +145,28 @@ public class MemoizeTest
 		}
 	}
 
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public static void MemoizeThrowsWhenResettingAfterDispose(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			using var buffer = seq.Memoize();
+
+			buffer.Consume();
+			buffer.Dispose();
+
+			_ = Assert.Throws<ObjectDisposedException>(buffer.Reset);
+		}
+	}
+
 	[Fact]
 	public void MemoizeIteratorWithPartialIterationBeforeCompleteIteration()
 	{
 		using var seq = Enumerable.Range(0, 10).AsTestingSequence();
 
 		using var buffer = seq.Memoize();
+		Assert.Equal(0, buffer.Count);
 
 		buffer.Take(5).AssertSequenceEqual(Enumerable.Range(0, 5));
 		Assert.Equal(5, buffer.Count);
@@ -144,10 +181,12 @@ public class MemoizeTest
 		using var seq = Enumerable.Range(0, 10).AsTestingSequence();
 
 		using var buffer = seq.Memoize();
+		Assert.Equal(0, buffer.Count);
 
 		using (buffer)
 			buffer.Take(1).Consume();
 
+		Assert.Equal(0, buffer.Count);
 		Assert.True(seq.IsDisposed);
 	}
 
@@ -228,33 +267,40 @@ public class MemoizeTest
 			.From(() => i++ == 0 ? throw new TestException() : 42)
 			.AsTestingSequence(maxEnumerations: 2);
 
-		using var memoized = xs.Memoize();
+		using var buffer = xs.Memoize();
+		Assert.Equal(0, buffer.Count);
 
-		using (var r1 = memoized.Read())
-		using (var r2 = memoized.Read())
+		using (var r1 = buffer.Read())
+		using (var r2 = buffer.Read())
 		{
 			_ = Assert.Throws<TestException>(() => r1.Read());
 			Guard.IsTrue(xs.IsDisposed);
 			_ = Assert.Throws<TestException>(() => r2.Read());
 		}
+		Assert.Equal(0, buffer.Count);
 
-		memoized.Reset();
-		using (var r1 = memoized.Read())
-		using (var r2 = memoized.Read())
+		buffer.Reset();
+		Assert.Equal(0, buffer.Count);
+		using (var r1 = buffer.Read())
+		using (var r2 = buffer.Read())
 			Guard.IsTrue(r1.Read() == r2.Read());
+		Assert.Equal(1, buffer.Count);
 	}
 
 	[Fact]
 	public void MemoizeIteratorRethrowsErrorDuringFirstIterationStartToAllIterationsUntilReset()
 	{
 		using var seq = new FailingEnumerable().AsTestingSequence(maxEnumerations: 2);
-		using var memo = seq.Memoize();
+
+		using var buffer = seq.Memoize();
+		Assert.Equal(0, buffer.Count);
 
 		for (var i = 0; i < 2; i++)
-			_ = Assert.Throws<TestException>(() => memo.First());
+			_ = Assert.Throws<TestException>(() => buffer.First());
 
-		memo.Reset();
-		memo.AssertSequenceEqual(1);
+		buffer.Reset();
+		buffer.AssertSequenceEqual(1);
+		Assert.Equal(1, buffer.Count);
 	}
 
 	private class FailingEnumerable : IEnumerable<int>
@@ -267,7 +313,7 @@ public class MemoizeTest
 				_started = true;
 				throw new TestException();
 			}
-			yield return 1;
+			return Enumerable.Range(1, 1).GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -279,6 +325,7 @@ public class MemoizeTest
 		using var list = new BreakingCollection<int>(Enumerable.Range(0, 10));
 
 		using var buffer = list.Memoize();
+		Assert.Equal(0, buffer.Count);
 
 		buffer.Take(1).Consume();
 		Assert.Equal(10, buffer.Count);
@@ -290,17 +337,21 @@ public class MemoizeTest
 		using var ts = new BreakingCollection<int>(Enumerable.Range(0, 10));
 
 		using var buffer = ts.Memoize();
+		Assert.Equal(0, buffer.Count);
 
 		buffer.AssertSequenceEqual(Enumerable.Range(0, 10));
 		buffer.AssertSequenceEqual(Enumerable.Range(0, 10));
 		Assert.Equal(1, ts.CopyCount);
+		Assert.Equal(10, buffer.Count);
 	}
 
 	[Fact]
 	public static void MemoizeCollectionRestartsAfterReset()
 	{
 		using var ts = new BreakingCollection<int>(Enumerable.Range(0, 10));
+
 		using var memoized = ts.Memoize();
+		Assert.Equal(0, memoized.Count);
 
 		memoized.Take(1).Consume();
 		Assert.Equal(1, ts.CopyCount);
@@ -346,8 +397,14 @@ public class MemoizeTest
 	public void MemoizeProxySimpleUse()
 	{
 		var ts = Enumerable.Range(1, 10).ToArray();
-		using var buffer = ts.Memoize(forceCache: false);
 
+		using var buffer = ts.Memoize(forceCache: false);
+		Assert.Equal(10, buffer.Count);
+
+		buffer.AssertSequenceEqual(Enumerable.Range(1, 10));
+		Assert.Equal(10, buffer.Count);
+
+		buffer.Reset();
 		buffer.AssertSequenceEqual(Enumerable.Range(1, 10));
 		Assert.Equal(10, buffer.Count);
 	}
@@ -362,6 +419,18 @@ public class MemoizeTest
 		buffer.Dispose();
 
 		_ = Assert.Throws<ObjectDisposedException>(buffer.Consume);
+	}
+
+	[Fact]
+	public void MemoizeProxyThrowsExceptionWhenResettingAfterDisposal()
+	{
+		var ts = Enumerable.Range(1, 10).ToArray();
+		var buffer = ts.Memoize(forceCache: false);
+
+		buffer.Consume();
+		buffer.Dispose();
+
+		_ = Assert.Throws<ObjectDisposedException>(buffer.Reset);
 	}
 
 	[Fact]
