@@ -3,10 +3,9 @@
 public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
-	/// Performs a scan (inclusive prefix sum) on a sequence of elements.
-	/// This operator is similar to <see cref="Enumerable.Aggregate{TSource}"/>
-	/// except that <see cref="ScanEx{TSource}"/> 
-	/// returns the sequence of intermediate results as well as the final one.
+	/// Performs a scan (inclusive prefix sum) on a sequence of elements. This operator is similar to <see
+	/// cref="Enumerable.Aggregate{TSource}"/> except that <see cref="ScanEx{TSource}"/> returns the sequence of
+	/// intermediate results as well as the final one.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in source sequence</typeparam>
 	/// <param name="source">Source sequence</param>
@@ -15,10 +14,6 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="transformation"/> is null</exception>
 	/// <remarks>
-	/// <para>
-	/// This operator returns the first element in <paramref name="source"/>,
-	/// while <see cref="EnumerableEx.Scan{TSource}"/> skips the first element.
-	/// </para>
 	/// <para>
 	/// This operator uses deferred execution and streams its result.
 	/// </para>
