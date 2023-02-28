@@ -2,7 +2,8 @@
 
 namespace SuperLinq;
 
-[ExcludeFromCodeCoverage(Justification = "These cover situations that are theoretically impossible, and so cannot be code-covered.")]
+// These cover situations that are theoretically impossible, and so cannot be code-covered.
+[ExcludeFromCodeCoverage]
 internal static class Assert
 {
 	public static void NotNull<T>([NotNull, AllowNull] T? obj, [CallerArgumentExpression(nameof(obj))] string? parameter = null)
