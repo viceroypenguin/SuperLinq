@@ -103,8 +103,7 @@ public static partial class SuperEnumerable
 				if (_disposed)
 					ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
 
-				if (_source == null)
-					ThrowHelper.ThrowInvalidOperationException();
+				Assert.NotNull(_source);
 
 				if (_exceptionIndex == -1)
 				{
@@ -155,8 +154,7 @@ public static partial class SuperEnumerable
 					{
 						if (index == _exceptionIndex)
 						{
-							if (_exception == null)
-								ThrowHelper.ThrowInvalidOperationException();
+							Assert.NotNull(_exception);
 							_exception.Throw();
 						}
 
@@ -186,8 +184,7 @@ public static partial class SuperEnumerable
 
 						_buffer.Add(_enumerator.Current);
 
-						if (index >= _buffer.Count)
-							ThrowHelper.ThrowInvalidOperationException();
+						Assert.True(index < _buffer.Count);
 					}
 
 					element = _buffer[index];
@@ -303,8 +300,7 @@ public static partial class SuperEnumerable
 						h = tmp;
 
 						// we should be only ones inside here
-						if (source == null)
-							ThrowHelper.ThrowInvalidOperationException();
+						Assert.NotNull(source);
 
 						T[]? array;
 						try
@@ -333,8 +329,7 @@ public static partial class SuperEnumerable
 						continue;
 
 					case State.Initialized:
-						if (h.Buffer == null)
-							ThrowHelper.ThrowInvalidOperationException();
+						Assert.NotNull(h.Buffer);
 						return h.Buffer;
 
 					case State.Disposed:

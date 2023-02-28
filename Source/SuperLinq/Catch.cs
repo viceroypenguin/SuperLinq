@@ -48,9 +48,7 @@ public static partial class SuperEnumerable
 				yield return e.Current;
 			}
 
-			if (errSource == null)
-				// should not be able to get here without setting `errSource`
-				ThrowHelper.ThrowInvalidOperationException();
+			Assert.NotNull(errSource);
 
 			foreach (var item in errSource)
 				yield return item;
