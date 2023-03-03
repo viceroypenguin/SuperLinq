@@ -1,6 +1,4 @@
-﻿using SuperLinq;
-
-namespace Test;
+﻿namespace Test;
 
 public class CatchTest
 {
@@ -84,9 +82,7 @@ public class CatchTest
 
 		var result = seq.Catch();
 
-		var x = result.ToList();
-
-		x.AssertSequenceEqual(
+		result.AssertSequenceEqual(
 			Enumerable.Range(1, 4)
 				.Repeat(sequenceNumber - 1)
 				.Concat(Enumerable.Range(1, 10)));
