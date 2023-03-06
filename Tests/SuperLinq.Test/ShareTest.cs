@@ -232,4 +232,19 @@ public class ShareTest
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
+
+	[Fact]
+	public void ShareLambdaIsLazy()
+	{
+		_ = new BreakingSequence<int>().Share(BreakingFunc.Of<IEnumerable<int>, IEnumerable<string>>());
+	}
+
+	[Fact]
+	public void ShareLambdaSimple()
+	{
+		using var seq = Enumerable.Range(0, 10).AsTestingSequence();
+
+		var result = seq.Share(xs => xs.Zip(xs, (l, r) => l + r).Take(4));
+		result.AssertSequenceEqual(1, 5, 9, 13);
+	}
 }
