@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
@@ -201,6 +202,31 @@ public class ShareTest
 
 		_ = Assert.Throws<ObjectDisposedException>(
 			buffer.Reset);
+	}
+
+	[Fact]
+	public void ShareRethrowsErrorDuringIterationToAllIteratorsUntilReset()
+	{
+		using var xs = SeqExceptionAt(2).AsTestingSequence(maxEnumerations: 2);
+
+		using var buffer = xs.Share();
+
+		using (var r1 = buffer.Read())
+		using (var r2 = buffer.Read())
+		{
+			Assert.Equal(1, r1.Read());
+			_ = Assert.Throws<TestException>(() => r2.Read());
+
+			Guard.IsTrue(xs.IsDisposed);
+			_ = Assert.Throws<TestException>(() => r1.Read());
+		}
+
+		_ = Assert.Throws<TestException>(() => buffer.Read());
+
+		buffer.Reset();
+
+		using (var r1 = buffer.Read())
+			Assert.Equal(1, r1.Read());
 	}
 
 	[Fact]
