@@ -255,8 +255,8 @@ public class PublishTest
 
 		buffer.Reset();
 
-		using (var r4 = buffer.Read())
-			Assert.Equal(1, r4.Read());
+		using var r4 = buffer.Read();
+		Assert.Equal(1, r4.Read());
 	}
 
 	[Fact]
