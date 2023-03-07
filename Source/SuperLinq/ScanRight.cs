@@ -5,7 +5,7 @@ public static partial class SuperEnumerable
 	/// <summary>
 	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// This operator is the right-associative version of the
-	/// <see cref="EnumerableEx.Scan{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
+	/// <see cref="Scan{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in source sequence.</typeparam>
 	/// <param name="source">Source sequence.</param>
@@ -26,7 +26,6 @@ public static partial class SuperEnumerable
 	/// This operator uses deferred execution and streams its results.
 	/// Source sequence is consumed greedily when an iteration of the resulting sequence begins.
 	/// </remarks>
-
 	public static IEnumerable<TSource> ScanRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
 	{
 		Guard.IsNotNull(source);
@@ -60,7 +59,7 @@ public static partial class SuperEnumerable
 	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// The specified seed value is used as the initial accumulator value.
 	/// This operator is the right-associative version of the
-	/// <see cref="EnumerableEx.Scan{TSource, TState}(IEnumerable{TSource}, TState, Func{TState, TSource, TState})"/> LINQ operator.
+	/// <see cref="Scan{TSource, TState}(IEnumerable{TSource}, TState, Func{TState, TSource, TState})"/> LINQ operator.
 	/// </summary>
 	/// <typeparam name="TSource">The type of the elements of source.</typeparam>
 	/// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
@@ -81,7 +80,6 @@ public static partial class SuperEnumerable
 	/// This operator uses deferred execution and streams its results.
 	/// Source sequence is consumed greedily when an iteration of the resulting sequence begins.
 	/// </remarks>
-
 	public static IEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
 	{
 		Guard.IsNotNull(source);

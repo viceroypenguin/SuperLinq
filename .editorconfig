@@ -206,6 +206,8 @@ csharp_preserve_single_line_statements = true:silent
 # Style Analytics
 dotnet_analyzer_diagnostic.category-Style.severity = warning
 
+dotnet_diagnostic.IDE0046.severity = silent				# IDE0046: Convert to conditional expression
+
 # For ScanEx()
 dotnet_code_quality.ca1711.allowed_suffixes = Ex
 

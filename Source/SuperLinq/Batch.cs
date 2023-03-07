@@ -1,21 +1,4 @@
-﻿#region License and Terms
-// SuperLinq - Extensions to LINQ to Objects
-// Copyright (c) 2009 Atif Aziz. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
-
-namespace SuperLinq;
+﻿namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -25,15 +8,67 @@ public static partial class SuperEnumerable
 	/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
 	/// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to chunk.</param>
 	/// <param name="size">The maximum size of each chunk.</param>
-	/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements the input sequence split into chunks of size size.</returns>
+	/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements the input sequence split into chunks of size
+	/// size.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="size"/> is below 1.</exception>
-	public static IEnumerable<IList<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size) =>
-#if NET6_0_OR_GREATER
-		source.Chunk(size);
-#else
-		source.Buffer(size);
-#endif
+	/// <remarks>
+	/// <para>
+	/// A chunk can contain fewer elements than <paramref name="size"/>, specifically the final buffer of <paramref
+	/// name="source"/>.
+	/// </para>
+	/// <para>
+	/// Returned subsequences are buffered, but the overall operation is streamed.<br/>
+	/// </para>
+	/// </remarks>
+	public static IEnumerable<IList<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
+	{
+		// yes this operator duplicates on net6+; but no name overlap, so leave alone
+		Guard.IsNotNull(source);
+		Guard.IsGreaterThanOrEqualTo(size, 1);
+
+		return Core(source, size);
+
+		static IEnumerable<IList<TSource>> Core(IEnumerable<TSource> source, int size)
+		{
+			TSource[]? array = null;
+
+			if (source is ICollection<TSource> coll)
+			{
+				if (coll.Count == 0)
+					yield break;
+
+				if (coll.Count <= size)
+				{
+					array = new TSource[coll.Count];
+					coll.CopyTo(array, 0);
+					yield return array;
+					yield break;
+				}
+			}
+			else if (source.TryGetCollectionCount() == 0)
+			{
+				yield break;
+			}
+
+			var n = 0;
+			foreach (var item in source)
+			{
+				(array ??= new TSource[size])[n++] = item;
+				if (n == size)
+				{
+					yield return array;
+					n = 0;
+				}
+			}
+
+			if (n != 0)
+			{
+				Array.Resize(ref array, n);
+				yield return array;
+			}
+		}
+	}
 
 	/// <summary>
 	/// Split the elements of a sequence into chunks of size at most <paramref name="size"/>.
@@ -156,7 +191,7 @@ public static partial class SuperEnumerable
 		Func<IReadOnlyList<TSource>, TResult> resultSelector)
 	{
 		if (source is ICollection<TSource> coll
-			&& coll.Count < size)
+			&& coll.Count <= size)
 		{
 			coll.CopyTo(array, 0);
 			yield return resultSelector(new ArraySegment<TSource>(array, 0, coll.Count));

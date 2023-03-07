@@ -84,9 +84,10 @@ internal sealed class TestingSequence<T> : IDisposableEnumerable<T>
 	{
 		AssertTestingSequence(_enumerationCount == _disposedCount, SimultaneousEnumerations);
 		AssertTestingSequence(_enumerationCount < _maxEnumerations, TooManyEnumerations);
-		_enumerationCount++;
 
 		var enumerator = _sequence.GetEnumerator().AsWatchable();
+		_enumerationCount++;
+
 		var disposed = false;
 		enumerator.Disposed += delegate
 		{
