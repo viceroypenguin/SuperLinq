@@ -31,6 +31,14 @@ public class BatchTest
 	}
 
 	[Fact]
+	public void BatchWithEmptyIListProvider()
+	{
+		Enumerable.Range(0, 0)
+			.Batch(1)
+			.AssertSequenceEqual();
+	}
+
+	[Fact]
 	public void BatchEvenlyDivisibleSequence()
 	{
 		using var seq = Enumerable.Range(1, 9).AsTestingSequence();
