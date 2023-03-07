@@ -12,15 +12,6 @@ public class CatchTest
 	}
 
 	[Fact]
-	public void CatchWithEmptySource()
-	{
-		using var seq = Enumerable.Empty<int>().AsTestingSequence();
-
-		var result = seq.Catch(new BreakingSequence<int>());
-		result.AssertSequenceEqual();
-	}
-
-	[Fact]
 	public void CatchThrowsDelayedExceptionOnNullSource()
 	{
 		var seq = SuperEnumerable.Catch(new IEnumerable<int>[] { null!, });
@@ -52,6 +43,15 @@ public class CatchTest
 		Assert.False(ran);
 		result.AssertSequenceEqual(1, 2, 3, 4, -5);
 		Assert.True(ran);
+	}
+
+	[Fact]
+	public void CatchWithEmptySequenceList()
+	{
+		using var seq = Enumerable.Empty<IEnumerable<int>>().AsTestingSequence();
+
+		var result = seq.Catch();
+		result.AssertSequenceEqual();
 	}
 
 	[Theory]
