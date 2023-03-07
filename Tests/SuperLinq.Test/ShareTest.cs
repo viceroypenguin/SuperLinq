@@ -18,6 +18,7 @@ public class ShareTest
 
 		using var result = seq.Share();
 		result.AssertSequenceEqual(Enumerable.Range(1, 10));
+		Assert.Equal(0, result.Count);
 	}
 
 	[Fact]
