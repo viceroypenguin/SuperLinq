@@ -15,16 +15,6 @@ public class InterleaveTests
 	}
 
 	/// <summary>
-	/// Verify that Interleave fails when encountering a null source
-	/// </summary>
-	[Fact]
-	public void TestInterleaveTestsSourcesForNull()
-	{
-		_ = Assert.Throws<ArgumentNullException>("sources", () =>
-			new[] { new BreakingSequence<int>(), default!, }.Interleave<int>());
-	}
-
-	/// <summary>
 	/// Verify that interleaving disposes those enumerators that it managed
 	/// to open successfully
 	/// </summary>
@@ -133,7 +123,9 @@ public class InterleaveTests
 		using var sequenceD = TestingSequence.Of(3);
 		using var sequenceE = TestingSequence.Of(4, 7, 10, 13, 15, 17);
 
-		var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD, sequenceE);
+		using var sequences = TestingSequence.Of<IEnumerable<int>>(sequenceA, sequenceB, sequenceC, sequenceD, sequenceE);
+		var result = sequences.Interleave();
+
 		result.AssertSequenceEqual(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
 	}
 }
