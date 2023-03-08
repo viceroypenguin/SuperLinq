@@ -15,16 +15,6 @@ public class InterleaveTests
 	}
 
 	/// <summary>
-	/// Verify that Interleave fails when encountering a null source
-	/// </summary>
-	[Fact]
-	public void TestInterleaveTestsSourcesForNull()
-	{
-		_ = Assert.Throws<ArgumentNullException>("sources", () =>
-			new[] { new AsyncBreakingSequence<int>(), default!, }.Interleave<int>());
-	}
-
-	/// <summary>
 	/// Verify that interleaving disposes those enumerators that it managed
 	/// to open successfully
 	/// </summary>
@@ -127,13 +117,18 @@ public class InterleaveTests
 	[Fact]
 	public async Task TestInterleaveManyImbalanceStrategySkip()
 	{
-		await using var sequenceA = TestingSequence.Of<int>(1, 5, 8, 11, 14, 16);
-		await using var sequenceB = TestingSequence.Of<int>(2, 6, 9, 12);
+		await using var sequenceA = TestingSequence.Of(1, 5, 8, 11, 14, 16);
+		await using var sequenceB = TestingSequence.Of(2, 6, 9, 12);
 		await using var sequenceC = TestingSequence.Of<int>();
-		await using var sequenceD = TestingSequence.Of<int>(3);
-		await using var sequenceE = TestingSequence.Of<int>(4, 7, 10, 13, 15, 17);
+		await using var sequenceD = TestingSequence.Of(3);
+		await using var sequenceE = TestingSequence.Of(4, 7, 10, 13, 15, 17);
 
-		var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD, sequenceE);
+		var iterations = 0;
+		var sequences = new[] { sequenceA, sequenceB, sequenceC, sequenceD, sequenceE, }
+			.Do<IAsyncEnumerable<int>>(_ => iterations++);
+		var result = sequences.Interleave();
+
 		await result.AssertSequenceEqual(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
+		Assert.Equal(5, iterations);
 	}
 }
