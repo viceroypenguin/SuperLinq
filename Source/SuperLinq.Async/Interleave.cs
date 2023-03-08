@@ -51,12 +51,9 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="sources">The sequences to interleave together</param>
 	/// <returns>A sequence of interleaved elements from all of the source sequences</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="sources"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException">Any of the items in <paramref name="sources"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<T> Interleave<T>(this IEnumerable<IAsyncEnumerable<T>> sources)
 	{
 		Guard.IsNotNull(sources);
-		foreach (var s in sources)
-			Guard.IsNotNull(s, nameof(sources));
 
 		return Core(sources);
 
