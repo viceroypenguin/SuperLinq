@@ -16,10 +16,7 @@ public partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> Do<TSource>(this IEnumerable<TSource> source, Action<TSource> onNext)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(onNext);
-
-		return DoCore(source, onNext, delegate { });
+		return Do(source, onNext, onCompleted: delegate { });
 	}
 
 	/// <summary>
@@ -41,17 +38,17 @@ public partial class SuperEnumerable
 		Guard.IsNotNull(onNext);
 		Guard.IsNotNull(onCompleted);
 
-		return DoCore(source, onNext, onCompleted);
-	}
+		return Core(source, onNext, onCompleted);
 
-	private static IEnumerable<TSource> DoCore<TSource>(IEnumerable<TSource> source, Action<TSource> onNext, Action onCompleted)
-	{
-		foreach (var el in source)
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Action<TSource> onNext, Action onCompleted)
 		{
-			onNext(el);
-			yield return el;
+			foreach (var el in source)
+			{
+				onNext(el);
+				yield return el;
+			}
+			onCompleted();
 		}
-		onCompleted();
 	}
 
 	/// <summary>
@@ -69,11 +66,7 @@ public partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> Do<TSource>(this IEnumerable<TSource> source, Action<TSource> onNext, Action<Exception> onError)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(onNext);
-		Guard.IsNotNull(onError);
-
-		return DoCore(source, onNext, onError, delegate { });
+		return Do(source, onNext, onError, onCompleted: delegate { });
 	}
 
 	/// <summary>
@@ -98,29 +91,29 @@ public partial class SuperEnumerable
 		Guard.IsNotNull(onError);
 		Guard.IsNotNull(onCompleted);
 
-		return DoCore(source, onNext, onError, onCompleted);
-	}
+		return Core(source, onNext, onError, onCompleted);
 
-	private static IEnumerable<TSource> DoCore<TSource>(IEnumerable<TSource> source, Action<TSource> onNext, Action<Exception> onError, Action onCompleted)
-	{
-		using var iter = source.GetEnumerator();
-		while (true)
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Action<TSource> onNext, Action<Exception> onError, Action onCompleted)
 		{
-			try
+			using var iter = source.GetEnumerator();
+			while (true)
 			{
-				if (!iter.MoveNext())
-					break;
-			}
-			catch (Exception ex)
-			{
-				onError(ex);
-				throw;
-			}
+				try
+				{
+					if (!iter.MoveNext())
+						break;
+				}
+				catch (Exception ex)
+				{
+					onError(ex);
+					throw;
+				}
 
-			var current = iter.Current;
-			onNext(current);
-			yield return current;
+				var current = iter.Current;
+				onNext(current);
+				yield return current;
+			}
+			onCompleted();
 		}
-		onCompleted();
 	}
 }
