@@ -51,13 +51,9 @@ public static partial class SuperEnumerable
 	/// <param name="sources">The sequences to interleave together</param>
 	/// <returns>A sequence of interleaved elements from all of the source sequences</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="sources"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException">Any of the items in <paramref name="sources"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<T> Interleave<T>(this IEnumerable<IEnumerable<T>> sources)
 	{
 		Guard.IsNotNull(sources);
-
-		if (sources.Any(s => s == null))
-			ThrowHelper.ThrowArgumentNullException(nameof(sources), "One or more sequences passed to Interleave was null.");
 
 		return Core(sources);
 
