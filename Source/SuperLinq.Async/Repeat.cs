@@ -8,9 +8,11 @@ public partial class AsyncSuperEnumerable
 	/// <typeparam name="TResult">Result sequence element type.</typeparam>
 	/// <param name="value">Value to repeat in the resulting sequence.</param>
 	/// <returns>Sequence repeating the given value infinitely.</returns>
-	public static IAsyncEnumerable<TResult> Repeat<TResult>(TResult value)
+	public static async IAsyncEnumerable<TResult> Repeat<TResult>(TResult value)
 	{
-		throw new NotImplementedException();
+		await default(ValueTask);
+		while (true)
+			yield return value;
 	}
 
 	/// <summary>
@@ -22,7 +24,25 @@ public partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> Repeat<TSource>(this IAsyncEnumerable<TSource> source)
 	{
-		throw new NotImplementedException();
+		Guard.IsNotNull(source);
+
+		return Core(source);
+
+		static async IAsyncEnumerable<TSource> Core(
+			IAsyncEnumerable<TSource> source,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default)
+		{
+			await using var buffer = source.Memoize();
+			while (true)
+			{
+				await foreach (var el in buffer
+						.WithCancellation(cancellationToken)
+						.ConfigureAwait(false))
+				{
+					yield return el;
+				}
+			}
+		}
 	}
 
 	/// <summary>
@@ -38,6 +58,26 @@ public partial class AsyncSuperEnumerable
 	/// <c>0</c>.</exception>
 	public static IAsyncEnumerable<TSource> Repeat<TSource>(this IAsyncEnumerable<TSource> source, int count)
 	{
-		throw new NotImplementedException();
+		Guard.IsNotNull(source);
+		Guard.IsGreaterThan(count, 0);
+
+		return Core(source, count);
+
+		static async IAsyncEnumerable<TSource> Core(
+			IAsyncEnumerable<TSource> source,
+			int count,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default)
+		{
+			await using var buffer = source.Memoize();
+			while (count-- > 0)
+			{
+				await foreach (var el in buffer
+						.WithCancellation(cancellationToken)
+						.ConfigureAwait(false))
+				{
+					yield return el;
+				}
+			}
+		}
 	}
 }
