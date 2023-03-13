@@ -10,4 +10,22 @@ public static partial class AsyncSuperEnumerable
 		enumerable.ConfigureAwait(false).WithCancellation(cancellationToken).GetAsyncEnumerator();
 
 	private static (bool HasValue, T Value) Some<T>(T value) => (true, value);
+
+	private static Func<ValueTask> ToAsync(this Action action)
+	{
+		return () =>
+		{
+			action();
+			return default;
+		};
+	}
+
+	private static Func<T, ValueTask> ToAsync<T>(this Action<T> action)
+	{
+		return p1 =>
+		{
+			action(p1);
+			return default;
+		};
+	}
 }
