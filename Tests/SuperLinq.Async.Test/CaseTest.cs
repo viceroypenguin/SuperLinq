@@ -6,6 +6,7 @@ public class CaseTest
 	public void CaseIsLazy()
 	{
 		_ = AsyncSuperEnumerable.Case(BreakingFunc.Of<int>(), new Dictionary<int, IAsyncEnumerable<int>>());
+		_ = AsyncSuperEnumerable.Case(BreakingFunc.Of<ValueTask<int>>(), new Dictionary<int, IAsyncEnumerable<int>>());
 	}
 
 	[Fact]
@@ -38,6 +39,7 @@ public class CaseTest
 	public void CaseSourceIsLazy()
 	{
 		_ = AsyncSuperEnumerable.Case(BreakingFunc.Of<int>(), new Dictionary<int, IAsyncEnumerable<int>>(), new AsyncBreakingSequence<int>());
+		_ = AsyncSuperEnumerable.Case(BreakingFunc.Of<ValueTask<int>>(), new Dictionary<int, IAsyncEnumerable<int>>(), new AsyncBreakingSequence<int>());
 	}
 
 	[Fact]
