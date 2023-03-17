@@ -28,4 +28,13 @@ public static partial class AsyncSuperEnumerable
 			return default;
 		};
 	}
+
+	private static Func<ValueTask<TResult>> ToAsync<TResult>(this Func<TResult> func)
+	{
+		return () =>
+		{
+			var ret = func();
+			return new ValueTask<TResult>(ret);
+		};
+	}
 }
