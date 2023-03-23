@@ -1,37 +1,40 @@
 ﻿namespace Test.Async;
 
-public class ScanExTest
+#pragma warning disable CS0618
+
+public class ScanTest
 {
 	[Fact]
-	public async Task ScanExEmpty()
+	public async Task ScanEmpty()
 	{
 		await using var seq = TestingSequence.Of<int>();
 
-		var result = seq.ScanEx((a, b) => a + b);
+		var result = seq.Scan((a, b) => a + b);
 		await result.AssertSequenceEqual();
 	}
 
 	[Fact]
-	public async Task ScanExSum()
+	public async Task ScanSum()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
 
-		var result = seq.ScanEx((a, b) => a + b);
+		var result = seq.Scan((a, b) => a + b);
 		await result.AssertSequenceEqual(1, 3, 6, 10, 15, 21, 28, 36, 45, 55);
 	}
 
 	[Fact]
-	public void ScanExIsLazy()
+	public void ScanIsLazy()
 	{
+		_ = new AsyncBreakingSequence<object>().Scan(BreakingFunc.Of<object, object, object>());
 		_ = new AsyncBreakingSequence<object>().ScanEx(BreakingFunc.Of<object, object, object>());
 	}
 
 	[Fact]
-	public async Task ScanExDoesNotIterateExtra()
+	public async Task ScanDoesNotIterateExtra()
 	{
 		await using var seq = AsyncSeqExceptionAt(4).AsTestingSequence(maxEnumerations: 2);
 
-		var result = seq.ScanEx((a, b) => a + b);
+		var result = seq.Scan((a, b) => a + b);
 
 		_ = await Assert.ThrowsAsync<TestException>(
 			async () => await result.Consume());
@@ -39,38 +42,42 @@ public class ScanExTest
 	}
 
 	[Fact]
-	public async Task SeededScanExEmpty()
+	public async Task SeededScanEmpty()
 	{
 		await using var seq = TestingSequence.Of<int>();
 
-		var result = seq.ScanEx(-1, (a, b) => a + b);
+		var result = seq.Scan(-1, (a, b) => a + b);
 		Assert.Equal(-1, await result.SingleAsync());
 	}
 
 	[Fact]
-	public async Task SeededScanExSum()
+	public async Task SeededScanSum()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
 
-		var result = seq.ScanEx(0, (a, b) => a + b);
+		var result = seq.Scan(0, (a, b) => a + b);
 		await result.AssertSequenceEqual(0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55);
 	}
 
 	[Fact]
-	public void SeededScanExIsLazy()
+	public void SeededScanIsLazy()
 	{
+		_ = new AsyncBreakingSequence<object>().Scan(seed: null,
+			BreakingFunc.Of<object?, object, object>());
 		_ = new AsyncBreakingSequence<object>().ScanEx(seed: null,
 			BreakingFunc.Of<object?, object, object>());
 	}
 
 	[Fact]
-	public async Task SeededScanExDoesNotIterateExtra()
+	public async Task SeededScanDoesNotIterateExtra()
 	{
 		await using var seq = AsyncSeqExceptionAt(4).AsTestingSequence(maxEnumerations: 2);
 
-		var result = seq.ScanEx(0, (a, b) => a + b);
+		var result = seq.Scan(0, (a, b) => a + b);
 
 		_ = await Assert.ThrowsAsync<TestException>(async () => await result.Consume());
 		await result.Take(4).AssertSequenceEqual(0, 1, 3, 6);
 	}
 }
+
+#pragma warning restore CS0618
