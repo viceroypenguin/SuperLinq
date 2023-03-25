@@ -50,6 +50,7 @@ public class MaxItemsTest
 	public void MaxItemsByIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().MaxItemsBy(BreakingFunc.Of<int, int>());
+		_ = new AsyncBreakingSequence<int>().MaxByWithTies(BreakingFunc.Of<int, int>());
 	}
 
 	[Fact]
@@ -72,6 +73,7 @@ public class MaxItemsTest
 	public void MaxItemsByComparerIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().MaxItemsBy(BreakingFunc.Of<int, int>(), comparer: null);
+		_ = new AsyncBreakingSequence<int>().MaxByWithTies(BreakingFunc.Of<int, int>(), comparer: null);
 	}
 
 	[Fact]

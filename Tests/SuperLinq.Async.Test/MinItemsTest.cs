@@ -50,6 +50,7 @@ public class MinItemsTest
 	public void MinItemsByIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().MinItemsBy(BreakingFunc.Of<int, int>());
+		_ = new AsyncBreakingSequence<int>().MinByWithTies(BreakingFunc.Of<int, int>());
 	}
 
 	[Fact]
@@ -72,6 +73,8 @@ public class MinItemsTest
 	public void MinItemsByComparerIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().MinItemsBy(BreakingFunc.Of<int, int>(), comparer: null);
+		_ = new AsyncBreakingSequence<int>().MinByWithTies
+			(BreakingFunc.Of<int, int>(), comparer: null);
 	}
 
 	[Fact]
