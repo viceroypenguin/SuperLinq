@@ -16,6 +16,8 @@ public class WhileTest
 	[Fact]
 	public async Task WhileBehavior()
 	{
+		await using var ts = Enumerable.Range(1, 10).AsTestingSequence();
+
 		var starts = 0;
 		var seq = AsyncSuperEnumerable.While(
 			() =>
@@ -25,7 +27,7 @@ public class WhileTest
 					2 => false,
 					_ => throw new TestException(),
 				},
-			AsyncEnumerable.Range(1, 10));
+			ts);
 
 		Assert.Equal(0, starts);
 		await seq.AssertSequenceEqual(

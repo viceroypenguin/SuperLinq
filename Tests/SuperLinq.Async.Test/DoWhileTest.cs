@@ -6,12 +6,13 @@ public class DoWhileTest
 	public void DoWhileIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().DoWhile(BreakingFunc.Of<bool>());
+		_ = new AsyncBreakingSequence<int>().DoWhile(BreakingFunc.Of<ValueTask<bool>>());
 	}
 
 	[Fact]
 	public async Task DoWhileBehavior()
 	{
-		using var ts = Enumerable.Range(1, 10).AsTestingSequence();
+		await using var ts = Enumerable.Range(1, 10).AsTestingSequence();
 
 		var starts = 0;
 		var seq = ts
