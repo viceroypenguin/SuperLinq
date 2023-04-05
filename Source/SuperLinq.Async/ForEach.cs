@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace SuperLinq.Async;
+﻿namespace SuperLinq.Async;
 
 public partial class AsyncSuperEnumerable
 {
