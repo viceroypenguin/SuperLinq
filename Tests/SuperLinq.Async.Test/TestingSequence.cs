@@ -99,9 +99,10 @@ internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
 	{
 		AssertTestingSequence(_enumerationCount == _disposedCount, SimultaneousEnumerations);
 		AssertTestingSequence(_enumerationCount < _maxEnumerations, TooManyEnumerations);
-		_enumerationCount++;
 
 		var enumerator = _sequence.GetAsyncEnumerator(cancellationToken).AsWatchable();
+		_enumerationCount++;
+
 		var disposed = false;
 		enumerator.Disposed += delegate
 		{
