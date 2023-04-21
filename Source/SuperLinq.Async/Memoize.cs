@@ -68,7 +68,7 @@ public static partial class AsyncSuperEnumerable
 				_buffer = new();
 				_initialized = false;
 				if (_enumerator != null)
-					await _enumerator.DisposeAsync();
+					await _enumerator.DisposeAsync().ConfigureAwait(false);
 				_enumerator = null;
 				_exceptionIndex = null;
 				_exception = null;
@@ -136,7 +136,7 @@ public static partial class AsyncSuperEnumerable
 				if (_disposed)
 					ThrowHelper.ThrowObjectDisposedException(nameof(IAsyncBuffer<T>));
 
-				await _lock.WaitAsync(cancellationToken);
+				await _lock.WaitAsync(cancellationToken).ConfigureAwait(false);
 				try
 				{
 					if (_disposed)
@@ -161,20 +161,20 @@ public static partial class AsyncSuperEnumerable
 						var moved = false;
 						try
 						{
-							moved = await _enumerator.MoveNextAsync(cancellationToken);
+							moved = await _enumerator.MoveNextAsync(cancellationToken).ConfigureAwait(false);
 						}
 						catch (Exception ex)
 						{
 							_exception = ExceptionDispatchInfo.Capture(ex);
 							_exceptionIndex = index;
-							await _enumerator.DisposeAsync();
+							await _enumerator.DisposeAsync().ConfigureAwait(false);
 							_enumerator = null;
 							throw;
 						}
 
 						if (!moved)
 						{
-							await _enumerator.DisposeAsync();
+							await _enumerator.DisposeAsync().ConfigureAwait(false);
 							_enumerator = null;
 							break;
 						}
@@ -201,13 +201,13 @@ public static partial class AsyncSuperEnumerable
 			if (_disposed)
 				return;
 
-			await _lock.WaitAsync();
+			await _lock.WaitAsync().ConfigureAwait(false);
 			try
 			{
 				_disposed = true;
 				_buffer.Clear();
 				if (_enumerator != null)
-					await _enumerator.DisposeAsync();
+					await _enumerator.DisposeAsync().ConfigureAwait(false);
 				_enumerator = null;
 				_source = null;
 			}
