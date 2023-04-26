@@ -22,6 +22,17 @@ public class PermutationsTest
 		permutations.Single().AssertSequenceEqual();
 	}
 
+	[Fact]
+	public void TestExceptionWhenTooLong()
+	{
+		using var emptySet = Enumerable.Range(1, 22).AsTestingSequence();
+
+		var result = emptySet.Permutations();
+
+		var ex = Assert.Throws<ArgumentException>("sequence", result.Consume);
+		Assert.Equal("Input set is too large to permute properly. (Parameter 'sequence')", ex.Message);
+	}
+
 	/// <summary>
 	/// Verify that there is one permutation of a set of one item
 	/// </summary>
