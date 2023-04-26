@@ -27,7 +27,7 @@
 			"_enableNewTab": true,
 			"_disableContribution": true
 		},
-    "template": ["default", "singulinkfx/singulinkfx", "memberpage", "singulinkfx/memberpage-extras"],
+    "template": ["default", "./singulinkfx/singulinkfx"],
     "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
     "content": [
       {
