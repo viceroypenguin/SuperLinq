@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Runtime.ExceptionServices;
+﻿using System.Runtime.ExceptionServices;
 
 namespace SuperLinq.Async;
 

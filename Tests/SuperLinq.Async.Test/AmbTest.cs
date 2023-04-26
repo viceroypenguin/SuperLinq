@@ -1,4 +1,6 @@
-﻿namespace Test.Async;
+﻿using System.Xml.Linq;
+
+namespace Test.Async;
 
 public class AmbTest
 {
@@ -7,6 +9,38 @@ public class AmbTest
 	{
 		_ = new AsyncBreakingSequence<int>().Amb(new AsyncBreakingSequence<int>());
 		_ = AsyncSuperEnumerable.Amb(new AsyncBreakingSequence<int>(), new AsyncBreakingSequence<int>());
+	}
+
+	[Theory]
+	[InlineData(1, false)]
+	[InlineData(2, false)]
+	[InlineData(3, false)]
+	[InlineData(1, true)]
+	[InlineData(2, true)]
+	[InlineData(3, true)]
+	public async Task AmbEmptyReturnsFirst(int sequenceNumber, bool asyncEmpty)
+	{
+		var empty = AsyncEnumerable.Empty<int>();
+		await using var tsEmpty = empty.AsTestingSequence();
+		if (asyncEmpty) empty = tsEmpty;
+
+		var async = AsyncEnumerable.Range(6, 5)
+			.SelectAwaitWithCancellation(async (i, ct) =>
+			{
+				await Task.Delay(250, ct);
+				return i;
+			});
+
+		// will switch to using `TestingSequence` once I turn on sync/async versions of it
+		var seq1 = sequenceNumber == 1 ? empty : async;
+		var seq2 = sequenceNumber == 2 ? empty : async;
+		var seq3 = sequenceNumber == 3 ? empty : async;
+
+		var ts = new[] { seq1, seq2, seq3, };
+
+		var result = ts.Amb();
+
+		await result.AssertSequenceEqual();
 	}
 
 	[Theory]
@@ -19,12 +53,14 @@ public class AmbTest
 		var async = AsyncEnumerable.Range(6, 5)
 			.SelectAwaitWithCancellation(async (i, ct) =>
 			{
-				await Task.Delay(10, ct);
+				await Task.Delay(250, ct);
 				return i;
 			});
-		await using var seq1 = (sequenceNumber == 1 ? sync : async).AsTestingSequence();
-		await using var seq2 = (sequenceNumber == 2 ? sync : async).AsTestingSequence();
-		await using var seq3 = (sequenceNumber == 3 ? sync : async).AsTestingSequence();
+
+		// will switch to using `TestingSequence` once I turn on sync/async versions of it
+		var seq1 = sequenceNumber == 1 ? sync : async;
+		var seq2 = sequenceNumber == 2 ? sync : async;
+		var seq3 = sequenceNumber == 3 ? sync : async;
 
 		var ts = new[] { seq1, seq2, seq3, };
 
@@ -48,7 +84,7 @@ public class AmbTest
 		var longer = AsyncEnumerable.Range(6, 5)
 			.SelectAwaitWithCancellation(async (i, ct) =>
 			{
-				await Task.Delay(30, ct);
+				await Task.Delay(250, ct);
 				return i;
 			});
 		await using var seq1 = (sequenceNumber == 1 ? shorter : longer).AsTestingSequence();

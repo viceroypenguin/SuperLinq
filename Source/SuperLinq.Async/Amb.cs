@@ -90,10 +90,15 @@ public static partial class AsyncSuperEnumerable
 						// choose it and forget the rest. we do not add this iter to the lists since those only track
 						// the items that need to be canceled and disposed.
 						e = iter;
+						eCts = cts;
 
 						// if the selected sequence is empty, then the amb sequence is empty as well.
 						if (!firstMove.Result)
+						{
+							await iter.DisposeAsync().ConfigureAwait(false);
+							cts.Dispose();
 							yield break;
+						}
 
 						break;
 					}
@@ -110,6 +115,10 @@ public static partial class AsyncSuperEnumerable
 					var t = await Task.WhenAny(tasks).ConfigureAwait(false);
 					var moveNext = await t.ConfigureAwait(false);
 
+					// if the selected sequence is empty, then the amb sequence is empty as well.
+					if (!moveNext)
+						yield break;
+
 					// since we built all three lists simultaneously, we can access the same index of each. 
 					// we need the enumerator (to continue to enumerate it) and the cts (to dispose it at the end)
 					var idx = tasks.IndexOf(t);
@@ -117,13 +126,10 @@ public static partial class AsyncSuperEnumerable
 					eCts = cancellationSources[idx];
 
 					// remove the selected item from the list of still-running iterators
+					// however, if empty, then leave items in list so they can be disposed 
 					cancellationSources.RemoveAt(idx);
 					enumerators.RemoveAt(idx);
 					tasks.RemoveAt(idx);
-
-					// if the selected sequence is empty, then the amb sequence is empty as well.
-					if (!moveNext)
-						yield break;
 				}
 			}
 			finally
