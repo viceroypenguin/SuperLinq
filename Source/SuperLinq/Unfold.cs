@@ -41,7 +41,14 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(stateSelector);
 		Guard.IsNotNull(resultSelector);
 
-		return Core(); IEnumerable<TResult> Core()
+		return Core(state, generator, predicate, stateSelector, resultSelector);
+
+		static IEnumerable<TResult> Core(
+			TState state,
+			Func<TState, T> generator,
+			Func<T, bool> predicate,
+			Func<T, TState> stateSelector,
+			Func<T, TResult> resultSelector)
 		{
 			while (true)
 			{
