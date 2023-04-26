@@ -34,7 +34,7 @@ public partial class SuperEnumerable
 
 			do
 			{
-				foreach (var item in source)
+				foreach (var item in memo)
 					yield return item;
 			} while (condition());
 		}

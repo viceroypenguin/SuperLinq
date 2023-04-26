@@ -11,8 +11,10 @@ public class DoWhileTest
 	[Fact]
 	public void DoWhileBehavior()
 	{
+		using var ts = Enumerable.Range(1, 10).AsTestingSequence();
+
 		var starts = 0;
-		var seq = Enumerable.Range(1, 10)
+		var seq = ts
 			.DoWhile(
 				() =>
 					starts++ switch
