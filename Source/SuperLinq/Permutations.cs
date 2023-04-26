@@ -47,7 +47,7 @@ public static partial class SuperEnumerable
 		//                               for( int j = 0; j < 8; j++ )
 		//                                   DoSomething();
 
-		private readonly IList<T> _valueSet;
+		private readonly T[] _valueSet;
 		private readonly int[] _permutation;
 		private readonly IEnumerable<Action> _generator;
 
@@ -56,15 +56,33 @@ public static partial class SuperEnumerable
 
 		private IList<T>? _current;
 
-		public PermutationEnumerator(IEnumerable<T> valueSet)
+		public PermutationEnumerator(IEnumerable<T> sequence)
 		{
-			_valueSet = valueSet.ToArray();
-			_permutation = new int[_valueSet.Count];
+			_valueSet = sequence.ToArray();
+			if (_valueSet.Length > 21)
+				throw new ArgumentException("Input set is too large to permute properly.", "sequence");
+
+			_permutation = new int[_valueSet.Length];
+
 			// The nested loop construction below takes into account the fact that:
 			// 1) for empty sets and sets of cardinality 1, there exists only a single permutation.
 			// 2) for sets larger than 1 element, the number of nested loops needed is: set.Count-1
-			_generator = NestedLoops(NextPermutation, Enumerable.Range(2, Math.Max(0, _valueSet.Count - 1)));
+			var permutationCount = _valueSet.Length == 0
+				? 0
+				: Enumerable.Range(2, Math.Max(0, _valueSet.Length - 1))
+					.Aggregate(1ul, (acc, x) => acc * (uint)x);
+
+			_generator = NestedLoops(
+				NextPermutation,
+				permutationCount);
+
 			Reset();
+		}
+
+		private static IEnumerable<Action> NestedLoops(Action action, ulong count)
+		{
+			for (var i = 0ul; i < count; i++)
+				yield return action;
 		}
 
 		[MemberNotNull(nameof(_generatorIterator))]
@@ -175,6 +193,7 @@ public static partial class SuperEnumerable
 	/// <param name="sequence">The original sequence to permute</param>
 	/// <returns>A sequence of lists representing permutations of the original sequence</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="sequence"/> is null.</exception>
+	/// <exception cref="ArgumentException"><paramref name="sequence"/> has too many elements to permute properly.</exception>
 	public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
 	{
 		Guard.IsNotNull(sequence);
