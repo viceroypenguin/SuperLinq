@@ -85,7 +85,7 @@ public class UsingTest
 		public ValueTask DisposeAsync()
 		{
 			IsDisposed = true;
-			return default(ValueTask);
+			return default;
 		}
 	}
 }
