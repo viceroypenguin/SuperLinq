@@ -19,7 +19,7 @@ public class AmbTest
 		var async = AsyncEnumerable.Range(6, 5)
 			.SelectAwaitWithCancellation(async (i, ct) =>
 			{
-				await Task.Delay(10, ct);
+				await Task.Delay(250, ct);
 				return i;
 			});
 		await using var seq1 = (sequenceNumber == 1 ? sync : async).AsTestingSequence();
@@ -48,7 +48,7 @@ public class AmbTest
 		var longer = AsyncEnumerable.Range(6, 5)
 			.SelectAwaitWithCancellation(async (i, ct) =>
 			{
-				await Task.Delay(30, ct);
+				await Task.Delay(250, ct);
 				return i;
 			});
 		await using var seq1 = (sequenceNumber == 1 ? shorter : longer).AsTestingSequence();
