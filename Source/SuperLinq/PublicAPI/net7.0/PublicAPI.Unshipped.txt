@@ -1,0 +1,49 @@
+#nullable enable
+static SuperLinq.SuperEnumerable.Buffer<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int count) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<TSource>!>!
+static SuperLinq.SuperEnumerable.Buffer<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int count, int skip) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<TSource>!>!
+static SuperLinq.SuperEnumerable.Case<TValue, TResult>(System.Func<TValue>! selector, System.Collections.Generic.IDictionary<TValue, System.Collections.Generic.IEnumerable<TResult>!>! sources) -> System.Collections.Generic.IEnumerable<TResult>!
+static SuperLinq.SuperEnumerable.Case<TValue, TResult>(System.Func<TValue>! selector, System.Collections.Generic.IDictionary<TValue, System.Collections.Generic.IEnumerable<TResult>!>! sources, System.Collections.Generic.IEnumerable<TResult>! defaultSource) -> System.Collections.Generic.IEnumerable<TResult>!
+static SuperLinq.SuperEnumerable.Catch<TSource, TException>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TException!, System.Collections.Generic.IEnumerable<TSource>!>! handler) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Catch<TSource>(params System.Collections.Generic.IEnumerable<TSource>![]! sources) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Catch<TSource>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! sources) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Catch<TSource>(this System.Collections.Generic.IEnumerable<TSource>! first, System.Collections.Generic.IEnumerable<TSource>! second) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Defer<TResult>(System.Func<System.Collections.Generic.IEnumerable<TResult>!>! enumerableFactory) -> System.Collections.Generic.IEnumerable<TResult>!
+static SuperLinq.SuperEnumerable.DistinctUntilChanged<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.DistinctUntilChanged<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.DistinctUntilChanged<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.DistinctUntilChanged<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Collections.Generic.IEqualityComparer<TSource>? comparer) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Do<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Action<TSource>! onNext) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Do<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Action<TSource>! onNext, System.Action! onCompleted) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Do<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Action<TSource>! onNext, System.Action<System.Exception!>! onError) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Do<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Action<TSource>! onNext, System.Action<System.Exception!>! onError, System.Action! onCompleted) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.DoWhile<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<bool>! condition) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Finally<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Action! finallyAction) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.ForEach<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Action<TSource, int>! action) -> void
+static SuperLinq.SuperEnumerable.ForEach<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Action<TSource>! action) -> void
+static SuperLinq.SuperEnumerable.If<TResult>(System.Func<bool>! condition, System.Collections.Generic.IEnumerable<TResult>! thenSource) -> System.Collections.Generic.IEnumerable<TResult>!
+static SuperLinq.SuperEnumerable.If<TResult>(System.Func<bool>! condition, System.Collections.Generic.IEnumerable<TResult>! thenSource, System.Collections.Generic.IEnumerable<TResult>! elseSource) -> System.Collections.Generic.IEnumerable<TResult>!
+static SuperLinq.SuperEnumerable.MaxByWithTies<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.MaxByWithTies<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IComparer<TKey>? comparer) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Memoize<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, bool forceCache = true) -> SuperLinq.IBuffer<TSource>!
+static SuperLinq.SuperEnumerable.MinByWithTies<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.MinByWithTies<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IComparer<TKey>? comparer) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.OnErrorResumeNext<TSource>(params System.Collections.Generic.IEnumerable<TSource>![]! sources) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.OnErrorResumeNext<TSource>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>! sources) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.OnErrorResumeNext<TSource>(this System.Collections.Generic.IEnumerable<TSource>! first, System.Collections.Generic.IEnumerable<TSource>! second) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Publish<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<System.Collections.Generic.IEnumerable<TSource>!, System.Collections.Generic.IEnumerable<TResult>!>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
+static SuperLinq.SuperEnumerable.Publish<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> SuperLinq.IBuffer<TSource>!
+static SuperLinq.SuperEnumerable.Repeat<TResult>(TResult value) -> System.Collections.Generic.IEnumerable<TResult>!
+static SuperLinq.SuperEnumerable.Repeat<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Repeat<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int count) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Retry<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Retry<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int count) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Scan<TSource, TState>(this System.Collections.Generic.IEnumerable<TSource>! source, TState seed, System.Func<TState, TSource, TState>! transformation) -> System.Collections.Generic.IEnumerable<TState>!
+static SuperLinq.SuperEnumerable.Scan<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TSource, TSource>! transformation) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Share<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<System.Collections.Generic.IEnumerable<TSource>!, System.Collections.Generic.IEnumerable<TResult>!>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
+static SuperLinq.SuperEnumerable.Share<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> SuperLinq.IBuffer<TSource>!
+static SuperLinq.SuperEnumerable.Throw<TSource>(System.Exception! exception) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.Using<TSource, TResource>(System.Func<TResource>! resourceFactory, System.Func<TResource, System.Collections.Generic.IEnumerable<TSource>!>! enumerableFactory) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.While<TSource>(System.Func<bool>! condition, System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<TSource>!
+SuperLinq.IBuffer<T>
+SuperLinq.IBuffer<T>.Count.get -> int
+SuperLinq.IBuffer<T>.Reset() -> void
