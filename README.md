@@ -283,7 +283,7 @@ Equality operations return a boolean value that indicates whether two sequences 
 Element Operations
 </summary>
 
-Lorem ipsum.
+Element operations return or find the index of a single, specific element from a sequence.
 
 ### Methods
 
