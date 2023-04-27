@@ -4,17 +4,15 @@
 			"src": [
 				{
 					"files": [
-						"**/*.csproj"
+						"SuperLinq/bin/Release/net7.0/SuperLinq.dll",
+						"SuperLinq.Async/bin/Release/net7.0/SuperLinq.Async.dll"
 					],
 					"src": "../../Source"
 				}
 			],
 			"dest": "api",
 			"disableGitFeatures": false,
-			"disableDefaultFilter": false,
-			"properties": {
-				"TargetFramework": "net7.0"
-			}
+			"disableDefaultFilter": false
 		}
   ],
   "build": {
@@ -25,10 +23,9 @@
 			"_appFooter": "",
 			"_enableSearch": true,
 			"_enableNewTab": true,
-			"_disableContribution": true
+			"_disableContribution": false
 		},
     "template": ["default", "./singulinkfx/singulinkfx"],
-    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
     "content": [
       {
         "files": [
