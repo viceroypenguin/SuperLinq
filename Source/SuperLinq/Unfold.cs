@@ -28,7 +28,7 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// This operator uses deferred execution and streams its results.
 	/// </remarks>
-
+	[Obsolete("Will be removed in v6.0.0; better implemented as `SuperEnumerable.Generate().TakeWhile().Select()`")]
 	public static IEnumerable<TResult> Unfold<TState, T, TResult>(
 		TState state,
 		Func<TState, T> generator,
