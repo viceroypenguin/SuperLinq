@@ -16,8 +16,7 @@ you to use on the types they extend (typically some instantiation of
 `IAsyncEnumerable<T>`).
 
 Apart from extension methods, SuperLinq.Async also offers regular static method
-that *generate* (instead of operating on) sequences, like `Generate`,
-`GenerateByIndex` and others. 
+that *generate* (instead of operating on) sequences, like `Generate` and others. 
 
 ## .NET Versions
 
