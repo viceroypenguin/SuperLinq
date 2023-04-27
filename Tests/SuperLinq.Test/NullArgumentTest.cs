@@ -127,14 +127,7 @@ public class NullArgumentTest
 			return true;
 		}
 
-		var nullableParameters = new[]
-		{
-			nameof(SuperEnumerable.Trace) + ".format",
-		};
-
-		var param = parameter.Member.Name + "." + parameter.Name;
-
-		return nullableParameters.Contains(param, StringComparer.OrdinalIgnoreCase);
+		return false;
 	}
 
 	private static object CreateInstance(Type type)

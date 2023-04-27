@@ -47,3 +47,7 @@ static SuperLinq.SuperEnumerable.While<TSource>(System.Func<bool>! condition, Sy
 SuperLinq.IBuffer<T>
 SuperLinq.IBuffer<T>.Count.get -> int
 SuperLinq.IBuffer<T>.Reset() -> void
+
+*REMOVED*static SuperLinq.SuperEnumerable.Trace<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<TSource>!
+*REMOVED*static SuperLinq.SuperEnumerable.Trace<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, string? format) -> System.Collections.Generic.IEnumerable<TSource>!
+*REMOVED*static SuperLinq.SuperEnumerable.Trace<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, string!>! formatter) -> System.Collections.Generic.IEnumerable<TSource>!
