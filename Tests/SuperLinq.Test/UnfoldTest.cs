@@ -1,5 +1,8 @@
 ﻿namespace Test;
 
+// Keep testing `Unfold` for now
+#pragma warning disable CS0618
+
 public class UnfoldTest
 {
 	[Fact]

@@ -19,6 +19,7 @@ public static partial class SuperEnumerable
 	/// <para>
 	/// This function defers execution and streams the results.</para>
 	/// </remarks>
+	[Obsolete("Will be removed in v6.0.0; better implemented as `Enumerable.Range().Select()`")]
 	public static IEnumerable<TResult> GenerateByIndex<TResult>(Func<int, TResult> generator)
 	{
 		Guard.IsNotNull(generator);

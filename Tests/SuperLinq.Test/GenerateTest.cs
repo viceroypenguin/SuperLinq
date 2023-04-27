@@ -1,5 +1,8 @@
 ﻿namespace Test;
 
+// Keep testing `GenerateByIndex` for now
+#pragma warning disable CS0618
+
 public class GenerateTest
 {
 	[Fact]
