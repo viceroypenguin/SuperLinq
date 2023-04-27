@@ -3,10 +3,9 @@
 		<LangVersion>latest</LangVersion>
 
 		<Nullable>enable</Nullable>
-		<WarningsAsErrors>nullable</WarningsAsErrors>
+		<WarningsAsErrors>$(WarningsAsErrors);nullable;</WarningsAsErrors>
 
 		<ImplicitUsings>enable</ImplicitUsings>
-		<WarningsAsErrors>nullable</WarningsAsErrors>
 
 		<TargetFrameworks>netcoreapp3.1;net6.0;net7.0</TargetFrameworks>
 		<CheckEolTargetFramework>false</CheckEolTargetFramework>
@@ -23,6 +22,9 @@
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+		<!-- Don't block development work; but block CI if dev work isn't complete. -->
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<CollectCoverage>true</CollectCoverage>

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SuperLinq.Docs": {
+      "commandName": "Project",
+      "workingDirectory": "$(ProjectDir)"
+    }
+  }
+}
