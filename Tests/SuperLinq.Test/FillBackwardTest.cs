@@ -40,4 +40,20 @@ public class FillBackwardTest
 				new { X = 0, Y = 0 },
 				new { X = 0, Y = 0 });
 	}
+
+	[Fact]
+	public void FillBackwardCollectionCopyTo()
+	{
+		using var xs = new BreakingCollection<int>(0, 0, 1, 2, 0, 0, 0, 3, 4, 0, 0);
+
+		var result = xs.FillBackward(e => e == 0);
+		Assert.Equal(xs.Count, (result as ICollection<int>)!.Count);
+
+		var arr = new int[xs.Count];
+		_ = result.CopyTo(arr, 0);
+
+		arr.AssertSequenceEqual(
+			1, 1, 1, 2, 3, 3, 3, 3, 4, 0, 0);
+	}
+
 }
