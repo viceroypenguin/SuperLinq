@@ -22,7 +22,7 @@ public class FillBackwardTest
 		using (seq)
 		{
 			seq
-				.FillBackward(x => x == 200)
+				.FillBackward(x => x != 200)
 				.AssertSequenceEqual(default(int?), null, 1, 2, null, null, null, 3, 4, null, null);
 		}
 	}
