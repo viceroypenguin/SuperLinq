@@ -22,7 +22,6 @@ internal static partial class TestExtensions
 	/// <summary>
 	/// Just to make our testing easier so we can chain the assertion call.
 	/// </summary>
-
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
 		Assert.Equal(expected, actual);
 
@@ -30,9 +29,22 @@ internal static partial class TestExtensions
 	/// Make testing even easier - a params array makes for readable tests :)
 	/// The sequence should be evaluated exactly once.
 	/// </summary>
+	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected)
+	{
+		if (actual is ICollection<T> coll)
+		{
+			Assert.Equal(expected.Length, coll.Count);
 
-	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
-		Assert.Equal(expected, actual);
+			var arr = new T[expected.Length];
+			_ = actual.CopyTo(arr);
+
+			Assert.Equal(expected, arr);
+		}
+		else
+		{
+			Assert.Equal(expected, actual);
+		}
+	}
 
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, Func<T, T, bool> comparer, params T[] expected) =>
 		Assert.Equal(expected, actual, EqualityComparer.Create(comparer));

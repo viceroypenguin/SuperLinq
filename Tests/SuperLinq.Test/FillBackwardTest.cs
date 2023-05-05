@@ -6,38 +6,53 @@ public class FillBackwardTest
 	public void FillBackwardIsLazy()
 	{
 		_ = new BreakingSequence<object>().FillBackward();
+		_ = new BreakingSequence<object>().FillBackward(BreakingFunc.Of<object, bool>());
+		_ = new BreakingSequence<object>().FillBackward(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, object, object>());
 	}
 
-	[Fact]
-	public void FillBackward()
-	{
-		using var input = TestingSequence.Of<int?>(null, null, 1, 2, null, null, null, 3, 4, null, null);
+	public static IEnumerable<object[]> GetIntNullSequences() =>
+		Seq<int?>(null, null, 1, 2, null, null, null, 3, 4, null, null)
+			.ArrangeCollectionInlineDatas()
+			.Select(x => new object[] { x });
 
-		input
-			.FillBackward()
-			.AssertSequenceEqual(1, 1, 1, 2, 3, 3, 3, 3, 4, null, null);
+	[Theory]
+	[MemberData(nameof(GetIntNullSequences))]
+	public void FillBackwardBlank(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
+			seq
+				.FillBackward(x => x != 200)
+				.AssertSequenceEqual(default(int?), null, 1, 2, null, null, null, 3, 4, null, null);
+		}
 	}
 
-	[Fact]
-	public void FillBackwardWithFillSelector()
+	[Theory]
+	[MemberData(nameof(GetIntNullSequences))]
+	public void FillBackward(IDisposableEnumerable<int?> seq)
 	{
-		using var xs = Seq(0, 0, 1, 2, 0, 0, 0, 3, 4, 0, 0)
-			.Select(x => new { X = x, Y = x })
-			.AsTestingSequence();
+		using (seq)
+		{
+			seq
+				.FillBackward()
+				.AssertSequenceEqual(1, 1, 1, 2, 3, 3, 3, 3, 4, null, null);
+		}
+	}
 
-		xs
-			.FillBackward(e => e.X == 0, (m, nm) => new { m.X, nm.Y })
-			.AssertSequenceEqual(
-				new { X = 0, Y = 1 },
-				new { X = 0, Y = 1 },
-				new { X = 1, Y = 1 },
-				new { X = 2, Y = 2 },
-				new { X = 0, Y = 3 },
-				new { X = 0, Y = 3 },
-				new { X = 0, Y = 3 },
-				new { X = 3, Y = 3 },
-				new { X = 4, Y = 4 },
-				new { X = 0, Y = 0 },
-				new { X = 0, Y = 0 });
+	public static IEnumerable<object[]> GetIntSequences() =>
+		Enumerable.Range(1, 13)
+			.ArrangeCollectionInlineDatas()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void FillBackwardWithFillSelector(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			seq
+				.FillBackward(e => e % 5 != 0, (x, y) => x * y)
+				.AssertSequenceEqual(5, 10, 15, 20, 5, 60, 70, 80, 90, 10, 11, 12, 13);
+		}
 	}
 }

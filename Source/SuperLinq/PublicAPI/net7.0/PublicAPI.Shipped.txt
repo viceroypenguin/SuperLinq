@@ -103,7 +103,7 @@ static SuperLinq.SuperEnumerable.ExceptBy<TSource, TKey>(System.Collections.Gene
 static SuperLinq.SuperEnumerable.Exclude<T>(this System.Collections.Generic.IEnumerable<T>! sequence, int startIndex, int count) -> System.Collections.Generic.IEnumerable<T>!
 static SuperLinq.SuperEnumerable.FallbackIfEmpty<T>(this System.Collections.Generic.IEnumerable<T>! source, params T[]! fallback) -> System.Collections.Generic.IEnumerable<T>!
 static SuperLinq.SuperEnumerable.FallbackIfEmpty<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Collections.Generic.IEnumerable<T>! fallback) -> System.Collections.Generic.IEnumerable<T>!
-static SuperLinq.SuperEnumerable.FillBackward<T>(this System.Collections.Generic.IEnumerable<T>! source) -> System.Collections.Generic.IEnumerable<T>!
+static SuperLinq.SuperEnumerable.FillBackward<T>(this System.Collections.Generic.IEnumerable<T?>! source) -> System.Collections.Generic.IEnumerable<T?>!
 static SuperLinq.SuperEnumerable.FillBackward<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Func<T, bool>! predicate) -> System.Collections.Generic.IEnumerable<T>!
 static SuperLinq.SuperEnumerable.FillBackward<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Func<T, bool>! predicate, System.Func<T, T, T>! fillSelector) -> System.Collections.Generic.IEnumerable<T>!
 static SuperLinq.SuperEnumerable.FillForward<T>(this System.Collections.Generic.IEnumerable<T>! source) -> System.Collections.Generic.IEnumerable<T>!
