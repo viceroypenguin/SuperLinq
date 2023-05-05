@@ -147,7 +147,7 @@ public static partial class SuperEnumerable
 			_source.CopyTo(array, arrayIndex);
 
 			var i = arrayIndex + _source.Count - 1;
-			for (; !_predicate(array[i]); i--)
+			for (; _predicate(array[i]); i--)
 			{
 				if (i < arrayIndex)
 					return;
