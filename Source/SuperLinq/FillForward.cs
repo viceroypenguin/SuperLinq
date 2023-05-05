@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -18,10 +20,9 @@ public static partial class SuperEnumerable
 	/// results. If references or values are null at the start of the
 	/// sequence then they remain null.
 	/// </remarks>
-
-	public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source)
+	public static IEnumerable<T?> FillForward<T>(this IEnumerable<T?> source)
 	{
-		return source.FillForward(e => e == null);
+		return source.FillForward(static e => e == null);
 	}
 
 	/// <summary>
@@ -42,13 +43,14 @@ public static partial class SuperEnumerable
 	/// results. If elements are missing at the start of the sequence then
 	/// they remain missing.
 	/// </remarks>
-
 	public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(predicate);
 
-		return FillForwardImpl(source, predicate, null);
+		return source is ICollection<T> coll
+			? new FillForwardCollection<T>(coll, predicate, fillSelector: default)
+			: FillForwardCore(source, predicate, fillSelector: default);
 	}
 
 	/// <summary>
@@ -74,29 +76,31 @@ public static partial class SuperEnumerable
 	/// results. If elements are missing at the start of the sequence then
 	/// they remain missing.
 	/// </remarks>
-
 	public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(predicate);
 		Guard.IsNotNull(fillSelector);
 
-		return FillForwardImpl(source, predicate, fillSelector);
+		return source is ICollection<T> coll
+			? new FillForwardCollection<T>(coll, predicate, fillSelector)
+			: FillForwardCore(source, predicate, fillSelector);
 	}
 
-	private static IEnumerable<T> FillForwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
+	private static IEnumerable<T> FillForwardCore<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
 	{
-		(bool, T) seed = default;
+		(bool, T?) seed = default;
 
 		foreach (var item in source)
 		{
 			if (predicate(item))
 			{
-				yield return seed is (true, { } someSeed)
-						   ? fillSelector != null
-							 ? fillSelector(item, someSeed)
-							 : someSeed
-						   : item;
+				yield return (seed, fillSelector) switch
+				{
+					((true, var s), { } f) => f(item, s),
+					((true, var s), _) => s,
+					_ => item,
+				};
 			}
 			else
 			{
@@ -104,5 +108,60 @@ public static partial class SuperEnumerable
 				yield return item;
 			}
 		}
+	}
+
+	private sealed class FillForwardCollection<T> : IteratorCollection<T, T>
+	{
+		private readonly ICollection<T> _source;
+		private readonly Func<T, bool> _predicate;
+		private readonly Func<T, T, T>? _fillSelector;
+
+		public FillForwardCollection(ICollection<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
+		{
+			_source = source;
+			_predicate = predicate;
+			_fillSelector = fillSelector;
+		}
+
+		public override int Count => _source.Count;
+
+		[ExcludeFromCodeCoverage]
+		public override IEnumerator<T> GetEnumerator() =>
+			FillForwardCore(_source, _predicate, _fillSelector)
+				.GetEnumerator();
+
+		public override void CopyTo(T[] array, int arrayIndex)
+		{
+			Guard.IsNotNull(array);
+			Guard.IsGreaterThanOrEqualTo(arrayIndex, 0);
+
+			_source.CopyTo(array, arrayIndex);
+
+			var i = arrayIndex;
+			var max = arrayIndex + _source.Count;
+			for (; i < max && _predicate(array[i]); i++)
+				;
+
+			if (i >= max)
+				return;
+
+			var last = array[i++];
+			for (; i < max; i++)
+			{
+				if (_predicate(array[i]))
+				{
+					array[i] = _fillSelector != null
+						? _fillSelector(array[i], last)
+						: last;
+				}
+				else
+					last = array[i];
+			}
+		}
+
+		[ExcludeFromCodeCoverage]
+		public override bool Contains(T item) =>
+			FillForwardCore(_source, _predicate, _fillSelector)
+				.Contains(item);
 	}
 }

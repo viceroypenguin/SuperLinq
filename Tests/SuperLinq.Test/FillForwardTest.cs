@@ -8,20 +8,58 @@ public class FillForwardTest
 	public void FillForwardIsLazy()
 	{
 		_ = new BreakingSequence<object>().FillForward();
+		_ = new BreakingSequence<object>().FillForward(BreakingFunc.Of<object, bool>());
+		_ = new BreakingSequence<object>().FillForward(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, object, object>());
 	}
 
-	[Fact]
-	public void FillForward()
+	public static IEnumerable<object[]> GetIntNullSequences() =>
+		Seq<int?>(null, null, 1, 2, null, null, null, 3, 4, null, null)
+			.ArrangeCollectionInlineDatas()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetIntNullSequences))]
+	public void FillForwardBlank(IDisposableEnumerable<int?> seq)
 	{
-		using var input = TestingSequence.Of<int?>(null, null, 1, 2, null, null, null, 3, 4, null, null);
+		using (seq)
+		{
+			seq
+				.FillForward(x => x != 200)
+				.AssertSequenceEqual(default(int?), null, 1, 2, null, null, null, 3, 4, null, null);
+		}
+	}
 
-		input
-			.FillForward()
-			.AssertSequenceEqual(default(int?), null, 1, 2, 2, 2, 2, 3, 4, 4, 4);
+	[Theory]
+	[MemberData(nameof(GetIntNullSequences))]
+	public void FillForward(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
+			seq
+				.FillForward()
+				.AssertSequenceEqual(default(int?), null, 1, 2, 2, 2, 2, 3, 4, 4, 4);
+		}
+	}
+
+	public static IEnumerable<object[]> GetIntSequences() =>
+		Enumerable.Range(1, 13)
+			.ArrangeCollectionInlineDatas()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void FillForwardWithFillSelector(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			seq
+				.FillForward(e => e % 5 != 0, (x, y) => x * y)
+				.AssertSequenceEqual(1, 2, 3, 4, 5, 30, 35, 40, 45, 10, 110, 120, 130);
+		}
 	}
 
 	[Fact]
-	public void FillForwardWithFillSelector()
+	public void FillForwardExample()
 	{
 		const string Table = @"
                 Europe UK          London      123
