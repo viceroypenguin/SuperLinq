@@ -46,7 +46,7 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(predicate);
 
-		return FillForwardImpl(source, predicate, null);
+		return FillForwardCore(source, predicate, null);
 	}
 
 	/// <summary>
@@ -78,22 +78,23 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(predicate);
 		Guard.IsNotNull(fillSelector);
 
-		return FillForwardImpl(source, predicate, fillSelector);
+		return FillForwardCore(source, predicate, fillSelector);
 	}
 
-	private static IEnumerable<T> FillForwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
+	private static IEnumerable<T> FillForwardCore<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
 	{
-		(bool, T) seed = default;
+		(bool, T?) seed = default;
 
 		foreach (var item in source)
 		{
 			if (predicate(item))
 			{
-				yield return seed is (true, { } someSeed)
-						   ? fillSelector != null
-							 ? fillSelector(item, someSeed)
-							 : someSeed
-						   : item;
+				yield return (seed, fillSelector) switch
+				{
+					((true, var s), { } f) => f(item, s),
+					((true, var s), _) => s,
+					_ => item,
+				};
 			}
 			else
 			{
