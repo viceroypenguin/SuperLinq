@@ -18,10 +18,9 @@ public static partial class SuperEnumerable
 	/// results. If references or values are null at the start of the
 	/// sequence then they remain null.
 	/// </remarks>
-
-	public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source)
+	public static IEnumerable<T?> FillForward<T>(this IEnumerable<T?> source)
 	{
-		return source.FillForward(e => e == null);
+		return source.FillForward(static e => e == null);
 	}
 
 	/// <summary>
@@ -42,7 +41,6 @@ public static partial class SuperEnumerable
 	/// results. If elements are missing at the start of the sequence then
 	/// they remain missing.
 	/// </remarks>
-
 	public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate)
 	{
 		Guard.IsNotNull(source);
@@ -74,7 +72,6 @@ public static partial class SuperEnumerable
 	/// results. If elements are missing at the start of the sequence then
 	/// they remain missing.
 	/// </remarks>
-
 	public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
 	{
 		Guard.IsNotNull(source);
