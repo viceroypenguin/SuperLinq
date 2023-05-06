@@ -1,5 +1,10 @@
 ﻿namespace Test;
 
+internal static class BreakingCollection
+{
+	public static BreakingCollection<T> AsBreakingCollection<T>(this IEnumerable<T> source) => new(source);
+}
+
 internal class BreakingCollection<T> : BreakingSequence<T>, ICollection<T>, IDisposableEnumerable<T>
 {
 	protected readonly IList<T> List;
