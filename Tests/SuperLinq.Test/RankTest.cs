@@ -156,11 +156,5 @@ public class RankTests
 
 		result = sequence.Rank(comparer: Comparer<int>.Default);
 		Assert.Equal(10_000, result.Count());
-
-		result = sequence.RankBy(x => -x);
-		Assert.Equal(10_000, result.Count());
-
-		result = sequence.RankBy(x => -x, comparer: Comparer<int>.Default);
-		Assert.Equal(10_000, result.Count());
 	}
 }

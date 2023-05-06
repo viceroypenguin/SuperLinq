@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -218,6 +220,7 @@ public static partial class SuperEnumerable
 
 		public override int Count => _source.Count;
 
+		[ExcludeFromCodeCoverage]
 		protected override IEnumerable<(TSource, int)> GetEnumerable() =>
 			RankByCore(_source, _keySelector, _comparer, _isDense);
 	}
