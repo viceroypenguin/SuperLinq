@@ -115,34 +115,34 @@ public static partial class SuperEnumerable
 		if (direction == OrderByDirection.Descending)
 			comparer = new ReverseComparer<T>(comparer);
 
-		return PartialSortCore(source, count, comparer);
-	}
+		return Core(source, count, comparer);
 
-	private static IEnumerable<T> PartialSortCore<T>(IEnumerable<T> source, int count, IComparer<T> comparer)
-	{
-		var top = new SortedSet<(T Item, int Index)>(
-			ValueTupleComparer.Create<T, int>(comparer, default));
-
-		var index = -1;
-		foreach (var item in source)
+		static IEnumerable<T> Core(IEnumerable<T> source, int count, IComparer<T> comparer)
 		{
-			index++;
+			var top = new SortedSet<(T Item, int Index)>(
+				ValueTupleComparer.Create<T, int>(comparer, default));
 
-			if (top.Count < count)
+			var index = -1;
+			foreach (var item in source)
 			{
+				index++;
+
+				if (top.Count < count)
+				{
+					_ = top.Add((item, index));
+					continue;
+				}
+
+				if (comparer.Compare(item, top.Max.Item) >= 0)
+					continue;
+
+				_ = top.Remove(top.Max);
 				_ = top.Add((item, index));
-				continue;
 			}
 
-			if (comparer.Compare(item, top.Max.Item) >= 0)
-				continue;
-
-			_ = top.Remove(top.Max);
-			_ = top.Add((item, index));
+			foreach (var (item, _) in top)
+				yield return item;
 		}
-
-		foreach (var (item, _) in top)
-			yield return item;
 	}
 
 	/// <summary>
