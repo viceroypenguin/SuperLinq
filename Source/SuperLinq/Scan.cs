@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -23,24 +25,45 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(transformation);
 
-		return Core(source, transformation);
+		if (source is ICollection<TSource> coll)
+			return new ScanIterator<TSource>(coll, transformation);
 
-		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Func<TSource, TSource, TSource> transformation)
+		return ScanCore(source, transformation);
+	}
+
+	private static IEnumerable<TSource> ScanCore<TSource>(IEnumerable<TSource> source, Func<TSource, TSource, TSource> transformation)
+	{
+		using var e = source.GetEnumerator();
+
+		if (!e.MoveNext())
+			yield break;
+
+		var state = e.Current;
+		yield return state;
+
+		while (e.MoveNext())
 		{
-			using var e = source.GetEnumerator();
-
-			if (!e.MoveNext())
-				yield break;
-
-			var state = e.Current;
+			state = transformation(state, e.Current);
 			yield return state;
-
-			while (e.MoveNext())
-			{
-				state = transformation(state, e.Current);
-				yield return state;
-			}
 		}
+	}
+
+	private class ScanIterator<T> : IteratorCollection<T, T>
+	{
+		private readonly ICollection<T> _source;
+		private readonly Func<T, T, T> _transformation;
+
+		public ScanIterator(ICollection<T> source, Func<T, T, T> transformation)
+		{
+			_source = source;
+			_transformation = transformation;
+		}
+
+		public override int Count => _source.Count;
+
+		[ExcludeFromCodeCoverage]
+		protected override IEnumerable<T> GetEnumerable() =>
+			ScanCore(_source, _transformation);
 	}
 
 	/// <summary>
@@ -89,21 +112,47 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(transformation);
 
-		return Core(source, seed, transformation);
+		if (source is ICollection<TSource> coll)
+			return new ScanStateIterator<TSource, TState>(coll, seed, transformation);
 
-		static IEnumerable<TState> Core(
-			IEnumerable<TSource> source,
+		return ScanCore(source, seed, transformation);
+	}
+
+	private static IEnumerable<TState> ScanCore<TSource, TState>(
+		IEnumerable<TSource> source,
+		TState state,
+		Func<TState, TSource, TState> transformation)
+	{
+		yield return state;
+
+		foreach (var e in source)
+		{
+			state = transformation(state, e);
+			yield return state;
+		}
+	}
+
+	private class ScanStateIterator<TSource, TState> : IteratorCollection<TSource, TState>
+	{
+		private readonly ICollection<TSource> _source;
+		private readonly TState _state;
+		private readonly Func<TState, TSource, TState> _transformation;
+
+		public ScanStateIterator(
+			ICollection<TSource> source,
 			TState state,
 			Func<TState, TSource, TState> transformation)
 		{
-			yield return state;
-
-			foreach (var e in source)
-			{
-				state = transformation(state, e);
-				yield return state;
-			}
+			_source = source;
+			_state = state;
+			_transformation = transformation;
 		}
+
+		public override int Count => _source.Count + 1;
+
+		[ExcludeFromCodeCoverage]
+		protected override IEnumerable<TState> GetEnumerable() =>
+			ScanCore(_source, _state, _transformation);
 	}
 
 	/// <summary>
