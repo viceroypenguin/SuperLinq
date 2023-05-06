@@ -38,17 +38,20 @@ public partial class SuperEnumerable
 		Guard.IsNotNull(onNext);
 		Guard.IsNotNull(onCompleted);
 
-		return Core(source, onNext, onCompleted);
+		if (source is ICollection<TSource> coll)
+			return new DoIterator<TSource>(coll, onNext, onError: null, onCompleted);
 
-		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Action<TSource> onNext, Action onCompleted)
+		return DoCore(source, onNext, onCompleted);
+	}
+
+	private static IEnumerable<TSource> DoCore<TSource>(IEnumerable<TSource> source, Action<TSource> onNext, Action onCompleted)
+	{
+		foreach (var el in source)
 		{
-			foreach (var el in source)
-			{
-				onNext(el);
-				yield return el;
-			}
-			onCompleted();
+			onNext(el);
+			yield return el;
 		}
+		onCompleted();
 	}
 
 	/// <summary>
@@ -91,29 +94,56 @@ public partial class SuperEnumerable
 		Guard.IsNotNull(onError);
 		Guard.IsNotNull(onCompleted);
 
-		return Core(source, onNext, onError, onCompleted);
+		if (source is ICollection<TSource> coll)
+			return new DoIterator<TSource>(coll, onNext, onError, onCompleted);
 
-		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Action<TSource> onNext, Action<Exception> onError, Action onCompleted)
+		return DoCore(source, onNext, onError, onCompleted);
+	}
+
+	private static IEnumerable<TSource> DoCore<TSource>(IEnumerable<TSource> source, Action<TSource> onNext, Action<Exception> onError, Action onCompleted)
+	{
+		using var iter = source.GetEnumerator();
+		while (true)
 		{
-			using var iter = source.GetEnumerator();
-			while (true)
+			try
 			{
-				try
-				{
-					if (!iter.MoveNext())
-						break;
-				}
-				catch (Exception ex)
-				{
-					onError(ex);
-					throw;
-				}
-
-				var current = iter.Current;
-				onNext(current);
-				yield return current;
+				if (!iter.MoveNext())
+					break;
 			}
-			onCompleted();
+			catch (Exception ex)
+			{
+				onError(ex);
+				throw;
+			}
+
+			var current = iter.Current;
+			onNext(current);
+			yield return current;
 		}
+		onCompleted();
+	}
+
+
+	private class DoIterator<T> : IteratorCollection<T, T>
+	{
+		private readonly ICollection<T> _source;
+		private readonly Action<T> _onNext;
+		private readonly Action<Exception>? _onError;
+		private readonly Action _onCompleted;
+
+		public DoIterator(ICollection<T> source, Action<T> onNext, Action<Exception>? onError, Action onCompleted)
+		{
+			_source = source;
+			_onNext = onNext;
+			_onError = onError;
+			_onCompleted = onCompleted;
+		}
+
+		public override int Count => _source.Count;
+
+		protected override IEnumerable<T> GetEnumerable() =>
+			_onError != null
+			? DoCore(_source, _onNext, _onError, _onCompleted)
+			: DoCore(_source, _onNext, _onCompleted);
 	}
 }
