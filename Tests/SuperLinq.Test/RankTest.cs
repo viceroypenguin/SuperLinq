@@ -144,4 +144,17 @@ public class RankTests
 				.Select((x, i) => (x, i + 1)));
 		}
 	}
+
+	[Fact]
+	public void TestRankCollectionCount()
+	{
+		using var sequence = Enumerable.Range(1, 10_000)
+			.AsBreakingCollection();
+
+		var result = sequence.Rank();
+		Assert.Equal(10_000, result.Count());
+
+		result = sequence.Rank(comparer: Comparer<int>.Default);
+		Assert.Equal(10_000, result.Count());
+	}
 }
