@@ -38,6 +38,16 @@ public class ScanTest
 	}
 
 	[Fact]
+	public void ScanCount()
+	{
+		using var sequence = Enumerable.Range(1, 10_000)
+			.AsBreakingCollection();
+
+		var result = sequence.Scan((a, b) => a + b);
+		Assert.Equal(10_000, result.Count());
+	}
+
+	[Fact]
 	public void SeededScanEmpty()
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -71,5 +81,15 @@ public class ScanTest
 
 		_ = Assert.Throws<TestException>(result.Consume);
 		result.Take(4).AssertSequenceEqual(0, 1, 3, 6);
+	}
+
+	[Fact]
+	public void SeededScanCount()
+	{
+		using var sequence = Enumerable.Range(1, 10_000)
+			.AsBreakingCollection();
+
+		var result = sequence.Scan(23, (a, b) => a + b);
+		Assert.Equal(10_001, result.Count());
 	}
 }
