@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -29,6 +31,12 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(otherSources);
 
+		foreach (var s in otherSources)
+			Guard.IsNotNull(s, nameof(otherSources));
+
+		if (source is ICollection<T> && otherSources.All(s => s is ICollection<T>))
+			return new InterleaveIterator<T>(otherSources.Prepend(source).Cast<ICollection<T>>());
+
 		return Interleave(otherSources.Prepend(source));
 	}
 
@@ -55,19 +63,38 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(sources);
 
-		return Core(sources);
+		if (sources is IEnumerable<ICollection<T>> sourcesColl)
+			return new InterleaveIterator<T>(sourcesColl.ToList());
 
-		static IEnumerable<T> Core(IEnumerable<IEnumerable<T>> sources)
+		return InterleaveCore(sources);
+	}
+
+	private static IEnumerable<T> InterleaveCore<T>(IEnumerable<IEnumerable<T>> sources)
+	{
+		using var list = new EnumeratorList<T>(sources);
+
+		while (list.Any())
 		{
-			using var list = new EnumeratorList<T>(sources);
-
-			while (list.Any())
+			for (var i = 0; list.MoveNext(i); i++)
 			{
-				for (var i = 0; list.MoveNext(i); i++)
-				{
-					yield return list.Current(i);
-				}
+				yield return list.Current(i);
 			}
 		}
+	}
+
+	private sealed class InterleaveIterator<T> : IteratorCollection<T, T>
+	{
+		private readonly IEnumerable<ICollection<T>> _sources;
+
+		public InterleaveIterator(IEnumerable<ICollection<T>> sources)
+		{
+			_sources = sources;
+		}
+
+		public override int Count => _sources.Sum(static s => s.Count);
+
+		[ExcludeFromCodeCoverage]
+		protected override IEnumerable<T> GetEnumerable() =>
+			InterleaveCore(_sources);
 	}
 }
