@@ -52,7 +52,10 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		return RankByImpl(source, keySelector, comparer: null, isDense: true);
+		if (source is ICollection<TSource> coll)
+			return new RankIterator<TSource, TKey>(coll, keySelector, comparer: null, isDense: false);
+
+		return RankByCore(source, keySelector, comparer: null, isDense: true);
 	}
 
 	/// <summary>
@@ -77,7 +80,10 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		return RankByImpl(source, keySelector, comparer, isDense: true);
+		if (source is ICollection<TSource> coll)
+			return new RankIterator<TSource, TKey>(coll, keySelector, comparer, isDense: true);
+
+		return RankByCore(source, keySelector, comparer, isDense: true);
 	}
 
 	/// <summary>
@@ -130,7 +136,10 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		return RankByImpl(source, keySelector, comparer: null, isDense: false);
+		if (source is ICollection<TSource> coll)
+			return new RankIterator<TSource, TKey>(coll, keySelector, comparer: null, isDense: false);
+
+		return RankByCore(source, keySelector, comparer: null, isDense: false);
 	}
 
 	/// <summary>
@@ -155,10 +164,13 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		return RankByImpl(source, keySelector, comparer, isDense: false);
+		if (source is ICollection<TSource> coll)
+			return new RankIterator<TSource, TKey>(coll, keySelector, comparer, isDense: false);
+
+		return RankByCore(source, keySelector, comparer, isDense: false);
 	}
 
-	private static IEnumerable<(TSource, int)> RankByImpl<TSource, TKey>(
+	private static IEnumerable<(TSource, int)> RankByCore<TSource, TKey>(
 		IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
 		IComparer<TKey>? comparer,
@@ -187,5 +199,26 @@ public static partial class SuperEnumerable
 
 			yield return (cur, rank);
 		}
+	}
+
+	private sealed class RankIterator<TSource, TKey> : IteratorCollection<TSource, (TSource, int)>
+	{
+		private readonly ICollection<TSource> _source;
+		private readonly Func<TSource, TKey> _keySelector;
+		private readonly IComparer<TKey>? _comparer;
+		private readonly bool _isDense;
+
+		public RankIterator(ICollection<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer, bool isDense)
+		{
+			_source = source;
+			_keySelector = keySelector;
+			_comparer = comparer;
+			_isDense = isDense;
+		}
+
+		public override int Count => _source.Count;
+
+		protected override IEnumerable<(TSource, int)> GetEnumerable() =>
+			RankByCore(_source, _keySelector, _comparer, _isDense);
 	}
 }
