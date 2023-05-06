@@ -14,6 +14,6 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(action);
 
-		return source.Do(action);
+		return Do(source, action);
 	}
 }

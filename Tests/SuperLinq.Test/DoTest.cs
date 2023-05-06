@@ -94,4 +94,17 @@ public class DoTest
 
 		Assert.Equal(155, count);
 	}
+
+	[Fact]
+	public void DoCollectionCount()
+	{
+		using var sequence = Enumerable.Range(1, 10_000)
+			.AsBreakingCollection();
+
+		var result = sequence.Do(delegate { });
+		Assert.Equal(10_000, result.Count());
+
+		result = sequence.Do(delegate { }, onError: delegate { });
+		Assert.Equal(10_000, result.Count());
+	}
 }
