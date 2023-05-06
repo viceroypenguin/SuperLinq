@@ -126,9 +126,8 @@ public static partial class SuperEnumerable
 		public override int Count => _source.Count;
 
 		[ExcludeFromCodeCoverage]
-		public override IEnumerator<T> GetEnumerator() =>
-			FillForwardCore(_source, _predicate, _fillSelector)
-				.GetEnumerator();
+		protected override IEnumerable<T> GetEnumerable() =>
+			FillForwardCore(_source, _predicate, _fillSelector);
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
@@ -158,10 +157,5 @@ public static partial class SuperEnumerable
 					last = array[i];
 			}
 		}
-
-		[ExcludeFromCodeCoverage]
-		public override bool Contains(T item) =>
-			FillForwardCore(_source, _predicate, _fillSelector)
-				.Contains(item);
 	}
 }

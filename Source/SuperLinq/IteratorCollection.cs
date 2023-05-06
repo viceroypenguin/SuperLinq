@@ -18,9 +18,17 @@ public partial class SuperEnumerable
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+		protected abstract IEnumerable<TResult> GetEnumerable();
+
 		public abstract int Count { get; }
-		public abstract IEnumerator<TResult> GetEnumerator();
-		public abstract bool Contains(TResult item);
-		public abstract void CopyTo(TResult[] array, int arrayIndex);
+
+		public virtual IEnumerator<TResult> GetEnumerator() =>
+			GetEnumerable().GetEnumerator();
+
+		public virtual bool Contains(TResult item) =>
+			GetEnumerable().Contains(item);
+
+		public virtual void CopyTo(TResult[] array, int arrayIndex) =>
+			GetEnumerable().CopyTo(array, arrayIndex);
 	}
 }

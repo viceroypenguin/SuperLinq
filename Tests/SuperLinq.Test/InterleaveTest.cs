@@ -128,4 +128,17 @@ public class InterleaveTests
 
 		result.AssertSequenceEqual(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
 	}
+
+	[Fact]
+	public void TestInterleaveCollectionCount()
+	{
+		using var sequenceA = Enumerable.Range(1, 100).AsBreakingCollection();
+		using var sequenceB = Enumerable.Range(1, 100).AsBreakingCollection();
+
+		var coll = sequenceA.Interleave(sequenceB);
+		Assert.Equal(200, coll.Count());
+
+		coll = Seq(sequenceA, sequenceB).Interleave<int>();
+		Assert.Equal(200, coll.Count());
+	}
 }
