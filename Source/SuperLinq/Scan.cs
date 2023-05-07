@@ -64,6 +64,23 @@ public static partial class SuperEnumerable
 		[ExcludeFromCodeCoverage]
 		protected override IEnumerable<T> GetEnumerable() =>
 			ScanCore(_source, _transformation);
+
+		public override void CopyTo(T[] array, int arrayIndex)
+		{
+			var (sList, b, cnt) = _source is IList<T> s
+				? (s, 0, s.Count)
+				: (array, arrayIndex, SuperEnumerable.CopyTo(_source, array, arrayIndex));
+
+			var i = 0;
+			var state = sList[b + i];
+			array[arrayIndex + i] = state;
+
+			for (i++; i < cnt; i++)
+			{
+				state = _transformation(state, sList[b + i]);
+				array[arrayIndex + i] = state;
+			}
+		}
 	}
 
 	/// <summary>
@@ -153,6 +170,20 @@ public static partial class SuperEnumerable
 		[ExcludeFromCodeCoverage]
 		protected override IEnumerable<TState> GetEnumerable() =>
 			ScanCore(_source, _state, _transformation);
+
+		public override void CopyTo(TState[] array, int arrayIndex)
+		{
+			var list = _source is IList<TSource> l ? l : _source.ToList();
+
+			var state = _state;
+			array[arrayIndex] = state;
+
+			for (var i = 0; i < list.Count; i++)
+			{
+				state = _transformation(state, list[i]);
+				array[arrayIndex + i] = state;
+			}
+		}
 	}
 
 	/// <summary>
@@ -173,9 +204,9 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	[Obsolete("Method renamed back to `Scan`.")]
 	public static IEnumerable<TState> ScanEx<TSource, TState>(
-		this IEnumerable<TSource> source,
-		TState seed,
-		Func<TState, TSource, TState> transformation)
+	this IEnumerable<TSource> source,
+	TState seed,
+	Func<TState, TSource, TState> transformation)
 	{
 		return Scan(source, seed, transformation);
 	}
