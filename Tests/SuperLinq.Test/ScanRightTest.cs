@@ -56,6 +56,42 @@ public class ScanRightTest
 		_ = new BreakingSequence<int>().ScanRight(BreakingFunc.Of<int, int, int>());
 	}
 
+	[Fact]
+	public void ScanRightCollection()
+	{
+		using var seq = Enumerable.Range(1, 10).AsBreakingCollection();
+
+		var result = seq.ScanRight((a, b) => a + b);
+		Assert.Equal(10, result.Count());
+
+		result.ToArray()
+			.AssertSequenceEqual(55, 54, 52, 49, 45, 40, 34, 27, 19, 10);
+		Assert.Equal(1, seq.CopyCount);
+
+		var arr = new int[20];
+		_ = result.CopyTo(arr, 5);
+		arr
+			.AssertSequenceEqual(0, 0, 0, 0, 0, 55, 54, 52, 49, 45, 40, 34, 27, 19, 10, 0, 0, 0, 0, 0);
+		Assert.Equal(2, seq.CopyCount);
+	}
+
+	[Fact]
+	public void ScanRightList()
+	{
+		using var seq = Enumerable.Range(1, 10).AsBreakingList();
+
+		var result = seq.ScanRight((a, b) => a + b);
+		Assert.Equal(10, result.Count());
+
+		result.ToArray()
+			.AssertSequenceEqual(55, 54, 52, 49, 45, 40, 34, 27, 19, 10);
+
+		var arr = new int[20];
+		_ = result.CopyTo(arr, 5);
+		arr
+			.AssertSequenceEqual(0, 0, 0, 0, 0, 55, 54, 52, 49, 45, 40, 34, 27, 19, 10, 0, 0, 0, 0, 0);
+	}
+
 	// ScanRight(source, seed, func)
 
 	[Theory]
@@ -107,5 +143,41 @@ public class ScanRightTest
 	public void ScanRightSeedIsLazy()
 	{
 		_ = new BreakingSequence<int>().ScanRight(string.Empty, BreakingFunc.Of<int, string, string>());
+	}
+
+	[Fact]
+	public void ScanRightSeedCollection()
+	{
+		using var seq = Enumerable.Range(1, 10).AsBreakingCollection();
+
+		var result = seq.ScanRight(5, (a, b) => a + b);
+		Assert.Equal(11, result.Count());
+
+		result.ToArray()
+			.AssertSequenceEqual(60, 59, 57, 54, 50, 45, 39, 32, 24, 15, 5);
+		Assert.Equal(1, seq.CopyCount);
+
+		var arr = new int[20];
+		_ = result.CopyTo(arr, 5);
+		arr
+			.AssertSequenceEqual(0, 0, 0, 0, 0, 60, 59, 57, 54, 50, 45, 39, 32, 24, 15, 5, 0, 0, 0, 0);
+		Assert.Equal(2, seq.CopyCount);
+	}
+
+	[Fact]
+	public void ScanRightSeedList()
+	{
+		using var seq = Enumerable.Range(1, 10).AsBreakingList();
+
+		var result = seq.ScanRight(5, (a, b) => a + b);
+		Assert.Equal(11, result.Count());
+
+		result.ToArray()
+			.AssertSequenceEqual(60, 59, 57, 54, 50, 45, 39, 32, 24, 15, 5);
+
+		var arr = new int[20];
+		_ = result.CopyTo(arr, 5);
+		arr
+			.AssertSequenceEqual(0, 0, 0, 0, 0, 60, 59, 57, 54, 50, 45, 39, 32, 24, 15, 5, 0, 0, 0, 0);
 	}
 }
