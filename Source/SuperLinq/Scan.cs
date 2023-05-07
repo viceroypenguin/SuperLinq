@@ -181,7 +181,7 @@ public static partial class SuperEnumerable
 			for (var i = 0; i < list.Count; i++)
 			{
 				state = _transformation(state, list[i]);
-				array[arrayIndex + i] = state;
+				array[arrayIndex + i + 1] = state;
 			}
 		}
 	}

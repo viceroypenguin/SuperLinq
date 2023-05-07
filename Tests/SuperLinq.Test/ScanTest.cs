@@ -38,13 +38,39 @@ public class ScanTest
 	}
 
 	[Fact]
-	public void ScanCount()
+	public void ScanCollection()
 	{
-		using var sequence = Enumerable.Range(1, 10_000)
-			.AsBreakingCollection();
+		using var seq = Enumerable.Range(1, 10).AsBreakingCollection();
 
-		var result = sequence.Scan((a, b) => a + b);
-		Assert.Equal(10_000, result.Count());
+		var result = seq.Scan((a, b) => a + b);
+		Assert.Equal(10, result.Count());
+
+		result.ToArray()
+			.AssertSequenceEqual(1, 3, 6, 10, 15, 21, 28, 36, 45, 55);
+		Assert.Equal(1, seq.CopyCount);
+
+		var arr = new int[20];
+		_ = result.CopyTo(arr, 5);
+		arr
+			.AssertSequenceEqual(0, 0, 0, 0, 0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 0, 0, 0, 0, 0);
+		Assert.Equal(2, seq.CopyCount);
+	}
+
+	[Fact]
+	public void ScanList()
+	{
+		using var seq = Enumerable.Range(1, 10).AsBreakingList();
+
+		var result = seq.Scan((a, b) => a + b);
+		Assert.Equal(10, result.Count());
+
+		result.ToArray()
+			.AssertSequenceEqual(1, 3, 6, 10, 15, 21, 28, 36, 45, 55);
+
+		var arr = new int[20];
+		_ = result.CopyTo(arr, 5);
+		arr
+			.AssertSequenceEqual(0, 0, 0, 0, 0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 0, 0, 0, 0, 0);
 	}
 
 	[Fact]
@@ -84,12 +110,38 @@ public class ScanTest
 	}
 
 	[Fact]
-	public void SeededScanCount()
+	public void SeededScanCollection()
 	{
-		using var sequence = Enumerable.Range(1, 10_000)
-			.AsBreakingCollection();
+		using var seq = Enumerable.Range(1, 10).AsBreakingCollection();
 
-		var result = sequence.Scan(23, (a, b) => a + b);
-		Assert.Equal(10_001, result.Count());
+		var result = seq.Scan(5, (a, b) => a + b);
+		Assert.Equal(11, result.Count());
+
+		result.ToArray()
+			.AssertSequenceEqual(5, 6, 8, 11, 15, 20, 26, 33, 41, 50, 60);
+		Assert.Equal(1, seq.CopyCount);
+
+		var arr = new int[20];
+		_ = result.CopyTo(arr, 5);
+		arr
+			.AssertSequenceEqual(0, 0, 0, 0, 0, 5, 6, 8, 11, 15, 20, 26, 33, 41, 50, 60, 0, 0, 0, 0);
+		Assert.Equal(2, seq.CopyCount);
+	}
+
+	[Fact]
+	public void SeededScanList()
+	{
+		using var seq = Enumerable.Range(1, 10).AsBreakingList();
+
+		var result = seq.Scan(5, (a, b) => a + b);
+		Assert.Equal(11, result.Count());
+
+		result.ToArray()
+			.AssertSequenceEqual(5, 6, 8, 11, 15, 20, 26, 33, 41, 50, 60);
+
+		var arr = new int[20];
+		_ = result.CopyTo(arr, 5);
+		arr
+			.AssertSequenceEqual(0, 0, 0, 0, 0, 5, 6, 8, 11, 15, 20, 26, 33, 41, 50, 60, 0, 0, 0, 0);
 	}
 }
