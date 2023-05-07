@@ -41,7 +41,7 @@ public static partial class SuperEnumerable
 
 	private static IEnumerable<TSource> ScanRightCore<TSource>(IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
 	{
-		var list = source is IList<TSource> l ? l : source.ToList();
+		var list = source.ToList();
 
 		if (list.Count == 0)
 			yield break;
@@ -133,7 +133,7 @@ public static partial class SuperEnumerable
 
 	private static IEnumerable<TAccumulate> ScanRightCore<TSource, TAccumulate>(IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
 	{
-		var list = source is IList<TSource> l ? l : source.ToList();
+		var list = source.ToList();
 		var stack = new Stack<TAccumulate>(list.Count + 1);
 		stack.Push(seed);
 
