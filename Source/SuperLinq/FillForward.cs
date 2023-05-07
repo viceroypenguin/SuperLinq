@@ -110,7 +110,7 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class FillForwardCollection<T> : IteratorCollection<T, T>
+	private sealed class FillForwardCollection<T> : CollectionIterator<T>
 	{
 		private readonly ICollection<T> _source;
 		private readonly Func<T, bool> _predicate;

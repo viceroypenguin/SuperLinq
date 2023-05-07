@@ -48,7 +48,7 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private class ScanIterator<T> : IteratorCollection<T, T>
+	private class ScanIterator<T> : CollectionIterator<T>
 	{
 		private readonly ICollection<T> _source;
 		private readonly Func<T, T, T> _transformation;
@@ -132,7 +132,7 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private class ScanStateIterator<TSource, TState> : IteratorCollection<TSource, TState>
+	private class ScanStateIterator<TSource, TState> : CollectionIterator<TState>
 	{
 		private readonly ICollection<TSource> _source;
 		private readonly TState _state;

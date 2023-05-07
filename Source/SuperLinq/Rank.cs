@@ -203,7 +203,7 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class RankIterator<TSource, TKey> : IteratorCollection<TSource, (TSource, int)>
+	private sealed class RankIterator<TSource, TKey> : CollectionIterator<(TSource, int)>
 	{
 		private readonly ICollection<TSource> _source;
 		private readonly Func<TSource, TKey> _keySelector;

@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -31,27 +33,65 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(func);
 
-		return Core(source, func);
+		if (source is ICollection<TSource> coll)
+			return new ScanRightIterator<TSource>(coll, func);
 
-		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
+		return ScanRightCore(source, func);
+	}
+
+	private static IEnumerable<TSource> ScanRightCore<TSource>(IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
+	{
+		var list = source.ToList();
+
+		if (list.Count == 0)
+			yield break;
+
+		var seed = list[^1];
+		var stack = new Stack<TSource>(list.Count);
+		stack.Push(seed);
+
+		for (var i = list.Count - 2; i >= 0; i--)
 		{
-			var list = source is IList<TSource> l ? l : source.ToList();
-
-			if (list.Count == 0)
-				yield break;
-
-			var seed = list[^1];
-			var stack = new Stack<TSource>(list.Count);
+			seed = func(list[i], seed);
 			stack.Push(seed);
+		}
 
-			for (var i = list.Count - 2; i >= 0; i--)
+		foreach (var item in stack)
+			yield return item;
+	}
+
+	private class ScanRightIterator<T> : CollectionIterator<T>
+	{
+		private readonly ICollection<T> _source;
+		private readonly Func<T, T, T> _func;
+
+		public ScanRightIterator(ICollection<T> source, Func<T, T, T> func)
+		{
+			_source = source;
+			_func = func;
+		}
+
+		public override int Count => _source.Count;
+
+		[ExcludeFromCodeCoverage]
+		protected override IEnumerable<T> GetEnumerable() =>
+			ScanRightCore(_source, _func);
+
+		public override void CopyTo(T[] array, int arrayIndex)
+		{
+			var (sList, b, cnt) = _source is IList<T> s
+				? (s, 0, s.Count)
+				: (array, arrayIndex, SuperEnumerable.CopyTo(_source, array, arrayIndex));
+
+			var i = cnt - 1;
+			var state = sList[b + i];
+			array[arrayIndex + i] = state;
+
+			for (i--; i >= 0; i--)
 			{
-				seed = func(list[i], seed);
-				stack.Push(seed);
+				state = _func(sList[b + i], state);
+				array[arrayIndex + i] = state;
 			}
-
-			foreach (var item in stack)
-				yield return item;
 		}
 	}
 
@@ -85,22 +125,59 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(func);
 
-		return Core(source, seed, func);
+		if (source is ICollection<TSource> coll)
+			return new ScanRightStateIterator<TSource, TAccumulate>(coll, seed, func);
 
-		static IEnumerable<TAccumulate> Core(IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
+		return ScanRightCore(source, seed, func);
+	}
+
+	private static IEnumerable<TAccumulate> ScanRightCore<TSource, TAccumulate>(IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
+	{
+		var list = source.ToList();
+		var stack = new Stack<TAccumulate>(list.Count + 1);
+		stack.Push(seed);
+
+		for (var i = list.Count - 1; i >= 0; i--)
 		{
-			var list = source is IList<TSource> l ? l : source.ToList();
-			var stack = new Stack<TAccumulate>(list.Count + 1);
+			seed = func(list[i], seed);
 			stack.Push(seed);
+		}
+
+		foreach (var item in stack)
+			yield return item;
+	}
+
+	private class ScanRightStateIterator<TSource, TAccumulate> : CollectionIterator<TAccumulate>
+	{
+		private readonly ICollection<TSource> _source;
+		private readonly TAccumulate _seed;
+		private readonly Func<TSource, TAccumulate, TAccumulate> _func;
+
+		public ScanRightStateIterator(ICollection<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
+		{
+			_source = source;
+			_seed = seed;
+			_func = func;
+		}
+
+		public override int Count => _source.Count + 1;
+
+		[ExcludeFromCodeCoverage]
+		protected override IEnumerable<TAccumulate> GetEnumerable() =>
+			ScanRightCore(_source, _seed, _func);
+
+		public override void CopyTo(TAccumulate[] array, int arrayIndex)
+		{
+			var list = _source is IList<TSource> l ? l : _source.ToList();
+
+			var seed = _seed;
+			array[arrayIndex + list.Count] = seed;
 
 			for (var i = list.Count - 1; i >= 0; i--)
 			{
-				seed = func(list[i], seed);
-				stack.Push(seed);
+				seed = _func(list[i], seed);
+				array[arrayIndex + i] = seed;
 			}
-
-			foreach (var item in stack)
-				yield return item;
 		}
 	}
 }
