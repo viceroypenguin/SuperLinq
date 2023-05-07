@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -73,31 +75,64 @@ public static partial class SuperEnumerable
 
 		comparer ??= EqualityComparer<TKey>.Default;
 
-		return Core(source, keySelector, seedSelector, accumulator, comparer);
+		if (source is ICollection<TSource> coll)
+			return new ScanByIterator<TSource, TKey, TState>(
+				coll, keySelector, seedSelector, accumulator, comparer);
 
-		static IEnumerable<(TKey key, TState state)> Core(
-			IEnumerable<TSource> source,
+		return ScanByCore(source, keySelector, seedSelector, accumulator, comparer);
+	}
+
+	private static IEnumerable<(TKey key, TState state)> ScanByCore<TSource, TKey, TState>(
+		IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		Func<TKey, TState> seedSelector,
+		Func<TState, TKey, TSource, TState> accumulator,
+		IEqualityComparer<TKey> comparer)
+	{
+		var stateByKey = new Collections.NullKeyDictionary<TKey, TState>(comparer);
+
+		foreach (var item in source)
+		{
+			var key = keySelector(item);
+
+			var state = stateByKey.TryGetValue(key, out var ps)
+				? ps
+				: seedSelector(key);
+
+			state = accumulator(state, key, item);
+
+			stateByKey[key] = state;
+
+			yield return (key, state);
+		}
+	}
+
+	private class ScanByIterator<TSource, TKey, TState> : CollectionIterator<(TKey key, TState state)>
+	{
+		private readonly ICollection<TSource> _source;
+		private readonly Func<TSource, TKey> _keySelector;
+		private readonly Func<TKey, TState> _seedSelector;
+		private readonly Func<TState, TKey, TSource, TState> _accumulator;
+		private readonly IEqualityComparer<TKey> _comparer;
+
+		public ScanByIterator(
+			ICollection<TSource> source,
 			Func<TSource, TKey> keySelector,
 			Func<TKey, TState> seedSelector,
 			Func<TState, TKey, TSource, TState> accumulator,
 			IEqualityComparer<TKey> comparer)
 		{
-			var stateByKey = new Collections.NullKeyDictionary<TKey, TState>(comparer);
-
-			foreach (var item in source)
-			{
-				var key = keySelector(item);
-
-				var state = stateByKey.TryGetValue(key, out var ps)
-					? ps
-					: seedSelector(key);
-
-				state = accumulator(state, key, item);
-
-				stateByKey[key] = state;
-
-				yield return (key, state);
-			}
+			_source = source;
+			_keySelector = keySelector;
+			_seedSelector = seedSelector;
+			_accumulator = accumulator;
+			_comparer = comparer;
 		}
+
+		public override int Count => _source.Count;
+
+		[ExcludeFromCodeCoverage]
+		protected override IEnumerable<(TKey key, TState state)> GetEnumerable() =>
+			ScanByCore(_source, _keySelector, _seedSelector, _accumulator, _comparer);
 	}
 }
