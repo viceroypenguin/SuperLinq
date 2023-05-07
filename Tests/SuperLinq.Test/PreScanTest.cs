@@ -56,4 +56,40 @@ public class PreScanTest
 				0);
 		sequence.AssertSequenceEqual(0, 1, 3);
 	}
+
+	[Fact]
+	public void PreScanCollection()
+	{
+		using var seq = Enumerable.Range(1, 10).AsBreakingCollection();
+
+		var result = seq.PreScan((a, b) => a + b, 5);
+		Assert.Equal(10, result.Count());
+
+		result.ToArray()
+			.AssertSequenceEqual(5, 6, 8, 11, 15, 20, 26, 33, 41, 50);
+		Assert.Equal(1, seq.CopyCount);
+
+		var arr = new int[20];
+		_ = result.CopyTo(arr, 5);
+		arr
+			.AssertSequenceEqual(0, 0, 0, 0, 0, 5, 6, 8, 11, 15, 20, 26, 33, 41, 50, 0, 0, 0, 0, 0);
+		Assert.Equal(2, seq.CopyCount);
+	}
+
+	[Fact]
+	public void PreScanList()
+	{
+		using var seq = Enumerable.Range(1, 10).AsBreakingList();
+
+		var result = seq.PreScan((a, b) => a + b, 5);
+		Assert.Equal(10, result.Count());
+
+		result.ToArray()
+			.AssertSequenceEqual(5, 6, 8, 11, 15, 20, 26, 33, 41, 50);
+
+		var arr = new int[20];
+		_ = result.CopyTo(arr, 5);
+		arr
+			.AssertSequenceEqual(0, 0, 0, 0, 0, 5, 6, 8, 11, 15, 20, 26, 33, 41, 50, 0, 0, 0, 0, 0);
+	}
 }
