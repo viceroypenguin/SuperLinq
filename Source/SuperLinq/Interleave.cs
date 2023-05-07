@@ -82,7 +82,7 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class InterleaveIterator<T> : IteratorCollection<T, T>
+	private sealed class InterleaveIterator<T> : CollectionIterator<T>
 	{
 		private readonly IEnumerable<ICollection<T>> _sources;
 
