@@ -75,6 +75,10 @@ public static partial class SuperEnumerable
 
 		comparer ??= EqualityComparer<TKey>.Default;
 
+		if (source is ICollection<TSource> coll)
+			return new ScanByIterator<TSource, TKey, TState>(
+				coll, keySelector, seedSelector, accumulator, comparer);
+
 		return ScanByCore(source, keySelector, seedSelector, accumulator, comparer);
 	}
 
