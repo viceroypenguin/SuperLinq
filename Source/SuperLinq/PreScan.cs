@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -45,25 +47,67 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(transformation);
 
-		return Core(source, transformation, identity);
+		if (source is ICollection<TSource> coll)
+			return new PreScanIterator<TSource>(coll, transformation, identity);
 
-		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Func<TSource, TSource, TSource> transformation, TSource identity)
+		return PreScanCore(source, transformation, identity);
+	}
+
+	private static IEnumerable<TSource> PreScanCore<TSource>(IEnumerable<TSource> source, Func<TSource, TSource, TSource> transformation, TSource identity)
+	{
+		var aggregator = identity;
+		using var e = source.GetEnumerator();
+
+		if (!e.MoveNext())
+			yield break;
+
+		yield return aggregator;
+		var current = e.Current;
+
+		while (e.MoveNext())
 		{
-			var aggregator = identity;
-			using var e = source.GetEnumerator();
-
-			if (!e.MoveNext())
-				yield break;
-
+			aggregator = transformation(aggregator, current);
 			yield return aggregator;
-			var current = e.Current;
+			current = e.Current;
+		}
+	}
 
-			while (e.MoveNext())
+	private class PreScanIterator<T> : CollectionIterator<T>
+	{
+		private readonly ICollection<T> _source;
+		private readonly Func<T, T, T> _transformation;
+		private readonly T _identity;
+
+		public PreScanIterator(ICollection<T> source, Func<T, T, T> transformation, T identity)
+		{
+			_source = source;
+			_transformation = transformation;
+			_identity = identity;
+		}
+
+		public override int Count => _source.Count;
+
+		[ExcludeFromCodeCoverage]
+		protected override IEnumerable<T> GetEnumerable() =>
+			PreScanCore(_source, _transformation, _identity);
+
+		public override void CopyTo(T[] array, int arrayIndex)
+		{
+			var (sList, b, cnt) = _source is IList<T> s
+				? (s, 0, s.Count)
+				: (array, arrayIndex, SuperEnumerable.CopyTo(_source, array, arrayIndex));
+
+			var i = 0;
+			var state = _identity;
+
+			for (; i < cnt - 1; i++)
 			{
-				aggregator = transformation(aggregator, current);
-				yield return aggregator;
-				current = e.Current;
+				var nextState = sList[b + i];
+				array[arrayIndex + i] = state;
+				state = _transformation(state, nextState);
 			}
+
+			array[arrayIndex + cnt - 1] = state;
 		}
 	}
 }
