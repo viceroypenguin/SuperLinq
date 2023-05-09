@@ -34,7 +34,7 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private class ZipMapIterator<TSource, TResult> : ListIterator<(TSource, TResult)>
+	private sealed class ZipMapIterator<TSource, TResult> : ListIterator<(TSource, TResult)>
 	{
 		private readonly IList<TSource> _source;
 		private readonly Func<TSource, TResult> _selector;
