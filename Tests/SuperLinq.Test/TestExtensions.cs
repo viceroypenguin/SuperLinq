@@ -34,11 +34,7 @@ internal static partial class TestExtensions
 		if (actual is ICollection<T> coll)
 		{
 			Assert.Equal(expected.Length, coll.Count);
-
-			var arr = new T[expected.Length];
-			_ = actual.CopyTo(arr);
-
-			Assert.Equal(expected, arr);
+			Assert.Equal(expected, coll.ToArray());
 		}
 		else
 		{
