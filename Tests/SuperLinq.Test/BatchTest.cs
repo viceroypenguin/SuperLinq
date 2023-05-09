@@ -19,7 +19,7 @@ public class BatchTest
 
 	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
 		seq
-			.ArrangeCollectionInlineDatas()
+			.GetCollectionSequences()
 			.Select(x => new object[] { x });
 
 	[Theory]
@@ -164,7 +164,7 @@ public class BatchTest
 
 	public static IEnumerable<object[]> GetCollection(IEnumerable<int> seq) =>
 		seq
-			.ArrangeCollectionInlineDatas()
+			.GetCollectionSequences()
 			.Where(x => x is not TestingSequence<int>)
 			.Select(x => new object[] { x });
 
