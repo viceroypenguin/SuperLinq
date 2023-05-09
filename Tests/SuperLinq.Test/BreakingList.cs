@@ -35,7 +35,7 @@ internal class BreakingList<T> : BreakingSequence<T>, IList<T>, IDisposableEnume
 	public void RemoveAt(int index) => Assert.Fail("LINQ Operators should not be calling this method.");
 	public bool IsReadOnly => true;
 
-	public virtual void CopyTo(T[] array, int arrayIndex) => Assert.Fail("LINQ Operators should not be calling this method.");
+	public virtual void CopyTo(T[] array, int arrayIndex) => List.CopyTo(array, arrayIndex);
 
 	public void Dispose() { }
 }
