@@ -22,12 +22,46 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(selector);
 
+		if (source is IList<TSource> list)
+			return new ZipMapIterator<TSource, TResult>(list, selector);
+
 		return Core(source, selector);
 
 		static IEnumerable<(TSource, TResult)> Core(IEnumerable<TSource> source, Func<TSource, TResult> selector)
 		{
 			foreach (var item in source)
 				yield return (item, selector(item));
+		}
+	}
+
+	private class ZipMapIterator<TSource, TResult> : ListIterator<(TSource, TResult)>
+	{
+		private readonly IList<TSource> _source;
+		private readonly Func<TSource, TResult> _selector;
+
+		public ZipMapIterator(IList<TSource> source, Func<TSource, TResult> selector)
+		{
+			_source = source;
+			_selector = selector;
+		}
+
+		public override int Count => _source.Count;
+
+		protected override IEnumerable<(TSource, TResult)> GetEnumerable()
+		{
+			var src = _source;
+			var cnt = (uint)src.Count;
+			for (var i = 0; i < cnt; i++)
+			{
+				var el = src[i];
+				yield return (el, _selector(el));
+			}
+		}
+
+		protected override (TSource, TResult) ElementAt(int index)
+		{
+			var el = _source[index];
+			return (el, _selector(el));
 		}
 	}
 }

@@ -4,34 +4,60 @@ namespace Test;
 
 public class ZipMapTest
 {
-	[Fact]
-	public void ZipMapIntTransformation()
+	public static IEnumerable<object[]> GetIntSequences() =>
+		Enumerable.Range(1, 10)
+			.GetListSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void ZipMapIntTransformation(IDisposableEnumerable<int> seq)
 	{
-		var range = Enumerable.Range(1, 10);
-		using var ts1 = range.AsTestingSequence();
-		ts1.ZipMap(i => i.ToString()).AssertSequenceEqual(
-			range.Select(i => (i, i.ToString())));
+		using (seq)
+		{
+			var result = seq.ZipMap(i => i.ToString());
+			result
+				.AssertSequenceEqual(Enumerable.Range(1, 10).Select(i => (i, i.ToString())));
+		}
 	}
 
-	[Fact]
-	public void ZipMapStringTransformation()
+	public static IEnumerable<object[]> GetStringSequences1()
 	{
-		var words = Seq("foo", "bar", "FOO", "Bar", "baz", "QUx", "bAz", "QuX");
-		using var ts1 = words.AsTestingSequence();
-
-		ts1.ZipMap(s => s.Length).AssertSequenceEqual(
-			words.Select(s => (s, s.Length)));
+		var seq = Seq("foo", "bar", "FOO", "Bar", "baz", "QUx", "bAz", "QuX");
+		return seq
+			.GetListSequences()
+			.Select(x => new object[] { x, seq, });
 	}
 
-	[Fact]
-	public void ZipMapRegexChoose()
+	[Theory]
+	[MemberData(nameof(GetStringSequences1))]
+	public void ZipMapStringTransformation(IDisposableEnumerable<string> seq, IEnumerable<string> src)
 	{
-		var words = Seq("foo", "hello", "world", "Bar", "QuX", "ay", "az");
-		using var ts1 = words.AsTestingSequence();
+		using (seq)
+		{
+			var result = seq.ZipMap(s => s.Length);
+			result.AssertSequenceEqual(
+				src.Select(s => (s, s.Length)));
+		}
+	}
 
-		ts1.ZipMap(s => Regex.IsMatch(s, @"^\w{3}$"))
-			.Choose(x => (x.result, x.item))
-			.AssertSequenceEqual("foo", "Bar", "QuX");
+	public static IEnumerable<object[]> GetStringSequences2() =>
+		Seq("foo", "hello", "world", "Bar", "QuX", "ay", "az")
+			.GetListSequences()
+			.Select(x => new object[] { x, });
+
+	[Theory]
+	[MemberData(nameof(GetStringSequences2))]
+	public void ZipMapRegexChoose(IDisposableEnumerable<string> seq)
+	{
+		using (seq)
+		{
+			var result = seq
+				.ZipMap(s => Regex.IsMatch(s, @"^\w{3}$"))
+				.Choose(x => (x.result, x.item));
+
+			result.AssertSequenceEqual("foo", "Bar", "QuX");
+		}
 	}
 
 	[Fact]
