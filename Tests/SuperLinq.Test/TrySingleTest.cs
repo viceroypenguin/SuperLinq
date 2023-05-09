@@ -6,7 +6,7 @@ public class TrySingleTest
 {
 	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
 		seq.Select(x => (int?)x)
-			.ArrangeCollectionInlineDatas()
+			.GetCollectionSequences()
 			.Select(x => new object[] { x });
 
 	[Theory]
@@ -24,7 +24,7 @@ public class TrySingleTest
 
 	public static IEnumerable<object[]> GetSingletonSequences(IEnumerable<int> seq) =>
 		seq.Select(x => (int?)x)
-			.ArrangeCollectionInlineDatas()
+			.GetCollectionSequences()
 			.Where(x => x is not BreakingCollection<int?>)
 			.Select(x => new object[] { x });
 

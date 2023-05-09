@@ -11,7 +11,7 @@ public class AtMostTest
 
 	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
 		seq
-			.ArrangeCollectionInlineDatas()
+			.GetCollectionSequences()
 			.Select(x => new object[] { x });
 
 	[Theory]

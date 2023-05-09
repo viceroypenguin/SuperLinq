@@ -58,7 +58,7 @@ internal static partial class TestExtensions
 	internal static void AssertCollectionEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected, IEqualityComparer<T>? comparer) =>
 		Assert.True(actual.CollectionEqual(expected, comparer));
 
-	internal static IEnumerable<IDisposableEnumerable<T>> ArrangeCollectionInlineDatas<T>(this IEnumerable<T> input)
+	internal static IEnumerable<IDisposableEnumerable<T>> GetCollectionSequences<T>(this IEnumerable<T> input)
 	{
 		// UI will consume one enumeration
 		yield return input.AsTestingSequence(maxEnumerations: 2);
