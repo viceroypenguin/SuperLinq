@@ -2,121 +2,232 @@
 
 public class PadStartTest
 {
-	// PadStart(source, width)
-
 	[Fact]
-	public void PadStartWithNegativeWidth()
+	public void PadStartNegativeWidth()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			Array.Empty<int>().PadStart(-1));
+			new BreakingSequence<object>().PadStart(-1));
 	}
 
 	[Fact]
 	public void PadStartIsLazy()
 	{
-		_ = new BreakingSequence<int>().PadStart(0);
+		_ = new BreakingSequence<object>().PadStart(0);
+		_ = new BreakingSequence<object>().PadStart(0, new object());
+		_ = new BreakingSequence<object>().PadStart(0, BreakingFunc.Of<int, object>());
 	}
 
-	public class PadStartWithDefaultPadding
+	public class ValueTypeElements
 	{
-		[Theory]
-		[InlineData(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
-		[InlineData(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
-		[InlineData(new[] { 123, 456, 789 }, 4, new[] { 0, 123, 456, 789 })]
-		[InlineData(new[] { 123, 456, 789 }, 5, new[] { 0, 0, 123, 456, 789 })]
-		public void ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
+		public static IEnumerable<object[]> GetIntSequences()
 		{
-			AssertEqual(source, x => x.PadStart(width), expected);
+			var seq = Seq(123, 456, 789);
+			yield return new object[] { new LinkedList<int>(seq), false, };
+			yield return new object[] { seq.AsTestingSequence(maxEnumerations: 2), false, };
+			yield return new object[] { seq.AsBreakingList(), false, };
+			yield return new object[] { seq.AsBreakingList(), true, };
 		}
 
 		[Theory]
-		[InlineData(new[] { "foo", "bar", "baz" }, 2, new[] { "foo", "bar", "baz" })]
-		[InlineData(new[] { "foo", "bar", "baz" }, 3, new[] { "foo", "bar", "baz" })]
-		[InlineData(new[] { "foo", "bar", "baz" }, 4, new[] { null, "foo", "bar", "baz" })]
-		[InlineData(new[] { "foo", "bar", "baz" }, 5, new[] { null, null, "foo", "bar", "baz" })]
-		public void ReferenceTypeElements(ICollection<string?> source, int width, IEnumerable<string?> expected)
+		[MemberData(nameof(GetIntSequences))]
+		public void PadStartWideSourceSequence(IEnumerable<int> seq, bool select)
 		{
-			AssertEqual(source, x => x.PadStart(width), expected);
+			using (seq as IDisposableEnumerable<int>)
+			{
+				var result = seq.PadStart(2);
+				if (select) result = result.Select(SuperEnumerable.Identity);
+				result.AssertSequenceEqual(123, 456, 789);
+			}
 		}
-	}
 
-	// PadStart(source, width, padding)
-
-	[Fact]
-	public void PadStartWithPaddingWithNegativeWidth()
-	{
-		_ = Assert.Throws<ArgumentOutOfRangeException>(
-			() => Array.Empty<int>().PadStart(-1, 1));
-	}
-
-	[Fact]
-	public void PadStartWithPaddingIsLazy()
-	{
-		_ = new BreakingSequence<int>().PadStart(0, -1);
-	}
-
-	public class PadStartWithPadding
-	{
-		[Theory]
-		[InlineData(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
-		[InlineData(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
-		[InlineData(new[] { 123, 456, 789 }, 4, new[] { -1, 123, 456, 789 })]
-		[InlineData(new[] { 123, 456, 789 }, 5, new[] { -1, -1, 123, 456, 789 })]
-		public void ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
+		[Fact]
+		public void PadStartWideListBehavior()
 		{
-			AssertEqual(source, x => x.PadStart(width, -1), expected);
+			using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
+
+			var result = seq.PadStart(5_000, x => x % 1_000);
+			Assert.Equal(10_000, result.Count());
+			Assert.Equal(1_200, result.ElementAt(1_200));
+			Assert.Equal(8_800, result.ElementAt(^1_200));
+
+			_ = Assert.Throws<ArgumentOutOfRangeException>(
+				"index",
+				() => result.ElementAt(10_001));
 		}
 
 		[Theory]
-		[InlineData(new[] { "foo", "bar", "baz" }, 2, new[] { "foo", "bar", "baz" })]
-		[InlineData(new[] { "foo", "bar", "baz" }, 3, new[] { "foo", "bar", "baz" })]
-		[InlineData(new[] { "foo", "bar", "baz" }, 4, new[] { "", "foo", "bar", "baz" })]
-		[InlineData(new[] { "foo", "bar", "baz" }, 5, new[] { "", "", "foo", "bar", "baz" })]
-		public void ReferenceTypeElements(ICollection<string> source, int width, IEnumerable<string> expected)
+		[MemberData(nameof(GetIntSequences))]
+		public void PadStartEqualSourceSequence(IEnumerable<int> seq, bool select)
 		{
-			AssertEqual(source, x => x.PadStart(width, string.Empty), expected);
-		}
-	}
-
-	// PadStart(source, width, paddingSelector)
-
-	[Fact]
-	public void PadStartWithSelectorWithNegativeWidth()
-	{
-		_ = Assert.Throws<ArgumentOutOfRangeException>(
-			() => Array.Empty<int>().PadStart(-1, SuperEnumerable.Identity));
-	}
-
-	[Fact]
-	public void PadStartWithSelectorIsLazy()
-	{
-		_ = new BreakingSequence<int>().PadStart(0, BreakingFunc.Of<int, int>());
-	}
-
-	public class PadStartWithSelector
-	{
-		[Theory]
-		[InlineData(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
-		[InlineData(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
-		[InlineData(new[] { 123, 456, 789 }, 4, new[] { 0, 123, 456, 789 })]
-		[InlineData(new[] { 123, 456, 789 }, 5, new[] { 0, -1, 123, 456, 789 })]
-		[InlineData(new[] { 123, 456, 789 }, 6, new[] { 0, -1, -4, 123, 456, 789 })]
-		[InlineData(new[] { 123, 456, 789 }, 7, new[] { 0, -1, -4, -9, 123, 456, 789 })]
-		public void ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
-		{
-			AssertEqual(source, x => x.PadStart(width, y => y * -y), expected);
+			using (seq as IDisposableEnumerable<int>)
+			{
+				var result = seq.PadStart(3);
+				if (select) result = result.Select(SuperEnumerable.Identity);
+				result.AssertSequenceEqual(123, 456, 789);
+			}
 		}
 
 		[Theory]
-		[InlineData(new[] { "foo", "bar", "baz" }, 2, new[] { "foo", "bar", "baz" })]
-		[InlineData(new[] { "foo", "bar", "baz" }, 3, new[] { "foo", "bar", "baz" })]
-		[InlineData(new[] { "foo", "bar", "baz" }, 4, new[] { "+", "foo", "bar", "baz" })]
-		[InlineData(new[] { "foo", "bar", "baz" }, 5, new[] { "+", "++", "foo", "bar", "baz" })]
-		[InlineData(new[] { "foo", "bar", "baz" }, 6, new[] { "+", "++", "+++", "foo", "bar", "baz" })]
-		[InlineData(new[] { "foo", "bar", "baz" }, 7, new[] { "+", "++", "+++", "++++", "foo", "bar", "baz" })]
-		public void ReferenceTypeElements(ICollection<string> source, int width, IEnumerable<string> expected)
+		[MemberData(nameof(GetIntSequences))]
+		public void PadStartNarrowSourceSequenceWithDefaultPadding(IEnumerable<int> seq, bool select)
 		{
-			AssertEqual(source, x => x.PadStart(width, y => new string('+', y + 1)), expected);
+			using (seq as IDisposableEnumerable<int>)
+			{
+				var result = seq.PadStart(5);
+				if (select) result = result.Select(SuperEnumerable.Identity);
+				result.AssertSequenceEqual(0, 0, 123, 456, 789);
+			}
+		}
+
+		[Theory]
+		[MemberData(nameof(GetIntSequences))]
+		public void PadStartNarrowSourceSequenceWithNonDefaultPadding(IEnumerable<int> seq, bool select)
+		{
+			using (seq as IDisposableEnumerable<int>)
+			{
+				var result = seq.PadStart(5, -1);
+				if (select) result = result.Select(SuperEnumerable.Identity);
+				result.AssertSequenceEqual(-1, -1, 123, 456, 789);
+			}
+		}
+
+		[Fact]
+		public void PadStartNarrowListBehavior()
+		{
+			using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
+
+			var result = seq.PadStart(40_000, x => x % 1_000);
+			Assert.Equal(40_000, result.Count());
+			Assert.Equal(200, result.ElementAt(1_200));
+			Assert.Equal(1_200, result.ElementAt(31_200));
+			Assert.Equal(8_800, result.ElementAt(^1_200));
+
+			_ = Assert.Throws<ArgumentOutOfRangeException>(
+				"index",
+				() => result.ElementAt(40_001));
+		}
+
+		public static IEnumerable<object[]> GetCharSequences()
+		{
+			var seq = "hello".AsEnumerable();
+			yield return new object[] { new LinkedList<char>(seq), false, };
+			yield return new object[] { seq.AsTestingSequence(maxEnumerations: 2), false, };
+			yield return new object[] { seq.AsBreakingList(), false, };
+			yield return new object[] { seq.AsBreakingList(), true, };
+		}
+
+		[Theory]
+		[MemberData(nameof(GetCharSequences))]
+		public void PadStartNarrowSourceSequenceWithDynamicPadding(IEnumerable<char> seq, bool select)
+		{
+			using (seq as IDisposableEnumerable<char>)
+			{
+				var result = seq.PadStart(15, i => i % 2 == 0 ? '+' : '-');
+				if (select) result = result.Select(SuperEnumerable.Identity);
+				result.AssertSequenceEqual("+-+-+-+-+-hello".ToCharArray());
+			}
+		}
+	}
+
+	public class ReferenceTypeElements
+	{
+		public static IEnumerable<object[]> GetStringSequences()
+		{
+			var seq = Seq("foo", "bar", "baz");
+			yield return new object[] { new LinkedList<string>(seq), false, };
+			yield return new object[] { seq.AsTestingSequence(maxEnumerations: 2), false, };
+			yield return new object[] { seq.AsBreakingList(), false, };
+			yield return new object[] { seq.AsBreakingList(), true, };
+		}
+
+		[Theory]
+		[MemberData(nameof(GetStringSequences))]
+		public void PadStartWideSourceSequence(IEnumerable<string> seq, bool select)
+		{
+			using (seq as IDisposableEnumerable<string>)
+			{
+				var result = seq.PadStart(2);
+				if (select) result = result.Select(SuperEnumerable.Identity);
+				result.AssertSequenceEqual("foo", "bar", "baz");
+			}
+		}
+
+		[Fact]
+		public void PadStartWideListBehavior()
+		{
+			using var seq = Seq("foo", "bar", "baz").AsBreakingList();
+
+			var result = seq.PadStart(2, x => $"Extra{x}");
+			Assert.Equal(3, result.Count());
+			Assert.Equal("bar", result.ElementAt(1));
+			Assert.Equal("baz", result.ElementAt(^1));
+
+			_ = Assert.Throws<ArgumentOutOfRangeException>(
+				"index",
+				() => result.ElementAt(3));
+		}
+
+		[Theory]
+		[MemberData(nameof(GetStringSequences))]
+		public void PadStartEqualSourceSequence(IEnumerable<string> seq, bool select)
+		{
+			using (seq as IDisposableEnumerable<string>)
+			{
+				var result = seq.PadStart(3);
+				if (select) result = result.Select(SuperEnumerable.Identity);
+				result.AssertSequenceEqual("foo", "bar", "baz");
+			}
+		}
+
+		[Theory]
+		[MemberData(nameof(GetStringSequences))]
+		public void PadStartNarrowSourceSequenceWithDefaultPadding(IEnumerable<string> seq, bool select)
+		{
+			using (seq as IDisposableEnumerable<string>)
+			{
+				var result = seq.PadStart(5);
+				if (select) result = result.Select(SuperEnumerable.Identity);
+				result.AssertSequenceEqual(default(string), null, "foo", "bar", "baz");
+			}
+		}
+
+		[Theory]
+		[MemberData(nameof(GetStringSequences))]
+		public void PadStartNarrowSourceSequenceWithNonDefaultPadding(IEnumerable<string> seq, bool select)
+		{
+			using (seq as IDisposableEnumerable<string>)
+			{
+				var result = seq.PadStart(5, string.Empty);
+				if (select) result = result.Select(SuperEnumerable.Identity);
+				result.AssertSequenceEqual(string.Empty, string.Empty, "foo", "bar", "baz");
+			}
+		}
+
+		[Theory]
+		[MemberData(nameof(GetStringSequences))]
+		public void PadStartNarrowSourceSequenceWithDynamicPadding(IEnumerable<string> seq, bool select)
+		{
+			using (seq as IDisposableEnumerable<string>)
+			{
+				var result = seq.PadStart(5, x => $"Extra{x}");
+				if (select) result = result.Select(SuperEnumerable.Identity);
+				result.AssertSequenceEqual("Extra0", "Extra1", "foo", "bar", "baz");
+			}
+		}
+
+		[Fact]
+		public void PadStartNarrowListBehavior()
+		{
+			using var seq = Seq("foo", "bar", "baz").AsBreakingList();
+
+			var result = seq.PadStart(5, x => $"Extra{x}");
+			Assert.Equal(5, result.Count());
+			Assert.Equal("Extra1", result.ElementAt(1));
+			Assert.Equal("baz", result.ElementAt(^1));
+
+			_ = Assert.Throws<ArgumentOutOfRangeException>(
+				"index",
+				() => result.ElementAt(5));
 		}
 	}
 
@@ -128,16 +239,5 @@ public class PadStartTest
 		result.AssertSequenceEqual(-1, -1, 1, 2, 3);
 		queue.Enqueue(4);
 		result.AssertSequenceEqual(-1, 1, 2, 3, 4);
-	}
-
-	private static void AssertEqual<T>(ICollection<T> input, Func<IEnumerable<T>, IEnumerable<T>> op, IEnumerable<T> expected)
-	{
-		// Test that the behaviour does not change whether a collection
-		// or a sequence is used as the source.
-
-		op(input).AssertSequenceEqual(expected);
-
-		using var xs = input.AsTestingSequence();
-		op(xs).AssertSequenceEqual(expected);
 	}
 }

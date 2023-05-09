@@ -145,11 +145,10 @@ public static partial class SuperEnumerable
 
 		protected override T ElementAt(int index)
 		{
-			if (index < _source.Count)
-				return _source[index];
-
 			Guard.IsLessThan(index, Count);
-			return _paddingSelector(index);
+			return index < _source.Count
+				? _source[index]
+				: _paddingSelector(index);
 		}
 	}
 }

@@ -94,9 +94,12 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(paddingSelector);
 		Guard.IsGreaterThanOrEqualTo(width, 0);
 
-		return PadStartImpl(source, width, paddingSelector);
+		if (source is IList<TSource> list)
+			return new PadStartListIterator<TSource>(list, width, paddingSelector);
 
-		static IEnumerable<TSource> PadStartImpl(
+		return Core(source, width, paddingSelector);
+
+		static IEnumerable<TSource> Core(
 			IEnumerable<TSource> source, int width,
 			Func<int, TSource> paddingSelector)
 		{
@@ -137,6 +140,53 @@ public static partial class SuperEnumerable
 				for (var i = 0; i < count; i++)
 					yield return array[i];
 			}
+		}
+	}
+
+	private sealed class PadStartListIterator<T> : ListIterator<T>
+	{
+		private readonly IList<T> _source;
+		private readonly int _width;
+		private readonly Func<int, T> _paddingSelector;
+
+		public PadStartListIterator(IList<T> source, int width, Func<int, T> paddingSelector)
+		{
+			_source = source;
+			_width = width;
+			_paddingSelector = paddingSelector;
+		}
+
+		public override int Count => Math.Max(_source.Count, _width);
+
+		protected override IEnumerable<T> GetEnumerable()
+		{
+			var cnt = (uint)_source.Count;
+			for (var i = 0; i < _width - cnt; i++)
+				yield return _paddingSelector(i);
+			for (var i = 0; i < cnt; i++)
+				yield return _source[i];
+		}
+
+		public override void CopyTo(T[] array, int arrayIndex)
+		{
+			Guard.IsNotNull(array);
+			Guard.IsGreaterThanOrEqualTo(arrayIndex, 0);
+
+			var offset = Math.Max(_width - _source.Count, 0);
+			for (var i = 0; i < offset; i++)
+				array[arrayIndex + i] = _paddingSelector(i);
+
+			_source.CopyTo(array, arrayIndex + offset);
+		}
+
+		protected override T ElementAt(int index)
+		{
+			Guard.IsLessThan(index, Count);
+
+			var offset = Math.Max(_width - _source.Count, 0);
+			return index < offset
+				? _paddingSelector(index)
+				: _source[index - offset];
 		}
 	}
 }
