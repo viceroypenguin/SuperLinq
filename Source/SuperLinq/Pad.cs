@@ -93,6 +93,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(paddingSelector);
 		Guard.IsGreaterThanOrEqualTo(width, 0);
 
+		if (source is IList<TSource> list)
+			return new PadIterator<TSource>(list, width, paddingSelector);
+
 		return Core(source, width, paddingSelector);
 
 		static IEnumerable<TSource> Core(
@@ -111,6 +114,42 @@ public static partial class SuperEnumerable
 				yield return paddingSelector(count);
 				count++;
 			}
+		}
+	}
+
+	private sealed class PadIterator<T> : ListIterator<T>
+	{
+		private readonly IList<T> _source;
+		private readonly int _width;
+		private readonly Func<int, T> _paddingSelector;
+
+		public PadIterator(IList<T> source, int width, Func<int, T> paddingSelector)
+		{
+			_source = source;
+			_width = width;
+			_paddingSelector = paddingSelector;
+		}
+
+		public override int Count => Math.Max(_source.Count, _width);
+
+		protected override IEnumerable<T> GetEnumerable()
+		{
+			var src = _source;
+			var cnt = (uint)src.Count;
+			for (var i = 0; i < cnt; i++)
+				yield return src[i];
+
+			for (var i = (int)cnt; i < _width; i++)
+				yield return _paddingSelector(i);
+		}
+
+		protected override T ElementAt(int index)
+		{
+			if (index < _source.Count)
+				return _source[index];
+
+			Guard.IsLessThan(index, Count);
+			return _paddingSelector(index);
 		}
 	}
 }
