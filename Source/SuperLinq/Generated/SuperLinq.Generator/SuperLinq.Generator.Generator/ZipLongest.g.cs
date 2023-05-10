@@ -39,6 +39,11 @@ public static partial class SuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        if (first is global::System.Collections.Generic.IList<T1> list1 && second is global::System.Collections.Generic.IList<T2> list2)
+        {
+            return new ZipLongestIterator<T1, T2, TResult>(list1, list2, resultSelector);
+        }
+
         return Core(first, second, resultSelector);
         static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Func<T1?, T2?, TResult> resultSelector)
         {
@@ -72,6 +77,35 @@ public static partial class SuperEnumerable
     /// <typeparam name = "T2">The type of the elements of <paramref name = "second"/>.</typeparam>
     /// <param name = "second">The second sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<(T1? , T2? )> ZipLongest<T1, T2>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second) => ZipLongest(first, second, global::System.ValueTuple.Create);
+    private class ZipLongestIterator<T1, T2, TResult> : ListIterator<TResult>
+    {
+        private readonly global::System.Collections.Generic.IList<T1> _list1;
+        private readonly global::System.Collections.Generic.IList<T2> _list2;
+        private readonly global::System.Func<T1?, T2?, TResult> _resultSelector;
+        public ZipLongestIterator(global::System.Collections.Generic.IList<T1> first, global::System.Collections.Generic.IList<T2> second, global::System.Func<T1?, T2?, TResult> resultSelector)
+        {
+            _list1 = first;
+            _list2 = second;
+            _resultSelector = resultSelector;
+        }
+
+        public override int Count => Max(_list1.Count, _list2.Count);
+        protected override IEnumerable<TResult> GetEnumerable()
+        {
+            var cnt = (uint)Count;
+            for (var i = 0; i < cnt; i++)
+            {
+                yield return _resultSelector(i < _list1.Count ? _list1[i] : default, i < _list2.Count ? _list2[i] : default);
+            }
+        }
+
+        protected override TResult ElementAt(int index)
+        {
+            global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+            return _resultSelector(index < _list1.Count ? _list1[index] : default, index < _list2.Count ? _list2[index] : default);
+        }
+    }
+
     /// <summary>
     /// Returns a projection of tuples, where each tuple contains the N-th
     /// element from each of the argument sequences. The resulting sequence
@@ -100,6 +134,11 @@ public static partial class SuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        if (first is global::System.Collections.Generic.IList<T1> list1 && second is global::System.Collections.Generic.IList<T2> list2 && third is global::System.Collections.Generic.IList<T3> list3)
+        {
+            return new ZipLongestIterator<T1, T2, T3, TResult>(list1, list2, list3, resultSelector);
+        }
+
         return Core(first, second, third, resultSelector);
         static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Func<T1?, T2?, T3?, TResult> resultSelector)
         {
@@ -137,6 +176,37 @@ public static partial class SuperEnumerable
     /// <typeparam name = "T3">The type of the elements of <paramref name = "third"/>.</typeparam>
     /// <param name = "third">The third sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<(T1? , T2? , T3? )> ZipLongest<T1, T2, T3>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third) => ZipLongest(first, second, third, global::System.ValueTuple.Create);
+    private class ZipLongestIterator<T1, T2, T3, TResult> : ListIterator<TResult>
+    {
+        private readonly global::System.Collections.Generic.IList<T1> _list1;
+        private readonly global::System.Collections.Generic.IList<T2> _list2;
+        private readonly global::System.Collections.Generic.IList<T3> _list3;
+        private readonly global::System.Func<T1?, T2?, T3?, TResult> _resultSelector;
+        public ZipLongestIterator(global::System.Collections.Generic.IList<T1> first, global::System.Collections.Generic.IList<T2> second, global::System.Collections.Generic.IList<T3> third, global::System.Func<T1?, T2?, T3?, TResult> resultSelector)
+        {
+            _list1 = first;
+            _list2 = second;
+            _list3 = third;
+            _resultSelector = resultSelector;
+        }
+
+        public override int Count => Max(_list1.Count, _list2.Count, _list3.Count);
+        protected override IEnumerable<TResult> GetEnumerable()
+        {
+            var cnt = (uint)Count;
+            for (var i = 0; i < cnt; i++)
+            {
+                yield return _resultSelector(i < _list1.Count ? _list1[i] : default, i < _list2.Count ? _list2[i] : default, i < _list3.Count ? _list3[i] : default);
+            }
+        }
+
+        protected override TResult ElementAt(int index)
+        {
+            global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+            return _resultSelector(index < _list1.Count ? _list1[index] : default, index < _list2.Count ? _list2[index] : default, index < _list3.Count ? _list3[index] : default);
+        }
+    }
+
     /// <summary>
     /// Returns a projection of tuples, where each tuple contains the N-th
     /// element from each of the argument sequences. The resulting sequence
@@ -168,6 +238,11 @@ public static partial class SuperEnumerable
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        if (first is global::System.Collections.Generic.IList<T1> list1 && second is global::System.Collections.Generic.IList<T2> list2 && third is global::System.Collections.Generic.IList<T3> list3 && fourth is global::System.Collections.Generic.IList<T4> list4)
+        {
+            return new ZipLongestIterator<T1, T2, T3, T4, TResult>(list1, list2, list3, list4, resultSelector);
+        }
+
         return Core(first, second, third, fourth, resultSelector);
         static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Func<T1?, T2?, T3?, T4?, TResult> resultSelector)
         {
@@ -209,4 +284,36 @@ public static partial class SuperEnumerable
     /// <typeparam name = "T4">The type of the elements of <paramref name = "fourth"/>.</typeparam>
     /// <param name = "fourth">The fourth sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<(T1? , T2? , T3? , T4? )> ZipLongest<T1, T2, T3, T4>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth) => ZipLongest(first, second, third, fourth, global::System.ValueTuple.Create);
+    private class ZipLongestIterator<T1, T2, T3, T4, TResult> : ListIterator<TResult>
+    {
+        private readonly global::System.Collections.Generic.IList<T1> _list1;
+        private readonly global::System.Collections.Generic.IList<T2> _list2;
+        private readonly global::System.Collections.Generic.IList<T3> _list3;
+        private readonly global::System.Collections.Generic.IList<T4> _list4;
+        private readonly global::System.Func<T1?, T2?, T3?, T4?, TResult> _resultSelector;
+        public ZipLongestIterator(global::System.Collections.Generic.IList<T1> first, global::System.Collections.Generic.IList<T2> second, global::System.Collections.Generic.IList<T3> third, global::System.Collections.Generic.IList<T4> fourth, global::System.Func<T1?, T2?, T3?, T4?, TResult> resultSelector)
+        {
+            _list1 = first;
+            _list2 = second;
+            _list3 = third;
+            _list4 = fourth;
+            _resultSelector = resultSelector;
+        }
+
+        public override int Count => Max(_list1.Count, _list2.Count, _list3.Count, _list4.Count);
+        protected override IEnumerable<TResult> GetEnumerable()
+        {
+            var cnt = (uint)Count;
+            for (var i = 0; i < cnt; i++)
+            {
+                yield return _resultSelector(i < _list1.Count ? _list1[i] : default, i < _list2.Count ? _list2[i] : default, i < _list3.Count ? _list3[i] : default, i < _list4.Count ? _list4[i] : default);
+            }
+        }
+
+        protected override TResult ElementAt(int index)
+        {
+            global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+            return _resultSelector(index < _list1.Count ? _list1[index] : default, index < _list2.Count ? _list2[index] : default, index < _list3.Count ? _list3[index] : default, index < _list4.Count ? _list4[index] : default);
+        }
+    }
 }

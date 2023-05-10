@@ -55,6 +55,18 @@ public static partial class SuperEnumerable
 
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
 
+		if (
+			{{~ for $j in 1..$i ~}}
+			{{ $ordinals[$j] }} is global::System.Collections.Generic.IList<T{{ $j }}> list{{ $j }}{{ if !for.last }}&&{{ else }}){{ end }}
+			{{~ end ~}}
+		{
+			return new ZipLongestIterator<{{ for $j in 1..$i }}T{{ $j }}, {{ end }}TResult>(
+				{{~ for $j in 1..$i ~}}
+				list{{ $j }},
+				{{~ end ~}}
+				resultSelector);
+		}
+
 		return Core(
 			{{~ for $j in 1..$i ~}}
 			{{ $ordinals[$j] }},
@@ -112,5 +124,49 @@ public static partial class SuperEnumerable
 			global::System.Collections.Generic.IEnumerable<T{{ $j }}> {{ $ordinals[$j] }}{{ if !for.last }},{{ end }}
 			{{~ end ~}}) =>
 		ZipLongest({{~ for $j in 1..$i ~}}{{ $ordinals[$j] }}, {{ end }}global::System.ValueTuple.Create);
+
+	private class ZipLongestIterator<{{ for $j in 1..$i }}T{{ $j }}, {{ end }}TResult> : ListIterator<TResult>
+	{
+		{{~ for $j in 1..$i ~}}
+		private readonly global::System.Collections.Generic.IList<T{{ $j }}> _list{{ $j }};
+		{{~ end ~}}
+		private readonly global::System.Func<{{ for $j in 1..$i }}T{{ $j }}?, {{ end }}TResult> _resultSelector;
+		
+		public ZipLongestIterator(
+			{{~ for $j in 1..$i ~}}
+			global::System.Collections.Generic.IList<T{{ $j }}> {{ $ordinals[$j] }},
+			{{~ end ~}}
+			global::System.Func<{{ for $j in 1..$i }}T{{ $j }}?, {{ end }}TResult> resultSelector)
+		{
+			{{~ for $j in 1..$i ~}}
+			_list{{ $j }} = {{ $ordinals[$j] }};
+			{{~ end ~}}
+			_resultSelector	= resultSelector;
+		}
+
+		public override int Count => Max({{ for $j in 1..$i }}_list{{ $j }}.Count{{ if !for.last }}, {{ end }}{{ end }});
+
+		protected override IEnumerable<TResult> GetEnumerable()
+		{
+			var cnt = (uint)Count;
+			for (var i = 0; i < cnt; i++)
+			{
+				yield return _resultSelector(
+					{{~ for $j in 1..$i ~}}
+					i < _list{{ $j }}.Count ? _list{{ $j }}[i] : default{{ if !for.last }}, {{ end }}
+					{{~ end ~}});
+			}
+		}
+
+		protected override TResult ElementAt(int index)
+		{
+			global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+
+			return _resultSelector(
+				{{~ for $j in 1..$i ~}}
+				index < _list{{ $j }}.Count ? _list{{ $j }}[index] : default{{ if !for.last }}, {{ end }}
+				{{~ end ~}});
+		}
+	}
 	{{ end ~}}
 }
