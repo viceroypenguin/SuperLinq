@@ -19,18 +19,22 @@ public class PadTest
 
 	public class ValueTypeElements
 	{
-		public static IEnumerable<object[]> GetIntSequences() =>
-			Seq(123, 456, 789)
-				.GetListSequences()
-				.Select(x => new object[] { x });
+		public static IEnumerable<object[]> GetIntSequences()
+		{
+			var seq = Seq(123, 456, 789);
+			yield return new object[] { seq.AsTestingSequence(maxEnumerations: 2), false, };
+			yield return new object[] { seq.AsBreakingList(), false, };
+			yield return new object[] { seq.AsBreakingList(), true, };
+		}
 
 		[Theory]
 		[MemberData(nameof(GetIntSequences))]
-		public void PadWideSourceSequence(IDisposableEnumerable<int> seq)
+		public void PadWideSourceSequence(IDisposableEnumerable<int> seq, bool select)
 		{
 			using (seq)
 			{
 				var result = seq.Pad(2);
+				if (select) result = result.Select(SuperEnumerable.Identity);
 				result.AssertSequenceEqual(123, 456, 789);
 			}
 		}
@@ -52,33 +56,36 @@ public class PadTest
 
 		[Theory]
 		[MemberData(nameof(GetIntSequences))]
-		public void PadEqualSourceSequence(IDisposableEnumerable<int> seq)
+		public void PadEqualSourceSequence(IDisposableEnumerable<int> seq, bool select)
 		{
 			using (seq)
 			{
 				var result = seq.Pad(3);
+				if (select) result = result.Select(SuperEnumerable.Identity);
 				result.AssertSequenceEqual(123, 456, 789);
 			}
 		}
 
 		[Theory]
 		[MemberData(nameof(GetIntSequences))]
-		public void PadNarrowSourceSequenceWithDefaultPadding(IDisposableEnumerable<int> seq)
+		public void PadNarrowSourceSequenceWithDefaultPadding(IDisposableEnumerable<int> seq, bool select)
 		{
 			using (seq)
 			{
 				var result = seq.Pad(5);
+				if (select) result = result.Select(SuperEnumerable.Identity);
 				result.AssertSequenceEqual(123, 456, 789, 0, 0);
 			}
 		}
 
 		[Theory]
 		[MemberData(nameof(GetIntSequences))]
-		public void PadNarrowSourceSequenceWithNonDefaultPadding(IDisposableEnumerable<int> seq)
+		public void PadNarrowSourceSequenceWithNonDefaultPadding(IDisposableEnumerable<int> seq, bool select)
 		{
 			using (seq)
 			{
 				var result = seq.Pad(5, -1);
+				if (select) result = result.Select(SuperEnumerable.Identity);
 				result.AssertSequenceEqual(123, 456, 789, -1, -1);
 			}
 		}
@@ -99,18 +106,22 @@ public class PadTest
 				() => result.ElementAt(40_001));
 		}
 
-		public static IEnumerable<object[]> GetCharSequences() =>
-			"hello"
-				.GetListSequences()
-				.Select(x => new object[] { x });
+		public static IEnumerable<object[]> GetCharSequences()
+		{
+			var seq = "hello".AsEnumerable();
+			yield return new object[] { seq.AsTestingSequence(maxEnumerations: 2), false, };
+			yield return new object[] { seq.AsBreakingList(), false, };
+			yield return new object[] { seq.AsBreakingList(), true, };
+		}
 
 		[Theory]
 		[MemberData(nameof(GetCharSequences))]
-		public void PadNarrowSourceSequenceWithDynamicPadding(IDisposableEnumerable<char> seq)
+		public void PadNarrowSourceSequenceWithDynamicPadding(IDisposableEnumerable<char> seq, bool select)
 		{
 			using (seq)
 			{
 				var result = seq.Pad(15, i => i % 2 == 0 ? '+' : '-');
+				if (select) result = result.Select(SuperEnumerable.Identity);
 				result.AssertSequenceEqual("hello-+-+-+-+-+".ToCharArray());
 			}
 		}
@@ -118,18 +129,22 @@ public class PadTest
 
 	public class ReferenceTypeElements
 	{
-		public static IEnumerable<object[]> GetStringSequences() =>
-			Seq("foo", "bar", "baz")
-				.GetListSequences()
-				.Select(x => new object[] { x });
+		public static IEnumerable<object[]> GetStringSequences()
+		{
+			var seq = Seq("foo", "bar", "baz");
+			yield return new object[] { seq.AsTestingSequence(maxEnumerations: 2), false, };
+			yield return new object[] { seq.AsBreakingList(), false, };
+			yield return new object[] { seq.AsBreakingList(), true, };
+		}
 
 		[Theory]
 		[MemberData(nameof(GetStringSequences))]
-		public void PadWideSourceSequence(IDisposableEnumerable<string> seq)
+		public void PadWideSourceSequence(IDisposableEnumerable<string> seq, bool select)
 		{
 			using (seq)
 			{
 				var result = seq.Pad(2);
+				if (select) result = result.Select(SuperEnumerable.Identity);
 				result.AssertSequenceEqual("foo", "bar", "baz");
 			}
 		}
@@ -151,44 +166,48 @@ public class PadTest
 
 		[Theory]
 		[MemberData(nameof(GetStringSequences))]
-		public void PadEqualSourceSequence(IDisposableEnumerable<string> seq)
+		public void PadEqualSourceSequence(IDisposableEnumerable<string> seq, bool select)
 		{
 			using (seq)
 			{
 				var result = seq.Pad(3);
+				if (select) result = result.Select(SuperEnumerable.Identity);
 				result.AssertSequenceEqual("foo", "bar", "baz");
 			}
 		}
 
 		[Theory]
 		[MemberData(nameof(GetStringSequences))]
-		public void PadNarrowSourceSequenceWithDefaultPadding(IDisposableEnumerable<string> seq)
+		public void PadNarrowSourceSequenceWithDefaultPadding(IDisposableEnumerable<string> seq, bool select)
 		{
 			using (seq)
 			{
 				var result = seq.Pad(5);
+				if (select) result = result.Select(SuperEnumerable.Identity);
 				result.AssertSequenceEqual("foo", "bar", "baz", null, null);
 			}
 		}
 
 		[Theory]
 		[MemberData(nameof(GetStringSequences))]
-		public void PadNarrowSourceSequenceWithNonDefaultPadding(IDisposableEnumerable<string> seq)
+		public void PadNarrowSourceSequenceWithNonDefaultPadding(IDisposableEnumerable<string> seq, bool select)
 		{
 			using (seq)
 			{
 				var result = seq.Pad(5, string.Empty);
+				if (select) result = result.Select(SuperEnumerable.Identity);
 				result.AssertSequenceEqual("foo", "bar", "baz", string.Empty, string.Empty);
 			}
 		}
 
 		[Theory]
 		[MemberData(nameof(GetStringSequences))]
-		public void PadNarrowSourceSequenceWithDynamicPadding(IDisposableEnumerable<string> seq)
+		public void PadNarrowSourceSequenceWithDynamicPadding(IDisposableEnumerable<string> seq, bool select)
 		{
 			using (seq)
 			{
 				var result = seq.Pad(5, x => $"Extra{x}");
+				if (select) result = result.Select(SuperEnumerable.Identity);
 				result.AssertSequenceEqual("foo", "bar", "baz", "Extra3", "Extra4");
 			}
 		}
