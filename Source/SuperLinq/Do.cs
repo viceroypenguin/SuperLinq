@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace SuperLinq;
 
 public partial class SuperEnumerable
 {
@@ -94,8 +96,8 @@ public partial class SuperEnumerable
 		Guard.IsNotNull(onError);
 		Guard.IsNotNull(onCompleted);
 
-		if (source is ICollection<TSource> coll)
-			return new DoIterator<TSource>(coll, onNext, onError, onCompleted);
+		if (source.TryGetCollectionCount() != null)
+			return new DoIterator<TSource>(source, onNext, onError, onCompleted);
 
 		return DoCore(source, onNext, onError, onCompleted);
 	}
@@ -126,12 +128,12 @@ public partial class SuperEnumerable
 
 	private sealed class DoIterator<T> : CollectionIterator<T>
 	{
-		private readonly ICollection<T> _source;
+		private readonly IEnumerable<T> _source;
 		private readonly Action<T> _onNext;
 		private readonly Action<Exception>? _onError;
 		private readonly Action _onCompleted;
 
-		public DoIterator(ICollection<T> source, Action<T> onNext, Action<Exception>? onError, Action onCompleted)
+		public DoIterator(IEnumerable<T> source, Action<T> onNext, Action<Exception>? onError, Action onCompleted)
 		{
 			_source = source;
 			_onNext = onNext;
@@ -139,8 +141,9 @@ public partial class SuperEnumerable
 			_onCompleted = onCompleted;
 		}
 
-		public override int Count => _source.Count;
+		public override int Count => _source.GetCollectionCount();
 
+		[ExcludeFromCodeCoverage]
 		protected override IEnumerable<T> GetEnumerable() =>
 			_onError != null
 			? DoCore(_source, _onNext, _onError, _onCompleted)
