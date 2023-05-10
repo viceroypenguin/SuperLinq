@@ -108,12 +108,12 @@ public class ZipLongestTest
 			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
 			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 0));
 			parameters.Add(
-				new object[] 
+				new object[]
 				{
 					first.AsBreakingList(),
 					second.AsBreakingList(),
-					third.AsBreakingList(), 
-					i, 
+					third.AsBreakingList(),
+					i,
 				});
 			parameters.Add(
 				new object[]
