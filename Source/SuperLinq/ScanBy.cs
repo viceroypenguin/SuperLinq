@@ -107,7 +107,7 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private class ScanByIterator<TSource, TKey, TState> : CollectionIterator<(TKey key, TState state)>
+	private sealed class ScanByIterator<TSource, TKey, TState> : CollectionIterator<(TKey key, TState state)>
 	{
 		private readonly ICollection<TSource> _source;
 		private readonly Func<TSource, TKey> _keySelector;

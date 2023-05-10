@@ -124,7 +124,7 @@ public partial class SuperEnumerable
 	}
 
 
-	private class DoIterator<T> : CollectionIterator<T>
+	private sealed class DoIterator<T> : CollectionIterator<T>
 	{
 		private readonly ICollection<T> _source;
 		private readonly Action<T> _onNext;
