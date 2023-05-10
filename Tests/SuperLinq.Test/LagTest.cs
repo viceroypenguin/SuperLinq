@@ -149,4 +149,15 @@ public class LagTests
 				new { A = "qux", B = "bar" });
 		}
 	}
+
+	[Fact]
+	public void ZipMapListBehavior()
+	{
+		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
+
+		var result = seq.Lag(20);
+		Assert.Equal(10_000, result.Count());
+		Assert.Equal((50, 30), result.ElementAt(50));
+		Assert.Equal((9_950, 9_930), result.ElementAt(^50));
+	}
 }
