@@ -35,115 +35,133 @@ public class LeadTests
 			new BreakingSequence<int>().Lead(0, (val, leadVal) => val + leadVal));
 	}
 
-	/// <summary>
-	/// Verify that lead can accept and propagate a default value passed to it.
-	/// </summary>
-	[Fact]
-	public void TestLeadExplicitDefaultValue()
-	{
-		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
+	public static IEnumerable<object[]> GetIntSequences() =>
+		Enumerable.Range(1, 100)
+			.GetListSequences()
+			.Select(x => new object[] { x });
 
-		var result = sequence.Lead(10, -1, (val, leadVal) => leadVal).ToList();
-		Assert.Equal(100, result.Count);
-		Assert.Equal(Enumerable.Repeat(-1, 10), result.Skip(100 - 10));
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestLeadExplicitDefaultValue(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lead(10, -1, (val, leadVal) => leadVal);
+			result.AssertSequenceEqual(
+				Enumerable.Range(11, 90)
+					.Concat(Enumerable.Repeat(-1, 10)));
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestLeadTuple(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lead(10);
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, 100)
+					.Select(x => (x, x <= 100 - 10 ? x + 10 : default)));
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestLeadImplicitDefaultValue(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lead(10, (val, leadVal) => leadVal);
+			result.AssertSequenceEqual(
+				Enumerable.Range(11, 90)
+					.Concat(Enumerable.Repeat(0, 10)));
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestLeadOffsetGreaterThanSequenceLength(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq
+				.Lead(101, -1, ValueTuple.Create);
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, 100).Select(x => (x, -1)));
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestLeadPassesCorrectValueOffsetBy1(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lead(1);
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, 100)
+					.Select(x => (x, x == 100 ? 0 : x + 1)));
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestLeadPassesCorrectValueOffsetBy2(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lead(2);
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, 100)
+					.Select(x => (x, x >= 99 ? 0 : x + 2)));
+		}
+	}
+
+	public static IEnumerable<object[]> GetStringSequences() =>
+		Seq("foo", "bar", "baz", "qux")
+			.GetListSequences()
+			.Select(x => new object[] { x, });
+
+	[Theory]
+	[MemberData(nameof(GetStringSequences))]
+	public void TestLagWithNullableReferences(IDisposableEnumerable<string> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lead(2, (a, b) => new { A = a, B = b });
+			result.AssertSequenceEqual(
+				new { A = "foo", B = (string?)"baz" },
+				new { A = "bar", B = (string?)"qux" },
+				new { A = "baz", B = (string?)null },
+				new { A = "qux", B = (string?)null });
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetStringSequences))]
+	public void TestLagWithNonNullableReferences(IDisposableEnumerable<string> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lead(2, string.Empty, (a, b) => new { A = a, B = b });
+			result.AssertSequenceEqual(
+				new { A = "foo", B = "baz" },
+				new { A = "bar", B = "qux" },
+				new { A = "baz", B = string.Empty },
+				new { A = "qux", B = string.Empty });
+		}
 	}
 
 	[Fact]
-	public void TestLeadTuple()
+	public void LeadListBehavior()
 	{
-		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
+		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
-		var result = sequence.Lead(10).ToList();
-		Assert.Equal(100, result.Count);
-		result.AssertSequenceEqual(
-			Enumerable.Range(1, 100).Select(x => (x, x <= 100 - 10 ? x + 10 : default)));
-	}
-
-	/// <summary>
-	/// Verify that Lead() will use default(T) if a specific default value is not supplied for the lead value.
-	/// </summary>
-	[Fact]
-	public void TestLeadImplicitDefaultValue()
-	{
-		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
-
-		var result = sequence.Lead(10, (val, leadVal) => leadVal).ToList();
-		Assert.Equal(100, result.Count);
-		Assert.Equal(Enumerable.Repeat(default(int), 10), result.Skip(100 - 10));
-	}
-
-	/// <summary>
-	/// Verify that if the lead offset is greater than the length of the sequence
-	/// Lead() still yield all of the elements of the source sequence.
-	/// </summary>
-	[Fact]
-	public void TestLeadOffsetGreaterThanSequenceLength()
-	{
-		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
-
-		var result = sequence
-			.Lead(101, -1, (val, leadVal) => new { A = val, B = leadVal })
-			.ToList();
-		Assert.Equal(100, result.Count);
-		Assert.Equal(Enumerable.Range(1, 100).Select(x => new { A = x, B = -1 }), result);
-	}
-
-	/// <summary>
-	/// Verify that Lead() actually yields the correct pair of values from the sequence
-	/// when the lead offset is 1.
-	/// </summary>
-	[Fact]
-	public void TestLeadPassesCorrectValueOffsetBy1()
-	{
-		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
-
-		var result = sequence
-			.Lead(1, 101, (val, leadVal) => new { A = val, B = leadVal })
-			.ToList();
-		Assert.Equal(100, result.Count);
-		Assert.True(result.All(x => x.B == (x.A + 1)));
-	}
-
-	/// <summary>
-	/// Verify that Lead() yields the correct pair of values from the sequence
-	/// when the lead offset is greater than 1.
-	/// </summary>
-	[Fact]
-	public void TestLeadPassesCorrectValueOffsetBy2()
-	{
-		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
-
-		var result = sequence
-			.Lead(2, 101, (val, leadVal) => new { A = val, B = leadVal })
-			.ToList();
-		Assert.Equal(100, result.Count);
-		Assert.True(result.Take(100 - 2).All(x => x.B == (x.A + 2)));
-		Assert.True(result.Skip(100 - 2).All(x => x.B == 101 && (x.A is 99 or 100)));
-	}
-
-	[Fact]
-	public void TestLagWithNullableReferences()
-	{
-		using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
-
-		var result = words.Lead(2, (a, b) => new { A = a, B = b });
-		result.AssertSequenceEqual(
-			new { A = "foo", B = (string?)"baz" },
-			new { A = "bar", B = (string?)"qux" },
-			new { A = "baz", B = (string?)null },
-			new { A = "qux", B = (string?)null });
-	}
-
-	[Fact]
-	public void TestLagWithNonNullableReferences()
-	{
-		using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
-
-		var result = words.Lead(2, string.Empty, (a, b) => new { A = a, B = b });
-		result.AssertSequenceEqual(
-			new { A = "foo", B = "baz" },
-			new { A = "bar", B = "qux" },
-			new { A = "baz", B = string.Empty },
-			new { A = "qux", B = string.Empty });
+		var result = seq.Lead(20);
+		Assert.Equal(10_000, result.Count());
+		Assert.Equal((50, 70), result.ElementAt(50));
+		Assert.Equal((9_950, 9_970), result.ElementAt(^50));
+		Assert.Equal((9_990, 0), result.ElementAt(^10));
 	}
 }
