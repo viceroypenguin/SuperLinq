@@ -66,6 +66,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(resultSelector);
 
+		if (source is IList<TSource> list)
+			return new TagFirstLastIterator<TSource, TResult>(list, resultSelector);
+
 		return Core(source, resultSelector);
 
 		static IEnumerable<TResult> Core(IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
@@ -86,6 +89,45 @@ public static partial class SuperEnumerable
 			}
 
 			yield return resultSelector(cur, first, true);
+		}
+	}
+
+	private class TagFirstLastIterator<TSource, TResult> : ListIterator<TResult>
+	{
+		private readonly IList<TSource> _source;
+		private readonly Func<TSource, bool, bool, TResult> _resultSelector;
+
+		public TagFirstLastIterator(IList<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
+		{
+			_source = source;
+			_resultSelector = resultSelector;
+		}
+
+		public override int Count => _source.Count;
+
+		protected override IEnumerable<TResult> GetEnumerable()
+		{
+			if (_source.Count <= 1)
+			{
+				if (_source.Count == 1)
+					yield return _resultSelector(_source[0], true, true);
+				yield break;
+			}
+
+			yield return _resultSelector(_source[0], true, false);
+
+			var cnt = (uint)_source.Count - 1;
+
+			for (var i = 1; i < cnt; i++)
+				yield return _resultSelector(_source[i], false, false);
+
+			yield return _resultSelector(_source[^1], false, true);
+		}
+
+		protected override TResult ElementAt(int index)
+		{
+			Guard.IsBetweenOrEqualTo(index, 0, _source.Count - 1);
+			return _resultSelector(_source[index], index == 0, index == _source.Count - 1);
 		}
 	}
 }
