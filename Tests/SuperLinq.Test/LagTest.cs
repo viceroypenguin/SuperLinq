@@ -157,6 +157,7 @@ public class LagTests
 
 		var result = seq.Lag(20);
 		Assert.Equal(10_000, result.Count());
+		Assert.Equal((10, 0), result.ElementAt(10));
 		Assert.Equal((50, 30), result.ElementAt(50));
 		Assert.Equal((9_950, 9_930), result.ElementAt(^50));
 	}
