@@ -17,10 +17,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<(TSource current, TSource? lag)> Lag<TSource>(this IEnumerable<TSource> source, int offset)
 	{
-		Guard.IsNotNull(source);
-
-		return source.Select(Some)
-					 .Lag(offset, default, (curr, lag) => (curr.Value, lag is (true, var some) ? some : default));
+		return source.Lag(offset, ValueTuple.Create);
 	}
 
 	/// <summary>
@@ -41,11 +38,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
-
-		return source.Select(Some)
-					 .Lag(offset, default, (curr, lag) => resultSelector(curr.Value, lag is (true, var some) ? some : default));
+		return source.Lag(offset, default!, resultSelector);
 	}
 
 	/// <summary>
@@ -70,6 +63,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(resultSelector);
 		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
+		if (source is IList<TSource> list)
+			return new LagIterator<TSource, TResult>(list, offset, defaultLagValue, resultSelector);
+
 		return Core(source, offset, defaultLagValue, resultSelector);
 
 		static IEnumerable<TResult> Core(IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
@@ -83,5 +79,37 @@ public static partial class SuperEnumerable
 					lagQueue.Count > offset ? lagQueue.Dequeue() : defaultLagValue);
 			}
 		}
+	}
+
+	private sealed class LagIterator<TSource, TResult> : ListIterator<TResult>
+	{
+		private readonly IList<TSource> _source;
+		private readonly int _offset;
+		private readonly TSource _defaultLagValue;
+		private readonly Func<TSource, TSource, TResult> _resultSelector;
+
+		public LagIterator(IList<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
+		{
+			_source = source;
+			_offset = offset;
+			_defaultLagValue = defaultLagValue;
+			_resultSelector = resultSelector;
+		}
+
+		public override int Count => _source.Count;
+
+		protected override IEnumerable<TResult> GetEnumerable()
+		{
+			var cnt = (uint)_source.Count;
+			for (var i = 0; i < cnt; i++)
+				yield return _resultSelector(
+					_source[i],
+					i < _offset ? _defaultLagValue : _source[i - _offset]);
+		}
+
+		protected override TResult ElementAt(int index) =>
+			_resultSelector(
+				_source[index],
+				index < _offset ? _defaultLagValue : _source[index - _offset]);
 	}
 }

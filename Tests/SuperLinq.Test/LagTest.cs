@@ -35,108 +35,130 @@ public class LagTests
 			new BreakingSequence<int>().Lag(0, (val, lagVal) => val + lagVal));
 	}
 
-	/// <summary>
-	/// Verify that lag can accept an propagate a default value passed to it.
-	/// </summary>
-	[Fact]
-	public void TestLagExplicitDefaultValue()
-	{
-		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
+	public static IEnumerable<object[]> GetIntSequences() =>
+		Enumerable.Range(1, 100)
+			.GetListSequences()
+			.Select(x => new object[] { x });
 
-		var result = sequence.Lag(10, -1, (val, lagVal) => lagVal).ToList();
-		Assert.Equal(100, result.Count);
-		Assert.Equal(Enumerable.Repeat(-1, 10), result.Take(10));
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestLagExplicitDefaultValue(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lag(10, -1, (val, lagVal) => lagVal);
+			result.AssertSequenceEqual(
+				Enumerable.Repeat(-1, 10).Concat(Enumerable.Range(1, 90)));
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestLagTuple(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lag(10);
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, 100).Select(x => (x, x <= 10 ? default : x - 10)));
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestLagImplicitDefaultValue(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lag(10, (val, lagVal) => lagVal);
+			result.AssertSequenceEqual(
+				Enumerable.Repeat(default(int), 10)
+					.Concat(Enumerable.Range(1, 90)));
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestLagOffsetGreaterThanSequenceLength(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lag(100 + 1, (a, b) => a);
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, 100));
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestLagPassesCorrectLagValueOffsetBy1(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lag(1);
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, 100)
+					.Select(x => (x, x - 1)));
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestLagPassesCorrectLagValuesOffsetBy2(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lag(2);
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, 100)
+					.Select(x => (x, x <= 2 ? 0 : x - 2)));
+		}
+	}
+
+	public static IEnumerable<object[]> GetStringSequences() =>
+		Seq("foo", "bar", "baz", "qux")
+			.GetListSequences()
+			.Select(x => new object[] { x, });
+
+	[Theory]
+	[MemberData(nameof(GetStringSequences))]
+	public void TestLagWithNullableReferences(IDisposableEnumerable<string> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lag(2, (a, b) => new { A = a, B = b });
+			result.AssertSequenceEqual(
+				new { A = "foo", B = (string?)null },
+				new { A = "bar", B = (string?)null },
+				new { A = "baz", B = (string?)"foo" },
+				new { A = "qux", B = (string?)"bar" });
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetStringSequences))]
+	public void TestLagWithNonNullableReferences(IDisposableEnumerable<string> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Lag(2, string.Empty, (a, b) => new { A = a, B = b });
+			result.AssertSequenceEqual(
+				new { A = "foo", B = string.Empty, },
+				new { A = "bar", B = string.Empty, },
+				new { A = "baz", B = "foo" },
+				new { A = "qux", B = "bar" });
+		}
 	}
 
 	[Fact]
-	public void TestLagTuple()
+	public void ZipMapListBehavior()
 	{
-		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
+		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
-		var result = sequence.Lag(10).ToList();
-		Assert.Equal(100, result.Count);
-		result.AssertSequenceEqual(
-			Enumerable.Range(1, 100).Select(x => (x, x <= 10 ? default : x - 10)));
-	}
-
-	/// <summary>
-	/// Verify that lag will use default(T) if a specific default value is not supplied for the lag value.
-	/// </summary>
-	[Fact]
-	public void TestLagImplicitDefaultValue()
-	{
-		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
-
-		var result = sequence.Lag(10, (val, lagVal) => lagVal).ToList();
-		Assert.Equal(100, result.Count);
-		Assert.Equal(Enumerable.Repeat(default(int), 10), result.Take(10));
-	}
-
-	/// <summary>
-	/// Verify that if the lag offset is greater than the sequence length lag
-	/// still yields all of the elements of the source sequence.
-	/// </summary>
-	[Fact]
-	public void TestLagOffsetGreaterThanSequenceLength()
-	{
-		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
-
-		var result = sequence.Lag(100 + 1, (a, b) => a).ToList();
-		Assert.Equal(100, result.Count);
-		Assert.Equal(Enumerable.Range(1, 100), result);
-	}
-
-	/// <summary>
-	/// Verify that lag actually yields the correct pair of values from the sequence
-	/// when offsetting by a single item.
-	/// </summary>
-	[Fact]
-	public void TestLagPassesCorrectLagValueOffsetBy1()
-	{
-		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
-
-		var result = sequence.Lag(1, (a, b) => new { A = a, B = b }).ToList();
-		Assert.Equal(100, result.Count);
-		Assert.True(result.All(x => x.B == (x.A - 1)));
-	}
-
-	/// <summary>
-	/// Verify that lag yields the correct pair of values from the sequence when
-	/// offsetting by more than a single item.
-	/// </summary>
-	[Fact]
-	public void TestLagPassesCorrectLagValuesOffsetBy2()
-	{
-		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
-
-		var result = sequence.Lag(2, (a, b) => new { A = a, B = b }).ToList();
-		Assert.Equal(100, result.Count);
-		Assert.True(result.Skip(2).All(x => x.B == (x.A - 2)));
-		Assert.True(result.Take(2).All(x => (x.A - x.B) == x.A));
-	}
-
-	[Fact]
-	public void TestLagWithNullableReferences()
-	{
-		using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
-		var result = words.Lag(2, (a, b) => new { A = a, B = b });
-		result.AssertSequenceEqual(
-			new { A = "foo", B = (string?)null },
-			new { A = "bar", B = (string?)null },
-			new { A = "baz", B = (string?)"foo" },
-			new { A = "qux", B = (string?)"bar" });
-	}
-
-	[Fact]
-	public void TestLagWithNonNullableReferences()
-	{
-		using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
-		var empty = string.Empty;
-		var result = words.Lag(2, empty, (a, b) => new { A = a, B = b });
-		result.AssertSequenceEqual(
-			new { A = "foo", B = empty },
-			new { A = "bar", B = empty },
-			new { A = "baz", B = "foo" },
-			new { A = "qux", B = "bar" });
+		var result = seq.Lag(20);
+		Assert.Equal(10_000, result.Count());
+		Assert.Equal((10, 0), result.ElementAt(10));
+		Assert.Equal((50, 30), result.ElementAt(50));
+		Assert.Equal((9_950, 9_930), result.ElementAt(^50));
 	}
 }
