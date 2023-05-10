@@ -143,6 +143,17 @@ public static partial class SuperEnumerable
 				yield return _paddingSelector(i);
 		}
 
+		public override void CopyTo(T[] array, int arrayIndex)
+		{
+			Guard.IsNotNull(array);
+			Guard.IsGreaterThanOrEqualTo(arrayIndex, 0);
+
+			_source.CopyTo(array, arrayIndex);
+
+			for (var i = _source.Count; i < _width; i++)
+				array[arrayIndex + i] = _paddingSelector(i);
+		}
+
 		protected override T ElementAt(int index)
 		{
 			Guard.IsLessThan(index, Count);
