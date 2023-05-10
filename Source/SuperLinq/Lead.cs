@@ -18,10 +18,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<(TSource current, TSource? lead)> Lead<TSource>(this IEnumerable<TSource> source, int offset)
 	{
-		Guard.IsNotNull(source);
-
-		return source.Select(Some)
-					 .Lead(offset, default, (curr, lead) => (curr.Value, lead is (true, var some) ? some : default));
+		return source.Lead(offset, ValueTuple.Create);
 	}
 
 	/// <summary>
@@ -43,11 +40,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
-
-		return source.Select(Some)
-					 .Lead(offset, default, (curr, lead) => resultSelector(curr.Value, lead is (true, var some) ? some : default));
+		return source.Lead(offset, default!, resultSelector);
 	}
 
 	/// <summary>
@@ -75,6 +68,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(resultSelector);
 		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
+		if (source is IList<TSource> list)
+			return new LeadIterator<TSource, TResult>(list, offset, defaultLeadValue, resultSelector);
+
 		return Core(source, offset, defaultLeadValue, resultSelector);
 
 		static IEnumerable<TResult> Core(IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
@@ -91,5 +87,40 @@ public static partial class SuperEnumerable
 			while (queue.Count > 0)
 				yield return resultSelector(queue.Dequeue(), defaultLeadValue);
 		}
+	}
+
+	private sealed class LeadIterator<TSource, TResult> : ListIterator<TResult>
+	{
+		private readonly IList<TSource> _source;
+		private readonly int _offset;
+		private readonly TSource _defaultLeadValue;
+		private readonly Func<TSource, TSource, TResult> _resultSelector;
+
+		public LeadIterator(IList<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
+		{
+			_source = source;
+			_offset = offset;
+			_defaultLeadValue = defaultLeadValue;
+			_resultSelector = resultSelector;
+		}
+
+		public override int Count => _source.Count;
+
+		protected override IEnumerable<TResult> GetEnumerable()
+		{
+			var cnt = (uint)_source.Count;
+			var maxOffset = Math.Max(_source.Count - _offset, 0);
+			for (var i = 0; i < cnt; i++)
+				yield return _resultSelector(
+					_source[i],
+					i < maxOffset ? _source[i + _offset] : _defaultLeadValue);
+		}
+
+		protected override TResult ElementAt(int index) =>
+			_resultSelector(
+				_source[index],
+				index < Math.Max(_source.Count - _offset, 0)
+					? _source[index + _offset]
+					: _defaultLeadValue);
 	}
 }

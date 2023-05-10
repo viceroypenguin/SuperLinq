@@ -18,6 +18,4 @@ public static partial class SuperEnumerable
 			_ => null
 		};
 #endif
-
-	internal static (bool HasValue, T Value) Some<T>(T value) => (true, value);
 }

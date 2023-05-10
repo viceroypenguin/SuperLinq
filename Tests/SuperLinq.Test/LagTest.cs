@@ -83,9 +83,9 @@ public class LagTests
 	{
 		using (seq)
 		{
-			var result = seq.Lag(100 + 1, (a, b) => a);
+			var result = seq.Lag(100 + 1, -1, ValueTuple.Create);
 			result.AssertSequenceEqual(
-				Enumerable.Range(1, 100));
+				Enumerable.Range(1, 100).Select(x => (x, -1)));
 		}
 	}
 
@@ -151,7 +151,7 @@ public class LagTests
 	}
 
 	[Fact]
-	public void ZipMapListBehavior()
+	public void LagListBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
