@@ -59,6 +59,23 @@ public class ZipLongestTest
 	}
 
 	[Fact]
+	public void TwoParamsListBehavior()
+	{
+		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
+		using var seq2 = Enumerable.Range(0, 5_000).AsBreakingList();
+
+		var result = seq1.ZipLongest(seq2);
+		Assert.Equal(10_000, result.Count());
+		Assert.Equal((10, 10), result.ElementAt(10));
+		Assert.Equal((50, 50), result.ElementAt(50));
+		Assert.Equal((9_950, 0), result.ElementAt(^50));
+
+		result = seq2.ZipLongest(seq1);
+		Assert.Equal(10_000, result.Count());
+		Assert.Equal((0, 9_950), result.ElementAt(^50));
+	}
+
+	[Fact]
 	public void ThreeParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -145,6 +162,24 @@ public class ZipLongestTest
 						shortSeq == 1 ? 0 : 3,
 						shortSeq == 2 ? 0 : 3)));
 		}
+	}
+
+	[Fact]
+	public void ThreeParamsListBehavior()
+	{
+		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
+		using var seq2 = Enumerable.Range(0, 5_000).AsBreakingList();
+		using var seq3 = Enumerable.Range(0, 5_000).AsBreakingList();
+
+		var result = seq1.ZipLongest(seq2, seq3);
+		Assert.Equal(10_000, result.Count());
+		Assert.Equal((10, 10, 10), result.ElementAt(10));
+		Assert.Equal((50, 50, 50), result.ElementAt(50));
+		Assert.Equal((9_950, 0, 0), result.ElementAt(^50));
+
+		result = seq2.ZipLongest(seq1, seq3);
+		Assert.Equal(10_000, result.Count());
+		Assert.Equal((0, 9_950, 0), result.ElementAt(^50));
 	}
 
 	[Fact]
@@ -252,5 +287,24 @@ public class ZipLongestTest
 						shortSeq == 2 ? 0 : 3,
 						shortSeq == 3 ? 0 : 3)));
 		}
+	}
+
+	[Fact]
+	public void FourParamsListBehavior()
+	{
+		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
+		using var seq2 = Enumerable.Range(0, 5_000).AsBreakingList();
+		using var seq3 = Enumerable.Range(0, 5_000).AsBreakingList();
+		using var seq4 = Enumerable.Range(0, 5_000).AsBreakingList();
+
+		var result = seq1.ZipLongest(seq2, seq3, seq4);
+		Assert.Equal(10_000, result.Count());
+		Assert.Equal((10, 10, 10, 10), result.ElementAt(10));
+		Assert.Equal((50, 50, 50, 50), result.ElementAt(50));
+		Assert.Equal((9_950, 0, 0, 0), result.ElementAt(^50));
+
+		result = seq2.ZipLongest(seq1, seq3, seq4);
+		Assert.Equal(10_000, result.Count());
+		Assert.Equal((0, 9_950, 0, 0), result.ElementAt(^50));
 	}
 }
