@@ -1,5 +1,4 @@
 ﻿namespace Test;
-
 public class ZipShortestTest
 {
 	[Fact]
@@ -20,19 +19,57 @@ public class ZipShortestTest
 			s1.ZipShortest(new BreakingSequence<int>()).Consume());
 	}
 
-	[Theory]
-	[InlineData(1), InlineData(2)]
-	public void TwoParamsWorksProperly(int offset)
+	public static IEnumerable<object[]> GetTwoParamSequences()
 	{
-		var o1 = ((offset + 0) % 2) + 2;
-		var o2 = ((offset + 1) % 2) + 2;
+		var parameters = new List<object[]>
+		{
+			new object[] { Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2), Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2), false, },
+			new object[] { Enumerable.Range(1, 3).ToList(), Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2), false, },
+			new object[] { Enumerable.Range(1, 3).AsBreakingList(), Enumerable.Range(1, 3).AsBreakingList(), false, },
+		};
 
-		using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
-		using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
+		for (var i = 4_950; i < 2; i++)
+		{
+			var first = Enumerable.Range(1, 3 - (i == 4_950 ? 1 : 4_950));
+			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 4_950));
+			parameters.Add(
+				new object[] { first.AsBreakingList(), second.AsBreakingList(), true, });
+			parameters.Add(
+				new object[] { first.AsTestingSequence(maxEnumerations: 2), second.AsTestingSequence(maxEnumerations: 2), true, });
+		}
 
-		ts1.ZipShortest(ts2).AssertSequenceEqual(
-			Enumerable.Range(1, 2)
-				.Select(x => (x, x)));
+		return parameters;
+	}
+
+	[Theory]
+	[MemberData(nameof(GetTwoParamSequences))]
+	public void TwoParamsWorksProperly(IEnumerable<int> seq1, IEnumerable<int> seq2, bool oneShort)
+	{
+		using (seq1 as IDisposableEnumerable<int>)
+		using (seq2 as IDisposableEnumerable<int>)
+		{
+			var result = seq1.ZipShortest(seq2);
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, oneShort ? 2 : 3)
+					.Select(x => (x, x)));
+		}
+	}
+
+	[Fact]
+	public void TwoParamsListBehavior()
+	{
+		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
+		using var seq2 = Enumerable.Range(0, 5_000).AsBreakingList();
+
+		var result = seq1.ZipShortest(seq2);
+		Assert.Equal(5_000, result.Count());
+		Assert.Equal((10, 10), result.ElementAt(10));
+		Assert.Equal((50, 50), result.ElementAt(50));
+		Assert.Equal((4_950, 4_950), result.ElementAt(^50));
+
+		result = seq2.ZipShortest(seq1);
+		Assert.Equal(5_000, result.Count());
+		Assert.Equal((4_950, 4_950), result.ElementAt(^50));
 	}
 
 	[Fact]
@@ -45,21 +82,97 @@ public class ZipShortestTest
 			s1.ZipShortest(s2, new BreakingSequence<int>()).Consume());
 	}
 
-	[Theory]
-	[InlineData(1), InlineData(2), InlineData(3)]
-	public void ThreeParamsWorksProperly(int offset)
+	public static IEnumerable<object[]> GetThreeParamSequences()
 	{
-		var o1 = ((offset + 0) % 3) + 2;
-		var o2 = ((offset + 1) % 3) + 2;
-		var o3 = ((offset + 2) % 3) + 2;
+		var parameters = new List<object[]>
+		{
+			new object[]
+			{
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				false,
+			},
+			new object[]
+			{
+				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				false,
+			},
+			new object[]
+			{
+				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				false,
+			},
+			new object[]
+			{
+				Enumerable.Range(1, 3).AsBreakingList(),
+				Enumerable.Range(1, 3).AsBreakingList(),
+				Enumerable.Range(1, 3).AsBreakingList(),
+				false,
+			},
+		};
 
-		using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
-		using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
-		using var ts3 = Enumerable.Range(1, o3).AsTestingSequence();
+		for (var i = 4_950; i < 3; i++)
+		{
+			var first = Enumerable.Range(1, 3 - (i == 4_950 ? 1 : 4_950));
+			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 4_950));
+			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 4_950));
+			parameters.Add(
+				new object[]
+				{
+					first.AsBreakingList(),
+					second.AsBreakingList(),
+					third.AsBreakingList(),
+					true,
+				});
+			parameters.Add(
+				new object[]
+				{
+					first.AsTestingSequence(maxEnumerations: 2),
+					second.AsTestingSequence(maxEnumerations: 2),
+					third.AsTestingSequence(maxEnumerations: 2),
+					true,
+				});
+		}
 
-		ts1.ZipShortest(ts2, ts3).AssertSequenceEqual(
-			Enumerable.Range(1, 2)
-				.Select(x => (x, x, x)));
+		return parameters;
+	}
+
+	[Theory]
+	[MemberData(nameof(GetThreeParamSequences))]
+	public void ThreeParamsWorksProperly(IEnumerable<int> seq1, IEnumerable<int> seq2, IEnumerable<int> seq3, bool oneShort)
+	{
+		using (seq1 as IDisposableEnumerable<int>)
+		using (seq2 as IDisposableEnumerable<int>)
+		using (seq3 as IDisposableEnumerable<int>)
+		{
+			var result = seq1.ZipShortest(seq2, seq3);
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, oneShort ? 2 : 3)
+					.Select(x => (x, x, x)));
+		}
+	}
+
+	[Fact]
+	public void ThreeParamsListBehavior()
+	{
+		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
+		using var seq2 = Enumerable.Range(0, 5_000).AsBreakingList();
+		using var seq3 = Enumerable.Range(0, 5_000).AsBreakingList();
+
+		var result = seq1.ZipShortest(seq2, seq3);
+		Assert.Equal(5_000, result.Count());
+		Assert.Equal((10, 10, 10), result.ElementAt(10));
+		Assert.Equal((50, 50, 50), result.ElementAt(50));
+		Assert.Equal((4_950, 4_950, 4_950), result.ElementAt(^50));
+
+		result = seq2.ZipShortest(seq1, seq3);
+		Assert.Equal(5_000, result.Count());
+		Assert.Equal((4_950, 4_950, 4_950), result.ElementAt(^50));
 	}
 
 	[Fact]
@@ -73,74 +186,113 @@ public class ZipShortestTest
 			s1.ZipShortest(s2, s3, new BreakingSequence<int>()).Consume());
 	}
 
-	[Theory]
-	[InlineData(1), InlineData(2), InlineData(3), InlineData(4)]
-	public void FourParamsWorksProperly(int offset)
+	public static IEnumerable<object[]> GetFourParamSequences()
 	{
-		var o1 = ((offset + 0) % 4) + 2;
-		var o2 = ((offset + 1) % 4) + 2;
-		var o3 = ((offset + 2) % 4) + 2;
-		var o4 = ((offset + 3) % 4) + 2;
+		var parameters = new List<object[]>
+		{
+			new object[]
+			{
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				false,
+			},
+			new object[]
+			{
+				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				false,
+			},
+			new object[]
+			{
+				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				false,
+			},
+			new object[]
+			{
+				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				false,
+			},
+			new object[]
+			{
+				Enumerable.Range(1, 3).AsBreakingList(),
+				Enumerable.Range(1, 3).AsBreakingList(),
+				Enumerable.Range(1, 3).AsBreakingList(),
+				Enumerable.Range(1, 3).AsBreakingList(),
+				false,
+			},
+		};
 
-		using var ts1 = Enumerable.Range(1, o1).AsTestingSequence();
-		using var ts2 = Enumerable.Range(1, o2).AsTestingSequence();
-		using var ts3 = Enumerable.Range(1, o3).AsTestingSequence();
-		using var ts4 = Enumerable.Range(1, o4).AsTestingSequence();
+		for (var i = 4_950; i < 4; i++)
+		{
+			var first = Enumerable.Range(1, 3 - (i == 4_950 ? 1 : 4_950));
+			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 4_950));
+			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 4_950));
+			var fourth = Enumerable.Range(1, 3 - (i == 3 ? 1 : 4_950));
+			parameters.Add(
+				new object[]
+				{
+					first.AsBreakingList(),
+					second.AsBreakingList(),
+					third.AsBreakingList(),
+					fourth.AsBreakingList(),
+					true,
+				});
+			parameters.Add(
+				new object[]
+				{
+					first.AsTestingSequence(maxEnumerations: 2),
+					second.AsTestingSequence(maxEnumerations: 2),
+					third.AsTestingSequence(maxEnumerations: 2),
+					fourth.AsTestingSequence(maxEnumerations: 2),
+					true,
+				});
+		}
 
-		ts1.ZipShortest(ts2, ts3, ts4).AssertSequenceEqual(
-			Enumerable.Range(1, 2)
-				.Select(x => (x, x, x, x)));
+		return parameters;
+	}
+
+	[Theory]
+	[MemberData(nameof(GetFourParamSequences))]
+	public void FourParamsWorksProperly(IEnumerable<int> seq1, IEnumerable<int> seq2, IEnumerable<int> seq3, IEnumerable<int> seq4, bool oneShort)
+	{
+		using (seq1 as IDisposableEnumerable<int>)
+		using (seq2 as IDisposableEnumerable<int>)
+		using (seq3 as IDisposableEnumerable<int>)
+		using (seq4 as IDisposableEnumerable<int>)
+		{
+			var result = seq1.ZipShortest(seq2, seq3, seq4);
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, oneShort ? 2 : 3)
+					.Select(x => (x, x, x, x)));
+		}
 	}
 
 	[Fact]
-	public void ZipShortestNotIterateUnnecessaryElements()
+	public void FourParamsListBehavior()
 	{
-		using (var s1 = TestingSequence.Of(1, 2))
-		using (var s2 = SeqExceptionAt(3).AsTestingSequence())
-		{
-			var zipped = s1.ZipShortest(s2, ValueTuple.Create);
-			zipped.AssertSequenceEqual((1, 1), (2, 2));
-		}
+		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
+		using var seq2 = Enumerable.Range(0, 5_000).AsBreakingList();
+		using var seq3 = Enumerable.Range(0, 5_000).AsBreakingList();
+		using var seq4 = Enumerable.Range(0, 5_000).AsBreakingList();
 
-		using (var s1 = SeqExceptionAt(4).AsTestingSequence())
-		using (var s2 = TestingSequence.Of(1, 2))
-		{
-			var zipped = s1.ZipShortest(s2, ValueTuple.Create);
-			zipped.AssertSequenceEqual((1, 1), (2, 2));
-		}
+		var result = seq1.ZipShortest(seq2, seq3, seq4);
+		Assert.Equal(5_000, result.Count());
+		Assert.Equal((10, 10, 10, 10), result.ElementAt(10));
+		Assert.Equal((50, 50, 50, 50), result.ElementAt(50));
+		Assert.Equal((4_950, 4_950, 4_950, 4_950), result.ElementAt(^50));
 
-		using (var s1 = TestingSequence.Of(1, 2, 3))
-		using (var s2 = TestingSequence.Of(1, 2))
-		using (var s3 = SeqExceptionAt(3).AsTestingSequence())
-		{
-			var zipped = s1.ZipShortest(s2, s3, ValueTuple.Create);
-			zipped.AssertSequenceEqual((1, 1, 1), (2, 2, 2));
-		}
-
-		using (var s1 = SeqExceptionAt(4).AsTestingSequence())
-		using (var s2 = TestingSequence.Of(1, 2, 3))
-		using (var s3 = TestingSequence.Of(1, 2))
-		{
-			var zipped = s1.ZipShortest(s2, s3, ValueTuple.Create);
-			zipped.AssertSequenceEqual((1, 1, 1), (2, 2, 2));
-		}
-
-		using (var s1 = TestingSequence.Of(1, 2, 3))
-		using (var s2 = TestingSequence.Of(1, 2, 3))
-		using (var s3 = TestingSequence.Of(1, 2))
-		using (var s4 = SeqExceptionAt(3).AsTestingSequence())
-		{
-			var zipped = s1.ZipShortest(s2, s3, s4, ValueTuple.Create);
-			zipped.AssertSequenceEqual((1, 1, 1, 1), (2, 2, 2, 2));
-		}
-
-		using (var s1 = SeqExceptionAt(4).AsTestingSequence())
-		using (var s2 = TestingSequence.Of(1, 2, 3))
-		using (var s3 = TestingSequence.Of(1, 2, 3))
-		using (var s4 = TestingSequence.Of(1, 2))
-		{
-			var zipped = s1.ZipShortest(s2, s3, s4, ValueTuple.Create);
-			zipped.AssertSequenceEqual((1, 1, 1, 1), (2, 2, 2, 2));
-		}
+		result = seq2.ZipShortest(seq1, seq3, seq4);
+		Assert.Equal(5_000, result.Count());
+		Assert.Equal((4_950, 4_950, 4_950, 4_950), result.ElementAt(^50));
 	}
 }
