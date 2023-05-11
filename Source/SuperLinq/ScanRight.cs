@@ -60,7 +60,7 @@ public static partial class SuperEnumerable
 			yield return item;
 	}
 
-	private class ScanRightIterator<T> : CollectionIterator<T>
+	private sealed class ScanRightIterator<T> : CollectionIterator<T>
 	{
 		private readonly ICollection<T> _source;
 		private readonly Func<T, T, T> _func;
@@ -147,7 +147,7 @@ public static partial class SuperEnumerable
 			yield return item;
 	}
 
-	private class ScanRightStateIterator<TSource, TAccumulate> : CollectionIterator<TAccumulate>
+	private sealed class ScanRightStateIterator<TSource, TAccumulate> : CollectionIterator<TAccumulate>
 	{
 		private readonly ICollection<TSource> _source;
 		private readonly TAccumulate _seed;

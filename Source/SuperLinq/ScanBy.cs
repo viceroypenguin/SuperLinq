@@ -75,9 +75,11 @@ public static partial class SuperEnumerable
 
 		comparer ??= EqualityComparer<TKey>.Default;
 
-		if (source is ICollection<TSource> coll)
+		if (source.TryGetCollectionCount() != null)
+		{
 			return new ScanByIterator<TSource, TKey, TState>(
-				coll, keySelector, seedSelector, accumulator, comparer);
+				source, keySelector, seedSelector, accumulator, comparer);
+		}
 
 		return ScanByCore(source, keySelector, seedSelector, accumulator, comparer);
 	}
@@ -107,16 +109,16 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private class ScanByIterator<TSource, TKey, TState> : CollectionIterator<(TKey key, TState state)>
+	private sealed class ScanByIterator<TSource, TKey, TState> : CollectionIterator<(TKey key, TState state)>
 	{
-		private readonly ICollection<TSource> _source;
+		private readonly IEnumerable<TSource> _source;
 		private readonly Func<TSource, TKey> _keySelector;
 		private readonly Func<TKey, TState> _seedSelector;
 		private readonly Func<TState, TKey, TSource, TState> _accumulator;
 		private readonly IEqualityComparer<TKey> _comparer;
 
 		public ScanByIterator(
-			ICollection<TSource> source,
+			IEnumerable<TSource> source,
 			Func<TSource, TKey> keySelector,
 			Func<TKey, TState> seedSelector,
 			Func<TState, TKey, TSource, TState> accumulator,
@@ -129,7 +131,7 @@ public static partial class SuperEnumerable
 			_comparer = comparer;
 		}
 
-		public override int Count => _source.Count;
+		public override int Count => _source.GetCollectionCount();
 
 		[ExcludeFromCodeCoverage]
 		protected override IEnumerable<(TKey key, TState state)> GetEnumerable() =>

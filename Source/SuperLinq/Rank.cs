@@ -166,8 +166,8 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		if (source is ICollection<TSource> coll)
-			return new RankIterator<TSource, TKey>(coll, keySelector, comparer, isDense: false);
+		if (source.TryGetCollectionCount() != null)
+			return new RankIterator<TSource, TKey>(source, keySelector, comparer, isDense: false);
 
 		return RankByCore(source, keySelector, comparer, isDense: false);
 	}
@@ -205,12 +205,12 @@ public static partial class SuperEnumerable
 
 	private sealed class RankIterator<TSource, TKey> : CollectionIterator<(TSource, int)>
 	{
-		private readonly ICollection<TSource> _source;
+		private readonly IEnumerable<TSource> _source;
 		private readonly Func<TSource, TKey> _keySelector;
 		private readonly IComparer<TKey>? _comparer;
 		private readonly bool _isDense;
 
-		public RankIterator(ICollection<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer, bool isDense)
+		public RankIterator(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer, bool isDense)
 		{
 			_source = source;
 			_keySelector = keySelector;
@@ -218,7 +218,7 @@ public static partial class SuperEnumerable
 			_isDense = isDense;
 		}
 
-		public override int Count => _source.Count;
+		public override int Count => _source.GetCollectionCount();
 
 		[ExcludeFromCodeCoverage]
 		protected override IEnumerable<(TSource, int)> GetEnumerable() =>

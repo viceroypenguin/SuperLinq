@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace SuperLinq;
 
 /// <summary>
 /// Provides a set of static methods for querying objects that
@@ -6,6 +8,7 @@
 /// </summary>
 public static partial class SuperEnumerable
 {
+	[ExcludeFromCodeCoverage]
 	internal static int? TryGetCollectionCount<T>(this IEnumerable<T> source) =>
 #if NET6_0_OR_GREATER
 		source.TryGetNonEnumeratedCount(out var count) ? count : default(int?);
@@ -15,7 +18,23 @@ public static partial class SuperEnumerable
 			null => ThrowHelper.ThrowArgumentNullException<int?>(nameof(source)),
 			ICollection<T> collection => collection.Count,
 			System.Collections.ICollection collection => collection.Count,
-			_ => null
+			_ => null,
+		};
+#endif
+
+	[ExcludeFromCodeCoverage]
+	internal static int GetCollectionCount<T>(this IEnumerable<T> source) =>
+#if NET6_0_OR_GREATER
+		source.TryGetNonEnumeratedCount(out var count)
+			? count
+			: ThrowHelper.ThrowInvalidOperationException<int>("Expected valid non-enumerated count.");
+#else
+		source switch
+		{
+			null => ThrowHelper.ThrowArgumentNullException<int>(nameof(source)),
+			ICollection<T> collection => collection.Count,
+			System.Collections.ICollection collection => collection.Count,
+			_ => ThrowHelper.ThrowInvalidOperationException<int>("Expected valid non-enumerated count."),
 		};
 #endif
 

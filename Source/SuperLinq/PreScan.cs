@@ -72,7 +72,7 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private class PreScanIterator<T> : CollectionIterator<T>
+	private sealed class PreScanIterator<T> : CollectionIterator<T>
 	{
 		private readonly ICollection<T> _source;
 		private readonly Func<T, T, T> _transformation;
