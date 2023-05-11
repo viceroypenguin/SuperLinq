@@ -18,4 +18,8 @@ public static partial class SuperEnumerable
 			_ => null
 		};
 #endif
+
+	private static int Max(int val1, int val2) => Math.Max(val1, val2);
+	private static int Max(int val1, int val2, int val3) => Math.Max(val1, Math.Max(val2, val3));
+	private static int Max(int val1, int val2, int val3, int val4) => Math.Max(Math.Max(val1, val2), Math.Max(val3, val4));
 }
