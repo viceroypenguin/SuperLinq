@@ -89,7 +89,7 @@ public static partial class SuperEnumerable
 		return CopyTo(source, array, 0);
 	}
 
-	private static int CopyTo<TSource>(IEnumerable<TSource> source, TSource[] array, int index)
+	internal static int CopyTo<TSource>(IEnumerable<TSource> source, TSource[] array, int index)
 	{
 		if (source is TSource[] arr)
 		{
