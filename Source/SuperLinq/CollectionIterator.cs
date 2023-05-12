@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq;
@@ -28,7 +29,17 @@ public partial class SuperEnumerable
 		public virtual bool Contains(T item) =>
 			GetEnumerable().Contains(item);
 
-		public virtual void CopyTo(T[] array, int arrayIndex) =>
-			GetEnumerable().CopyTo(array, arrayIndex);
+		public virtual void CopyTo(T[] array, int arrayIndex)
+		{
+			Guard.IsNotNull(array);
+			Guard.IsGreaterThanOrEqualTo(arrayIndex, 0);
+
+			if (Count + arrayIndex > array.Length)
+				ThrowHelper.ThrowArgumentException(nameof(array), "Destination is not long enough.");
+
+			var i = arrayIndex;
+			foreach (var el in GetEnumerable())
+				array[i++] = el;
+		}
 	}
 }
