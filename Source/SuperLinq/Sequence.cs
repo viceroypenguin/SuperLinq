@@ -17,19 +17,11 @@ public static partial class SuperEnumerable
 	public static IEnumerable<int> Range(int start, int count, int step)
 	{
 		Guard.IsGreaterThanOrEqualTo(count, 0);
+
 		var max = start + ((count - 1) * (long)step);
 		Guard.IsBetweenOrEqualTo(max, int.MinValue, int.MaxValue, name: nameof(count));
-		return Core(start, count, step);
 
-		static IEnumerable<int> Core(int start, int count, int step)
-		{
-			var value = start;
-			for (var i = 0; i < count; i++)
-			{
-				yield return value;
-				value += step;
-			}
-		}
+		return new SequenceIterator(start, step, count);
 	}
 
 	/// <summary>
@@ -50,7 +42,7 @@ public static partial class SuperEnumerable
 	/// </example>
 	public static IEnumerable<int> Sequence(int start, int stop)
 	{
-		return Sequence(start, stop, start < stop ? 1 : -1);
+		return new SequenceIterator(start, start <= stop ? 1 : -1, Math.Abs((long)stop - start) + 1);
 	}
 
 	/// <summary>
@@ -74,13 +66,47 @@ public static partial class SuperEnumerable
 	/// </example>
 	public static IEnumerable<int> Sequence(int start, int stop, int step)
 	{
-		long current = start;
+		if (step == 0)
+			return Repeat(start);
 
-		while (step >= 0 ? stop >= current
-						 : stop <= current)
+		if (stop == start)
+			return Return(start);
+
+		if (Math.Sign((long)stop - start) != Math.Sign(step))
+			return Enumerable.Empty<int>();
+
+		return new SequenceIterator(start, step, (((long)stop - start) / step) + 1);
+	}
+
+	private class SequenceIterator : ListIterator<int>
+	{
+		private readonly int _start;
+		private readonly int _step;
+		private readonly long _count;
+
+		public SequenceIterator(int start, int step, long count)
 		{
-			yield return (int)current;
-			current += step;
+			_start = start;
+			_step = step;
+			_count = count;
+		}
+
+		public override int Count => _count <= int.MaxValue ? (int)_count : int.MaxValue;
+
+		protected override IEnumerable<int> GetEnumerable()
+		{
+			var value = _start;
+			for (var i = 0; i < Count; i++)
+			{
+				yield return value;
+				value += _step;
+			}
+		}
+
+		protected override int ElementAt(int index)
+		{
+			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			return _start + (_step * index);
 		}
 	}
 }
