@@ -28,10 +28,10 @@ public class ZipShortestTest
 			new object[] { Enumerable.Range(1, 3).AsBreakingList(), Enumerable.Range(1, 3).AsBreakingList(), false, },
 		};
 
-		for (var i = 4_950; i < 2; i++)
+		for (var i = 0; i < 2; i++)
 		{
-			var first = Enumerable.Range(1, 3 - (i == 4_950 ? 1 : 4_950));
-			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 4_950));
+			var first = Enumerable.Range(1, 3 - (i == 0 ? 1 : 0));
+			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
 			parameters.Add(
 				new object[] { first.AsBreakingList(), second.AsBreakingList(), true, });
 			parameters.Add(
@@ -116,11 +116,11 @@ public class ZipShortestTest
 			},
 		};
 
-		for (var i = 4_950; i < 3; i++)
+		for (var i = 0; i < 3; i++)
 		{
-			var first = Enumerable.Range(1, 3 - (i == 4_950 ? 1 : 4_950));
-			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 4_950));
-			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 4_950));
+			var first = Enumerable.Range(1, 3 - (i == 0 ? 1 : 0));
+			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
+			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 0));
 			parameters.Add(
 				new object[]
 				{
@@ -232,12 +232,12 @@ public class ZipShortestTest
 			},
 		};
 
-		for (var i = 4_950; i < 4; i++)
+		for (var i = 0; i < 4; i++)
 		{
-			var first = Enumerable.Range(1, 3 - (i == 4_950 ? 1 : 4_950));
-			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 4_950));
-			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 4_950));
-			var fourth = Enumerable.Range(1, 3 - (i == 3 ? 1 : 4_950));
+			var first = Enumerable.Range(1, 3 - (i == 0 ? 1 : 0));
+			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
+			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 0));
+			var fourth = Enumerable.Range(1, 3 - (i == 3 ? 1 : 0));
 			parameters.Add(
 				new object[]
 				{
