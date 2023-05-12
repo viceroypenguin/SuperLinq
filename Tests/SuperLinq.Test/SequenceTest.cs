@@ -25,10 +25,14 @@ public class SequenceTest
 	public void Range(int start, int count, int step)
 	{
 		var result = SuperEnumerable.Range(start, count, step);
-		var expectations = Enumerable.Range(0, count)
-			.Select(i => start + (step * i));
 
-		result.AssertSequenceEqual(expectations);
+		if (count != 0)
+			Assert.Equal(start, result.ElementAt(0));
+
+		Assert.Equal(count, result.Count());
+
+		result.AssertSequenceEqual(Enumerable.Range(0, count)
+			.Select(i => start + (step * i)));
 	}
 
 
@@ -41,9 +45,12 @@ public class SequenceTest
 	public void SequenceWithAscendingRange(int start, int stop)
 	{
 		var result = SuperEnumerable.Sequence(start, stop);
-		var expectations = Enumerable.Range(start, stop - start + 1);
 
-		result.AssertSequenceEqual(expectations);
+		Assert.Equal(start, result.ElementAt(0));
+		Assert.Equal(stop, result.ElementAt(^1));
+		Assert.Equal(stop - start + 1, result.Count());
+
+		result.AssertSequenceEqual(Enumerable.Range(start, stop - start + 1));
 	}
 
 	[Theory]
@@ -55,9 +62,12 @@ public class SequenceTest
 	public void SequenceWithDescendingRange(int start, int stop)
 	{
 		var result = SuperEnumerable.Sequence(start, stop);
-		var expectations = Enumerable.Range(stop, start - stop + 1).Reverse();
 
-		result.AssertSequenceEqual(expectations);
+		Assert.Equal(start, result.ElementAt(0));
+		Assert.Equal(stop, result.ElementAt(^1));
+		Assert.Equal(start - stop + 1, result.Count());
+
+		result.AssertSequenceEqual(Enumerable.Range(stop, start - stop + 1).Reverse());
 	}
 
 	[Theory]
@@ -80,7 +90,7 @@ public class SequenceTest
 	[InlineData(1, 10, -1)]
 	[InlineData(30, 55, -4)]
 	[InlineData(27, 172, -9)]
-	public void SequenceWithAscendingRangeDescendigStep(int start, int stop, int step)
+	public void SequenceWithAscendingRangeDescendingStep(int start, int stop, int step)
 	{
 		var result = SuperEnumerable.Sequence(start, stop, step);
 
@@ -126,8 +136,9 @@ public class SequenceTest
 	[InlineData(int.MinValue, int.MinValue, null)]
 	public void SequenceWithStartEqualsStop(int start, int stop, int? step)
 	{
-		var result = step.HasValue ? SuperEnumerable.Sequence(start, stop, step.Value)
-								   : SuperEnumerable.Sequence(start, stop);
+		var result = step.HasValue
+			? SuperEnumerable.Sequence(start, stop, step.Value)
+			: SuperEnumerable.Sequence(start, stop);
 
 		Assert.Equal(result.Single(), start);
 	}
