@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -17,6 +19,9 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(source);
 		Guard.IsGreaterThanOrEqualTo(size, 1);
+
+		if (source is IList<TSource> list)
+			return new WindowIterator<TSource>(list, size);
 
 		return Core(source, size);
 
@@ -47,6 +52,56 @@ public static partial class SuperEnumerable
 			}
 
 			yield return window;
+		}
+	}
+
+	private sealed class WindowIterator<T> : ListIterator<IList<T>>
+	{
+		private readonly IList<T> _source;
+		private readonly int _size;
+
+		public WindowIterator(IList<T> source, int size)
+		{
+			_source = source;
+			_size = size;
+		}
+
+		public override int Count => Math.Max(_source.Count - _size + 1, 0);
+
+		protected override IEnumerable<IList<T>> GetEnumerable()
+		{
+			if (Count < _size)
+				yield break;
+
+			var window = new T[_size];
+
+			for (var i = 0; i < _size; i++)
+				window[i] = _source[i];
+
+			var count = (uint)_source.Count;
+			for (var i = _size; i < count; i++)
+			{
+				var newWindow = new T[_size];
+				window.AsSpan()[1..].CopyTo(newWindow);
+				newWindow[^1] = _source[i];
+
+				yield return window;
+				window = newWindow;
+			}
+
+			yield return window;
+		}
+
+		protected override IList<T> ElementAt(int index)
+		{
+			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+
+			var arr = new T[_size];
+			var max = (uint)(index + _size);
+			for (int i = 0, j = index; i < _size && j < max; i++, j++)
+				arr[i] = _source[j];
+
+			return arr;
 		}
 	}
 }
