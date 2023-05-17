@@ -82,7 +82,7 @@ public static partial class SuperEnumerable
 
 			try
 			{
-				while (stack.Any())
+				while (stack.Count != 0)
 				{
 					e = stack.Pop();
 
