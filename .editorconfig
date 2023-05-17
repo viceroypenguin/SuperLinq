@@ -18,6 +18,7 @@ indent_size = 2
 # Code files
 [*.cs]
 indent_size = 4
+tab_width = 4
 charset = utf-8-bom
 
 ## Dotnet code style settings:
@@ -228,6 +229,9 @@ dotnet_diagnostic.CA2000.severity = error               # CA2000: Dispose object
 # Overly strict checks
 dotnet_diagnostic.CA2007.severity = none                # CA2007: Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA5394.severity = none                # CA5394: Random is an insecure random number generator. Use cryptographically secure random number generators when randomness is required for security.
+
+# False Positive
+dotnet_diagnostic.IDE0251.severity = none               # IDE0251: Make member readonly
 
 # Public API Documentation
 dotnet_diagnostic.RS0016.severity = error				# RS0016: Add public types and members to the declared API
