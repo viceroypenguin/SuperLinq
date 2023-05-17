@@ -13,8 +13,8 @@ internal static class SequenceReader
 }
 
 /// <summary>
-/// Adds reader semantics to a sequence where <see cref="IAsyncEnumerable{T}.MoveNext"/>
-/// and <see cref="IAsyncEnumerable{T}.Current"/> are rolled into a single
+/// Adds reader semantics to a sequence where <see cref="IAsyncEnumerator{T}.MoveNextAsync"/>
+/// and <see cref="IAsyncEnumerator{T}.Current"/> are rolled into a single
 /// "read" operation.
 /// </summary>
 /// <typeparam name="T">Type of elements to read.</typeparam>

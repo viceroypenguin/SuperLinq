@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace Test.Async;
+﻿namespace Test.Async;
 
 public class AmbTest
 {

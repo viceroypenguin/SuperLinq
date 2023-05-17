@@ -13,9 +13,8 @@ internal static class SequenceReader
 }
 
 /// <summary>
-/// Adds reader semantics to a sequence where <see cref="IEnumerator{T}.MoveNext"/>
-/// and <see cref="IEnumerator{T}.Current"/> are rolled into a single
-/// "read" operation.
+/// Adds reader semantics to a sequence where <see cref="System.Collections.IEnumerator.MoveNext"/> and <see
+/// cref="IEnumerator{T}.Current"/> are rolled into a single "read" operation.
 /// </summary>
 /// <typeparam name="T">Type of elements to read.</typeparam>
 internal sealed class SequenceReader<T> : IDisposable
