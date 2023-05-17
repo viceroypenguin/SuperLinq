@@ -33,8 +33,10 @@ internal static partial class TestExtensions
 	{
 		if (actual is ICollection<T> coll)
 		{
-			Assert.Equal(expected.Length, coll.Count);
-			Assert.Equal(expected, coll.ToArray());
+			var arr = new T[expected.Length];
+			var cnt = SuperEnumerable.CopyTo(actual, arr);
+			Assert.Equal(expected.Length, cnt);
+			Assert.Equal(expected, arr);
 		}
 		else
 		{
