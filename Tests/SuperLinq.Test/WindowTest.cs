@@ -3,7 +3,7 @@
 /// <summary>
 /// Verify the behavior of the Window operator
 /// </summary>
-public class WindowTests
+public partial class WindowTests
 {
 	/// <summary>
 	/// Verify that Window behaves in a lazy manner
@@ -12,9 +12,6 @@ public class WindowTests
 	public void TestWindowIsLazy()
 	{
 		_ = new BreakingSequence<int>().Window(1);
-		_ = new BreakingSequence<int>().Window(1, BreakingFunc.Of<IReadOnlyList<int>, int>());
-		_ = new BreakingSequence<int>().Window(new int[3], BreakingFunc.Of<IReadOnlyList<int>, int>());
-		_ = new BreakingSequence<int>().Window(new int[3], 1, BreakingFunc.Of<IReadOnlyList<int>, int>());
 	}
 
 	/// <summary>
@@ -25,12 +22,6 @@ public class WindowTests
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Window(-5));
-
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new BreakingSequence<int>().Window(Array.Empty<int>(), -5, SuperEnumerable.Identity));
-
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new BreakingSequence<int>().Window(-5, SuperEnumerable.Identity));
 	}
 
 	[Fact]
@@ -91,15 +82,6 @@ public class WindowTests
 		Assert.Empty(result);
 	}
 
-	[Fact]
-	public void TestWindowBufferEmptySequence()
-	{
-		using var sequence = Seq<int>().AsTestingSequence();
-
-		var result = sequence.Window(5, SuperEnumerable.Identity);
-		Assert.Empty(result);
-	}
-
 	/// <summary>
 	/// Verify that decomposing a sequence into windows of a single item
 	/// degenerates to the original sequence.
@@ -118,20 +100,6 @@ public class WindowTests
 			Assert.Equal(SuperEnumerable.Return(expected), actual);
 	}
 
-	[Fact]
-	public void TestWindowBufferOfSingleElement()
-	{
-		using var sequence = Enumerable.Range(0, 100).AsTestingSequence();
-
-		var result = sequence.Window(1, l => l[0]).ToList();
-
-		// number of windows should be equal to the source sequence length
-		Assert.Equal(100, result.Count);
-		// each window should contain single item consistent of element at that offset
-		foreach (var (actual, expected) in result.Zip(Enumerable.Range(0, 100)))
-			Assert.Equal(expected, actual);
-	}
-
 	/// <summary>
 	/// Verify that asking for a window large than the source sequence results
 	/// in a empty sequence.
@@ -142,18 +110,6 @@ public class WindowTests
 		using var sequence = Enumerable.Range(0, 10).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
 
 		var result = sequence.Window(11).ToList();
-
-		// there should only be one window whose contents is the same
-		// as the source sequence
-		Assert.Empty(result);
-	}
-
-	[Fact]
-	public void TestWindowBufferLargerThanSequence()
-	{
-		using var sequence = Enumerable.Range(0, 10).AsTestingSequence(TestingSequence.Options.AllowRepeatedMoveNexts);
-
-		var result = sequence.Window(11, l => l.Sum());
 
 		// there should only be one window whose contents is the same
 		// as the source sequence
@@ -177,36 +133,5 @@ public class WindowTests
 		var index = 0;
 		foreach (var window in result)
 			Assert.Equal(Enumerable.Range(0, 100).Skip(index++).Take(33), window);
-	}
-
-	[Fact]
-	public void TestWindowBufferSmallerThanSequence()
-	{
-		using var sequence = Enumerable.Range(0, 100).AsTestingSequence();
-
-		var result = sequence.Window(33, l => l.Sum()).ToList();
-
-		// ensure that the number of windows is correct
-		Assert.Equal(100 - 33 + 1, result.Count);
-		// ensure each window contains the correct set of items
-		var index = 0;
-		foreach (var window in result)
-			Assert.Equal(Enumerable.Range(0, 100).Skip(index++).Take(33).Sum(), window);
-	}
-
-	/// <summary>
-	/// Verify that later windows do not modify any of the previous ones.
-	/// </summary>
-	[Fact]
-	public void TestWindowWindowsImmutability()
-	{
-		using var windows = Enumerable.Range(1, 5).Window(2).AsTestingSequence();
-
-		using var reader = windows.ToArray().Read();
-		reader.Read().AssertSequenceEqual(1, 2);
-		reader.Read().AssertSequenceEqual(2, 3);
-		reader.Read().AssertSequenceEqual(3, 4);
-		reader.Read().AssertSequenceEqual(4, 5);
-		reader.ReadEnd();
 	}
 }

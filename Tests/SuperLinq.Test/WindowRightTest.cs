@@ -1,14 +1,11 @@
 ﻿namespace Test;
 
-public class WindowRightTest
+public partial class WindowRightTest
 {
 	[Fact]
 	public void WindowRightIsLazy()
 	{
 		_ = new BreakingSequence<int>().WindowRight(1);
-		_ = new BreakingSequence<int>().WindowRight(1, BreakingFunc.Of<IReadOnlyList<int>, int>());
-		_ = new BreakingSequence<int>().WindowRight(new int[3], BreakingFunc.Of<IReadOnlyList<int>, int>());
-		_ = new BreakingSequence<int>().WindowRight(new int[3], 1, BreakingFunc.Of<IReadOnlyList<int>, int>());
 	}
 
 	[Fact]
@@ -18,12 +15,6 @@ public class WindowRightTest
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			sequence.WindowRight(-5));
-
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			sequence.WindowRight(Array.Empty<int>(), -5, SuperEnumerable.Identity));
-
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			sequence.WindowRight(-5, SuperEnumerable.Identity));
 	}
 
 	[Fact]
@@ -84,15 +75,6 @@ public class WindowRightTest
 		Assert.Empty(result);
 	}
 
-	[Fact]
-	public void WindowRightBufferEmptySequence()
-	{
-		using var sequence = Seq<int>().AsTestingSequence();
-
-		var result = sequence.WindowRight(5, SuperEnumerable.Identity);
-		Assert.Empty(result);
-	}
-
 	/// <summary>
 	/// Verify that decomposing a sequence into windows of a single item
 	/// degenerates to the original sequence.
@@ -111,19 +93,6 @@ public class WindowRightTest
 	}
 
 	[Fact]
-	public void WindowRightBufferSingleElement()
-	{
-		using var xs = Enumerable.Range(1, 100).AsTestingSequence();
-		var result = xs.WindowRight(1, l => l[0]).ToList();
-
-		// number of windows should be equal to the source sequence length
-		Assert.Equal(100, result.Count);
-		// each window should contain single item consistent of element at that offset
-		foreach (var (actual, expected) in result.Zip(Enumerable.Range(1, 100)))
-			Assert.Equal(expected, actual);
-	}
-
-	[Fact]
 	public void WindowRightWithWindowSizeLargerThanSequence()
 	{
 		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
@@ -138,20 +107,6 @@ public class WindowRightTest
 	}
 
 	[Fact]
-	public void WindowRightBufferWithWindowSizeLargerThanSequence()
-	{
-		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
-
-		using var reader = sequence.WindowRight(10, a => string.Join("", a)).Read();
-		Assert.Equal("1", reader.Read());
-		Assert.Equal("12", reader.Read());
-		Assert.Equal("123", reader.Read());
-		Assert.Equal("1234", reader.Read());
-		Assert.Equal("12345", reader.Read());
-		reader.ReadEnd();
-	}
-
-	[Fact]
 	public void WindowRightWithWindowSizeSmallerThanSequence()
 	{
 		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
@@ -162,20 +117,6 @@ public class WindowRightTest
 		reader.Read().AssertSequenceEqual(1, 2, 3);
 		reader.Read().AssertSequenceEqual(2, 3, 4);
 		reader.Read().AssertSequenceEqual(3, 4, 5);
-		reader.ReadEnd();
-	}
-
-	[Fact]
-	public void WindowRightBufferWithWindowSizeSmallerThanSequence()
-	{
-		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
-
-		using var reader = sequence.WindowRight(3, a => string.Join("", a)).Read();
-		Assert.Equal("1", reader.Read());
-		Assert.Equal("12", reader.Read());
-		Assert.Equal("123", reader.Read());
-		Assert.Equal("234", reader.Read());
-		Assert.Equal("345", reader.Read());
 		reader.ReadEnd();
 	}
 }
