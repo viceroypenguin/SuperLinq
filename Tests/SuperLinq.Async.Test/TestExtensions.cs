@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Diagnostics;
-
-namespace Test.Async;
+﻿namespace Test.Async;
 
 internal static partial class TestExtensions
 {

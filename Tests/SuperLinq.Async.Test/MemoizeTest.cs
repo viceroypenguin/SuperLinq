@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Reflection.PortableExecutable;
+﻿using System.Collections;
 using CommunityToolkit.Diagnostics;
 
 namespace Test.Async;

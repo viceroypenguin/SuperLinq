@@ -1,7 +1,13 @@
 ﻿namespace SuperLinq.Generator;
 
+/// <summary>
+/// int->string translations of different types.
+/// </summary>
 public record ArgumentNames(string[] Arity, string[] Ordinals, string[] Cardinals)
 {
+	/// <summary>
+	/// int->string translations of different types.
+	/// </summary>
 	public static ArgumentNames Instance { get; } = new(
 		Arity: new[]
 		{

@@ -74,6 +74,7 @@ public static partial class SuperEnumerable
         }
 
         public override int Count => Min(_list1.Count, _list2.Count);
+
         protected override IEnumerable<TResult> GetEnumerable()
         {
             var cnt = (uint)Count;
@@ -170,6 +171,7 @@ public static partial class SuperEnumerable
         }
 
         public override int Count => Min(_list1.Count, _list2.Count, _list3.Count);
+
         protected override IEnumerable<TResult> GetEnumerable()
         {
             var cnt = (uint)Count;
@@ -274,6 +276,7 @@ public static partial class SuperEnumerable
         }
 
         public override int Count => Min(_list1.Count, _list2.Count, _list3.Count, _list4.Count);
+
         protected override IEnumerable<TResult> GetEnumerable()
         {
             var cnt = (uint)Count;
