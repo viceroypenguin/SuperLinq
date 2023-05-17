@@ -5,9 +5,13 @@ using Scriban;
 
 namespace SuperLinq.Generator;
 
+/// <summary>
+/// Uses source generation tools to automate the building of some operators
+/// </summary>
 [Generator]
 public class Generator : IIncrementalGenerator
 {
+	/// <inheritdoc />
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
