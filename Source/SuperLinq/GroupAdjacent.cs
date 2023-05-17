@@ -289,8 +289,8 @@ public static partial class SuperEnumerable
 		yield return resultSelector(k, members);
 	}
 
-	private static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, List<TElement> members) =>
-		new Grouping<TKey, TElement>(key, members.AsReadOnly());
+	private static Grouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, List<TElement> members) =>
+		new(key, members.AsReadOnly());
 
 	[Serializable]
 	private sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>

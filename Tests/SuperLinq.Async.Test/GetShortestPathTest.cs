@@ -29,7 +29,7 @@ public static class GetShortestPathTest
 		return map;
 	}
 
-	private static IAsyncEnumerable<T> AddTestingSequenceToList<T>(this IEnumerable<T> source, List<TestingSequence<T>> list)
+	private static TestingSequence<T> AddTestingSequenceToList<T>(this IEnumerable<T> source, List<TestingSequence<T>> list)
 	{
 		var seq = source.AsTestingSequence();
 		list.Add(seq);

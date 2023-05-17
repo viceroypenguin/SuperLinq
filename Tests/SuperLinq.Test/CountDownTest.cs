@@ -102,44 +102,44 @@ public class CountDownTest
 
 	private static class TestCollection
 	{
-		public static ICollection<T> Create<T>(
+		public static Collection<T> Create<T>(
 			ICollection<T> collection,
 			Func<IEnumerator<T>, IEnumerator<T>>? em = null)
 		{
 			return new Collection<T>(collection, em);
 		}
+	}
 
-		/// <summary>
-		/// A collection that wraps another but which also permits its
-		/// enumerator to be substituted for another.
-		/// </summary>
-		private sealed class Collection<T> : ICollection<T>
+	/// <summary>
+	/// A collection that wraps another but which also permits its
+	/// enumerator to be substituted for another.
+	/// </summary>
+	private sealed class Collection<T> : ICollection<T>
+	{
+		private readonly Func<IEnumerator<T>, IEnumerator<T>> _em;
+		private readonly ICollection<T> _collection;
+
+		public Collection(
+			ICollection<T> collection,
+			Func<IEnumerator<T>, IEnumerator<T>>? em = null)
 		{
-			private readonly Func<IEnumerator<T>, IEnumerator<T>> _em;
-			private readonly ICollection<T> _collection;
-
-			public Collection(
-				ICollection<T> collection,
-				Func<IEnumerator<T>, IEnumerator<T>>? em = null)
-			{
-				_collection = collection ?? ThrowHelper.ThrowArgumentNullException<ICollection<T>>(nameof(collection));
-				_em = em ?? SuperEnumerable.Identity;
-			}
-
-			public int Count => _collection.Count;
-			public bool IsReadOnly => _collection.IsReadOnly;
-
-			public IEnumerator<T> GetEnumerator() =>
-				_em(_collection.GetEnumerator());
-
-			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-			public bool Contains(T item) => _collection.Contains(item);
-			public void CopyTo(T[] array, int arrayIndex) => _collection.CopyTo(array, arrayIndex);
-
-			public void Add(T item) => throw new NotImplementedException();
-			public void Clear() => throw new NotImplementedException();
-			public bool Remove(T item) => throw new NotImplementedException();
+			_collection = collection ?? ThrowHelper.ThrowArgumentNullException<ICollection<T>>(nameof(collection));
+			_em = em ?? SuperEnumerable.Identity;
 		}
+
+		public int Count => _collection.Count;
+		public bool IsReadOnly => _collection.IsReadOnly;
+
+		public IEnumerator<T> GetEnumerator() =>
+			_em(_collection.GetEnumerator());
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		public bool Contains(T item) => _collection.Contains(item);
+		public void CopyTo(T[] array, int arrayIndex) => _collection.CopyTo(array, arrayIndex);
+
+		public void Add(T item) => throw new NotImplementedException();
+		public void Clear() => throw new NotImplementedException();
+		public bool Remove(T item) => throw new NotImplementedException();
 	}
 }
