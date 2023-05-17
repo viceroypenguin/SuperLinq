@@ -31,10 +31,12 @@ internal static partial class TestExtensions
 	/// </summary>
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected)
 	{
-		if (actual is ICollection<T> coll)
+		if (actual is ICollection<T>)
 		{
-			Assert.Equal(expected.Length, coll.Count);
-			Assert.Equal(expected, coll.ToArray());
+			var arr = new T[expected.Length];
+			var cnt = SuperEnumerable.CopyTo(actual, arr);
+			Assert.Equal(expected.Length, cnt);
+			Assert.Equal(expected, arr);
 		}
 		else
 		{
