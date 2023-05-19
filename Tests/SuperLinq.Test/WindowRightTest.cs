@@ -17,106 +17,135 @@ public partial class WindowRightTest
 			sequence.WindowRight(-5));
 	}
 
-	[Fact]
-	public void WindowModifiedBeforeMoveNextDoesNotAffectNextWindow()
+	public static IEnumerable<object[]> GetThreeElementSequences() =>
+		Enumerable.Range(0, 3)
+			.GetListSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetThreeElementSequences))]
+	public void WindowModifiedBeforeMoveNextDoesNotAffectNextWindow(IDisposableEnumerable<int> seq)
 	{
-		using var sequence = Enumerable.Range(0, 3).AsTestingSequence();
-		using var e = sequence.WindowRight(2).GetEnumerator();
+		using (seq)
+		{
+			using var e = seq.WindowRight(2).GetEnumerator();
 
-		_ = e.MoveNext();
-		var window1 = e.Current;
-		window1[0] = -1;
-		_ = e.MoveNext();
-		var window2 = e.Current;
+			_ = e.MoveNext();
+			var window1 = e.Current;
+			window1[0] = -1;
+			_ = e.MoveNext();
+			var window2 = e.Current;
 
-		Assert.Equal(0, window2[0]);
+			Assert.Equal(0, window2[0]);
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetThreeElementSequences))]
+	public void WindowModifiedAfterMoveNextDoesNotAffectNextWindow(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			using var e = seq.WindowRight(2).GetEnumerator();
+
+			_ = e.MoveNext();
+			var window1 = e.Current;
+			_ = e.MoveNext();
+			window1[0] = -1;
+			var window2 = e.Current;
+
+			Assert.Equal(0, window2[0]);
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetThreeElementSequences))]
+	public void WindowModifiedDoesNotAffectPreviousWindow(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			using var e = seq.WindowRight(2).GetEnumerator();
+
+			_ = e.MoveNext();
+			var window1 = e.Current;
+			_ = e.MoveNext();
+			var window2 = e.Current;
+			window2[0] = -1;
+
+			Assert.Equal(0, window1[0]);
+		}
+	}
+
+	public static IEnumerable<object[]> GetEmptySequences() =>
+		Enumerable.Empty<int>()
+			.GetListSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetEmptySequences))]
+	public void WindowRightEmptySequence(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.WindowRight(5);
+			result.AssertSequenceEqual();
+		}
+	}
+
+	public static IEnumerable<object[]> GetHundredElementSequences() =>
+		Enumerable.Range(0, 100)
+			.GetListSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetHundredElementSequences))]
+	public void WindowRightOfSingleElement(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.WindowRight(1);
+
+			foreach (var (actual, expected) in result.Zip(Enumerable.Range(0, 100)))
+				Assert.Equal(SuperEnumerable.Return(expected), actual);
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetHundredElementSequences))]
+	public void WindowRightWithWindowSizeLargerThanSequence(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.WindowRight(10);
+			result.AssertSequenceEqual(
+				Enumerable.Range(0, 10)
+					.Select(x => Enumerable.Range(0, x + 1))
+					.Concat(Enumerable.Range(1, 90)
+						.Select(x => Enumerable.Range(x, 10))));
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetHundredElementSequences))]
+	public void WindowRightWithWindowSizeSmallerThanSequence(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.WindowRight(110);
+			result.AssertSequenceEqual(
+				Enumerable.Range(0, 100)
+					.Select(i => Enumerable.Range(0, i + 1)));
+		}
 	}
 
 	[Fact]
-	public void WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
+	public void WindowRightListBehavior()
 	{
-		using var sequence = Enumerable.Range(0, 3).AsTestingSequence();
-		using var e = sequence.WindowRight(2).GetEnumerator();
+		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
-		_ = e.MoveNext();
-		var window1 = e.Current;
-		_ = e.MoveNext();
-		window1[0] = -1;
-		var window2 = e.Current;
-
-		Assert.Equal(0, window2[0]);
-	}
-
-	[Fact]
-	public void WindowModifiedDoesNotAffectPreviousWindow()
-	{
-		using var sequence = Enumerable.Range(0, 3).AsTestingSequence();
-		using var e = sequence.WindowRight(2).GetEnumerator();
-
-		_ = e.MoveNext();
-		var window1 = e.Current;
-		_ = e.MoveNext();
-		var window2 = e.Current;
-		window2[0] = -1;
-
-		Assert.Equal(0, window1[0]);
-	}
-
-	/// <summary>
-	/// Verify that a sliding window of an any size over an empty sequence
-	/// is an empty sequence
-	/// </summary>
-	[Fact]
-	public void WindowRightEmptySequence()
-	{
-		using var sequence = TestingSequence.Of<int>();
-
-		var result = sequence.WindowRight(5);
-		Assert.Empty(result);
-	}
-
-	/// <summary>
-	/// Verify that decomposing a sequence into windows of a single item
-	/// degenerates to the original sequence.
-	/// </summary>
-	[Fact]
-	public void WindowRightSingleElement()
-	{
-		using var xs = Enumerable.Range(1, 100).AsTestingSequence();
-		var result = xs.WindowRight(1).ToList();
-
-		// number of windows should be equal to the source sequence length
-		Assert.Equal(100, result.Count);
-		// each window should contain single item consistent of element at that offset
-		foreach (var (actual, expected) in result.Zip(Enumerable.Range(1, 100)))
-			Assert.Equal(SuperEnumerable.Return(expected), actual);
-	}
-
-	[Fact]
-	public void WindowRightWithWindowSizeLargerThanSequence()
-	{
-		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
-
-		using var reader = sequence.WindowRight(10).Read();
-		reader.Read().AssertSequenceEqual(1);
-		reader.Read().AssertSequenceEqual(1, 2);
-		reader.Read().AssertSequenceEqual(1, 2, 3);
-		reader.Read().AssertSequenceEqual(1, 2, 3, 4);
-		reader.Read().AssertSequenceEqual(1, 2, 3, 4, 5);
-		reader.ReadEnd();
-	}
-
-	[Fact]
-	public void WindowRightWithWindowSizeSmallerThanSequence()
-	{
-		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
-
-		using var reader = sequence.WindowRight(3).Read();
-		reader.Read().AssertSequenceEqual(1);
-		reader.Read().AssertSequenceEqual(1, 2);
-		reader.Read().AssertSequenceEqual(1, 2, 3);
-		reader.Read().AssertSequenceEqual(2, 3, 4);
-		reader.Read().AssertSequenceEqual(3, 4, 5);
-		reader.ReadEnd();
+		var result = seq.WindowRight(20);
+		Assert.Equal(10_000, result.Count());
+		Assert.Equal(Enumerable.Range(0, 10), result.ElementAt(10));
+		Assert.Equal(Enumerable.Range(9_980, 20), result.ElementAt(^1));
 	}
 }
