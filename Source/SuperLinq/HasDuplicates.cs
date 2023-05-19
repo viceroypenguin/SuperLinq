@@ -74,6 +74,15 @@ public static partial class SuperEnumerable
 		var enumeratedElements = source.TryGetCollectionCount() is { } collectionCount
 			? new HashSet<TKey>(collectionCount, comparer)
 			: new HashSet<TKey>(comparer);
-		return source.Any(element => !enumeratedElements.Add(keySelector(element)));
+
+		foreach (var element in source)
+		{
+			if (enumeratedElements.Add(keySelector(element)) is false)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
