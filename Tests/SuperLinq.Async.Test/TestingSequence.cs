@@ -10,6 +10,9 @@ internal static class TestingSequence
 	internal static TestingSequence<T> Of<T>(params T[] elements) =>
 		new(elements.ToAsyncEnumerable(), Options.None, maxEnumerations: 1);
 
+	internal static TestingSequence<T> OfWithFailure<T>(params T[] elements) =>
+		new(elements.ToAsyncEnumerable().Concat(new AsyncBreakingSequence<T>()), Options.None, maxEnumerations: 1);
+
 	internal static TestingSequence<T> Of<T>(Options options, params T[] elements) =>
 		new(elements.ToAsyncEnumerable(), options, maxEnumerations: 1);
 

@@ -11,6 +11,9 @@ internal static class TestingSequence
 	internal static TestingSequence<T> Of<T>(params T[] elements) =>
 		new(elements, Options.None, maxEnumerations: 1);
 
+	internal static TestingSequence<T> OfWithFailure<T>(params T[] elements) =>
+		new(elements.Concat(new BreakingSequence<T>()), Options.None, maxEnumerations: 1);
+
 	internal static TestingSequence<T> Of<T>(Options options, params T[] elements) =>
 		elements.AsTestingSequence(options, maxEnumerations: 1);
 

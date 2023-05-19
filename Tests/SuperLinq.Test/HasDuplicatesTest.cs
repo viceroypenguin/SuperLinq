@@ -59,11 +59,10 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Sequence_Projection_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
 	{
-		using var source = SuperEnumerable.From(() => new DummyClass("FirstElement"),
-				() => new DummyClass("DUPLICATED_STRING"),
-				() => new DummyClass("DUPLICATED_STRING"),
-				() => throw new TestException())
-			.AsTestingSequence();
+		using var source = TestingSequence.OfWithFailure(
+			new DummyClass("FirstElement"),
+			new DummyClass("DUPLICATED_STRING"),
+			new DummyClass("DUPLICATED_STRING"));
 
 		var record = await Record.ExceptionAsync(() => Task.FromResult(source.HasDuplicates(x => x.ComparableString)));
 
