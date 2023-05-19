@@ -65,7 +65,7 @@ public class HasDuplicatesTest
 	}
 
 	[Fact]
-	public async void When_Asking_For_Duplicates_On_Sequence_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
+	public async Task When_Asking_For_Duplicates_On_Sequence_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
 	{
 		var source = SuperEnumerable.From(() => "FirstElement",
 			() => "DUPLICATED_STRING",
@@ -78,7 +78,7 @@ public class HasDuplicatesTest
 	}
 
 	[Fact]
-	public async void When_Asking_For_Duplicates_On_Sequence_Projection_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
+	public async Task When_Asking_For_Duplicates_On_Sequence_Projection_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
 	{
 		var source = SuperEnumerable.From(() => new DummyClass("FirstElement"),
 			() => new DummyClass("DUPLICATED_STRING"),
