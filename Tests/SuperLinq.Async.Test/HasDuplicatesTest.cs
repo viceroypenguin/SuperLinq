@@ -5,7 +5,7 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Sequence_Without_Duplicates_Then_False_Is_Returned()
 	{
-		var asyncSequence = AsyncSuperEnumerable.From(
+		await using var asyncSequence = AsyncSuperEnumerable.From(
 			async () =>
 			{
 				await Task.Delay(100);
@@ -20,7 +20,7 @@ public class HasDuplicatesTest
 			{
 				await Task.Delay(300);
 				return "ThirdElement";
-			});
+			}).AsTestingSequence();
 
 		var hasDuplicates = await asyncSequence.HasDuplicates();
 
@@ -30,7 +30,7 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Sequence_Projection_Without_Duplicates_Then_False_Is_Returned()
 	{
-		var dummyClasses = AsyncSuperEnumerable.From(
+		await using var dummyClasses = AsyncSuperEnumerable.From(
 			async () =>
 			{
 				await Task.Delay(100);
@@ -45,7 +45,7 @@ public class HasDuplicatesTest
 			{
 				await Task.Delay(300);
 				return new DummyClass("ThirdElement");
-			});
+			}).AsTestingSequence();
 
 		var hasDuplicates = await dummyClasses.HasDuplicates(x => x.ComparableString);
 
@@ -55,7 +55,7 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Sequence_With_Duplicates_Then_True_Is_Returned()
 	{
-		var asyncSequence = AsyncSuperEnumerable.From(
+		await using var asyncSequence = AsyncSuperEnumerable.From(
 			async () =>
 			{
 				await Task.Delay(100);
@@ -75,7 +75,7 @@ public class HasDuplicatesTest
 			{
 				await Task.Delay(400);
 				return "ThirdElement";
-			});
+			}).AsTestingSequence();
 
 		var hasDuplicates = await asyncSequence.HasDuplicates();
 
@@ -85,7 +85,7 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Sequence_Projection_With_Duplicates_Then_True_Is_Returned()
 	{
-		var dummyClasses = AsyncSuperEnumerable.From(
+		await using var dummyClasses = AsyncSuperEnumerable.From(
 			async () =>
 			{
 				await Task.Delay(100);
@@ -105,7 +105,7 @@ public class HasDuplicatesTest
 			{
 				await Task.Delay(400);
 				return new DummyClass("ThirdElement");
-			});
+			}).AsTestingSequence();
 
 		var hasDuplicates = await dummyClasses.HasDuplicates(x => x.ComparableString);
 
@@ -115,7 +115,7 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Sequence_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
 	{
-		var asyncSequence = AsyncSuperEnumerable.From(
+		await using var asyncSequence = AsyncSuperEnumerable.From(
 			async () =>
 			{
 				await Task.Delay(100);
@@ -135,7 +135,7 @@ public class HasDuplicatesTest
 			{
 				await Task.Delay(400);
 				throw new TestException();
-			});
+			}).AsTestingSequence();
 
 		var record = await Record.ExceptionAsync(async () => await asyncSequence.HasDuplicates());
 
@@ -145,7 +145,7 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Sequence_Projection_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
 	{
-		var dummyClasses = AsyncSuperEnumerable.From(
+		await using var dummyClasses = AsyncSuperEnumerable.From(
 			async () =>
 			{
 				await Task.Delay(100);
@@ -165,7 +165,7 @@ public class HasDuplicatesTest
 			{
 				await Task.Delay(400);
 				throw new TestException();
-			});
+			}).AsTestingSequence();
 
 		var record = await Record.ExceptionAsync(async () => await dummyClasses.HasDuplicates(x => x.ComparableString));
 
@@ -189,7 +189,7 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Sequence_With_Custom_Always_True_Comparer_Then_True_Is_Returned()
 	{
-		var asyncSequence = AsyncSuperEnumerable.From(
+		await using var asyncSequence = AsyncSuperEnumerable.From(
 			async () =>
 			{
 				await Task.Delay(100);
@@ -204,7 +204,7 @@ public class HasDuplicatesTest
 			{
 				await Task.Delay(300);
 				return "ThirdElement";
-			});
+			}).AsTestingSequence();
 
 		var hasDuplicates = await asyncSequence.HasDuplicates(new DummyStringAlwaysTrueComparer());
 
@@ -214,7 +214,7 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Sequence_Projection_With_Custom_Always_True_Comparer_Then_True_Is_Returned()
 	{
-		var dummyClasses = AsyncSuperEnumerable.From(
+		await using var dummyClasses = AsyncSuperEnumerable.From(
 			async () =>
 			{
 				await Task.Delay(100);
@@ -229,7 +229,7 @@ public class HasDuplicatesTest
 			{
 				await Task.Delay(300);
 				return new DummyClass("ThirdElement");
-			});
+			}).AsTestingSequence();
 
 		var hasDuplicates =
 			await dummyClasses.HasDuplicates(x => x.ComparableString, new DummyStringAlwaysTrueComparer());
@@ -240,7 +240,7 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_None_Duplicates_Sequence_With_Custom_Always_True_Comparer_Then_True_Is_Returned()
 	{
-		var asyncSequence = AsyncSuperEnumerable.From(
+		await using var asyncSequence = AsyncSuperEnumerable.From(
 			async () =>
 			{
 				await Task.Delay(100);
@@ -255,7 +255,7 @@ public class HasDuplicatesTest
 			{
 				await Task.Delay(300);
 				return "ThirdElement";
-			});
+			}).AsTestingSequence();
 
 		var hasDuplicates = await asyncSequence.HasDuplicates(new DummyStringAlwaysTrueComparer());
 
@@ -265,7 +265,7 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Sequence_With_Null_Comparer_Then_Default_Comparer_Is_Used_And_False_Is_Returned()
 	{
-		var asyncSequence = AsyncSuperEnumerable.From(
+		await using var asyncSequence = AsyncSuperEnumerable.From(
 			async () =>
 			{
 				await Task.Delay(100);
@@ -280,7 +280,7 @@ public class HasDuplicatesTest
 			{
 				await Task.Delay(300);
 				return "ThirdElement";
-			});
+			}).AsTestingSequence();
 
 		var hasDuplicates = await asyncSequence.HasDuplicates(null);
 
@@ -290,7 +290,7 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Sequence_With_Custom_Always_False_Comparer_Then_False_Is_Returned()
 	{
-		var asyncSequence = AsyncSuperEnumerable.From(
+		await using var asyncSequence = AsyncSuperEnumerable.From(
 			async () =>
 			{
 				await Task.Delay(100);
@@ -305,7 +305,7 @@ public class HasDuplicatesTest
 			{
 				await Task.Delay(300);
 				return "ThirdElement";
-			});
+			}).AsTestingSequence();
 
 		var hasDuplicates = await asyncSequence.HasDuplicates(new DummyStringAlwaysFalseComparer());
 
@@ -315,7 +315,7 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Multiple_Duplicates_Sequence_With_Custom_Always_False_Comparer_Then_False_Is_Returned()
 	{
-		var asyncSequence = AsyncSuperEnumerable.From(
+		await using var asyncSequence = AsyncSuperEnumerable.From(
 			async () =>
 			{
 				await Task.Delay(100);
@@ -330,7 +330,7 @@ public class HasDuplicatesTest
 			{
 				await Task.Delay(300);
 				return "DUPLICATED_STRING";
-			});
+			}).AsTestingSequence();
 
 		var hasDuplicates = await asyncSequence.HasDuplicates(new DummyStringAlwaysFalseComparer());
 
@@ -340,7 +340,7 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Multiple_Duplicates_Sequence_Projection_With_Custom_Always_False_Comparer_Then_False_Is_Returned()
 	{
-		var asyncSequence = AsyncSuperEnumerable.From(
+		await using var asyncSequence = AsyncSuperEnumerable.From(
 			async () =>
 			{
 				await Task.Delay(100);
@@ -355,7 +355,7 @@ public class HasDuplicatesTest
 			{
 				await Task.Delay(300);
 				return new DummyClass("DUPLICATED_STRING");
-			});
+			}).AsTestingSequence();
 
 		var hasDuplicates =
 			await asyncSequence.HasDuplicates(x => x.ComparableString, new DummyStringAlwaysFalseComparer());
