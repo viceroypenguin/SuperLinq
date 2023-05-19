@@ -1,1 +1,5 @@
 #nullable enable
+static SuperLinq.Async.AsyncSuperEnumerable.HasDuplicates<T>(this System.Collections.Generic.IAsyncEnumerable<T>! source) -> System.Threading.Tasks.ValueTask<bool>
+static SuperLinq.Async.AsyncSuperEnumerable.HasDuplicates<T>(this System.Collections.Generic.IAsyncEnumerable<T>! source, System.Collections.Generic.IEqualityComparer<T>? comparer) -> System.Threading.Tasks.ValueTask<bool>
+static SuperLinq.Async.AsyncSuperEnumerable.HasDuplicates<TSource, TKey>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> System.Threading.Tasks.ValueTask<bool>
+static SuperLinq.Async.AsyncSuperEnumerable.HasDuplicates<TSource, TKey>(this System.Collections.Generic.IAsyncEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Threading.Tasks.ValueTask<bool>

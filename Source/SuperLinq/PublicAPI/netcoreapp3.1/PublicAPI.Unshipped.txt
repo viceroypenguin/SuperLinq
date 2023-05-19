@@ -1,1 +1,5 @@
 #nullable enable
+static SuperLinq.SuperEnumerable.HasDuplicates<T>(this System.Collections.Generic.IEnumerable<T>! source) -> bool
+static SuperLinq.SuperEnumerable.HasDuplicates<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Collections.Generic.IEqualityComparer<T>? comparer) -> bool
+static SuperLinq.SuperEnumerable.HasDuplicates<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> bool
+static SuperLinq.SuperEnumerable.HasDuplicates<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> bool
