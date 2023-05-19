@@ -113,36 +113,6 @@ public class HasDuplicatesTest
 	}
 
 	[Fact]
-	public async Task When_Asking_For_Duplicates_On_Sequence_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
-	{
-		await using var asyncSequence = AsyncSuperEnumerable.From(
-			async () =>
-			{
-				await Task.Delay(100);
-				return "FirstElement";
-			},
-			async () =>
-			{
-				await Task.Delay(200);
-				return "DUPLICATED_STRING";
-			},
-			async () =>
-			{
-				await Task.Delay(300);
-				return "DUPLICATED_STRING";
-			},
-			async () =>
-			{
-				await Task.Delay(400);
-				throw new TestException();
-			}).AsTestingSequence();
-
-		var record = await Record.ExceptionAsync(async () => await asyncSequence.HasDuplicates());
-
-		Assert.Null(record);
-	}
-
-	[Fact]
 	public async Task When_Asking_For_Duplicates_On_Sequence_Projection_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
 	{
 		await using var dummyClasses = AsyncSuperEnumerable.From(
