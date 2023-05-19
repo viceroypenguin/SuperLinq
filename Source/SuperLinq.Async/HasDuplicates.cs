@@ -60,7 +60,7 @@ public static partial class AsyncSuperEnumerable
 
 		await foreach (var element in source.ConfigureAwait(false))
 		{
-			if (enumeratedElements.Add(keySelector(element)) is false)
+			if (!enumeratedElements.Add(keySelector(element)))
 			{
 				return true;
 			}

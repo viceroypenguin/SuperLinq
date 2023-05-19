@@ -77,7 +77,7 @@ public static partial class SuperEnumerable
 
 		foreach (var element in source)
 		{
-			if (enumeratedElements.Add(keySelector(element)) is false)
+			if (!enumeratedElements.Add(keySelector(element)))
 			{
 				return true;
 			}
