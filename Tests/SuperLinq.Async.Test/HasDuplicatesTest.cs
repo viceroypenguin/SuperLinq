@@ -175,13 +175,15 @@ public class HasDuplicatesTest
 	[Fact]
 	public async Task When_Asking_Duplicates_Then_It_Is_Executed_Right_Away()
 	{
-		_ = await Assert.ThrowsAsync<TestException>(async () => _ = await new AsyncBreakingSequence<string>().HasDuplicates());
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
+			_ = await new AsyncBreakingSequence<string>().HasDuplicates());
 	}
 
 	[Fact]
 	public async Task When_Asking_Duplicates_On_Sequence_Projection_Then_It_Is_Executed_Right_Away()
 	{
-		_ = await Assert.ThrowsAsync<TestException>(async () => _ = await new AsyncBreakingSequence<DummyClass>().HasDuplicates(x => x.ComparableString));
+		_ = await Assert.ThrowsAsync<TestException>(async () =>
+			_ = await new AsyncBreakingSequence<DummyClass>().HasDuplicates(x => x.ComparableString));
 	}
 
 	[Fact]
@@ -229,7 +231,8 @@ public class HasDuplicatesTest
 				return new DummyClass("ThirdElement");
 			});
 
-		var hasDuplicates = await dummyClasses.HasDuplicates(x => x.ComparableString, new DummyStringAlwaysTrueComparer());
+		var hasDuplicates =
+			await dummyClasses.HasDuplicates(x => x.ComparableString, new DummyStringAlwaysTrueComparer());
 
 		Assert.True(hasDuplicates);
 	}
@@ -354,29 +357,45 @@ public class HasDuplicatesTest
 				return new DummyClass("DUPLICATED_STRING");
 			});
 
-		var hasDuplicates = await asyncSequence.HasDuplicates(x => x.ComparableString, new DummyStringAlwaysFalseComparer());
+		var hasDuplicates =
+			await asyncSequence.HasDuplicates(x => x.ComparableString, new DummyStringAlwaysFalseComparer());
 
 		Assert.False(hasDuplicates);
 	}
 
 	private sealed class DummyClass
 	{
-		public string ComparableString { get; }
+		public DummyClass(string comparableString)
+		{
+			ComparableString = comparableString;
+		}
 
-		public DummyClass(string comparableString) => ComparableString = comparableString;
+		public string ComparableString { get; }
 	}
 
 	private sealed class DummyStringAlwaysTrueComparer : IEqualityComparer<string>
 	{
-		public bool Equals(string? x, string? y) => true;
+		public bool Equals(string? x, string? y)
+		{
+			return true;
+		}
 
-		public int GetHashCode(string obj) => 0;
+		public int GetHashCode(string obj)
+		{
+			return 0;
+		}
 	}
 
 	private sealed class DummyStringAlwaysFalseComparer : IEqualityComparer<string>
 	{
-		public bool Equals(string? x, string? y) => false;
+		public bool Equals(string? x, string? y)
+		{
+			return false;
+		}
 
-		public int GetHashCode(string obj) => 0;
+		public int GetHashCode(string obj)
+		{
+			return 0;
+		}
 	}
 }

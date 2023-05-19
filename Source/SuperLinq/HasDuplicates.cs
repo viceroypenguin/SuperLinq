@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SuperLinq;
+﻿namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
