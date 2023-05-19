@@ -71,7 +71,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		var enumeratedElements = new HashSet<TKey>(comparer);
+		var enumeratedElements = source.TryGetCollectionCount() is { } collectionCount
+			? new HashSet<TKey>(collectionCount, comparer)
+			: new HashSet<TKey>(comparer);
 		return source.Any(element => !enumeratedElements.Add(keySelector(element)));
 	}
 }
