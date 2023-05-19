@@ -64,9 +64,9 @@ public class HasDuplicatesTest
 			new DummyClass("DUPLICATED_STRING"),
 			new DummyClass("DUPLICATED_STRING"));
 
-		var record = await Record.ExceptionAsync(async () => await asyncSequence.HasDuplicates(x => x.ComparableString));
+		var hasDuplicates = await asyncSequence.HasDuplicates(x => x.ComparableString);
 
-		Assert.Null(record);
+		Assert.True(hasDuplicates);
 	}
 
 	[Fact]

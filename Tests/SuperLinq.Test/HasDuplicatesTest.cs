@@ -57,16 +57,16 @@ public class HasDuplicatesTest
 	}
 
 	[Fact]
-	public async Task When_Asking_For_Duplicates_On_Sequence_Projection_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
+	public void When_Asking_For_Duplicates_On_Sequence_Projection_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
 	{
-		using var source = TestingSequence.OfWithFailure(
+		using var sequence = TestingSequence.OfWithFailure(
 			new DummyClass("FirstElement"),
 			new DummyClass("DUPLICATED_STRING"),
 			new DummyClass("DUPLICATED_STRING"));
 
-		var record = await Record.ExceptionAsync(() => Task.FromResult(source.HasDuplicates(x => x.ComparableString)));
+		var hasDuplicates = sequence.HasDuplicates(x => x.ComparableString);
 
-		Assert.Null(record);
+		Assert.True(hasDuplicates);
 	}
 
 	[Fact]
