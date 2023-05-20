@@ -11,6 +11,34 @@ public class ZipShortestTest
 	}
 
 	[Fact]
+	public void MoveNextIsNotCalledUnnecessarily3()
+	{
+		using var s1 = TestingSequence.Of(1, 2);
+		using var s2 = TestingSequence.Of(1, 2, 3);
+		using var s3 = SeqExceptionAt(3).AsTestingSequence();
+
+		// `TestException` from `BreakingFunc` should not be thrown
+		s1.ZipShortest(s2, s3).Consume();
+	}
+
+	[Fact]
+	public void MoveNextIsNotCalledUnnecessarily4()
+	{
+		using var s1 = TestingSequence.Of(1, 2);
+		using var s2 = TestingSequence.Of(1, 2, 3);
+		using var s3 = SuperEnumerable
+			.From(
+				() => 1,
+				() => 2,
+				BreakingFunc.Of<int>())
+			.AsTestingSequence();
+		using var s4 = TestingSequence.Of(1, 2, 3);
+
+		// `TestException` from `BreakingFunc` should not be thrown
+		s1.ZipShortest(s2, s3, s4).Consume();
+	}
+
+	[Fact]
 	public void TwoParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		using var s1 = TestingSequence.Of(1, 2);

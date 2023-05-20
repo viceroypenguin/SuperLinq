@@ -47,6 +47,18 @@ public static partial class SuperEnumerable
 
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
 
+		if (
+			{{~ for $j in 1..$i ~}}
+			{{ $ordinals[$j] }} is global::System.Collections.Generic.IList<T{{ $cardinals[$j] }}> list{{ $j }}{{ if !for.last }}&&{{ else }}){{ end }}
+			{{~ end ~}}
+		{
+			return new EquiZipIterator<{{ for $j in 1..$i }}T{{ $cardinals[$j] }}, {{ end }}TResult>(
+				{{~ for $j in 1..$i ~}}
+				list{{ $j }},
+				{{~ end ~}}
+				resultSelector);
+		}
+
 		return Core(
 			{{~ for $j in 1..$i ~}}
 			{{ $ordinals[$j] }},
@@ -121,5 +133,65 @@ public static partial class SuperEnumerable
 			global::System.Collections.Generic.IEnumerable<T{{ $cardinals[$j] }}> {{ $ordinals[$j] }}{{ if !for.last }},{{ end }}
 			{{~ end ~}}) =>
 		EquiZip({{~ for $j in 1..$i ~}}{{ $ordinals[$j] }}, {{ end }}global::System.ValueTuple.Create);
+
+	private class EquiZipIterator<{{ for $j in 1..$i }}T{{ $j }}, {{ end }}TResult> : ListIterator<TResult>
+	{
+		{{~ for $j in 1..$i ~}}
+		private readonly global::System.Collections.Generic.IList<T{{ $j }}> _list{{ $j }};
+		{{~ end ~}}
+		private readonly global::System.Func<{{ for $j in 1..$i }}T{{ $j }}, {{ end }}TResult> _resultSelector;
+		
+		public EquiZipIterator(
+			{{~ for $j in 1..$i ~}}
+			global::System.Collections.Generic.IList<T{{ $j }}> {{ $ordinals[$j] }},
+			{{~ end ~}}
+			global::System.Func<{{ for $j in 1..$i }}T{{ $j }}, {{ end }}TResult> resultSelector)
+		{
+			{{~ for $j in 1..$i ~}}
+			_list{{ $j }} = {{ $ordinals[$j] }};
+			{{~ end ~}}
+			_resultSelector	= resultSelector;
+		}
+
+		public override int Count
+		{
+			get
+			{
+				var count = _list1.Count;
+
+				{{~ for $j in 2..$i ~}}
+				if (_list{{ $j }}.Count != count)
+				{
+					global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException(
+						(count < _list{{ $j }}.Count ? "First" : "{{ $cardinals[$j] }}") + " sequence too short.");
+				}
+				{{~ end ~}}
+
+				return count;
+			}
+		}
+
+		protected override IEnumerable<TResult> GetEnumerable()
+		{
+			var cnt = (uint)Count;
+			for (var i = 0; i < cnt; i++)
+			{
+				yield return _resultSelector(
+					{{~ for $j in 1..$i ~}}
+					_list{{ $j }}[i]{{ if !for.last }}, {{ end }}
+					{{~ end ~}});
+			}
+		}
+
+		protected override TResult ElementAt(int index)
+		{
+			global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+
+			return _resultSelector(
+				{{~ for $j in 1..$i ~}}
+				_list{{ $j }}[index]{{ if !for.last }}, {{ end }}
+				{{~ end ~}});
+		}
+	}
 	{{ end ~}}
 }
