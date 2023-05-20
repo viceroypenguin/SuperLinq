@@ -61,7 +61,7 @@ public class EquiZipTest
 		using var s1 = TestingSequence.Of(1, 2);
 
 		_ = Assert.Throws<TestException>(() =>
-			s1.ZipLongest(new BreakingSequence<int>()).Consume());
+			s1.EquiZip(new BreakingSequence<int>()).Consume());
 	}
 
 	public static IEnumerable<object[]> GetTwoParamEqualSequences()
@@ -152,7 +152,7 @@ public class EquiZipTest
 		using var s2 = TestingSequence.Of(1, 2);
 
 		_ = Assert.Throws<TestException>(() =>
-			s1.ZipLongest(s2, new BreakingSequence<int>()).Consume());
+			s1.EquiZip(s2, new BreakingSequence<int>()).Consume());
 	}
 
 	public static IEnumerable<object[]> GetThreeParamEqualSequences()
@@ -194,7 +194,7 @@ public class EquiZipTest
 		using (seq2 as IDisposableEnumerable<int>)
 		using (seq3 as IDisposableEnumerable<int>)
 		{
-			var result = seq1.ZipLongest(seq2, seq3);
+			var result = seq1.EquiZip(seq2, seq3);
 			result.AssertSequenceEqual(
 				Enumerable.Range(1, 3)
 					.Select(x => (x, x, x)));
@@ -282,7 +282,7 @@ public class EquiZipTest
 		using var s3 = TestingSequence.Of(1, 2);
 
 		_ = Assert.Throws<TestException>(() =>
-			s1.ZipLongest(s2, s3, new BreakingSequence<int>()).Consume());
+			s1.EquiZip(s2, s3, new BreakingSequence<int>()).Consume());
 	}
 
 	public static IEnumerable<object[]> GetFourParamEqualSequences()
@@ -336,7 +336,7 @@ public class EquiZipTest
 		using (seq3 as IDisposableEnumerable<int>)
 		using (seq4 as IDisposableEnumerable<int>)
 		{
-			var result = seq1.ZipLongest(seq2, seq3, seq4);
+			var result = seq1.EquiZip(seq2, seq3, seq4);
 			result.AssertSequenceEqual(
 				Enumerable.Range(1, 3)
 					.Select(x => (x, x, x, x)));
@@ -400,7 +400,7 @@ public class EquiZipTest
 		using var seq3 = Enumerable.Range(0, 10_000).AsBreakingList();
 		using var seq4 = Enumerable.Range(0, 10_000).AsBreakingList();
 
-		var result = seq1.ZipLongest(seq2, seq3, seq4);
+		var result = seq1.EquiZip(seq2, seq3, seq4);
 		Assert.Equal(10_000, result.Count());
 		Assert.Equal((10, 10, 10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50, 50, 50), result.ElementAt(50));
