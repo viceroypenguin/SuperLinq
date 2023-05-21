@@ -18,6 +18,65 @@ public class BatchTest
 				.Batch(0));
 	}
 
+	public static IEnumerable<object[]> GetFourElementSequences() =>
+		Enumerable.Range(0, 4)
+			.GetListSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetFourElementSequences))]
+	public void BatchModifiedBeforeMoveNextDoesNotAffectNextBatch(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			using var e = seq.Batch(2).GetEnumerator();
+
+			_ = e.MoveNext();
+			var batch1 = e.Current;
+			batch1[1] = -1;
+			_ = e.MoveNext();
+			var batch2 = e.Current;
+
+			Assert.Equal(3, batch2[1]);
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetFourElementSequences))]
+	public void BatchModifiedAfterMoveNextDoesNotAffectNextBatch(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			using var e = seq.Batch(2).GetEnumerator();
+
+			_ = e.MoveNext();
+			var batch1 = e.Current;
+			_ = e.MoveNext();
+			batch1[1] = -1;
+			var batch2 = e.Current;
+
+			Assert.Equal(3, batch2[1]);
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetFourElementSequences))]
+	public void BatchModifiedDoesNotAffectPreviousBatch(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			using var e = seq.Batch(2).GetEnumerator();
+
+			_ = e.MoveNext();
+			var batch1 = e.Current;
+			_ = e.MoveNext();
+			var batch2 = e.Current;
+			batch2[1] = -1;
+
+			Assert.Equal(1, batch1[1]);
+		}
+	}
+
 	public static IEnumerable<object[]> GetEmptySequences() =>
 		Enumerable.Empty<int>()
 			.GetAllSequences()
