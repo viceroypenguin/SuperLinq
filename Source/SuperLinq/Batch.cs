@@ -113,9 +113,9 @@ public static partial class SuperEnumerable
 		{
 			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
 
-			var arr = new T[_size];
 			var start = index * _size;
 			var max = (uint)Math.Min(_source.Count, start + _size);
+			var arr = new T[Math.Min(_size, max - start)];
 			for (int i = 0, j = start; i < _size && j < max; i++, j++)
 				arr[i] = _source[j];
 
