@@ -2,6 +2,7 @@
 
 public class BatchTest
 {
+	#region Regular
 	[Fact]
 	public void BatchIsLazy()
 	{
@@ -17,13 +18,13 @@ public class BatchTest
 				.Batch(0));
 	}
 
-	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
-		seq
-			.GetCollectionSequences()
+	public static IEnumerable<object[]> GetEmptySequences() =>
+		Enumerable.Empty<int>()
+			.GetAllSequences()
 			.Select(x => new object[] { x });
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { })]
+	[MemberData(nameof(GetEmptySequences))]
 	public void BatchWithEmptySource(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -31,6 +32,7 @@ public class BatchTest
 	}
 
 	[Fact]
+	// branch not able to run with `BreakingList<>`
 	public void BatchWithEmptyIListProvider()
 	{
 		Enumerable.Range(0, 0)
@@ -38,30 +40,52 @@ public class BatchTest
 			.AssertSequenceEqual();
 	}
 
-	[Fact]
-	public void BatchEvenlyDivisibleSequence()
-	{
-		using var seq = Enumerable.Range(1, 9).AsTestingSequence();
+	public static IEnumerable<object[]> GetSequences() =>
+		Enumerable.Range(1, 9)
+			.GetListSequences()
+			.Select(x => new object[] { x });
 
-		var result = seq.Batch(3);
-		using var reader = result.Read();
-		reader.Read().AssertSequenceEqual(1, 2, 3);
-		reader.Read().AssertSequenceEqual(4, 5, 6);
-		reader.Read().AssertSequenceEqual(7, 8, 9);
-		reader.ReadEnd();
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void BatchEvenlyDivisibleSequence(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Batch(3);
+
+			result.AssertSequenceEqual(
+				Seq(1, 2, 3),
+				Seq(4, 5, 6),
+				Seq(7, 8, 9));
+		}
 	}
 
-	[Fact]
-	public void BatchUnevenlyDivisibleSequence()
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void BatchUnevenlyDivisibleSequence(IDisposableEnumerable<int> seq)
 	{
-		using var seq = Enumerable.Range(1, 9).AsTestingSequence();
+		using (seq)
+		{
+			var result = seq.Batch(4);
 
-		var result = seq.Batch(4);
-		using var reader = result.Read();
-		reader.Read().AssertSequenceEqual(1, 2, 3, 4);
-		reader.Read().AssertSequenceEqual(5, 6, 7, 8);
-		reader.Read().AssertSequenceEqual(9);
-		reader.ReadEnd();
+			result.AssertSequenceEqual(
+				Seq(1, 2, 3, 4),
+				Seq(5, 6, 7, 8),
+				Seq(9));
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void BatchSmallSequence(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Batch(10);
+
+			result.AssertSequenceEqual(
+				Seq(1, 2, 3, 4, 5, 6, 7, 8, 9));
+		}
 	}
 
 	[Fact]
@@ -97,6 +121,31 @@ public class BatchTest
 			() => result.AssertCount(2).Consume());
 	}
 
+	[Fact]
+	public void BatchListEvenlyDivisibleBehavior()
+	{
+		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
+
+		var result = seq.Batch(20);
+		Assert.Equal(10_000 / 20, result.Count());
+		Assert.Equal(Enumerable.Range(1_000, 20), result.ElementAt(50));
+		Assert.Equal(Enumerable.Range(9_980, 20), result.ElementAt(^1));
+	}
+
+	[Fact]
+	public void BatchListUnevenlyDivisibleBehavior()
+	{
+		using var seq = Enumerable.Range(0, 10_002).AsBreakingList();
+
+		var result = seq.Batch(20);
+		Assert.Equal((10_002 / 20) + 1, result.Count());
+		Assert.Equal(Enumerable.Range(1_000, 20), result.ElementAt(50));
+		Assert.Equal(Enumerable.Range(9_980, 20), result.ElementAt(^2));
+		Assert.Equal(Enumerable.Range(10_000, 2), result.ElementAt(^1));
+	}
+	#endregion
+
+	#region Buffered
 	[Fact]
 	public void BatchBufferedIsLazy()
 	{
@@ -184,4 +233,5 @@ public class BatchTest
 		_ = Assert.Throws<TestException>(
 			() => result.AssertCount(2).Consume());
 	}
+	#endregion
 }
