@@ -58,11 +58,12 @@ public static partial class SuperEnumerable
 			foreach (var item in source)
 			{
 				(array ??= new TSource[size])[n++] = item;
-				if (n == size)
-				{
-					yield return array;
-					n = 0;
-				}
+				if (n != size)
+					continue;
+
+				yield return array;
+				array = null;
+				n = 0;
 			}
 
 			if (n != 0)
