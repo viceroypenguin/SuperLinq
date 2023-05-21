@@ -27,6 +27,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsGreaterThanOrEqualTo(size, 1);
 
+		if (source is IList<TSource> list)
+			return new BatchIterator<TSource>(list, size);
+
 		return Core(source, size);
 
 		static IEnumerable<IList<TSource>> Core(IEnumerable<TSource> source, int size)
@@ -67,6 +70,56 @@ public static partial class SuperEnumerable
 				Array.Resize(ref array, n);
 				yield return array;
 			}
+		}
+	}
+
+	private sealed class BatchIterator<T> : ListIterator<IList<T>>
+	{
+		private readonly IList<T> _source;
+		private readonly int _size;
+
+		public BatchIterator(IList<T> source, int size)
+		{
+			_source = source;
+			_size = size;
+		}
+
+		public override int Count => ((_source.Count - 1) / _size) + 1;
+
+		protected override IEnumerable<IList<T>> GetEnumerable()
+		{
+			var sourceIndex = 0;
+			var count = (uint)_source.Count;
+			while (sourceIndex + _size - 1 < count)
+			{
+				var window = new T[_size];
+				for (var i = 0; i < _size && sourceIndex < count; sourceIndex++, i++)
+					window[i] = _source[sourceIndex];
+
+				yield return window;
+			}
+
+			if (sourceIndex < count)
+			{
+				var window = new T[count - sourceIndex];
+				for (var j = 0; sourceIndex < count; sourceIndex++, j++)
+					window[j] = _source[sourceIndex];
+
+				yield return window;
+			}
+		}
+
+		protected override IList<T> ElementAt(int index)
+		{
+			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+
+			var arr = new T[_size];
+			var start = index * _size;
+			var max = (uint)Math.Min(_source.Count, start + _size);
+			for (int i = 0, j = start; i < _size && j < max; i++, j++)
+				arr[i] = _source[j];
+
+			return arr;
 		}
 	}
 }

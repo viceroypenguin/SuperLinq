@@ -70,6 +70,14 @@ internal static partial class TestExtensions
 		yield return new BreakingList<T>(input);
 	}
 
+	internal static IEnumerable<IDisposableEnumerable<T>> GetAllSequences<T>(this IEnumerable<T> input)
+	{
+		// UI will consume one enumeration
+		yield return input.AsTestingSequence(maxEnumerations: 2);
+		yield return new BreakingCollection<T>(input);
+		yield return new BreakingList<T>(input);
+	}
+
 	internal static IDisposableEnumerable<T> ToSourceKind<T>(this IList<T> input, SourceKind sourceKind) =>
 		sourceKind switch
 		{
