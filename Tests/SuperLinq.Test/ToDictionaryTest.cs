@@ -2,7 +2,6 @@
 
 public class ToDictionaryTest
 {
-#if !NET8_0_OR_GREATER
 	[Fact]
 	public void ToDictionaryWithKeyValuePairs()
 	{
@@ -11,7 +10,7 @@ public class ToDictionaryTest
 			KeyValuePair.Create("bar", 456),
 			KeyValuePair.Create("baz", 789));
 
-		var dict = pairs.ToDictionary();
+		var dict = SuperEnumerable.ToDictionary(pairs);
 
 		Assert.Equal(123, dict["foo"]);
 		Assert.Equal(456, dict["bar"]);
@@ -26,7 +25,7 @@ public class ToDictionaryTest
 			("bar", 456),
 			("baz", 789));
 
-		var dict = pairs.ToDictionary();
+		var dict = SuperEnumerable.ToDictionary(pairs);
 
 		Assert.Equal(123, dict["foo"]);
 		Assert.Equal(456, dict["bar"]);
@@ -41,7 +40,7 @@ public class ToDictionaryTest
 			KeyValuePair.Create("bar", 456),
 			KeyValuePair.Create("baz", 789));
 
-		var dict = pairs.ToDictionary(StringComparer.OrdinalIgnoreCase);
+		var dict = SuperEnumerable.ToDictionary(pairs, StringComparer.OrdinalIgnoreCase);
 
 		Assert.Equal(123, dict["FOO"]);
 		Assert.Equal(456, dict["BAR"]);
@@ -56,11 +55,10 @@ public class ToDictionaryTest
 			("bar", 456),
 			("baz", 789));
 
-		var dict = pairs.ToDictionary(StringComparer.OrdinalIgnoreCase);
+		var dict = SuperEnumerable.ToDictionary(pairs, StringComparer.OrdinalIgnoreCase);
 
 		Assert.Equal(123, dict["FOO"]);
 		Assert.Equal(456, dict["BAR"]);
 		Assert.Equal(789, dict["BAZ"]);
 	}
-#endif
 }
