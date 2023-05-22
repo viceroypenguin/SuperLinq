@@ -1,5 +1,7 @@
 ﻿namespace Test;
 
+#pragma warning disable CS0618
+
 public class ToDictionaryTest
 {
 	[Fact]
@@ -62,3 +64,5 @@ public class ToDictionaryTest
 		Assert.Equal(789, dict["BAZ"]);
 	}
 }
+
+#pragma warning restore CS0618
