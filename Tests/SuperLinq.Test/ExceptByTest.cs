@@ -1,7 +1,5 @@
 ﻿namespace Test;
 
-#pragma warning disable CS0618
-
 public class ExceptByTest
 {
 	[Fact]
@@ -9,7 +7,7 @@ public class ExceptByTest
 	{
 		using var first = TestingSequence.Of("aaa", "bb", "c", "dddd");
 		using var second = TestingSequence.Of("xx", "y");
-		var result = SuperEnumerable.ExceptBy(first, second, x => x.Length);
+		var result = first.ExceptBy(second, x => x.Length);
 		result.AssertSequenceEqual("aaa", "dddd");
 	}
 
@@ -17,7 +15,7 @@ public class ExceptByTest
 	public void ExceptByIsLazy()
 	{
 		var bs = new BreakingSequence<string>();
-		_ = SuperEnumerable.ExceptBy(bs, bs, BreakingFunc.Of<string, int>());
+		_ = bs.ExceptBy(bs, BreakingFunc.Of<string, int>());
 	}
 
 	[Fact]
@@ -25,7 +23,7 @@ public class ExceptByTest
 	{
 		using var first = TestingSequence.Of("aaa", "bb", "c", "a", "b", "c", "dddd");
 		using var second = TestingSequence.Of("xx");
-		var result = SuperEnumerable.ExceptBy(first, second, x => x.Length);
+		var result = first.ExceptBy(second, x => x.Length);
 		result.AssertSequenceEqual("aaa", "c", "dddd");
 	}
 
@@ -34,7 +32,7 @@ public class ExceptByTest
 	{
 		using var first = TestingSequence.Of("first", "second", "third", "fourth");
 		using var second = TestingSequence.Of("FIRST", "thiRD", "FIFTH");
-		var result = SuperEnumerable.ExceptBy(first, second, word => word, StringComparer.OrdinalIgnoreCase);
+		var result = first.ExceptBy(second, StringComparer.OrdinalIgnoreCase.GetHashCode, EqualityComparer.Create<int>((x, y) => x == y));
 		result.AssertSequenceEqual("second", "fourth");
 	}
 
@@ -43,16 +41,14 @@ public class ExceptByTest
 	{
 		using var first = TestingSequence.Of("aaa", "bb", "c", "dddd");
 		using var second = TestingSequence.Of("xx", "y");
-		var result = SuperEnumerable.ExceptBy(first, second, x => x.Length, keyComparer: null);
+		var result = first.ExceptBy(second, x => x.Length, keyComparer: null);
 		result.AssertSequenceEqual("aaa", "dddd");
 	}
 
 	[Fact]
 	public void ExceptByIsLazyWithComparer()
 	{
-		var bs = new BreakingSequence<string>();
-		_ = SuperEnumerable.ExceptBy(bs, bs, BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
+		var bs = new BreakingSequence<int>();
+		_ = bs.ExceptBy(bs, BreakingFunc.Of<int, string>(), StringComparer.Ordinal);
 	}
 }
-
-#pragma warning restore CS0618 // Type or member is obsolete
