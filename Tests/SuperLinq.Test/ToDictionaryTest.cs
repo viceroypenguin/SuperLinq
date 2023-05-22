@@ -1,18 +1,18 @@
 ﻿namespace Test;
 
+#pragma warning disable CS0618
+
 public class ToDictionaryTest
 {
 	[Fact]
 	public void ToDictionaryWithKeyValuePairs()
 	{
-		var pairs = new[]
-		{
-				KeyValuePair.Create("foo", 123),
-				KeyValuePair.Create("bar", 456),
-				KeyValuePair.Create("baz", 789),
-			};
+		using var pairs = TestingSequence.Of(
+			KeyValuePair.Create("foo", 123),
+			KeyValuePair.Create("bar", 456),
+			KeyValuePair.Create("baz", 789));
 
-		var dict = pairs.ToDictionary();
+		var dict = SuperEnumerable.ToDictionary(pairs);
 
 		Assert.Equal(123, dict["foo"]);
 		Assert.Equal(456, dict["bar"]);
@@ -22,14 +22,12 @@ public class ToDictionaryTest
 	[Fact]
 	public void ToDictionaryWithCouples()
 	{
-		var pairs = new[]
-		{
-				("foo", 123),
-				("bar", 456),
-				("baz", 789),
-			};
+		using var pairs = TestingSequence.Of(
+			("foo", 123),
+			("bar", 456),
+			("baz", 789));
 
-		var dict = pairs.ToDictionary();
+		var dict = SuperEnumerable.ToDictionary(pairs);
 
 		Assert.Equal(123, dict["foo"]);
 		Assert.Equal(456, dict["bar"]);
@@ -39,14 +37,12 @@ public class ToDictionaryTest
 	[Fact]
 	public void ToDictionaryWithKeyValuePairsWithComparer()
 	{
-		var pairs = new[]
-		{
-				KeyValuePair.Create("foo", 123),
-				KeyValuePair.Create("bar", 456),
-				KeyValuePair.Create("baz", 789),
-			};
+		using var pairs = TestingSequence.Of(
+			KeyValuePair.Create("foo", 123),
+			KeyValuePair.Create("bar", 456),
+			KeyValuePair.Create("baz", 789));
 
-		var dict = pairs.ToDictionary(StringComparer.OrdinalIgnoreCase);
+		var dict = SuperEnumerable.ToDictionary(pairs, StringComparer.OrdinalIgnoreCase);
 
 		Assert.Equal(123, dict["FOO"]);
 		Assert.Equal(456, dict["BAR"]);
@@ -56,17 +52,17 @@ public class ToDictionaryTest
 	[Fact]
 	public void ToDictionaryWithCouplesWithComparer()
 	{
-		var pairs = new[]
-		{
-				("foo", 123),
-				("bar", 456),
-				("baz", 789),
-			};
+		using var pairs = TestingSequence.Of(
+			("foo", 123),
+			("bar", 456),
+			("baz", 789));
 
-		var dict = pairs.ToDictionary(StringComparer.OrdinalIgnoreCase);
+		var dict = SuperEnumerable.ToDictionary(pairs, StringComparer.OrdinalIgnoreCase);
 
 		Assert.Equal(123, dict["FOO"]);
 		Assert.Equal(456, dict["BAR"]);
 		Assert.Equal(789, dict["BAZ"]);
 	}
 }
+
+#pragma warning restore CS0618

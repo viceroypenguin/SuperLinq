@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{835F8FFA
 		Directory.Build.props = Directory.Build.props
 		license.txt = license.txt
 		README.md = README.md
+		TargetFrameworks.props = TargetFrameworks.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{8392DDDC-9D3E-4A41-A93C-1EF1503D71F9}"

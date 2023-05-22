@@ -13,11 +13,18 @@ public static partial class SuperEnumerable
 	/// A <see cref="Dictionary{TKey, TValue}"/> containing the values
 	/// mapped to their keys.
 	/// </returns>
-
+#if NET8_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+		IEnumerable<KeyValuePair<TKey, TValue>> source)
+#else
 	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
 		this IEnumerable<KeyValuePair<TKey, TValue>> source)
-		where TKey : notnull =>
-		source.ToDictionary(comparer: default);
+#endif
+		where TKey : notnull
+	{
+		return ToDictionary(source, comparer: default);
+	}
 
 	/// <summary>
 	/// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
@@ -32,10 +39,16 @@ public static partial class SuperEnumerable
 	/// A <see cref="Dictionary{TKey, TValue}"/> containing the values
 	/// mapped to their keys.
 	/// </returns>
-
+#if NET8_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+		IEnumerable<KeyValuePair<TKey, TValue>> source,
+		IEqualityComparer<TKey>? comparer)
+#else
 	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
 		this IEnumerable<KeyValuePair<TKey, TValue>> source,
 		IEqualityComparer<TKey>? comparer)
+#endif
 		where TKey : notnull
 	{
 		Guard.IsNotNull(source);
@@ -54,11 +67,18 @@ public static partial class SuperEnumerable
 	/// A <see cref="Dictionary{TKey, TValue}"/> containing the values
 	/// mapped to their keys.
 	/// </returns>
-
+#if NET8_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+		IEnumerable<(TKey Key, TValue Value)> source)
+#else
 	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
 		this IEnumerable<(TKey Key, TValue Value)> source)
-		where TKey : notnull =>
-		source.ToDictionary(comparer: default);
+#endif
+		where TKey : notnull
+	{
+		return ToDictionary(source, comparer: default);
+	}
 
 	/// <summary>
 	/// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
@@ -73,10 +93,16 @@ public static partial class SuperEnumerable
 	/// A <see cref="Dictionary{TKey, TValue}"/> containing the values
 	/// mapped to their keys.
 	/// </returns>
-
+#if NET8_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+		IEnumerable<(TKey Key, TValue Value)> source,
+		IEqualityComparer<TKey>? comparer)
+#else
 	public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
 		this IEnumerable<(TKey Key, TValue Value)> source,
 		IEqualityComparer<TKey>? comparer)
+#endif
 		where TKey : notnull
 	{
 		Guard.IsNotNull(source);

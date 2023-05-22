@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="../../TargetFrameworks.props" />
+
 	<PropertyGroup>
 		<AssemblyName>SuperLinq</AssemblyName>
 		<RootNamespace>SuperLinq</RootNamespace>
@@ -175,7 +177,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="SuperLinq.Async"/>
+		<InternalsVisibleTo Include="SuperLinq.Async" />
 	</ItemGroup>
 
 </Project>

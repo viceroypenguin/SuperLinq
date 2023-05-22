@@ -66,7 +66,12 @@ public static partial class AsyncSuperEnumerable
 
 							if (successTask == delayTask)
 							{
+#if NET8_0_OR_GREATER
+								await cts.CancelAsync();
+#else
 								cts.Cancel();
+#endif
+
 								_ = await moveNextTask.ConfigureAwait(false);
 								throw new TimeoutException("The operation has timed out.");
 							}
