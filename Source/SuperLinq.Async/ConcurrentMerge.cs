@@ -230,7 +230,11 @@ public static partial class AsyncSuperEnumerable
 				// list.Count will be non-zero iff an exception is thrown
 				if (list.Count != 0)
 				{
+#if NET8_0_OR_GREATER
+					await cts.CancelAsync();
+#else
 					cts.Cancel();
+#endif
 
 #pragma warning disable CA1031 // Do not catch general exception types
 					try
