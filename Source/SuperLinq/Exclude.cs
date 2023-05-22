@@ -20,11 +20,13 @@ public static partial class SuperEnumerable
 		Guard.IsGreaterThanOrEqualTo(startIndex, 0);
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 
-		return count switch
-		{
-			0 => sequence,
-			_ => Core(sequence, startIndex, count)
-		};
+		if (count == 0)
+			return sequence;
+
+		if (sequence is IList<T> list)
+			return new ExcludeIterator<T>(list, startIndex, count);
+
+		return Core(sequence, startIndex, count);
 
 		static IEnumerable<T> Core(IEnumerable<T> sequence, int startIndex, int count)
 		{
@@ -37,6 +39,44 @@ public static partial class SuperEnumerable
 					yield return item;
 				index++;
 			}
+		}
+	}
+
+	private sealed class ExcludeIterator<T> : ListIterator<T>
+	{
+		private readonly IList<T> _source;
+		private readonly int _startIndex;
+		private readonly int _count;
+
+		public ExcludeIterator(IList<T> source, int startIndex, int count)
+		{
+			_source = source;
+			_startIndex = startIndex;
+			_count = count;
+		}
+
+		public override int Count =>
+			_source.Count < _startIndex ? _source.Count :
+			_source.Count < _startIndex + _count ? _startIndex :
+			_source.Count - _count;
+
+		protected override IEnumerable<T> GetEnumerable()
+		{
+			var cnt = (uint)_source.Count;
+			for (var i = 0; i < cnt && i < _startIndex; i++)
+				yield return _source[i];
+
+			for (var i = _startIndex + _count; i < cnt; i++)
+				yield return _source[i];
+		}
+
+		protected override T ElementAt(int index)
+		{
+			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+
+			return index < _startIndex
+				? _source[index]
+				: _source[index + _count];
 		}
 	}
 }

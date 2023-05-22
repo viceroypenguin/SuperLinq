@@ -5,18 +5,12 @@
 /// </summary>
 public class ExcludeTests
 {
-	/// <summary>
-	/// Verify that Exclude behaves in a lazy manner
-	/// </summary>
 	[Fact]
 	public void TestExcludeIsLazy()
 	{
 		_ = new BreakingSequence<int>().Exclude(0, 10);
 	}
 
-	/// <summary>
-	/// Verify that a negative startIndex parameter results in an exception
-	/// </summary>
 	[Fact]
 	public void TestExcludeNegativeStartIndexException()
 	{
@@ -24,9 +18,6 @@ public class ExcludeTests
 			new BreakingSequence<int>().Exclude(-10, 10));
 	}
 
-	/// <summary>
-	/// Verify that a negative count parameter results in an exception
-	/// </summary>
 	[Fact]
 	public void TestExcludeNegativeCountException()
 	{
@@ -34,9 +25,6 @@ public class ExcludeTests
 			new BreakingSequence<int>().Exclude(0, -5));
 	}
 
-	/// <summary>
-	/// Verify that excluding with count equals zero returns the original source
-	/// </summary>
 	[Fact]
 	public void TestExcludeWithCountEqualsZero()
 	{
@@ -46,90 +34,127 @@ public class ExcludeTests
 		result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	/// <summary>
-	/// Verify that excluding from an empty sequence results in an empty sequence
-	/// </summary>
-	[Fact]
-	public void TestExcludeEmptySequence()
-	{
-		using var sequence = Enumerable.Empty<int>().AsTestingSequence(maxEnumerations: 3);
+	public static IEnumerable<object[]> GetIntSequences() =>
+		Enumerable.Range(1, 100)
+			.GetListSequences()
+			.Select(x => new object[] { x });
 
-		Assert.Equal(Enumerable.Empty<int>(), sequence.Exclude(0, 0));
-		// shouldn't matter how many we ask for past end
-		Assert.Equal(Enumerable.Empty<int>(), sequence.Exclude(0, 10));
-		// shouldn't matter where we start
-		Assert.Equal(Enumerable.Empty<int>(), sequence.Exclude(5, 5));
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestExcludeSequenceHead(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Exclude(0, 5);
+			result.AssertSequenceEqual(Enumerable.Range(6, 95));
+		}
 	}
 
-	/// <summary>
-	/// Verify we can exclude the beginning portion of a sequence
-	/// </summary>
-	[Fact]
-	public void TestExcludeSequenceHead()
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestExcludeSequenceTail(IDisposableEnumerable<int> seq)
 	{
-		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
-
-		var result = sequence.Exclude(0, 5);
-		result.AssertSequenceEqual(Enumerable.Range(6, 5));
+		using (seq)
+		{
+			var result = seq.Exclude(95, 10);
+			result.AssertSequenceEqual(Enumerable.Range(1, 95));
+		}
 	}
 
-	/// <summary>
-	/// Verify we can exclude the tail portion of a sequence
-	/// </summary>
-	[Fact]
-	public void TestExcludeSequenceTail()
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestExcludeSequenceMiddle(IDisposableEnumerable<int> seq)
 	{
-		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
-
-		var result = sequence.Exclude(5, 10);
-		result.AssertSequenceEqual(Enumerable.Range(1, 5));
+		using (seq)
+		{
+			var result = seq.Exclude(30, 50);
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, 30)
+					.Concat(Enumerable.Range(81, 20)));
+		}
 	}
 
-	/// <summary>
-	/// Verify we can exclude the middle portion of a sequence
-	/// </summary>
-	[Fact]
-	public void TestExcludeSequenceMiddle()
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestExcludeEntireSequence(IDisposableEnumerable<int> seq)
 	{
-		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
-
-		var result = sequence.Exclude(3, 5);
-		Assert.Equal(Seq(1, 2, 3, 9, 10), result);
+		using (seq)
+		{
+			var result = seq.Exclude(0, 101);
+			result.AssertSequenceEqual();
+		}
 	}
 
-	/// <summary>
-	/// Verify that excluding the entire sequence results in an empty sequence
-	/// </summary>
-	[Fact]
-	public void TestExcludeEntireSequence()
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestExcludeCountGreaterThanSequenceLength(IDisposableEnumerable<int> seq)
 	{
-		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
-
-		var result = sequence.Exclude(0, 10);
-		Assert.Empty(result);
+		using (seq)
+		{
+			var result = seq.Exclude(1, 10 * 10);
+			result.AssertSequenceEqual(1);
+		}
 	}
 
-	/// <summary>
-	/// Verify that excluding past the end on a sequence excludes the appropriate elements
-	/// </summary>
-	[Fact]
-	public void TestExcludeCountGreaterThanSequenceLength()
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
+	public void TestExcludeStartIndexGreaterThanSequenceLength(IDisposableEnumerable<int> seq)
 	{
-		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
-
-		var result = sequence.Exclude(1, 10 * 10);
-		Assert.Equal(Seq(1), result);
+		using (seq)
+		{
+			var result = seq.Exclude(101, 10);
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, 100));
+		}
 	}
 
-	/// <summary>
-	/// Verify that beginning exclusion past the end of a sequence has no effect
-	/// </summary>
 	[Fact]
-	public void TestExcludeStartIndexGreaterThanSequenceLength()
+	public void ExcludeListBehaviorMid()
 	{
-		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
+		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
-		var result = sequence.Exclude(10 + 5, 10);
-		Assert.Equal(Enumerable.Range(1, 10), result);
+		var result = seq.Exclude(1_001, 1_000);
+		Assert.Equal(9_000, result.Count());
+		Assert.Equal(10, result.ElementAt(10));
+		Assert.Equal(1_000, result.ElementAt(1_000));
+		Assert.Equal(2_001, result.ElementAt(1_001));
+		Assert.Equal(9_950, result.ElementAt(^50));
+		Assert.Equal(9_950, result.ElementAt(8_950));
+	}
+
+	[Fact]
+	public void ExcludeListBehaviorEnd()
+	{
+		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
+
+		var result = seq.Exclude(9_500, 1_000);
+		Assert.Equal(9_500, result.Count());
+		Assert.Equal(10, result.ElementAt(10));
+		Assert.Equal(9_450, result.ElementAt(^50));
+	}
+
+	[Fact]
+	public void ExcludeListBehaviorAfter()
+	{
+		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
+
+		var result = seq.Exclude(15_000, 1_000);
+		Assert.Equal(10_000, result.Count());
+		Assert.Equal(10, result.ElementAt(10));
+		Assert.Equal(9_950, result.ElementAt(^50));
+	}
+
+	[Fact]
+	public void ExcludeListBehaviorEntire()
+	{
+		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
+
+		var result = seq.Exclude(0, 10_000);
+
+#pragma warning disable xUnit2013 // Do not use equality check to check for collection size.
+		Assert.Equal(0, result.Count());
+#pragma warning restore xUnit2013 // Do not use equality check to check for collection size.
+
+		_ = Assert.Throws<ArgumentOutOfRangeException>("index", () => result.ElementAt(0));
 	}
 }
