@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="../../TargetFrameworks.props" />
+
 	<PropertyGroup>
 		<AssemblyTitle>SuperLinq.Test</AssemblyTitle>
 		<AssemblyName>SuperLinq.Test</AssemblyName>
