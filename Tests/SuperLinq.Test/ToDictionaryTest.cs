@@ -2,15 +2,14 @@
 
 public class ToDictionaryTest
 {
+#if !NET8_0_OR_GREATER
 	[Fact]
 	public void ToDictionaryWithKeyValuePairs()
 	{
-		var pairs = new[]
-		{
-				KeyValuePair.Create("foo", 123),
-				KeyValuePair.Create("bar", 456),
-				KeyValuePair.Create("baz", 789),
-			};
+		using var pairs = TestingSequence.Of(
+			KeyValuePair.Create("foo", 123),
+			KeyValuePair.Create("bar", 456),
+			KeyValuePair.Create("baz", 789));
 
 		var dict = pairs.ToDictionary();
 
@@ -22,12 +21,10 @@ public class ToDictionaryTest
 	[Fact]
 	public void ToDictionaryWithCouples()
 	{
-		var pairs = new[]
-		{
-				("foo", 123),
-				("bar", 456),
-				("baz", 789),
-			};
+		using var pairs = TestingSequence.Of(
+			("foo", 123),
+			("bar", 456),
+			("baz", 789));
 
 		var dict = pairs.ToDictionary();
 
@@ -39,12 +36,10 @@ public class ToDictionaryTest
 	[Fact]
 	public void ToDictionaryWithKeyValuePairsWithComparer()
 	{
-		var pairs = new[]
-		{
-				KeyValuePair.Create("foo", 123),
-				KeyValuePair.Create("bar", 456),
-				KeyValuePair.Create("baz", 789),
-			};
+		using var pairs = TestingSequence.Of(
+			KeyValuePair.Create("foo", 123),
+			KeyValuePair.Create("bar", 456),
+			KeyValuePair.Create("baz", 789));
 
 		var dict = pairs.ToDictionary(StringComparer.OrdinalIgnoreCase);
 
@@ -56,12 +51,10 @@ public class ToDictionaryTest
 	[Fact]
 	public void ToDictionaryWithCouplesWithComparer()
 	{
-		var pairs = new[]
-		{
-				("foo", 123),
-				("bar", 456),
-				("baz", 789),
-			};
+		using var pairs = TestingSequence.Of(
+			("foo", 123),
+			("bar", 456),
+			("baz", 789));
 
 		var dict = pairs.ToDictionary(StringComparer.OrdinalIgnoreCase);
 
@@ -69,4 +62,5 @@ public class ToDictionaryTest
 		Assert.Equal(456, dict["BAR"]);
 		Assert.Equal(789, dict["BAZ"]);
 	}
+#endif
 }
