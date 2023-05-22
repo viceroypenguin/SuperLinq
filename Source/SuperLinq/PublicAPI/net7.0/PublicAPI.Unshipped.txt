@@ -1,4 +1,8 @@
 #nullable enable
+*REMOVED*static SuperLinq.SuperEnumerable.ExceptBy<TSource, TKey>(System.Collections.Generic.IEnumerable<TSource>! first, System.Collections.Generic.IEnumerable<TSource>! second, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<TSource>!
+*REMOVED*static SuperLinq.SuperEnumerable.ExceptBy<TSource, TKey>(System.Collections.Generic.IEnumerable<TSource>! first, System.Collections.Generic.IEnumerable<TSource>! second, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IEqualityComparer<TKey>? keyComparer) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.ExceptBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! first, System.Collections.Generic.IEnumerable<TSource>! second, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<TSource>!
+static SuperLinq.SuperEnumerable.ExceptBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! first, System.Collections.Generic.IEnumerable<TSource>! second, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IEqualityComparer<TKey>? keyComparer) -> System.Collections.Generic.IEnumerable<TSource>!
 static SuperLinq.SuperEnumerable.HasDuplicates<T>(this System.Collections.Generic.IEnumerable<T>! source) -> bool
 static SuperLinq.SuperEnumerable.HasDuplicates<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Collections.Generic.IEqualityComparer<T>? comparer) -> bool
 static SuperLinq.SuperEnumerable.HasDuplicates<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> bool
