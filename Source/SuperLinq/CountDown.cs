@@ -77,23 +77,15 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(resultSelector);
 		Guard.IsGreaterThanOrEqualTo(count, 1);
 
-		return source.TryGetCollectionCount() is int
-			? IterateCollection(source, count, resultSelector)
-			: IterateSequence(source, count, resultSelector);
+		if (source is IList<TSource> list)
+			return new CountDownListIterator<TSource, TResult>(list, count, resultSelector);
 
-		static IEnumerable<TResult> IterateCollection(IEnumerable<TSource> source, int count, Func<TSource, int?, TResult> resultSelector)
-		{
-			// Attempt to extract the count of the source enumerator,
-			// in order to convert fromEnd indices to regular indices.
-			// Enumerable counts can change over time, so it is very
-			// important that this check happens at enumeration time;
-			// do not move it outside of the iterator method.
-			var i = source.TryGetCollectionCount()!.Value;
-			foreach (var item in source)
-				yield return resultSelector(item, i-- <= count ? i : null);
-		}
+		if (source.TryGetCollectionCount() is int)
+			return new CountDownCollectionIterator<TSource, TResult>(source, count, resultSelector);
 
-		static IEnumerable<TResult> IterateSequence(IEnumerable<TSource> source, int count, Func<TSource, int?, TResult> resultSelector)
+		return Core(source, count, resultSelector);
+
+		static IEnumerable<TResult> Core(IEnumerable<TSource> source, int count, Func<TSource, int?, TResult> resultSelector)
 		{
 			var queue = new Queue<TSource>(Math.Max(1, count + 1));
 
@@ -106,6 +98,72 @@ public static partial class SuperEnumerable
 
 			while (queue.Count > 0)
 				yield return resultSelector(queue.Dequeue(), queue.Count);
+		}
+	}
+
+	private sealed class CountDownCollectionIterator<TSource, TResult> : CollectionIterator<TResult>
+	{
+		private readonly IEnumerable<TSource> _source;
+		private readonly int _count;
+		private readonly Func<TSource, int?, TResult> _resultSelector;
+
+		public CountDownCollectionIterator(IEnumerable<TSource> source, int count, Func<TSource, int?, TResult> resultSelector)
+		{
+			_source = source;
+			_count = count;
+			_resultSelector = resultSelector;
+		}
+
+		public override int Count => _source.GetCollectionCount();
+
+		protected override IEnumerable<TResult> GetEnumerable()
+		{
+			var i = Count;
+			foreach (var item in _source)
+				yield return _resultSelector(item, i-- <= _count ? i : null);
+		}
+	}
+
+	private sealed class CountDownListIterator<TSource, TResult> : ListIterator<TResult>
+	{
+		private readonly IList<TSource> _source;
+		private readonly int _count;
+		private readonly Func<TSource, int?, TResult> _resultSelector;
+
+		public CountDownListIterator(IList<TSource> source, int count, Func<TSource, int?, TResult> resultSelector)
+		{
+			_source = source;
+			_count = count;
+			_resultSelector = resultSelector;
+		}
+
+		public override int Count => _source.Count;
+
+		protected override IEnumerable<TResult> GetEnumerable()
+		{
+			var cnt = (uint)_source.Count - _count;
+			var i = 0;
+			for (; i < cnt; i++)
+			{
+				yield return _resultSelector(
+					_source[i],
+					null);
+			}
+
+			cnt = (uint)_source.Count;
+			for (; i < cnt; i++)
+			{
+				yield return _resultSelector(
+					_source[i],
+					(int)cnt - i - 1);
+			}
+		}
+
+		protected override TResult ElementAt(int index)
+		{
+			return _resultSelector(
+				_source[index],
+				_source.Count - index < _count ? _source.Count - index - 1 : null);
 		}
 	}
 }
