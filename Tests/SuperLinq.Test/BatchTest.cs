@@ -78,7 +78,7 @@ public class BatchTest
 	}
 
 	public static IEnumerable<object[]> GetEmptySequences() =>
-		Enumerable.Empty<int>()
+		Array.Empty<int>()
 			.GetAllSequences()
 			.Select(x => new object[] { x });
 
@@ -269,12 +269,6 @@ public class BatchTest
 		using var seq = new BreakingCollection<int>(Enumerable.Range(1, 9));
 		seq.Batch(10, i => i.Sum()).Consume();
 	}
-
-	public static IEnumerable<object[]> GetCollection(IEnumerable<int> seq) =>
-		seq
-			.GetCollectionSequences()
-			.Where(x => x is not TestingSequence<int>)
-			.Select(x => new object[] { x });
 
 	[Fact]
 	public void BatchBufferedUsesCollectionCountAtIterationTime()

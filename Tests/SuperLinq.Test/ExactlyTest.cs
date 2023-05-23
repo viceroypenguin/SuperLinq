@@ -11,7 +11,7 @@ public class ExactlyTest
 
 	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
 		seq
-			.GetCollectionSequences()
+			.GetBreakingCollectionSequences()
 			.Select(x => new object[] { x });
 
 	[Theory]

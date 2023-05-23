@@ -13,7 +13,7 @@ public class MemoizeTest
 
 	public static IEnumerable<object[]> GetSequences() =>
 		Enumerable.Range(1, 10)
-			.GetCollectionSequences()
+			.GetBreakingCollectionSequences()
 			.Select(x => new object[] { x });
 
 	[Theory]

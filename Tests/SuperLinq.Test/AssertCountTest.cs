@@ -22,19 +22,13 @@ public class AssertCountTest
 		data.AssertCount(3).Consume();
 		using (var xs = data.AsTestingSequence())
 			xs.AssertCount(3).Consume();
-		using (var xs = new BreakingCollection<string>(data))
-		{
-			// expect a `TestException` as we try to enumerate the list
-			// but should _not_ get an `ArgumentException` as the 
-			// count is correct for the sequence
-			_ = Assert.Throws<TestException>(
-				() => xs.AssertCount(3).Consume());
-		}
+		using (var xs = data.AsTestingCollection())
+			xs.AssertCount(3).Consume();
 	}
 
 	public static IEnumerable<object[]> GetSequences() =>
 		Enumerable.Range(1, 10)
-			.GetCollectionSequences()
+			.GetBreakingCollectionSequences()
 			.Select(x => new object[] { x });
 
 	[Theory]

@@ -10,59 +10,71 @@ public class DoTest
 		_ = new BreakingSequence<int>().Do(BreakingAction.Of<int>(), BreakingAction.Of<Exception>(), BreakingAction.Of());
 	}
 
-	[Fact]
-	public void DoBehavior()
+	public static IEnumerable<object[]> GetSequences() =>
+		Enumerable.Range(1, 10)
+			.GetCollectionSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void DoBehavior(IDisposableEnumerable<int> seq)
 	{
-		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
+		using (seq)
+		{
+			var count = 0;
+			var result = seq.Do(i => count += i);
 
-		var count = 0;
-		var result = seq.Do(i => count += i);
-
-		result.AssertSequenceEqual(Enumerable.Range(1, 10));
-		Assert.Equal(55, count);
+			result.AssertSequenceEqual(Enumerable.Range(1, 10));
+			Assert.Equal(55, count);
+		}
 	}
 
-	[Fact]
-	public void DoCompletedBehavior()
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void DoCompletedBehavior(IDisposableEnumerable<int> seq)
 	{
-		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
+		using (seq)
+		{
+			var count = 0;
+			var result = seq.Do(i => count += i, () => count += 10);
 
-		var count = 0;
-		var result = seq.Do(i => count += i, () => count += 10);
-
-		result.AssertSequenceEqual(Enumerable.Range(1, 10));
-		Assert.Equal(65, count);
+			result.AssertSequenceEqual(Enumerable.Range(1, 10));
+			Assert.Equal(65, count);
+		}
 	}
 
-	[Fact]
-	public void DoBehaviorNoError()
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void DoBehaviorNoError(IDisposableEnumerable<int> seq)
 	{
-		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
+		using (seq)
+		{
+			var count = 0;
+			var result = seq.Do(i => count += i, BreakingAction.Of<Exception>());
 
-		var count = 0;
-		var result = seq.Do(i => count += i, BreakingAction.Of<Exception>());
-
-		result.AssertSequenceEqual(Enumerable.Range(1, 10));
-		Assert.Equal(55, count);
+			result.AssertSequenceEqual(Enumerable.Range(1, 10));
+			Assert.Equal(55, count);
+		}
 	}
 
-	[Fact]
-	public void DoCompletedBehaviorNoError()
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void DoCompletedBehaviorNoError(IDisposableEnumerable<int> seq)
 	{
-		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
+		using (seq)
+		{
+			var count = 0;
+			var result = seq.Do(i => count += i, BreakingAction.Of<Exception>(), () => count += 10);
 
-		var count = 0;
-		var result = seq.Do(i => count += i, BreakingAction.Of<Exception>(), () => count += 10);
-
-		result.AssertSequenceEqual(Enumerable.Range(1, 10));
-		Assert.Equal(65, count);
+			result.AssertSequenceEqual(Enumerable.Range(1, 10));
+			Assert.Equal(65, count);
+		}
 	}
 
 	[Fact]
 	public void DoBehaviorError()
 	{
-		using var seq = Enumerable.Range(1, 10)
-			.Concat(SuperEnumerable.From(BreakingFunc.Of<int>()))
+		using var seq = SeqExceptionAt(11)
 			.AsTestingSequence();
 
 		var count = 0;
@@ -79,8 +91,7 @@ public class DoTest
 	[Fact]
 	public void DoCompletedBehaviorError()
 	{
-		using var seq = Enumerable.Range(1, 10)
-			.Concat(SuperEnumerable.From(BreakingFunc.Of<int>()))
+		using var seq = SeqExceptionAt(11)
 			.AsTestingSequence();
 
 		var count = 0;

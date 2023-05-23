@@ -58,7 +58,7 @@ public class TestingSequenceException : Exception
 /// when it is disposed itself and also whether GetEnumerator() is
 /// called exactly once or not.
 /// </summary>
-internal sealed class TestingSequence<T> : IDisposableEnumerable<T>
+internal class TestingSequence<T> : IDisposableEnumerable<T>
 {
 	private readonly IEnumerable<T> _sequence;
 	private readonly Options _options;
