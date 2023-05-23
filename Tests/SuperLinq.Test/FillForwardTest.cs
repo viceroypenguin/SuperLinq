@@ -14,7 +14,7 @@ public class FillForwardTest
 
 	public static IEnumerable<object[]> GetIntNullSequences() =>
 		Seq<int?>(null, null, 1, 2, null, null, null, 3, 4, null, null)
-			.GetCollectionSequences()
+			.GetBreakingCollectionSequences()
 			.Select(x => new object[] { x });
 
 	[Theory]
@@ -43,7 +43,7 @@ public class FillForwardTest
 
 	public static IEnumerable<object[]> GetIntSequences() =>
 		Enumerable.Range(1, 13)
-			.GetCollectionSequences()
+			.GetBreakingCollectionSequences()
 			.Select(x => new object[] { x });
 
 	[Theory]

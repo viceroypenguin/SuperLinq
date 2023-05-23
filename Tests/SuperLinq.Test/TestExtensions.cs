@@ -60,7 +60,14 @@ internal static partial class TestExtensions
 	{
 		// UI will consume one enumeration
 		yield return input.AsTestingSequence(maxEnumerations: 2);
-		yield return new BreakingCollection<T>(input);
+		yield return input.AsTestingCollection(maxEnumerations: 2);
+	}
+
+	internal static IEnumerable<IDisposableEnumerable<T>> GetBreakingCollectionSequences<T>(this IEnumerable<T> input)
+	{
+		// UI will consume one enumeration
+		yield return input.AsTestingSequence(maxEnumerations: 2);
+		yield return input.AsBreakingCollection();
 	}
 
 	internal static IEnumerable<IDisposableEnumerable<T>> GetListSequences<T>(this IEnumerable<T> input)
@@ -74,13 +81,13 @@ internal static partial class TestExtensions
 	{
 		// UI will consume one enumeration
 		yield return input.AsTestingSequence(maxEnumerations: 2);
-		yield return new BreakingCollection<T>(input);
-		yield return new BreakingList<T>(input);
+		yield return input.AsTestingCollection(maxEnumerations: 2);
+		yield return input.AsBreakingList();
 	}
 
 	internal static IDisposableEnumerable<T> ToSourceKind<T>(this IList<T> input, SourceKind sourceKind) =>
 		sourceKind switch
-		{
+		{ 
 			SourceKind.Sequence => input.AsTestingSequence(),
 			SourceKind.BreakingCollection => new BreakingCollection<T>(input),
 			_ => ThrowHelper.ThrowArgumentException<IDisposableEnumerable<T>>(nameof(sourceKind)),

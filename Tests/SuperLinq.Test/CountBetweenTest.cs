@@ -25,7 +25,7 @@ public class CountBetweenTest
 
 	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
 		seq
-			.GetCollectionSequences()
+			.GetBreakingCollectionSequences()
 			.Select(x => new object[] { x });
 
 	[Theory]
@@ -38,7 +38,7 @@ public class CountBetweenTest
 
 	public static IEnumerable<object[]> GetTestData(int count, int min, int max, bool expecting) =>
 		Enumerable.Range(1, count)
-			.GetCollectionSequences()
+			.GetBreakingCollectionSequences()
 			.Select(x => new object[] { x, min, max, expecting });
 
 	[Theory]
