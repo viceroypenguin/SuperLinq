@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Diagnostics;
-
-namespace Test;
+﻿namespace Test;
 
 public enum SourceKind
 {
@@ -84,12 +82,4 @@ internal static partial class TestExtensions
 		yield return input.AsTestingCollection(maxEnumerations: 2);
 		yield return input.AsBreakingList();
 	}
-
-	internal static IDisposableEnumerable<T> ToSourceKind<T>(this IList<T> input, SourceKind sourceKind) =>
-		sourceKind switch
-		{ 
-			SourceKind.Sequence => input.AsTestingSequence(),
-			SourceKind.BreakingCollection => new BreakingCollection<T>(input),
-			_ => ThrowHelper.ThrowArgumentException<IDisposableEnumerable<T>>(nameof(sourceKind)),
-		};
 }
