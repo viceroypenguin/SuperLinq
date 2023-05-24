@@ -20,8 +20,8 @@ internal static partial class TestExtensions
 	/// <summary>
 	/// Just to make our testing easier so we can chain the assertion call.
 	/// </summary>
-	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
-		actual.AssertSequenceEqual(expected as IList<T> ?? expected.ToList());
+	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected, bool testCollectionEnumerable = false) =>
+		actual.AssertSequenceEqual(expected as IList<T> ?? expected.ToList(), testCollectionEnumerable);
 
 	/// <summary>
 	/// Make testing even easier - a params array makes for readable tests :)
@@ -30,7 +30,7 @@ internal static partial class TestExtensions
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
 		actual.AssertSequenceEqual((IList<T>)expected);
 
-	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IList<T> expected)
+	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IList<T> expected, bool testCollectionEnumerable = false)
 	{
 		if (actual is ICollection<T>)
 		{
@@ -38,6 +38,9 @@ internal static partial class TestExtensions
 			var cnt = SuperEnumerable.CopyTo(actual, arr);
 			Assert.Equal(expected.Count, cnt);
 			Assert.Equal(expected, arr);
+
+			if (testCollectionEnumerable)
+				Assert.Equal(expected, actual);
 		}
 		else
 		{

@@ -24,6 +24,9 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(source);
 
+		if (source is IList<TSource> list)
+			return new ReplaceIterator<TSource>(list, value, index);
+
 		return Core(source, index, value);
 
 		static IEnumerable<TSource> Core(
@@ -59,6 +62,9 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(source);
 
+		if (source is IList<TSource> list)
+			return new ReplaceIterator<TSource>(list, value, index);
+
 		return Core(source, value, index);
 
 		static IEnumerable<TSource> Core(IEnumerable<TSource> source, TSource value, Index index)
@@ -78,7 +84,7 @@ public static partial class SuperEnumerable
 			}
 			else
 			{
-				var cnt = index.Value + 1;
+				var cnt = index.Value;
 				var queue = new Queue<TSource>();
 
 				foreach (var e in source)
@@ -100,6 +106,49 @@ public static partial class SuperEnumerable
 				while (queue.Count != 0)
 					yield return queue.Dequeue();
 			}
+		}
+	}
+
+	private sealed class ReplaceIterator<TSource> : ListIterator<TSource>
+	{
+		private readonly IList<TSource> _source;
+		private readonly TSource _value;
+		private readonly Index _index;
+
+		public ReplaceIterator(IList<TSource> source, TSource value, Index index)
+		{
+			_source = source;
+			_value = value;
+			_index = index;
+		}
+
+		public override int Count => _source.Count;
+
+		protected override IEnumerable<TSource> GetEnumerable()
+		{
+			var cnt = (uint)_source.Count;
+			var idx = _index.GetOffset(_source.Count);
+
+			for (var i = 0; i < cnt; i++)
+				yield return i == idx ? _value : _source[i];
+		}
+
+		public override void CopyTo(TSource[] array, int arrayIndex)
+		{
+			_source.CopyTo(array, arrayIndex);
+
+			var idx = _index.GetOffset(_source.Count);
+			if (idx >= 0 && idx < _source.Count)
+				array[arrayIndex + idx] = _value;
+		}
+
+		protected override TSource ElementAt(int index)
+		{
+			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+
+			return index == _index.GetOffset(_source.Count)
+				? _value
+				: _source[index];
 		}
 	}
 }
