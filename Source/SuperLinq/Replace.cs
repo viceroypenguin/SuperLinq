@@ -136,7 +136,10 @@ public static partial class SuperEnumerable
 		public override void CopyTo(TSource[] array, int arrayIndex)
 		{
 			_source.CopyTo(array, arrayIndex);
-			array[arrayIndex + _index.GetOffset(_source.Count)] = _value;
+
+			var idx = _index.GetOffset(_source.Count);
+			if (idx >= 0 && idx < _source.Count)
+				array[arrayIndex + idx] = _value;
 		}
 
 		protected override TSource ElementAt(int index)
