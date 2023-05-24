@@ -37,7 +37,8 @@ public class ReplaceTest
 			result.AssertSequenceEqual(
 				Enumerable.Range(1, index)
 					.Append(30)
-					.Concat(Enumerable.Range(index + 2, 9 - index)));
+					.Concat(Enumerable.Range(index + 2, 9 - index)),
+				testCollectionEnumerable: true);
 		}
 	}
 
@@ -50,7 +51,8 @@ public class ReplaceTest
 			result.AssertSequenceEqual(
 				Enumerable.Range(1, index)
 					.Append(30)
-					.Concat(Enumerable.Range(index + 2, 9 - index)));
+					.Concat(Enumerable.Range(index + 2, 9 - index)),
+				testCollectionEnumerable: true);
 		}
 	}
 
@@ -64,7 +66,8 @@ public class ReplaceTest
 			result.AssertSequenceEqual(
 				Enumerable.Range(1, 9 - index)
 					.Append(30)
-					.Concat(Enumerable.Range(11 - index, index)));
+					.Concat(Enumerable.Range(11 - index, index)),
+				testCollectionEnumerable: true);
 		}
 	}
 
@@ -80,7 +83,9 @@ public class ReplaceTest
 		using (seq)
 		{
 			var result = seq.Replace(10, 30);
-			result.AssertSequenceEqual(Enumerable.Range(1, 10));
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, 10),
+				testCollectionEnumerable: true);
 		}
 	}
 
@@ -91,7 +96,9 @@ public class ReplaceTest
 		using (seq)
 		{
 			var result = seq.Replace(new Index(10), 30);
-			result.AssertSequenceEqual(Enumerable.Range(1, 10));
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, 10),
+				testCollectionEnumerable: true);
 		}
 	}
 
@@ -102,7 +109,9 @@ public class ReplaceTest
 		using (seq)
 		{
 			var result = seq.Replace(^11, 30);
-			result.AssertSequenceEqual(Enumerable.Range(1, 10));
+			result.AssertSequenceEqual(
+				Enumerable.Range(1, 10),
+				testCollectionEnumerable: true);
 		}
 	}
 
