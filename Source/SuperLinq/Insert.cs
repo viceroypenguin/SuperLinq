@@ -30,34 +30,9 @@ public static partial class SuperEnumerable
 	/// </exception>
 	public static IEnumerable<T> Insert<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
 		Guard.IsGreaterThanOrEqualTo(index, 0);
 
-		return Core(first, second, index);
-
-		static IEnumerable<T> Core(IEnumerable<T> first, IEnumerable<T> second, int index)
-		{
-			var i = -1;
-
-			using var iter = first.GetEnumerator();
-
-			while (++i < index && iter.MoveNext())
-				yield return iter.Current;
-
-			if (i < index)
-			{
-				ThrowHelper.ThrowArgumentOutOfRangeException(
-					nameof(index),
-					"Insertion index is greater than the length of the first sequence.");
-			}
-
-			foreach (var item in second)
-				yield return item;
-
-			while (iter.MoveNext())
-				yield return iter.Current;
-		}
+		return Insert(first, second, (Index)index);
 	}
 
 	/// <summary>
@@ -91,11 +66,17 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(first);
 		Guard.IsNotNull(second);
 
-		return !index.IsFromEnd ? Insert(first, second, index.Value) :
-			index.Value == 0 ? first.Concat(second) :
-			Core(first, second, index.Value);
+		if (first is IList<T> fList && second is IList<T> sList)
+			return new InsertListIterator<T>(fList, sList, index);
 
-		static IEnumerable<T> Core(IEnumerable<T> first, IEnumerable<T> second, int index)
+		if (first.TryGetCollectionCount() is int && second.TryGetCollectionCount() is int)
+			return new InsertCollectionIterator<T>(first, second, index);
+
+		return !index.IsFromEnd ? InsertCore(first, second, index.Value) :
+			index.Value == 0 ? first.Concat(second) :
+			FromEndCore(first, second, index.Value);
+
+		static IEnumerable<T> FromEndCore(IEnumerable<T> first, IEnumerable<T> second, int index)
 		{
 			using var e = first.CountDown(index, ValueTuple.Create).GetEnumerator();
 
@@ -123,6 +104,145 @@ public static partial class SuperEnumerable
 				}
 				while (e.MoveNext());
 			}
+		}
+	}
+
+	private static IEnumerable<T> InsertCore<T>(IEnumerable<T> first, IEnumerable<T> second, int index)
+	{
+		var i = -1;
+
+		using var iter = first.GetEnumerator();
+
+		while (++i < index && iter.MoveNext())
+			yield return iter.Current;
+
+		if (i < index)
+		{
+			ThrowHelper.ThrowArgumentOutOfRangeException(
+				nameof(index),
+				"Insertion index is greater than the length of the first sequence.");
+		}
+
+		foreach (var item in second)
+			yield return item;
+
+		while (iter.MoveNext())
+			yield return iter.Current;
+	}
+
+	private class InsertCollectionIterator<T> : CollectionIterator<T>
+	{
+		private readonly IEnumerable<T> _first;
+		private readonly IEnumerable<T> _second;
+		private readonly Index _index;
+
+		public InsertCollectionIterator(IEnumerable<T> first, IEnumerable<T> second, Index index)
+		{
+			_first = first;
+			_second = second;
+			_index = index;
+		}
+
+		public override int Count
+		{
+			get
+			{
+				var fCount = _first.GetCollectionCount();
+				var idx = _index.GetOffset(fCount);
+				Guard.IsBetweenOrEqualTo(idx, 0, fCount);
+				return fCount + _second.GetCollectionCount();
+			}
+		}
+
+		protected override IEnumerable<T> GetEnumerable()
+		{
+			var fCount = _first.GetCollectionCount();
+			var idx = _index.GetOffset(fCount);
+			Guard.IsBetweenOrEqualTo(idx, 0, fCount);
+
+			return InsertCore(_first, _second, idx);
+		}
+
+		public override void CopyTo(T[] array, int arrayIndex)
+		{
+			Guard.IsNotNull(array);
+			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+
+			_ = _first.CopyTo(array, arrayIndex);
+
+			var span = array.AsSpan()[arrayIndex..];
+			var cnt = _first.GetCollectionCount();
+			var idx = _index.GetOffset(cnt);
+			span[idx..cnt].CopyTo(span[(idx + _second.GetCollectionCount())..]);
+
+			_ = _second.CopyTo(array, arrayIndex + idx);
+		}
+	}
+
+	private class InsertListIterator<T> : ListIterator<T>
+	{
+		private readonly IList<T> _first;
+		private readonly IList<T> _second;
+		private readonly Index _index;
+
+		public InsertListIterator(IList<T> first, IList<T> second, Index index)
+		{
+			_first = first;
+			_second = second;
+			_index = index;
+		}
+
+		public override int Count
+		{
+			get
+			{
+				var idx = _index.GetOffset(_first.Count);
+				Guard.IsBetweenOrEqualTo(idx, 0, _first.Count);
+				return _first.Count + _second.Count;
+			}
+		}
+
+		protected override IEnumerable<T> GetEnumerable()
+		{
+			var idx = _index.GetOffset(_first.Count);
+			Guard.IsBetweenOrEqualTo(idx, 0, _first.Count);
+
+			for (var i = 0; i < (uint)idx; i++)
+				yield return _first[i];
+
+			var cnt = (uint)_second.Count;
+			for (var j = 0; j < cnt; j++)
+				yield return _second[j];
+
+			cnt = (uint)_first.Count;
+			for (var i = idx; i < cnt; i++)
+				yield return _first[i];
+		}
+
+		public override void CopyTo(T[] array, int arrayIndex)
+		{
+			Guard.IsNotNull(array);
+			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+
+			_first.CopyTo(array, arrayIndex);
+
+			var span = array.AsSpan()[arrayIndex..];
+			var cnt = _first.Count;
+			var idx = _index.GetOffset(cnt);
+			span[idx..cnt].CopyTo(span[(idx + _second.Count)..]);
+
+			_second.CopyTo(array, arrayIndex + idx);
+		}
+
+		protected override T ElementAt(int index)
+		{
+			var idx = _index.GetOffset(_first.Count);
+			Guard.IsBetweenOrEqualTo(idx, 0, _first.Count);
+			Guard.IsBetweenOrEqualTo(index, 0, _first.Count + _second.Count - 1);
+
+			return index < idx ? _first[index] :
+				index < idx + _second.Count ? _second[index - idx] :
+				_first[index - _second.Count];
 		}
 	}
 }
