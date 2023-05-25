@@ -97,49 +97,81 @@ public static partial class SuperEnumerable
 		if (source is IList<TSource> list)
 			return new PadStartListIterator<TSource>(list, width, paddingSelector);
 
+		if (source.TryGetCollectionCount() is int)
+			return new PadStartCollectionIterator<TSource>(source, width, paddingSelector);
+
 		return Core(source, width, paddingSelector);
 
 		static IEnumerable<TSource> Core(
 			IEnumerable<TSource> source, int width,
 			Func<int, TSource> paddingSelector)
 		{
-			if (source.TryGetCollectionCount() is int collectionCount)
-			{
-				for (var i = 0; i < width - collectionCount; i++)
-					yield return paddingSelector(i);
-				foreach (var item in source)
-					yield return item;
-			}
-			else
-			{
-				var array = new TSource[width];
-				var count = 0;
+			var array = new TSource[width];
+			var count = 0;
 
-				using (var e = source.GetEnumerator())
+			using (var e = source.GetEnumerator())
+			{
+				for (; count < width && e.MoveNext(); count++)
+					array[count] = e.Current;
+
+				if (count == width)
 				{
-					for (; count < width && e.MoveNext(); count++)
-						array[count] = e.Current;
+					for (var i = 0; i < count; i++)
+						yield return array[i];
 
-					if (count == width)
-					{
-						for (var i = 0; i < count; i++)
-							yield return array[i];
+					while (e.MoveNext())
+						yield return e.Current;
 
-						while (e.MoveNext())
-							yield return e.Current;
-
-						yield break;
-					}
+					yield break;
 				}
-
-				var len = width - count;
-
-				for (var i = 0; i < len; i++)
-					yield return paddingSelector(i);
-
-				for (var i = 0; i < count; i++)
-					yield return array[i];
 			}
+
+			var len = width - count;
+
+			for (var i = 0; i < len; i++)
+				yield return paddingSelector(i);
+
+			for (var i = 0; i < count; i++)
+				yield return array[i];
+		}
+	}
+
+	private sealed class PadStartCollectionIterator<T> : CollectionIterator<T>
+	{
+		private readonly IEnumerable<T> _source;
+		private readonly int _width;
+		private readonly Func<int, T> _paddingSelector;
+
+		public PadStartCollectionIterator(
+			IEnumerable<T> source, int width,
+			Func<int, T> paddingSelector)
+		{
+			_source = source;
+			_width = width;
+			_paddingSelector = paddingSelector;
+		}
+
+		public override int Count => Math.Max(_source.GetCollectionCount(), _width);
+
+		protected override IEnumerable<T> GetEnumerable()
+		{
+			var cnt = _width - _source.GetCollectionCount();
+			for (var i = 0; i < cnt; i++)
+				yield return _paddingSelector(i);
+			foreach (var item in _source)
+				yield return item;
+		}
+
+		public override void CopyTo(T[] array, int arrayIndex)
+		{
+			Guard.IsNotNull(array);
+			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+
+			var offset = Math.Max(_width - _source.GetCollectionCount(), 0);
+			for (var i = 0; i < offset; i++)
+				array[arrayIndex + i] = _paddingSelector(i);
+
+			_ = _source.CopyTo(array, arrayIndex + offset);
 		}
 	}
 
@@ -170,7 +202,7 @@ public static partial class SuperEnumerable
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
 			Guard.IsNotNull(array);
-			Guard.IsGreaterThanOrEqualTo(arrayIndex, 0);
+			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
 			var offset = Math.Max(_width - _source.Count, 0);
 			for (var i = 0; i < offset; i++)
