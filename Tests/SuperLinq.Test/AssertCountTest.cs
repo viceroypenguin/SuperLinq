@@ -58,16 +58,17 @@ public class AssertCountTest
 	}
 
 	[Fact]
-	public void AssertCountNarrowCollectionBehavior()
+	public void AssertCountCollectionBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingCollection();
 
 		var result = seq.AssertCount(10_000);
 		Assert.Equal(10_000, result.Count());
+		result.AssertSequenceEqual(Enumerable.Range(0, 10_000));
 	}
 
 	[Fact]
-	public void AssertCountNarrowListBehavior()
+	public void AssertCountListBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
