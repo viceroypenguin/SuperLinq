@@ -152,9 +152,9 @@ public class RankTests
 			.AsBreakingCollection();
 
 		var result = sequence.Rank();
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
 
 		result = sequence.Rank(comparer: Comparer<int>.Default);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
 	}
 }
