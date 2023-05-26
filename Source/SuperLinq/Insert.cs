@@ -130,7 +130,7 @@ public static partial class SuperEnumerable
 			yield return iter.Current;
 	}
 
-	private class InsertCollectionIterator<T> : CollectionIterator<T>
+	private sealed class InsertCollectionIterator<T> : CollectionIterator<T>
 	{
 		private readonly IEnumerable<T> _first;
 		private readonly IEnumerable<T> _second;
@@ -179,7 +179,7 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private class InsertListIterator<T> : ListIterator<T>
+	private sealed class InsertListIterator<T> : ListIterator<T>
 	{
 		private readonly IList<T> _first;
 		private readonly IList<T> _second;
