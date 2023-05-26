@@ -63,7 +63,7 @@ public class AssertCountTest
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingCollection();
 
 		var result = seq.AssertCount(10_000);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
 		result.AssertSequenceEqual(Enumerable.Range(0, 10_000));
 	}
 
@@ -73,14 +73,12 @@ public class AssertCountTest
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq.AssertCount(10_000);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
 		Assert.Equal(200, result.ElementAt(200));
 		Assert.Equal(1_200, result.ElementAt(1_200));
 		Assert.Equal(8_800, result.ElementAt(^1_200));
-
-		_ = Assert.Throws<ArgumentOutOfRangeException>(
-			"index",
-			() => result.ElementAt(40_001));
 	}
 
 	[Fact]

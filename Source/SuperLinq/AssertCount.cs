@@ -45,7 +45,7 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private class AssertCountCollectionIterator<T> : CollectionIterator<T>
+	private sealed class AssertCountCollectionIterator<T> : CollectionIterator<T>
 	{
 		private readonly IEnumerable<T> _source;
 		private readonly int _count;
@@ -76,13 +76,13 @@ public static partial class SuperEnumerable
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
 			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, Count - 1);
+			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
 			_ = _source.CopyTo(array, arrayIndex);
 		}
 	}
 
-	private class AssertCountListIterator<T> : ListIterator<T>
+	private sealed class AssertCountListIterator<T> : ListIterator<T>
 	{
 		private readonly IList<T> _source;
 		private readonly int _count;
@@ -114,7 +114,7 @@ public static partial class SuperEnumerable
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
 			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, Count - 1);
+			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
 			_source.CopyTo(array, arrayIndex);
 		}
