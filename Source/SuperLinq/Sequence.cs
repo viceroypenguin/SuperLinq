@@ -78,7 +78,7 @@ public static partial class SuperEnumerable
 		return new SequenceIterator(start, step, (((long)stop - start) / step) + 1);
 	}
 
-	private class SequenceIterator : ListIterator<int>
+	private sealed class SequenceIterator : ListIterator<int>
 	{
 		private readonly int _start;
 		private readonly int _step;
