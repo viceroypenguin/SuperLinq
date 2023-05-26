@@ -107,9 +107,12 @@ public static partial class SuperEnumerable
 					i < _offset ? _defaultLagValue : _source[i - _offset]);
 		}
 
-		protected override TResult ElementAt(int index) =>
-			_resultSelector(
+		protected override TResult ElementAt(int index)
+		{
+			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			return _resultSelector(
 				_source[index],
 				index < _offset ? _defaultLagValue : _source[index - _offset]);
+		}
 	}
 }
