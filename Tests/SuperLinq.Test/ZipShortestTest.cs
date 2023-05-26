@@ -90,13 +90,17 @@ public class ZipShortestTest
 		using var seq2 = Enumerable.Range(0, 5_000).AsBreakingList();
 
 		var result = seq1.ZipShortest(seq2);
-		Assert.Equal(5_000, result.Count());
+		result.AssertCollectionErrorChecking(5_000);
+		result.AssertListElementChecking(5_000);
+
 		Assert.Equal((10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50), result.ElementAt(50));
 		Assert.Equal((4_950, 4_950), result.ElementAt(^50));
 
 		result = seq2.ZipShortest(seq1);
-		Assert.Equal(5_000, result.Count());
+		result.AssertCollectionErrorChecking(5_000);
+		result.AssertListElementChecking(5_000);
+
 		Assert.Equal((4_950, 4_950), result.ElementAt(^50));
 	}
 
@@ -193,13 +197,17 @@ public class ZipShortestTest
 		using var seq3 = Enumerable.Range(0, 5_000).AsBreakingList();
 
 		var result = seq1.ZipShortest(seq2, seq3);
-		Assert.Equal(5_000, result.Count());
+		result.AssertCollectionErrorChecking(5_000);
+		result.AssertListElementChecking(5_000);
+
 		Assert.Equal((10, 10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50, 50), result.ElementAt(50));
 		Assert.Equal((4_950, 4_950, 4_950), result.ElementAt(^50));
 
 		result = seq2.ZipShortest(seq1, seq3);
-		Assert.Equal(5_000, result.Count());
+		result.AssertCollectionErrorChecking(5_000);
+		result.AssertListElementChecking(5_000);
+
 		Assert.Equal((4_950, 4_950, 4_950), result.ElementAt(^50));
 	}
 
@@ -314,13 +322,17 @@ public class ZipShortestTest
 		using var seq4 = Enumerable.Range(0, 5_000).AsBreakingList();
 
 		var result = seq1.ZipShortest(seq2, seq3, seq4);
-		Assert.Equal(5_000, result.Count());
+		result.AssertCollectionErrorChecking(5_000);
+		result.AssertListElementChecking(5_000);
+
 		Assert.Equal((10, 10, 10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50, 50, 50), result.ElementAt(50));
 		Assert.Equal((4_950, 4_950, 4_950, 4_950), result.ElementAt(^50));
 
 		result = seq2.ZipShortest(seq1, seq3, seq4);
-		Assert.Equal(5_000, result.Count());
+		result.AssertCollectionErrorChecking(5_000);
+		result.AssertListElementChecking(5_000);
+
 		Assert.Equal((4_950, 4_950, 4_950, 4_950), result.ElementAt(^50));
 	}
 }
