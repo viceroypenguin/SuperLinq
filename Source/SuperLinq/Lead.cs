@@ -116,11 +116,14 @@ public static partial class SuperEnumerable
 					i < maxOffset ? _source[i + _offset] : _defaultLeadValue);
 		}
 
-		protected override TResult ElementAt(int index) =>
-			_resultSelector(
+		protected override TResult ElementAt(int index)
+		{
+			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			return _resultSelector(
 				_source[index],
 				index < Math.Max(_source.Count - _offset, 0)
 					? _source[index + _offset]
 					: _defaultLeadValue);
+		}
 	}
 }

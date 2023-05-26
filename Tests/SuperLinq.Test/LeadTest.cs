@@ -3,7 +3,7 @@
 /// <summary>
 /// Verify the behavior of the Lead operator.
 /// </summary>
-public class LeadTests
+public class LeadTest
 {
 	/// <summary>
 	/// Verify that Lead() behaves in a lazy manner.
@@ -159,7 +159,9 @@ public class LeadTests
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq.Lead(20);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
 		Assert.Equal((50, 70), result.ElementAt(50));
 		Assert.Equal((9_950, 9_970), result.ElementAt(^50));
 		Assert.Equal((9_990, 0), result.ElementAt(^10));
