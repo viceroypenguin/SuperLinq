@@ -63,7 +63,7 @@ public class PreScanTest
 		using var seq = Enumerable.Range(1, 10).AsBreakingCollection();
 
 		var result = seq.PreScan((a, b) => a + b, 5);
-		Assert.Equal(10, result.Count());
+		result.AssertCollectionErrorChecking(10);
 
 		result.ToArray()
 			.AssertSequenceEqual(5, 6, 8, 11, 15, 20, 26, 33, 41, 50);
@@ -82,7 +82,7 @@ public class PreScanTest
 		using var seq = Enumerable.Range(1, 10).AsBreakingList();
 
 		var result = seq.PreScan((a, b) => a + b, 5);
-		Assert.Equal(10, result.Count());
+		result.AssertCollectionErrorChecking(10);
 
 		result.ToArray()
 			.AssertSequenceEqual(5, 6, 8, 11, 15, 20, 26, 33, 41, 50);
