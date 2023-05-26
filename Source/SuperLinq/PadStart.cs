@@ -213,7 +213,7 @@ public static partial class SuperEnumerable
 
 		protected override T ElementAt(int index)
 		{
-			Guard.IsLessThan(index, Count);
+			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
 
 			var offset = Math.Max(_width - _source.Count, 0);
 			return index < offset
