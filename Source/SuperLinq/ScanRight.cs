@@ -79,6 +79,9 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
+			Guard.IsNotNull(array);
+			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+
 			var (sList, b, cnt) = _source is IList<T> s
 				? (s, 0, s.Count)
 				: (array, arrayIndex, SuperEnumerable.CopyTo(_source, array, arrayIndex));
@@ -168,6 +171,9 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(TAccumulate[] array, int arrayIndex)
 		{
+			Guard.IsNotNull(array);
+			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+
 			var list = _source is IList<TSource> l ? l : _source.ToList();
 
 			var seed = _seed;

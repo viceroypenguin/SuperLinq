@@ -98,7 +98,7 @@ public class InsertTest
 		using var seq2 = Enumerable.Range(0, 10_000).AsBreakingCollection();
 
 		var result = seq1.Insert(seq2, 5_000);
-		Assert.Equal(20_000, result.Count());
+		result.AssertCollectionErrorChecking(20_000);
 	}
 
 	[Fact]
@@ -108,14 +108,12 @@ public class InsertTest
 		using var seq2 = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq1.Insert(seq2, 5_000);
-		Assert.Equal(20_000, result.Count());
+		result.AssertCollectionErrorChecking(20_000);
+		result.AssertListElementChecking(20_000);
+
 		Assert.Equal(1_200, result.ElementAt(1_200));
 		Assert.Equal(6_200, result.ElementAt(11_200));
 		Assert.Equal(8_800, result.ElementAt(^1_200));
-
-		_ = Assert.Throws<ArgumentOutOfRangeException>(
-			"index",
-			() => result.ElementAt(20_000));
 	}
 
 	[Fact]
@@ -125,13 +123,26 @@ public class InsertTest
 		using var seq2 = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq1.Insert(seq2, ^5_000);
-		Assert.Equal(20_000, result.Count());
+		result.AssertCollectionErrorChecking(20_000);
+		result.AssertListElementChecking(20_000);
+
 		Assert.Equal(1_200, result.ElementAt(1_200));
 		Assert.Equal(6_200, result.ElementAt(11_200));
 		Assert.Equal(8_800, result.ElementAt(^1_200));
+	}
 
-		_ = Assert.Throws<ArgumentOutOfRangeException>(
-			"index",
-			() => result.ElementAt(20_000));
+	[Fact]
+	public void InsertListAtEndBehavior()
+	{
+		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
+		using var seq2 = Enumerable.Range(0, 10_000).AsBreakingList();
+
+		var result = seq1.Insert(seq2, ^0);
+		result.AssertCollectionErrorChecking(20_000);
+		result.AssertListElementChecking(20_000);
+
+		Assert.Equal(1_200, result.ElementAt(1_200));
+		Assert.Equal(1_200, result.ElementAt(11_200));
+		Assert.Equal(8_800, result.ElementAt(^1_200));
 	}
 }

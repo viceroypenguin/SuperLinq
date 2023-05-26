@@ -61,7 +61,7 @@ public static partial class SuperEnumerable
     /// <typeparam name = "TSecond">The type of the elements of <paramref name = "second"/>.</typeparam>
     /// <param name = "second">The second sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<(TFirst, TSecond)> ZipShortest<TFirst, TSecond>(this global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second) => ZipShortest(first, second, global::System.ValueTuple.Create);
-    private class ZipShortestIterator<T1, T2, TResult> : ListIterator<TResult>
+    private sealed class ZipShortestIterator<T1, T2, TResult> : ListIterator<TResult>
     {
         private readonly global::System.Collections.Generic.IList<T1> _list1;
         private readonly global::System.Collections.Generic.IList<T2> _list2;
@@ -86,7 +86,7 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+            global::CommunityToolkit.Diagnostics.Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
             return _resultSelector(_list1[index], _list2[index]);
         }
     }
@@ -156,7 +156,7 @@ public static partial class SuperEnumerable
     /// <typeparam name = "TThird">The type of the elements of <paramref name = "third"/>.</typeparam>
     /// <param name = "third">The third sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<(TFirst, TSecond, TThird)> ZipShortest<TFirst, TSecond, TThird>(this global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Collections.Generic.IEnumerable<TThird> third) => ZipShortest(first, second, third, global::System.ValueTuple.Create);
-    private class ZipShortestIterator<T1, T2, T3, TResult> : ListIterator<TResult>
+    private sealed class ZipShortestIterator<T1, T2, T3, TResult> : ListIterator<TResult>
     {
         private readonly global::System.Collections.Generic.IList<T1> _list1;
         private readonly global::System.Collections.Generic.IList<T2> _list2;
@@ -183,7 +183,7 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+            global::CommunityToolkit.Diagnostics.Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
             return _resultSelector(_list1[index], _list2[index], _list3[index]);
         }
     }
@@ -259,7 +259,7 @@ public static partial class SuperEnumerable
     /// <typeparam name = "TFourth">The type of the elements of <paramref name = "fourth"/>.</typeparam>
     /// <param name = "fourth">The fourth sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<(TFirst, TSecond, TThird, TFourth)> ZipShortest<TFirst, TSecond, TThird, TFourth>(this global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Collections.Generic.IEnumerable<TThird> third, global::System.Collections.Generic.IEnumerable<TFourth> fourth) => ZipShortest(first, second, third, fourth, global::System.ValueTuple.Create);
-    private class ZipShortestIterator<T1, T2, T3, T4, TResult> : ListIterator<TResult>
+    private sealed class ZipShortestIterator<T1, T2, T3, T4, TResult> : ListIterator<TResult>
     {
         private readonly global::System.Collections.Generic.IList<T1> _list1;
         private readonly global::System.Collections.Generic.IList<T2> _list2;
@@ -288,7 +288,7 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+            global::CommunityToolkit.Diagnostics.Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
             return _resultSelector(_list1[index], _list2[index], _list3[index], _list4[index]);
         }
     }

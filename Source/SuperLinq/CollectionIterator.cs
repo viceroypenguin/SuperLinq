@@ -31,7 +31,7 @@ public partial class SuperEnumerable
 		public virtual void CopyTo(T[] array, int arrayIndex)
 		{
 			Guard.IsNotNull(array);
-			Guard.IsGreaterThanOrEqualTo(arrayIndex, 0);
+			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
 			if (Count + arrayIndex > array.Length)
 				ThrowHelper.ThrowArgumentException(nameof(array), "Destination is not long enough.");

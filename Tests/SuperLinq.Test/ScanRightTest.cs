@@ -62,7 +62,7 @@ public class ScanRightTest
 		using var seq = Enumerable.Range(1, 10).AsBreakingCollection();
 
 		var result = seq.ScanRight((a, b) => a + b);
-		Assert.Equal(10, result.Count());
+		result.AssertCollectionErrorChecking(10);
 
 		result.ToArray()
 			.AssertSequenceEqual(55, 54, 52, 49, 45, 40, 34, 27, 19, 10);
@@ -151,7 +151,7 @@ public class ScanRightTest
 		using var seq = Enumerable.Range(1, 10).AsBreakingCollection();
 
 		var result = seq.ScanRight(5, (a, b) => a + b);
-		Assert.Equal(11, result.Count());
+		result.AssertCollectionErrorChecking(11);
 
 		result.ToArray()
 			.AssertSequenceEqual(60, 59, 57, 54, 50, 45, 39, 32, 24, 15, 5);
@@ -170,7 +170,7 @@ public class ScanRightTest
 		using var seq = Enumerable.Range(1, 10).AsBreakingList();
 
 		var result = seq.ScanRight(5, (a, b) => a + b);
-		Assert.Equal(11, result.Count());
+		result.AssertCollectionErrorChecking(11);
 
 		result.ToArray()
 			.AssertSequenceEqual(60, 59, 57, 54, 50, 45, 39, 32, 24, 15, 5);

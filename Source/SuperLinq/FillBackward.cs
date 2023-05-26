@@ -144,7 +144,7 @@ public static partial class SuperEnumerable
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
 			Guard.IsNotNull(array);
-			Guard.IsGreaterThanOrEqualTo(arrayIndex, 0);
+			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
 			_source.CopyTo(array, arrayIndex);
 

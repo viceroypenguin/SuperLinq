@@ -60,7 +60,7 @@ public class CountDownTest
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingCollection();
 
 		var result = seq.CountDown(20);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
 	}
 
 	[Fact]
@@ -69,7 +69,9 @@ public class CountDownTest
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq.CountDown(20);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
 		Assert.Equal((10, default(int?)), result.ElementAt(10));
 		Assert.Equal((50, default(int?)), result.ElementAt(50));
 		Assert.Equal((9_995, 4), result.ElementAt(^5));

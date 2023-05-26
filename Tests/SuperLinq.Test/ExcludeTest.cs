@@ -114,7 +114,9 @@ public class ExcludeTests
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq.Exclude(1_001, 1_000);
-		Assert.Equal(9_000, result.Count());
+		result.AssertCollectionErrorChecking(9_000);
+		result.AssertListElementChecking(9_000);
+
 		Assert.Equal(10, result.ElementAt(10));
 		Assert.Equal(1_000, result.ElementAt(1_000));
 		Assert.Equal(2_001, result.ElementAt(1_001));
@@ -128,7 +130,9 @@ public class ExcludeTests
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq.Exclude(9_500, 1_000);
-		Assert.Equal(9_500, result.Count());
+		result.AssertCollectionErrorChecking(9_500);
+		result.AssertListElementChecking(9_500);
+
 		Assert.Equal(10, result.ElementAt(10));
 		Assert.Equal(9_450, result.ElementAt(^50));
 	}
@@ -139,7 +143,9 @@ public class ExcludeTests
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq.Exclude(15_000, 1_000);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
 		Assert.Equal(10, result.ElementAt(10));
 		Assert.Equal(9_950, result.ElementAt(^50));
 	}
@@ -150,11 +156,10 @@ public class ExcludeTests
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq.Exclude(0, 10_000);
+		result.AssertCollectionErrorChecking(0);
 
-#pragma warning disable xUnit2013 // Do not use equality check to check for collection size.
-		Assert.Equal(0, result.Count());
-#pragma warning restore xUnit2013 // Do not use equality check to check for collection size.
-
-		_ = Assert.Throws<ArgumentOutOfRangeException>("index", () => result.ElementAt(0));
+		_ = Assert.Throws<ArgumentOutOfRangeException>(
+			"index",
+			() => result.ElementAt(0));
 	}
 }

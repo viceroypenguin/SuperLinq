@@ -17,7 +17,13 @@ internal class BreakingList<T> : BreakingSequence<T>, IList<T>, IDisposableEnume
 
 	public T this[int index]
 	{
-		get => List[index];
+		get
+		{
+			if (index < 0 || index >= List.Count)
+				Assert.Fail("LINQ Operators should prevent this from happening.");
+			return List[index];
+		}
+
 		set => Assert.Fail("LINQ Operators should not be calling this method.");
 	}
 

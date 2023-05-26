@@ -65,13 +65,17 @@ public class ZipLongestTest
 		using var seq2 = Enumerable.Range(0, 5_000).AsBreakingList();
 
 		var result = seq1.ZipLongest(seq2);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
 		Assert.Equal((10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50), result.ElementAt(50));
 		Assert.Equal((9_950, 0), result.ElementAt(^50));
 
 		result = seq2.ZipLongest(seq1);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
 		Assert.Equal((0, 9_950), result.ElementAt(^50));
 	}
 
@@ -172,13 +176,17 @@ public class ZipLongestTest
 		using var seq3 = Enumerable.Range(0, 5_000).AsBreakingList();
 
 		var result = seq1.ZipLongest(seq2, seq3);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
 		Assert.Equal((10, 10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50, 50), result.ElementAt(50));
 		Assert.Equal((9_950, 0, 0), result.ElementAt(^50));
 
 		result = seq2.ZipLongest(seq1, seq3);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
 		Assert.Equal((0, 9_950, 0), result.ElementAt(^50));
 	}
 
@@ -298,13 +306,17 @@ public class ZipLongestTest
 		using var seq4 = Enumerable.Range(0, 5_000).AsBreakingList();
 
 		var result = seq1.ZipLongest(seq2, seq3, seq4);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
 		Assert.Equal((10, 10, 10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50, 50, 50), result.ElementAt(50));
 		Assert.Equal((9_950, 0, 0, 0), result.ElementAt(^50));
 
 		result = seq2.ZipLongest(seq1, seq3, seq4);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
 		Assert.Equal((0, 9_950, 0, 0), result.ElementAt(^50));
 	}
 }

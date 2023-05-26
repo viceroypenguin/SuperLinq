@@ -165,4 +165,16 @@ public class SequenceTest
 
 		Assert.True(result.Take(100).All(x => x == start));
 	}
+
+	[Fact]
+	public void SequenceListBehavior()
+	{
+		var result = SuperEnumerable.Sequence(0, 9_999);
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
+		Assert.Equal(10, result.ElementAt(10));
+		Assert.Equal(20, result.ElementAt(20));
+		Assert.Equal(9_950, result.ElementAt(^50));
+	}
 }

@@ -121,7 +121,9 @@ public class ReplaceTest
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq.Replace(20, -1);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
 		Assert.Equal(10, result.ElementAt(10));
 		Assert.Equal(-1, result.ElementAt(20));
 		Assert.Equal(9_950, result.ElementAt(^50));

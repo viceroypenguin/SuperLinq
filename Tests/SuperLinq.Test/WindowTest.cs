@@ -147,7 +147,10 @@ public partial class WindowTests
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq.Window(20);
-		Assert.Equal(10_000 - 20 + 1, result.Count());
+		var length = 10_000 - 20 + 1;
+		result.AssertCollectionErrorChecking(length);
+		result.AssertListElementChecking(length);
+
 		Assert.Equal(Enumerable.Range(50, 20), result.ElementAt(50));
 		Assert.Equal(Enumerable.Range(9_980, 20), result.ElementAt(^1));
 	}

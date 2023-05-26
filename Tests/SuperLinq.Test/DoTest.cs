@@ -113,9 +113,9 @@ public class DoTest
 			.AsBreakingCollection();
 
 		var result = sequence.Do(delegate { });
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
 
 		result = sequence.Do(delegate { }, onError: delegate { });
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
 	}
 }

@@ -36,18 +36,25 @@ public class PadTest
 	}
 
 	[Fact]
+	public void PadWideCollectionBehavior()
+	{
+		using var seq = Enumerable.Range(0, 10_000).AsBreakingCollection();
+
+		var result = seq.Pad(5_000, x => x % 1_000);
+		result.AssertCollectionErrorChecking(10_000);
+	}
+
+	[Fact]
 	public void PadWideListBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq.Pad(5_000, x => x % 1_000);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
 		Assert.Equal(1_200, result.ElementAt(1_200));
 		Assert.Equal(8_800, result.ElementAt(^1_200));
-
-		_ = Assert.Throws<ArgumentOutOfRangeException>(
-			"index",
-			() => result.ElementAt(10_001));
 	}
 
 	[Theory]
@@ -95,7 +102,7 @@ public class PadTest
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingCollection();
 
 		var result = seq.Pad(40_000, x => x % 1_000);
-		Assert.Equal(40_000, result.Count());
+		result.AssertCollectionErrorChecking(40_000);
 	}
 
 	[Fact]
@@ -104,14 +111,12 @@ public class PadTest
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq.Pad(40_000, x => x % 1_000);
-		Assert.Equal(40_000, result.Count());
+		result.AssertCollectionErrorChecking(40_000);
+		result.AssertListElementChecking(40_000);
+
 		Assert.Equal(1_200, result.ElementAt(1_200));
 		Assert.Equal(200, result.ElementAt(11_200));
 		Assert.Equal(800, result.ElementAt(^1_200));
-
-		_ = Assert.Throws<ArgumentOutOfRangeException>(
-			"index",
-			() => result.ElementAt(40_001));
 	}
 
 	public static IEnumerable<object[]> GetCharSequences() =>

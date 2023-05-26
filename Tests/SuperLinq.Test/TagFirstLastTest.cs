@@ -35,7 +35,9 @@ public class TagFirstLastTest
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq.TagFirstLast();
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
 		Assert.Equal((0, true, false), result.ElementAt(0));
 		Assert.Equal((30, false, false), result.ElementAt(30));
 		Assert.Equal((9_999, false, true), result.ElementAt(^1));

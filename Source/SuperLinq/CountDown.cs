@@ -161,6 +161,7 @@ public static partial class SuperEnumerable
 
 		protected override TResult ElementAt(int index)
 		{
+			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
 			return _resultSelector(
 				_source[index],
 				_source.Count - index < _count ? _source.Count - index - 1 : null);

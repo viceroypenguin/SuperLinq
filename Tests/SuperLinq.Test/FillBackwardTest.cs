@@ -55,4 +55,14 @@ public class FillBackwardTest
 				.AssertSequenceEqual(5, 10, 15, 20, 5, 60, 70, 80, 90, 10, 11, 12, 13);
 		}
 	}
+
+	[Fact]
+	public void FillBackwardCollectionCount()
+	{
+		using var sequence = Enumerable.Range(1, 10_000)
+			.AsBreakingCollection();
+
+		var result = sequence.FillBackward();
+		result.AssertCollectionErrorChecking(10_000);
+	}
 }

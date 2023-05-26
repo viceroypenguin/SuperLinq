@@ -77,7 +77,7 @@ public static partial class SuperEnumerable
     /// <typeparam name = "T2">The type of the elements of <paramref name = "second"/>.</typeparam>
     /// <param name = "second">The second sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<(T1? , T2? )> ZipLongest<T1, T2>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second) => ZipLongest(first, second, global::System.ValueTuple.Create);
-    private class ZipLongestIterator<T1, T2, TResult> : ListIterator<TResult>
+    private sealed class ZipLongestIterator<T1, T2, TResult> : ListIterator<TResult>
     {
         private readonly global::System.Collections.Generic.IList<T1> _list1;
         private readonly global::System.Collections.Generic.IList<T2> _list2;
@@ -102,7 +102,7 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+            global::CommunityToolkit.Diagnostics.Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
             return _resultSelector(index < _list1.Count ? _list1[index] : default, index < _list2.Count ? _list2[index] : default);
         }
     }
@@ -177,7 +177,7 @@ public static partial class SuperEnumerable
     /// <typeparam name = "T3">The type of the elements of <paramref name = "third"/>.</typeparam>
     /// <param name = "third">The third sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<(T1? , T2? , T3? )> ZipLongest<T1, T2, T3>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third) => ZipLongest(first, second, third, global::System.ValueTuple.Create);
-    private class ZipLongestIterator<T1, T2, T3, TResult> : ListIterator<TResult>
+    private sealed class ZipLongestIterator<T1, T2, T3, TResult> : ListIterator<TResult>
     {
         private readonly global::System.Collections.Generic.IList<T1> _list1;
         private readonly global::System.Collections.Generic.IList<T2> _list2;
@@ -204,7 +204,7 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+            global::CommunityToolkit.Diagnostics.Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
             return _resultSelector(index < _list1.Count ? _list1[index] : default, index < _list2.Count ? _list2[index] : default, index < _list3.Count ? _list3[index] : default);
         }
     }
@@ -286,7 +286,7 @@ public static partial class SuperEnumerable
     /// <typeparam name = "T4">The type of the elements of <paramref name = "fourth"/>.</typeparam>
     /// <param name = "fourth">The fourth sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<(T1? , T2? , T3? , T4? )> ZipLongest<T1, T2, T3, T4>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth) => ZipLongest(first, second, third, fourth, global::System.ValueTuple.Create);
-    private class ZipLongestIterator<T1, T2, T3, T4, TResult> : ListIterator<TResult>
+    private sealed class ZipLongestIterator<T1, T2, T3, T4, TResult> : ListIterator<TResult>
     {
         private readonly global::System.Collections.Generic.IList<T1> _list1;
         private readonly global::System.Collections.Generic.IList<T2> _list2;
@@ -315,7 +315,7 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+            global::CommunityToolkit.Diagnostics.Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
             return _resultSelector(index < _list1.Count ? _list1[index] : default, index < _list2.Count ? _list2[index] : default, index < _list3.Count ? _list3[index] : default, index < _list4.Count ? _list4[index] : default);
         }
     }

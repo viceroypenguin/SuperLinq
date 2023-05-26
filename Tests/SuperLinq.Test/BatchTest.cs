@@ -186,7 +186,10 @@ public class BatchTest
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
 
 		var result = seq.Batch(20);
-		Assert.Equal(10_000 / 20, result.Count());
+		var length = 10_000 / 20;
+		result.AssertCollectionErrorChecking(length);
+		result.AssertListElementChecking(length);
+
 		Assert.Equal(Enumerable.Range(1_000, 20), result.ElementAt(50));
 		Assert.Equal(Enumerable.Range(9_980, 20), result.ElementAt(^1));
 	}
@@ -197,7 +200,10 @@ public class BatchTest
 		using var seq = Enumerable.Range(0, 10_002).AsBreakingList();
 
 		var result = seq.Batch(20);
-		Assert.Equal((10_002 / 20) + 1, result.Count());
+		var length = (10_002 / 20) + 1;
+		result.AssertCollectionErrorChecking(length);
+		result.AssertListElementChecking(length);
+
 		Assert.Equal(Enumerable.Range(1_000, 20), result.ElementAt(50));
 		Assert.Equal(Enumerable.Range(9_980, 20), result.ElementAt(^2));
 		Assert.Equal(Enumerable.Range(10_000, 2), result.ElementAt(^1));

@@ -121,6 +121,6 @@ public class ScanByTest
 			.AsBreakingCollection();
 
 		var result = sequence.ScanBy(x => x, x => x, (a, b, c) => a);
-		Assert.Equal(10_000, result.Count());
+		result.AssertCollectionErrorChecking(10_000);
 	}
 }

@@ -100,4 +100,14 @@ public class FillForwardTest
 				new { Continent = "Africa", Country = "Egypt", City = "Alexandria", Value = 890 },
 				new { Continent = "Africa", Country = "Kenya", City = "Nairobi", Value = 901 });
 	}
+
+	[Fact]
+	public void FillForwardCollectionCount()
+	{
+		using var sequence = Enumerable.Range(1, 10_000)
+			.AsBreakingCollection();
+
+		var result = sequence.FillForward();
+		result.AssertCollectionErrorChecking(10_000);
+	}
 }

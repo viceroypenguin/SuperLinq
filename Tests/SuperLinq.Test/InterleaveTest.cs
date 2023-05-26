@@ -3,7 +3,7 @@
 /// <summary>
 /// Verify the behavior of the Interleave operator
 /// </summary>
-public class InterleaveTests
+public class InterleaveTest
 {
 	/// <summary>
 	/// Verify that Interleave behaves in a lazy manner
@@ -132,13 +132,13 @@ public class InterleaveTests
 	[Fact]
 	public void TestInterleaveCollectionCount()
 	{
-		using var sequenceA = Enumerable.Range(1, 100).AsBreakingCollection();
-		using var sequenceB = Enumerable.Range(1, 100).AsBreakingCollection();
+		using var sequenceA = Enumerable.Range(1, 10_000).AsBreakingCollection();
+		using var sequenceB = Enumerable.Range(1, 10_000).AsBreakingCollection();
 
-		var coll = sequenceA.Interleave(sequenceB);
-		Assert.Equal(200, coll.Count());
+		var result = sequenceA.Interleave(sequenceB);
+		result.AssertCollectionErrorChecking(20_000);
 
-		coll = Seq(sequenceA, sequenceB).Interleave<int>();
-		Assert.Equal(200, coll.Count());
+		result = Seq(sequenceA, sequenceB).Interleave<int>();
+		result.AssertCollectionErrorChecking(20_000);
 	}
 }
