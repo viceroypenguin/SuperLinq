@@ -109,6 +109,7 @@ Quantifier operations return a boolean value that indicates whether the sequence
 | CountBetween		 | Determines whether or not the number of elements in the sequence is between an inclusive range of minimum and maximum integers. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.CountBetween.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.CountBetween.html) |
 | Exactly			 | Determines whether or not the number of elements in the sequence is equals to the given integer. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Exactly.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Exactly.html) |
 | TrySingle			 | Determines the cardinality of the sequence in the set `{ 0, 1, >1 }`. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.TrySingle.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.TrySingle.html) |
+| HasDuplicates		 | Determines whether the sequence contains duplicates | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.HasDuplicates.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.HasDuplicates.html) |
 
 </details>
 
