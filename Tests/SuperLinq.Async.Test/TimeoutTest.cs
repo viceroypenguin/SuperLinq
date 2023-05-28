@@ -59,7 +59,7 @@ public class TimeoutTest
 	}
 
 	[Fact]
-	public async Task TimeoutExceptionWithOperationCanceledExceptionInnerException()
+	public async Task TimeoutExceptionWithoutOperationCanceledExceptionInnerException()
 	{
 		var sequence = new SequenceWithoutThrowIfCancellationRequested();
 
@@ -72,7 +72,7 @@ public class TimeoutTest
 	}
 
 	[Fact]
-	public async Task TimeoutExceptionWithoutOperationCanceledExceptionInnerException()
+	public async Task TimeoutExceptionWithOperationCanceledExceptionInnerException()
 	{
 		var sequence = new SequenceWithThrowIfCancellationRequested();
 
