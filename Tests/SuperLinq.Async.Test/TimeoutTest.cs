@@ -57,4 +57,62 @@ public class TimeoutTest
 		_ = await Assert.ThrowsAsync<TimeoutException>(
 			async () => await result.Consume());
 	}
+
+	[Fact]
+	public async Task TimeoutExceptionWithoutOperationCanceledExceptionInnerException()
+	{
+		await using var ts = new SequenceWithoutThrowIfCancellationRequested()
+			.AsTestingSequence();
+
+		var result = ts.Timeout(TimeSpan.FromMilliseconds(0));
+
+		var timeoutException = await Assert.ThrowsAsync<TimeoutException>(
+			async () => await result.Consume());
+
+		Assert.Null(timeoutException.InnerException);
+	}
+
+	[Fact]
+	public async Task TimeoutExceptionWithOperationCanceledExceptionInnerException()
+	{
+		await using var ts = new SequenceWithThrowIfCancellationRequested()
+			.AsTestingSequence();
+
+		var result = ts.Timeout(TimeSpan.FromMilliseconds(0));
+
+		var timeoutException = await Assert.ThrowsAsync<TimeoutException>(
+			async () => await result.Consume());
+
+		_ = Assert.IsAssignableFrom<OperationCanceledException>(timeoutException.InnerException);
+	}
+
+	private class SequenceWithoutThrowIfCancellationRequested : IAsyncEnumerable<int>
+	{
+		public IAsyncEnumerator<int> GetAsyncEnumerator(CancellationToken cancellationToken = new())
+		{
+			// cancellationToken.ThrowIfCancellationRequested() is purposefully not done here
+
+			return AsyncEnumerable.Range(1, 5)
+				.SelectAwait(async x =>
+				{
+					await Task.Delay(TimeSpan.FromMilliseconds(1), CancellationToken.None);
+					return x;
+				}).GetAsyncEnumerator(CancellationToken.None);
+		}
+	}
+
+	private class SequenceWithThrowIfCancellationRequested : IAsyncEnumerable<int>
+	{
+		public IAsyncEnumerator<int> GetAsyncEnumerator(CancellationToken cancellationToken = new())
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+
+			return AsyncEnumerable.Range(1, 5)
+				.SelectAwait(async x =>
+				{
+					await Task.Delay(TimeSpan.FromMilliseconds(1), cancellationToken);
+					return x;
+				}).GetAsyncEnumerator(cancellationToken);
+		}
+	}
 }
