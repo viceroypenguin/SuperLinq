@@ -61,9 +61,10 @@ public class TimeoutTest
 	[Fact]
 	public async Task TimeoutExceptionWithoutOperationCanceledExceptionInnerException()
 	{
-		var sequence = new SequenceWithoutThrowIfCancellationRequested();
+		await using var ts = new SequenceWithoutThrowIfCancellationRequested()
+			.AsTestingSequence();
 
-		var result = sequence.Timeout(TimeSpan.FromMilliseconds(0));
+		var result = ts.Timeout(TimeSpan.FromMilliseconds(0));
 
 		var timeoutException = await Assert.ThrowsAsync<TimeoutException>(
 			async () => await result.Consume());
@@ -74,9 +75,10 @@ public class TimeoutTest
 	[Fact]
 	public async Task TimeoutExceptionWithOperationCanceledExceptionInnerException()
 	{
-		var sequence = new SequenceWithThrowIfCancellationRequested();
+		await using var ts = new SequenceWithThrowIfCancellationRequested()
+			.AsTestingSequence();
 
-		var result = sequence.Timeout(TimeSpan.FromMilliseconds(0));
+		var result = ts.Timeout(TimeSpan.FromMilliseconds(0));
 
 		var timeoutException = await Assert.ThrowsAsync<TimeoutException>(
 			async () => await result.Consume());
