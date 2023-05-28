@@ -40,7 +40,9 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(fallback);
 
-		return Core(source, fallback);
+		return source.TryGetCollectionCount() is { } and 0
+			? fallback
+			: Core(source, fallback);
 
 		static IEnumerable<T> Core(IEnumerable<T> source, IEnumerable<T> fallback)
 		{
@@ -48,8 +50,11 @@ public static partial class SuperEnumerable
 			{
 				if (e.MoveNext())
 				{
-					do { yield return e.Current; }
-					while (e.MoveNext());
+					do
+					{
+						yield return e.Current;
+					} while (e.MoveNext());
+
 					yield break;
 				}
 			}
