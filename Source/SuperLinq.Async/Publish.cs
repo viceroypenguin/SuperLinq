@@ -228,7 +228,15 @@ public static partial class AsyncSuperEnumerable
 			}
 			finally
 			{
-				_ = _buffers?.Remove(buffer);
+				await _lock.WaitAsync(CancellationToken.None).ConfigureAwait(false);
+				try
+				{
+					_ = _buffers?.Remove(buffer);
+				}
+				finally
+				{
+					_ = _lock.Release();
+				}
 			}
 		}
 
