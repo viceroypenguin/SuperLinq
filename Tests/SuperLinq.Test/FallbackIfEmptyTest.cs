@@ -11,15 +11,7 @@ public class FallbackIfEmptyTest
 	}
 
 	[Fact]
-	public void FallbackIfEmptyWithEmptyListSequence()
-	{
-		var source = Enumerable.Empty<int>().ToList();
-		source.FallbackIfEmpty(12).AssertSequenceEqual(12);
-		source.FallbackIfEmpty(12, 23).AssertSequenceEqual(12, 23);
-	}
-
-	[Fact]
-	public void FallbackIfEmptyWithCollectionListSequence()
+	public void FallbackIfEmptyWithCollectionSequence()
 	{
 		using var source = Enumerable.Empty<int>().AsTestingCollection(maxEnumerations: 2);
 		source.FallbackIfEmpty(12).AssertSequenceEqual(12);
@@ -30,7 +22,13 @@ public class FallbackIfEmptyTest
 	public void FallbackIfEmptyWithNotEmptySequence()
 	{
 		using var source = Seq(1).AsTestingSequence(maxEnumerations: 2);
-		source.FallbackIfEmpty(12).AssertSequenceEqual(1);
-		source.FallbackIfEmpty(12, 23).AssertSequenceEqual(1);
+		source.FallbackIfEmpty(new BreakingSequence<int>()).AssertSequenceEqual(1);
+	}
+
+	[Fact]
+	public void FallbackIfEmptyWithNotEmptyCollectionSequence()
+	{
+		using var source = Seq(1).AsTestingCollection(maxEnumerations: 2);
+		source.FallbackIfEmpty(new BreakingSequence<int>()).AssertSequenceEqual(1);
 	}
 }
