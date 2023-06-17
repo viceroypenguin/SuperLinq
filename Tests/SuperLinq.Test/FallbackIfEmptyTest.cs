@@ -47,4 +47,18 @@ public class FallbackIfEmptyTest
 		var result = source.FallbackIfEmpty(new BreakingSequence<int>());
 		result.AssertCollectionErrorChecking(1);
 	}
+
+	[Fact]
+	public void FallbackIfEmptyUsesCollectionCountAtIterationTime()
+	{
+		using var source = new BreakingCountCollection<int>();
+
+		var result = source.FallbackIfEmpty(new BreakingSequence<int>());
+		_ = Assert.Throws<TestException>(() => result.Consume());
+	}
+
+	internal class BreakingCountCollection<T> : BreakingCollection<T>
+	{
+		public new int Count => throw new TestException();
+	}
 }
