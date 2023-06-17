@@ -29,4 +29,22 @@ public class FallbackIfEmptyTest
 		using var source = Seq(1).AsTestingCollection(maxEnumerations: 2);
 		source.FallbackIfEmpty(new BreakingSequence<int>()).AssertSequenceEqual(1);
 	}
+
+	[Fact]
+	public void AssertFallbackIfEmptyCollectionBehaviorOnEmptyCollection()
+	{
+		using var source = Enumerable.Empty<int>().AsTestingCollection(maxEnumerations: 2);
+
+		var result = source.FallbackIfEmpty(12);
+		result.AssertCollectionErrorChecking(1);
+	}
+
+	[Fact]
+	public void AssertFallbackIfEmptyCollectionBehaviorOnNonEmptyCollection()
+	{
+		using var source = Seq(1).AsTestingCollection(maxEnumerations: 2);
+
+		var result = source.FallbackIfEmpty(new BreakingSequence<int>());
+		result.AssertCollectionErrorChecking(1);
+	}
 }
