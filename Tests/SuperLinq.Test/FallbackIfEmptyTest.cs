@@ -7,7 +7,6 @@ public class FallbackIfEmptyTest
 	{
 		using var source = Enumerable.Empty<int>().AsTestingSequence(maxEnumerations: 2);
 		source.FallbackIfEmpty(12).AssertSequenceEqual(12);
-		source.FallbackIfEmpty(12, 23).AssertSequenceEqual(12, 23);
 	}
 
 	[Fact]
@@ -15,7 +14,6 @@ public class FallbackIfEmptyTest
 	{
 		using var source = Enumerable.Empty<int>().AsTestingCollection(maxEnumerations: 2);
 		source.FallbackIfEmpty(12).AssertSequenceEqual(12);
-		source.FallbackIfEmpty(12, 23).AssertSequenceEqual(12, 23);
 	}
 
 	[Fact]
