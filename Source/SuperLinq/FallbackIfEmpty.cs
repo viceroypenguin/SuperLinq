@@ -40,8 +40,8 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(fallback);
 
-		return source is ICollection<T> 
-			? new FallbackIfEmptyCollectionIterator<T>(source, fallback) 
+		return source is ICollection<T>
+			? new FallbackIfEmptyCollectionIterator<T>(source, fallback)
 			: Core(source, fallback);
 
 		static IEnumerable<T> Core(IEnumerable<T> source, IEnumerable<T> fallback)
