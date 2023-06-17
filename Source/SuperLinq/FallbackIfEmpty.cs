@@ -76,13 +76,13 @@ public static partial class SuperEnumerable
 		}
 
 		public override int Count =>
-			_source.TryGetCollectionCount() is { } and 0
+			_source.GetCollectionCount() == 0
 				? _fallback.Count()
 				: _source.GetCollectionCount();
 
 		protected override IEnumerable<T> GetEnumerable()
 		{
-			return _source.TryGetCollectionCount() is { } and 0
+			return _source.GetCollectionCount() == 0
 				? _fallback
 				: _source;
 		}
