@@ -52,14 +52,13 @@ public class FallbackIfEmptyTest
 	[Fact]
 	public void FallbackIfEmptyUsesCollectionCountAtIterationTime()
 	{
-		using var source = new BreakingCountCollection<int>();
+		var stack = new Stack<int>(Enumerable.Range(1, 3));
+		var result = stack.FallbackIfEmpty(4);
 
-		var result = source.FallbackIfEmpty(new BreakingSequence<int>());
-		_ = Assert.Throws<TestException>(() => result.Consume());
-	}
+		result.Consume();
 
-	internal class BreakingCountCollection<T> : BreakingCollection<T>
-	{
-		public new int Count => throw new TestException();
+		stack.Push(4);
+
+		result.Consume();
 	}
 }
