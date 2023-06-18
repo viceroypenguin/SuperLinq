@@ -44,7 +44,8 @@ public class FallbackIfEmptyTest
 	{
 		using var source = Seq(1).AsTestingCollection(maxEnumerations: 2);
 
-		var result = source.FallbackIfEmpty(new BreakingSequence<int>());
+		using var fallback = new BreakingCollection<int>();
+		var result = source.FallbackIfEmpty(fallback);
 		result.AssertCollectionErrorChecking(1);
 	}
 
