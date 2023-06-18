@@ -12,7 +12,7 @@ public class FallbackIfEmptyTest
 	[Fact]
 	public void FallbackIfEmptyWithCollectionSequence()
 	{
-		using var source = Enumerable.Empty<int>().AsTestingCollection(maxEnumerations: 2);
+		using var source = Enumerable.Empty<int>().AsTestingCollection();
 		source.FallbackIfEmpty(12).AssertSequenceEqual(12);
 	}
 

@@ -41,6 +41,7 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(fallback);
 
 		return source.TryGetCollectionCount() is not null
+			   && fallback.TryGetCollectionCount() is not null
 			? new FallbackIfEmptyCollectionIterator<T>(source, fallback)
 			: Core(source, fallback);
 
