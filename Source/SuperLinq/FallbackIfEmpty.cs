@@ -40,7 +40,10 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(fallback);
 
-		return Core(source, fallback);
+		return source.TryGetCollectionCount() is not null
+			   && fallback.TryGetCollectionCount() is not null
+			? new FallbackIfEmptyCollectionIterator<T>(source, fallback)
+			: Core(source, fallback);
 
 		static IEnumerable<T> Core(IEnumerable<T> source, IEnumerable<T> fallback)
 		{
@@ -48,14 +51,41 @@ public static partial class SuperEnumerable
 			{
 				if (e.MoveNext())
 				{
-					do { yield return e.Current; }
-					while (e.MoveNext());
+					do
+					{
+						yield return e.Current;
+					} while (e.MoveNext());
+
 					yield break;
 				}
 			}
 
 			foreach (var item in fallback)
 				yield return item;
+		}
+	}
+
+	private sealed class FallbackIfEmptyCollectionIterator<T> : CollectionIterator<T>
+	{
+		private readonly IEnumerable<T> _source;
+		private readonly IEnumerable<T> _fallback;
+
+		public FallbackIfEmptyCollectionIterator(IEnumerable<T> source, IEnumerable<T> fallback)
+		{
+			_source = source;
+			_fallback = fallback;
+		}
+
+		public override int Count =>
+			_source.GetCollectionCount() == 0
+				? _fallback.Count()
+				: _source.GetCollectionCount();
+
+		protected override IEnumerable<T> GetEnumerable()
+		{
+			return _source.GetCollectionCount() == 0
+				? _fallback
+				: _source;
 		}
 	}
 }
