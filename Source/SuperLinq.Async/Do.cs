@@ -16,6 +16,9 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> Do<TSource>(this IAsyncEnumerable<TSource> source, Action<TSource> onNext)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(onNext);
+
 		return Do(source, onNext.ToAsync(), onCompleted: () => default);
 	}
 
@@ -33,6 +36,9 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> Do<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask> onNext)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(onNext);
+
 		return Do(source, onNext, onCompleted: () => default);
 	}
 
@@ -111,6 +117,10 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> Do<TSource>(this IAsyncEnumerable<TSource> source, Action<TSource> onNext, Action<Exception> onError)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(onNext);
+		Guard.IsNotNull(onError);
+
 		return Do(source, onNext.ToAsync(), onError.ToAsync(), onCompleted: () => default);
 	}
 
@@ -129,6 +139,10 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> Do<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask> onNext, Func<Exception, ValueTask> onError)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(onNext);
+		Guard.IsNotNull(onError);
+
 		return Do(source, onNext, onError, onCompleted: () => default);
 	}
 
@@ -149,6 +163,11 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> Do<TSource>(this IAsyncEnumerable<TSource> source, Action<TSource> onNext, Action<Exception> onError, Action onCompleted)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(onNext);
+		Guard.IsNotNull(onError);
+		Guard.IsNotNull(onCompleted);
+
 		return Do(source, onNext.ToAsync(), onError.ToAsync(), onCompleted.ToAsync());
 	}
 
