@@ -256,7 +256,7 @@ public partial class AsyncSuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static async ValueTask<TCost?> GetShortestPathCost<TState, TCost>(
+	public static ValueTask<TCost?> GetShortestPathCost<TState, TCost>(
 		TState start,
 		Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost)>> getNeighbors,
 		Func<TState, ValueTask<bool>> predicate,
@@ -273,31 +273,42 @@ public partial class AsyncSuperEnumerable
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
 
-		var totalCost = new Dictionary<TState, TCost?>(stateComparer);
-		var queue = new UpdatablePriorityQueue<TState, TCost>(16, costComparer, stateComparer);
+		return Core(start, getNeighbors, predicate, stateComparer, costComparer, cancellationToken);
 
-		var current = start;
-		TCost? cost = default;
-		do
+		static async ValueTask<TCost?> Core(
+			TState start,
+			Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost)>> getNeighbors,
+			Func<TState, ValueTask<bool>> predicate,
+			IEqualityComparer<TState> stateComparer,
+			IComparer<TCost> costComparer,
+			CancellationToken cancellationToken)
 		{
-			cancellationToken.ThrowIfCancellationRequested();
+			var totalCost = new Dictionary<TState, TCost?>(stateComparer);
+			var queue = new UpdatablePriorityQueue<TState, TCost>(16, costComparer, stateComparer);
 
-			totalCost[current] = cost;
-			if (await predicate(current).ConfigureAwait(false))
-				break;
-
-			var newStates = getNeighbors(current, cost);
-			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
+			var current = start;
+			TCost? cost = default;
+			do
 			{
-				if (!totalCost.TryGetValue(s, out _))
-					queue.EnqueueMinimum(s, p);
-			}
+				cancellationToken.ThrowIfCancellationRequested();
 
-			if (!queue.TryDequeue(out current, out cost))
-				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
-		} while (true);
+				totalCost[current] = cost;
+				if (await predicate(current).ConfigureAwait(false))
+					break;
 
-		return cost;
+				var newStates = getNeighbors(current, cost);
+				await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
+				{
+					if (!totalCost.TryGetValue(s, out _))
+						queue.EnqueueMinimum(s, p);
+				}
+
+				if (!queue.TryDequeue(out current, out cost))
+					ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
+			} while (true);
+
+			return cost;
+		}
 	}
 
 	#endregion
@@ -559,7 +570,7 @@ public partial class AsyncSuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static async ValueTask<IEnumerable<(TState state, TCost? cost)>>
+	public static ValueTask<IEnumerable<(TState state, TCost? cost)>>
 		GetShortestPath<TState, TCost>(
 			TState start,
 			Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost)>> getNeighbors,
@@ -577,44 +588,56 @@ public partial class AsyncSuperEnumerable
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
 
-		var totalCost = new Dictionary<TState, (TState? parent, TCost? cost)>(stateComparer);
-		var queue = new UpdatablePriorityQueue<TState, (TState? parent, TCost cost)>(
-			16,
-			priorityComparer: Comparer<(TState? parent, TCost cost)>.Create(
-				(x, y) => costComparer.Compare(x.cost, y.cost)),
-			stateComparer);
+		return Core(start, getNeighbors, predicate, stateComparer, costComparer, cancellationToken);
 
-		var current = start;
-		TState? end = default;
-		(TState? parent, TCost cost) from = default;
-		do
+		static async ValueTask<IEnumerable<(TState state, TCost? cost)>>
+			Core(
+				TState start,
+				Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost)>> getNeighbors,
+				Func<TState, ValueTask<bool>> predicate,
+				IEqualityComparer<TState> stateComparer,
+				IComparer<TCost> costComparer,
+				CancellationToken cancellationToken)
 		{
-			cancellationToken.ThrowIfCancellationRequested();
+			var totalCost = new Dictionary<TState, (TState? parent, TCost? cost)>(stateComparer);
+			var queue = new UpdatablePriorityQueue<TState, (TState? parent, TCost cost)>(
+				16,
+				priorityComparer: Comparer<(TState? parent, TCost cost)>.Create(
+					(x, y) => costComparer.Compare(x.cost, y.cost)),
+				stateComparer);
 
-			totalCost[current] = from;
-			if (await predicate(current).ConfigureAwait(false))
+			var current = start;
+			TState? end = default;
+			(TState? parent, TCost cost) from = default;
+			do
 			{
-				end = current;
-				break;
-			}
+				cancellationToken.ThrowIfCancellationRequested();
 
-			var cost = from.cost;
-			var newStates = getNeighbors(current, cost);
-			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
-			{
-				if (!totalCost.TryGetValue(s, out _))
-					queue.EnqueueMinimum(s, (current, p));
-			}
+				totalCost[current] = from;
+				if (await predicate(current).ConfigureAwait(false))
+				{
+					end = current;
+					break;
+				}
 
-			if (!queue.TryDequeue(out current, out from))
-				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
-		} while (true);
+				var cost = from.cost;
+				var newStates = getNeighbors(current, cost);
+				await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
+				{
+					if (!totalCost.TryGetValue(s, out _))
+						queue.EnqueueMinimum(s, (current, p));
+				}
 
-		return SuperEnumerable.Generate(end, x => totalCost[x].parent!)
-			.TakeUntil(x => stateComparer.Equals(x, start))
-			.ZipMap(x => totalCost[x].cost)
-			.Reverse()
-			.ToList();
+				if (!queue.TryDequeue(out current, out from))
+					ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
+			} while (true);
+
+			return SuperEnumerable.Generate(end, x => totalCost[x].parent!)
+				.TakeUntil(x => stateComparer.Equals(x, start))
+				.ZipMap(x => totalCost[x].cost)
+				.Reverse()
+				.ToList();
+		}
 	}
 
 	#endregion
@@ -757,7 +780,7 @@ public partial class AsyncSuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static async ValueTask<IReadOnlyDictionary<TState, (TState? previousState, TCost? cost)>>
+	public static ValueTask<IReadOnlyDictionary<TState, (TState? previousState, TCost? cost)>>
 		GetShortestPaths<TState, TCost>(
 			TState start,
 			Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost)>> getNeighbors,
@@ -773,31 +796,42 @@ public partial class AsyncSuperEnumerable
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
 
-		var totalCost = new Dictionary<TState, (TState? parent, TCost? cost)>(stateComparer);
-		var queue = new UpdatablePriorityQueue<TState, (TState? parent, TCost? cost)>(
-			16,
-			priorityComparer: Comparer<(TState? parent, TCost? cost)>.Create(
-				(x, y) => costComparer.Compare(x.cost, y.cost)),
-			stateComparer);
+		return Core(start, getNeighbors, stateComparer, costComparer, cancellationToken);
 
-		var current = start;
-		(TState? parent, TCost? cost) from = default;
-		do
+		static async ValueTask<IReadOnlyDictionary<TState, (TState? previousState, TCost? cost)>>
+			Core(
+				TState start,
+				Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost)>> getNeighbors,
+				IEqualityComparer<TState> stateComparer,
+				IComparer<TCost> costComparer,
+				CancellationToken cancellationToken = default)
 		{
-			cancellationToken.ThrowIfCancellationRequested();
+			var totalCost = new Dictionary<TState, (TState? parent, TCost? cost)>(stateComparer);
+			var queue = new UpdatablePriorityQueue<TState, (TState? parent, TCost? cost)>(
+				16,
+				priorityComparer: Comparer<(TState? parent, TCost? cost)>.Create(
+					(x, y) => costComparer.Compare(x.cost, y.cost)),
+				stateComparer);
 
-			totalCost[current] = from;
-
-			var cost = from.cost;
-			var newStates = getNeighbors(current, cost);
-			await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
+			var current = start;
+			(TState? parent, TCost? cost) from = default;
+			do
 			{
-				if (!totalCost.TryGetValue(s, out _))
-					queue.EnqueueMinimum(s, (current, p));
-			}
-		} while (queue.TryDequeue(out current, out from));
+				cancellationToken.ThrowIfCancellationRequested();
 
-		return totalCost;
+				totalCost[current] = from;
+
+				var cost = from.cost;
+				var newStates = getNeighbors(current, cost);
+				await foreach (var (s, p) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
+				{
+					if (!totalCost.TryGetValue(s, out _))
+						queue.EnqueueMinimum(s, (current, p));
+				}
+			} while (queue.TryDequeue(out current, out from));
+
+			return totalCost;
+		}
 	}
 
 	#endregion
@@ -1072,7 +1106,7 @@ public partial class AsyncSuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static async ValueTask<TCost?> GetShortestPathCost<TState, TCost>(
+	public static ValueTask<TCost?> GetShortestPathCost<TState, TCost>(
 		TState start,
 		Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost, TCost bestGuess)>> getNeighbors,
 		Func<TState, ValueTask<bool>> predicate,
@@ -1089,40 +1123,51 @@ public partial class AsyncSuperEnumerable
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
 
-		var totalCost = new Dictionary<TState, TCost?>(stateComparer);
-		var queue = new UpdatablePriorityQueue<TState, (TCost bestGuess, TCost traversed)>(
-			16,
-			priorityComparer: Comparer<(TCost bestGuess, TCost traversed)>.Create(
-				(x, y) =>
-				{
-					var cmp = costComparer.Compare(x.bestGuess, y.bestGuess);
-					return cmp != 0 ? cmp : costComparer.Compare(x.traversed, y.traversed);
-				}),
-			stateComparer);
+		return Core(start, getNeighbors, predicate, stateComparer, costComparer, cancellationToken);
 
-		var current = start;
-		(TCost bestGuess, TCost traversed) costs = default;
-		do
+		static async ValueTask<TCost?> Core(
+			TState start,
+			Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost cost, TCost bestGuess)>> getNeighbors,
+			Func<TState, ValueTask<bool>> predicate,
+			IEqualityComparer<TState> stateComparer,
+			IComparer<TCost> costComparer,
+			CancellationToken cancellationToken)
 		{
-			cancellationToken.ThrowIfCancellationRequested();
+			var totalCost = new Dictionary<TState, TCost?>(stateComparer);
+			var queue = new UpdatablePriorityQueue<TState, (TCost bestGuess, TCost traversed)>(
+				16,
+				priorityComparer: Comparer<(TCost bestGuess, TCost traversed)>.Create(
+					(x, y) =>
+					{
+						var cmp = costComparer.Compare(x.bestGuess, y.bestGuess);
+						return cmp != 0 ? cmp : costComparer.Compare(x.traversed, y.traversed);
+					}),
+				stateComparer);
 
-			if (!totalCost.TryGetValue(current, out var oldCost)
-				|| costComparer.Compare(costs.traversed, oldCost) < 0)
+			var current = start;
+			(TCost bestGuess, TCost traversed) costs = default;
+			do
 			{
-				totalCost[current] = costs.traversed;
-				if (await predicate(current).ConfigureAwait(false))
-					break;
+				cancellationToken.ThrowIfCancellationRequested();
 
-				var newStates = getNeighbors(current, costs.traversed);
-				await foreach (var (s, p, h) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
-					queue.EnqueueMinimum(s, (h, p));
-			}
+				if (!totalCost.TryGetValue(current, out var oldCost)
+					|| costComparer.Compare(costs.traversed, oldCost) < 0)
+				{
+					totalCost[current] = costs.traversed;
+					if (await predicate(current).ConfigureAwait(false))
+						break;
 
-			if (!queue.TryDequeue(out current, out costs))
-				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
-		} while (true);
+					var newStates = getNeighbors(current, costs.traversed);
+					await foreach (var (s, p, h) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
+						queue.EnqueueMinimum(s, (h, p));
+				}
 
-		return costs.traversed;
+				if (!queue.TryDequeue(out current, out costs))
+					ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
+			} while (true);
+
+			return costs.traversed;
+		}
 	}
 
 	#endregion
@@ -1406,7 +1451,7 @@ public partial class AsyncSuperEnumerable
 	///  This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static async ValueTask<IEnumerable<(TState nextState, TCost? cost)>>
+	public static ValueTask<IEnumerable<(TState nextState, TCost? cost)>>
 		GetShortestPath<TState, TCost>(
 			TState start,
 			Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost traversed, TCost bestGuess)>> getNeighbors,
@@ -1424,49 +1469,61 @@ public partial class AsyncSuperEnumerable
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
 
-		var totalCost = new Dictionary<TState, (TState? parent, TCost? traversed)>(stateComparer);
-		var queue = new UpdatablePriorityQueue<TState, (TState? parent, TCost bestGuess, TCost traversed)>(
-			16,
-			priorityComparer: Comparer<(TState? parent, TCost bestGuess, TCost traversed)>.Create(
-				(x, y) =>
-				{
-					var cmp = costComparer.Compare(x.bestGuess, y.bestGuess);
-					return cmp != 0 ? cmp : costComparer.Compare(x.traversed, y.traversed);
-				}),
-			stateComparer);
+		return Core(start, getNeighbors, predicate, stateComparer, costComparer, cancellationToken);
 
-		var current = start;
-		TState? end = default;
-		(TState? parent, TCost bestGuess, TCost traversed) from = default;
-		do
+		static async ValueTask<IEnumerable<(TState nextState, TCost? cost)>>
+			Core(
+				TState start,
+				Func<TState, TCost?, IAsyncEnumerable<(TState nextState, TCost traversed, TCost bestGuess)>> getNeighbors,
+				Func<TState, ValueTask<bool>> predicate,
+				IEqualityComparer<TState> stateComparer,
+				IComparer<TCost> costComparer,
+				CancellationToken cancellationToken = default)
 		{
-			cancellationToken.ThrowIfCancellationRequested();
+			var totalCost = new Dictionary<TState, (TState? parent, TCost? traversed)>(stateComparer);
+			var queue = new UpdatablePriorityQueue<TState, (TState? parent, TCost bestGuess, TCost traversed)>(
+				16,
+				priorityComparer: Comparer<(TState? parent, TCost bestGuess, TCost traversed)>.Create(
+					(x, y) =>
+					{
+						var cmp = costComparer.Compare(x.bestGuess, y.bestGuess);
+						return cmp != 0 ? cmp : costComparer.Compare(x.traversed, y.traversed);
+					}),
+				stateComparer);
 
-			if (!totalCost.TryGetValue(current, out var oldCost)
-				|| costComparer.Compare(from.traversed, oldCost.traversed) < 0)
+			var current = start;
+			TState? end = default;
+			(TState? parent, TCost bestGuess, TCost traversed) from = default;
+			do
 			{
-				totalCost[current] = (from.parent, from.traversed);
-				if (await predicate(current).ConfigureAwait(false))
+				cancellationToken.ThrowIfCancellationRequested();
+
+				if (!totalCost.TryGetValue(current, out var oldCost)
+					|| costComparer.Compare(from.traversed, oldCost.traversed) < 0)
 				{
-					end = current;
-					break;
+					totalCost[current] = (from.parent, from.traversed);
+					if (await predicate(current).ConfigureAwait(false))
+					{
+						end = current;
+						break;
+					}
+
+					var cost = from.traversed;
+					var newStates = getNeighbors(current, cost);
+					await foreach (var (s, p, h) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
+						queue.EnqueueMinimum(s, (current, h, p));
 				}
 
-				var cost = from.traversed;
-				var newStates = getNeighbors(current, cost);
-				await foreach (var (s, p, h) in newStates.WithCancellation(cancellationToken).ConfigureAwait(false))
-					queue.EnqueueMinimum(s, (current, h, p));
-			}
+				if (!queue.TryDequeue(out current, out from))
+					ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
+			} while (true);
 
-			if (!queue.TryDequeue(out current, out from))
-				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
-		} while (true);
-
-		return SuperEnumerable.Generate(end, x => totalCost[x].parent!)
-			.TakeUntil(x => stateComparer.Equals(x, start))
-			.ZipMap(x => totalCost[x].traversed)
-			.Reverse()
-			.ToList();
+			return SuperEnumerable.Generate(end, x => totalCost[x].parent!)
+				.TakeUntil(x => stateComparer.Equals(x, start))
+				.ZipMap(x => totalCost[x].traversed)
+				.Reverse()
+				.ToList();
+		}
 	}
 
 	#endregion
