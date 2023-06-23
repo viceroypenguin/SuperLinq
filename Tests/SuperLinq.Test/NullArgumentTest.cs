@@ -20,31 +20,33 @@ public class NullArgumentTest
 	public static IEnumerable<object[]> GetNotNullInlineDatas() =>
 		GetInlineDatas(canBeNull: false, inlineDataFactory: (method, args, paramName) => () =>
 		{
-			Exception? e = null;
+			var tie = Assert.Throws<TargetInvocationException>(() =>
+				method.Invoke(null, args));
 
+			var e = tie.InnerException;
+			Assert.NotNull(e);
+
+			var ane = Assert.IsAssignableFrom<ArgumentNullException>(e);
+			Assert.Equal(paramName, ane.ParamName);
+		});
+
+	public static IEnumerable<object[]> GetCanBeNullInlineDatas() =>
+		GetInlineDatas(canBeNull: true, inlineDataFactory: (method, args, paramName) => () =>
+		{
 			try
 			{
 				_ = method.Invoke(null, args);
 			}
 			catch (TargetInvocationException tie)
 			{
-				e = tie.InnerException;
+				Assert.False(tie.InnerException != null
+					&& tie.InnerException is ArgumentNullException ane
+					&& ane.ParamName != paramName);
 			}
-
-			Assert.NotNull(e);
-			_ = Assert.IsAssignableFrom<ArgumentNullException>(e);
-			var ane = (ArgumentNullException)e!;
-			Assert.Equal(paramName, ane.ParamName);
 		});
-
-	public static IEnumerable<object[]> GetCanBeNullInlineDatas() =>
-		GetInlineDatas(canBeNull: true, inlineDataFactory: (method, args, _) => () => method.Invoke(null, args));
 
 	private static readonly string[] s_skipMethods =
 	{
-		nameof(SuperEnumerable.GetShortestPath),
-		nameof(SuperEnumerable.GetShortestPathCost),
-		nameof(SuperEnumerable.GetShortestPaths),
 		nameof(SuperEnumerable.CopyTo),
 	};
 
@@ -137,6 +139,7 @@ public class NullArgumentTest
 		if (type == typeof(JoinType)) return JoinType.Hash;
 		if (type == typeof(StringComparer)) return StringComparer.Ordinal;
 		if (type == typeof(TaskScheduler)) return TaskScheduler.Default;
+		if (type == typeof(IDisposable)) return new Disposable();
 		if (type.IsArray) return Array.CreateInstance(type.GetElementType()!, 0);
 		if (type.GetTypeInfo().IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type)!;
 		if (typeof(Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
@@ -155,7 +158,9 @@ public class NullArgumentTest
 	{
 		var invoke = type.GetMethod("Invoke");
 		var parameters = invoke!.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name));
-		var body = Expression.Default(invoke.ReturnType); // requires >= .NET 4.0
+		Expression body = invoke.ReturnType == typeof(void)
+			? Expression.Default(invoke.ReturnType)
+			: Expression.Constant(CreateInstance(invoke.ReturnType)); // requires >= .NET 4.0
 		var lambda = Expression.Lambda(type, body, parameters);
 		return lambda.Compile();
 	}
@@ -167,6 +172,11 @@ public class NullArgumentTest
 		var definition = typeof(GenericArgs).GetTypeInfo().GetNestedType(name);
 		var instantiation = definition!.MakeGenericType(type.GetGenericArguments());
 		return Activator.CreateInstance(instantiation)!;
+	}
+
+	private class Disposable : IDisposable
+	{
+		public void Dispose() { }
 	}
 
 	private static class EmptyEnumerable
