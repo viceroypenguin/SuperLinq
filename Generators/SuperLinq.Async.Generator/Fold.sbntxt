@@ -20,7 +20,7 @@ public static partial class AsyncSuperEnumerable
     /// <exception cref="global::System.InvalidOperationException">
 	/// <paramref name="source"/> does not contain exactly {{$i}} element{{if $i != 1}}s{{end}}.
 	/// </exception>
-    public static async global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<
+    public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<
 		{{~ for $j in 1..$i ~}}
 		T,
 		{{~ end ~}}
@@ -29,13 +29,22 @@ public static partial class AsyncSuperEnumerable
 		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
 		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
 
-		var elements = await source.AssertCount({{$i}}).ToListAsync().ConfigureAwait(false);
+		return Core(source, folder);
 
-		return folder(
+		static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<
 			{{~ for $j in 1..$i ~}}
-			elements[{{$j-1}}]{{ if !for.last }},{{ end }}
+			T,
 			{{~ end ~}}
-		);
+			TResult> folder)
+		{
+			var elements = await source.AssertCount({{$i}}).ToListAsync().ConfigureAwait(false);
+
+			return folder(
+				{{~ for $j in 1..$i ~}}
+				elements[{{$j-1}}]{{ if !for.last }},{{ end }}
+				{{~ end ~}}
+			);
+		}
 	}
 	{{ end ~}}
 }
