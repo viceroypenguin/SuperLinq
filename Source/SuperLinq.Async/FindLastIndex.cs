@@ -115,48 +115,53 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static async ValueTask<int> FindLastIndex<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count, CancellationToken cancellationToken = default)
+	public static ValueTask<int> FindLastIndex<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(predicate);
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 
-		if (!index.IsFromEnd)
+		return Core(source, predicate, index, count, cancellationToken);
+
+		static async ValueTask<int> Core(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count, CancellationToken cancellationToken)
 		{
-			var lastIndex = -1;
-			var i = 0;
-			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
+			if (!index.IsFromEnd)
 			{
-				if (i >= index.Value)
-					break;
-
-				if (predicate(element))
-					lastIndex = i;
-				i++;
-			}
-
-			return i - lastIndex > count ? -1 : lastIndex;
-		}
-		else
-		{
-			var indexFromEnd = index.Value - 1;
-			var lastIndex = -1;
-			var i = 0;
-
-			Queue<TSource> queue = new(indexFromEnd + 1);
-			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-			{
-				queue.Enqueue(element);
-				if (queue.Count > indexFromEnd)
+				var lastIndex = -1;
+				var i = 0;
+				await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 				{
-					if (predicate(queue.Dequeue()))
-						lastIndex = i;
+					if (i >= index.Value)
+						break;
 
+					if (predicate(element))
+						lastIndex = i;
 					i++;
 				}
-			}
 
-			return i - lastIndex > count ? -1 : lastIndex;
+				return i - lastIndex > count ? -1 : lastIndex;
+			}
+			else
+			{
+				var indexFromEnd = index.Value - 1;
+				var lastIndex = -1;
+				var i = 0;
+
+				Queue<TSource> queue = new(indexFromEnd + 1);
+				await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
+				{
+					queue.Enqueue(element);
+					if (queue.Count > indexFromEnd)
+					{
+						if (predicate(queue.Dequeue()))
+							lastIndex = i;
+
+						i++;
+					}
+				}
+
+				return i - lastIndex > count ? -1 : lastIndex;
+			}
 		}
 	}
 }
