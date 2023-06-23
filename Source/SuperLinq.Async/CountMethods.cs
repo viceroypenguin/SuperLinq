@@ -154,26 +154,29 @@ public static partial class AsyncSuperEnumerable
 	/// The <c>result</c> variable will contain <c>1</c>.
 	/// </example>
 
-	public static async ValueTask<int> CompareCount<TFirst, TSecond>(this IAsyncEnumerable<TFirst> first, IAsyncEnumerable<TSecond> second, CancellationToken cancellationToken = default)
+	public static ValueTask<int> CompareCount<TFirst, TSecond>(this IAsyncEnumerable<TFirst> first, IAsyncEnumerable<TSecond> second, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(first);
 		Guard.IsNotNull(second);
 
-		bool firstHasNext;
-		bool secondHasNext;
+		return Core(first, second, cancellationToken);
 
-		await using var e1 = first.GetConfiguredAsyncEnumerator(cancellationToken);
-		await using var e2 = second.GetConfiguredAsyncEnumerator(cancellationToken);
-
+		static async ValueTask<int> Core(IAsyncEnumerable<TFirst> first, IAsyncEnumerable<TSecond> second, CancellationToken cancellationToken)
 		{
+			bool firstHasNext;
+			bool secondHasNext;
+
+			await using var e1 = first.GetConfiguredAsyncEnumerator(cancellationToken);
+			await using var e2 = second.GetConfiguredAsyncEnumerator(cancellationToken);
+
 			do
 			{
 				firstHasNext = await e1.MoveNextAsync();
 				secondHasNext = await e2.MoveNextAsync();
 			}
 			while (firstHasNext && secondHasNext);
-		}
 
-		return firstHasNext.CompareTo(secondHasNext);
+			return firstHasNext.CompareTo(secondHasNext);
+		}
 	}
 }

@@ -75,7 +75,7 @@ public static partial class AsyncSuperEnumerable
 	/// This method executes immediately.
 	/// </para>
 	/// </remarks>
-	public static async ValueTask<bool> CollectionEqual<TSource>(
+	public static ValueTask<bool> CollectionEqual<TSource>(
 		this IAsyncEnumerable<TSource> first,
 		IAsyncEnumerable<TSource> second,
 		IEqualityComparer<TSource>? comparer,
@@ -84,12 +84,21 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(first);
 		Guard.IsNotNull(second);
 
-		var firstSet = await first.CountBy(Identity, comparer)
-			.ToHashSetAsync(ValueTupleEqualityComparer.Create<TSource, int>(comparer, comparer2: null), cancellationToken)
-			.ConfigureAwait(false);
-		var secondSet = await second.CountBy(Identity, comparer)
-			.ToListAsync(cancellationToken)
-			.ConfigureAwait(false);
-		return firstSet.SetEquals(secondSet);
+		return Core(first, second, comparer, cancellationToken);
+
+		static async ValueTask<bool> Core(
+			IAsyncEnumerable<TSource> first,
+			IAsyncEnumerable<TSource> second,
+			IEqualityComparer<TSource>? comparer,
+			CancellationToken cancellationToken = default)
+		{
+			var firstSet = await first.CountBy(Identity, comparer)
+				.ToHashSetAsync(ValueTupleEqualityComparer.Create<TSource, int>(comparer, comparer2: null), cancellationToken)
+				.ConfigureAwait(false);
+			var secondSet = await second.CountBy(Identity, comparer)
+				.ToListAsync(cancellationToken)
+				.ConfigureAwait(false);
+			return firstSet.SetEquals(secondSet);
+		}
 	}
 }

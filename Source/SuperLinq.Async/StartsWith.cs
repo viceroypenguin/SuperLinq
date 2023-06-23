@@ -25,6 +25,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static ValueTask<bool> StartsWith<T>(this IAsyncEnumerable<T> first, IEnumerable<T> second, CancellationToken cancellationToken = default)
 	{
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+
 		return StartsWith(first, second.ToAsyncEnumerable(), comparer: null, cancellationToken);
 	}
 
@@ -77,6 +80,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static ValueTask<bool> StartsWith<T>(this IAsyncEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T>? comparer, CancellationToken cancellationToken = default)
 	{
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+
 		return StartsWith(first, second.ToAsyncEnumerable(), comparer, cancellationToken);
 	}
 
@@ -101,19 +107,24 @@ public static partial class AsyncSuperEnumerable
 	/// of elements at the same index.
 	/// </remarks>
 
-	public static async ValueTask<bool> StartsWith<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, IEqualityComparer<T>? comparer, CancellationToken cancellationToken = default)
+	public static ValueTask<bool> StartsWith<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, IEqualityComparer<T>? comparer, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(first);
 		Guard.IsNotNull(second);
 
 		comparer ??= EqualityComparer<T>.Default;
 
-		var snd = await second.ToListAsync(cancellationToken).ConfigureAwait(false);
-		return await first.Take(snd.Count)
-			.SequenceEqualAsync(
-				snd.ToAsyncEnumerable(),
-				comparer,
-				cancellationToken)
-			.ConfigureAwait(false);
+		return Core(first, second, comparer, cancellationToken);
+
+		static async ValueTask<bool> Core(IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, IEqualityComparer<T>? comparer, CancellationToken cancellationToken)
+		{
+			var snd = await second.ToListAsync(cancellationToken).ConfigureAwait(false);
+			return await first.Take(snd.Count)
+				.SequenceEqualAsync(
+					snd.ToAsyncEnumerable(),
+					comparer,
+					cancellationToken)
+				.ConfigureAwait(false);
+		}
 	}
 }

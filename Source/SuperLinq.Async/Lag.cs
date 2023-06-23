@@ -61,6 +61,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TResult> Lag<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(resultSelector);
+
 		return source.Lag(offset, defaultLagValue, (curr, lag) => new ValueTask<TResult>(resultSelector(curr, lag)));
 	}
 

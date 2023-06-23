@@ -23,6 +23,9 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> While<TSource>(Func<bool> condition, IAsyncEnumerable<TSource> source)
 	{
+		Guard.IsNotNull(condition);
+		Guard.IsNotNull(source);
+
 		return While(condition.ToAsync(), source);
 	}
 

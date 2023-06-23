@@ -11,7 +11,9 @@ public static partial class AsyncSuperEnumerable
 	/// <see langword="true"/> if any element of the sequence <paramref name="source" /> is duplicated, <see langword="false"/> otherwise 
 	/// </returns>
 	public static ValueTask<bool> HasDuplicates<T>(this IAsyncEnumerable<T> source)
-		=> source.HasDuplicates(EqualityComparer<T>.Default);
+	{
+		return source.HasDuplicates(EqualityComparer<T>.Default);
+	}
 
 	/// <summary>
 	///   Checks if sequence contains duplicates, using the specified element equality comparer
@@ -24,7 +26,9 @@ public static partial class AsyncSuperEnumerable
 	/// <see langword="true"/> if any element of the sequence <paramref name="source" /> is duplicated, <see langword="false"/> otherwise 
 	/// </returns>
 	public static ValueTask<bool> HasDuplicates<T>(this IAsyncEnumerable<T> source, IEqualityComparer<T>? comparer)
-		=> source.HasDuplicates(Identity, comparer);
+	{
+		return source.HasDuplicates(Identity, comparer);
+	}
 
 	/// <summary>
 	///   Checks if sequence contains duplicates, using the specified element equality comparer
@@ -37,7 +41,9 @@ public static partial class AsyncSuperEnumerable
 	/// <see langword="true"/> if any element of the sequence <paramref name="source" /> is duplicated, <see langword="false"/> otherwise 
 	/// </returns>
 	public static ValueTask<bool> HasDuplicates<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector)
-		=> source.HasDuplicates(keySelector, EqualityComparer<TKey>.Default);
+	{
+		return source.HasDuplicates(keySelector, EqualityComparer<TKey>.Default);
+	}
 
 	/// <summary>
 	///   Checks if sequence contains duplicates, using the specified element equality comparer
@@ -51,22 +57,27 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>
 	/// <see langword="true"/> if any element of the sequence <paramref name="source" /> is duplicated, <see langword="false"/> otherwise 
 	/// </returns>
-	public static async ValueTask<bool> HasDuplicates<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+	public static ValueTask<bool> HasDuplicates<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		var enumeratedElements = new HashSet<TKey>(comparer);
+		return Core(source, keySelector, comparer);
 
-		await foreach (var element in source.ConfigureAwait(false))
+		static async ValueTask<bool> Core(IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
 		{
-			if (!enumeratedElements.Add(keySelector(element)))
-			{
-				return true;
-			}
-		}
+			var enumeratedElements = new HashSet<TKey>(comparer);
 
-		return false;
+			await foreach (var element in source.ConfigureAwait(false))
+			{
+				if (!enumeratedElements.Add(keySelector(element)))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 	}
 }
 

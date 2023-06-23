@@ -14,7 +14,7 @@ public partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This operator executes immediately.
 	/// </remarks>
-	public static async ValueTask ForEach<TSource>(
+	public static ValueTask ForEach<TSource>(
 		this IAsyncEnumerable<TSource> source,
 		Action<TSource> action,
 		CancellationToken cancellationToken = default)
@@ -22,8 +22,16 @@ public partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(action);
 
-		await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-			action(element);
+		return Core(source, action, cancellationToken);
+
+		static async ValueTask Core(
+			IAsyncEnumerable<TSource> source,
+			Action<TSource> action,
+			CancellationToken cancellationToken)
+		{
+			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
+				action(element);
+		}
 	}
 
 	/// <summary>
@@ -38,7 +46,7 @@ public partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This operator executes immediately.
 	/// </remarks>
-	public static async ValueTask ForEach<TSource>(
+	public static ValueTask ForEach<TSource>(
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, ValueTask> action,
 		CancellationToken cancellationToken = default)
@@ -46,8 +54,16 @@ public partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(action);
 
-		await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-			await action(element).ConfigureAwait(false);
+		return Core(source, action, cancellationToken);
+
+		static async ValueTask Core(
+			IAsyncEnumerable<TSource> source,
+			Func<TSource, ValueTask> action,
+			CancellationToken cancellationToken)
+		{
+			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
+				await action(element).ConfigureAwait(false);
+		}
 	}
 
 	/// <summary>
@@ -64,7 +80,7 @@ public partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This operator executes immediately.
 	/// </remarks>
-	public static async ValueTask ForEach<TSource>(
+	public static ValueTask ForEach<TSource>(
 		this IAsyncEnumerable<TSource> source,
 		Action<TSource, int> action,
 		CancellationToken cancellationToken = default)
@@ -72,9 +88,17 @@ public partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(action);
 
-		var index = 0;
-		await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-			action(element, index++);
+		return Core(source, action, cancellationToken);
+
+		static async ValueTask Core(
+			IAsyncEnumerable<TSource> source,
+			Action<TSource, int> action,
+			CancellationToken cancellationToken)
+		{
+			var index = 0;
+			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
+				action(element, index++);
+		}
 	}
 
 	/// <summary>
@@ -91,7 +115,7 @@ public partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This operator executes immediately.
 	/// </remarks>
-	public static async ValueTask ForEach<TSource>(
+	public static ValueTask ForEach<TSource>(
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, int, ValueTask> action,
 		CancellationToken cancellationToken = default)
@@ -99,8 +123,16 @@ public partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(action);
 
-		var index = 0;
-		await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-			await action(element, index++).ConfigureAwait(false);
+		return Core(source, action, cancellationToken);
+
+		static async ValueTask Core(
+			IAsyncEnumerable<TSource> source,
+			Func<TSource, int, ValueTask> action,
+			CancellationToken cancellationToken)
+		{
+			var index = 0;
+			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
+				await action(element, index++).ConfigureAwait(false);
+		}
 	}
 }

@@ -25,6 +25,9 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static ValueTask<TSource> AggregateRight<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, TSource> func, CancellationToken cancellationToken = default)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
+
 		return source.AggregateRight((a, b, ct) => new ValueTask<TSource>(func(a, b)), cancellationToken);
 	}
 
@@ -51,6 +54,9 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static ValueTask<TSource> AggregateRight<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, ValueTask<TSource>> func, CancellationToken cancellationToken = default)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
+
 		return source.AggregateRight((a, b, ct) => func(a, b), cancellationToken);
 	}
 
@@ -75,22 +81,33 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This operator executes immediately.
 	/// </remarks>
-	public static async ValueTask<TSource> AggregateRight<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, CancellationToken, ValueTask<TSource>> func, CancellationToken cancellationToken = default)
+	public static ValueTask<TSource> AggregateRight<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TSource, CancellationToken, ValueTask<TSource>> func,
+		CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(func);
 
-		await using var e = source.Reverse().GetConfiguredAsyncEnumerator(cancellationToken);
+		return Core(source, func, cancellationToken);
 
-		if (!await e.MoveNextAsync())
-			ThrowHelper.ThrowInvalidOperationException("Sequence contains no elements");
+		static async ValueTask<TSource> Core(
+			IAsyncEnumerable<TSource> source,
+			Func<TSource, TSource, CancellationToken, ValueTask<TSource>> func,
+			CancellationToken cancellationToken = default)
+		{
+			await using var e = source.Reverse().GetConfiguredAsyncEnumerator(cancellationToken);
 
-		var seed = e.Current;
+			if (!await e.MoveNextAsync())
+				ThrowHelper.ThrowInvalidOperationException("Sequence contains no elements");
 
-		while (await e.MoveNextAsync())
-			seed = await func(e.Current, seed, cancellationToken).ConfigureAwait(false);
+			var seed = e.Current;
 
-		return seed;
+			while (await e.MoveNextAsync())
+				seed = await func(e.Current, seed, cancellationToken).ConfigureAwait(false);
+
+			return seed;
+		}
 	}
 
 	/// <summary>
@@ -121,6 +138,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static ValueTask<TAccumulate> AggregateRight<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func, CancellationToken cancellationToken = default)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
+
 		return source.AggregateRight(seed, (a, b, ct) => new ValueTask<TAccumulate>(func(a, b)), cancellationToken);
 	}
 
@@ -152,6 +172,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static ValueTask<TAccumulate> AggregateRight<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, ValueTask<TAccumulate>> func, CancellationToken cancellationToken = default)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(func);
+
 		return source.AggregateRight(seed, (a, b, ct) => func(a, b), cancellationToken);
 	}
 
@@ -181,15 +204,24 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </remarks>
 
-	public static async ValueTask<TAccumulate> AggregateRight<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func, CancellationToken cancellationToken = default)
+	public static ValueTask<TAccumulate> AggregateRight<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(func);
 
-		await foreach (var i in source.Reverse().WithCancellation(cancellationToken).ConfigureAwait(false))
-			seed = await func(i, seed, cancellationToken).ConfigureAwait(false);
+		return Core(source, seed, func, cancellationToken);
 
-		return seed;
+		static async ValueTask<TAccumulate> Core(
+			IAsyncEnumerable<TSource> source,
+			TAccumulate seed,
+			Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func,
+			CancellationToken cancellationToken = default)
+		{
+			await foreach (var i in source.Reverse().WithCancellation(cancellationToken).ConfigureAwait(false))
+				seed = await func(i, seed, cancellationToken).ConfigureAwait(false);
+
+			return seed;
+		}
 	}
 
 	/// <summary>
@@ -224,6 +256,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static ValueTask<TResult> AggregateRight<TSource, TAccumulate, TResult>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func, Func<TAccumulate, TResult> resultSelector, CancellationToken cancellationToken = default)
 	{
+		Guard.IsNotNull(func);
+		Guard.IsNotNull(resultSelector);
+
 		return source.AggregateRight(seed, (a, b, ct) => new ValueTask<TAccumulate>(func(a, b)), (a, ct) => new ValueTask<TResult>(resultSelector(a)), cancellationToken);
 	}
 
@@ -259,6 +294,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static ValueTask<TResult> AggregateRight<TSource, TAccumulate, TResult>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, ValueTask<TAccumulate>> func, Func<TAccumulate, ValueTask<TResult>> resultSelector, CancellationToken cancellationToken = default)
 	{
+		Guard.IsNotNull(func);
+		Guard.IsNotNull(resultSelector);
+
 		return source.AggregateRight(seed, (a, b, ct) => func(a, b), (a, ct) => resultSelector(a), cancellationToken);
 	}
 
@@ -292,12 +330,20 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </remarks>
 
-	public static async ValueTask<TResult> AggregateRight<TSource, TAccumulate, TResult>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func, Func<TAccumulate, CancellationToken, ValueTask<TResult>> resultSelector, CancellationToken cancellationToken = default)
+	public static ValueTask<TResult> AggregateRight<TSource, TAccumulate, TResult>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func, Func<TAccumulate, CancellationToken, ValueTask<TResult>> resultSelector, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(func);
 		Guard.IsNotNull(resultSelector);
 
-		return await resultSelector(await source.AggregateRight(seed, func, cancellationToken).ConfigureAwait(false), cancellationToken).ConfigureAwait(false);
+		return Core(source, seed, func, resultSelector, cancellationToken);
+
+		static async ValueTask<TResult> Core(
+			IAsyncEnumerable<TSource> source,
+			TAccumulate seed,
+			Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func,
+			Func<TAccumulate, CancellationToken, ValueTask<TResult>> resultSelector,
+			CancellationToken cancellationToken = default) =>
+				await resultSelector(await source.AggregateRight(seed, func, cancellationToken).ConfigureAwait(false), cancellationToken).ConfigureAwait(false);
 	}
 }

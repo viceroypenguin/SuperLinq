@@ -62,6 +62,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TResult> Lead<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(resultSelector);
+
 		return source.Lead(offset, defaultLeadValue, (curr, lead) => new ValueTask<TResult>(resultSelector(curr, lead)));
 	}
 
