@@ -9,6 +9,7 @@ public static partial class AsyncSuperEnumerable
 	/// <typeparam name="T">Type of elements.</typeparam>
 	/// <param name="first">The sequence to check.</param>
 	/// <param name="second">The sequence to compare to.</param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// <see langword="true"/> if <paramref name="first" /> ends with elements
 	/// equivalent to <paramref name="second" />.
@@ -20,10 +21,12 @@ public static partial class AsyncSuperEnumerable
 	/// <see cref="EqualityComparer{T}.Default" /> on pairs of elements at
 	/// the same index.
 	/// </remarks>
-
-	public static ValueTask<bool> EndsWith<T>(this IAsyncEnumerable<T> first, IEnumerable<T> second)
+	public static ValueTask<bool> EndsWith<T>(this IAsyncEnumerable<T> first, IEnumerable<T> second, CancellationToken cancellationToken = default)
 	{
-		return EndsWith(first, second.ToAsyncEnumerable(), comparer: null);
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+
+		return EndsWith(first, second.ToAsyncEnumerable(), comparer: null, cancellationToken);
 	}
 
 	/// <summary>
@@ -33,6 +36,7 @@ public static partial class AsyncSuperEnumerable
 	/// <typeparam name="T">Type of elements.</typeparam>
 	/// <param name="first">The sequence to check.</param>
 	/// <param name="second">The sequence to compare to.</param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// <see langword="true"/> if <paramref name="first" /> ends with elements
 	/// equivalent to <paramref name="second" />.
@@ -44,10 +48,9 @@ public static partial class AsyncSuperEnumerable
 	/// <see cref="EqualityComparer{T}.Default" /> on pairs of elements at
 	/// the same index.
 	/// </remarks>
-
-	public static ValueTask<bool> EndsWith<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second)
+	public static ValueTask<bool> EndsWith<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, CancellationToken cancellationToken = default)
 	{
-		return EndsWith(first, second, comparer: null);
+		return EndsWith(first, second, comparer: null, cancellationToken);
 	}
 
 	/// <summary>
@@ -58,6 +61,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="first">The sequence to check.</param>
 	/// <param name="second">The sequence to compare to.</param>
 	/// <param name="comparer">Equality comparer to use.</param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// <see langword="true"/> if <paramref name="first" /> ends with elements
 	/// equivalent to <paramref name="second" />.
@@ -68,10 +72,12 @@ public static partial class AsyncSuperEnumerable
 	/// <see cref="IEqualityComparer{T}.Equals(T,T)" /> on pairs of
 	/// elements at the same index.
 	/// </remarks>
-
-	public static ValueTask<bool> EndsWith<T>(this IAsyncEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T>? comparer)
+	public static ValueTask<bool> EndsWith<T>(this IAsyncEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T>? comparer, CancellationToken cancellationToken = default)
 	{
-		return EndsWith(first, second.ToAsyncEnumerable(), comparer);
+		Guard.IsNotNull(first);
+		Guard.IsNotNull(second);
+
+		return EndsWith(first, second.ToAsyncEnumerable(), comparer, cancellationToken);
 	}
 
 	/// <summary>
@@ -82,6 +88,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="first">The sequence to check.</param>
 	/// <param name="second">The sequence to compare to.</param>
 	/// <param name="comparer">Equality comparer to use.</param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <returns>
 	/// <see langword="true"/> if <paramref name="first" /> ends with elements
 	/// equivalent to <paramref name="second" />.
@@ -92,17 +99,24 @@ public static partial class AsyncSuperEnumerable
 	/// <see cref="IEqualityComparer{T}.Equals(T,T)" /> on pairs of
 	/// elements at the same index.
 	/// </remarks>
-
-	public static async ValueTask<bool> EndsWith<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, IEqualityComparer<T>? comparer)
+	public static ValueTask<bool> EndsWith<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, IEqualityComparer<T>? comparer, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(first);
 		Guard.IsNotNull(second);
 
 		comparer ??= EqualityComparer<T>.Default;
 
-		var snd = await second.ToListAsync().ConfigureAwait(false);
-		return await first.TakeLast(snd.Count)
-			.SequenceEqualAsync(snd.ToAsyncEnumerable(), comparer)
-			.ConfigureAwait(false);
+		return Core(first, second, comparer, cancellationToken);
+
+		static async ValueTask<bool> Core(IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, IEqualityComparer<T>? comparer, CancellationToken cancellationToken)
+		{
+			var snd = await second.ToListAsync(cancellationToken).ConfigureAwait(false);
+			return await first.TakeLast(snd.Count)
+				.SequenceEqualAsync(
+					snd.ToAsyncEnumerable(),
+					comparer,
+					cancellationToken)
+				.ConfigureAwait(false);
+		}
 	}
 }
