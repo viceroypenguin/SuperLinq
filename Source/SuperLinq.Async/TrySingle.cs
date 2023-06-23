@@ -80,7 +80,7 @@ public static partial class AsyncSuperEnumerable
 	/// This operator uses immediate execution, but never consumes more
 	/// than two elements from the sequence.
 	/// </remarks>
-	public static async ValueTask<TResult> TrySingle<T, TCardinality, TResult>(
+	public static ValueTask<TResult> TrySingle<T, TCardinality, TResult>(
 		this IAsyncEnumerable<T> source,
 		TCardinality zero, TCardinality one, TCardinality many,
 		Func<TCardinality, T?, TResult> resultSelector,
@@ -89,13 +89,22 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(resultSelector);
 
-		await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
-		if (!await e.MoveNextAsync())
-			return resultSelector(zero, default);
+		return Core(source, zero, one, many, resultSelector, cancellationToken);
 
-		var current = e.Current;
-		return !await e.MoveNextAsync()
-			? resultSelector(one, current)
-			: resultSelector(many, default);
+		static async ValueTask<TResult> Core(
+			IAsyncEnumerable<T> source,
+			TCardinality zero, TCardinality one, TCardinality many,
+			Func<TCardinality, T?, TResult> resultSelector,
+			CancellationToken cancellationToken)
+		{
+			await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
+			if (!await e.MoveNextAsync())
+				return resultSelector(zero, default);
+
+			var current = e.Current;
+			return !await e.MoveNextAsync()
+				? resultSelector(one, current)
+				: resultSelector(many, default);
+		}
 	}
 }
