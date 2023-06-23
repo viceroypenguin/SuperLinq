@@ -19,22 +19,27 @@ public static partial class AsyncSuperEnumerable
 	/// To instead return a default value when the specified index is out of range, 
 	/// use the <see cref="ElementAtOrDefaultAsync{TSource}(IAsyncEnumerable{TSource}, Index, CancellationToken)" /> method.</para>
 	/// </remarks>
-	public static async ValueTask<TSource> ElementAtAsync<TSource>(this IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken = default)
+	public static ValueTask<TSource> ElementAtAsync<TSource>(this IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
 
 		if (!index.IsFromEnd)
 		{
-			return await AsyncEnumerable.ElementAtAsync(source, index.Value, cancellationToken).ConfigureAwait(false);
+			return AsyncEnumerable.ElementAtAsync(source, index.Value, cancellationToken);
 		}
 
-		var (success, element) = await TryGetElementFromEnd(source, index.Value, cancellationToken).ConfigureAwait(false);
-		if (!success)
+		return Core(source, index, cancellationToken);
+
+		static async ValueTask<TSource> Core(IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken)
 		{
-			ThrowHelper.ThrowArgumentOutOfRangeException(nameof(index));
-		}
+			var (success, element) = await TryGetElementFromEnd(source, index.Value, cancellationToken).ConfigureAwait(false);
+			if (!success)
+			{
+				ThrowHelper.ThrowArgumentOutOfRangeException(nameof(index));
+			}
 
-		return Debug.AssertNotNull(element);
+			return Debug.AssertNotNull(element);
+		}
 	}
 
 	/// <summary>Returns the element at a specified index in a sequence or a default value if the index is out of range.</summary>
@@ -47,17 +52,22 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// <para>The default value for reference and nullable types is <see langword="null" />.</para>
 	/// </remarks>
-	public static async ValueTask<TSource?> ElementAtOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken = default)
+	public static ValueTask<TSource?> ElementAtOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
 
 		if (!index.IsFromEnd)
 		{
-			return await AsyncEnumerable.ElementAtOrDefaultAsync(source, index.Value, cancellationToken).ConfigureAwait(false);
+			return AsyncEnumerable.ElementAtOrDefaultAsync(source, index.Value, cancellationToken);
 		}
 
-		var (_, element) = await TryGetElementFromEnd(source, index.Value, cancellationToken).ConfigureAwait(false);
-		return element;
+		return Core(source, index, cancellationToken);
+
+		static async ValueTask<TSource?> Core(IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken)
+		{
+			var (_, element) = await TryGetElementFromEnd(source, index.Value, cancellationToken).ConfigureAwait(false);
+			return element;
+		}
 	}
 
 	private static async ValueTask<(bool success, TSource? element)> TryGetElementFromEnd<TSource>(IAsyncEnumerable<TSource> source, int indexFromEnd, CancellationToken cancellationToken)
