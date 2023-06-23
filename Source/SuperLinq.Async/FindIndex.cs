@@ -111,65 +111,70 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static async ValueTask<int> FindIndex<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count, CancellationToken cancellationToken = default)
+	public static ValueTask<int> FindIndex<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count, CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(predicate);
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 
-		if (!index.IsFromEnd)
+		return Core(source, predicate, index, count, cancellationToken);
+
+		static async ValueTask<int> Core(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count, CancellationToken cancellationToken)
 		{
-			var i = 0;
-			var c = 0;
-			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
+			if (!index.IsFromEnd)
 			{
-				if (i >= index.Value)
+				var i = 0;
+				var c = 0;
+				await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 				{
-					if (predicate(element))
-						return i;
-					if (++c >= count)
-						return -1;
-				}
-
-				i++;
-			}
-
-			return -1;
-		}
-		else
-		{
-			await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
-
-			var indexFromEnd = index.Value;
-			var i = 0;
-			if (await e.MoveNextAsync())
-			{
-				Queue<TSource> queue = new();
-				queue.Enqueue(e.Current);
-
-				while (await e.MoveNextAsync())
-				{
-					if (queue.Count == indexFromEnd)
+					if (i >= index.Value)
 					{
-						_ = queue.Dequeue();
-						i++;
+						if (predicate(element))
+							return i;
+						if (++c >= count)
+							return -1;
 					}
 
-					queue.Enqueue(e.Current);
-				}
-
-				var c = 0;
-				while (queue.Count != 0)
-				{
-					if (predicate(queue.Dequeue()))
-						return i;
-					if (++c >= count)
-						return -1;
 					i++;
 				}
-			}
 
-			return -1;
+				return -1;
+			}
+			else
+			{
+				await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
+
+				var indexFromEnd = index.Value;
+				var i = 0;
+				if (await e.MoveNextAsync())
+				{
+					Queue<TSource> queue = new();
+					queue.Enqueue(e.Current);
+
+					while (await e.MoveNextAsync())
+					{
+						if (queue.Count == indexFromEnd)
+						{
+							_ = queue.Dequeue();
+							i++;
+						}
+
+						queue.Enqueue(e.Current);
+					}
+
+					var c = 0;
+					while (queue.Count != 0)
+					{
+						if (predicate(queue.Dequeue()))
+							return i;
+						if (++c >= count)
+							return -1;
+						i++;
+					}
+				}
+
+				return -1;
+			}
 		}
 	}
 }
