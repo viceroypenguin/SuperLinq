@@ -20,6 +20,9 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TResult> If<TResult>(Func<bool> condition, IAsyncEnumerable<TResult> thenSource)
 	{
+		Guard.IsNotNull(condition);
+		Guard.IsNotNull(thenSource);
+
 		return If(condition.ToAsync(), thenSource, AsyncEnumerable.Empty<TResult>());
 	}
 
@@ -41,6 +44,9 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TResult> If<TResult>(Func<ValueTask<bool>> condition, IAsyncEnumerable<TResult> thenSource)
 	{
+		Guard.IsNotNull(condition);
+		Guard.IsNotNull(thenSource);
+
 		return If(condition, thenSource, AsyncEnumerable.Empty<TResult>());
 	}
 
@@ -65,6 +71,10 @@ public static partial class AsyncSuperEnumerable
 		IAsyncEnumerable<TResult> thenSource,
 		IAsyncEnumerable<TResult> elseSource)
 	{
+		Guard.IsNotNull(condition);
+		Guard.IsNotNull(thenSource);
+		Guard.IsNotNull(elseSource);
+
 		return If(condition.ToAsync(), thenSource, elseSource);
 	}
 
