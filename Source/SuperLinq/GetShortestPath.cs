@@ -279,6 +279,8 @@ public partial class SuperEnumerable
 				break;
 
 			var newStates = getNeighbors(current, cost);
+			Guard.IsNotNull(newStates, $"{nameof(getNeighbors)}()");
+
 			foreach (var (s, p) in newStates)
 			{
 				if (!totalCost.TryGetValue(s, out _))
@@ -584,6 +586,8 @@ public partial class SuperEnumerable
 
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
+			Guard.IsNotNull(newStates, $"{nameof(getNeighbors)}()");
+
 			foreach (var (s, p) in newStates)
 			{
 				if (!totalCost.TryGetValue(s, out _))
@@ -767,6 +771,8 @@ public partial class SuperEnumerable
 
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
+			Guard.IsNotNull(newStates, $"{nameof(getNeighbors)}()");
+
 			foreach (var (s, p) in newStates)
 			{
 				if (!totalCost.TryGetValue(s, out _))
@@ -1083,6 +1089,8 @@ public partial class SuperEnumerable
 					break;
 
 				var newStates = getNeighbors(current, costs.traversed);
+				Guard.IsNotNull(newStates, $"{nameof(getNeighbors)}()");
+
 				foreach (var (s, p, h) in newStates)
 					queue.EnqueueMinimum(s, (h, p));
 			}
@@ -1410,6 +1418,8 @@ public partial class SuperEnumerable
 
 				var cost = from.traversed;
 				var newStates = getNeighbors(current, cost);
+				Guard.IsNotNull(newStates, $"{nameof(getNeighbors)}()");
+
 				foreach (var (s, p, h) in newStates)
 					queue.EnqueueMinimum(s, (current, h, p));
 			}
