@@ -137,7 +137,7 @@ Projection refers to the operation of transforming an object into a new form tha
 | RankBy			 | Provides an `int` value indicating the current rank of each element of the sequence according to a key. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.RankBy.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.RankBy.html) |
 | DenseRank			 | Provides an `int` value indicating the current rank of each element of the sequence, counting ties as a single element. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.DenseRank.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.DenseRank.html) |
 | DenseRankBy		 | Provides an `int` value indicating the current rank of each element of the sequence according to a key, counting ties as a single element. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.DenseRankBy.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.DenseRankBy.html) |
-| Evaluate			 | Transforms a sequence of functions to a sequence of values returned by the functions. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Evaluate.html) | N/A |
+| Evaluate			 | Transforms a sequence of functions to a sequence of values returned by the functions. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Evaluate.html) | N/A[^1] |
 | ZipMap			 | Applies a function to each element in a sequence and returns a sequence of tuples containing both the original item as well as the function result. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.ZipMap.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.ZipMap.html) |
 
 </details>
@@ -181,8 +181,8 @@ A join of two data sources is the association of objects in one data source with
 
 | Method Name        | Description | Sync doc | Async doc |
 | -----------        | --- | --- | --- |
-| Cartesian			 | Executes a cartesian product (join without any key) of up to eight sequences. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Cartesian.html) | N/A |
-| FullGroupJoin		 | Joins two sequences based on key selector functions, returning two lists containing the values on each side that match according to the key. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.FullGroupJoin.html) | N/A |
+| Cartesian			 | Executes a cartesian product (join without any key) of up to eight sequences. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Cartesian.html) | N/A[^1] |
+| FullGroupJoin		 | Joins two sequences based on key selector functions, returning two lists containing the values on each side that match according to the key. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.FullGroupJoin.html) | N/A[^1] |
 | FullOuterJoin		 | Joins two sequences based on key selector functions, returning `default` values if either sequence does not have a matching key. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.FullOuterJoin.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.FullOuterJoin.html) |
 | InnerJoin			 | Joins two sequences based on key selector functions. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.InnerJoin.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.InnerJoin.html) |
 | LeftOuterJoin		 | Joins two sequences based on key selector functions, returning `default` values if the second sequence does not have a matching key. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.LeftOuterJoin.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.LeftOuterJoin.html) |
@@ -253,7 +253,7 @@ Selection operations choose which sequence to based on a criteria evaluated at t
 
 | Method Name        | Description | Sync doc | Async doc |
 | -----------        | --- | --- | --- |
-| Amb				 | Enumerates the first sequence to return the first value. | N/A | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Amb.html) |
+| Amb				 | Enumerates the first sequence to return the first value. | N/A[^2] | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Amb.html) |
 | Case				 | Enumerates a sequence chosen by a function executed at the time of enumeration. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Case.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Case.html) |
 | If				 | Enumerates a sequence chosen by a condition function executed at the time of enumeration. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.If.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.If.html) |
 | Defer				 | Enumerates a sequence returned by a function executed at the time of enumeration. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Defer.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Defer.html) |
@@ -311,11 +311,11 @@ Element operations return or find a single, specific element from a sequence.
 | Method Name        | Description | Sync doc | Async doc |
 | -----------        | --- | --- | --- |
 | CopyTo			 | Copies the elements from a sequence into a provided list-like structure. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.CopyTo.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.CopyTo.html) |
-| ToDataTable		 | Converts a sequence of objects into a `DataTable` object. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.ToDataTable.html) | N/A |
-| ToDelimitedString	 | Converts a sequence of elements to a delimited string containing the `string` form of each element. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.ToDelimitedString.html) | N/A |
-| ToDictionary		 | Converts a sequence of `KeyValuePair` or `(key, value)` tuples into a `Dictionary<,>` | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.ToDictionary.html) | N/A |
-| ToLookup			 | Converts a sequence of `KeyValuePair` or `(key, value)` tuples into a `Lookup<,>` | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.ToLookup.html) | N/A |
-| Transpose			 | Transposes a jagged two-dimensional array of elements, such that, for example, each row of the returned 2d array contains the first element of each inner array of the input. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Transpose.html) | N/A |
+| ToDataTable		 | Converts a sequence of objects into a `DataTable` object. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.ToDataTable.html) | N/A[^3] |
+| ToDelimitedString	 | Converts a sequence of elements to a delimited string containing the `string` form of each element. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.ToDelimitedString.html) | N/A[^1] |
+| ToDictionary		 | Converts a sequence of `KeyValuePair` or `(key, value)` tuples into a `Dictionary<,>` | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.ToDictionary.html) | N/A[^1] |
+| ToLookup			 | Converts a sequence of `KeyValuePair` or `(key, value)` tuples into a `Lookup<,>` | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.ToLookup.html) | N/A[^1] |
+| Transpose			 | Transposes a jagged two-dimensional array of elements, such that, for example, each row of the returned 2d array contains the first element of each inner array of the input. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Transpose.html) | N/A[^1] |
 
 
 </details>
@@ -331,8 +331,8 @@ Concatenation refers to the operation of appending one sequence to another.
 
 | Method Name             | Description | Sync doc | Async doc |
 | -----------             | --- | --- | --- |
-| ConcurrentMerge		  | Merges the elements of two or more asynchronous sequences into a single sequence. | N/A | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.ConcurrentMerge.html) |
-| Flatten				  | Flattens a sequence containing arbitrarily-nested sequences into a single sequence. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Flatten.html) | N/A |
+| ConcurrentMerge		  | Merges the elements of two or more asynchronous sequences into a single sequence. | N/A[^2] | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.ConcurrentMerge.html) |
+| Flatten				  | Flattens a sequence containing arbitrarily-nested sequences into a single sequence. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Flatten.html) | N/A[^4] |
 | Insert				  | Inserts the elements of a sequence into another sequence at a specified index. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Insert.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Insert.html) |
 | Interleave			  | Interleaves the elements of two or more sequences into a single sequence. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Interleave.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Interleave.html) |
 | Replace				  | Replaces a range of elements in a sequence with the elements from another sequence. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Replace.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Replace.html) |
@@ -402,7 +402,7 @@ Sequence operations perform some operation on a sequence as a whole.
 | Consume			 | Immediately consumes and discards a sequence, allowing a lazy sequence that has side-effects to be completed. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Consume.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Consume.html) |
 | ForEach			 | Immediately executes an action on every element in a sequence. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.ForEach.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.ForEach.html) |
 | Do				 | Performs an action on each element in a sequence as it is enumerated. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Do.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Do.html) |
-| Timeout			 | Throws an exception if the async processing of an element takes longer than a specified timeout. | N/A | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Timeout.html) |
+| Timeout			 | Throws an exception if the async processing of an element takes longer than a specified timeout. | N/A[^2] | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Timeout.html) |
 | AssertCount		 | Evalutes the length of a sequence as it is enumerated and validates that the length is the same as expected. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.AssertCount.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.AssertCount.html) |
 | Finally			 | Executes an action when a sequence finishes enumerating, regardless of whether or not the sequence completed successfully. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Finally.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Finally.html) |
 
@@ -426,3 +426,10 @@ Tree operations allow processing tree-like data structures in a data-agnostic fo
 | GetShortestPaths	   | Determine the shortest cost to every node in a graph-like virtual structure using Dijkstra's algorithm. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.GetShortestPaths.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.GetShortestPaths.html) |
 
 </details>
+
+#### Footnotes:
+
+[^1]: Not yet implemented; open a ticket if operator is desired
+[^2]: Async operator without a sync equivalent
+[^3]: `DataTable` is an no-longer relevant data structure, so this method is only kept for posterity and will not be migrated to a datatable.
+[^4]: Will not be implemented, due to complex nature of flattening async sequences into a single sequence
