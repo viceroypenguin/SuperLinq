@@ -14,19 +14,14 @@ public static partial class AsyncSuperEnumerable
 	{
 		Guard.IsNotNull(enumerableFactory);
 
-		return new DeferEnumerable<TResult>(enumerableFactory);
-	}
+		return Core(enumerableFactory);
 
-	private sealed class DeferEnumerable<T> : IAsyncEnumerable<T>
-	{
-		private readonly Func<IAsyncEnumerable<T>> _factory;
-
-		public DeferEnumerable(Func<IAsyncEnumerable<T>> factory)
+		static async IAsyncEnumerable<TResult> Core(
+			Func<IAsyncEnumerable<TResult>> enumerableFactory,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			_factory = factory;
+			await foreach (var el in enumerableFactory().WithCancellation(cancellationToken).ConfigureAwait(false))
+				yield return el;
 		}
-
-		public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken) =>
-			_factory().GetAsyncEnumerator(cancellationToken);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
 
 namespace SuperLinq;
 
@@ -16,21 +17,12 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(enumerableFactory);
 
-		return new DeferEnumerable<TResult>(enumerableFactory);
-	}
+		return Core(enumerableFactory);
 
-	private sealed class DeferEnumerable<T> : IEnumerable<T>
-	{
-		private readonly Func<IEnumerable<T>> _factory;
-
-		public DeferEnumerable(Func<IEnumerable<T>> factory)
+		static IEnumerable<TResult> Core(Func<IEnumerable<TResult>> enumerableFactory)
 		{
-			_factory = factory;
+			foreach (var el in enumerableFactory())
+				yield return el;
 		}
-
-		public IEnumerator<T> GetEnumerator() =>
-			_factory().GetEnumerator();
-
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }
