@@ -5,34 +5,67 @@ public class IndexTest
 	[Fact]
 	public void IndexIsLazy()
 	{
-		var bs = new BreakingSequence<object>();
-		_ = bs.Index();
-		_ = bs.Index(0);
+		_ = new BreakingSequence<object>().Index();
+		_ = new BreakingSequence<object>().Index(0);
 	}
 
 	private const string One = "one";
 	private const string Two = "two";
 	private const string Three = "three";
 
-	[Fact]
-	public void IndexSequence()
+	public static IEnumerable<object[]> GetSequences() =>
+		Seq(One, Two, Three)
+			.GetAllSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void IndexSequence(IDisposableEnumerable<string> seq)
 	{
-		using var seq = TestingSequence.Of(One, Two, Three);
-		var result = seq.Index();
-		result.AssertSequenceEqual(
-			(0, One),
-			(1, Two),
-			(2, Three));
+		using (seq)
+		{
+			var result = seq.Index();
+			result.AssertSequenceEqual(
+				(0, One),
+				(1, Two),
+				(2, Three));
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void IndexSequenceStartIndex(IDisposableEnumerable<string> seq)
+	{
+		using (seq)
+		{
+			var result = seq.Index(10);
+			result.AssertSequenceEqual(
+				(10, One),
+				(11, Two),
+				(12, Three));
+		}
 	}
 
 	[Fact]
-	public void IndexSequenceStartIndex()
+	public void IndexCollectionBehavior()
 	{
-		using var seq = TestingSequence.Of(One, Two, Three);
-		var result = seq.Index(10);
-		result.AssertSequenceEqual(
-			(10, One),
-			(11, Two),
-			(12, Three));
+		using var seq = Enumerable.Range(0, 10_000).AsBreakingCollection();
+
+		var result = seq.Index(10_000);
+		result.AssertCollectionErrorChecking(10_000);
+	}
+
+	[Fact]
+	public void IndexListBehavior()
+	{
+		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
+
+		var result = seq.Index(10_000);
+		result.AssertCollectionErrorChecking(10_000);
+		result.AssertListElementChecking(10_000);
+
+		Assert.Equal((10_200, 200), result.ElementAt(200));
+		Assert.Equal((11_200, 1_200), result.ElementAt(1_200));
+		Assert.Equal((18_800, 8_800), result.ElementAt(^1_200));
 	}
 }
