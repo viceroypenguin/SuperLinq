@@ -8,7 +8,7 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.DocAsCode.App" Version="2.67.3" />
+		<PackageReference Include="Microsoft.DocAsCode.App" Version="2.67.5" />
 		<PackageReference Include="Microsoft.DocAsCode.Build.MemberLevelManagedReference" Version="2.63.1" />
 	</ItemGroup>
 
