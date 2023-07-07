@@ -46,4 +46,13 @@ public static partial class AsyncSuperEnumerable
 			return new ValueTask<TResult>(ret);
 		};
 	}
+
+	private static Func<T1, T2, ValueTask<TResult>> ToAsync<T1, T2, TResult>(this Func<T1, T2, TResult> func)
+	{
+		return (arg1, arg2) =>
+		{
+			var ret = func(arg1, arg2);
+			return new ValueTask<TResult>(ret);
+		};
+	}
 }
