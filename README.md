@@ -90,6 +90,7 @@ condition. It is also known as selection.
 | -----------        | --- | --- | --- |
 | Choose			 | Filters a sequence based on a projection method that returns a tuple containing `bool` value and a new projected value. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Choose.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Choose.html) |
 | Where              | Filters a sequence of values based on an enumeration of boolean values. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Where.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Where.html) |
+| WhereLead          | Filters a sequence of values based on a predicate evaluated on the current value and a leading value. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.WhereLead.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.WhereLead.html) |
 
 </details>
 
