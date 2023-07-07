@@ -27,6 +27,10 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> WhereLead<TSource>(this IAsyncEnumerable<TSource> source, int offset, Func<TSource, TSource?, bool> predicate)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(predicate);
+		Guard.IsGreaterThanOrEqualTo(offset, 1);
+
 		return source.WhereLead(offset, default!, predicate.ToAsync());
 	}
 
@@ -55,6 +59,10 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> WhereLead<TSource>(this IAsyncEnumerable<TSource> source, int offset, Func<TSource, TSource?, ValueTask<bool>> predicate)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(predicate);
+		Guard.IsGreaterThanOrEqualTo(offset, 1);
+
 		return source.WhereLead(offset, default!, predicate);
 	}
 
@@ -80,6 +88,10 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> WhereLead<TSource>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, bool> predicate)
 	{
+		Guard.IsNotNull(source);
+		Guard.IsNotNull(predicate);
+		Guard.IsGreaterThanOrEqualTo(offset, 1);
+
 		return source.WhereLead(offset, defaultLeadValue, predicate.ToAsync());
 	}
 
