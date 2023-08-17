@@ -1,5 +1,1 @@
 #nullable enable
-static SuperLinq.SuperEnumerable.WhereLag<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int offset, System.Func<TSource, TSource?, bool>! predicate) -> System.Collections.Generic.IEnumerable<TSource>!
-static SuperLinq.SuperEnumerable.WhereLag<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int offset, TSource defaultLagValue, System.Func<TSource, TSource, bool>! predicate) -> System.Collections.Generic.IEnumerable<TSource>!
-static SuperLinq.SuperEnumerable.WhereLead<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int offset, System.Func<TSource, TSource?, bool>! predicate) -> System.Collections.Generic.IEnumerable<TSource>!
-static SuperLinq.SuperEnumerable.WhereLead<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int offset, TSource defaultLeadValue, System.Func<TSource, TSource, bool>! predicate) -> System.Collections.Generic.IEnumerable<TSource>!
