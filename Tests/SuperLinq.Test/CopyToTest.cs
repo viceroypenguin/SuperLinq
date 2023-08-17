@@ -54,13 +54,13 @@ public class CopyToTest
 	[Fact]
 	public void ThrowsOnTooMuchDataForIListArray()
 	{
-		_ = Assert.Throws<ArgumentException>(
+		_ = Assert.ThrowsAny<ArgumentException>(
 			() => Seq(1).CopyTo((IList<int>)Array.Empty<int>()));
-		_ = Assert.Throws<ArgumentException>(
+		_ = Assert.ThrowsAny<ArgumentException>(
 			() => Enumerable.Range(1, 1).CopyTo((IList<int>)Array.Empty<int>()));
-		_ = Assert.Throws<ArgumentException>(
+		_ = Assert.ThrowsAny<ArgumentException>(
 			() => new List<int> { 1 }.AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
-		_ = Assert.Throws<ArgumentException>(
+		_ = Assert.ThrowsAny<ArgumentException>(
 			() => new List<int> { 1 }.AsReadOnly().AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
 	}
 

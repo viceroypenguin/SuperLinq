@@ -169,7 +169,7 @@ public static partial class SuperEnumerable
 		/// same.
 		/// </remarks>
 		/// <returns>List of permuted source sequence values</returns>
-		private IList<T> PermuteValueSet()
+		private T[] PermuteValueSet()
 		{
 			var permutedSet = new T[_permutation.Length];
 			for (var i = 0; i < _permutation.Length; i++)
