@@ -45,7 +45,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> Batch<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		int size,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<ArraySegment<TSource>, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
@@ -94,7 +94,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> Batch<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		TSource[] array,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<ArraySegment<TSource>, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(array);
@@ -149,7 +149,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		TSource[] array,
 		int size,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<ArraySegment<TSource>, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(array);
@@ -164,7 +164,7 @@ public static partial class SuperEnumerable
 		IEnumerable<TSource> source,
 		TSource[] array,
 		int size,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<ArraySegment<TSource>, TResult> resultSelector)
 	{
 		if (source is ICollection<TSource> coll)
 		{

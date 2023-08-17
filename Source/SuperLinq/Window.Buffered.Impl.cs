@@ -8,7 +8,7 @@ public static partial class SuperEnumerable
 		TSource[] array,
 		int size,
 		WindowType type,
-		Func<IReadOnlyList<TSource>, TResult> projector)
+		Func<ArraySegment<TSource>, TResult> projector)
 	{
 		var n = 0;
 

@@ -9,9 +9,9 @@ public partial class WindowTests
 	public void TestWindowIsLazy()
 	{
 		_ = new BreakingSequence<int>().Window(1);
-		_ = new BreakingSequence<int>().Window(1, BreakingFunc.Of<IReadOnlyList<int>, int>());
-		_ = new BreakingSequence<int>().Window(new int[3], BreakingFunc.Of<IReadOnlyList<int>, int>());
-		_ = new BreakingSequence<int>().Window(new int[3], 1, BreakingFunc.Of<IReadOnlyList<int>, int>());
+		_ = new BreakingSequence<int>().Window(1, BreakingFunc.Of<ArraySegment<int>, int>());
+		_ = new BreakingSequence<int>().Window(new int[3], BreakingFunc.Of<ArraySegment<int>, int>());
+		_ = new BreakingSequence<int>().Window(new int[3], 1, BreakingFunc.Of<ArraySegment<int>, int>());
 	}
 
 	[Fact]

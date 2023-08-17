@@ -6,9 +6,9 @@ public partial class WindowLeftTest
 	public void WindowLeftIsLazy()
 	{
 		_ = new BreakingSequence<int>().WindowLeft(1);
-		_ = new BreakingSequence<int>().WindowLeft(1, BreakingFunc.Of<IReadOnlyList<int>, int>());
-		_ = new BreakingSequence<int>().WindowLeft(new int[3], BreakingFunc.Of<IReadOnlyList<int>, int>());
-		_ = new BreakingSequence<int>().WindowLeft(new int[3], 1, BreakingFunc.Of<IReadOnlyList<int>, int>());
+		_ = new BreakingSequence<int>().WindowLeft(1, BreakingFunc.Of<ArraySegment<int>, int>());
+		_ = new BreakingSequence<int>().WindowLeft(new int[3], BreakingFunc.Of<ArraySegment<int>, int>());
+		_ = new BreakingSequence<int>().WindowLeft(new int[3], 1, BreakingFunc.Of<ArraySegment<int>, int>());
 	}
 
 	[Fact]

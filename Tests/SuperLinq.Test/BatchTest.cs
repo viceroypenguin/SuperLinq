@@ -9,11 +9,11 @@ public class BatchTest
 		_ = new BreakingSequence<int>().Buffer(1);
 
 		_ = new BreakingSequence<int>()
-			.Batch(1, BreakingFunc.Of<IReadOnlyList<int>, int>());
+			.Batch(1, BreakingFunc.Of<ArraySegment<int>, int>());
 		_ = new BreakingSequence<int>()
-			.Batch(new int[2], BreakingFunc.Of<IReadOnlyList<int>, int>());
+			.Batch(new int[2], BreakingFunc.Of<ArraySegment<int>, int>());
 		_ = new BreakingSequence<int>()
-			.Batch(new int[2], 1, BreakingFunc.Of<IReadOnlyList<int>, int>());
+			.Batch(new int[2], 1, BreakingFunc.Of<ArraySegment<int>, int>());
 	}
 
 	[Fact]
@@ -25,18 +25,18 @@ public class BatchTest
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
 			() => new BreakingSequence<int>()
-				.Batch(0, BreakingFunc.Of<IReadOnlyList<int>, int>()));
+				.Batch(0, BreakingFunc.Of<ArraySegment<int>, int>()));
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
 			() => new BreakingSequence<int>()
-				.Batch([], 0, BreakingFunc.Of<IReadOnlyList<int>, int>()));
+				.Batch([], 0, BreakingFunc.Of<ArraySegment<int>, int>()));
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
 			() => new BreakingSequence<int>()
-				.Batch(new int[5], 6, BreakingFunc.Of<IReadOnlyList<int>, int>()));
+				.Batch(new int[5], 6, BreakingFunc.Of<ArraySegment<int>, int>()));
 
 		_ = new BreakingSequence<int>()
-			.Batch(new int[5], 5, BreakingFunc.Of<IReadOnlyList<int>, int>());
+			.Batch(new int[5], 5, BreakingFunc.Of<ArraySegment<int>, int>());
 	}
 
 	public static IEnumerable<object[]> GetFourElementSequences() =>
