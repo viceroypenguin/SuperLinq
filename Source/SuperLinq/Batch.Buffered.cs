@@ -3,28 +3,43 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Split the elements of a sequence into chunks of size at most <paramref name="size"/>.
+	///	    Split the elements of a sequence into chunks of size at most <paramref name="size"/>.
 	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
-	/// <typeparam name="TResult">The type of the value return by <paramref name="resultSelector"/>.</typeparam>
-	/// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to chunk.</param>
-	/// <param name="size">The maximum size of each chunk.</param>
-	/// <param name="resultSelector">A transform function to apply to each chunk.</param>
-	/// <returns>A sequence of elements returned by <paramref name="resultSelector"/>.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="resultSelector"/> is
-	/// null.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="size"/> is below 1.</exception>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of <paramref name="source"/>.
+	///	</typeparam>
+	/// <typeparam name="TResult">
+	///	    The type of the value return by <paramref name="resultSelector"/>.
+	/// </typeparam>
+	/// <param name="source">
+	///	    An <see cref="IEnumerable{T}"/> whose elements to chunk.
+	/// </param>
+	/// <param name="size">
+	///	    The maximum size of each chunk.
+	/// </param>
+	/// <param name="resultSelector">
+	///	    A transform function to apply to each chunk.
+	/// </param>
+	/// <returns>
+	///	    A sequence of elements returned by <paramref name="resultSelector"/>.
+	///	</returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="resultSelector"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="size"/> is below 1.
+	///	</exception>
 	/// <remarks>
 	/// <para>
-	/// A chunk can contain fewer elements than <paramref name="size"/>, specifically the final chunk of <paramref
-	/// name="source"/>.
+	///	    A chunk can contain fewer elements than <paramref name="size"/>, specifically the final chunk of <paramref
+	///     name="source"/>.
 	/// </para>
 	/// <para>
-	/// In this overload of <c>Batch</c>, a single array of length <paramref name="size"/> is allocated as a buffer for
-	/// all subsequences.
+	///	    In this overload of <c>Batch</c>, a single array of length <paramref name="size"/> is allocated as a buffer
+	///     for all subsequences.
 	/// </para>
 	/// <para>
-	/// This operator uses deferred execution and streams its results.
+	///	    This operator uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TResult> Batch<TSource, TResult>(
@@ -40,26 +55,40 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Split the elements of a sequence into chunks of size at most <c><paramref name="array"/>.Length</c>.
+	///	    Split the elements of a sequence into chunks of size at most <c><paramref name="array"/>.Length</c>.
 	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
-	/// <typeparam name="TResult">The type of the value return by <paramref name="resultSelector"/>.</typeparam>
-	/// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to chunk.</param>
-	/// <param name="array">An array to use as a buffer for each chunk.</param>
-	/// <param name="resultSelector">A transform function to apply to each chunk.</param>
-	/// <returns>A sequence of elements returned by <paramref name="resultSelector"/>.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="resultSelector"/>, or
-	/// <paramref name="array"/> is null.</exception>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of <paramref name="source"/>.
+	///	</typeparam>
+	/// <typeparam name="TResult">
+	///	    The type of the value return by <paramref name="resultSelector"/>.
+	/// </typeparam>
+	/// <param name="source">
+	///	    An <see cref="IEnumerable{T}"/> whose elements to chunk.
+	/// </param>
+	/// <param name="array">
+	///	    The array to use as a buffer for each chunk
+	/// </param>
+	/// <param name="resultSelector">
+	///	    A transform function to apply to each chunk.
+	/// </param>
+	/// <returns>
+	///	    A sequence of elements returned by <paramref name="resultSelector"/>.
+	///	</returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/>, <paramref name="resultSelector"/>, or <paramref name="array"/> is <see
+	///     langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
-	/// A chunk can contain fewer elements than <c><paramref name="array"/>.Length</c>, specifically the final chunk of
-	/// <paramref name="source"/>.
+	///	    A chunk can contain fewer elements than <c><paramref name="array"/>.Length</c>, specifically the final chunk
+	///     of <paramref name="source"/>.
 	/// </para>
 	/// <para>
-	/// In this overload of <c>Batch</c>, <paramref name="array"/> is used as a common buffer for all subsequences.
+	///	    In this overload of <c>Batch</c>, <paramref name="array"/> is used as a common buffer for all subsequences.
 	/// </para>
 	/// <para>
-	/// This operator uses deferred execution and streams its results.
+	///	    This operator uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TResult> Batch<TSource, TResult>(
@@ -75,31 +104,45 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Split the elements of a sequence into chunks of size at most <paramref name="size"/>.
+	///	    Split the elements of a sequence into chunks of size at most <paramref name="size"/>.
 	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
-	/// <typeparam name="TResult">The type of the value return by <paramref name="resultSelector"/>.</typeparam>
-	/// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to chunk.</param>
-	/// <param name="size">The maximum size of each chunk.</param>
-	/// <param name="array">An array to use as a buffer for each chunk.</param>
-	/// <param name="resultSelector">A transform function to apply to each chunk.</param>
-	/// <returns>A sequence of elements returned by <paramref name="resultSelector"/>.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="resultSelector"/>, or
-	/// <paramref name="array"/> is null.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="size"/> is below 1 or above <c><paramref
-	/// name="array"/>.Length</c>.</exception>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of <paramref name="source"/>.
+	///	</typeparam>
+	/// <typeparam name="TResult">
+	///	    The type of the value return by <paramref name="resultSelector"/>.
+	/// </typeparam>
+	/// <param name="source">
+	///	    An <see cref="IEnumerable{T}"/> whose elements to chunk.
+	/// </param>
+	/// <param name="array">
+	///	    The array to use as a buffer for each chunk
+	/// </param>
+	/// <param name="size">
+	///	    The maximum size of each chunk.
+	/// </param>
+	/// <param name="resultSelector">
+	///	    A transform function to apply to each chunk.
+	/// </param>
+	/// <returns>
+	///	    A sequence of elements returned by <paramref name="resultSelector"/>.
+	///	</returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/>, <paramref name="resultSelector"/>, or <paramref name="array"/> is <see
+	///     langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
-	/// A chunk can contain fewer elements than <paramref name="size"/>, specifically the final chunk of <paramref
-	/// name="source"/>.
+	///	    A chunk can contain fewer elements than <paramref name="size"/>, specifically the final chunk of <paramref
+	///     name="source"/>.
 	/// </para>
 	/// <para>
-	/// In this overload of <c>Batch</c>, <paramref name="array"/> is used as a common buffer for all subsequences.<br/>
-	/// This overload is provided to ease usage of common buffers, such as those rented from <see
-	/// cref="System.Buffers.ArrayPool{T}"/>, which may return an array larger than requested.
+	///	    In this overload of <c>Batch</c>, <paramref name="array"/> is used as a common buffer for all
+	///     subsequences. This overload is provided to ease usage of common buffers, such as those rented from <see
+	///     cref="System.Buffers.ArrayPool{T}"/>, which may return an array larger than requested.
 	/// </para>
 	/// <para>
-	/// This operator uses deferred execution and streams its results.
+	///	    This operator uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TResult> Batch<TSource, TResult>(
