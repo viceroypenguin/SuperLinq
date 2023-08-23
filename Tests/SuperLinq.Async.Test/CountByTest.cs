@@ -83,9 +83,9 @@ public class CountByTest
 
 		await ss.CountBy(SuperEnumerable.Identity)
 			.AssertSequenceEqual(
-				KeyValuePair.Create("foo", 2),
-				KeyValuePair.Create((string)null!, 4),
-				KeyValuePair.Create("bar", 2),
-				KeyValuePair.Create("baz", 2));
+				KeyValuePair.Create((string?)"foo", 2),
+				KeyValuePair.Create((string?)null, 4),
+				KeyValuePair.Create((string?)"bar", 2),
+				KeyValuePair.Create((string?)"baz", 2));
 	}
 }
