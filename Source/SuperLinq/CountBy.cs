@@ -30,7 +30,7 @@ public static partial class SuperEnumerable
 	///     in it's entirety immediately when first element of the returned sequence is consumed. 
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<(TKey key, int count)> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 	{
 		return source.CountBy(keySelector, comparer: null);
 	}
@@ -68,14 +68,14 @@ public static partial class SuperEnumerable
 	///     in it's entirety immediately when first element of the returned sequence is consumed. 
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<(TKey key, int count)> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return Core(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 
-		static IEnumerable<(TKey key, int count)> Core(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+		static IEnumerable<KeyValuePair<TKey, int>> Core(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
 		{
 			// Avoid the temptation to inline the Loop method, which
 			// exists solely to separate the scope & lifetimes of the
@@ -91,7 +91,7 @@ public static partial class SuperEnumerable
 			var (keys, counts) = Loop(source, keySelector, comparer);
 
 			for (var i = 0; i < keys.Count; i++)
-				yield return (keys[i], counts[i]);
+				yield return new(keys[i], counts[i]);
 		}
 
 		static (List<TKey>, List<int>) Loop(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> cmp)
