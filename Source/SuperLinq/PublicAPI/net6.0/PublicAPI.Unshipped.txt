@@ -1,1 +1,5 @@
 #nullable enable
+*REMOVED*static SuperLinq.SuperEnumerable.CountBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<(TKey key, int count)>!
+*REMOVED*static SuperLinq.SuperEnumerable.CountBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Collections.Generic.IEnumerable<(TKey key, int count)>!
+static SuperLinq.SuperEnumerable.CountBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, int>>!
+static SuperLinq.SuperEnumerable.CountBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, int>>!

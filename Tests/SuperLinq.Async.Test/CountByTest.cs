@@ -9,12 +9,12 @@ public class CountByTest
 
 		await xs.CountBy(SuperEnumerable.Identity)
 			.AssertSequenceEqual(
-				(1, 4),
-				(2, 3),
-				(3, 2),
-				(4, 1),
-				(5, 1),
-				(6, 1));
+				KeyValuePair.Create(1, 4),
+				KeyValuePair.Create(2, 3),
+				KeyValuePair.Create(3, 2),
+				KeyValuePair.Create(4, 1),
+				KeyValuePair.Create(5, 1),
+				KeyValuePair.Create(6, 1));
 	}
 
 	[Fact]
@@ -24,11 +24,11 @@ public class CountByTest
 
 		await xs.CountBy(SuperEnumerable.Identity)
 			.AssertSequenceEqual(
-				('j', 1),
-				('a', 1),
-				('f', 2),
-				('e', 1),
-				('r', 1));
+				KeyValuePair.Create('j', 1),
+				KeyValuePair.Create('a', 1),
+				KeyValuePair.Create('f', 2),
+				KeyValuePair.Create('e', 1),
+				KeyValuePair.Create('r', 1));
 	}
 
 	[Fact]
@@ -40,8 +40,8 @@ public class CountByTest
 		await xs
 			.CountBy(c => c % 2)
 			.AssertSequenceEqual(
-				(1, 50),
-				(0, 50));
+				KeyValuePair.Create(1, 50),
+				KeyValuePair.Create(0, 50));
 	}
 
 	[Fact]
@@ -52,9 +52,9 @@ public class CountByTest
 		await xs
 			.CountBy(SuperEnumerable.Identity, StringComparer.OrdinalIgnoreCase)
 			.AssertSequenceEqual(
-				("a", 3),
-				("B", 2),
-				("c", 1));
+				KeyValuePair.Create("a", 3),
+				KeyValuePair.Create("B", 2),
+				KeyValuePair.Create("c", 1));
 	}
 
 	[Fact]
@@ -63,7 +63,7 @@ public class CountByTest
 		var randomSequence = SuperLinq.SuperEnumerable.Random(0, 100).Take(100).ToArray();
 
 		await using var xs = randomSequence.AsTestingSequence();
-		var countByKeys = xs.CountBy(SuperEnumerable.Identity).Select(x => x.key);
+		var countByKeys = xs.CountBy(SuperEnumerable.Identity).Select(x => x.Key);
 		var groupByKeys = randomSequence.GroupBy(SuperEnumerable.Identity).Select(x => x.Key);
 
 		await countByKeys.AssertSequenceEqual(groupByKeys);
@@ -83,9 +83,9 @@ public class CountByTest
 
 		await ss.CountBy(SuperEnumerable.Identity)
 			.AssertSequenceEqual(
-				("foo", 2),
-				(default, 4),
-				("bar", 2),
-				("baz", 2));
+				KeyValuePair.Create("foo", 2),
+				KeyValuePair.Create((string)null!, 4),
+				KeyValuePair.Create("bar", 2),
+				KeyValuePair.Create("baz", 2));
 	}
 }
