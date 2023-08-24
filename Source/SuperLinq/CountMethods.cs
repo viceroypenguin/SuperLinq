@@ -3,25 +3,33 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Determines whether or not the number of elements in the sequence is greater than
-	/// or equal to the given integer.
+	///	    Determines whether or not the number of elements in the sequence is greater than or equal to the given
+	///     integer.
 	/// </summary>
-	/// <typeparam name="T">Element type of sequence</typeparam>
-	/// <param name="source">The source sequence</param>
-	/// <param name="count">The minimum number of items a sequence must have for this
-	/// function to return true</param>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
-	/// <returns><see langword="true"/> if the number of elements in the sequence is greater than
-	/// or equal to the given integer or <see langword="false"/> otherwise.</returns>
-	/// <example>
-	/// <code><![CDATA[
-	/// var numbers = new[] { 123, 456, 789 };
-	/// var result = numbers.AtLeast(2);
-	/// ]]></code>
-	/// The <c>result</c> variable will contain <see langword="true"/>.
-	/// </example>
-
+	/// <typeparam name="T">
+	///	    Element type of sequence
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence
+	/// </param>
+	/// <param name="count">
+	///     The minimum number of items a sequence must have for this function to return <see langword="true"/>.
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is negative.
+	/// </exception>
+	/// <returns>
+	///	    <see langword="true"/> if the number of elements in the sequence is greater than or equal to the given
+	///     integer, <see langword="false"/> otherwise.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	///	    This method executes immediately.
+	/// </para>
+	/// </remarks>
 	public static bool AtLeast<T>(this IEnumerable<T> source, int count)
 	{
 		Guard.IsGreaterThanOrEqualTo(count, 0);
@@ -30,25 +38,33 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Determines whether or not the number of elements in the sequence is lesser than
-	/// or equal to the given integer.
+	///	    Determines whether or not the number of elements in the sequence is lesser than or equal to the given
+	///     integer.
 	/// </summary>
-	/// <typeparam name="T">Element type of sequence</typeparam>
-	/// <param name="source">The source sequence</param>
-	/// <param name="count">The maximum number of items a sequence must have for this
-	/// function to return true</param>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
-	/// <returns><see langword="true"/> if the number of elements in the sequence is lesser than
-	/// or equal to the given integer or <see langword="false"/> otherwise.</returns>
-	/// <example>
-	/// <code><![CDATA[
-	/// var numbers = new[] { 123, 456, 789 };
-	/// var result = numbers.AtMost(2);
-	/// ]]></code>
-	/// The <c>result</c> variable will contain <see langword="false"/>.
-	/// </example>
-
+	/// <typeparam name="T">
+	///	    Element type of sequence
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence
+	/// </param>
+	/// <param name="count">
+	///	    The maximum number of items a sequence must have for this function to return <see langword="true"/>.
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is negative.
+	/// </exception>
+	/// <returns>
+	///	    <see langword="true"/> if the number of elements in the sequence is lesser than or equal to the given
+	///     integer, <see langword="false"/> otherwise.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	///	    This method executes immediately.
+	/// </para>
+	/// </remarks>
 	public static bool AtMost<T>(this IEnumerable<T> source, int count)
 	{
 		Guard.IsGreaterThanOrEqualTo(count, 0);
@@ -57,24 +73,32 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Determines whether or not the number of elements in the sequence is equals to the given integer.
+	///	    Determines whether or not the number of elements in the sequence is equals to the given integer.
 	/// </summary>
-	/// <typeparam name="T">Element type of sequence</typeparam>
-	/// <param name="source">The source sequence</param>
-	/// <param name="count">The exactly number of items a sequence must have for this
-	/// function to return true</param>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
-	/// <returns><see langword="true"/> if the number of elements in the sequence is equals
-	/// to the given integer or <see langword="false"/> otherwise.</returns>
-	/// <example>
-	/// <code><![CDATA[
-	/// var numbers = new[] { 123, 456, 789 };
-	/// var result = numbers.Exactly(3);
-	/// ]]></code>
-	/// The <c>result</c> variable will contain <see langword="true"/>.
-	/// </example>
-
+	/// <typeparam name="T">
+	///	    Element type of sequence
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence
+	/// </param>
+	/// <param name="count">
+	///	    The exactly number of items a sequence must have for this function to return <see langword="true"/>.
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is negative.
+	/// </exception>
+	/// <returns>
+	///	    <see langword="true"/> if the number of elements in the sequence is equals to the given integer, <see
+	///     langword="false"/> otherwise.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	///	    This method executes immediately.
+	/// </para>
+	/// </remarks>
 	public static bool Exactly<T>(this IEnumerable<T> source, int count)
 	{
 		Guard.IsGreaterThanOrEqualTo(count, 0);
@@ -83,27 +107,36 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Determines whether or not the number of elements in the sequence is between
-	/// an inclusive range of minimum and maximum integers.
+	///	    Determines whether or not the number of elements in the sequence is between an inclusive range of minimum
+	///     and maximum integers.
 	/// </summary>
-	/// <typeparam name="T">Element type of sequence</typeparam>
-	/// <param name="source">The source sequence</param>
-	/// <param name="min">The minimum number of items a sequence must have for this
-	/// function to return true</param>
-	/// <param name="max">The maximum number of items a sequence must have for this
-	/// function to return true</param>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="min"/> is negative or <paramref name="max"/> is less than min</exception>
-	/// <returns><see langword="true"/> if the number of elements in the sequence is between (inclusive)
-	/// the min and max given integers or <see langword="false"/> otherwise.</returns>
-	/// <example>
-	/// <code><![CDATA[
-	/// var numbers = new[] { 123, 456, 789 };
-	/// var result = numbers.CountBetween(1, 2);
-	/// ]]></code>
-	/// The <c>result</c> variable will contain <see langword="false"/>.
-	/// </example>
-
+	/// <typeparam name="T">
+	///	    Element type of sequence
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence
+	/// </param>
+	/// <param name="min">
+	///	    The minimum number of items a sequence must have for this function to return <see langword="true"/>.
+	/// </param>
+	/// <param name="max">
+	///	    The maximum number of items a sequence must have for this function to return <see langword="true"/>.
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="min"/> is negative, or <paramref name="max"/> is less than <paramref name="min"/>.
+	/// </exception>
+	/// <returns>
+	///	    <see langword="true"/> if the number of elements in the sequence is between (inclusive) the min and max
+	///     given integers, <see langword="false"/> otherwise.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	///	    This method executes immediately.
+	/// </para>
+	/// </remarks>
 	public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
 	{
 		Guard.IsGreaterThanOrEqualTo(min, 0);
@@ -122,26 +155,33 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Compares two sequences and returns an integer that indicates whether the first sequence
-	/// has fewer, the same or more elements than the second sequence.
+	///	    Compares two sequences and returns an integer that indicates whether the first sequence has fewer, the same
+	///     or more elements than the second sequence.
 	/// </summary>
-	/// <typeparam name="TFirst">Element type of the first sequence</typeparam>
-	/// <typeparam name="TSecond">Element type of the second sequence</typeparam>
-	/// <param name="first">The first sequence</param>
-	/// <param name="second">The second sequence</param>
-	/// <exception cref="ArgumentNullException"><paramref name="first"/> is null</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="second"/> is null</exception>
-	/// <returns><c>-1</c> if the first sequence has the fewest elements, <c>0</c> if the two sequences have the same number of elements
-	/// or <c>1</c> if the first sequence has the most elements.</returns>
-	/// <example>
-	/// <code><![CDATA[
-	/// var first = new[] { 123, 456 };
-	/// var second = new[] { 789 };
-	/// var result = first.CompareCount(second);
-	/// ]]></code>
-	/// The <c>result</c> variable will contain <c>1</c>.
-	/// </example>
-
+	/// <typeparam name="TFirst">
+	///	    Element type of the first sequence.
+	/// </typeparam>
+	/// <typeparam name="TSecond">
+	///	    Element type of the second sequence.
+	/// </typeparam>
+	/// <param name="first">
+	///	    The first sequence.
+	/// </param>
+	/// <param name="second">
+	///	    The second sequence.
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="first"/> or <paramref name="second"/> is <see langword="null"/>.
+	/// </exception>
+	/// <returns>
+	///	    <c>-1</c> if the first sequence has the fewest elements, <c>0</c> if the two sequences have the same number
+	///     of elements or <c>1</c> if the first sequence has the most elements.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	///	    This method executes immediately.
+	/// </para>
+	/// </remarks>
 	public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)
 	{
 		Guard.IsNotNull(first);
