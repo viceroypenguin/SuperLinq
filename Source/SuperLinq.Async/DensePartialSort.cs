@@ -1,4 +1,6 @@
-﻿namespace SuperLinq.Async;
+﻿using SuperLinq.Collections;
+
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -249,21 +251,21 @@ public static partial class AsyncSuperEnumerable
 		static async IAsyncEnumerable<TSource> Core(IAsyncEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var top = new SortedSet<TKey>(comparer);
-			var dic = new Dictionary<(TKey Key, int Index), List<TSource>>(count);
+			var dic = new NullKeyDictionary<TKey, List<TSource>>(count);
 
 			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
 				var key = keySelector(item);
 				if (top.TryGetValue(key, out var oKey))
 				{
-					dic[(oKey, 1)].Add(item);
+					dic[oKey].Add(item);
 					continue;
 				}
 
 				if (top.Count < count)
 				{
 					_ = top.Add(key);
-					dic[(key, 1)] = new() { item, };
+					dic[key] = new() { item, };
 					continue;
 				}
 
@@ -271,15 +273,15 @@ public static partial class AsyncSuperEnumerable
 				if (comparer.Compare(key, max) > 0)
 					continue;
 
-				_ = dic.Remove((max, 1));
+				_ = dic.Remove(max);
 				_ = top.Remove(max);
 				_ = top.Add(key);
-				dic[(key, 1)] = new() { item, };
+				dic[key] = new() { item, };
 			}
 
 			foreach (var entry in top)
 			{
-				foreach (var i in dic[(entry, 1)])
+				foreach (var i in dic[entry])
 					yield return i;
 			}
 		}

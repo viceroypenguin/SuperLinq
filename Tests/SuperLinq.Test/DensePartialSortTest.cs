@@ -56,4 +56,45 @@ public class DensePartialSortTests
 			.Select(s => s[0])
 			.AssertSequenceEqual('A', 'A', 'C', 'C', 'E', 'E');
 	}
+
+	[Fact]
+	public void DensePartialSortIsStable()
+	{
+		using var list = new[]
+		{
+			(key: 5, text: "1"),
+			(key: 5, text: "2"),
+			(key: 4, text: "3"),
+			(key: 4, text: "4"),
+			(key: 3, text: "5"),
+			(key: 3, text: "6"),
+			(key: 2, text: "7"),
+			(key: 2, text: "8"),
+			(key: 1, text: "9"),
+			(key: 1, text: "10"),
+		}.AsTestingSequence(maxEnumerations: 5);
+
+		var stableSort = new[]
+		{
+			(key: 1, text: "9"),
+			(key: 1, text: "10"),
+			(key: 2, text: "7"),
+			(key: 2, text: "8"),
+			(key: 3, text: "5"),
+			(key: 3, text: "6"),
+			(key: 4, text: "3"),
+			(key: 4, text: "4"),
+			(key: 5, text: "1"),
+			(key: 5, text: "2"),
+		};
+
+		var comparer = Comparer<(int key, string text)>.Create((a, b) => a.key.CompareTo(b.key));
+
+		for (var i = 1; i <= 5; i++)
+		{
+			var sorted = list.DensePartialSort(i, comparer);
+			sorted.AssertSequenceEqual(
+				stableSort.Take(i * 2));
+		}
+	}
 }
