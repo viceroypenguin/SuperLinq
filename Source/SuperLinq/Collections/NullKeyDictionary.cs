@@ -13,6 +13,10 @@ internal sealed class NullKeyDictionary<TKey, TValue> : Dictionary<ValueTuple<TK
 		: base(comparer: ValueTupleEqualityComparer.Create(comparer))
 	{ }
 
+	public NullKeyDictionary(int count)
+		: base(count, comparer: ValueTupleEqualityComparer.Create<TKey>(default))
+	{ }
+
 	public TValue this[TKey key]
 	{
 		get => this[ValueTuple.Create(key)];
