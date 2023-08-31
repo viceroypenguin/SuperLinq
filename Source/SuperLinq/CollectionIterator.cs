@@ -33,12 +33,7 @@ public partial class SuperEnumerable
 			Guard.IsNotNull(array);
 			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
-			if (Count + arrayIndex > array.Length)
-				ThrowHelper.ThrowArgumentException(nameof(array), "Destination is not long enough.");
-
-			var i = arrayIndex;
-			foreach (var el in GetEnumerable())
-				array[i++] = el;
+			_ = SuperEnumerable.CopyTo(GetEnumerable(), array, arrayIndex);
 		}
 	}
 }
