@@ -4,28 +4,44 @@ public static partial class SuperEnumerable
 {
     /// <summary>
     /// <para>
-    /// Applies a specified function to the corresponding elements of second sequences,
-    /// producing a sequence of the results.</para>
+    ///	    Applies a specified function to the corresponding elements of second sequences, producing a sequence of the
+    ///     results.
+    /// </para>
     /// <para>
-    /// The resulting sequence has the same length as the input sequences.
-    /// If the input sequences are of different lengths, an exception is thrown.</para>
+    ///	    The resulting sequence has the same length as the input sequences. If the input sequences are of different
+    ///     lengths, an exception is thrown.
+    /// </para>
     /// </summary>
     /// <typeparam name = "TResult">
-    /// The type of the elements of the result sequence.</typeparam>
-    /// <param name = "resultSelector">A projection function that combines
-    /// elements from all of the sequences.</param>
-    /// <returns>A sequence of elements returned by <paramref name = "resultSelector"/>.</returns>
+    ///	    The type of the elements of the result sequence.
+    /// </typeparam>
+    /// <param name = "resultSelector">
+    ///	    A projection function that combines elements from all of the sequences.
+    /// </param>
+    /// <returns>
+    ///	    A sequence of elements returned by <paramref name = "resultSelector"/>.
+    /// </returns>
     /// <remarks>
-    /// This method uses deferred execution and stream its results.
+    ///	    This method uses deferred execution and stream its results.
     /// </remarks>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "resultSelector"/> or any of the input sequences is null.</exception>
-    /// <exception cref = "global::System.InvalidOperationException">
-    /// Any of the input sequences are shorter than the others.
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///	    <paramref name = "resultSelector"/> or any of the input sequences is <see langword="null"/>.
     /// </exception>
-    /// <typeparam name = "TFirst">The type of the elements of <paramref name = "first"/>.</typeparam>
-    /// <param name = "first">The first sequence of elements.</param>
-    /// <typeparam name = "TSecond">The type of the elements of <paramref name = "second"/>.</typeparam>
-    /// <param name = "second">The second sequence of elements.</param>
+    /// <exception cref = "global::System.InvalidOperationException">
+    ///	    Any of the input sequences are shorter than the others.
+    /// </exception>
+    /// <typeparam name = "TFirst">
+    ///		The type of the elements of <paramref name = "first"/>.
+    /// </typeparam>
+    /// <param name = "first">
+    ///		The first sequence of elements.
+    /// </param>
+    /// <typeparam name = "TSecond">
+    ///		The type of the elements of <paramref name = "second"/>.
+    /// </typeparam>
+    /// <param name = "second">
+    ///		The second sequence of elements.
+    /// </param>
     public static global::System.Collections.Generic.IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(this global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Func<TFirst, TSecond, TResult> resultSelector)
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
@@ -61,23 +77,33 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Joins the corresponding elements of second sequences,
-    /// producing a sequence of tuples containing them.
+    ///	    Joins the corresponding elements of second sequences, producing a sequence of tuples containing them.
     /// </summary>
-    /// <returns>A sequence of 
-    /// <see cref = "global::System.ValueTuple{T1, T2}"/> 
-    /// containing corresponding elements from each of the sequences.</returns>
+    /// <returns>
+    ///	    A sequence of <see cref = "global::System.ValueTuple{T1, T2}"/> 
+    ///	    containing corresponding elements from each of the sequences.
+    /// </returns>
     /// <remarks>
-    /// This method uses deferred execution and stream its results.
+    ///	    This method uses deferred execution and stream its results.
     /// </remarks>
-    /// <exception cref = "global::System.ArgumentNullException">Any of the input sequences is null.</exception>
+    /// <exception cref = "global::System.ArgumentNullException">
+    /// Any of the input sequences is null.
+    ///	    </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// Any of the input sequences are shorter than the others.
+    ///	    Any of the input sequences are shorter than the others.
     /// </exception>
-    /// <typeparam name = "TFirst">The type of the elements of <paramref name = "first"/>.</typeparam>
-    /// <param name = "first">The first sequence of elements.</param>
-    /// <typeparam name = "TSecond">The type of the elements of <paramref name = "second"/>.</typeparam>
-    /// <param name = "second">The second sequence of elements.</param>
+    /// <typeparam name = "TFirst">
+    ///     The type of the elements of <paramref name = "first"/>.
+    /// </typeparam>
+    /// <param name = "first">
+    ///     The first sequence of elements.
+    /// </param>
+    /// <typeparam name = "TSecond">
+    ///     The type of the elements of <paramref name = "second"/>.
+    /// </typeparam>
+    /// <param name = "second">
+    ///     The second sequence of elements.
+    /// </param>
     public static global::System.Collections.Generic.IEnumerable<(TFirst, TSecond)> EquiZip<TFirst, TSecond>(this global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second) => EquiZip(first, second, global::System.ValueTuple.Create);
     private class EquiZipIterator<T1, T2, TResult> : ListIterator<TResult>
     {
@@ -123,30 +149,50 @@ public static partial class SuperEnumerable
 
     /// <summary>
     /// <para>
-    /// Applies a specified function to the corresponding elements of third sequences,
-    /// producing a sequence of the results.</para>
+    ///	    Applies a specified function to the corresponding elements of second sequences, producing a sequence of the
+    ///     results.
+    /// </para>
     /// <para>
-    /// The resulting sequence has the same length as the input sequences.
-    /// If the input sequences are of different lengths, an exception is thrown.</para>
+    ///	    The resulting sequence has the same length as the input sequences. If the input sequences are of different
+    ///     lengths, an exception is thrown.
+    /// </para>
     /// </summary>
     /// <typeparam name = "TResult">
-    /// The type of the elements of the result sequence.</typeparam>
-    /// <param name = "resultSelector">A projection function that combines
-    /// elements from all of the sequences.</param>
-    /// <returns>A sequence of elements returned by <paramref name = "resultSelector"/>.</returns>
+    ///	    The type of the elements of the result sequence.
+    /// </typeparam>
+    /// <param name = "resultSelector">
+    ///	    A projection function that combines elements from all of the sequences.
+    /// </param>
+    /// <returns>
+    ///	    A sequence of elements returned by <paramref name = "resultSelector"/>.
+    /// </returns>
     /// <remarks>
-    /// This method uses deferred execution and stream its results.
+    ///	    This method uses deferred execution and stream its results.
     /// </remarks>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "resultSelector"/> or any of the input sequences is null.</exception>
-    /// <exception cref = "global::System.InvalidOperationException">
-    /// Any of the input sequences are shorter than the others.
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///	    <paramref name = "resultSelector"/> or any of the input sequences is <see langword="null"/>.
     /// </exception>
-    /// <typeparam name = "TFirst">The type of the elements of <paramref name = "first"/>.</typeparam>
-    /// <param name = "first">The first sequence of elements.</param>
-    /// <typeparam name = "TSecond">The type of the elements of <paramref name = "second"/>.</typeparam>
-    /// <param name = "second">The second sequence of elements.</param>
-    /// <typeparam name = "TThird">The type of the elements of <paramref name = "third"/>.</typeparam>
-    /// <param name = "third">The third sequence of elements.</param>
+    /// <exception cref = "global::System.InvalidOperationException">
+    ///	    Any of the input sequences are shorter than the others.
+    /// </exception>
+    /// <typeparam name = "TFirst">
+    ///		The type of the elements of <paramref name = "first"/>.
+    /// </typeparam>
+    /// <param name = "first">
+    ///		The first sequence of elements.
+    /// </param>
+    /// <typeparam name = "TSecond">
+    ///		The type of the elements of <paramref name = "second"/>.
+    /// </typeparam>
+    /// <param name = "second">
+    ///		The second sequence of elements.
+    /// </param>
+    /// <typeparam name = "TThird">
+    ///		The type of the elements of <paramref name = "third"/>.
+    /// </typeparam>
+    /// <param name = "third">
+    ///		The third sequence of elements.
+    /// </param>
     public static global::System.Collections.Generic.IEnumerable<TResult> EquiZip<TFirst, TSecond, TThird, TResult>(this global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Collections.Generic.IEnumerable<TThird> third, global::System.Func<TFirst, TSecond, TThird, TResult> resultSelector)
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
@@ -186,25 +232,39 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Joins the corresponding elements of third sequences,
-    /// producing a sequence of tuples containing them.
+    ///	    Joins the corresponding elements of second sequences, producing a sequence of tuples containing them.
     /// </summary>
-    /// <returns>A sequence of 
-    /// <see cref = "global::System.ValueTuple{T1, T2, T3}"/> 
-    /// containing corresponding elements from each of the sequences.</returns>
+    /// <returns>
+    ///	    A sequence of <see cref = "global::System.ValueTuple{T1, T2, T3}"/> 
+    ///	    containing corresponding elements from each of the sequences.
+    /// </returns>
     /// <remarks>
-    /// This method uses deferred execution and stream its results.
+    ///	    This method uses deferred execution and stream its results.
     /// </remarks>
-    /// <exception cref = "global::System.ArgumentNullException">Any of the input sequences is null.</exception>
+    /// <exception cref = "global::System.ArgumentNullException">
+    /// Any of the input sequences is null.
+    ///	    </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// Any of the input sequences are shorter than the others.
+    ///	    Any of the input sequences are shorter than the others.
     /// </exception>
-    /// <typeparam name = "TFirst">The type of the elements of <paramref name = "first"/>.</typeparam>
-    /// <param name = "first">The first sequence of elements.</param>
-    /// <typeparam name = "TSecond">The type of the elements of <paramref name = "second"/>.</typeparam>
-    /// <param name = "second">The second sequence of elements.</param>
-    /// <typeparam name = "TThird">The type of the elements of <paramref name = "third"/>.</typeparam>
-    /// <param name = "third">The third sequence of elements.</param>
+    /// <typeparam name = "TFirst">
+    ///     The type of the elements of <paramref name = "first"/>.
+    /// </typeparam>
+    /// <param name = "first">
+    ///     The first sequence of elements.
+    /// </param>
+    /// <typeparam name = "TSecond">
+    ///     The type of the elements of <paramref name = "second"/>.
+    /// </typeparam>
+    /// <param name = "second">
+    ///     The second sequence of elements.
+    /// </param>
+    /// <typeparam name = "TThird">
+    ///     The type of the elements of <paramref name = "third"/>.
+    /// </typeparam>
+    /// <param name = "third">
+    ///     The third sequence of elements.
+    /// </param>
     public static global::System.Collections.Generic.IEnumerable<(TFirst, TSecond, TThird)> EquiZip<TFirst, TSecond, TThird>(this global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Collections.Generic.IEnumerable<TThird> third) => EquiZip(first, second, third, global::System.ValueTuple.Create);
     private class EquiZipIterator<T1, T2, T3, TResult> : ListIterator<TResult>
     {
@@ -257,32 +317,56 @@ public static partial class SuperEnumerable
 
     /// <summary>
     /// <para>
-    /// Applies a specified function to the corresponding elements of fourth sequences,
-    /// producing a sequence of the results.</para>
+    ///	    Applies a specified function to the corresponding elements of second sequences, producing a sequence of the
+    ///     results.
+    /// </para>
     /// <para>
-    /// The resulting sequence has the same length as the input sequences.
-    /// If the input sequences are of different lengths, an exception is thrown.</para>
+    ///	    The resulting sequence has the same length as the input sequences. If the input sequences are of different
+    ///     lengths, an exception is thrown.
+    /// </para>
     /// </summary>
     /// <typeparam name = "TResult">
-    /// The type of the elements of the result sequence.</typeparam>
-    /// <param name = "resultSelector">A projection function that combines
-    /// elements from all of the sequences.</param>
-    /// <returns>A sequence of elements returned by <paramref name = "resultSelector"/>.</returns>
+    ///	    The type of the elements of the result sequence.
+    /// </typeparam>
+    /// <param name = "resultSelector">
+    ///	    A projection function that combines elements from all of the sequences.
+    /// </param>
+    /// <returns>
+    ///	    A sequence of elements returned by <paramref name = "resultSelector"/>.
+    /// </returns>
     /// <remarks>
-    /// This method uses deferred execution and stream its results.
+    ///	    This method uses deferred execution and stream its results.
     /// </remarks>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "resultSelector"/> or any of the input sequences is null.</exception>
-    /// <exception cref = "global::System.InvalidOperationException">
-    /// Any of the input sequences are shorter than the others.
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///	    <paramref name = "resultSelector"/> or any of the input sequences is <see langword="null"/>.
     /// </exception>
-    /// <typeparam name = "TFirst">The type of the elements of <paramref name = "first"/>.</typeparam>
-    /// <param name = "first">The first sequence of elements.</param>
-    /// <typeparam name = "TSecond">The type of the elements of <paramref name = "second"/>.</typeparam>
-    /// <param name = "second">The second sequence of elements.</param>
-    /// <typeparam name = "TThird">The type of the elements of <paramref name = "third"/>.</typeparam>
-    /// <param name = "third">The third sequence of elements.</param>
-    /// <typeparam name = "TFourth">The type of the elements of <paramref name = "fourth"/>.</typeparam>
-    /// <param name = "fourth">The fourth sequence of elements.</param>
+    /// <exception cref = "global::System.InvalidOperationException">
+    ///	    Any of the input sequences are shorter than the others.
+    /// </exception>
+    /// <typeparam name = "TFirst">
+    ///		The type of the elements of <paramref name = "first"/>.
+    /// </typeparam>
+    /// <param name = "first">
+    ///		The first sequence of elements.
+    /// </param>
+    /// <typeparam name = "TSecond">
+    ///		The type of the elements of <paramref name = "second"/>.
+    /// </typeparam>
+    /// <param name = "second">
+    ///		The second sequence of elements.
+    /// </param>
+    /// <typeparam name = "TThird">
+    ///		The type of the elements of <paramref name = "third"/>.
+    /// </typeparam>
+    /// <param name = "third">
+    ///		The third sequence of elements.
+    /// </param>
+    /// <typeparam name = "TFourth">
+    ///		The type of the elements of <paramref name = "fourth"/>.
+    /// </typeparam>
+    /// <param name = "fourth">
+    ///		The fourth sequence of elements.
+    /// </param>
     public static global::System.Collections.Generic.IEnumerable<TResult> EquiZip<TFirst, TSecond, TThird, TFourth, TResult>(this global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Collections.Generic.IEnumerable<TThird> third, global::System.Collections.Generic.IEnumerable<TFourth> fourth, global::System.Func<TFirst, TSecond, TThird, TFourth, TResult> resultSelector)
     {
         global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
@@ -326,27 +410,45 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Joins the corresponding elements of fourth sequences,
-    /// producing a sequence of tuples containing them.
+    ///	    Joins the corresponding elements of second sequences, producing a sequence of tuples containing them.
     /// </summary>
-    /// <returns>A sequence of 
-    /// <see cref = "global::System.ValueTuple{T1, T2, T3, T4}"/> 
-    /// containing corresponding elements from each of the sequences.</returns>
+    /// <returns>
+    ///	    A sequence of <see cref = "global::System.ValueTuple{T1, T2, T3, T4}"/> 
+    ///	    containing corresponding elements from each of the sequences.
+    /// </returns>
     /// <remarks>
-    /// This method uses deferred execution and stream its results.
+    ///	    This method uses deferred execution and stream its results.
     /// </remarks>
-    /// <exception cref = "global::System.ArgumentNullException">Any of the input sequences is null.</exception>
+    /// <exception cref = "global::System.ArgumentNullException">
+    /// Any of the input sequences is null.
+    ///	    </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// Any of the input sequences are shorter than the others.
+    ///	    Any of the input sequences are shorter than the others.
     /// </exception>
-    /// <typeparam name = "TFirst">The type of the elements of <paramref name = "first"/>.</typeparam>
-    /// <param name = "first">The first sequence of elements.</param>
-    /// <typeparam name = "TSecond">The type of the elements of <paramref name = "second"/>.</typeparam>
-    /// <param name = "second">The second sequence of elements.</param>
-    /// <typeparam name = "TThird">The type of the elements of <paramref name = "third"/>.</typeparam>
-    /// <param name = "third">The third sequence of elements.</param>
-    /// <typeparam name = "TFourth">The type of the elements of <paramref name = "fourth"/>.</typeparam>
-    /// <param name = "fourth">The fourth sequence of elements.</param>
+    /// <typeparam name = "TFirst">
+    ///     The type of the elements of <paramref name = "first"/>.
+    /// </typeparam>
+    /// <param name = "first">
+    ///     The first sequence of elements.
+    /// </param>
+    /// <typeparam name = "TSecond">
+    ///     The type of the elements of <paramref name = "second"/>.
+    /// </typeparam>
+    /// <param name = "second">
+    ///     The second sequence of elements.
+    /// </param>
+    /// <typeparam name = "TThird">
+    ///     The type of the elements of <paramref name = "third"/>.
+    /// </typeparam>
+    /// <param name = "third">
+    ///     The third sequence of elements.
+    /// </param>
+    /// <typeparam name = "TFourth">
+    ///     The type of the elements of <paramref name = "fourth"/>.
+    /// </typeparam>
+    /// <param name = "fourth">
+    ///     The fourth sequence of elements.
+    /// </param>
     public static global::System.Collections.Generic.IEnumerable<(TFirst, TSecond, TThird, TFourth)> EquiZip<TFirst, TSecond, TThird, TFourth>(this global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Collections.Generic.IEnumerable<TThird> third, global::System.Collections.Generic.IEnumerable<TFourth> fourth) => EquiZip(first, second, third, fourth, global::System.ValueTuple.Create);
     private class EquiZipIterator<T1, T2, T3, T4, TResult> : ListIterator<TResult>
     {
