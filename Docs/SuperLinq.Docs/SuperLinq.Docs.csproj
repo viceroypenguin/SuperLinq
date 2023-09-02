@@ -8,8 +8,7 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.DocAsCode.App" Version="2.67.5" />
-		<PackageReference Include="Microsoft.DocAsCode.Build.MemberLevelManagedReference" Version="2.63.1" />
+		<PackageReference Include="DocFx.App" Version="2.70.0" />
 	</ItemGroup>
 
 </Project>
