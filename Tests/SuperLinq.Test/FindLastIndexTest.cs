@@ -68,7 +68,7 @@ public class FindLastIndexTest
 		array[^6] = 3;
 		Assert.Equal(
 			(^6).GetOffset(20),
-			array.FindLastIndex(i => i == 3, ^5));
+			array.FindLastIndex(i => i == 3, ^6));
 	}
 
 	[Fact]
