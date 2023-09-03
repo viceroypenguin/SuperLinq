@@ -126,7 +126,7 @@ public static partial class SuperEnumerable
 			var i = 0;
 			foreach (var element in source)
 			{
-				if (i >= index.Value)
+				if (i > index.Value)
 					break;
 
 				if (predicate(element))
