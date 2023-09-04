@@ -3,19 +3,31 @@
 public static partial class SuperEnumerable
 {
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 1 element.
+    ///		Returns the result of applying a function to a sequence of 1 element.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 1 element.
+    ///		<paramref name = "source"/> does not contain exactly 1 element.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, TResult> folder)
     {
@@ -26,19 +38,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 2 elements.
+    ///		Returns the result of applying a function to a sequence of 2 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 2 elements.
+    ///		<paramref name = "source"/> does not contain exactly 2 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, TResult> folder)
     {
@@ -49,19 +73,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 3 elements.
+    ///		Returns the result of applying a function to a sequence of 3 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 3 elements.
+    ///		<paramref name = "source"/> does not contain exactly 3 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, TResult> folder)
     {
@@ -72,19 +108,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 4 elements.
+    ///		Returns the result of applying a function to a sequence of 4 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 4 elements.
+    ///		<paramref name = "source"/> does not contain exactly 4 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, TResult> folder)
     {
@@ -95,19 +143,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 5 elements.
+    ///		Returns the result of applying a function to a sequence of 5 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 5 elements.
+    ///		<paramref name = "source"/> does not contain exactly 5 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, TResult> folder)
     {
@@ -118,19 +178,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 6 elements.
+    ///		Returns the result of applying a function to a sequence of 6 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 6 elements.
+    ///		<paramref name = "source"/> does not contain exactly 6 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, TResult> folder)
     {
@@ -141,19 +213,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 7 elements.
+    ///		Returns the result of applying a function to a sequence of 7 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 7 elements.
+    ///		<paramref name = "source"/> does not contain exactly 7 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, TResult> folder)
     {
@@ -164,19 +248,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 8 elements.
+    ///		Returns the result of applying a function to a sequence of 8 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 8 elements.
+    ///		<paramref name = "source"/> does not contain exactly 8 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, TResult> folder)
     {
@@ -187,19 +283,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 9 elements.
+    ///		Returns the result of applying a function to a sequence of 9 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 9 elements.
+    ///		<paramref name = "source"/> does not contain exactly 9 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, TResult> folder)
     {
@@ -210,19 +318,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 10 elements.
+    ///		Returns the result of applying a function to a sequence of 10 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 10 elements.
+    ///		<paramref name = "source"/> does not contain exactly 10 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
@@ -233,19 +353,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 11 elements.
+    ///		Returns the result of applying a function to a sequence of 11 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 11 elements.
+    ///		<paramref name = "source"/> does not contain exactly 11 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
@@ -256,19 +388,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 12 elements.
+    ///		Returns the result of applying a function to a sequence of 12 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 12 elements.
+    ///		<paramref name = "source"/> does not contain exactly 12 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
@@ -279,19 +423,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 13 elements.
+    ///		Returns the result of applying a function to a sequence of 13 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 13 elements.
+    ///		<paramref name = "source"/> does not contain exactly 13 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
@@ -302,19 +458,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 14 elements.
+    ///		Returns the result of applying a function to a sequence of 14 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 14 elements.
+    ///		<paramref name = "source"/> does not contain exactly 14 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
@@ -325,19 +493,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 15 elements.
+    ///		Returns the result of applying a function to a sequence of 15 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 15 elements.
+    ///		<paramref name = "source"/> does not contain exactly 15 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
@@ -348,19 +528,31 @@ public static partial class SuperEnumerable
     }
 
     /// <summary>
-    /// Returns the result of applying a function to a sequence of 16 elements.
+    ///		Returns the result of applying a function to a sequence of 16 elements.
     /// </summary>
     /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
     /// </remarks>
-    /// <typeparam name = "T">Type of element in the source sequence</typeparam>
-    /// <typeparam name = "TResult">Type of the result</typeparam>
-    /// <param name = "source">The sequence of items to fold.</param>
-    /// <param name = "folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name = "folder"/>.</returns>
-    /// <exception cref = "global::System.ArgumentNullException"><paramref name = "source"/> or <paramref name = "folder"/> is null.</exception>
+    /// <typeparam name = "T">
+    ///		Type of element in the source sequence
+    /// </typeparam>
+    /// <typeparam name = "TResult">
+    ///		Type of the result
+    /// </typeparam>
+    /// <param name = "source">
+    ///		The sequence of items to fold.
+    /// </param>
+    /// <param name = "folder">
+    ///		Function to apply to the elements in the sequence.
+    /// </param>
+    /// <returns>
+    ///		The folded value returned by <paramref name = "folder"/>.
+    /// </returns>
+    /// <exception cref = "global::System.ArgumentNullException">
+    ///		<paramref name = "source"/> or <paramref name = "folder"/> is <see langword="null"/>.
+    /// </exception>
     /// <exception cref = "global::System.InvalidOperationException">
-    /// <paramref name = "source"/> does not contain exactly 16 elements.
+    ///		<paramref name = "source"/> does not contain exactly 16 elements.
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
