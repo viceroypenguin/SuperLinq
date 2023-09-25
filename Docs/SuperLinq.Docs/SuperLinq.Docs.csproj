@@ -8,7 +8,7 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DocFx.App" Version="2.70.2" />
+		<PackageReference Include="DocFx.App" Version="2.70.4" />
 	</ItemGroup>
 
 </Project>
