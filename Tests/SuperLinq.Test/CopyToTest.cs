@@ -54,14 +54,16 @@ public class CopyToTest
 	[Fact]
 	public void ThrowsOnTooMuchDataForIListArray()
 	{
+#pragma warning disable IDE0301 // Simplify collection initialization
 		_ = Assert.ThrowsAny<ArgumentException>(
-			() => Seq(1).CopyTo((IList<int>)[]));
+			() => Seq(1).CopyTo((IList<int>)Array.Empty<int>()));
 		_ = Assert.ThrowsAny<ArgumentException>(
-			() => Enumerable.Range(1, 1).CopyTo((IList<int>)[]));
+			() => Enumerable.Range(1, 1).CopyTo((IList<int>)Array.Empty<int>()));
 		_ = Assert.ThrowsAny<ArgumentException>(
-			() => new List<int> { 1 }.AsEnumerable().CopyTo((IList<int>)[]));
+			() => new List<int> { 1 }.AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
 		_ = Assert.ThrowsAny<ArgumentException>(
-			() => new List<int> { 1 }.AsReadOnly().AsEnumerable().CopyTo((IList<int>)[]));
+			() => new List<int> { 1 }.AsReadOnly().AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
+#pragma warning restore IDE0301 // Simplify collection initialization
 	}
 
 	[Fact]
