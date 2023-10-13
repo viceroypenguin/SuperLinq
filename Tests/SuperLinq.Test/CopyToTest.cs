@@ -14,7 +14,7 @@ public class CopyToTest
 			() => default(IEnumerable<int>)!.CopyTo(Array.Empty<int>()));
 		_ = Assert.Throws<ArgumentNullException>(
 			"source",
-			() => default(IEnumerable<int>)!.CopyTo((IList<int>)Array.Empty<int>()));
+			() => default(IEnumerable<int>)!.CopyTo((IList<int>)[]));
 		_ = Assert.Throws<ArgumentNullException>(
 			"source",
 			() => default(IEnumerable<int>)!.CopyTo(Array.Empty<int>(), 1));
@@ -54,6 +54,7 @@ public class CopyToTest
 	[Fact]
 	public void ThrowsOnTooMuchDataForIListArray()
 	{
+#pragma warning disable IDE0301 // Simplify collection initialization
 		_ = Assert.ThrowsAny<ArgumentException>(
 			() => Seq(1).CopyTo((IList<int>)Array.Empty<int>()));
 		_ = Assert.ThrowsAny<ArgumentException>(
@@ -62,15 +63,16 @@ public class CopyToTest
 			() => new List<int> { 1 }.AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
 		_ = Assert.ThrowsAny<ArgumentException>(
 			() => new List<int> { 1 }.AsReadOnly().AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
+#pragma warning restore IDE0301 // Simplify collection initialization
 	}
 
 	[Fact]
 	public void ThrowsOnTooMuchDataForSpan()
 	{
 		_ = Assert.Throws<ArgumentException>(
-			() => Seq(1).CopyTo(Array.Empty<int>().AsSpan()));
+			() => Seq(1).CopyTo([]));
 		_ = Assert.Throws<ArgumentException>(
-			() => new List<int> { 1 }.AsEnumerable().CopyTo(Array.Empty<int>().AsSpan()));
+			() => new List<int> { 1 }.AsEnumerable().CopyTo([]));
 	}
 
 	[Fact]

@@ -46,9 +46,9 @@ public class NullArgumentTest
 		});
 
 	private static readonly string[] s_skipMethods =
-	{
+	[
 		nameof(AsyncSuperEnumerable.CopyTo),
-	};
+	];
 
 	private static IEnumerable<object[]> GetInlineDatas(bool canBeNull, Func<MethodInfo, object[], string, Action> inlineDataFactory) =>
 		from m in typeof(AsyncSuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
@@ -73,12 +73,12 @@ public class NullArgumentTest
 		$"{definition.Name}: '{parameter.Name}' ({parameter.Position});\n{definition}";
 
 	private static readonly string[] s_joinMethods =
-	{
+	[
 		nameof(AsyncSuperEnumerable.InnerJoin),
 		nameof(AsyncSuperEnumerable.LeftOuterJoin),
 		nameof(AsyncSuperEnumerable.RightOuterJoin),
 		nameof(AsyncSuperEnumerable.FullOuterJoin),
-	};
+	];
 
 	private static MethodInfo InstantiateMethod(MethodInfo definition)
 	{
@@ -172,7 +172,7 @@ public class NullArgumentTest
 		var value = CreateInstance(type.GetGenericArguments()[0]);
 		var method = typeof(Task).GetMethod("FromResult");
 		var instantiation = method!.MakeGenericMethod(type.GetGenericArguments());
-		return instantiation!.Invoke(null, new object?[] { value, })!;
+		return instantiation!.Invoke(null, [value,])!;
 	}
 
 	private static object CreateGenericInterfaceInstance(TypeInfo type)

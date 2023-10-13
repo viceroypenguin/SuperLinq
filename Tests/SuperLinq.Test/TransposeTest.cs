@@ -23,13 +23,13 @@ public class TransposeTest
 	[Fact]
 	public void TransposeWithRowsOfSameLength()
 	{
-		var expectations = new[]
+		var expectations = new int[][]
 		{
-				new [] { 10, 20, 30 },
-				new [] { 11, 21, 31 },
-				new [] { 12, 22, 32 },
-				new [] { 13, 23, 33 },
-			};
+			[10, 20, 30],
+			[11, 21, 31],
+			[12, 22, 32],
+			[13, 23, 33],
+		};
 
 		using var row1 = TestingSequence.Of(10, 11, 12, 13);
 		using var row2 = TestingSequence.Of(20, 21, 22, 23);
@@ -42,11 +42,11 @@ public class TransposeTest
 	[Fact]
 	public void TransposeWithRowsOfDifferentLengths()
 	{
-		var expectations = new[]
+		var expectations = new int[][]
 		{
-			new[] { 10, 20, 30 },
-			new[] { 11, 31 },
-			new[] { 32 },
+			[10, 20, 30],
+			[11, 31],
+			[32],
 		};
 
 		using var row1 = TestingSequence.Of(10, 11);
@@ -90,14 +90,14 @@ public class TransposeTest
 
 		var result = matrix.Transpose().Take(5);
 
-		var expectations = new[]
+		var expectations = new int[][]
 		{
-				new[] { 2,    3,    5 },
-				new[] { 4,    9,   25 },
-				new[] { 8,   27,  125 },
-				new[] { 16,  81,  625 },
-				new[] { 32, 243, 3125 }
-			};
+			[2,    3,    5],
+			[4,    9,   25],
+			[8,   27,  125],
+			[16,  81,  625],
+			[32, 243, 3125]
+		};
 
 		AssertMatrix(expectations, result);
 		sequences.VerifySequences();
@@ -117,14 +117,14 @@ public class TransposeTest
 
 		var result = matrix.Transpose().Take(5);
 
-		var expectations = new[]
+		var expectations = new int[][]
 		{
-				new[] { 2,    3,    5 },
-				new[] { 4,    9,   25 },
-				new[] { 8,        125 },
-				new[] { 16,       625 },
-				new[] { 32,      3125 }
-			};
+			[2,    3,    5],
+			[4,    9,   25],
+			[8,        125],
+			[16,       625],
+			[32,      3125]
+		};
 
 		AssertMatrix(expectations, result);
 		sequences.VerifySequences();

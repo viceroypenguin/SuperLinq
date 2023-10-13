@@ -69,7 +69,7 @@ public class TakeTest
 	public async Task SourceNonEmptyCountOne()
 	{
 		var source = AsyncSeq(2, 5, 9, 1);
-		int[] expected = { 2 };
+		var expected = new[] { 2 };
 
 		Assert.Equal(expected, await source.Take(1).ToListAsync());
 		Assert.Equal(expected, await source.Take(0..1).ToListAsync());
@@ -94,7 +94,7 @@ public class TakeTest
 	public async Task SourceNonEmptyTakeAllButOne()
 	{
 		var source = AsyncSeq(2, 5, 9, 1);
-		int[] expected = { 2, 5, 9 };
+		var expected = new[] { 2, 5, 9 };
 
 		Assert.Equal(expected, await source.Take(3).ToListAsync());
 		Assert.Equal(expected, await source.Take(0..3).ToListAsync());
@@ -107,7 +107,7 @@ public class TakeTest
 	public async Task RunOnce()
 	{
 		var source = AsyncSeq(2, 5, 9, 1);
-		int[] expected = { 2, 5, 9 };
+		var expected = new[] { 2, 5, 9 };
 
 		Assert.Equal(expected, await source.Take(3).ToListAsync());
 		Assert.Equal(expected, await source.Take(0..3).ToListAsync());

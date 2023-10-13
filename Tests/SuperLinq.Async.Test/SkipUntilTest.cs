@@ -50,17 +50,16 @@ public class SkipUntilTest
 	}
 
 	public static readonly IEnumerable<object[]> TestData =
-		new[]
-		{
-			new object[] { Array.Empty<int>(), 0, Array.Empty<int>()     }, // empty sequence
-            new object[] { new[] { 0       } , 0, Array.Empty<int>()     }, // one-item sequence, predicate succeed
-            new object[] { new[] { 0       } , 1, Array.Empty<int>()     }, // one-item sequence, predicate don't succeed
-            new object[] { new[] { 1, 2, 3 } , 0, new[] { 2, 3 } },         // predicate succeed on first item
-            new object[] { new[] { 1, 2, 3 } , 1, new[] { 2, 3 } },
-			new object[] { new[] { 1, 2, 3 } , 2, new[] { 3    } },
-			new object[] { new[] { 1, 2, 3 } , 3, Array.Empty<int>()     }, // predicate succeed on last item
-            new object[] { new[] { 1, 2, 3 } , 4, Array.Empty<int>()     }, // predicate never succeed
-		};
+		[
+			[Array.Empty<int>(), 0, Array.Empty<int>()], // empty sequence
+			[new[] { 0 }, 0, Array.Empty<int>()], // one-item sequence, predicate succeed
+			[new[] { 0 }, 1, Array.Empty<int>()], // one-item sequence, predicate don't succeed
+			[new[] { 1, 2, 3 }, 0, new[] { 2, 3 }],         // predicate succeed on first item
+			[new[] { 1, 2, 3 }, 1, new[] { 2, 3 }],
+			[new[] { 1, 2, 3 }, 2, new[] { 3 }],
+			[new[] { 1, 2, 3 }, 3, Array.Empty<int>()], // predicate succeed on last item
+			[new[] { 1, 2, 3 }, 4, Array.Empty<int>()], // predicate never succeed
+		];
 
 	[Theory, MemberData(nameof(TestData))]
 	public async Task TestSkipUntil(int[] source, int min, int[] expected)
