@@ -50,10 +50,10 @@ public class MoveTest
 		return
 			from index in Enumerable.Range(0, Length)
 			from count in Enumerable.Range(0, Length + 1)
-			from tcd in new[]
+			from tcd in new object[][]
 			{
-				new object[] { Length, index, count, Math.Max(0, index - 1), },
-				new object[] { Length, index, count, index + 1, },
+				[Length, index, count, Math.Max(0, index - 1),],
+				[Length, index, count, index + 1,],
 			}
 			select tcd;
 	}

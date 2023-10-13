@@ -110,7 +110,7 @@ public static partial class SuperEnumerable
 		}
 
 		if (lastIndex == -1)
-			return Array.Empty<TResult>();
+			return [];
 
 		var length = lastIndex + 1;
 		var array = new TResult?[length];

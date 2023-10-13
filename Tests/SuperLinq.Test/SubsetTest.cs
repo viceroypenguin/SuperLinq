@@ -89,13 +89,13 @@ public class SubsetTest
 		using var sequence = Enumerable.Range(1, 4).AsTestingSequence();
 
 		var result = sequence.Subsets();
-		var expectedSubsets = new[]
+		var expectedSubsets = new int[][]
 		{
-			Array.Empty<int>(),
-			new[] {1}, new[] {2}, new[] {3}, new[] {4},
-			new[] {1,2}, new[] {1,3}, new[] {1,4}, new[] {2,3}, new[] {2,4}, new[] {3,4},
-			new[] {1,2,3}, new[] {1,2,4}, new[] {1,3,4}, new[] {2,3,4},
-			new[] {1,2,3,4}
+			[],
+			[1], [2], [3], [4],
+			[1,2], [1,3], [1,4], [2,3], [2,4], [3,4],
+			[1,2,3], [1,2,4], [1,3,4], [2,3,4],
+			[1,2,3,4]
 		};
 
 		foreach (var (actual, expected) in result.Zip(expectedSubsets))
@@ -129,23 +129,23 @@ public class SubsetTest
 
 		var result = sequence.Subsets(4);
 
-		var expectedSubsets = new[]
+		var expectedSubsets = new int[][]
 		{
-			new[] {1,2,3,4},
-			new[] {1,2,3,5},
-			new[] {1,2,3,6},
-			new[] {1,2,4,5},
-			new[] {1,2,4,6},
-			new[] {1,2,5,6},
-			new[] {1,3,4,5},
-			new[] {1,3,4,6},
-			new[] {1,3,5,6},
-			new[] {1,4,5,6},
-			new[] {2,3,4,5},
-			new[] {2,3,4,6},
-			new[] {2,3,5,6},
-			new[] {2,4,5,6},
-			new[] {3,4,5,6},
+			[1,2,3,4,],
+			[1,2,3,5,],
+			[1,2,3,6,],
+			[1,2,4,5,],
+			[1,2,4,6,],
+			[1,2,5,6,],
+			[1,3,4,5,],
+			[1,3,4,6,],
+			[1,3,5,6,],
+			[1,4,5,6,],
+			[2,3,4,5,],
+			[2,3,4,6,],
+			[2,3,5,6,],
+			[2,4,5,6,],
+			[3,4,5,6,],
 		};
 
 		foreach (var (actual, expected) in result.Zip(expectedSubsets))

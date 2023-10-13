@@ -5,12 +5,11 @@ namespace Test;
 public class LeftOuterJoinTest
 {
 	public static IEnumerable<object[]> GetJoinTypes() =>
-		new[]
-		{
-			new object[] { JoinType.Loop, },
-			new object[] { JoinType.Hash, },
-			new object[] { JoinType.Merge, },
-		};
+		[
+			[JoinType.Loop,],
+			[JoinType.Hash,],
+			[JoinType.Merge,],
+		];
 
 	[Theory, MemberData(nameof(GetJoinTypes))]
 	public void LeftOuterJoinIsLazy(JoinType joinType)

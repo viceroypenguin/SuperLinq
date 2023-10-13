@@ -45,13 +45,12 @@ public static class GetShortestPathTest
 	public class Dijkstra
 	{
 		public static IEnumerable<object?[]> GetStringIntCostData { get; } =
-			new[]
-			{
-				new object?[] { null, null, 15, 7, },
-				new object?[] { StringComparer.InvariantCultureIgnoreCase, null, 10, 4, },
-				new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 150, 6, },
-				new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, 1, },
-			};
+			[
+				[null, null, 15, 7,],
+				[StringComparer.InvariantCultureIgnoreCase, null, 10, 4,],
+				[null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 150, 6,],
+				[StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, 1,],
+			];
 
 		[Theory]
 		[MemberData(nameof(GetStringIntCostData))]
@@ -97,7 +96,7 @@ public static class GetShortestPathTest
 			var count = 0;
 
 			var sequences = new List<TestingSequence<(string, int)>>();
-			var actualCost = SuperEnumerable.GetShortestPathCost<string, int>(
+			var actualCost = SuperEnumerable.GetShortestPathCost(
 				"start",
 				(x, c) =>
 				{
@@ -116,13 +115,12 @@ public static class GetShortestPathTest
 		}
 
 		public static IEnumerable<object?[]> GetStringIntPathData { get; } =
-			new[]
-			{
-				new object?[] { null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), 7, },
-				new object?[] { StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("END", 10)), 4, },
-				new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), 6, },
-				new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("END", 1000)), 1, },
-			};
+			[
+				[null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), 7,],
+				[StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("END", 10)), 4,],
+				[null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), 6,],
+				[StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("END", 1000)), 1,],
+			];
 
 		[Theory]
 		[MemberData(nameof(GetStringIntPathData))]
@@ -187,51 +185,62 @@ public static class GetShortestPathTest
 		}
 
 		public static IEnumerable<object?[]> GetStringIntPathsData { get; } =
-			new[]
-			{
-				new object?[] { null, null, Seq(
-					("start", (null, 0)),
-					("a", ("start", 1)),
-					("b", ("a", 3)),
-					("c", ("b", 6)),
-					("d", ("c", 10)),
-					("end", ("d", 15)),
-					("A", ("start", 10)),
-					("B", ("A", 30)),
-					("C", ("B", 60)),
-					("D", ("C", 100)),
-					("END", ("start", 10))),
-				},
-				new object?[] { StringComparer.InvariantCultureIgnoreCase, null, Seq(
-					("start", (null, 0)),
-					("a", ("start", 1)),
-					("b", ("a", 3)),
-					("c", ("b", 6)),
-					("d", ("c", 10)),
-					("end", ("start", 10))),
-				},
-				new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(
-					("start", (null, 0)),
-					("a", ("start", 1)),
-					("b", ("a", 3)),
-					("c", ("b", 6)),
-					("d", ("c", 10)),
-					("A", ("start", 10)),
-					("B", ("A", 30)),
-					("C", ("B", 60)),
-					("D", ("C", 100)),
-					("end", ("D", 150)),
-					("END", ("start", 1000))),
-				},
-				new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(
-					("start", (null, 0)),
-					("a", ("start", 10)),
-					("b", ("a", 30)),
-					("c", ("b", 60)),
-					("d", ("c", 100)),
-					("end", ("start", 1000))),
-				},
-			};
+			[
+				[
+					null,
+					null,
+					Seq(
+						("start", (null, 0)),
+						("a", ("start", 1)),
+						("b", ("a", 3)),
+						("c", ("b", 6)),
+						("d", ("c", 10)),
+						("end", ("d", 15)),
+						("A", ("start", 10)),
+						("B", ("A", 30)),
+						("C", ("B", 60)),
+						("D", ("C", 100)),
+						("END", ("start", 10))),
+				],
+				[
+					StringComparer.InvariantCultureIgnoreCase,
+					null,
+					Seq(
+						("start", (null, 0)),
+						("a", ("start", 1)),
+						("b", ("a", 3)),
+						("c", ("b", 6)),
+						("d", ("c", 10)),
+						("end", ("start", 10))),
+				],
+				[
+					null,
+					Comparer<int>.Create((x, y) => -x.CompareTo(y)),
+					Seq(
+						("start", (null, 0)),
+						("a", ("start", 1)),
+						("b", ("a", 3)),
+						("c", ("b", 6)),
+						("d", ("c", 10)),
+						("A", ("start", 10)),
+						("B", ("A", 30)),
+						("C", ("B", 60)),
+						("D", ("C", 100)),
+						("end", ("D", 150)),
+						("END", ("start", 1000))),
+				],
+				[
+					StringComparer.InvariantCultureIgnoreCase,
+					Comparer<int>.Create((x, y) => -x.CompareTo(y)),
+					Seq(
+						("start", (null, 0)),
+						("a", ("start", 10)),
+						("b", ("a", 30)),
+						("c", ("b", 60)),
+						("d", ("c", 100)),
+						("end", ("start", 1000))),
+				],
+			];
 
 		[Theory]
 		[MemberData(nameof(GetStringIntPathsData))]
@@ -339,13 +348,12 @@ public static class GetShortestPathTest
 	public class AStar
 	{
 		public static IEnumerable<object?[]> GetStringIntCostData { get; } =
-			new[]
-			{
-				new object?[] { null, null, 15, 7, },
-				new object?[] { StringComparer.InvariantCultureIgnoreCase, null, 10, 4, },
-				new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 150, 6, },
-				new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, 1, },
-			};
+			[
+				[null, null, 15, 7,],
+				[StringComparer.InvariantCultureIgnoreCase, null, 10, 4,],
+				[null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 150, 6,],
+				[StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, 1,],
+			];
 
 		// No heuristic means this operates the same as Dijkstra; this is
 		// to prove the base algorithm still works.
@@ -381,13 +389,12 @@ public static class GetShortestPathTest
 		}
 
 		public static IEnumerable<object?[]> GetStringIntPathData { get; } =
-			new[]
-			{
-				new object?[] { null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), 7, },
-				new object?[] { StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("END", 10)), 4, },
-				new object?[] { null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), 6, },
-				new object?[] { StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("END", 1000)), 1, },
-			};
+			[
+				[null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), 7,],
+				[StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("END", 10)), 4,],
+				[null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), 6,],
+				[StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("END", 1000)), 1,],
+			];
 
 		// No heuristic means this operates the same as Dijkstra; this is
 		// to prove the base algorithm still works.

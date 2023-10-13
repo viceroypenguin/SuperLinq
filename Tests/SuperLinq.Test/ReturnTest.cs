@@ -92,14 +92,14 @@ public class ReturnTest
 
 #pragma warning disable IDE0200 // Remove unnecessary lambda expression
 	public static IEnumerable<object[]> UnsupportedActions() =>
-		new[]
+		new Action[][]
 		{
-			new Action[] { () => SomeSingleton.List.Add(new object()), },
-			new Action[] { () => SomeSingleton.Collection.Clear(), },
-			new Action[] { () => SomeSingleton.Collection.Remove(SomeSingleton.Item), },
-			new Action[] { () => SomeSingleton.List.RemoveAt(0), },
-			new Action[] { () => SomeSingleton.List.Insert(0, new object()), },
-			new Action[] { () => SomeSingleton.List[0] = new object(), },
+			[() => SomeSingleton.List.Add(new object()),],
+			[() => SomeSingleton.Collection.Clear(),],
+			[() => SomeSingleton.Collection.Remove(SomeSingleton.Item),],
+			[() => SomeSingleton.List.RemoveAt(0),],
+			[() => SomeSingleton.List.Insert(0, new object()),],
+			[() => SomeSingleton.List[0] = new object(),],
 		};
 #pragma warning restore IDE0200 // Remove unnecessary lambda expression
 

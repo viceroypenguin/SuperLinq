@@ -209,6 +209,9 @@ dotnet_analyzer_diagnostic.category-Style.severity = warning
 
 dotnet_diagnostic.IDE0011.severity = silent				# IDE0011: Add braces
 dotnet_diagnostic.IDE0046.severity = silent				# IDE0046: Convert to conditional expression
+dotnet_diagnostic.IDE0290.severity = none				# IDE0290: Use primary constructor
+dotnet_diagnostic.IDE0028.severity = none				# IDE0028: Simplify collection initialization
+dotnet_diagnostic.IDE0305.severity = none				# IDE0305: Simplify collection initialization
 
 # For ScanEx()
 dotnet_code_quality.ca1711.allowed_suffixes = Ex

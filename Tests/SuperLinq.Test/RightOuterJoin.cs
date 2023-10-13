@@ -5,11 +5,10 @@ namespace Test;
 public class RightOuterJoinTest
 {
 	public static IEnumerable<object[]> GetJoinTypes() =>
-		new[]
-		{
-			new object[] { JoinType.Hash, },
-			new object[] { JoinType.Merge, },
-		};
+		[
+			[JoinType.Hash,],
+			[JoinType.Merge,],
+		];
 
 	[Theory, MemberData(nameof(GetJoinTypes))]
 	public void RightOuterJoinIsLazy(JoinType joinType)

@@ -14,7 +14,7 @@ public partial class WindowTests
 	public void TestWindowBufferedNegativeWindowSizeException()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new BreakingSequence<int>().Window(Array.Empty<int>(), -5, SuperEnumerable.Identity));
+			new BreakingSequence<int>().Window(new int[3], -5, SuperEnumerable.Identity));
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Window(-5, SuperEnumerable.Identity));

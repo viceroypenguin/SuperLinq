@@ -32,10 +32,12 @@ public class ZipLongestTest
 		{
 			var first = Enumerable.Range(1, 3 - (i == 0 ? 1 : 0));
 			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
+#pragma warning disable CA2000 // Dispose objects before losing scope
 			parameters.Add(
-				new object[] { first.AsBreakingList(), second.AsBreakingList(), i, });
+				[first.AsBreakingList(), second.AsBreakingList(), i,]);
 			parameters.Add(
-				new object[] { first.AsTestingSequence(maxEnumerations: 2), second.AsTestingSequence(maxEnumerations: 2), i, });
+				[first.AsTestingSequence(maxEnumerations: 2), second.AsTestingSequence(maxEnumerations: 2), i,]);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
 		return parameters;
@@ -128,22 +130,22 @@ public class ZipLongestTest
 			var first = Enumerable.Range(1, 3 - (i == 0 ? 1 : 0));
 			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
 			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 0));
+#pragma warning disable CA2000 // Dispose objects before losing scope
 			parameters.Add(
-				new object[]
-				{
+				[
 					first.AsBreakingList(),
 					second.AsBreakingList(),
 					third.AsBreakingList(),
 					i,
-				});
+				]);
 			parameters.Add(
-				new object[]
-				{
+				[
 					first.AsTestingSequence(maxEnumerations: 2),
 					second.AsTestingSequence(maxEnumerations: 2),
 					third.AsTestingSequence(maxEnumerations: 2),
 					i,
-				});
+				]);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
 		return parameters;
@@ -253,24 +255,24 @@ public class ZipLongestTest
 			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
 			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 0));
 			var fourth = Enumerable.Range(1, 3 - (i == 3 ? 1 : 0));
+#pragma warning disable CA2000 // Dispose objects before losing scope
 			parameters.Add(
-				new object[]
-				{
+				[
 					first.AsBreakingList(),
 					second.AsBreakingList(),
 					third.AsBreakingList(),
 					fourth.AsBreakingList(),
 					i,
-				});
+				]);
 			parameters.Add(
-				new object[]
-				{
+				[
 					first.AsTestingSequence(maxEnumerations: 2),
 					second.AsTestingSequence(maxEnumerations: 2),
 					third.AsTestingSequence(maxEnumerations: 2),
 					fourth.AsTestingSequence(maxEnumerations: 2),
 					i,
-				});
+				]);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
 		return parameters;

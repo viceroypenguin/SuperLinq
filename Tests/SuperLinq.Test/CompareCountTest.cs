@@ -89,7 +89,7 @@ public class CompareCountTest
 	[Fact]
 	public void CompareCountDisposesFirstEnumerator()
 	{
-		using var collection = new BreakingCollection<int>(Array.Empty<int>());
+		using var collection = new BreakingCollection<int>([]);
 		using var seq = TestingSequence.Of<int>();
 
 		Assert.Equal(0, seq.CompareCount(collection));
@@ -98,7 +98,7 @@ public class CompareCountTest
 	[Fact]
 	public void CompareCountDisposesSecondEnumerator()
 	{
-		using var collection = new BreakingCollection<int>(Array.Empty<int>());
+		using var collection = new BreakingCollection<int>([]);
 		using var seq = TestingSequence.Of<int>();
 
 		Assert.Equal(0, collection.CompareCount(seq));

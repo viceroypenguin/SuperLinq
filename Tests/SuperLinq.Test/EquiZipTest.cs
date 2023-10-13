@@ -2,18 +2,18 @@
 
 public class EquiZipTest
 {
-	private static readonly string[] s_cardinals = new[]
-	{
-		"Zeroth" ,
-		"First"  ,
-		"Second" ,
-		"Third"  ,
-		"Fourth" ,
-		"Fifth"  ,
-		"Sixth"  ,
+	private static readonly string[] s_cardinals =
+	[
+		"Zeroth",
+		"First",
+		"Second",
+		"Third",
+		"Fourth",
+		"Fifth",
+		"Sixth",
 		"Seventh",
-		"Eighth" ,
-	};
+		"Eighth",
+	];
 
 	[Fact]
 	public void EquiZipIsLazy()
@@ -96,10 +96,12 @@ public class EquiZipTest
 		{
 			var first = Enumerable.Range(1, 3 - (i == 0 ? 1 : 0));
 			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
+#pragma warning disable CA2000 // Dispose objects before losing scope
 			parameters.Add(
-				new object[] { first.AsBreakingList(), second.AsBreakingList(), s_cardinals[i + 1], });
+				[first.AsBreakingList(), second.AsBreakingList(), s_cardinals[i + 1],]);
 			parameters.Add(
-				new object[] { first.AsTestingSequence(maxEnumerations: 2), second.AsTestingSequence(maxEnumerations: 2), s_cardinals[i + 1], });
+				[first.AsTestingSequence(maxEnumerations: 2), second.AsTestingSequence(maxEnumerations: 2), s_cardinals[i + 1],]);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
 		return parameters;
@@ -210,22 +212,22 @@ public class EquiZipTest
 			var first = Enumerable.Range(1, 3 - (i == 0 ? 1 : 0));
 			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
 			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 0));
+#pragma warning disable CA2000 // Dispose objects before losing scope
 			parameters.Add(
-				new object[]
-				{
+				[
 					first.AsBreakingList(),
 					second.AsBreakingList(),
 					third.AsBreakingList(),
 					s_cardinals[i + 1],
-				});
+				]);
 			parameters.Add(
-				new object[]
-				{
+				[
 					first.AsTestingSequence(maxEnumerations: 2),
 					second.AsTestingSequence(maxEnumerations: 2),
 					third.AsTestingSequence(maxEnumerations: 2),
 					s_cardinals[i + 1],
-				});
+				]);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
 		return parameters;
@@ -353,24 +355,24 @@ public class EquiZipTest
 			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
 			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 0));
 			var fourth = Enumerable.Range(1, 3 - (i == 3 ? 1 : 0));
+#pragma warning disable CA2000 // Dispose objects before losing scope
 			parameters.Add(
-				new object[]
-				{
+				[
 					first.AsBreakingList(),
 					second.AsBreakingList(),
 					third.AsBreakingList(),
 					fourth.AsBreakingList(),
 					s_cardinals[i + 1],
-				});
+				]);
 			parameters.Add(
-				new object[]
-				{
+				[
 					first.AsTestingSequence(maxEnumerations: 2),
 					second.AsTestingSequence(maxEnumerations: 2),
 					third.AsTestingSequence(maxEnumerations: 2),
 					fourth.AsTestingSequence(maxEnumerations: 2),
 					s_cardinals[i + 1],
-				});
+				]);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
 		return parameters;

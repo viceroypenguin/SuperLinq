@@ -20,13 +20,13 @@ public class CountDownTest
 	private static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)
 	{
 		var xs = Enumerable.Range(0, 5).ToArray();
-		yield return selector(xs, 1, new int?[] { null, null, null, null, 0 });
-		yield return selector(xs, 2, new int?[] { null, null, null, 1, 0 });
-		yield return selector(xs, 3, new int?[] { null, null, 2, 1, 0 });
-		yield return selector(xs, 4, new int?[] { null, 3, 2, 1, 0 });
-		yield return selector(xs, 5, new int?[] { 4, 3, 2, 1, 0 });
-		yield return selector(xs, 6, new int?[] { 4, 3, 2, 1, 0 });
-		yield return selector(xs, 7, new int?[] { 4, 3, 2, 1, 0 });
+		yield return selector(xs, 1, [null, null, null, null, 0]);
+		yield return selector(xs, 2, [null, null, null, 1, 0]);
+		yield return selector(xs, 3, [null, null, 2, 1, 0]);
+		yield return selector(xs, 4, [null, 3, 2, 1, 0]);
+		yield return selector(xs, 5, [4, 3, 2, 1, 0]);
+		yield return selector(xs, 6, [4, 3, 2, 1, 0]);
+		yield return selector(xs, 7, [4, 3, 2, 1, 0]);
 	}
 
 	public static IEnumerable<object[]> SequenceData { get; } =
