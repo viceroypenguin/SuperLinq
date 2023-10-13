@@ -21,7 +21,7 @@ public static partial class SuperEnumerable
 	public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
 		where TTable : DataTable
 	{
-		return ToDataTable(source, table, Array.Empty<Expression<Func<T, object>>>());
+		return ToDataTable(source, table, []);
 	}
 
 	/// <summary>
@@ -54,7 +54,7 @@ public static partial class SuperEnumerable
 
 	public static DataTable ToDataTable<T>(this IEnumerable<T> source)
 	{
-		return ToDataTable(source, new DataTable(), Array.Empty<Expression<Func<T, object>>>());
+		return ToDataTable(source, new DataTable(), []);
 	}
 
 	/// <summary>

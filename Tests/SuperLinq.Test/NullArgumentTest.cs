@@ -46,9 +46,9 @@ public class NullArgumentTest
 		});
 
 	private static readonly string[] s_skipMethods =
-	{
+	[
 		nameof(SuperEnumerable.CopyTo),
-	};
+	];
 
 	private static IEnumerable<object[]> GetInlineDatas(bool canBeNull, Func<MethodInfo, object[], string, Action> inlineDataFactory) =>
 		from m in typeof(SuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
@@ -73,12 +73,12 @@ public class NullArgumentTest
 		$"{definition.Name}: '{parameter.Name}' ({parameter.Position});\n{definition}";
 
 	private static readonly string[] s_joinMethods =
-	{
+	[
 		nameof(SuperEnumerable.InnerJoin),
 		nameof(SuperEnumerable.LeftOuterJoin),
 		nameof(SuperEnumerable.RightOuterJoin),
 		nameof(SuperEnumerable.FullOuterJoin),
-	};
+	];
 
 	private static MethodInfo InstantiateMethod(MethodInfo definition)
 	{

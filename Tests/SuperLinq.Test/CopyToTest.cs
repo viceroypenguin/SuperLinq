@@ -14,7 +14,7 @@ public class CopyToTest
 			() => default(IEnumerable<int>)!.CopyTo(Array.Empty<int>()));
 		_ = Assert.Throws<ArgumentNullException>(
 			"source",
-			() => default(IEnumerable<int>)!.CopyTo((IList<int>)Array.Empty<int>()));
+			() => default(IEnumerable<int>)!.CopyTo((IList<int>)[]));
 		_ = Assert.Throws<ArgumentNullException>(
 			"source",
 			() => default(IEnumerable<int>)!.CopyTo(Array.Empty<int>(), 1));
@@ -55,22 +55,22 @@ public class CopyToTest
 	public void ThrowsOnTooMuchDataForIListArray()
 	{
 		_ = Assert.ThrowsAny<ArgumentException>(
-			() => Seq(1).CopyTo((IList<int>)Array.Empty<int>()));
+			() => Seq(1).CopyTo((IList<int>)[]));
 		_ = Assert.ThrowsAny<ArgumentException>(
-			() => Enumerable.Range(1, 1).CopyTo((IList<int>)Array.Empty<int>()));
+			() => Enumerable.Range(1, 1).CopyTo((IList<int>)[]));
 		_ = Assert.ThrowsAny<ArgumentException>(
-			() => new List<int> { 1 }.AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
+			() => new List<int> { 1 }.AsEnumerable().CopyTo((IList<int>)[]));
 		_ = Assert.ThrowsAny<ArgumentException>(
-			() => new List<int> { 1 }.AsReadOnly().AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
+			() => new List<int> { 1 }.AsReadOnly().AsEnumerable().CopyTo((IList<int>)[]));
 	}
 
 	[Fact]
 	public void ThrowsOnTooMuchDataForSpan()
 	{
 		_ = Assert.Throws<ArgumentException>(
-			() => Seq(1).CopyTo(Array.Empty<int>().AsSpan()));
+			() => Seq(1).CopyTo([]));
 		_ = Assert.Throws<ArgumentException>(
-			() => new List<int> { 1 }.AsEnumerable().CopyTo(Array.Empty<int>().AsSpan()));
+			() => new List<int> { 1 }.AsEnumerable().CopyTo([]));
 	}
 
 	[Fact]

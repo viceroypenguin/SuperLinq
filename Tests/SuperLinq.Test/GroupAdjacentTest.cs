@@ -177,7 +177,7 @@ public class GroupAdjacentTest
 
 		var groupings = source.GroupAdjacent(SuperEnumerable.Identity);
 
-		int?[] aNull = { null };
+		var aNull = new int?[] { null };
 
 		using var reader = groupings.Read();
 		AssertGrouping(reader, 1, 1);

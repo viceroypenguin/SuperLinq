@@ -7,11 +7,10 @@ public class FullOuterJoinTest
 	public enum Side { Left, Right, Both }
 
 	public static IEnumerable<object[]> GetJoinTypes() =>
-		new[]
-		{
-			new object[] { JoinType.Hash, },
-			new object[] { JoinType.Merge, },
-		};
+		[
+			[JoinType.Hash,],
+			[JoinType.Merge,],
+		];
 
 	[Theory, MemberData(nameof(GetJoinTypes))]
 	public void FullOuterJoinIsLazy(JoinType joinType)

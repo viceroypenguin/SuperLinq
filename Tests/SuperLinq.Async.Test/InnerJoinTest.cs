@@ -5,12 +5,11 @@ namespace Test.Async;
 public class InnerJoinTest
 {
 	public static IEnumerable<object[]> GetJoinTypes() =>
-		new[]
-		{
-			new object[] { JoinType.Loop, },
-			new object[] { JoinType.Hash, },
-			new object[] { JoinType.Merge, },
-		};
+		[
+			[JoinType.Loop,],
+			[JoinType.Hash,],
+			[JoinType.Merge,],
+		];
 
 	[Theory, MemberData(nameof(GetJoinTypes))]
 	public void InnerJoinIsLazy(JoinType joinType)

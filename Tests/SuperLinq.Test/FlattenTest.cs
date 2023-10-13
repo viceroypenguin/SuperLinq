@@ -239,19 +239,19 @@ public class FlattenTest
 			new Series
 			{
 				Name = "series1",
-				Attributes = new[]
-				{
-					new Attribute { Values = new[] { 1, 2 } },
-					new Attribute { Values = new[] { 3, 4 } },
-				},
+				Attributes =
+				[
+					new Attribute { Values = [1, 2] },
+					new Attribute { Values = [3, 4] },
+				],
 			},
 			new Series
 			{
 				Name = "series2",
-				Attributes = new[]
-				{
-					new Attribute { Values = new[] { 5, 6 } },
-				},
+				Attributes =
+				[
+					new Attribute { Values = [5, 6] },
+				],
 			},
 		}.AsTestingSequence();
 
@@ -335,12 +335,12 @@ public class FlattenTest
 	private class Series
 	{
 		public string Name { get; init; } = string.Empty;
-		public Attribute[] Attributes { get; init; } = Array.Empty<Attribute>();
+		public Attribute[] Attributes { get; init; } = [];
 	}
 
 	private class Attribute
 	{
-		public int[] Values { get; init; } = Array.Empty<int>();
+		public int[] Values { get; init; } = [];
 	}
 
 	private class Tree<T>

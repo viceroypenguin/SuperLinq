@@ -16,7 +16,7 @@ public partial class WindowLeftTest
 		var sequence = Enumerable.Repeat(1, 10);
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			sequence.WindowLeft(Array.Empty<int>(), -5, SuperEnumerable.Identity));
+			sequence.WindowLeft(new int[1], -5, SuperEnumerable.Identity));
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			sequence.WindowLeft(-5, SuperEnumerable.Identity));
