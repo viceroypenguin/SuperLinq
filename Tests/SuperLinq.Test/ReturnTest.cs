@@ -31,7 +31,7 @@ public class ReturnTest
 	[Fact]
 	public void TestResultingListHasCountOne()
 	{
-		Assert.Equal(1, SomeSingleton.List.Count);
+		_ = Assert.Single(SomeSingleton.List);
 	}
 
 	[Fact]
@@ -69,7 +69,7 @@ public class ReturnTest
 	[Fact]
 	public void TestResultingCollectionHasCountOne()
 	{
-		Assert.Equal(1, SomeSingleton.Collection.Count);
+		_ = Assert.Single(SomeSingleton.Collection);
 	}
 
 	[Fact]
