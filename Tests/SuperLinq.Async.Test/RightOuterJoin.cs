@@ -1,83 +1,38 @@
-﻿using static Test.Async.FullOuterJoinTest.Side;
+﻿using static Test.Async.JoinOperation;
 
 namespace Test.Async;
 
 public class RightOuterJoinTest
 {
-	public static IEnumerable<object[]> GetJoinTypes() =>
-		[
-			[JoinType.Hash,],
-			[JoinType.Merge,],
-		];
+	private static IAsyncEnumerable<((string, string) Left, (string, string) Right)> ExecuteJoin(
+		IAsyncEnumerable<(string, string)> left,
+		IAsyncEnumerable<(string, string)> right,
+		JoinOperation op,
+		bool passProjectors) =>
+		(op, passProjectors) switch
+		{
+			(Hash, false) => left.RightOuterHashJoin(right, l => l.Item1, r => r.Item1, StringComparer.OrdinalIgnoreCase),
+			(Hash, true) => left.RightOuterHashJoin(right, l => l.Item1, r => r.Item1, r => (default, r), ValueTuple.Create, StringComparer.OrdinalIgnoreCase),
+			(Merge, false) => left.RightOuterMergeJoin(right, l => l.Item1, r => r.Item1, StringComparer.OrdinalIgnoreCase),
+			(Merge, true) => left.RightOuterMergeJoin(right, l => l.Item1, r => r.Item1, r => (default, r), ValueTuple.Create, StringComparer.OrdinalIgnoreCase),
 
-	[Theory, MemberData(nameof(GetJoinTypes))]
-	public void RightOuterJoinIsLazy(JoinType joinType)
+			_ => throw new NotSupportedException(),
+		};
+
+	public static IEnumerable<object[]> GetRightOuterJoins() =>
+		new[] { Hash, Merge, }.Cartesian(new[] { false, true, }, (x, y) => new object[] { x, y, });
+
+	[Theory, MemberData(nameof(GetRightOuterJoins))]
+	public void RightOuterJoinIsLazy(JoinOperation op, bool passProjectors)
 	{
-		var xs = new AsyncBreakingSequence<int>();
-		var ys = new AsyncBreakingSequence<double>();
+		var xs = new AsyncBreakingSequence<(string, string)>();
+		var ys = new AsyncBreakingSequence<(string, string)>();
 
-		_ = xs.RightOuterJoin(
-			ys, joinType,
-			BreakingFunc.Of<int, string>(),
-			BreakingFunc.Of<double, string>());
-
-		_ = xs.RightOuterJoin(
-			ys, joinType,
-			BreakingFunc.Of<int, string>(),
-			BreakingFunc.Of<double, string>(),
-			StringComparer.Ordinal);
-
-		_ = xs.RightOuterJoin(
-			ys, joinType,
-			BreakingFunc.Of<int, string>(),
-			BreakingFunc.Of<double, string>(),
-			BreakingFunc.Of<double, object>(),
-			BreakingFunc.Of<int, double, object>());
-
-		_ = xs.RightOuterJoin(
-			ys, joinType,
-			BreakingFunc.Of<int, string>(),
-			BreakingFunc.Of<double, string>(),
-			BreakingFunc.Of<double, object>(),
-			BreakingFunc.Of<int, double, object>(),
-			StringComparer.Ordinal);
+		_ = ExecuteJoin(xs, ys, op, passProjectors);
 	}
 
-	[Theory, MemberData(nameof(GetJoinTypes))]
-	public async Task RightOuterJoinResults(JoinType joinType)
-	{
-		var foo = (1, "foo");
-		var bar1 = (2, "bar");
-		var bar2 = (2, "Bar");
-		var bar3 = (2, "BAR");
-		var baz = (3, "baz");
-		var qux = (4, "qux");
-		var quux = (5, "quux");
-		var quuz = (6, "quuz");
-
-		using var xs = TestingSequence.Of(foo, bar1, qux);
-		using var ys = TestingSequence.Of(bar2, bar3, baz, quuz, quux);
-
-		var missing = default((int, string));
-
-		var result = xs
-			.RightOuterJoin(ys,
-				joinType,
-				x => x.Item1,
-				y => y.Item1,
-				y => (Right, missing, y),
-				(x, y) => (Both, x, y));
-
-		await result.AssertCollectionEqual(
-			(Both, bar1, bar2),
-			(Both, bar1, bar3),
-			(Right, missing, quux),
-			(Right, missing, baz),
-			(Right, missing, quuz));
-	}
-
-	[Theory, MemberData(nameof(GetJoinTypes))]
-	public async Task RightOuterJoinWithComparerResults(JoinType joinType)
+	[Theory, MemberData(nameof(GetRightOuterJoins))]
+	public async Task RightOuterJoinResults(JoinOperation op, bool passProjectors)
 	{
 		var foo = ("one", "foo");
 		var bar1 = ("two", "bar");
@@ -88,74 +43,46 @@ public class RightOuterJoinTest
 		var quux = ("five", "quux");
 		var quuz = ("six", "quuz");
 
-		using var xs = TestingSequence.Of(foo, bar1, qux);
-		using var ys = TestingSequence.Of(bar2, bar3, baz, quuz, quux);
+		using var xs = new[] { foo, bar1, qux }.OrderBy(x => x.Item1, StringComparer.OrdinalIgnoreCase).AsTestingSequence();
+		using var ys = new[] { bar2, bar3, baz, quuz, quux }.OrderBy(x => x.Item1, StringComparer.OrdinalIgnoreCase).AsTestingSequence();
 
-		var missing = default((string, string));
-
-		var result = xs
-			.RightOuterJoin(ys,
-				joinType,
-				x => x.Item1,
-				y => y.Item1,
-				y => (Right, missing, y),
-				(x, y) => (Both, x, y),
-				StringComparer.OrdinalIgnoreCase);
-
+		var result = ExecuteJoin(xs, ys, op, passProjectors);
 		await result.AssertCollectionEqual(
-			(Both, bar1, bar2),
-			(Both, bar1, bar3),
-			(Right, missing, quux),
-			(Right, missing, baz),
-			(Right, missing, quuz));
+			(bar1, bar2),
+			(bar1, bar3),
+			(default, baz),
+			(default, quuz),
+			(default, quux));
 	}
 
-	[Theory, MemberData(nameof(GetJoinTypes))]
-	public async Task RightOuterJoinEmptyLeft(JoinType joinType)
+	[Theory, MemberData(nameof(GetRightOuterJoins))]
+	public async Task RightOuterJoinEmptyLeft(JoinOperation op, bool passProjectors)
 	{
-		var foo = (1, "foo");
-		var bar = (2, "bar");
-		var baz = (3, "baz");
+		var foo = ("one", "foo");
+		var bar = ("two", "bar");
+		var baz = ("three", "baz");
 
-		using var xs = TestingSequence.Of<(int, string)>();
+		using var xs = TestingSequence.Of<(string, string)>();
 		using var ys = TestingSequence.Of(foo, bar, baz);
 
-		var missing = default((int, string));
-
-		var result = xs
-			.RightOuterJoin(ys,
-				joinType,
-				x => x.Item1,
-				y => y.Item1,
-				y => (Right, missing, y),
-				(x, y) => (Both, x, y));
-
-		await result.AssertSequenceEqual(
-			(Right, missing, foo),
-			(Right, missing, bar),
-			(Right, missing, baz));
+		var result = ExecuteJoin(xs, ys, op, passProjectors);
+		await result.AssertCollectionEqual(
+			(default, foo),
+			(default, bar),
+			(default, baz));
 	}
 
-	[Theory, MemberData(nameof(GetJoinTypes))]
-	public async Task RightOuterJoinEmptyRight(JoinType joinType)
+	[Theory, MemberData(nameof(GetRightOuterJoins))]
+	public async Task RightOuterJoinEmptyRight(JoinOperation op, bool passProjectors)
 	{
-		var foo = (1, "foo");
-		var bar = (2, "bar");
-		var baz = (3, "baz");
+		var foo = ("one", "foo");
+		var bar = ("two", "bar");
+		var baz = ("three", "baz");
 
 		using var xs = TestingSequence.Of(foo, bar, baz);
-		using var ys = TestingSequence.Of<(int, string)>();
+		using var ys = TestingSequence.Of<(string, string)>();
 
-		var missing = default((int, string));
-
-		var result = xs
-			.RightOuterJoin(ys,
-				joinType,
-				x => x.Item1,
-				y => y.Item1,
-				y => (Right, missing, y),
-				(x, y) => (Both, x, y));
-
-		await result.AssertSequenceEqual();
+		var result = ExecuteJoin(xs, ys, op, passProjectors);
+		await result.AssertCollectionEqual();
 	}
 }
