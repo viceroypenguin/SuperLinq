@@ -19,4 +19,16 @@ public interface IAsyncBuffer<out T> : IAsyncEnumerable<T>, IAsyncDisposable
 	/// The number of elements currently cached.
 	/// </summary>
 	int Count { get; }
+
+	/// <summary>
+	///		Configures how awaits on the tasks returned from an async disposable are performed.
+	/// </summary>
+	/// <param name="continueOnCapturedContext">
+	///		<see langword="true" /> to capture and marshal back to the current context; otherwise, <see langword="false" />.
+	/// </param>
+	/// <returns>
+	///		The configured async disposable.
+	/// </returns>
+	public ConfiguredAsyncDisposable ConfigureAwait(bool continueOnCapturedContext) =>
+		((IAsyncDisposable)this).ConfigureAwait(continueOnCapturedContext);
 }
