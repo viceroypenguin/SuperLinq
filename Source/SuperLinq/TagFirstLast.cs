@@ -126,7 +126,9 @@ public static partial class SuperEnumerable
 
 		protected override TResult ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, _source.Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
+
 			return _resultSelector(_source[index], index == 0, index == _source.Count - 1);
 		}
 	}

@@ -29,7 +29,7 @@ public static partial class AsyncSuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
-		Guard.IsGreaterThanOrEqualTo(offset, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(offset);
 
 		return source.WhereLag(offset, default!, predicate.ToAsync());
 	}
@@ -61,7 +61,7 @@ public static partial class AsyncSuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
-		Guard.IsGreaterThanOrEqualTo(offset, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(offset);
 
 		return source.WhereLag(offset, default!, predicate);
 	}
@@ -90,7 +90,7 @@ public static partial class AsyncSuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
-		Guard.IsGreaterThanOrEqualTo(offset, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(offset);
 
 		return source.WhereLag(offset, defaultLagValue, predicate.ToAsync());
 	}
@@ -119,7 +119,7 @@ public static partial class AsyncSuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
-		Guard.IsGreaterThanOrEqualTo(offset, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(offset);
 
 		return Core(source, offset, defaultLagValue, predicate);
 

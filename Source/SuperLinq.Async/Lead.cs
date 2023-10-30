@@ -86,7 +86,7 @@ public static partial class AsyncSuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
-		Guard.IsGreaterThanOrEqualTo(offset, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(offset);
 
 		return Core(source, offset, defaultLeadValue, resultSelector);
 

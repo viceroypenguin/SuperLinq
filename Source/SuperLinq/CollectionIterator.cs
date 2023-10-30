@@ -31,7 +31,8 @@ public partial class SuperEnumerable
 		public virtual void CopyTo(T[] array, int arrayIndex)
 		{
 			ArgumentNullException.ThrowIfNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
 			_ = SuperEnumerable.CopyTo(GetEnumerable(), array, arrayIndex);
 		}

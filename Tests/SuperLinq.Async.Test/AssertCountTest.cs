@@ -26,7 +26,7 @@ public class AssertCountTest
 	public async Task AssertCountShortSequence()
 	{
 		await using var data = TestingSequence.Of("foo", "bar", "baz");
-		_ = await Assert.ThrowsAsync<ArgumentException>("source.Count()", async () =>
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>("source.Count()", async () =>
 			await data.AssertCount(4).Consume());
 	}
 
@@ -34,7 +34,7 @@ public class AssertCountTest
 	public async Task AssertCountLongSequence()
 	{
 		await using var data = TestingSequence.Of("foo", "bar", "baz");
-		_ = await Assert.ThrowsAsync<ArgumentException>("source.Count()", async () =>
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>("source.Count()", async () =>
 			await data.AssertCount(2).Consume());
 	}
 }

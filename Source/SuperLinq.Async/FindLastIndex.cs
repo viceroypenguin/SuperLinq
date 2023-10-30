@@ -119,7 +119,7 @@ public static partial class AsyncSuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return Core(source, predicate, index, count, cancellationToken);
 

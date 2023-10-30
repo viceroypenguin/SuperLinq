@@ -25,7 +25,7 @@ public static partial class AsyncSuperEnumerable
 	{
 		// yes this operator duplicates on net6+; but no name overlap, so leave alone
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThanOrEqualTo(size, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
 
 		return Core(source, size);
 

@@ -67,7 +67,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<int> Random(int maxValue)
 	{
-		Guard.IsGreaterThanOrEqualTo(maxValue, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(maxValue);
 
 		return Random(s_randomInstance, maxValue);
 	}
@@ -84,7 +84,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<int> Random(Random rand, int maxValue)
 	{
 		ArgumentNullException.ThrowIfNull(rand);
-		Guard.IsGreaterThanOrEqualTo(maxValue, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(maxValue);
 
 		return RandomImpl(rand, r => r.Next(maxValue));
 	}
@@ -130,7 +130,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<int> Random(Random rand, int minValue, int maxValue)
 	{
 		ArgumentNullException.ThrowIfNull(rand);
-		Guard.IsLessThanOrEqualTo(minValue, maxValue);
+		ArgumentOutOfRangeException.ThrowIfLessThan(maxValue, minValue);
 
 		return RandomImpl(rand, r => r.Next(minValue, maxValue));
 	}

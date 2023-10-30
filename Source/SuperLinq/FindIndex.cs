@@ -109,7 +109,7 @@ public static partial class SuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		if (source.TryGetCollectionCount() is int length)
 		{

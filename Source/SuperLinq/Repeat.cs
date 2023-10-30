@@ -52,7 +52,7 @@ public partial class SuperEnumerable
 	public static IEnumerable<TSource> Repeat<TSource>(this IEnumerable<TSource> source, int count)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThan(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
 
 		return Core(source, count);
 

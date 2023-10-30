@@ -74,7 +74,7 @@ public static partial class AsyncSuperEnumerable
 		int maxConcurrency)
 	{
 		ArgumentNullException.ThrowIfNull(sources);
-		Guard.IsGreaterThanOrEqualTo(maxConcurrency, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxConcurrency);
 
 		foreach (var s in sources)
 			ArgumentNullException.ThrowIfNull(s, nameof(sources));

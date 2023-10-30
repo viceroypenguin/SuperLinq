@@ -9,34 +9,40 @@ namespace SuperLinq;
 public static partial class SuperEnumerable
 {
 	[ExcludeFromCodeCoverage]
-	internal static int? TryGetCollectionCount<T>(this IEnumerable<T> source) =>
+	internal static int? TryGetCollectionCount<T>(this IEnumerable<T> source)
+	{
+		ArgumentNullException.ThrowIfNull(source);
+
 #if NET6_0_OR_GREATER
-		source.TryGetNonEnumeratedCount(out var count) ? count : default(int?);
+		return source.TryGetNonEnumeratedCount(out var count) ? count : default(int?);
 #else
-		source switch
+		return source switch
 		{
-			null => ThrowHelper.ThrowArgumentNullException<int?>(nameof(source)),
 			ICollection<T> collection => collection.Count,
 			System.Collections.ICollection collection => collection.Count,
 			_ => null,
 		};
 #endif
+	}
 
 	[ExcludeFromCodeCoverage]
-	internal static int GetCollectionCount<T>(this IEnumerable<T> source) =>
+	internal static int GetCollectionCount<T>(this IEnumerable<T> source)
+	{
+		ArgumentNullException.ThrowIfNull(source);
+
 #if NET6_0_OR_GREATER
-		source.TryGetNonEnumeratedCount(out var count)
-			? count
-			: ThrowHelper.ThrowInvalidOperationException<int>("Expected valid non-enumerated count.");
+		if (!source.TryGetNonEnumeratedCount(out var count))
+			ThrowHelper.ThrowInvalidOperationException("Expected valid non-enumerated count.");
+		return count;
 #else
-		source switch
+		return source switch
 		{
-			null => ThrowHelper.ThrowArgumentNullException<int>(nameof(source)),
 			ICollection<T> collection => collection.Count,
 			System.Collections.ICollection collection => collection.Count,
 			_ => ThrowHelper.ThrowInvalidOperationException<int>("Expected valid non-enumerated count."),
 		};
 #endif
+	}
 
 	private static int Max(int val1, int val2) => Math.Max(val1, val2);
 	private static int Max(int val1, int val2, int val3) => Math.Max(val1, Math.Max(val2, val3));

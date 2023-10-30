@@ -92,7 +92,7 @@ public static partial class SuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(paddingSelector);
-		Guard.IsGreaterThanOrEqualTo(width, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(width);
 
 		if (source is IList<TSource> list)
 			return new PadStartListIterator<TSource>(list, width, paddingSelector);
@@ -165,7 +165,8 @@ public static partial class SuperEnumerable
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
 			ArgumentNullException.ThrowIfNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
 			var offset = Math.Max(_width - _source.GetCollectionCount(), 0);
 			for (var i = 0; i < offset; i++)
@@ -202,7 +203,8 @@ public static partial class SuperEnumerable
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
 			ArgumentNullException.ThrowIfNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
 			var offset = Math.Max(_width - _source.Count, 0);
 			for (var i = 0; i < offset; i++)
@@ -213,7 +215,8 @@ public static partial class SuperEnumerable
 
 		protected override T ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
 			var offset = Math.Max(_width - _source.Count, 0);
 			return index < offset

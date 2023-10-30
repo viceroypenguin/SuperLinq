@@ -53,7 +53,7 @@ public static partial class AsyncSuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(list);
-		Guard.IsGreaterThanOrEqualTo(index, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(index);
 
 		if (list is TSource[] array)
 		{

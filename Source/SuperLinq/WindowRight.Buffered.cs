@@ -51,7 +51,7 @@ public static partial class SuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(selector);
-		Guard.IsGreaterThanOrEqualTo(size, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
 
 		return WindowImpl(source, new TSource[size], size, WindowType.Right, selector);
 	}
@@ -163,7 +163,8 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(array);
 		ArgumentNullException.ThrowIfNull(selector);
-		Guard.IsBetweenOrEqualTo(size, 1, array.Length);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
+		ArgumentOutOfRangeException.ThrowIfGreaterThan(size, array.Length);
 
 		return WindowImpl(source, array, size, WindowType.Right, selector);
 	}

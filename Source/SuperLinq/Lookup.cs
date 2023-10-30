@@ -224,7 +224,8 @@ internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 		{
 			get
 			{
-				Guard.IsBetween(index, -1, _count);
+				ArgumentOutOfRangeException.ThrowIfNegative(index);
+				ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, _count);
 				return _elements[index];
 			}
 

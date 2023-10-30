@@ -8,9 +8,10 @@ namespace SuperLinq.Exceptions;
 
 #pragma warning disable RS0016
 #pragma warning disable CA1711
+#pragma warning disable CS1591
 
 [Browsable(false)]
-public static class ArgumentNullException
+internal static class ArgumentNullException
 {
 	/// <summary>Throws an <see cref="ArgumentNullException"/> if <paramref name="argument"/> is null.</summary>
 	/// <param name="argument">The reference type argument to validate as non-null.</param>

@@ -26,7 +26,7 @@ public static partial class AsyncSuperEnumerable
 	public static ValueTask<bool> AtLeast<T>(this IAsyncEnumerable<T> source, int count, CancellationToken cancellationToken = default)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return QuantityIterator(source, limit: count, min: count, max: int.MaxValue, cancellationToken);
 	}
@@ -55,7 +55,7 @@ public static partial class AsyncSuperEnumerable
 	public static ValueTask<bool> AtMost<T>(this IAsyncEnumerable<T> source, int count, CancellationToken cancellationToken = default)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return QuantityIterator(source, limit: count + 1, min: 0, max: count, cancellationToken);
 	}
@@ -83,7 +83,7 @@ public static partial class AsyncSuperEnumerable
 	public static ValueTask<bool> Exactly<T>(this IAsyncEnumerable<T> source, int count, CancellationToken cancellationToken = default)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return QuantityIterator(source, limit: count + 1, min: count, max: count, cancellationToken);
 	}
@@ -114,8 +114,8 @@ public static partial class AsyncSuperEnumerable
 	public static ValueTask<bool> CountBetween<T>(this IAsyncEnumerable<T> source, int min, int max, CancellationToken cancellationToken = default)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThanOrEqualTo(min, 0);
-		Guard.IsGreaterThanOrEqualTo(max, min);
+		ArgumentOutOfRangeException.ThrowIfNegative(min);
+		ArgumentOutOfRangeException.ThrowIfLessThan(max, min);
 
 		return QuantityIterator(source, limit: max + 1, min: min, max: max, cancellationToken);
 	}

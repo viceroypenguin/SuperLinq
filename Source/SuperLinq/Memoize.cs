@@ -381,8 +381,15 @@ public static partial class SuperEnumerable
 		}
 
 		private ICollection<T>? _source;
-		private ICollection<T> Source =>
-			_source ?? ThrowHelper.ThrowObjectDisposedException<ICollection<T>>(nameof(IBuffer<T>));
+		private ICollection<T> Source
+		{
+			get
+			{
+				if (_source == null)
+					ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+				return _source;
+			}
+		}
 
 		public void Reset()
 		{

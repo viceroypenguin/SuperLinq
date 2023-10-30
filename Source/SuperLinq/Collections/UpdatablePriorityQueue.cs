@@ -142,7 +142,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// </exception>
 	public UpdatablePriorityQueue(int initialCapacity, IComparer<TPriority>? priorityComparer, IEqualityComparer<TElement>? elementComparer)
 	{
-		Guard.IsGreaterThanOrEqualTo(initialCapacity, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(initialCapacity);
 
 		_nodes = new (TElement, TPriority)[initialCapacity];
 		_priorityComparer = InitializeComparer(priorityComparer);
@@ -708,7 +708,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <returns>The current capacity of the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>.</returns>
 	public int EnsureCapacity(int capacity)
 	{
-		Guard.IsGreaterThanOrEqualTo(capacity, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(capacity);
 
 		if (_nodes.Length < capacity)
 		{
@@ -1071,14 +1071,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 		{
 			ArgumentNullException.ThrowIfNull(array);
 
-			try
-			{
-				Array.Copy(Queue._nodes, 0, array, index, Queue.Count);
-			}
-			catch (ArrayTypeMismatchException)
-			{
-				ThrowHelper.ThrowArrayTypeMismatchException();
-			}
+			Array.Copy(Queue._nodes, 0, array, index, Queue.Count);
 		}
 
 		/// <summary>

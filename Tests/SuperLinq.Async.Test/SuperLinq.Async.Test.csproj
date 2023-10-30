@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="../../TargetFrameworks.props" />
 
@@ -34,6 +34,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
 		<PackageReference Include="xunit" Version="2.6.1" />
 		<PackageReference Include="coverlet.collector" Version="6.0.0" PrivateAssets="All" />
 		<PackageReference Include="coverlet.msbuild" Version="6.0.0" PrivateAssets="All" />

@@ -136,7 +136,8 @@ public static partial class SuperEnumerable
 		public override void CopyTo(TSource[] array, int arrayIndex)
 		{
 			ArgumentNullException.ThrowIfNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
 			_source.CopyTo(array, arrayIndex);
 
@@ -147,7 +148,8 @@ public static partial class SuperEnumerable
 
 		protected override TSource ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
 			return index == _index.GetOffset(_source.Count)
 				? _value

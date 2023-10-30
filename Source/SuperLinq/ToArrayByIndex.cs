@@ -104,7 +104,8 @@ public static partial class SuperEnumerable
 		foreach (var e in source)
 		{
 			var i = indexSelector(e);
-			Guard.IsGreaterThanOrEqualTo(i, 0, "indexSelector(e)");
+			ArgumentOutOfRangeException.ThrowIfNegative(i, "indexSelector(e)");
+
 			lastIndex = Math.Max(i, lastIndex);
 			indexed.Add((i, e));
 		}
@@ -222,7 +223,7 @@ public static partial class SuperEnumerable
 		Func<T, int, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThanOrEqualTo(length, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(length);
 		ArgumentNullException.ThrowIfNull(indexSelector);
 		ArgumentNullException.ThrowIfNull(resultSelector);
 
@@ -230,7 +231,9 @@ public static partial class SuperEnumerable
 		foreach (var e in source)
 		{
 			var i = indexSelector(e);
-			Guard.IsBetween(i, -1, array.Length, "indexSelector(e)");
+			ArgumentOutOfRangeException.ThrowIfNegative(i, "indexSelector(e)");
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(i, array.Length, "indexSelector(e)");
+
 			array[i] = resultSelector(e, i);
 		}
 		return array;

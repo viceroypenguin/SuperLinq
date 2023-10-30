@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 
 	public static bool AtLeast<T>(this IEnumerable<T> source, int count)
 	{
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return QuantityIterator(source, count, count, int.MaxValue);
 	}
@@ -51,7 +51,7 @@ public static partial class SuperEnumerable
 
 	public static bool AtMost<T>(this IEnumerable<T> source, int count)
 	{
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return QuantityIterator(source, count + 1, 0, count);
 	}
@@ -77,7 +77,7 @@ public static partial class SuperEnumerable
 
 	public static bool Exactly<T>(this IEnumerable<T> source, int count)
 	{
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return QuantityIterator(source, count + 1, count, count);
 	}
@@ -106,8 +106,8 @@ public static partial class SuperEnumerable
 
 	public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
 	{
-		Guard.IsGreaterThanOrEqualTo(min, 0);
-		Guard.IsGreaterThanOrEqualTo(max, min);
+		ArgumentOutOfRangeException.ThrowIfNegative(min);
+		ArgumentOutOfRangeException.ThrowIfLessThan(max, min);
 
 		return QuantityIterator(source, max + 1, min, max);
 	}
@@ -178,7 +178,7 @@ public static partial class SuperEnumerable
 	private static int CountUpTo<T>(this IEnumerable<T> source, int max)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThanOrEqualTo(max, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(max);
 
 		var count = 0;
 

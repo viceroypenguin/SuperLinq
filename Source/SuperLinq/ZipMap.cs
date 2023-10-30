@@ -60,7 +60,8 @@ public static partial class SuperEnumerable
 
 		protected override (TSource, TResult) ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
 			var el = _source[index];
 			return (el, _selector(el));

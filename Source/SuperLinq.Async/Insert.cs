@@ -32,7 +32,7 @@ public static partial class AsyncSuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
-		Guard.IsGreaterThanOrEqualTo(index, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(index);
 
 		return Core(first, second, index);
 

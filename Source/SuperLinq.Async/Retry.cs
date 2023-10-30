@@ -52,7 +52,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TSource> Retry<TSource>(this IAsyncEnumerable<TSource> source, int count)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThan(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
 
 		return Enumerable.Repeat(source, count).Catch();
 	}

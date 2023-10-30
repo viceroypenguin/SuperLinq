@@ -61,7 +61,7 @@ public static partial class SuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
-		Guard.IsGreaterThanOrEqualTo(offset, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(offset);
 
 		if (source is IList<TSource> list)
 			return new LagIterator<TSource, TResult>(list, offset, defaultLagValue, resultSelector);
@@ -109,7 +109,9 @@ public static partial class SuperEnumerable
 
 		protected override TResult ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
+
 			return _resultSelector(
 				_source[index],
 				index < _offset ? _defaultLagValue : _source[index - _offset]);

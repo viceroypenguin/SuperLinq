@@ -39,7 +39,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<IList<TSource>> WindowRight<TSource>(this IEnumerable<TSource> source, int size)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThanOrEqualTo(size, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
 
 		if (source is IList<TSource> list)
 			return new WindowRightIterator<TSource>(list, size);
@@ -132,7 +132,8 @@ public static partial class SuperEnumerable
 
 		protected override IList<T> ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
 			if (index < _size)
 			{

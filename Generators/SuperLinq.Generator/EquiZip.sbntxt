@@ -185,7 +185,8 @@ public static partial class SuperEnumerable
 
 		protected override TResult ElementAt(int index)
 		{
-			Guard.IsLessThan(index, Count);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
 			return _resultSelector(
 				{{~ for $j in 1..$i ~}}

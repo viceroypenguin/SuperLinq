@@ -38,7 +38,7 @@ public static partial class SuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(rand);
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(subsetSize);
 
 		return RandomSubsetImpl(source, rand, seq => (seq.ToArray(), subsetSize));
 	}

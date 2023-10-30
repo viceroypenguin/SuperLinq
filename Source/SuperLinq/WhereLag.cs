@@ -54,7 +54,7 @@ public static partial class SuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
-		Guard.IsGreaterThanOrEqualTo(offset, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(offset);
 
 		return Core(source, offset, defaultLagValue, predicate);
 

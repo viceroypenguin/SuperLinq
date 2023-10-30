@@ -239,7 +239,7 @@ public static partial class AsyncSuperEnumerable
 		OrderByDirection direction)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
 		ArgumentNullException.ThrowIfNull(keySelector);
 
 		comparer ??= Comparer<TKey>.Default;

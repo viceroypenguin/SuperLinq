@@ -18,9 +18,7 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<TSource> source,
 		IAsyncEnumerable<int> indices)
 	{
-#pragma warning disable MA0015
-		return BindByIndex(source, indices, static (e, i) => e, static i => throw new ArgumentOutOfRangeException(nameof(indices), "Index is greater than the length of the first sequence."));
-#pragma warning restore MA0015
+		return BindByIndex(source, indices, static (e, i) => e, static i => ThrowHelper.ThrowArgumentOutOfRangeException<TSource>(nameof(indices), "Index is greater than the length of the first sequence."));
 	}
 
 	/// <summary>
@@ -63,7 +61,7 @@ public static partial class AsyncSuperEnumerable
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			// keeps track of the order of indices to know what order items should be output in
-			var lookup = await indices.Index().ToDictionaryAsync(x => { Guard.IsGreaterThanOrEqualTo(x.item, 0, nameof(indices)); return x.item; }, x => x.index, cancellationToken).ConfigureAwait(false);
+			var lookup = await indices.Index().ToDictionaryAsync(x => { ArgumentOutOfRangeException.ThrowIfNegative(x.item, nameof(indices)); return x.item; }, x => x.index, cancellationToken).ConfigureAwait(false);
 			// keep track of items out of output order
 			var lookback = new Dictionary<int, TSource>();
 

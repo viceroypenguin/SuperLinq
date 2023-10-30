@@ -148,12 +148,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Using Include="CommunityToolkit.Diagnostics" />
 		<Using Include="System.Runtime.CompilerServices" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
 		<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.4" PrivateAssets="All" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
 		<PackageReference Include="MinVer" Version="4.3.0" PrivateAssets="All" />

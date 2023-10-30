@@ -116,7 +116,8 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            Guard.IsLessThan(index, Count);
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
             return _resultSelector(_list1[index], _list2[index]);
         }
     }
@@ -250,7 +251,8 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            Guard.IsLessThan(index, Count);
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
             return _resultSelector(_list1[index], _list2[index], _list3[index]);
         }
     }
@@ -399,7 +401,8 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            Guard.IsLessThan(index, Count);
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
             return _resultSelector(_list1[index], _list2[index], _list3[index], _list4[index]);
         }
     }

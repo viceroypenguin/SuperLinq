@@ -109,7 +109,7 @@ public static partial class AsyncSuperEnumerable
 		IComparer<T>? comparer, OrderByDirection direction)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
 
 		comparer ??= Comparer<T>.Default;
 		if (direction == OrderByDirection.Descending)
@@ -271,7 +271,7 @@ public static partial class AsyncSuperEnumerable
 		OrderByDirection direction)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
 		ArgumentNullException.ThrowIfNull(keySelector);
 
 		comparer ??= Comparer<TKey>.Default;

@@ -95,7 +95,9 @@ public static partial class SuperEnumerable
 
 		protected override (int index, T item) ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
+
 			return (_startIndex + index, _source[index]);
 		}
 	}

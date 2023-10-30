@@ -34,7 +34,7 @@ public static partial class SuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
-		Guard.IsGreaterThanOrEqualTo(size, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
 
 		return BatchImpl(source, new TSource[size], size, resultSelector);
 	}
@@ -111,7 +111,8 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(array);
 		ArgumentNullException.ThrowIfNull(resultSelector);
-		Guard.IsBetweenOrEqualTo(size, 1, array.Length);
+		ArgumentOutOfRangeException.ThrowIfLessThan(size, 1);
+		ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(size, array.Length);
 
 		return BatchImpl(source, array, size, resultSelector);
 	}

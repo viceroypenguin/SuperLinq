@@ -91,7 +91,7 @@ public static partial class AsyncSuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(paddingSelector);
-		Guard.IsGreaterThanOrEqualTo(width, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(width);
 
 		return Core(source, width, paddingSelector);
 

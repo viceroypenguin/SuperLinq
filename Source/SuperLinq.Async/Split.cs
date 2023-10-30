@@ -174,7 +174,7 @@ public static partial class AsyncSuperEnumerable
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
 		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		comparer ??= EqualityComparer<TSource>.Default;
@@ -271,7 +271,7 @@ public static partial class AsyncSuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(separatorFunc);
-		Guard.IsGreaterThanOrEqualTo(count, 1);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
 		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return Core(source, separatorFunc, count, resultSelector);

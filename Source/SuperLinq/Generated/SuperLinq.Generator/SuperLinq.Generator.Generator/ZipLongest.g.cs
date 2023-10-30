@@ -102,7 +102,8 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
             return _resultSelector(index < _list1.Count ? _list1[index] : default, index < _list2.Count ? _list2[index] : default);
         }
     }
@@ -204,7 +205,8 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
             return _resultSelector(index < _list1.Count ? _list1[index] : default, index < _list2.Count ? _list2[index] : default, index < _list3.Count ? _list3[index] : default);
         }
     }
@@ -315,7 +317,8 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
             return _resultSelector(index < _list1.Count ? _list1[index] : default, index < _list2.Count ? _list2[index] : default, index < _list3.Count ? _list3[index] : default, index < _list4.Count ? _list4[index] : default);
         }
     }

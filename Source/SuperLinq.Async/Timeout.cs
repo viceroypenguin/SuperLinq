@@ -40,7 +40,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TSource> Timeout<TSource>(this IAsyncEnumerable<TSource> source, TimeSpan timeout)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		Guard.IsBetween(timeout.TotalMilliseconds, -1, uint.MaxValue);
+		ArgumentOutOfRangeException.ThrowIfNegative(timeout.Milliseconds);
 
 		return Core(source, timeout);
 
