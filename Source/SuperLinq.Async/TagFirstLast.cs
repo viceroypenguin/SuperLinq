@@ -63,8 +63,8 @@ public static partial class AsyncSuperEnumerable
 	/// </example>
 	public static IAsyncEnumerable<TResult> TagFirstLast<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return Core(source, resultSelector);
 

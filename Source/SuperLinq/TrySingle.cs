@@ -82,8 +82,8 @@ public static partial class SuperEnumerable
 		TCardinality zero, TCardinality one, TCardinality many,
 		Func<TCardinality, T?, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		if (source.TryGetCollectionCount() is int n)
 		{

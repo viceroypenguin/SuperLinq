@@ -59,8 +59,8 @@ public static partial class AsyncSuperEnumerable
 	/// </returns>
 	public static ValueTask<bool> HasDuplicates<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return Core(source, keySelector, comparer);
 

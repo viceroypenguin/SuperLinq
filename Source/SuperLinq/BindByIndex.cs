@@ -51,10 +51,10 @@ public static partial class SuperEnumerable
 		Func<TSource, int, TResult> resultSelector,
 		Func<int, TResult> missingSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(indices);
-		Guard.IsNotNull(resultSelector);
-		Guard.IsNotNull(missingSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(indices);
+		ArgumentNullException.ThrowIfNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(missingSelector);
 
 		return Core(source, indices, resultSelector, missingSelector);
 

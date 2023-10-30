@@ -117,8 +117,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static ValueTask<int> FindLastIndex<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 
 		return Core(source, predicate, index, count, cancellationToken);

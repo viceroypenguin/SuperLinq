@@ -39,13 +39,13 @@ public static partial class SuperEnumerable
 		{{~ end ~}}
         global::System.Func<{{ for $j in 1..$i }}TAccumulate{{$j}}, {{ end }}TResult> resultSelector)
 	{
-		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		{{~ for $j in 1..$i ~}}
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator{{$j}});
+        ArgumentNullException.ThrowIfNull(accumulator{{$j}});
 		{{~ end ~}}
 
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(resultSelector);
 
 		foreach (var item in source)
 		{

@@ -89,8 +89,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(paddingSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(paddingSelector);
 		Guard.IsGreaterThanOrEqualTo(width, 0);
 
 		if (source is IList<TSource> list)
@@ -142,7 +142,7 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
+			ArgumentNullException.ThrowIfNull(array);
 			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
 			var cnt = _source.CopyTo(array, arrayIndex);
@@ -180,7 +180,7 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
+			ArgumentNullException.ThrowIfNull(array);
 			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
 			_source.CopyTo(array, arrayIndex);

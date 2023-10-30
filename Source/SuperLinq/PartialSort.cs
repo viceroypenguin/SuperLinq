@@ -108,7 +108,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<T> source, int count,
 		IComparer<T>? comparer, OrderByDirection direction)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThanOrEqualTo(count, 1);
 
 		comparer ??= Comparer<T>.Default;
@@ -270,9 +270,9 @@ public static partial class SuperEnumerable
 		IComparer<TKey>? comparer,
 		OrderByDirection direction)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThanOrEqualTo(count, 1);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		comparer ??= Comparer<TKey>.Default;
 		if (direction == OrderByDirection.Descending)

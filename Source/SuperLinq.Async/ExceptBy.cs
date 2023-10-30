@@ -59,9 +59,9 @@ public static partial class AsyncSuperEnumerable
 		Func<TSource, TKey> keySelector,
 		IEqualityComparer<TKey>? keyComparer)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return Core(first, second, keySelector, keyComparer);
 

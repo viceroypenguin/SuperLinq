@@ -45,8 +45,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillBackward<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
 
 		return FillBackwardImpl(source, i => new ValueTask<bool>(predicate(i)), fillSelector: null);
 	}
@@ -72,8 +72,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillBackward<T>(this IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> predicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
 
 		return FillBackwardImpl(source, predicate, fillSelector: null);
 	}
@@ -104,9 +104,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillBackward<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
-		Guard.IsNotNull(fillSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
+		ArgumentNullException.ThrowIfNull(fillSelector);
 
 		return FillBackwardImpl(source, i => new ValueTask<bool>(predicate(i)), (a, b) => new ValueTask<T>(fillSelector(a, b)));
 	}
@@ -137,9 +137,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillBackward<T>(this IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> predicate, Func<T, T, T> fillSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
-		Guard.IsNotNull(fillSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
+		ArgumentNullException.ThrowIfNull(fillSelector);
 
 		return FillBackwardImpl(source, predicate, (a, b) => new ValueTask<T>(fillSelector(a, b)));
 	}
@@ -170,9 +170,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillBackward<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate, Func<T, T, ValueTask<T>> fillSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
-		Guard.IsNotNull(fillSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
+		ArgumentNullException.ThrowIfNull(fillSelector);
 
 		return FillBackwardImpl(source, i => new ValueTask<bool>(predicate(i)), fillSelector);
 	}
@@ -203,9 +203,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillBackward<T>(this IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> predicate, Func<T, T, ValueTask<T>> fillSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
-		Guard.IsNotNull(fillSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
+		ArgumentNullException.ThrowIfNull(fillSelector);
 
 		return FillBackwardImpl(source, predicate, fillSelector);
 	}

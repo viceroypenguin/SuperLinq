@@ -19,8 +19,8 @@ public partial class AsyncSuperEnumerable
 		Action<TSource> action,
 		CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(action);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(action);
 
 		return Core(source, action, cancellationToken);
 
@@ -51,8 +51,8 @@ public partial class AsyncSuperEnumerable
 		Func<TSource, ValueTask> action,
 		CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(action);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(action);
 
 		return Core(source, action, cancellationToken);
 
@@ -85,8 +85,8 @@ public partial class AsyncSuperEnumerable
 		Action<TSource, int> action,
 		CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(action);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(action);
 
 		return Core(source, action, cancellationToken);
 
@@ -120,8 +120,8 @@ public partial class AsyncSuperEnumerable
 		Func<TSource, int, ValueTask> action,
 		CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(action);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(action);
 
 		return Core(source, action, cancellationToken);
 

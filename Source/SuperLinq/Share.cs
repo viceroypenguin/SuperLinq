@@ -30,7 +30,7 @@ public static partial class SuperEnumerable
 	/// </example>
 	public static IBuffer<TSource> Share<TSource>(this IEnumerable<TSource> source)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return new SharedBuffer<TSource>(source);
 	}

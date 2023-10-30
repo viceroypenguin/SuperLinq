@@ -15,7 +15,7 @@ public static partial class SuperEnumerable
 	/// <returns>A series of sequences representing each sliding window subsequence</returns>
 	public static IEnumerable<IList<TSource>> Window<TSource>(this IEnumerable<TSource> source, int size)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThanOrEqualTo(size, 1);
 
 		if (source is IList<TSource> list)

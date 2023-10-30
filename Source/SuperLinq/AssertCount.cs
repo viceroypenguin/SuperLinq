@@ -21,7 +21,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, int count)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 
 		if (source is IList<TSource> list)
@@ -75,7 +75,7 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
+			ArgumentNullException.ThrowIfNull(array);
 			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
 			_ = _source.CopyTo(array, arrayIndex);
@@ -113,7 +113,7 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
+			ArgumentNullException.ThrowIfNull(array);
 			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
 			_source.CopyTo(array, arrayIndex);

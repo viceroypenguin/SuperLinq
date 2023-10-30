@@ -105,10 +105,10 @@ public static partial class SuperEnumerable
 		Func<TAccumulate, TSource, TAccumulate> func,
 		IEqualityComparer<TKey>? comparer = null) where TKey : notnull
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
-		Guard.IsNotNull(seedSelector);
-		Guard.IsNotNull(func);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
+		ArgumentNullException.ThrowIfNull(seedSelector);
+		ArgumentNullException.ThrowIfNull(func);
 
 		return Core(source, keySelector, seedSelector, func, comparer ?? EqualityComparer<TKey>.Default);
 

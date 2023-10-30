@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
 	{
-		Guard.IsNotNull(sequence);
+		ArgumentNullException.ThrowIfNull(sequence);
 
 		return Core(sequence);
 
@@ -73,7 +73,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence, int subsetSize)
 	{
-		Guard.IsNotNull(sequence);
+		ArgumentNullException.ThrowIfNull(sequence);
 		Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
 
 		// NOTE: There's an interesting trade-off that we have to make in this operator.
@@ -191,7 +191,7 @@ public static partial class SuperEnumerable
 
 		public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
 		{
-			Guard.IsNotNull(sequence);
+			ArgumentNullException.ThrowIfNull(sequence);
 			_sequence = sequence;
 
 			Guard.IsGreaterThanOrEqualTo(subsetSize, 0);

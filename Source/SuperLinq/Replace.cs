@@ -22,7 +22,7 @@ public static partial class SuperEnumerable
 		int index,
 		TSource value)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		if (source is IList<TSource> list)
 			return new ReplaceIterator<TSource>(list, value, index);
@@ -60,7 +60,7 @@ public static partial class SuperEnumerable
 		Index index,
 		TSource value)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		if (source is IList<TSource> list)
 			return new ReplaceIterator<TSource>(list, value, index);
@@ -135,7 +135,7 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(TSource[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
+			ArgumentNullException.ThrowIfNull(array);
 			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
 			_source.CopyTo(array, arrayIndex);

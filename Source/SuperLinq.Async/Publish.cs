@@ -17,7 +17,7 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IAsyncBuffer<TSource> Publish<TSource>(this IAsyncEnumerable<TSource> source)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return new PublishBuffer<TSource>(source);
 	}

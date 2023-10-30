@@ -67,9 +67,9 @@ public static partial class AsyncSuperEnumerable
 		Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return Core(source, predicate, resultSelector, cancellationToken);
 
@@ -107,8 +107,8 @@ public static partial class AsyncSuperEnumerable
 		Func<IAsyncEnumerable<T>, IAsyncEnumerable<T>, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return source.Partition(
 			key1: true, key2: false,
@@ -140,8 +140,8 @@ public static partial class AsyncSuperEnumerable
 		Func<IAsyncEnumerable<T>, IAsyncEnumerable<T>, IAsyncEnumerable<T>, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return source.Partition(
 			key1: true, key2: false, key3: null,
@@ -210,8 +210,8 @@ public static partial class AsyncSuperEnumerable
 		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return PartitionImpl(
 			source, 1, key, key2: default, key3: default, comparer,
@@ -284,8 +284,8 @@ public static partial class AsyncSuperEnumerable
 		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return PartitionImpl(
 			source, 2, key1, key2, key3: default, comparer,
@@ -360,8 +360,8 @@ public static partial class AsyncSuperEnumerable
 		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return PartitionImpl(source, 3, key1, key2, key3, comparer, resultSelector, cancellationToken);
 	}

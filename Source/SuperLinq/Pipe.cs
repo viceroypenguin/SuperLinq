@@ -11,8 +11,8 @@ public static partial class SuperEnumerable
 	/// <returns>Sequence exhibiting the specified side-effects upon enumeration.</returns>
 	public static IEnumerable<TSource> Pipe<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(action);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(action);
 
 		return Do(source, action);
 	}

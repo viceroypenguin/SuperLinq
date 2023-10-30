@@ -114,7 +114,7 @@ public static partial class SuperEnumerable
 
 	private static bool QuantityIterator<T>(IEnumerable<T> source, int limit, int min, int max)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		var count = source.TryGetCollectionCount() ?? source.CountUpTo(limit);
 
@@ -144,8 +144,8 @@ public static partial class SuperEnumerable
 
 	public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		if (first.TryGetCollectionCount() is int firstCount)
 		{
@@ -177,7 +177,7 @@ public static partial class SuperEnumerable
 
 	private static int CountUpTo<T>(this IEnumerable<T> source, int max)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThanOrEqualTo(max, 0);
 
 		var count = 0;

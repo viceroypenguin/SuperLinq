@@ -16,7 +16,7 @@ public partial class SuperEnumerable
 
 	public static IEnumerable<T> From<T>(Func<T> function)
 	{
-		Guard.IsNotNull(function);
+		ArgumentNullException.ThrowIfNull(function);
 		return Core(function);
 
 		static IEnumerable<T> Core(Func<T> function)
@@ -40,8 +40,8 @@ public partial class SuperEnumerable
 
 	public static IEnumerable<T> From<T>(Func<T> function1, Func<T> function2)
 	{
-		Guard.IsNotNull(function1);
-		Guard.IsNotNull(function2);
+		ArgumentNullException.ThrowIfNull(function1);
+		ArgumentNullException.ThrowIfNull(function2);
 		return Core(function1, function2);
 
 		static IEnumerable<T> Core(Func<T> function1, Func<T> function2)
@@ -67,9 +67,9 @@ public partial class SuperEnumerable
 
 	public static IEnumerable<T> From<T>(Func<T> function1, Func<T> function2, Func<T> function3)
 	{
-		Guard.IsNotNull(function1);
-		Guard.IsNotNull(function2);
-		Guard.IsNotNull(function3);
+		ArgumentNullException.ThrowIfNull(function1);
+		ArgumentNullException.ThrowIfNull(function2);
+		ArgumentNullException.ThrowIfNull(function3);
 		return Core(function1, function2, function3);
 
 		static IEnumerable<T> Core(Func<T> function1, Func<T> function2, Func<T> function3)

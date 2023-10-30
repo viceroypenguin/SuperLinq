@@ -15,8 +15,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<IEnumerable<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, bool> newSegmentPredicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(newSegmentPredicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
 
 		return Segment(source, (curr, prev, index) => new ValueTask<bool>(newSegmentPredicate(curr)));
 	}
@@ -34,8 +34,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<IEnumerable<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> newSegmentPredicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(newSegmentPredicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
 
 		return Segment(source, (curr, prev, index) => newSegmentPredicate(curr));
 	}
@@ -53,8 +53,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<IEnumerable<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(newSegmentPredicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
 
 		return Segment(source, (curr, prev, index) => new ValueTask<bool>(newSegmentPredicate(curr, index)));
 	}
@@ -72,8 +72,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<IEnumerable<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, int, ValueTask<bool>> newSegmentPredicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(newSegmentPredicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
 
 		return Segment(source, (curr, prev, index) => newSegmentPredicate(curr, index));
 	}
@@ -91,8 +91,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<IEnumerable<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(newSegmentPredicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
 
 		return Segment(source, (curr, prev, index) => new ValueTask<bool>(newSegmentPredicate(curr, prev, index)));
 	}
@@ -110,8 +110,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<IEnumerable<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, T, int, ValueTask<bool>> newSegmentPredicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(newSegmentPredicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
 
 		return Core(source, newSegmentPredicate);
 

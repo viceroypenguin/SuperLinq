@@ -11,7 +11,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	public static ValueTask Consume<T>(this IAsyncEnumerable<T> source, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		return Core(source, cancellationToken);
 
 		static async ValueTask Core(IAsyncEnumerable<T> source, CancellationToken cancellationToken)

@@ -23,8 +23,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> While<TSource>(Func<bool> condition, IEnumerable<TSource> source)
 	{
-		Guard.IsNotNull(condition);
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(condition);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return Core(condition, source);
 

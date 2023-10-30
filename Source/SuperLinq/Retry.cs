@@ -21,7 +21,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> Retry<TSource>(this IEnumerable<TSource> source)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return Repeat<IEnumerable<TSource>>(source).Catch();
 	}
@@ -51,7 +51,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> Retry<TSource>(this IEnumerable<TSource> source, int count)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThan(count, 0);
 
 		return Enumerable.Repeat(source, count).Catch();

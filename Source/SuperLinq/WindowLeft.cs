@@ -38,7 +38,7 @@ public static partial class SuperEnumerable
 	/// </example>
 	public static IEnumerable<IList<TSource>> WindowLeft<TSource>(this IEnumerable<TSource> source, int size)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThanOrEqualTo(size, 1);
 
 		if (source is IList<TSource> list)

@@ -11,7 +11,7 @@ public static partial class SuperEnumerable
 
 	public static void Consume<T>(this IEnumerable<T> source)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		foreach (var _ in source)
 		{
 		}

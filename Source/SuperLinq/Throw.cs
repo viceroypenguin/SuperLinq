@@ -20,7 +20,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> Throw<TSource>(Exception exception)
 	{
-		Guard.IsNotNull(exception);
+		ArgumentNullException.ThrowIfNull(exception);
 
 		return Core(exception);
 

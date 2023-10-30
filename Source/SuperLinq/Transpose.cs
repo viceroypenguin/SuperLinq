@@ -33,7 +33,7 @@ public static partial class SuperEnumerable
 	/// </example>
 	public static IEnumerable<IEnumerable<T>> Transpose<T>(this IEnumerable<IEnumerable<T>> source)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return Core(source);
 

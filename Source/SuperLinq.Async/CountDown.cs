@@ -73,8 +73,8 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<TSource> source,
 		int count, Func<TSource, int?, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 		Guard.IsGreaterThanOrEqualTo(count, 1);
 
 		return Core(source, count, resultSelector);

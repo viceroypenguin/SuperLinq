@@ -15,8 +15,8 @@ public partial class SuperEnumerable
 	/// </remarks>
 	public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(action);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(action);
 
 		foreach (var element in source)
 			action(element);
@@ -37,8 +37,8 @@ public partial class SuperEnumerable
 	/// </remarks>
 	public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource, int> action)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(action);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(action);
 
 		var index = 0;
 		foreach (var element in source)

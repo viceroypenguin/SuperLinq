@@ -30,8 +30,8 @@ public static partial class SuperEnumerable
 
 	public static IOrderedEnumerable<T> OrderBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector, IComparer<TKey>? comparer, OrderByDirection direction)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 		return direction == OrderByDirection.Ascending
 				   ? source.OrderBy(keySelector, comparer)
 				   : source.OrderByDescending(keySelector, comparer);
@@ -65,8 +65,8 @@ public static partial class SuperEnumerable
 
 	public static IOrderedEnumerable<T> ThenBy<T, TKey>(this IOrderedEnumerable<T> source, Func<T, TKey> keySelector, IComparer<TKey>? comparer, OrderByDirection direction)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 		return direction == OrderByDirection.Ascending
 				   ? source.ThenBy(keySelector, comparer)
 				   : source.ThenByDescending(keySelector, comparer);

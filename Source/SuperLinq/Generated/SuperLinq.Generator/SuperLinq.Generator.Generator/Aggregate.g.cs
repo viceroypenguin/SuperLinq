@@ -27,10 +27,10 @@ public static partial class SuperEnumerable
     /// <param name = "accumulator2">The second accumulator.</param>
     public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, TAccumulate1 seed1, global::System.Func<TAccumulate1, T, TAccumulate1> accumulator1, TAccumulate2 seed2, global::System.Func<TAccumulate2, T, TAccumulate2> accumulator2, global::System.Func<TAccumulate1, TAccumulate2, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator1);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator2);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(accumulator1);
+        ArgumentNullException.ThrowIfNull(accumulator2);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         foreach (var item in source)
         {
             seed1 = accumulator1(seed1, item);
@@ -90,11 +90,11 @@ public static partial class SuperEnumerable
     /// <param name = "accumulator3">The third accumulator.</param>
     public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TAccumulate3, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, TAccumulate1 seed1, global::System.Func<TAccumulate1, T, TAccumulate1> accumulator1, TAccumulate2 seed2, global::System.Func<TAccumulate2, T, TAccumulate2> accumulator2, TAccumulate3 seed3, global::System.Func<TAccumulate3, T, TAccumulate3> accumulator3, global::System.Func<TAccumulate1, TAccumulate2, TAccumulate3, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator1);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator2);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator3);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(accumulator1);
+        ArgumentNullException.ThrowIfNull(accumulator2);
+        ArgumentNullException.ThrowIfNull(accumulator3);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         foreach (var item in source)
         {
             seed1 = accumulator1(seed1, item);
@@ -161,12 +161,12 @@ public static partial class SuperEnumerable
     /// <param name = "accumulator4">The fourth accumulator.</param>
     public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, TAccumulate1 seed1, global::System.Func<TAccumulate1, T, TAccumulate1> accumulator1, TAccumulate2 seed2, global::System.Func<TAccumulate2, T, TAccumulate2> accumulator2, TAccumulate3 seed3, global::System.Func<TAccumulate3, T, TAccumulate3> accumulator3, TAccumulate4 seed4, global::System.Func<TAccumulate4, T, TAccumulate4> accumulator4, global::System.Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator1);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator2);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator3);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator4);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(accumulator1);
+        ArgumentNullException.ThrowIfNull(accumulator2);
+        ArgumentNullException.ThrowIfNull(accumulator3);
+        ArgumentNullException.ThrowIfNull(accumulator4);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         foreach (var item in source)
         {
             seed1 = accumulator1(seed1, item);
@@ -240,13 +240,13 @@ public static partial class SuperEnumerable
     /// <param name = "accumulator5">The fifth accumulator.</param>
     public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, TAccumulate1 seed1, global::System.Func<TAccumulate1, T, TAccumulate1> accumulator1, TAccumulate2 seed2, global::System.Func<TAccumulate2, T, TAccumulate2> accumulator2, TAccumulate3 seed3, global::System.Func<TAccumulate3, T, TAccumulate3> accumulator3, TAccumulate4 seed4, global::System.Func<TAccumulate4, T, TAccumulate4> accumulator4, TAccumulate5 seed5, global::System.Func<TAccumulate5, T, TAccumulate5> accumulator5, global::System.Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator1);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator2);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator3);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator4);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator5);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(accumulator1);
+        ArgumentNullException.ThrowIfNull(accumulator2);
+        ArgumentNullException.ThrowIfNull(accumulator3);
+        ArgumentNullException.ThrowIfNull(accumulator4);
+        ArgumentNullException.ThrowIfNull(accumulator5);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         foreach (var item in source)
         {
             seed1 = accumulator1(seed1, item);
@@ -327,14 +327,14 @@ public static partial class SuperEnumerable
     /// <param name = "accumulator6">The sixth accumulator.</param>
     public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, TAccumulate1 seed1, global::System.Func<TAccumulate1, T, TAccumulate1> accumulator1, TAccumulate2 seed2, global::System.Func<TAccumulate2, T, TAccumulate2> accumulator2, TAccumulate3 seed3, global::System.Func<TAccumulate3, T, TAccumulate3> accumulator3, TAccumulate4 seed4, global::System.Func<TAccumulate4, T, TAccumulate4> accumulator4, TAccumulate5 seed5, global::System.Func<TAccumulate5, T, TAccumulate5> accumulator5, TAccumulate6 seed6, global::System.Func<TAccumulate6, T, TAccumulate6> accumulator6, global::System.Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator1);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator2);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator3);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator4);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator5);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator6);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(accumulator1);
+        ArgumentNullException.ThrowIfNull(accumulator2);
+        ArgumentNullException.ThrowIfNull(accumulator3);
+        ArgumentNullException.ThrowIfNull(accumulator4);
+        ArgumentNullException.ThrowIfNull(accumulator5);
+        ArgumentNullException.ThrowIfNull(accumulator6);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         foreach (var item in source)
         {
             seed1 = accumulator1(seed1, item);
@@ -422,15 +422,15 @@ public static partial class SuperEnumerable
     /// <param name = "accumulator7">The seventh accumulator.</param>
     public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, TAccumulate1 seed1, global::System.Func<TAccumulate1, T, TAccumulate1> accumulator1, TAccumulate2 seed2, global::System.Func<TAccumulate2, T, TAccumulate2> accumulator2, TAccumulate3 seed3, global::System.Func<TAccumulate3, T, TAccumulate3> accumulator3, TAccumulate4 seed4, global::System.Func<TAccumulate4, T, TAccumulate4> accumulator4, TAccumulate5 seed5, global::System.Func<TAccumulate5, T, TAccumulate5> accumulator5, TAccumulate6 seed6, global::System.Func<TAccumulate6, T, TAccumulate6> accumulator6, TAccumulate7 seed7, global::System.Func<TAccumulate7, T, TAccumulate7> accumulator7, global::System.Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator1);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator2);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator3);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator4);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator5);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator6);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator7);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(accumulator1);
+        ArgumentNullException.ThrowIfNull(accumulator2);
+        ArgumentNullException.ThrowIfNull(accumulator3);
+        ArgumentNullException.ThrowIfNull(accumulator4);
+        ArgumentNullException.ThrowIfNull(accumulator5);
+        ArgumentNullException.ThrowIfNull(accumulator6);
+        ArgumentNullException.ThrowIfNull(accumulator7);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         foreach (var item in source)
         {
             seed1 = accumulator1(seed1, item);
@@ -525,16 +525,16 @@ public static partial class SuperEnumerable
     /// <param name = "accumulator8">The eighth accumulator.</param>
     public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TAccumulate8, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, TAccumulate1 seed1, global::System.Func<TAccumulate1, T, TAccumulate1> accumulator1, TAccumulate2 seed2, global::System.Func<TAccumulate2, T, TAccumulate2> accumulator2, TAccumulate3 seed3, global::System.Func<TAccumulate3, T, TAccumulate3> accumulator3, TAccumulate4 seed4, global::System.Func<TAccumulate4, T, TAccumulate4> accumulator4, TAccumulate5 seed5, global::System.Func<TAccumulate5, T, TAccumulate5> accumulator5, TAccumulate6 seed6, global::System.Func<TAccumulate6, T, TAccumulate6> accumulator6, TAccumulate7 seed7, global::System.Func<TAccumulate7, T, TAccumulate7> accumulator7, TAccumulate8 seed8, global::System.Func<TAccumulate8, T, TAccumulate8> accumulator8, global::System.Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TAccumulate8, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator1);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator2);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator3);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator4);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator5);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator6);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator7);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(accumulator8);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(accumulator1);
+        ArgumentNullException.ThrowIfNull(accumulator2);
+        ArgumentNullException.ThrowIfNull(accumulator3);
+        ArgumentNullException.ThrowIfNull(accumulator4);
+        ArgumentNullException.ThrowIfNull(accumulator5);
+        ArgumentNullException.ThrowIfNull(accumulator6);
+        ArgumentNullException.ThrowIfNull(accumulator7);
+        ArgumentNullException.ThrowIfNull(accumulator8);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         foreach (var item in source)
         {
             seed1 = accumulator1(seed1, item);

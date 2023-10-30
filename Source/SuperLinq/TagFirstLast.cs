@@ -63,8 +63,8 @@ public static partial class SuperEnumerable
 	/// </example>
 	public static IEnumerable<TResult> TagFirstLast<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		if (source is IList<TSource> list)
 			return new TagFirstLastIterator<TSource, TResult>(list, resultSelector);

@@ -196,7 +196,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentException"><paramref name="sequence"/> has too many elements to permute properly.</exception>
 	public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
 	{
-		Guard.IsNotNull(sequence);
+		ArgumentNullException.ThrowIfNull(sequence);
 
 		return Core(sequence);
 

@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> DistinctUntilChanged<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		return DistinctUntilChanged(source, Identity, comparer);
 	}
 
@@ -57,8 +57,8 @@ public static partial class SuperEnumerable
 	/// langword="null"/>.</exception>
 	public static IEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return Core(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 

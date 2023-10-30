@@ -81,8 +81,8 @@ public static partial class AsyncSuperEnumerable
 		IEqualityComparer<TSource>? comparer,
 		CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		return Core(first, second, comparer, cancellationToken);
 

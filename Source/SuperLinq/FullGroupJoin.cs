@@ -120,11 +120,11 @@ public static partial class SuperEnumerable
 		Func<TKey, IEnumerable<TFirst>, IEnumerable<TSecond>, TResult> resultSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
-		Guard.IsNotNull(firstKeySelector);
-		Guard.IsNotNull(secondKeySelector);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
+		ArgumentNullException.ThrowIfNull(firstKeySelector);
+		ArgumentNullException.ThrowIfNull(secondKeySelector);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return Core(comparer ?? EqualityComparer<TKey>.Default);
 

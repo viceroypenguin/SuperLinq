@@ -51,8 +51,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static async ValueTask<int> CopyTo<TSource>(this IAsyncEnumerable<TSource> source, IList<TSource> list, int index, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(list);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(list);
 		Guard.IsGreaterThanOrEqualTo(index, 0);
 
 		if (list is TSource[] array)

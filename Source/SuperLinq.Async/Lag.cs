@@ -16,7 +16,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<(TSource current, TSource? lag)> Lag<TSource>(this IAsyncEnumerable<TSource> source, int offset)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return source.Select(Some)
 					 .Lag(offset, default, (curr, lag) => (curr.Value, lag is (true, var some) ? some : default));
@@ -38,8 +38,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TResult> Lag<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return source.Select(Some)
 					 .Lag(offset, default, (curr, lag) => resultSelector(curr.Value, lag is (true, var some) ? some : default));
@@ -61,8 +61,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TResult> Lag<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return source.Lag(offset, defaultLagValue, (curr, lag) => new ValueTask<TResult>(resultSelector(curr, lag)));
 	}
@@ -83,8 +83,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TResult> Lag<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, ValueTask<TResult>> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
 		return Core(source, offset, defaultLagValue, resultSelector);

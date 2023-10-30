@@ -41,7 +41,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<object?> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
 	{
-		Guard.IsNotNull(predicate);
+		ArgumentNullException.ThrowIfNull(predicate);
 
 		return Flatten(source, obj => obj is IEnumerable inner && predicate(inner) ? inner : null);
 	}
@@ -70,8 +70,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<object?> Flatten(this IEnumerable source, Func<object?, IEnumerable?> selector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(selector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(selector);
 
 		return Core(); IEnumerable<object?> Core()
 		{

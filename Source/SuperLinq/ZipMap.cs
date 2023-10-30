@@ -19,8 +19,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="selector"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<(TSource item, TResult result)> ZipMap<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(selector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(selector);
 
 		if (source is IList<TSource> list)
 			return new ZipMapIterator<TSource, TResult>(list, selector);

@@ -30,7 +30,7 @@ public partial class SuperEnumerable
 
 		public virtual void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
+			ArgumentNullException.ThrowIfNull(array);
 			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
 			_ = SuperEnumerable.CopyTo(GetEnumerable(), array, arrayIndex);

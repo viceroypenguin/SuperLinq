@@ -26,8 +26,8 @@ public static partial class SuperEnumerable
 		{{~ end ~}}
 		TResult> folder)
     {
-		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(folder);
 
 		var elements = source.AssertCount({{$i}}).ToList();
 

@@ -27,7 +27,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncBuffer<TSource> Memoize<TSource>(this IAsyncEnumerable<TSource> source)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return new EnumerableMemoizedBuffer<TSource>(source);
 	}
@@ -100,7 +100,7 @@ public static partial class AsyncSuperEnumerable
 
 				if (_exceptionIndex == -1)
 				{
-					Guard.IsNotNull(_exception);
+					ArgumentNullException.ThrowIfNull(_exception);
 					_exception.Throw();
 				}
 

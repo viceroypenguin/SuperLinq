@@ -23,7 +23,7 @@ public partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> Repeat<TSource>(this IEnumerable<TSource> source)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return Core(source);
 
@@ -51,7 +51,7 @@ public partial class SuperEnumerable
 	/// <c>0</c>.</exception>
 	public static IEnumerable<TSource> Repeat<TSource>(this IEnumerable<TSource> source, int count)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThan(count, 0);
 
 		return Core(source, count);

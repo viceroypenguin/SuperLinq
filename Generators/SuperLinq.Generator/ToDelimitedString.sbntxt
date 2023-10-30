@@ -25,8 +25,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static global::System.String ToDelimitedString(this global::System.Collections.Generic.IEnumerable<{{t}}> source, global::System.String delimiter)
 	{
-		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(delimiter);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(delimiter);
 		return ToDelimitedStringImpl(source, delimiter, Builder);
 
 		static global::System.Text.StringBuilder Builder(global::System.Text.StringBuilder sb, {{t}} e) => sb.Append(e);

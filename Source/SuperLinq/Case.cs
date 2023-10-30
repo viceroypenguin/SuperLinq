@@ -54,9 +54,9 @@ public static partial class SuperEnumerable
 		IEnumerable<TResult> defaultSource)
 		where TValue : notnull
 	{
-		Guard.IsNotNull(selector);
-		Guard.IsNotNull(sources);
-		Guard.IsNotNull(defaultSource);
+		ArgumentNullException.ThrowIfNull(selector);
+		ArgumentNullException.ThrowIfNull(sources);
+		ArgumentNullException.ThrowIfNull(defaultSource);
 
 		return Core(selector, sources, defaultSource);
 

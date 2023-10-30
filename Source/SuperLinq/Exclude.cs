@@ -16,7 +16,7 @@ public static partial class SuperEnumerable
 	/// </exception>
 	public static IEnumerable<T> Exclude<T>(this IEnumerable<T> sequence, int startIndex, int count)
 	{
-		Guard.IsNotNull(sequence);
+		ArgumentNullException.ThrowIfNull(sequence);
 		Guard.IsGreaterThanOrEqualTo(startIndex, 0);
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 

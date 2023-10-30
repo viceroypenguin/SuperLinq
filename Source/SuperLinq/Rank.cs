@@ -49,8 +49,8 @@ public static partial class SuperEnumerable
 	public static IEnumerable<(TSource item, int rank)> DenseRankBy<TSource, TKey>(
 		this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return RankByCore(source, keySelector, comparer: null, isDense: true);
 	}
@@ -74,8 +74,8 @@ public static partial class SuperEnumerable
 		Func<TSource, TKey> keySelector,
 		IComparer<TKey> comparer)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return RankByCore(source, keySelector, comparer, isDense: true);
 	}
@@ -127,8 +127,8 @@ public static partial class SuperEnumerable
 	public static IEnumerable<(TSource item, int rank)> RankBy<TSource, TKey>(
 		this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return RankByCore(source, keySelector, comparer: null, isDense: false);
 	}
@@ -152,8 +152,8 @@ public static partial class SuperEnumerable
 		Func<TSource, TKey> keySelector,
 		IComparer<TKey> comparer)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return RankByCore(source, keySelector, comparer, isDense: false);
 	}

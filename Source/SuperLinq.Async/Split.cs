@@ -173,9 +173,9 @@ public static partial class AsyncSuperEnumerable
 		TSource separator, IEqualityComparer<TSource>? comparer, int count,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThanOrEqualTo(count, 1);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		comparer ??= EqualityComparer<TSource>.Default;
 		return Split(source, item => comparer.Equals(item, separator), count, resultSelector);
@@ -269,10 +269,10 @@ public static partial class AsyncSuperEnumerable
 		Func<TSource, bool> separatorFunc, int count,
 		Func<IEnumerable<TSource>, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(separatorFunc);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(separatorFunc);
 		Guard.IsGreaterThanOrEqualTo(count, 1);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return Core(source, separatorFunc, count, resultSelector);
 

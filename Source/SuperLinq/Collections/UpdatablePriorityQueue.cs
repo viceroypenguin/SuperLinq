@@ -190,7 +190,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// </remarks>
 	public UpdatablePriorityQueue(IEnumerable<(TElement Element, TPriority Priority)> items, IComparer<TPriority>? priorityComparer, IEqualityComparer<TElement>? elementComparer)
 	{
-		Guard.IsNotNull(items);
+		ArgumentNullException.ThrowIfNull(items);
 
 		_nodes = items.ToArray();
 		_priorityComparer = InitializeComparer(priorityComparer);
@@ -458,7 +458,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <remarks>Any existing elements will be unconditionally updated to the new priority.</remarks>
 	public void EnqueueRange(IEnumerable<(TElement Element, TPriority Priority)> items)
 	{
-		Guard.IsNotNull(items);
+		ArgumentNullException.ThrowIfNull(items);
 
 		var count = 0;
 		var collection = items as ICollection<(TElement Element, TPriority Priority)>;
@@ -522,7 +522,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <remarks>Any existing elements will be unconditionally updated to the new priority.</remarks>
 	public void EnqueueRange(IEnumerable<TElement> elements, TPriority priority)
 	{
-		Guard.IsNotNull(elements);
+		ArgumentNullException.ThrowIfNull(elements);
 
 		int count;
 		if (elements is ICollection<(TElement Element, TPriority Priority)> collection &&
@@ -575,7 +575,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <remarks>Any existing elements will be updated to the new priority if and only if the new priority is lower than the existing priority.</remarks>
 	public void EnqueueRangeMinimum(IEnumerable<(TElement Element, TPriority Priority)> items)
 	{
-		Guard.IsNotNull(items);
+		ArgumentNullException.ThrowIfNull(items);
 
 		var count = 0;
 		var collection = items as ICollection<(TElement Element, TPriority Priority)>;
@@ -639,7 +639,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <remarks>Any existing elements will be updated to the new priority if and only if the new priority is lower than the existing priority.</remarks>
 	public void EnqueueRangeMinimum(IEnumerable<TElement> elements, TPriority priority)
 	{
-		Guard.IsNotNull(elements);
+		ArgumentNullException.ThrowIfNull(elements);
 
 		int count;
 		if (elements is ICollection<(TElement Element, TPriority Priority)> collection &&
@@ -1069,7 +1069,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 
 		void ICollection.CopyTo(Array array, int index)
 		{
-			Guard.IsNotNull(array);
+			ArgumentNullException.ThrowIfNull(array);
 
 			try
 			{
@@ -1174,7 +1174,7 @@ internal sealed class PriorityQueueDebugView<TElement, TPriority>
 
 	public PriorityQueueDebugView(UpdatablePriorityQueue<TElement, TPriority> queue)
 	{
-		Guard.IsNotNull(queue);
+		ArgumentNullException.ThrowIfNull(queue);
 
 		_queue = queue;
 		_sort = true;
@@ -1182,7 +1182,9 @@ internal sealed class PriorityQueueDebugView<TElement, TPriority>
 
 	public PriorityQueueDebugView(UpdatablePriorityQueue<TElement, TPriority>.UnorderedItemsCollection collection)
 	{
-		_queue = collection?.Queue ?? throw new ArgumentNullException(nameof(collection));
+		ArgumentNullException.ThrowIfNull(collection);
+
+		_queue = collection.Queue;
 	}
 
 	[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]

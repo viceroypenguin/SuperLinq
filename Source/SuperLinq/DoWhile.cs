@@ -23,8 +23,8 @@ public partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> DoWhile<TSource>(this IEnumerable<TSource> source, Func<bool> condition)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(condition);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(condition);
 
 		return Core(source, condition);
 

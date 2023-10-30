@@ -59,8 +59,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
 		if (source is IList<TSource> list)

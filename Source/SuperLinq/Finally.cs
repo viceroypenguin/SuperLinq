@@ -19,8 +19,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> Finally<TSource>(this IEnumerable<TSource> source, Action finallyAction)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(finallyAction);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(finallyAction);
 
 		return Core(source, finallyAction);
 

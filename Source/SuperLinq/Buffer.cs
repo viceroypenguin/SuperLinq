@@ -54,7 +54,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<IList<TSource>> Buffer<TSource>(this IEnumerable<TSource> source, int count, int skip)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThan(count, 0);
 		Guard.IsGreaterThan(skip, 0);
 

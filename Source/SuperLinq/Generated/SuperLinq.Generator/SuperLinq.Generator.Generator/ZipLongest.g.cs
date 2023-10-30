@@ -36,9 +36,9 @@ public static partial class SuperEnumerable
     /// <param name = "second">The second sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<TResult> ZipLongest<T1, T2, TResult>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Func<T1?, T2?, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         if (first is global::System.Collections.Generic.IList<T1> list1 && second is global::System.Collections.Generic.IList<T2> list2)
         {
             return new ZipLongestIterator<T1, T2, TResult>(list1, list2, resultSelector);
@@ -102,7 +102,7 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            global::CommunityToolkit.Diagnostics.Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+            Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
             return _resultSelector(index < _list1.Count ? _list1[index] : default, index < _list2.Count ? _list2[index] : default);
         }
     }
@@ -131,10 +131,10 @@ public static partial class SuperEnumerable
     /// <param name = "third">The third sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<TResult> ZipLongest<T1, T2, T3, TResult>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Func<T1?, T2?, T3?, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         if (first is global::System.Collections.Generic.IList<T1> list1 && second is global::System.Collections.Generic.IList<T2> list2 && third is global::System.Collections.Generic.IList<T3> list3)
         {
             return new ZipLongestIterator<T1, T2, T3, TResult>(list1, list2, list3, resultSelector);
@@ -204,7 +204,7 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            global::CommunityToolkit.Diagnostics.Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+            Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
             return _resultSelector(index < _list1.Count ? _list1[index] : default, index < _list2.Count ? _list2[index] : default, index < _list3.Count ? _list3[index] : default);
         }
     }
@@ -235,11 +235,11 @@ public static partial class SuperEnumerable
     /// <param name = "fourth">The fourth sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, TResult>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Func<T1?, T2?, T3?, T4?, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(fourth);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         if (first is global::System.Collections.Generic.IList<T1> list1 && second is global::System.Collections.Generic.IList<T2> list2 && third is global::System.Collections.Generic.IList<T3> list3 && fourth is global::System.Collections.Generic.IList<T4> list4)
         {
             return new ZipLongestIterator<T1, T2, T3, T4, TResult>(list1, list2, list3, list4, resultSelector);
@@ -315,7 +315,7 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            global::CommunityToolkit.Diagnostics.Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+            Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
             return _resultSelector(index < _list1.Count ? _list1[index] : default, index < _list2.Count ? _list2[index] : default, index < _list3.Count ? _list3[index] : default, index < _list4.Count ? _list4[index] : default);
         }
     }

@@ -50,10 +50,10 @@ public static partial class SuperEnumerable
         global::System.Func<{{ for $j in 1..$i }}T{{ $j }}?, {{ end }}TResult> resultSelector)
 	{
 		{{~ for $j in 1..$i ~}}
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull({{ $ordinals[$j] }});
+        ArgumentNullException.ThrowIfNull({{ $ordinals[$j] }});
 		{{~ end ~}}
 
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(resultSelector);
 
 		if (
 			{{~ for $j in 1..$i ~}}
@@ -160,7 +160,7 @@ public static partial class SuperEnumerable
 
 		protected override TResult ElementAt(int index)
 		{
-			global::CommunityToolkit.Diagnostics.Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
 
 			return _resultSelector(
 				{{~ for $j in 1..$i ~}}

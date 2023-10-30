@@ -13,8 +13,8 @@ public static partial class AsyncSuperEnumerable
 	/// langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> OnErrorResumeNext<TSource>(this IAsyncEnumerable<TSource> first, IAsyncEnumerable<TSource> second)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		return OnErrorResumeNext(new[] { first, second, });
 	}
@@ -29,7 +29,7 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="sources"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> OnErrorResumeNext<TSource>(params IAsyncEnumerable<TSource>[] sources)
 	{
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return sources.ToAsyncEnumerable().OnErrorResumeNext();
 	}
@@ -44,7 +44,7 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="sources"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> OnErrorResumeNext<TSource>(this IEnumerable<IAsyncEnumerable<TSource>> sources)
 	{
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return sources.ToAsyncEnumerable().OnErrorResumeNext();
 	}
@@ -59,7 +59,7 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="sources"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> OnErrorResumeNext<TSource>(this IAsyncEnumerable<IAsyncEnumerable<TSource>> sources)
 	{
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return Core(sources);
 
@@ -69,7 +69,7 @@ public static partial class AsyncSuperEnumerable
 		{
 			await foreach (var source in sources.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
-				Guard.IsNotNull(source);
+				ArgumentNullException.ThrowIfNull(source);
 				await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
 
 				while (true)

@@ -36,8 +36,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> source, int subsetSize, Random rand)
 	{
-		Guard.IsNotNull(rand);
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(rand);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
 
 		return RandomSubsetImpl(source, rand, seq => (seq.ToArray(), subsetSize));

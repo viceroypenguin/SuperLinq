@@ -15,7 +15,7 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>A series of sequences representing each sliding window subsequence</returns>
 	public static IAsyncEnumerable<IList<TSource>> Window<TSource>(this IAsyncEnumerable<TSource> source, int size)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThanOrEqualTo(size, 1);
 
 		return Core(source, size);

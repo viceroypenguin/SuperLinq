@@ -27,8 +27,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> WhereLag<TSource>(this IAsyncEnumerable<TSource> source, int offset, Func<TSource, TSource?, bool> predicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
 		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
 		return source.WhereLag(offset, default!, predicate.ToAsync());
@@ -59,8 +59,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> WhereLag<TSource>(this IAsyncEnumerable<TSource> source, int offset, Func<TSource, TSource?, ValueTask<bool>> predicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
 		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
 		return source.WhereLag(offset, default!, predicate);
@@ -88,8 +88,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> WhereLag<TSource>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, bool> predicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
 		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
 		return source.WhereLag(offset, defaultLagValue, predicate.ToAsync());
@@ -117,8 +117,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> WhereLag<TSource>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, ValueTask<bool>> predicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
 		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
 		return Core(source, offset, defaultLagValue, predicate);

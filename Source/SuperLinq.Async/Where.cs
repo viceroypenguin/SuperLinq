@@ -16,8 +16,8 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="filter"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> Where<TSource>(this IAsyncEnumerable<TSource> source, IAsyncEnumerable<bool> filter)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(filter);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(filter);
 
 		return Core(source, filter);
 

@@ -89,8 +89,8 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IAsyncEnumerable<TSource> Pad<TSource>(this IAsyncEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(paddingSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(paddingSelector);
 		Guard.IsGreaterThanOrEqualTo(width, 0);
 
 		return Core(source, width, paddingSelector);

@@ -42,7 +42,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IBuffer<TSource> Memoize<TSource>(this IEnumerable<TSource> source, bool forceCache = true)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return (source, forceCache) switch
 		{
@@ -107,7 +107,7 @@ public static partial class SuperEnumerable
 
 				if (_exceptionIndex == -1)
 				{
-					Guard.IsNotNull(_exception);
+					ArgumentNullException.ThrowIfNull(_exception);
 					_exception.Throw();
 				}
 

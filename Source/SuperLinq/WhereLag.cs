@@ -52,8 +52,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> WhereLag<TSource>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, bool> predicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
 		Guard.IsGreaterThanOrEqualTo(offset, 1);
 
 		return Core(source, offset, defaultLagValue, predicate);

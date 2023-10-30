@@ -22,7 +22,7 @@ public static partial class AsyncSuperEnumerable
 		int index,
 		TSource value)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return Core(source, value, index);
 
@@ -56,7 +56,7 @@ public static partial class AsyncSuperEnumerable
 		Index index,
 		TSource value)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return Core(source, value, index);
 

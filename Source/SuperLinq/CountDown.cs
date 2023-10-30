@@ -73,8 +73,8 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		int count, Func<TSource, int?, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 		Guard.IsGreaterThanOrEqualTo(count, 1);
 
 		if (source is IList<TSource> list)

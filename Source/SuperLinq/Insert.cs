@@ -63,8 +63,8 @@ public static partial class SuperEnumerable
 	/// </exception>
 	public static IEnumerable<T> Insert<T>(this IEnumerable<T> first, IEnumerable<T> second, Index index)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		if (first is IList<T> fList && second is IList<T> sList)
 			return new InsertListIterator<T>(fList, sList, index);
@@ -165,7 +165,7 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
+			ArgumentNullException.ThrowIfNull(array);
 			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
 			_ = _first.CopyTo(array, arrayIndex);
@@ -221,7 +221,7 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
+			ArgumentNullException.ThrowIfNull(array);
 			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
 
 			_first.CopyTo(array, arrayIndex);

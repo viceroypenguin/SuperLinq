@@ -25,7 +25,7 @@ public partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<T> TraverseBreadthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
 	{
-		Guard.IsNotNull(childrenSelector);
+		ArgumentNullException.ThrowIfNull(childrenSelector);
 
 		return Core(root, childrenSelector);
 
@@ -67,7 +67,7 @@ public partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<T> TraverseDepthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
 	{
-		Guard.IsNotNull(childrenSelector);
+		ArgumentNullException.ThrowIfNull(childrenSelector);
 
 		return Core(root, childrenSelector);
 

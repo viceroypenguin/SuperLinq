@@ -33,7 +33,7 @@ public static partial class SuperEnumerable
 	/// </example>
 	public static IBuffer<TSource> Publish<TSource>(this IEnumerable<TSource> source)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return new PublishBuffer<TSource>(source);
 	}

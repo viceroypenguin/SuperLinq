@@ -111,8 +111,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static int FindLastIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 
 		if (source.TryGetCollectionCount() is int length)

@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<IList<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
 	{
 		// yes this operator duplicates on net6+; but no name overlap, so leave alone
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThanOrEqualTo(size, 1);
 
 		if (source is IList<TSource> list)

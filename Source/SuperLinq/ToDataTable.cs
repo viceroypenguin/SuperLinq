@@ -75,9 +75,9 @@ public static partial class SuperEnumerable
 	public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
 		where TTable : DataTable
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(table);
-		Guard.IsNotNull(expressions);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(table);
+		ArgumentNullException.ThrowIfNull(expressions);
 
 		var members = PrepareMemberInfos(expressions).ToArray();
 		members = BuildOrBindSchema(table, members);

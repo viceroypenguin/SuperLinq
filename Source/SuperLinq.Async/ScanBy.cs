@@ -30,9 +30,9 @@ public static partial class AsyncSuperEnumerable
 		Func<TKey, TState> seedSelector,
 		Func<TState, TKey, TSource, TState> accumulator)
 	{
-		Guard.IsNotNull(keySelector);
-		Guard.IsNotNull(seedSelector);
-		Guard.IsNotNull(accumulator);
+		ArgumentNullException.ThrowIfNull(keySelector);
+		ArgumentNullException.ThrowIfNull(seedSelector);
+		ArgumentNullException.ThrowIfNull(accumulator);
 
 		return source.ScanBy(
 			(s, ct) => new ValueTask<TKey>(keySelector(s)),
@@ -68,9 +68,9 @@ public static partial class AsyncSuperEnumerable
 		Func<TKey, ValueTask<TState>> seedSelector,
 		Func<TState, TKey, TSource, ValueTask<TState>> accumulator)
 	{
-		Guard.IsNotNull(keySelector);
-		Guard.IsNotNull(seedSelector);
-		Guard.IsNotNull(accumulator);
+		ArgumentNullException.ThrowIfNull(keySelector);
+		ArgumentNullException.ThrowIfNull(seedSelector);
+		ArgumentNullException.ThrowIfNull(accumulator);
 
 		return source.ScanBy(
 			(s, ct) => keySelector(s),
@@ -143,9 +143,9 @@ public static partial class AsyncSuperEnumerable
 		Func<TState, TKey, TSource, TState> accumulator,
 		IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(keySelector);
-		Guard.IsNotNull(seedSelector);
-		Guard.IsNotNull(accumulator);
+		ArgumentNullException.ThrowIfNull(keySelector);
+		ArgumentNullException.ThrowIfNull(seedSelector);
+		ArgumentNullException.ThrowIfNull(accumulator);
 
 		return source.ScanBy(
 			(s, ct) => new ValueTask<TKey>(keySelector(s)),
@@ -187,9 +187,9 @@ public static partial class AsyncSuperEnumerable
 		Func<TState, TKey, TSource, ValueTask<TState>> accumulator,
 		IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(keySelector);
-		Guard.IsNotNull(seedSelector);
-		Guard.IsNotNull(accumulator);
+		ArgumentNullException.ThrowIfNull(keySelector);
+		ArgumentNullException.ThrowIfNull(seedSelector);
+		ArgumentNullException.ThrowIfNull(accumulator);
 
 		return source.ScanBy(
 			(s, ct) => keySelector(s),
@@ -231,10 +231,10 @@ public static partial class AsyncSuperEnumerable
 		Func<TState, TKey, TSource, CancellationToken, ValueTask<TState>> accumulator,
 		IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
-		Guard.IsNotNull(seedSelector);
-		Guard.IsNotNull(accumulator);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
+		ArgumentNullException.ThrowIfNull(seedSelector);
+		ArgumentNullException.ThrowIfNull(accumulator);
 
 		comparer ??= EqualityComparer<TKey>.Default;
 

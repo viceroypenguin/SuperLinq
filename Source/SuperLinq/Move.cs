@@ -29,7 +29,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<T> Move<T>(this IEnumerable<T> source, int fromIndex, int count, int toIndex)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		Guard.IsGreaterThanOrEqualTo(fromIndex, 0);
 		Guard.IsGreaterThanOrEqualTo(count, 0);
 		Guard.IsGreaterThanOrEqualTo(toIndex, 0);

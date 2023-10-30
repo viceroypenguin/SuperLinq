@@ -86,8 +86,8 @@ public static partial class AsyncSuperEnumerable
 		Func<TCardinality, T?, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return Core(source, zero, one, many, resultSelector, cancellationToken);
 
