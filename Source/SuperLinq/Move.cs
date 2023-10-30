@@ -3,30 +3,35 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Returns a sequence with a range of elements in the source sequence
-	/// moved to a new offset.
+	///	    Returns a sequence with a range of elements in the source sequence moved to a new offset.
 	/// </summary>
-	/// <typeparam name="T">Type of the source sequence.</typeparam>
-	/// <param name="source">The source sequence.</param>
+	/// <typeparam name="T">
+	///	    Type of the source sequence.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence.
+	/// </param>
 	/// <param name="fromIndex">
-	/// The zero-based index identifying the first element in the range of
-	/// elements to move.</param>
-	/// <param name="count">The count of items to move.</param>
+	///	    The zero-based index identifying the first element in the range of elements to move.
+	/// </param>
+	/// <param name="count">
+	///	    The count of items to move.
+	/// </param>
 	/// <param name="toIndex">
-	/// The index where the specified range will be moved.</param>
+	///	    The index where the specified range will be moved.
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="fromIndex"/>, <paramref name="count"/>, or <paramref name="toIndex"/> is less than <c>0</c>.
+	/// </exception>
 	/// <returns>
-	/// A sequence with the specified range moved to the new position.
+	///	    A sequence with the specified range moved to the new position.
 	/// </returns>
 	/// <remarks>
-	/// This operator uses deferred execution and streams its results.
+	///	    This operator uses deferred execution and streams its results.
 	/// </remarks>
-	/// <example>
-	/// <code><![CDATA[
-	/// var result = Enumerable.Range(0, 6).Move(3, 2, 0);
-	/// ]]></code>
-	/// The <c>result</c> variable will contain <c>{ 3, 4, 0, 1, 2, 5 }</c>.
-	/// </example>
-
 	public static IEnumerable<T> Move<T>(this IEnumerable<T> source, int fromIndex, int count, int toIndex)
 	{
 		Guard.IsNotNull(source);
