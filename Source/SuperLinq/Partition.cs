@@ -66,7 +66,8 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(predicate);
 		Guard.IsNotNull(resultSelector);
 
-		return source.GroupBy(predicate).Partition(resultSelector);
+		var lookup = source.ToLookup(predicate);
+		return resultSelector(lookup[true], lookup[false]);
 	}
 
 	/// <summary>
@@ -85,6 +86,7 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static TResult Partition<T, TResult>(
 		this IEnumerable<IGrouping<bool, T>> source,
 		Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
@@ -114,6 +116,7 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static TResult Partition<T, TResult>(
 		this IEnumerable<IGrouping<bool?, T>> source,
 		Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
@@ -146,6 +149,7 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static TResult Partition<TKey, TElement, TResult>(
 		this IEnumerable<IGrouping<TKey, TElement>> source,
 		TKey key,
@@ -176,6 +180,7 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static TResult Partition<TKey, TElement, TResult>(
 		this IEnumerable<IGrouping<TKey, TElement>> source,
 		TKey key, IEqualityComparer<TKey>? comparer,
@@ -211,6 +216,7 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static TResult Partition<TKey, TElement, TResult>(
 		this IEnumerable<IGrouping<TKey, TElement>> source,
 		TKey key1, TKey key2,
@@ -243,6 +249,7 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static TResult Partition<TKey, TElement, TResult>(
 		this IEnumerable<IGrouping<TKey, TElement>> source,
 		TKey key1, TKey key2, IEqualityComparer<TKey>? comparer,
@@ -279,6 +286,7 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static TResult Partition<TKey, TElement, TResult>(
 		this IEnumerable<IGrouping<TKey, TElement>> source,
 		TKey key1, TKey key2, TKey key3,
@@ -312,6 +320,7 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static TResult Partition<TKey, TElement, TResult>(
 		this IEnumerable<IGrouping<TKey, TElement>> source,
 		TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey>? comparer,

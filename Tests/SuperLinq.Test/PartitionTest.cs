@@ -1,5 +1,7 @@
 ﻿namespace Test;
 
+#pragma warning disable CS0618
+
 public class PartitionTest
 {
 	[Fact]

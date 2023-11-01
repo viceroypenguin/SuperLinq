@@ -23,8 +23,10 @@ public static partial class AsyncSuperEnumerable
 	/// and then 8. The <c>odds</c> variable, when iterated over, will yield
 	/// 1, 3, 5, 7 and then 9.
 	/// </example>
-	public static ValueTask<(IAsyncEnumerable<T> True, IAsyncEnumerable<T> False)>
-		Partition<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate, CancellationToken cancellationToken = default)
+	public static ValueTask<(IEnumerable<T> True, IEnumerable<T> False)> Partition<T>(
+		this IAsyncEnumerable<T> source,
+		Func<T, bool> predicate,
+		CancellationToken cancellationToken = default)
 	{
 		return source.Partition(predicate, ValueTuple.Create, cancellationToken: cancellationToken);
 	}
@@ -62,14 +64,24 @@ public static partial class AsyncSuperEnumerable
 	public static ValueTask<TResult> Partition<T, TResult>(
 		this IAsyncEnumerable<T> source,
 		Func<T, bool> predicate,
-		Func<IAsyncEnumerable<T>, IAsyncEnumerable<T>, TResult> resultSelector,
+		Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector,
 		CancellationToken cancellationToken = default)
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(predicate);
 		Guard.IsNotNull(resultSelector);
 
-		return source.GroupBy(predicate).Partition(resultSelector, cancellationToken: cancellationToken);
+		return Core(source, predicate, resultSelector, cancellationToken);
+
+		static async ValueTask<TResult> Core(
+			IAsyncEnumerable<T> source,
+			Func<T, bool> predicate,
+			Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector,
+			CancellationToken cancellationToken)
+		{
+			var lookup = await source.ToLookupAsync(predicate, cancellationToken).ConfigureAwait(false);
+			return resultSelector(lookup[true], lookup[false]);
+		}
 	}
 
 	/// <summary>
@@ -89,6 +101,7 @@ public static partial class AsyncSuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static ValueTask<TResult> Partition<T, TResult>(
 		this IAsyncEnumerable<IAsyncGrouping<bool, T>> source,
 		Func<IAsyncEnumerable<T>, IAsyncEnumerable<T>, TResult> resultSelector,
@@ -121,6 +134,7 @@ public static partial class AsyncSuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static ValueTask<TResult> Partition<T, TResult>(
 		this IAsyncEnumerable<IAsyncGrouping<bool?, T>> source,
 		Func<IAsyncEnumerable<T>, IAsyncEnumerable<T>, IAsyncEnumerable<T>, TResult> resultSelector,
@@ -156,6 +170,7 @@ public static partial class AsyncSuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
 		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
 		TKey key,
@@ -188,6 +203,7 @@ public static partial class AsyncSuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
 		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
 		TKey key, IEqualityComparer<TKey>? comparer,
@@ -226,6 +242,7 @@ public static partial class AsyncSuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
 		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
 		TKey key1, TKey key2,
@@ -260,6 +277,7 @@ public static partial class AsyncSuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
 		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
 		TKey key1, TKey key2, IEqualityComparer<TKey>? comparer,
@@ -299,6 +317,7 @@ public static partial class AsyncSuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
 		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
 		TKey key1, TKey key2, TKey key3,
@@ -334,6 +353,7 @@ public static partial class AsyncSuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+	[Obsolete("Better implemented via `.ToLookup()`; will be removed in v6.0.0")]
 	public static ValueTask<TResult> Partition<TKey, TElement, TResult>(
 		this IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
 		TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey>? comparer,

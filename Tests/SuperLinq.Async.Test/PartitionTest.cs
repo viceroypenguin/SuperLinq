@@ -1,5 +1,7 @@
 ﻿namespace Test.Async;
 
+#pragma warning disable CS0618
+
 public class PartitionTest
 {
 	[Fact]
@@ -9,8 +11,8 @@ public class PartitionTest
 
 		var (evens, odds) = await sequence.Partition(x => x % 2 == 0);
 
-		await evens.AssertSequenceEqual(0, 2, 4, 6, 8);
-		await odds.AssertSequenceEqual(1, 3, 5, 7, 9);
+		evens.AssertSequenceEqual(0, 2, 4, 6, 8);
+		odds.AssertSequenceEqual(1, 3, 5, 7, 9);
 	}
 
 	[Fact]
@@ -20,8 +22,8 @@ public class PartitionTest
 
 		var (evens, odds) = await sequence.Partition(x => x % 2 == 0);
 
-		await evens.AssertSequenceEqual();
-		await odds.AssertSequenceEqual();
+		evens.AssertSequenceEqual();
+		odds.AssertSequenceEqual();
 	}
 
 	[Fact]
@@ -31,8 +33,8 @@ public class PartitionTest
 
 		var (evens, odds) = await sequence.Partition(x => x % 2 == 0, ValueTuple.Create);
 
-		await evens.AssertSequenceEqual(0, 2, 4, 6, 8);
-		await odds.AssertSequenceEqual(1, 3, 5, 7, 9);
+		evens.AssertSequenceEqual(0, 2, 4, 6, 8);
+		odds.AssertSequenceEqual(1, 3, 5, 7, 9);
 	}
 
 	[Fact]
