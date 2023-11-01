@@ -23,8 +23,10 @@ public static partial class AsyncSuperEnumerable
 	/// and then 8. The <c>odds</c> variable, when iterated over, will yield
 	/// 1, 3, 5, 7 and then 9.
 	/// </example>
-	public static ValueTask<(IEnumerable<T> True, IEnumerable<T> False)>
-		Partition<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate, CancellationToken cancellationToken = default)
+	public static ValueTask<(IEnumerable<T> True, IEnumerable<T> False)> Partition<T>(
+		this IAsyncEnumerable<T> source,
+		Func<T, bool> predicate,
+		CancellationToken cancellationToken = default)
 	{
 		return source.Partition(predicate, ValueTuple.Create, cancellationToken: cancellationToken);
 	}
@@ -59,7 +61,7 @@ public static partial class AsyncSuperEnumerable
 	/// and then 8. The <c>odds</c> variable, when iterated over, will yield
 	/// 1, 3, 5, 7 and then 9.
 	/// </example>
-	public static async ValueTask<TResult> Partition<T, TResult>(
+	public static ValueTask<TResult> Partition<T, TResult>(
 		this IAsyncEnumerable<T> source,
 		Func<T, bool> predicate,
 		Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector,
@@ -69,8 +71,17 @@ public static partial class AsyncSuperEnumerable
 		Guard.IsNotNull(predicate);
 		Guard.IsNotNull(resultSelector);
 
-		var lookup = await source.ToLookupAsync(predicate, cancellationToken).ConfigureAwait(false);
-		return resultSelector(lookup[true], lookup[false]);
+		return Core(source, predicate, resultSelector, cancellationToken);
+
+		static async ValueTask<TResult> Core(
+			IAsyncEnumerable<T> source,
+			Func<T, bool> predicate,
+			Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector,
+			CancellationToken cancellationToken)
+		{
+			var lookup = await source.ToLookupAsync(predicate, cancellationToken).ConfigureAwait(false);
+			return resultSelector(lookup[true], lookup[false]);
+		}
 	}
 
 	/// <summary>
