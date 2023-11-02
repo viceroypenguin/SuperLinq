@@ -3,25 +3,31 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Partitions or splits a sequence in two using a predicate.
+	///	    Partitions or splits a sequence in two using a predicate.
 	/// </summary>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="predicate">The predicate function.</param>
-	/// <typeparam name="T">Type of source elements.</typeparam>
+	/// <param name="source">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="predicate">
+	///	    The predicate function.
+	/// </param>
+	/// <typeparam name="T">
+	///	    Type of source elements.
+	/// </typeparam>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <returns>
-	/// A tuple of elements satisfying the predicate and those that do not,
-	/// respectively.
+	///	    A tuple of elements satisfying the predicate and those that do not, respectively.
 	/// </returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-	/// <example>
-	/// <code><![CDATA[
-	/// var (evens, odds) =
-	///     Enumerable.Range(0, 10).Partition(x => x % 2 == 0);
-	/// ]]></code>
-	/// The <c>evens</c> variable, when iterated over, will yield 0, 2, 4, 6
-	/// and then 8. The <c>odds</c> variable, when iterated over, will yield
-	/// 1, 3, 5, 7 and then 9.
-	/// </example>
+	/// <remarks>
+	///		
+	/// </remarks>
+	/// <remarks>
+	/// <para>
+	///	    This method executes immediately.
+	/// </para>
+	/// </remarks>
 	public static (IEnumerable<T> True, IEnumerable<T> False)
 		Partition<T>(this IEnumerable<T> source, Func<T, bool> predicate)
 	{
@@ -29,34 +35,36 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Partitions or splits a sequence in two using a predicate and then
-	/// projects a result from the two.
+	///	    Partitions or splits a sequence in two using a predicate and then projects a result from the two.
 	/// </summary>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="predicate">The predicate function.</param>
-	/// <param name="resultSelector">
-	/// Function that projects the result from sequences of elements that
-	/// satisfy the predicate and those that do not, respectively, passed as
-	/// arguments.
+	/// <param name="source">
+	///	    The source sequence.
 	/// </param>
-	/// <typeparam name="T">Type of source elements.</typeparam>
-	/// <typeparam name="TResult">Type of the result.</typeparam>
+	/// <param name="predicate">
+	///	    The predicate function.
+	/// </param>
+	/// <param name="resultSelector">
+	///	    Function that projects the result from sequences of elements that satisfy the predicate and those that do
+	///     not, respectively, passed as arguments.
+	/// </param>
+	/// <typeparam name="T">
+	///	    Type of source elements.
+	/// </typeparam>
+	/// <typeparam name="TResult">
+	///	    Type of the result.
+	/// </typeparam>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/>, <paramref name="predicate"/>, or <paramref name="resultSelector"/> is <see
+	///     langword="null"/>.
+	/// </exception>
 	/// <returns>
-	/// The return value from <paramref name="resultSelector"/>.
+	///	    The return value from <paramref name="resultSelector"/>.
 	/// </returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
-	/// <example>
-	/// <code><![CDATA[
-	/// var (evens, odds) =
-	///     Enumerable.Range(0, 10)
-	///               .Partition(x => x % 2 == 0, ValueTuple.Create);
-	/// ]]></code>
-	/// The <c>evens</c> variable, when iterated over, will yield 0, 2, 4, 6
-	/// and then 8. The <c>odds</c> variable, when iterated over, will yield
-	/// 1, 3, 5, 7 and then 9.
-	/// </example>
+	/// <remarks>
+	/// <para>
+	///	    This method executes immediately.
+	/// </para>
+	/// </remarks>
 	public static TResult Partition<T, TResult>(
 		this IEnumerable<T> source,
 		Func<T, bool> predicate,
