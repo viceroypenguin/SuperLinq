@@ -179,21 +179,40 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Generates a sequence of lists that represent the permutations of the original sequence.
+	///	    Generates a sequence of lists that represent the permutations of the original sequence.
 	/// </summary>
+	/// <typeparam name="T">
+	///	    The type of the elements in the sequence
+	/// </typeparam>
+	/// <param name="sequence">
+	///	    The original sequence to permute
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="sequence"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentException">
+	///	    <paramref name="sequence"/> has too many elements to permute properly.
+	/// </exception>
+	/// <returns>
+	///	    A sequence of lists representing permutations of the original sequence
+	/// </returns>
 	/// <remarks>
-	/// A permutation is a unique re-ordering of the elements of the sequence.<br/>
-	/// This operator returns permutations in a deferred, streaming fashion; however, each
-	/// permutation is materialized into a new list. There are N! permutations of a sequence,
-	/// where N => sequence.Count().<br/>
-	/// Be aware that the original sequence is considered one of the permutations and will be
-	/// returned as one of the results.
+	/// <para>
+	///	    A permutation is a unique re-ordering of the elements of the sequence.
+	/// </para>
+	/// <para>
+	///	    This method is implemented by using deferred execution. However, <paramref name="sequence"/> will be
+	///     consumed in it's entirety immediately when first element of the returned sequence is consumed. 
+	/// </para>
+	/// <para>
+	///	    Each permutation is materialized into a new list. There are N! permutations of a sequence, where N is the
+	///     number of elements in <paramref name="sequence"/>.
+	/// </para>
+	/// <para>
+	///	    Note that the original sequence is considered one of the permutations and will be returned as one of the
+	///     results.
+	/// </para>
 	/// </remarks>
-	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
-	/// <param name="sequence">The original sequence to permute</param>
-	/// <returns>A sequence of lists representing permutations of the original sequence</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="sequence"/> is null.</exception>
-	/// <exception cref="ArgumentException"><paramref name="sequence"/> has too many elements to permute properly.</exception>
 	public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
 	{
 		Guard.IsNotNull(sequence);
