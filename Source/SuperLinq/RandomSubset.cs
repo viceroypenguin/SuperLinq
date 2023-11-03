@@ -3,49 +3,80 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Returns a sequence of a specified size of random elements from the
-	/// original sequence.
+	///	    Returns a sequence of a specified size of random elements from the original sequence.
 	/// </summary>
-	/// <typeparam name="T">The type of source sequence elements.</typeparam>
+	/// <typeparam name="T">
+	///	    The type of source sequence elements.
+	/// </typeparam>
 	/// <param name="source">
-	/// The sequence from which to return random elements.</param>
-	/// <param name="subsetSize">The size of the random subset to return.</param>
+	///	    The sequence from which to return random elements.
+	/// </param>
+	/// <param name="subsetSize">
+	///	    The size of the random subset to return.
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///		<paramref name="subsetSize"/> is negative or larger than the length of <paramref name="source"/>.
+	/// </exception>
 	/// <returns>
-	/// A random sequence of elements in random order from the original
-	/// sequence.</returns>
-
+	///	    A random sequence of elements in random order from the original sequence.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
+	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> source, int subsetSize)
 	{
 		return RandomSubset(source, subsetSize, new Random());
 	}
 
 	/// <summary>
-	/// Returns a sequence of a specified size of random elements from the
-	/// original sequence. An additional parameter specifies a random
-	/// generator to be used for the random selection algorithm.
+	///	    Returns a sequence of a specified size of random elements from the original sequence.
 	/// </summary>
-	/// <typeparam name="T">The type of source sequence elements.</typeparam>
+	/// <typeparam name="T">
+	///	    The type of source sequence elements.
+	/// </typeparam>
 	/// <param name="source">
-	/// The sequence from which to return random elements.</param>
-	/// <param name="subsetSize">The size of the random subset to return.</param>
+	///	    The sequence from which to return random elements.
+	/// </param>
+	/// <param name="subsetSize">
+	///	    The size of the random subset to return.
+	/// </param>
 	/// <param name="rand">
-	/// A random generator used as part of the selection algorithm.</param>
+	///		A random generator used as part of the selection algorithm.
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="rand"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///		<paramref name="subsetSize"/> is negative or larger than the length of <paramref name="source"/>.
+	/// </exception>
 	/// <returns>
-	/// A random sequence of elements in random order from the original
-	/// sequence.</returns>
-
+	///	    A random sequence of elements in random order from the original sequence.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
+	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> source, int subsetSize, Random rand)
 	{
 		Guard.IsNotNull(rand);
 		Guard.IsNotNull(source);
 		Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
 
+		if (source.TryGetCollectionCount() is int n)
+			Guard.IsLessThanOrEqualTo(subsetSize, n);
+
 		return RandomSubsetImpl(source, rand, seq => (seq.ToArray(), subsetSize));
 	}
 
-#pragma warning disable MA0050 // arguments validated in both callers
 	private static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, Func<IEnumerable<T>, (T[], int)> seeder)
-#pragma warning restore MA0050
 	{
 		// The simplest and most efficient way to return a random subset is to perform
 		// an in-place, partial Fisher-Yates shuffle of the sequence. While we could do
