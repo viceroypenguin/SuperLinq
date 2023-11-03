@@ -3,39 +3,38 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Returns an infinite sequence of random integers using the standard
-	/// .NET random number generator.
+	///	    Returns an infinite sequence of random integers.
 	/// </summary>
-	/// <returns>An infinite sequence of random integers</returns>
+	/// <returns>
+	///	    An infinite sequence of random integers
+	/// </returns>
 	/// <remarks>
-	/// The implementation internally uses a shared, thread-local instance of
-	/// <see cref="System.Random" /> to generate a random number on each
-	/// iteration. The actual <see cref="System.Random" /> instance used
-	/// therefore will depend on the thread on which a single iteration is
-	/// taking place; that is the call to
-	/// <see cref="System.Collections.IEnumerator.MoveNext()" />. If the
-	/// overall iteration takes place on different threads (e.g.
-	/// via asynchronous awaits completing on different threads) then various
-	/// different <see cref="System.Random" /> instances will be involved
-	/// in the generation of the sequence of random numbers. Because the
-	/// <see cref="System.Random" /> instance is shared, if multiple sequences
-	/// are generated on the same thread, the order of enumeration affects the
-	/// resulting sequences.
+	/// <para>
+	///	    This operator uses deferred execution and streams its result.
+	/// </para>
 	/// </remarks>
-
 	public static IEnumerable<int> Random()
 	{
 		return Random(s_randomInstance);
 	}
 
 	/// <summary>
-	/// Returns an infinite sequence of random integers using the supplied
-	/// random number generator.
+	///	    Returns an infinite sequence of random integers using the supplied random number generator.
 	/// </summary>
-	/// <param name="rand">Random generator used to produce random numbers</param>
-	/// <returns>An infinite sequence of random integers</returns>
-	/// <exception cref="ArgumentNullException">Thrown if <paramref name="rand"/> is <see langword="null"/>.</exception>
-
+	/// <param name="rand">
+	///	    Random generator used to produce random numbers
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="rand"/> is <see langword="null"/>.
+	/// </exception>
+	/// <returns>
+	///	    An infinite sequence of random integers
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	///	    This operator uses deferred execution and streams its result.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<int> Random(Random rand)
 	{
 		Guard.IsNotNull(rand);
@@ -44,27 +43,19 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Returns an infinite sequence of random integers between zero and
-	/// a given maximum.
+	///	    Returns an infinite sequence of random integers between zero and a given maximum.
 	/// </summary>
-	/// <param name="maxValue">exclusive upper bound for the random values returned</param>
-	/// <returns>An infinite sequence of random integers</returns>
+	/// <param name="maxValue">
+	///		Exclusive upper bound for random values returned.
+	/// </param>
+	/// <returns>
+	///	    An infinite sequence of random integers
+	/// </returns>
 	/// <remarks>
-	/// The implementation internally uses a shared, thread-local instance of
-	/// <see cref="System.Random" /> to generate a random number on each
-	/// iteration. The actual <see cref="System.Random" /> instance used
-	/// therefore will depend on the thread on which a single iteration is
-	/// taking place; that is the call to
-	/// <see cref="System.Collections.IEnumerator.MoveNext()" />. If the
-	/// overall iteration takes place on different threads (e.g.
-	/// via asynchronous awaits completing on different threads) then various
-	/// different <see cref="System.Random" /> instances will be involved
-	/// in the generation of the sequence of random numbers. Because the
-	/// <see cref="System.Random" /> instance is shared, if multiple sequences
-	/// are generated on the same thread, the order of enumeration affects the
-	/// resulting sequences.
+	/// <para>
+	///	    This operator uses deferred execution and streams its result.
+	/// </para>
 	/// </remarks>
-
 	public static IEnumerable<int> Random(int maxValue)
 	{
 		Guard.IsGreaterThanOrEqualTo(maxValue, 0);
@@ -73,14 +64,26 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Returns an infinite sequence of random integers between zero and a
-	/// given maximum using the supplied random number generator.
+	///	    Returns an infinite sequence of random integers between zero and a given maximum using the supplied random
+	///     number generator.
 	/// </summary>
-	/// <param name="rand">Random generator used to produce values</param>
-	/// <param name="maxValue">Exclusive upper bound for random values returned</param>
-	/// <returns>An infinite sequence of random integers</returns>
-	/// <exception cref="ArgumentNullException">Thrown if <paramref name="rand"/> is <see langword="null"/>.</exception>
-
+	/// <param name="rand">
+	///	    Random generator used to produce values
+	/// </param>
+	/// <param name="maxValue">
+	///	    Exclusive upper bound for random values returned
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="rand"/> is <see langword="null"/>.
+	/// </exception>
+	/// <returns>
+	///	    An infinite sequence of random integers
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	///	    This operator uses deferred execution and streams its result.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<int> Random(Random rand, int maxValue)
 	{
 		Guard.IsNotNull(rand);
@@ -90,43 +93,57 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Returns an infinite sequence of random integers between a given
-	/// minimum and a maximum.
+	///	    Returns an infinite sequence of random integers between a given minimum and maximum.
 	/// </summary>
-	/// <param name="minValue">Inclusive lower bound of the values returned</param>
-	/// <param name="maxValue">Exclusive upper bound of the values returned</param>
-	/// <returns>An infinite sequence of random integers</returns>
+	/// <param name="minValue">
+	///		Inclusive lower bound for random values returned.
+	/// </param>
+	/// <param name="maxValue">
+	///		Exclusive upper bound for random values returned.
+	/// </param>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///		<paramref name="minValue"/> is greater than <paramref name="maxValue"/>.
+	/// </exception>
+	/// <returns>
+	///	    An infinite sequence of random integers
+	/// </returns>
 	/// <remarks>
-	/// The implementation internally uses a shared, thread-local instance of
-	/// <see cref="System.Random" /> to generate a random number on each
-	/// iteration. The actual <see cref="System.Random" /> instance used
-	/// therefore will depend on the thread on which a single iteration is
-	/// taking place; that is the call to
-	/// <see cref="System.Collections.IEnumerator.MoveNext()" />. If the
-	/// overall iteration takes place on different threads (e.g.
-	/// via asynchronous awaits completing on different threads) then various
-	/// different <see cref="System.Random" /> instances will be involved
-	/// in the generation of the sequence of random numbers. Because the
-	/// <see cref="System.Random" /> instance is shared, if multiple sequences
-	/// are generated on the same thread, the order of enumeration affects the
-	/// resulting sequences.
+	/// <para>
+	///	    This operator uses deferred execution and streams its result.
+	/// </para>
 	/// </remarks>
-
 	public static IEnumerable<int> Random(int minValue, int maxValue)
 	{
 		return Random(s_randomInstance, minValue, maxValue);
 	}
 
 	/// <summary>
-	/// Returns an infinite sequence of random integers between a given
-	/// minumum and a maximum using the supplied random number generator.
+	///	    Returns an infinite sequence of random integers between zero and a given maximum using the supplied random
+	///     number generator.
 	/// </summary>
-	/// <param name="rand">Generator used to produce random numbers</param>
-	/// <param name="minValue">Inclusive lower bound of the values returned</param>
-	/// <param name="maxValue">Exclusive upper bound of the values returned</param>
-	/// <returns>An infinite sequence of random integers</returns>
-	/// <exception cref="ArgumentNullException">Thrown if <paramref name="rand"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="minValue"/> is greater than <paramref name="maxValue"/>.</exception>
+	/// <param name="rand">
+	///	    Random generator used to produce values
+	/// </param>
+	/// <param name="minValue">
+	///		Inclusive lower bound for random values returned.
+	/// </param>
+	/// <param name="maxValue">
+	///	    Exclusive upper bound for random values returned
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="rand"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///		<paramref name="minValue"/> is greater than <paramref name="maxValue"/>.
+	/// </exception>
+	/// <returns>
+	///	    An infinite sequence of random integers
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	///	    This operator uses deferred execution and streams its result.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<int> Random(Random rand, int minValue, int maxValue)
 	{
 		Guard.IsNotNull(rand);
@@ -136,38 +153,38 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Returns an infinite sequence of random double values between 0.0 and 1.0
+	///	    Returns an infinite sequence of random double values between 0.0 and 1.0.
 	/// </summary>
-	/// <returns>An infinite sequence of random doubles</returns>
+	/// <returns>
+	///	    An infinite sequence of random doubles
+	/// </returns>
 	/// <remarks>
-	/// The implementation internally uses a shared, thread-local instance of
-	/// <see cref="System.Random" /> to generate a random number on each
-	/// iteration. The actual <see cref="System.Random" /> instance used
-	/// therefore will depend on the thread on which a single iteration is
-	/// taking place; that is the call to
-	/// <see cref="System.Collections.IEnumerator.MoveNext()" />. If the
-	/// overall iteration takes place on different threads (e.g.
-	/// via asynchronous awaits completing on different threads) then various
-	/// different <see cref="System.Random" /> instances will be involved
-	/// in the generation of the sequence of random numbers. Because the
-	/// <see cref="System.Random" /> instance is shared, if multiple sequences
-	/// are generated on the same thread, the order of enumeration affects the
-	/// resulting sequences.
+	/// <para>
+	///	    This operator uses deferred execution and streams its result.
+	/// </para>
 	/// </remarks>
-
 	public static IEnumerable<double> RandomDouble()
 	{
 		return RandomDouble(s_randomInstance);
 	}
 
 	/// <summary>
-	/// Returns an infinite sequence of random double values between 0.0 and 1.0
-	/// using the supplied random number generator.
+	///	    Returns an infinite sequence of random double values between 0.0 and 1.0 using the supplied random number generator.
 	/// </summary>
-	/// <param name="rand">Generator used to produce random numbers</param>
-	/// <returns>An infinite sequence of random doubles</returns>
-	/// <exception cref="ArgumentNullException">Thrown if <paramref name="rand"/> is <see langword="null"/>.</exception>
-
+	/// <param name="rand">
+	///	    Random generator used to produce values
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="rand"/> is <see langword="null"/>.
+	/// </exception>
+	/// <returns>
+	///	    An infinite sequence of random doubles
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	///	    This operator uses deferred execution and streams its result.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<double> RandomDouble(Random rand)
 	{
 		Guard.IsNotNull(rand);
@@ -183,7 +200,6 @@ public static partial class SuperEnumerable
 	/// <param name="rand">Random generators used to produce the sequence</param>
 	/// <param name="nextValue">Generator function that actually produces the next value - specific to T</param>
 	/// <returns>An infinite sequence of random numbers of type T</returns>
-
 	private static IEnumerable<T> RandomImpl<T>(Random rand, Func<Random, T> nextValue)
 	{
 		while (true)
@@ -197,14 +213,12 @@ public static partial class SuperEnumerable
 		new GlobalRandom();
 
 	/// <remarks>
-	/// <see cref="System.Random"/> is not thread-safe so the following
-	/// implementation uses thread-local <see cref="System.Random"/>
-	/// instances to create the illusion of a global
-	/// <see cref="System.Random"/> implementation. For some background,
-	/// see <a href="https://blogs.msdn.microsoft.com/pfxteam/2009/02/19/getting-random-numbers-in-a-thread-safe-way/">Getting
-	/// random numbers in a thread-safe way</a>
+	///	    <see cref="System.Random"/> is not thread-safe so the following implementation uses thread-local <see
+	///     cref="System.Random"/> instances to create the illusion of a global <see cref="System.Random"/>
+	///     implementation. For some background, see <a
+	///     href="https://blogs.msdn.microsoft.com/pfxteam/2009/02/19/getting-random-numbers-in-a-thread-safe-way/">Getting
+	///     random numbers in a thread-safe way</a>
 	/// </remarks>
-
 	private sealed class GlobalRandom : Random
 	{
 		private static int s_seed = Environment.TickCount;
