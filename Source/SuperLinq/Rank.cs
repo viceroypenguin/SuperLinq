@@ -55,7 +55,7 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(keySelector);
 
 		if (source is ICollection<TSource> coll)
-			return new RankIterator<TSource, TKey>(coll, keySelector, comparer: null, isDense: false);
+			return new RankIterator<TSource, TKey>(coll, keySelector, comparer: null, isDense: true);
 
 		return RankByCore(source, keySelector, comparer: null, isDense: true);
 	}
