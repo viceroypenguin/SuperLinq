@@ -3,11 +3,17 @@
 public partial class SuperEnumerable
 {
 	/// <summary>
-	/// Generates a sequence by repeating the given value infinitely.
+	///	    Generates a sequence by repeating the given value infinitely.
 	/// </summary>
-	/// <typeparam name="TResult">Result sequence element type.</typeparam>
-	/// <param name="value">Value to repeat in the resulting sequence.</param>
-	/// <returns>Sequence repeating the given value infinitely.</returns>
+	/// <typeparam name="TResult">
+	///	    Result sequence element type.
+	/// </typeparam>
+	/// <param name="value">
+	///	    Value to repeat in the resulting sequence.
+	/// </param>
+	/// <returns>
+	///	    Sequence repeating the given value infinitely.
+	/// </returns>
 	public static IEnumerable<TResult> Repeat<TResult>(TResult value)
 	{
 		while (true)
@@ -15,12 +21,31 @@ public partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Repeats and concatenates the source sequence infinitely.
+	///	    Repeats and concatenates the source sequence infinitely.
 	/// </summary>
-	/// <typeparam name="TSource">Source sequence element type.</typeparam>
-	/// <param name="source">Source sequence.</param>
-	/// <returns>Sequence obtained by concatenating the source sequence to itself infinitely.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <typeparam name="TSource">
+	///	    Source sequence element type.
+	/// </typeparam>
+	/// <param name="source">
+	///	    Source sequence.
+	/// </param>
+	/// <returns>
+	///	    Sequence obtained by concatenating the source sequence to itself infinitely.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <remarks>
+	/// <para>
+	///	    This operator uses deferred execution and streams its result. The <paramref name="source"/> sequence is
+	///     cached as the returned <see cref="IEnumerable{T}"/> is enumerated. When <paramref name="source"/> has
+	///     completed, the values from <paramref name="source"/> will be returned again indefinitely. 
+	/// </para>
+	/// <para>
+	///	    The cache is maintained separately for each <see cref="IEnumerator{T}"/> generated from the returned <see
+	///     cref="IEnumerable{T}"/>.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<TSource> Repeat<TSource>(this IEnumerable<TSource> source)
 	{
 		Guard.IsNotNull(source);
@@ -39,16 +64,37 @@ public partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Repeats and concatenates the source sequence the given number of times.
+	///	    Repeats and concatenates the source sequence the given number of times.
 	/// </summary>
-	/// <typeparam name="TSource">Source sequence element type.</typeparam>
-	/// <param name="source">Source sequence.</param>
-	/// <param name="count">Number of times to repeat the source sequence.</param>
-	/// <returns>Sequence obtained by concatenating the source sequence to itself the specified number of
-	/// times.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than or equal to
-	/// <c>0</c>.</exception>
+	/// <typeparam name="TSource">
+	///	    Source sequence element type.
+	/// </typeparam>
+	/// <param name="source">
+	///	    Source sequence.
+	/// </param>
+	/// <param name="count">
+	///	    Number of times to repeat the source sequence.
+	///	</param>
+	/// <returns>
+	///	    Sequence obtained by concatenating the source sequence to itself the specified number of times.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is less than or equal to <c>0</c>.
+	///	</exception>
+	/// <remarks>
+	/// <para>
+	///	    This operator uses deferred execution and streams its result. The <paramref name="source"/> sequence is
+	///     cached as the returned <see cref="IEnumerable{T}"/> is enumerated. When <paramref name="source"/> has
+	///     completed, the values from <paramref name="source"/> will be returned again <paramref name="count"/> times. 
+	/// </para>
+	/// <para>
+	///	    The cache is maintained separately for each <see cref="IEnumerator{T}"/> generated from the returned <see
+	///     cref="IEnumerable{T}"/>.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<TSource> Repeat<TSource>(this IEnumerable<TSource> source, int count)
 	{
 		Guard.IsNotNull(source);
