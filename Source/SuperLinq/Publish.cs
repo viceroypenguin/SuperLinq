@@ -38,34 +38,6 @@ public static partial class SuperEnumerable
 		return new PublishBuffer<TSource>(source);
 	}
 
-	/// <summary>
-	/// Publishes the source sequence within a selector function where each enumerator can obtain a view over a tail of
-	/// the source sequence.
-	/// </summary>
-	/// <typeparam name="TSource">Source sequence element type.</typeparam>
-	/// <typeparam name="TResult">Result sequence element type.</typeparam>
-	/// <param name="source">Source sequence.</param>
-	/// <param name="selector">Selector function with published access to the source sequence for each
-	/// enumerator.</param>
-	/// <returns>Sequence resulting from applying the selector function to the published view over the source
-	/// sequence.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <see
-	/// langword="null"/>.</exception>
-	public static IEnumerable<TResult> Publish<TSource, TResult>(this IEnumerable<TSource> source, Func<IEnumerable<TSource>, IEnumerable<TResult>> selector)
-	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(selector);
-
-		return Core(source, selector);
-
-		static IEnumerable<TResult> Core(IEnumerable<TSource> source, Func<IEnumerable<TSource>, IEnumerable<TResult>> selector)
-		{
-			using var buffer = source.Publish();
-			foreach (var i in selector(buffer))
-				yield return i;
-		}
-	}
-
 	private sealed class PublishBuffer<T> : IBuffer<T>
 	{
 		private readonly object _lock = new();

@@ -288,19 +288,4 @@ public class PublishTest
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
-
-	[Fact]
-	public void PublishLambdaIsLazy()
-	{
-		_ = new BreakingSequence<int>().Publish(BreakingFunc.Of<IEnumerable<int>, IEnumerable<string>>());
-	}
-
-	[Fact]
-	public void PublishLambdaSimple()
-	{
-		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
-
-		var result = seq.Publish(xs => xs.Zip(xs, (l, r) => l + r).Take(4));
-		result.AssertSequenceEqual(2, 4, 6, 8);
-	}
 }
