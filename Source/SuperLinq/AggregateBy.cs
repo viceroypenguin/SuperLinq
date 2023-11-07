@@ -86,8 +86,8 @@ public static partial class SuperEnumerable
 	///     default equality comparer for <typeparamref name="TKey"/> is used.
 	/// </param>
 	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/>, <paramref name="keySelector"/>, or <paramref name="func"/> is <see
-	///     langword="null" />.
+	///	    <paramref name="source"/>, <paramref name="seedSelector"/>, <paramref name="keySelector"/>, or <paramref
+	///     name="func"/> is <see langword="null" />.
 	/// </exception>
 	/// <returns>
 	///	    A sequence of unique keys and their accumulated value.
