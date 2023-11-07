@@ -289,19 +289,4 @@ public class PublishTest
 			return AsyncEnumerable.Range(1, 1).GetAsyncEnumerator(cancellationToken);
 		}
 	}
-
-	[Fact]
-	public void PublishLambdaIsLazy()
-	{
-		_ = new AsyncBreakingSequence<int>().Publish(BreakingFunc.Of<IAsyncEnumerable<int>, IAsyncEnumerable<string>>());
-	}
-
-	[Fact]
-	public async Task PublishLambdaSimple()
-	{
-		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
-
-		var result = seq.Publish(xs => xs.Zip(xs, (l, r) => l + r).Take(4));
-		await result.AssertSequenceEqual(2, 4, 6, 8);
-	}
 }
