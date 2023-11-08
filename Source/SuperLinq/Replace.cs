@@ -3,19 +3,29 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Replaces a single value in a sequence at a specified index with the given replacement value.
+	///	    Replaces a single value in a sequence at a specified index with the given replacement value.
 	/// </summary>
-	/// <typeparam name="TSource">Type of item in the sequence</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="index">The index of the value to replace.</param>
-	/// <param name="value">The replacement value to use at <paramref name="index"/>.</param>
+	/// <typeparam name="TSource">
+	///	    Type of item in the sequence
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="index">
+	///	    The index of the value to replace.
+	/// </param>
+	/// <param name="value">
+	///	    The replacement value to use at <paramref name="index"/>.
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <returns>
-	/// A sequence with the original values from <paramref name="source"/>, except for position <paramref name="index"/>
-	/// which has the value <paramref name="value"/>.
+	///	    A sequence with the original values from <paramref name="source"/>, except for position <paramref
+	///     name="index"/> which has the value <paramref name="value"/>.
 	/// </returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <remarks>
-	/// This operator evaluates in a deferred and streaming manner.
+	///	    This operator evaluates in a deferred and streaming manner.
 	/// </remarks>
 	public static IEnumerable<TSource> Replace<TSource>(
 		this IEnumerable<TSource> source,
@@ -41,19 +51,29 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Replaces a single value in a sequence at a specified index with the given replacement value.
+	///	    Replaces a single value in a sequence at a specified index with the given replacement value.
 	/// </summary>
-	/// <typeparam name="TSource">Type of item in the sequence</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="index">The index of the value to replace.</param>
-	/// <param name="value">The replacement value to use at <paramref name="index"/>.</param>
+	/// <typeparam name="TSource">
+	///	    Type of item in the sequence
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="index">
+	///	    The index of the value to replace.
+	/// </param>
+	/// <param name="value">
+	///	    The replacement value to use at <paramref name="index"/>.
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <returns>
-	/// A sequence with the original values from <paramref name="source"/>, except for position <paramref name="index"/>
-	/// which has the value <paramref name="value"/>.
+	///	    A sequence with the original values from <paramref name="source"/>, except for position <paramref
+	///     name="index"/> which has the value <paramref name="value"/>.
 	/// </returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <remarks>
-	/// This operator evaluates in a deferred and streaming manner.
+	///	    This operator evaluates in a deferred and streaming manner.
 	/// </remarks>
 	public static IEnumerable<TSource> Replace<TSource>(
 		this IEnumerable<TSource> source,
