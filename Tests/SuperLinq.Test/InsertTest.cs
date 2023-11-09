@@ -41,7 +41,7 @@ public class InsertTest
 
 			_ = Assert.Throws<ArgumentOutOfRangeException>(delegate
 			{
-				result.AssertSequenceEqual(Enumerable.Range(0, 10));
+				result.Consume();
 			});
 		}
 	}
@@ -59,7 +59,7 @@ public class InsertTest
 
 			_ = Assert.Throws<ArgumentOutOfRangeException>(delegate
 			{
-				result.AssertSequenceEqual(Enumerable.Range(0, 10));
+				result.Consume();
 			});
 		}
 	}
