@@ -128,62 +128,22 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(func);
 
-		if (source is ICollection<TSource> coll)
-			return new ScanRightStateIterator<TSource, TAccumulate>(coll, seed, func);
+		return Core(source, seed, func);
 
-		return ScanRightCore(source, seed, func);
-	}
-
-	private static IEnumerable<TAccumulate> ScanRightCore<TSource, TAccumulate>(IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
-	{
-		var list = source.ToList();
-		var stack = new Stack<TAccumulate>(list.Count + 1);
-		stack.Push(seed);
-
-		for (var i = list.Count - 1; i >= 0; i--)
+		static IEnumerable<TAccumulate> Core(IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
 		{
-			seed = func(list[i], seed);
+			var list = source.ToList();
+			var stack = new Stack<TAccumulate>(list.Count + 1);
 			stack.Push(seed);
-		}
-
-		foreach (var item in stack)
-			yield return item;
-	}
-
-	private sealed class ScanRightStateIterator<TSource, TAccumulate> : CollectionIterator<TAccumulate>
-	{
-		private readonly ICollection<TSource> _source;
-		private readonly TAccumulate _seed;
-		private readonly Func<TSource, TAccumulate, TAccumulate> _func;
-
-		public ScanRightStateIterator(ICollection<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
-		{
-			_source = source;
-			_seed = seed;
-			_func = func;
-		}
-
-		public override int Count => _source.Count + 1;
-
-		[ExcludeFromCodeCoverage]
-		protected override IEnumerable<TAccumulate> GetEnumerable() =>
-			ScanRightCore(_source, _seed, _func);
-
-		public override void CopyTo(TAccumulate[] array, int arrayIndex)
-		{
-			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
-
-			var list = _source is IList<TSource> l ? l : _source.ToList();
-
-			var seed = _seed;
-			array[arrayIndex + list.Count] = seed;
 
 			for (var i = list.Count - 1; i >= 0; i--)
 			{
-				seed = _func(list[i], seed);
-				array[arrayIndex + i] = seed;
+				seed = func(list[i], seed);
+				stack.Push(seed);
 			}
+
+			foreach (var item in stack)
+				yield return item;
 		}
 	}
 }
