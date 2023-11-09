@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace SuperLinq;
+﻿namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -47,70 +45,25 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(transformation);
 
-		if (source is ICollection<TSource> coll)
-			return new PreScanIterator<TSource>(coll, transformation, identity);
+		return Core(source, transformation, identity);
 
-		return PreScanCore(source, transformation, identity);
-	}
-
-	private static IEnumerable<TSource> PreScanCore<TSource>(IEnumerable<TSource> source, Func<TSource, TSource, TSource> transformation, TSource identity)
-	{
-		var aggregator = identity;
-		using var e = source.GetEnumerator();
-
-		if (!e.MoveNext())
-			yield break;
-
-		yield return aggregator;
-		var current = e.Current;
-
-		while (e.MoveNext())
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Func<TSource, TSource, TSource> transformation, TSource identity)
 		{
-			aggregator = transformation(aggregator, current);
+			var aggregator = identity;
+			using var e = source.GetEnumerator();
+
+			if (!e.MoveNext())
+				yield break;
+
 			yield return aggregator;
-			current = e.Current;
-		}
-	}
+			var current = e.Current;
 
-	private sealed class PreScanIterator<T> : CollectionIterator<T>
-	{
-		private readonly ICollection<T> _source;
-		private readonly Func<T, T, T> _transformation;
-		private readonly T _identity;
-
-		public PreScanIterator(ICollection<T> source, Func<T, T, T> transformation, T identity)
-		{
-			_source = source;
-			_transformation = transformation;
-			_identity = identity;
-		}
-
-		public override int Count => _source.Count;
-
-		[ExcludeFromCodeCoverage]
-		protected override IEnumerable<T> GetEnumerable() =>
-			PreScanCore(_source, _transformation, _identity);
-
-		public override void CopyTo(T[] array, int arrayIndex)
-		{
-			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
-
-			var (sList, b, cnt) = _source is IList<T> s
-				? (s, 0, s.Count)
-				: (array, arrayIndex, SuperEnumerable.CopyTo(_source, array, arrayIndex));
-
-			var i = 0;
-			var state = _identity;
-
-			for (; i < cnt - 1; i++)
+			while (e.MoveNext())
 			{
-				var nextState = sList[b + i];
-				array[arrayIndex + i] = state;
-				state = _transformation(state, nextState);
+				aggregator = transformation(aggregator, current);
+				yield return aggregator;
+				current = e.Current;
 			}
-
-			array[arrayIndex + cnt - 1] = state;
 		}
 	}
 }
