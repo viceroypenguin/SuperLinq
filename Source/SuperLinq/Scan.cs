@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace SuperLinq;
+﻿namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -25,63 +23,22 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(transformation);
 
-		if (source is ICollection<TSource> coll)
-			return new ScanIterator<TSource>(coll, transformation);
+		return Core(source, transformation);
 
-		return ScanCore(source, transformation);
-	}
-
-	private static IEnumerable<TSource> ScanCore<TSource>(IEnumerable<TSource> source, Func<TSource, TSource, TSource> transformation)
-	{
-		using var e = source.GetEnumerator();
-
-		if (!e.MoveNext())
-			yield break;
-
-		var state = e.Current;
-		yield return state;
-
-		while (e.MoveNext())
+		static IEnumerable<TSource> Core(IEnumerable<TSource> source, Func<TSource, TSource, TSource> transformation)
 		{
-			state = transformation(state, e.Current);
+			using var e = source.GetEnumerator();
+
+			if (!e.MoveNext())
+				yield break;
+
+			var state = e.Current;
 			yield return state;
-		}
-	}
 
-	private sealed class ScanIterator<T> : CollectionIterator<T>
-	{
-		private readonly ICollection<T> _source;
-		private readonly Func<T, T, T> _transformation;
-
-		public ScanIterator(ICollection<T> source, Func<T, T, T> transformation)
-		{
-			_source = source;
-			_transformation = transformation;
-		}
-
-		public override int Count => _source.Count;
-
-		[ExcludeFromCodeCoverage]
-		protected override IEnumerable<T> GetEnumerable() =>
-			ScanCore(_source, _transformation);
-
-		public override void CopyTo(T[] array, int arrayIndex)
-		{
-			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
-
-			var (sList, b, cnt) = _source is IList<T> s
-				? (s, 0, s.Count)
-				: (array, arrayIndex, SuperEnumerable.CopyTo(_source, array, arrayIndex));
-
-			var i = 0;
-			var state = sList[b + i];
-			array[arrayIndex + i] = state;
-
-			for (i++; i < cnt; i++)
+			while (e.MoveNext())
 			{
-				state = _transformation(state, sList[b + i]);
-				array[arrayIndex + i] = state;
+				state = transformation(state, e.Current);
+				yield return state;
 			}
 		}
 	}
@@ -132,62 +89,19 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(transformation);
 
-		if (source is ICollection<TSource> coll)
-			return new ScanStateIterator<TSource, TState>(coll, seed, transformation);
+		return Core(source, seed, transformation);
 
-		return ScanCore(source, seed, transformation);
-	}
-
-	private static IEnumerable<TState> ScanCore<TSource, TState>(
-		IEnumerable<TSource> source,
-		TState state,
-		Func<TState, TSource, TState> transformation)
-	{
-		yield return state;
-
-		foreach (var e in source)
-		{
-			state = transformation(state, e);
-			yield return state;
-		}
-	}
-
-	private sealed class ScanStateIterator<TSource, TState> : CollectionIterator<TState>
-	{
-		private readonly ICollection<TSource> _source;
-		private readonly TState _state;
-		private readonly Func<TState, TSource, TState> _transformation;
-
-		public ScanStateIterator(
-			ICollection<TSource> source,
+		static IEnumerable<TState> Core(
+			IEnumerable<TSource> source,
 			TState state,
 			Func<TState, TSource, TState> transformation)
 		{
-			_source = source;
-			_state = state;
-			_transformation = transformation;
-		}
+			yield return state;
 
-		public override int Count => _source.Count + 1;
-
-		[ExcludeFromCodeCoverage]
-		protected override IEnumerable<TState> GetEnumerable() =>
-			ScanCore(_source, _state, _transformation);
-
-		public override void CopyTo(TState[] array, int arrayIndex)
-		{
-			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
-
-			var list = _source is IList<TSource> l ? l : _source.ToList();
-
-			var state = _state;
-			array[arrayIndex] = state;
-
-			for (var i = 0; i < list.Count; i++)
+			foreach (var e in source)
 			{
-				state = _transformation(state, list[i]);
-				array[arrayIndex + i + 1] = state;
+				state = transformation(state, e);
+				yield return state;
 			}
 		}
 	}
