@@ -12,7 +12,7 @@ public class DoTest
 
 	public static IEnumerable<object[]> GetSequences() =>
 		Enumerable.Range(1, 10)
-			.GetCollectionSequences()
+			.GetTestingSequence()
 			.Select(x => new object[] { x });
 
 	[Theory]
@@ -104,18 +104,5 @@ public class DoTest
 				.Consume());
 
 		Assert.Equal(155, count);
-	}
-
-	[Fact]
-	public void DoCollectionCount()
-	{
-		using var sequence = Enumerable.Range(1, 10_000)
-			.AsBreakingCollection();
-
-		var result = sequence.Do(delegate { });
-		result.AssertCollectionErrorChecking(10_000);
-
-		result = sequence.Do(delegate { }, onError: delegate { });
-		result.AssertCollectionErrorChecking(10_000);
 	}
 }

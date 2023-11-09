@@ -113,14 +113,4 @@ public class ScanByTest
 		_ = Assert.Throws<TestException>(() =>
 			result.ElementAt(5));
 	}
-
-	[Fact]
-	public void ScanByCollectionCount()
-	{
-		using var sequence = Enumerable.Range(1, 10_000)
-			.AsBreakingCollection();
-
-		var result = sequence.ScanBy(x => x, x => x, (a, b, c) => a);
-		result.AssertCollectionErrorChecking(10_000);
-	}
 }

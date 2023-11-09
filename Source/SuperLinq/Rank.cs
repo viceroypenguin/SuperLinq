@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace SuperLinq;
+﻿namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -54,9 +52,6 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		if (source is ICollection<TSource> coll)
-			return new RankIterator<TSource, TKey>(coll, keySelector, comparer: null, isDense: true);
-
 		return RankByCore(source, keySelector, comparer: null, isDense: true);
 	}
 
@@ -81,9 +76,6 @@ public static partial class SuperEnumerable
 	{
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
-
-		if (source is ICollection<TSource> coll)
-			return new RankIterator<TSource, TKey>(coll, keySelector, comparer, isDense: true);
 
 		return RankByCore(source, keySelector, comparer, isDense: true);
 	}
@@ -138,9 +130,6 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		if (source is ICollection<TSource> coll)
-			return new RankIterator<TSource, TKey>(coll, keySelector, comparer: null, isDense: false);
-
 		return RankByCore(source, keySelector, comparer: null, isDense: false);
 	}
 
@@ -166,9 +155,6 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(keySelector);
 
-		if (source.TryGetCollectionCount() != null)
-			return new RankIterator<TSource, TKey>(source, keySelector, comparer, isDense: false);
-
 		return RankByCore(source, keySelector, comparer, isDense: false);
 	}
 
@@ -186,7 +172,6 @@ public static partial class SuperEnumerable
 			.OrderBy(keySelector, comparer)
 			.Lag(1))
 		{
-#pragma warning disable CA1508 // Avoid dead conditional code
 			if (rank == 0
 				|| comparer.Compare(
 					keySelector(cur),
@@ -195,33 +180,10 @@ public static partial class SuperEnumerable
 				rank += isDense ? 1 : count;
 				count = 0;
 			}
-#pragma warning restore CA1508 // Avoid dead conditional code
 
 			count++;
 
 			yield return (cur, rank);
 		}
-	}
-
-	private sealed class RankIterator<TSource, TKey> : CollectionIterator<(TSource, int)>
-	{
-		private readonly IEnumerable<TSource> _source;
-		private readonly Func<TSource, TKey> _keySelector;
-		private readonly IComparer<TKey>? _comparer;
-		private readonly bool _isDense;
-
-		public RankIterator(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer, bool isDense)
-		{
-			_source = source;
-			_keySelector = keySelector;
-			_comparer = comparer;
-			_isDense = isDense;
-		}
-
-		public override int Count => _source.GetCollectionCount();
-
-		[ExcludeFromCodeCoverage]
-		protected override IEnumerable<(TSource, int)> GetEnumerable() =>
-			RankByCore(_source, _keySelector, _comparer, _isDense);
 	}
 }

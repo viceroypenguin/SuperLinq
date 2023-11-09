@@ -16,7 +16,7 @@ public class RankTests
 
 	public static IEnumerable<object[]> GetSimpleSequences() =>
 		Enumerable.Repeat(1, 10)
-			.GetCollectionSequences()
+			.GetTestingSequence()
 			.Select(x => new object[] { x, });
 
 	[Theory]
@@ -48,7 +48,7 @@ public class RankTests
 	public static IEnumerable<object[]> GetDescendingIntSequences() =>
 		Enumerable.Range(456, 100)
 			.Reverse()
-			.GetCollectionSequences()
+			.GetTestingSequence()
 			.Select(x => new object[] { x, });
 
 	[Theory]
@@ -67,7 +67,7 @@ public class RankTests
 
 	public static IEnumerable<object[]> GetAscendingIntSequences() =>
 		Enumerable.Range(456, 100)
-			.GetCollectionSequences()
+			.GetTestingSequence()
 			.Select(x => new object[] { x, });
 
 	[Theory]
@@ -88,7 +88,7 @@ public class RankTests
 		Enumerable.Range(0, 10)
 			.Concat(Enumerable.Range(0, 10))
 			.Concat(Enumerable.Range(0, 10))
-			.GetCollectionSequences()
+			.GetTestingSequence()
 			.Select(x => new object[] { x, });
 
 	/// <summary>
@@ -124,7 +124,7 @@ public class RankTests
 				new Person(Name: "Jim", Age: 74, ExpectedRank: 8),
 				new Person(Name: "Jes", Age: 11, ExpectedRank: 1),
 		}
-			.GetCollectionSequences()
+			.GetTestingSequence()
 			.Select(x => new object[] { x, });
 
 	/// <summary>
@@ -145,7 +145,7 @@ public class RankTests
 	public static IEnumerable<object[]> GetDateTimeSequences() =>
 		Enumerable.Range(1, 10)
 			.Select(x => new DateTime(2010, x, 20 - x))
-			.GetCollectionSequences()
+			.GetTestingSequence()
 			.Select(x => new object[] { x, });
 
 	/// <summary>
@@ -182,18 +182,5 @@ public class RankTests
 						.OrderByDescending(x => x.Day)
 						.Select((x, i) => (x, i + 1)));
 		}
-	}
-
-	[Fact]
-	public void TestRankCollectionCount()
-	{
-		using var sequence = Enumerable.Range(1, 10_000)
-			.AsBreakingCollection();
-
-		var result = sequence.Rank();
-		result.AssertCollectionErrorChecking(10_000);
-
-		result = sequence.Rank(comparer: Comparer<int>.Default);
-		result.AssertCollectionErrorChecking(10_000);
 	}
 }

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace SuperLinq;
+﻿namespace SuperLinq;
 
 public partial class SuperEnumerable
 {
@@ -39,9 +37,6 @@ public partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(onNext);
 		Guard.IsNotNull(onCompleted);
-
-		if (source is ICollection<TSource> coll)
-			return new DoIterator<TSource>(coll, onNext, onError: null, onCompleted);
 
 		return DoCore(source, onNext, onCompleted);
 	}
@@ -96,9 +91,6 @@ public partial class SuperEnumerable
 		Guard.IsNotNull(onError);
 		Guard.IsNotNull(onCompleted);
 
-		if (source.TryGetCollectionCount() != null)
-			return new DoIterator<TSource>(source, onNext, onError, onCompleted);
-
 		return DoCore(source, onNext, onError, onCompleted);
 	}
 
@@ -125,28 +117,4 @@ public partial class SuperEnumerable
 		onCompleted();
 	}
 
-
-	private sealed class DoIterator<T> : CollectionIterator<T>
-	{
-		private readonly IEnumerable<T> _source;
-		private readonly Action<T> _onNext;
-		private readonly Action<Exception>? _onError;
-		private readonly Action _onCompleted;
-
-		public DoIterator(IEnumerable<T> source, Action<T> onNext, Action<Exception>? onError, Action onCompleted)
-		{
-			_source = source;
-			_onNext = onNext;
-			_onError = onError;
-			_onCompleted = onCompleted;
-		}
-
-		public override int Count => _source.GetCollectionCount();
-
-		[ExcludeFromCodeCoverage]
-		protected override IEnumerable<T> GetEnumerable() =>
-			_onError != null
-			? DoCore(_source, _onNext, _onError, _onCompleted)
-			: DoCore(_source, _onNext, _onCompleted);
-	}
 }

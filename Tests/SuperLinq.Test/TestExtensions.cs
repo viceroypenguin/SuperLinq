@@ -111,6 +111,12 @@ internal static partial class TestExtensions
 	#endregion
 
 	#region Testing Sequence Generation
+	internal static IEnumerable<IDisposableEnumerable<T>> GetTestingSequence<T>(this IEnumerable<T> input)
+	{
+		// UI will consume one enumeration
+		yield return input.AsTestingSequence(maxEnumerations: 2);
+	}
+
 	internal static IEnumerable<IDisposableEnumerable<T>> GetCollectionSequences<T>(this IEnumerable<T> input)
 	{
 		// UI will consume one enumeration
