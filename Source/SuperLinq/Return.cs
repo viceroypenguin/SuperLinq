@@ -5,11 +5,17 @@ namespace SuperLinq;
 public partial class SuperEnumerable
 {
 	/// <summary>
-	/// Returns a single-element sequence containing the item provided.
+	///		Returns a single-element sequence containing the item provided.
 	/// </summary>
-	/// <typeparam name="T">The type of the item.</typeparam>
-	/// <param name="item">The item to return in a sequence.</param>
-	/// <returns>A sequence containing only <paramref name="item"/>.</returns>
+	/// <typeparam name="T">
+	///		The type of the item.
+	/// </typeparam>
+	/// <param name="item">
+	///		The item to return in a sequence.
+	/// </param>
+	/// <returns>
+	///		A sequence containing only <paramref name="item"/>.
+	/// </returns>
 	public static IEnumerable<T> Return<T>(T item) =>
 		new SingleElementList<T>(item);
 
