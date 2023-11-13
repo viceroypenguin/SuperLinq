@@ -44,7 +44,8 @@ public static partial class SuperEnumerable
 	}
 
 #pragma warning disable MA0050 // arguments validated in both callers
-	private static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, Func<IEnumerable<T>, (T[], int)> seeder)
+// this line below should fix this warning/error
+	private static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, Func<IEnumerable<T>, (T[], int)> seeder, int? subsetLength)
 #pragma warning restore MA0050
 	{
 		// The simplest and most efficient way to return a random subset is to perform
@@ -53,14 +54,21 @@ public static partial class SuperEnumerable
 		// than the length of the sequence.
 		// See: http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 
-		var (array, subsetSize) = seeder(source);
+		// this block that follows should fix the error
 
-		if (array.Length < subsetSize)
-		{
-			ThrowHelper.ThrowArgumentOutOfRangeException(
-				nameof(subsetSize),
-				"Subset size must be less than or equal to the source length.");
-		}
+        var (array, subsetSize) = seeder(source);
+
+        if (!subsetLength.HasValue)
+        {
+            subsetLength = array.Length;
+        }
+
+        if (array.Length < subsetSize || subsetLength > array.Length)
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(
+                nameof(subsetSize),
+                "Subset size must be less than or equal to the source length, and subset length must not exceed the source length.");
+       }
 
 		var m = 0;                // keeps track of count items shuffled
 		var w = array.Length;     // upper bound of shrinking swap range
@@ -75,8 +83,10 @@ public static partial class SuperEnumerable
 			--w;
 		}
 
-		// yield the random subset as a new sequence
-		for (var i = 0; i < subsetSize; i++)
-			yield return array[i];
+        // yield the random subset as a new sequence
+		// change to subsetLength so it will take the full value
+
+        for (var i = 0; i < subsetLength.Value; i++)
+            yield return array[i];
 	}
 }
