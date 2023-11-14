@@ -17,14 +17,14 @@ uid: SuperLinq.SuperEnumerable.DenseRankBy``2(System.Collections.Generic.IEnumer
 example: [*content]
 ---
 The following code example demonstrates how to rank the items in a sequence according to a key using `DenseRankBy`.
-[!code-csharp[](SuperLinq/DenseRank/DenseRankBy1.linq#L6-)]
+[!code-csharp[](SuperLinq/DenseRankBy/DenseRankBy1.linq#L6-)]
 
 ---
 uid: SuperLinq.SuperEnumerable.DenseRankBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IComparer{``1})
 example: [*content]
 ---
 The following code example demonstrates how to rank the items in a sequence according to a key using `DenseRankBy`.
-[!code-csharp[](SuperLinq/DenseRank/DenseRankBy3.linq#L6-)]
+[!code-csharp[](SuperLinq/DenseRankBy/DenseRankBy3.linq#L6-)]
 
 ----
 uid: SuperLinq.SuperEnumerable.Rank``1(System.Collections.Generic.IEnumerable{``0})
@@ -45,11 +45,11 @@ uid: SuperLinq.SuperEnumerable.RankBy``2(System.Collections.Generic.IEnumerable{
 example: [*content]
 ----
 The following code example demonstrates how to rank the items in a sequence according to a key using `RankBy`.
-[!code-csharp[](SuperLinq/Rank/RankBy1.linq#L6-)]
+[!code-csharp[](SuperLinq/RankBy/RankBy1.linq#L6-)]
 
 ----
 uid: SuperLinq.SuperEnumerable.RankBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IComparer{``1})
 example: [*content]
 ----
 The following code example demonstrates how to rank the items in a sequence according to a key using `RankBy`.
-[!code-csharp[](SuperLinq/Rank/RankBy3.linq#L6-)]
+[!code-csharp[](SuperLinq/RankBy/RankBy3.linq#L6-)]
