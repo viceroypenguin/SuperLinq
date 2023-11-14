@@ -4,8 +4,8 @@
 			"src": [
 				{
 					"files": [
-						"SuperLinq/bin/Release/net7.0/SuperLinq.dll",
-						"SuperLinq.Async/bin/Release/net7.0/SuperLinq.Async.dll"
+						"SuperLinq/bin/Release/net8.0/SuperLinq.dll",
+						"SuperLinq.Async/bin/Release/net8.0/SuperLinq.Async.dll"
 					],
 					"src": "../../Source"
 				}
