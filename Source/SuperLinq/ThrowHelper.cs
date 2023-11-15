@@ -37,6 +37,14 @@ internal static class ThrowHelper
 		throw new InvalidOperationException(message);
 
 	[DoesNotReturn]
+	public static void ThrowNotSupportedException() =>
+		throw new NotSupportedException();
+
+	[DoesNotReturn]
+	public static T ThrowNotSupportedException<T>() =>
+		throw new NotSupportedException();
+
+	[DoesNotReturn]
 	public static void ThrowObjectDisposedException(string type) =>
 		throw new ObjectDisposedException(type);
 }

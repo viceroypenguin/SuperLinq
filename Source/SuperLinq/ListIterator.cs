@@ -8,14 +8,14 @@ public partial class SuperEnumerable
 	private abstract class ListIterator<T> : CollectionIterator<T>, IList<T>, IReadOnlyList<T>
 	{
 		public void Insert(int index, T item) =>
-			throw new NotSupportedException();
+			ThrowHelper.ThrowNotSupportedException();
 		public void RemoveAt(int index) =>
-			throw new NotSupportedException();
+			ThrowHelper.ThrowNotSupportedException();
 
 		public T this[int index]
 		{
 			get => ElementAt(index);
-			set => throw new NotSupportedException();
+			set => ThrowHelper.ThrowNotSupportedException();
 		}
 
 		protected abstract T ElementAt(int index);

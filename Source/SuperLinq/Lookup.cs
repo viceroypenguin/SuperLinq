@@ -229,16 +229,13 @@ internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 				return _elements[index];
 			}
 
-			set => ThrowModificationNotSupportedException();
+			set => ThrowHelper.ThrowNotSupportedException();
 		}
 
-		void ICollection<TElement>.Add(TElement item) => ThrowModificationNotSupportedException();
-		void ICollection<TElement>.Clear() => ThrowModificationNotSupportedException();
-		bool ICollection<TElement>.Remove(TElement item) { ThrowModificationNotSupportedException(); return false; }
-		void IList<TElement>.Insert(int index, TElement item) => ThrowModificationNotSupportedException();
-		void IList<TElement>.RemoveAt(int index) => ThrowModificationNotSupportedException();
-
-		[DoesNotReturn]
-		private static void ThrowModificationNotSupportedException() => throw new NotSupportedException("Grouping is immutable.");
+		void ICollection<TElement>.Add(TElement item) => ThrowHelper.ThrowNotSupportedException();
+		void ICollection<TElement>.Clear() => ThrowHelper.ThrowNotSupportedException();
+		bool ICollection<TElement>.Remove(TElement item) => ThrowHelper.ThrowNotSupportedException<bool>();
+		void IList<TElement>.Insert(int index, TElement item) => ThrowHelper.ThrowNotSupportedException();
+		void IList<TElement>.RemoveAt(int index) => ThrowHelper.ThrowNotSupportedException();
 	}
 }

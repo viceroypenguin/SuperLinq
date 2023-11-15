@@ -234,7 +234,7 @@ public static partial class AsyncSuperEnumerable
 			// randomizing operator from the outer class then they will
 			// need to be overriden.
 
-			throw new NotSupportedException("Should never reach this code.");
+			return ThrowHelper.ThrowNotSupportedException<double>();
 		}
 	}
 #endif

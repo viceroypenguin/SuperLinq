@@ -10,11 +10,11 @@ public partial class SuperEnumerable
 	{
 		public bool IsReadOnly => true;
 		public void Add(T item) =>
-			throw new NotSupportedException();
+			ThrowHelper.ThrowNotSupportedException();
 		public bool Remove(T item) =>
-			throw new NotSupportedException();
+			ThrowHelper.ThrowNotSupportedException<bool>();
 		public void Clear() =>
-			throw new NotSupportedException();
+			ThrowHelper.ThrowNotSupportedException();
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

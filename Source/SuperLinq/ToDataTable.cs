@@ -149,7 +149,7 @@ public static partial class SuperEnumerable
 			return body is MemberExpression memberExpression
 				   && memberExpression.Expression?.NodeType == ExpressionType.Parameter
 				 ? memberExpression.Member
-				 : throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
+				 : ThrowHelper.ThrowArgumentException<MemberInfo>(nameof(lambda), $"Illegal expression: {lambda}");
 		}
 	}
 

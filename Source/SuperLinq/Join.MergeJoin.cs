@@ -14,7 +14,7 @@ public static partial class SuperEnumerable
 		}
 
 		public bool Equals([AllowNull] TKey x, [AllowNull] TKey y) => _comparer.Compare(x, y) == 0;
-		public int GetHashCode([DisallowNull] TKey obj) => throw new NotSupportedException();
+		public int GetHashCode([DisallowNull] TKey obj) => ThrowHelper.ThrowNotSupportedException<int>();
 	}
 
 	private static IEnumerable<TResult> MergeJoin<TLeft, TRight, TKey, TResult>(
