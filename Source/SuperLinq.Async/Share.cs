@@ -19,38 +19,6 @@ public static partial class AsyncSuperEnumerable
 		return new SharedBuffer<TSource>(source);
 	}
 
-	/// <summary>
-	/// Shares the source sequence within a selector function where each enumerator can fetch the next element from the
-	/// source sequence.
-	/// </summary>
-	/// <typeparam name="TSource">Source sequence element type.</typeparam>
-	/// <typeparam name="TResult">Result sequence element type.</typeparam>
-	/// <param name="source">Source sequence.</param>
-	/// <param name="selector">Selector function with shared access to the source sequence for each enumerator.</param>
-	/// <returns>Sequence resulting from applying the selector function to the shared view over the source
-	/// sequence.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is <see
-	/// langword="null"/>.</exception>
-	public static IAsyncEnumerable<TResult> Share<TSource, TResult>(
-		this IAsyncEnumerable<TSource> source,
-		Func<IAsyncEnumerable<TSource>, IAsyncEnumerable<TResult>> selector)
-	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(selector);
-
-		return Core(source, selector);
-
-		static async IAsyncEnumerable<TResult> Core(
-			IAsyncEnumerable<TSource> source,
-			Func<IAsyncEnumerable<TSource>, IAsyncEnumerable<TResult>> selector,
-			[EnumeratorCancellation] CancellationToken cancellationToken = default)
-		{
-			await using var buffer = source.Share();
-			await foreach (var i in selector(buffer).WithCancellation(cancellationToken).ConfigureAwait(false))
-				yield return i;
-		}
-	}
-
 	private sealed class SharedBuffer<T> : IAsyncBuffer<T>
 	{
 		private readonly SemaphoreSlim _lock = new(initialCount: 1);
