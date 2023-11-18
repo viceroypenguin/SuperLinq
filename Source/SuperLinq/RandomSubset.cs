@@ -1,54 +1,55 @@
-﻿namespace SuperLinq;
-
-public static partial class SuperEnumerable
+namespace SuperLinq
 {
-	/// <summary>
-	/// Returns a sequence of a specified size of random elements from the
-	/// original sequence.
-	/// </summary>
-	/// <typeparam name="T">The type of source sequence elements.</typeparam>
-	/// <param name="source">
-	/// The sequence from which to return random elements.</param>
-	/// <param name="subsetSize">The size of the random subset to return.</param>
-	/// <returns>
-	/// A random sequence of elements in random order from the original
-	/// sequence.</returns>
+    public static partial class SuperEnumerable
+    {
+        /// <summary>
+        /// Returns a sequence of a specified size of random elements from the
+        /// original sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of source sequence elements.</typeparam>
+        /// <param name="source">
+        /// The sequence from which to return random elements.</param>
+        /// <param name="subsetSize">The size of the random subset to return.</param>
+        /// <returns>
+        /// A random sequence of elements in random order from the original
+        /// sequence.</returns>
 
-	public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> source, int subsetSize)
-	{
-		return RandomSubset(source, subsetSize, new Random());
-	}
+        public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> source, int subsetSize)
+        {
+            return RandomSubset(source, subsetSize, new Random());
+        }
 
-	/// <summary>
-	/// Returns a sequence of a specified size of random elements from the
-	/// original sequence. An additional parameter specifies a random
-	/// generator to be used for the random selection algorithm.
-	/// </summary>
-	/// <typeparam name="T">The type of source sequence elements.</typeparam>
-	/// <param name="source">
-	/// The sequence from which to return random elements.</param>
-	/// <param name="subsetSize">The size of the random subset to return.</param>
-	/// <param name="rand">
-	/// A random generator used as part of the selection algorithm.</param>
-	/// <returns>
-	/// A random sequence of elements in random order from the original
-	/// sequence.</returns>
+        /// <summary>
+        /// Returns a sequence of a specified size of random elements from the
+        /// original sequence. An additional parameter specifies a random
+        /// generator to be used for the random selection algorithm.
+        /// </summary>
+        /// <typeparam name="T">The type of source sequence elements.</typeparam>
+        /// <param name="source">
+        /// The sequence from which to return random elements.</param>
+        /// <param name="subsetSize">The size of the random subset to return.</param>
+        /// <param name="rand">
+        /// A random generator used as part of the selection algorithm.</param>
+        /// <returns>
+        /// A random sequence of elements in random order from the original
+        /// sequence.</returns>
 
-	public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> source, int subsetSize, Random rand)
-	{
-		Guard.IsNotNull(rand);
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
+        public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> source, int subsetSize, Random rand)
+        {
+            Guard.IsNotNull(rand);
+            Guard.IsNotNull(source);
+            Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
 
-		return RandomSubsetImpl(source, rand, seq => (seq.ToArray(), subsetSize));
-	}
+            return RandomSubsetImpl(source, rand, subsetSize);
+        }
 
 #pragma warning disable MA0050 // arguments validated in both callers
 // this line below should fix this warning/error
-	private static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, Func<IEnumerable<T>, (T[], int)> seeder, int? subsetLength)
-#pragma warning restore MA0050
-	{
-		// The simplest and most efficient way to return a random subset is to perform
+
+        private static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, int? subsetLength)
+  #pragma warning restore MA0050      
+        {
+            		// The simplest and most efficient way to return a random subset is to perform
 		// an in-place, partial Fisher-Yates shuffle of the sequence. While we could do
 		// a full shuffle, it would be wasteful in the cases where subsetSize is shorter
 		// than the length of the sequence.
@@ -56,37 +57,36 @@ public static partial class SuperEnumerable
 
 		// this block that follows should fix the error
 
-        var (array, subsetSize) = seeder(source);
+            var array = source.ToArray(); // Move .ToArray() inside RandomSubsetImpl
 
-        if (!subsetLength.HasValue)
-        {
-            subsetLength = array.Length;
+            if (!subsetLength.HasValue)
+            {
+                subsetLength = array.Length;
+            }
+
+            if (array.Length < subsetLength || subsetLength < 0)
+            {
+                ThrowHelper.ThrowArgumentOutOfRangeException(
+                    nameof(subsetLength),
+                    "Subset length must be non-negative and not exceed the source length.");
+            }
+
+            var m = 0;                // keeps track of count items shuffled
+            var w = array.Length;     // upper bound of shrinking swap range
+            var g = w - 1;            // used to compute the second swap index
+
+            // perform in-place, partial Fisher-Yates shuffle
+            while (m < subsetLength)
+            {
+                var k = g - rand.Next(w);
+                (array[m], array[k]) = (array[k], array[m]);
+                ++m;
+                --w;
+            }
+
+            // yield the random subset as a new sequence
+            for (var i = 0; i < subsetLength.Value; i++)
+                yield return array[i];
         }
-
-        if (array.Length < subsetSize || subsetLength > array.Length)
-        {
-            ThrowHelper.ThrowArgumentOutOfRangeException(
-                nameof(subsetSize),
-                "Subset size must be less than or equal to the source length, and subset length must not exceed the source length.");
-       }
-
-		var m = 0;                // keeps track of count items shuffled
-		var w = array.Length;     // upper bound of shrinking swap range
-		var g = w - 1;            // used to compute the second swap index
-
-		// perform in-place, partial Fisher-Yates shuffle
-		while (m < subsetSize)
-		{
-			var k = g - rand.Next(w);
-			(array[m], array[k]) = (array[k], array[m]);
-			++m;
-			--w;
-		}
-
-        // yield the random subset as a new sequence
-		// change to subsetLength so it will take the full value
-
-        for (var i = 0; i < subsetLength.Value; i++)
-            yield return array[i];
-	}
+    }
 }
