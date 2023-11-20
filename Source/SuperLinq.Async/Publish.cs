@@ -48,13 +48,13 @@ public static partial class AsyncSuperEnumerable
 		public async ValueTask Reset(CancellationToken cancellationToken = default)
 		{
 			if (_disposed)
-				ThrowHelper.ThrowObjectDisposedException(nameof(IAsyncBuffer<T>));
+				ThrowHelper.ThrowObjectDisposedException<IAsyncBuffer<T>>();
 
 			await _lock.WaitAsync(cancellationToken).ConfigureAwait(false);
 			try
 			{
 				if (_disposed)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IAsyncBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IAsyncBuffer<T>>();
 
 				_initialized = false;
 				_version++;
@@ -82,13 +82,13 @@ public static partial class AsyncSuperEnumerable
 		private (Queue<T> buffer, int version) InitializeEnumerator(CancellationToken cancellationToken)
 		{
 			if (_disposed)
-				ThrowHelper.ThrowObjectDisposedException(nameof(IAsyncBuffer<T>));
+				ThrowHelper.ThrowObjectDisposedException<IAsyncBuffer<T>>();
 
 			_lock.Wait(cancellationToken);
 			try
 			{
 				if (_disposed)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IAsyncBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IAsyncBuffer<T>>();
 
 				Assert.NotNull(_source);
 
@@ -135,13 +135,13 @@ public static partial class AsyncSuperEnumerable
 					T? element;
 
 					if (_disposed)
-						ThrowHelper.ThrowObjectDisposedException(nameof(IAsyncBuffer<T>));
+						ThrowHelper.ThrowObjectDisposedException<IAsyncBuffer<T>>();
 
 					await _lock.WaitAsync(cancellationToken);
 					try
 					{
 						if (_disposed)
-							ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+							ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 						if (!_initialized
 							|| version != _version)
 						{

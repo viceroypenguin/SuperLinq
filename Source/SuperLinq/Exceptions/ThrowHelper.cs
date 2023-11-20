@@ -47,8 +47,8 @@ internal static class ThrowHelper
 		throw new NotSupportedException();
 
 	[DoesNotReturn]
-	public static void ThrowObjectDisposedException(string type) =>
-		throw new ObjectDisposedException(type);
+	public static void ThrowObjectDisposedException<T>() =>
+		throw new ObjectDisposedException(typeof(T).Name);
 
 	[DoesNotReturn]
 	public static void ThrowUnreachableException() =>

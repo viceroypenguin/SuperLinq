@@ -79,7 +79,7 @@ public static partial class SuperEnumerable
 			lock (_lock)
 			{
 				if (_disposed)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 
 				_buffer = new();
 				_initialized = false;
@@ -101,7 +101,7 @@ public static partial class SuperEnumerable
 			lock (_lock)
 			{
 				if (_disposed)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 
 				Assert.NotNull(_source);
 
@@ -143,7 +143,7 @@ public static partial class SuperEnumerable
 				lock (_lock)
 				{
 					if (_disposed)
-						ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+						ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 					if (!_initialized
 						|| buffer != _buffer)
 					{
@@ -268,7 +268,7 @@ public static partial class SuperEnumerable
 					}
 
 					case State.Disposed:
-						ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+						ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 						break;
 
 					default:
@@ -335,7 +335,7 @@ public static partial class SuperEnumerable
 						return h.Buffer;
 
 					case State.Disposed:
-						ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+						ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 						break;
 
 					case State.Error:
@@ -354,7 +354,7 @@ public static partial class SuperEnumerable
 			foreach (var i in buffer)
 			{
 				if (_state.State == State.Disposed)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 
 				if (_state.State != State.Initialized
 					|| _state.Buffer != buffer)
@@ -390,7 +390,7 @@ public static partial class SuperEnumerable
 			get
 			{
 				if (_source == null)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 				return _source;
 			}
 		}
@@ -398,7 +398,7 @@ public static partial class SuperEnumerable
 		public void Reset()
 		{
 			if (_source == null)
-				ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+				ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 		}
 
 		public int Count => Source.Count;

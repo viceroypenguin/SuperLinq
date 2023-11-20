@@ -57,13 +57,13 @@ public static partial class AsyncSuperEnumerable
 		public async ValueTask Reset(CancellationToken cancellationToken = default)
 		{
 			if (_disposed)
-				ThrowHelper.ThrowObjectDisposedException(nameof(IAsyncBuffer<T>));
+				ThrowHelper.ThrowObjectDisposedException<IAsyncBuffer<T>>();
 
 			await _lock.WaitAsync(cancellationToken);
 			try
 			{
 				if (_disposed)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IAsyncBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IAsyncBuffer<T>>();
 
 				_buffer = new();
 				_initialized = false;
@@ -88,13 +88,13 @@ public static partial class AsyncSuperEnumerable
 		private void InitializeEnumerator(CancellationToken cancellationToken)
 		{
 			if (_disposed)
-				ThrowHelper.ThrowObjectDisposedException(nameof(IAsyncBuffer<T>));
+				ThrowHelper.ThrowObjectDisposedException<IAsyncBuffer<T>>();
 
 			_lock.Wait(cancellationToken);
 			try
 			{
 				if (_disposed)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IAsyncBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IAsyncBuffer<T>>();
 
 				Assert.NotNull(_source);
 
@@ -134,13 +134,13 @@ public static partial class AsyncSuperEnumerable
 				T? element;
 
 				if (_disposed)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IAsyncBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IAsyncBuffer<T>>();
 
 				await _lock.WaitAsync(cancellationToken).ConfigureAwait(false);
 				try
 				{
 					if (_disposed)
-						ThrowHelper.ThrowObjectDisposedException(nameof(IAsyncBuffer<T>));
+						ThrowHelper.ThrowObjectDisposedException<IAsyncBuffer<T>>();
 					if (!_initialized
 						|| buffer != _buffer)
 					{
