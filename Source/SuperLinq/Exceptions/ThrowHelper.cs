@@ -1,16 +1,17 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
-namespace SuperLinq;
+namespace SuperLinq.Exceptions;
 
 internal static class ThrowHelper
 {
 	[DoesNotReturn]
 	public static void ThrowArgumentException(string param, string message) =>
-		throw new ArgumentException(param, message);
+		throw new ArgumentException(message, param);
 
 	[DoesNotReturn]
 	public static T ThrowArgumentException<T>(string param, string message) =>
-		throw new ArgumentException(param, message);
+		throw new ArgumentException(message, param);
 
 	[DoesNotReturn]
 	public static void ThrowArgumentOutOfRangeException(string param) =>
@@ -47,4 +48,12 @@ internal static class ThrowHelper
 	[DoesNotReturn]
 	public static void ThrowObjectDisposedException(string type) =>
 		throw new ObjectDisposedException(type);
+
+	[DoesNotReturn]
+	public static void ThrowUnreachableException() =>
+		throw new UnreachableException();
+
+	[DoesNotReturn]
+	public static void ThrowTimeoutException(string message, Exception? ex = default) =>
+		throw new TimeoutException(message, ex);
 }

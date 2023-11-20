@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 
 namespace SuperLinq;
@@ -271,7 +270,8 @@ public static partial class SuperEnumerable
 						break;
 
 					default:
-						throw new UnreachableException();
+						ThrowHelper.ThrowUnreachableException();
+						return;
 				}
 			}
 		}
@@ -341,7 +341,8 @@ public static partial class SuperEnumerable
 						break;
 
 					default:
-						throw new UnreachableException();
+						ThrowHelper.ThrowUnreachableException();
+						return default!;
 				}
 			}
 		}

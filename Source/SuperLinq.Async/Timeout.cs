@@ -73,12 +73,12 @@ public static partial class AsyncSuperEnumerable
 #endif
 
 								_ = await moveNextTask.ConfigureAwait(false);
-								throw new TimeoutException("The operation has timed out.");
+								ThrowHelper.ThrowTimeoutException("The operation has timed out.");
 							}
 						}
 						catch (OperationCanceledException ex) when (cts.IsCancellationRequested)
 						{
-							throw new TimeoutException("The operation has timed out.", ex);
+							ThrowHelper.ThrowTimeoutException("The operation has timed out.", ex);
 						}
 					}
 

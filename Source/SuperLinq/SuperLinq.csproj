@@ -148,7 +148,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Using Include="System.Runtime.CompilerServices" />
+		<Using Include="SuperLinq.Exceptions" />
 	</ItemGroup>
 
 	<ItemGroup>

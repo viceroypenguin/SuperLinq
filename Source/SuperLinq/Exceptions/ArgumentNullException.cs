@@ -3,12 +3,9 @@ global using ArgumentNullException = SuperLinq.Exceptions.ArgumentNullException;
 
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace SuperLinq.Exceptions;
-
-#pragma warning disable RS0016
-#pragma warning disable CA1711
-#pragma warning disable CS1591
 
 [Browsable(false)]
 internal static class ArgumentNullException
