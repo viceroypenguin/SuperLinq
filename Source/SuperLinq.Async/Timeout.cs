@@ -58,27 +58,20 @@ public static partial class AsyncSuperEnumerable
 
 					if (!moveNextVt.IsCompleted)
 					{
-						try
-						{
-							var moveNextTask = moveNextVt.AsTask();
-							var delayTask = Task.Delay(timeout, cancellationToken);
-							var successTask = await Task.WhenAny(moveNextTask, delayTask).ConfigureAwait(false);
+						var moveNextTask = moveNextVt.AsTask();
+						var delayTask = Task.Delay(timeout, cancellationToken);
+						var successTask = await Task.WhenAny(moveNextTask, delayTask).ConfigureAwait(false);
 
-							if (successTask == delayTask)
-							{
+						if (successTask == delayTask)
+						{
 #if NET8_0_OR_GREATER
-								await cts.CancelAsync();
+							await cts.CancelAsync();
 #else
-								cts.Cancel();
+							cts.Cancel();
 #endif
 
-								_ = await moveNextTask.ConfigureAwait(false);
-								throw new TimeoutException("The operation has timed out.");
-							}
-						}
-						catch (OperationCanceledException ex) when (cts.IsCancellationRequested)
-						{
-							throw new TimeoutException("The operation has timed out.", ex);
+							_ = await moveNextTask.ConfigureAwait(false);
+							cts.Token.ThrowIfCancellationRequested();
 						}
 					}
 
