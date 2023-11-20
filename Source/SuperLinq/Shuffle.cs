@@ -49,10 +49,6 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsNotNull(rand);
 
-		return RandomSubsetImpl(source, rand, seq =>
-		{
-			var array = seq.ToArray();
-			return (array, array.Length);
-		});
+		return RandomSubsetImpl(source, rand, null);
 	}
 }
