@@ -107,9 +107,9 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static int FindIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		if (source.TryGetCollectionCount() is int length)
 		{

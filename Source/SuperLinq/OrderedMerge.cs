@@ -87,7 +87,7 @@ public static partial class SuperEnumerable
 		IEnumerable<T> second,
 		Func<T, TKey> keySelector)
 	{
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return OrderedMerge(first, second, keySelector, Identity, Identity, static (a, _) => a);
 	}
@@ -123,7 +123,7 @@ public static partial class SuperEnumerable
 		Func<T, TKey> keySelector,
 		IComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return OrderedMerge(first, second, keySelector, Identity, Identity, static (a, _) => a, comparer);
 	}
@@ -165,12 +165,12 @@ public static partial class SuperEnumerable
 		Func<T, TResult> secondSelector,
 		Func<T, T, TResult> bothSelector)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
-		Guard.IsNotNull(keySelector);
-		Guard.IsNotNull(firstSelector);
-		Guard.IsNotNull(bothSelector);
-		Guard.IsNotNull(secondSelector);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
+		ArgumentNullException.ThrowIfNull(keySelector);
+		ArgumentNullException.ThrowIfNull(firstSelector);
+		ArgumentNullException.ThrowIfNull(bothSelector);
+		ArgumentNullException.ThrowIfNull(secondSelector);
 
 		return MergeJoin(
 			first, second,
@@ -220,12 +220,12 @@ public static partial class SuperEnumerable
 		Func<T, T, TResult> bothSelector,
 		IComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
-		Guard.IsNotNull(keySelector);
-		Guard.IsNotNull(firstSelector);
-		Guard.IsNotNull(bothSelector);
-		Guard.IsNotNull(secondSelector);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
+		ArgumentNullException.ThrowIfNull(keySelector);
+		ArgumentNullException.ThrowIfNull(firstSelector);
+		ArgumentNullException.ThrowIfNull(bothSelector);
+		ArgumentNullException.ThrowIfNull(secondSelector);
 
 		return MergeJoin(
 				first, second,
@@ -278,13 +278,13 @@ public static partial class SuperEnumerable
 		Func<TSecond, TResult> secondSelector,
 		Func<TFirst, TSecond, TResult> bothSelector)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
-		Guard.IsNotNull(firstKeySelector);
-		Guard.IsNotNull(secondKeySelector);
-		Guard.IsNotNull(firstSelector);
-		Guard.IsNotNull(bothSelector);
-		Guard.IsNotNull(secondSelector);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
+		ArgumentNullException.ThrowIfNull(firstKeySelector);
+		ArgumentNullException.ThrowIfNull(secondKeySelector);
+		ArgumentNullException.ThrowIfNull(firstSelector);
+		ArgumentNullException.ThrowIfNull(bothSelector);
+		ArgumentNullException.ThrowIfNull(secondSelector);
 
 		return MergeJoin(
 			first, second,
@@ -340,13 +340,13 @@ public static partial class SuperEnumerable
 		Func<TFirst, TSecond, TResult> bothSelector,
 		IComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
-		Guard.IsNotNull(firstKeySelector);
-		Guard.IsNotNull(secondKeySelector);
-		Guard.IsNotNull(firstSelector);
-		Guard.IsNotNull(bothSelector);
-		Guard.IsNotNull(secondSelector);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
+		ArgumentNullException.ThrowIfNull(firstKeySelector);
+		ArgumentNullException.ThrowIfNull(secondKeySelector);
+		ArgumentNullException.ThrowIfNull(firstSelector);
+		ArgumentNullException.ThrowIfNull(bothSelector);
+		ArgumentNullException.ThrowIfNull(secondSelector);
 
 		return MergeJoin(
 				first, second,

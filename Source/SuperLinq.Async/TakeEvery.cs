@@ -25,8 +25,8 @@ public static partial class AsyncSuperEnumerable
 	/// </example>
 	public static IAsyncEnumerable<TSource> TakeEvery<TSource>(this IAsyncEnumerable<TSource> source, int step)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(step, 1);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(step);
 		return source.Where((e, i) => i % step == 0);
 	}
 }

@@ -16,7 +16,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> From<T>(Func<Task<T>> function)
 	{
-		Guard.IsNotNull(function);
+		ArgumentNullException.ThrowIfNull(function);
 		return Core(function);
 
 		static async IAsyncEnumerable<T> Core(Func<Task<T>> function, [EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -41,8 +41,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> From<T>(Func<Task<T>> function1, Func<Task<T>> function2)
 	{
-		Guard.IsNotNull(function1);
-		Guard.IsNotNull(function2);
+		ArgumentNullException.ThrowIfNull(function1);
+		ArgumentNullException.ThrowIfNull(function2);
 		return Core(function1, function2);
 
 		static async IAsyncEnumerable<T> Core(Func<Task<T>> function1, Func<Task<T>> function2, [EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -70,9 +70,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> From<T>(Func<Task<T>> function1, Func<Task<T>> function2, Func<Task<T>> function3)
 	{
-		Guard.IsNotNull(function1);
-		Guard.IsNotNull(function2);
-		Guard.IsNotNull(function3);
+		ArgumentNullException.ThrowIfNull(function1);
+		ArgumentNullException.ThrowIfNull(function2);
+		ArgumentNullException.ThrowIfNull(function3);
 		return Core(function1, function2, function3);
 
 		static async IAsyncEnumerable<T> Core(Func<Task<T>> function1, Func<Task<T>> function2, Func<Task<T>> function3, [EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -117,7 +117,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> Evaluate<T>(this IEnumerable<Func<Task<T>>> functions)
 	{
-		Guard.IsNotNull(functions);
+		ArgumentNullException.ThrowIfNull(functions);
 		return Core(functions);
 
 		static async IAsyncEnumerable<T> Core(IEnumerable<Func<Task<T>>> functions, [EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -145,7 +145,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> Evaluate<T>(this IAsyncEnumerable<Func<Task<T>>> functions)
 	{
-		Guard.IsNotNull(functions);
+		ArgumentNullException.ThrowIfNull(functions);
 		return Core(functions);
 
 		static async IAsyncEnumerable<T> Core(IAsyncEnumerable<Func<Task<T>>> functions, [EnumeratorCancellation] CancellationToken cancellationToken = default)

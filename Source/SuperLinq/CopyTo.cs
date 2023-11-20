@@ -26,7 +26,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static int CopyTo<TSource>(this IEnumerable<TSource> source, Span<TSource> span)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		if (source is TSource[] arr)
 		{
@@ -83,8 +83,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static int CopyTo<TSource>(this IEnumerable<TSource> source, TSource[] array)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(array);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(array);
 
 		return CopyTo(source, array, 0);
 	}
@@ -174,9 +174,9 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static int CopyTo<TSource>(this IEnumerable<TSource> source, IList<TSource> list, int index)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(list);
-		Guard.IsGreaterThanOrEqualTo(index, 0);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(list);
+		ArgumentOutOfRangeException.ThrowIfNegative(index);
 
 		if (list is TSource[] array)
 		{

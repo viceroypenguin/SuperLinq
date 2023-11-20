@@ -42,10 +42,10 @@ public static partial class AsyncSuperEnumerable
         global::System.Func<{{ for $j in 1..$i }}T{{ $cardinals[$j] }}, {{ end }}TResult> resultSelector)
 	{
 		{{~ for $j in 1..$i ~}}
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull({{ $ordinals[$j] }});
+        ArgumentNullException.ThrowIfNull({{ $ordinals[$j] }});
 		{{~ end ~}}
 
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return Core(
 			{{~ for $j in 1..$i ~}}
@@ -77,7 +77,7 @@ public static partial class AsyncSuperEnumerable
 							end ~}}
 						)
 					{
-                        global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
+                        ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
  					}
 
 					yield break;
@@ -85,7 +85,7 @@ public static partial class AsyncSuperEnumerable
 
 				{{~ for $j in 2..$i ~}}
 				if (!await e{{$j}}.MoveNextAsync())
-					global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException(
+					ThrowHelper.ThrowInvalidOperationException(
 						"{{ $cardinals[$j] }} sequence too short.");
 				{{~ end ~}}
 

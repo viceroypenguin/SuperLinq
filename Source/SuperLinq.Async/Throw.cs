@@ -20,7 +20,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> Throw<TSource>(Exception exception)
 	{
-		Guard.IsNotNull(exception);
+		ArgumentNullException.ThrowIfNull(exception);
 
 		return Core(exception);
 

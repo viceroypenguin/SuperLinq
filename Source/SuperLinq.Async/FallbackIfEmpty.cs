@@ -37,8 +37,8 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="fallback"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<T> FallbackIfEmpty<T>(this IAsyncEnumerable<T> source, IEnumerable<T> fallback)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(fallback);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(fallback);
 
 		return source.FallbackIfEmpty(fallback.ToAsyncEnumerable());
 	}
@@ -59,8 +59,8 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="fallback"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<T> FallbackIfEmpty<T>(this IAsyncEnumerable<T> source, IAsyncEnumerable<T> fallback)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(fallback);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(fallback);
 
 		return Core(source, fallback);
 

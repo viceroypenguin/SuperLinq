@@ -25,8 +25,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static ValueTask<bool> AtLeast<T>(this IAsyncEnumerable<T> source, int count, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return QuantityIterator(source, limit: count, min: count, max: int.MaxValue, cancellationToken);
 	}
@@ -54,8 +54,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static ValueTask<bool> AtMost<T>(this IAsyncEnumerable<T> source, int count, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return QuantityIterator(source, limit: count + 1, min: 0, max: count, cancellationToken);
 	}
@@ -82,8 +82,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static ValueTask<bool> Exactly<T>(this IAsyncEnumerable<T> source, int count, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return QuantityIterator(source, limit: count + 1, min: count, max: count, cancellationToken);
 	}
@@ -113,9 +113,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static ValueTask<bool> CountBetween<T>(this IAsyncEnumerable<T> source, int min, int max, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(min, 0);
-		Guard.IsGreaterThanOrEqualTo(max, min);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegative(min);
+		ArgumentOutOfRangeException.ThrowIfLessThan(max, min);
 
 		return QuantityIterator(source, limit: max + 1, min: min, max: max, cancellationToken);
 	}
@@ -156,8 +156,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static ValueTask<int> CompareCount<TFirst, TSecond>(this IAsyncEnumerable<TFirst> first, IAsyncEnumerable<TSecond> second, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		return Core(first, second, cancellationToken);
 

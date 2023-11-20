@@ -60,7 +60,7 @@ public static partial class SuperEnumerable
 		{
 			_valueSet = sequence.ToArray();
 			if (_valueSet.Length > 21)
-				throw new ArgumentException("Input set is too large to permute properly.", nameof(sequence));
+				ThrowHelper.ThrowArgumentException(nameof(sequence), "Input set is too large to permute properly.");
 
 			_permutation = new int[_valueSet.Length];
 
@@ -196,7 +196,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentException"><paramref name="sequence"/> has too many elements to permute properly.</exception>
 	public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
 	{
-		Guard.IsNotNull(sequence);
+		ArgumentNullException.ThrowIfNull(sequence);
 
 		return Core(sequence);
 

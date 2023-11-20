@@ -34,9 +34,9 @@ public partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> Do<TSource>(this IEnumerable<TSource> source, Action<TSource> onNext, Action onCompleted)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(onNext);
-		Guard.IsNotNull(onCompleted);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(onNext);
+		ArgumentNullException.ThrowIfNull(onCompleted);
 
 		return DoCore(source, onNext, onCompleted);
 	}
@@ -86,10 +86,10 @@ public partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> Do<TSource>(this IEnumerable<TSource> source, Action<TSource> onNext, Action<Exception> onError, Action onCompleted)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(onNext);
-		Guard.IsNotNull(onError);
-		Guard.IsNotNull(onCompleted);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(onNext);
+		ArgumentNullException.ThrowIfNull(onError);
+		ArgumentNullException.ThrowIfNull(onCompleted);
 
 		return DoCore(source, onNext, onError, onCompleted);
 	}

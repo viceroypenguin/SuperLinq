@@ -12,7 +12,7 @@ public static partial class AsyncSuperEnumerable
 	/// langword="null"/>.</exception>
 	public static IAsyncEnumerable<TResult> Defer<TResult>(Func<IAsyncEnumerable<TResult>> enumerableFactory)
 	{
-		Guard.IsNotNull(enumerableFactory);
+		ArgumentNullException.ThrowIfNull(enumerableFactory);
 
 		return Core(enumerableFactory);
 

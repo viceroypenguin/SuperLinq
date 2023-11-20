@@ -60,7 +60,7 @@ public static partial class SuperEnumerable
 		Func<T, int> indexSelector,
 		Func<T, TResult> resultSelector)
 	{
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 		return source.ToArrayByIndex(indexSelector, (e, _) => resultSelector(e));
 	}
 
@@ -94,9 +94,9 @@ public static partial class SuperEnumerable
 		Func<T, int> indexSelector,
 		Func<T, int, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(indexSelector);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(indexSelector);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		var lastIndex = -1;
 		var indexed = new List<(int, T)>();
@@ -104,7 +104,8 @@ public static partial class SuperEnumerable
 		foreach (var e in source)
 		{
 			var i = indexSelector(e);
-			Guard.IsGreaterThanOrEqualTo(i, 0, "indexSelector(e)");
+			ArgumentOutOfRangeException.ThrowIfNegative(i, "indexSelector(e)");
+
 			lastIndex = Math.Max(i, lastIndex);
 			indexed.Add((i, e));
 		}
@@ -184,7 +185,7 @@ public static partial class SuperEnumerable
 		Func<T, int> indexSelector,
 		Func<T, TResult> resultSelector)
 	{
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 		return source.ToArrayByIndex(length, indexSelector, (e, _) => resultSelector(e));
 	}
 
@@ -221,16 +222,18 @@ public static partial class SuperEnumerable
 		Func<T, int> indexSelector,
 		Func<T, int, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(length, 0);
-		Guard.IsNotNull(indexSelector);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegative(length);
+		ArgumentNullException.ThrowIfNull(indexSelector);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		var array = new TResult?[length];
 		foreach (var e in source)
 		{
 			var i = indexSelector(e);
-			Guard.IsBetween(i, -1, array.Length, "indexSelector(e)");
+			ArgumentOutOfRangeException.ThrowIfNegative(i, "indexSelector(e)");
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(i, array.Length, "indexSelector(e)");
+
 			array[i] = resultSelector(e, i);
 		}
 		return array;

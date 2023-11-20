@@ -21,7 +21,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TResult> GenerateByIndex<TResult>(Func<int, TResult> generator)
 	{
-		Guard.IsNotNull(generator);
+		ArgumentNullException.ThrowIfNull(generator);
 
 		return Sequence(0, int.MaxValue)
 			.Select(generator);
@@ -46,7 +46,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TResult> GenerateByIndex<TResult>(Func<int, ValueTask<TResult>> generator)
 	{
-		Guard.IsNotNull(generator);
+		ArgumentNullException.ThrowIfNull(generator);
 
 		return Sequence(0, int.MaxValue)
 			.SelectAwait(generator);
@@ -71,7 +71,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TResult> GenerateByIndex<TResult>(Func<int, CancellationToken, ValueTask<TResult>> generator)
 	{
-		Guard.IsNotNull(generator);
+		ArgumentNullException.ThrowIfNull(generator);
 
 		return Sequence(0, int.MaxValue)
 			.SelectAwaitWithCancellation(generator);

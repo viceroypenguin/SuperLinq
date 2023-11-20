@@ -15,7 +15,7 @@ public static partial class SuperEnumerable
 	/// langword="null"/>.</exception>
 	public static IEnumerable<TResult> Defer<TResult>(Func<IEnumerable<TResult>> enumerableFactory)
 	{
-		Guard.IsNotNull(enumerableFactory);
+		ArgumentNullException.ThrowIfNull(enumerableFactory);
 
 		return Core(enumerableFactory);
 

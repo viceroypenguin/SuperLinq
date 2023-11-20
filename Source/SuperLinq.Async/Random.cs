@@ -38,7 +38,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<int> Random(Random rand)
 	{
-		Guard.IsNotNull(rand);
+		ArgumentNullException.ThrowIfNull(rand);
 
 		return RandomImpl(rand, r => r.Next());
 	}
@@ -67,7 +67,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<int> Random(int maxValue)
 	{
-		Guard.IsGreaterThanOrEqualTo(maxValue, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(maxValue);
 
 		return Random(s_randomInstance, maxValue);
 	}
@@ -83,8 +83,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<int> Random(Random rand, int maxValue)
 	{
-		Guard.IsNotNull(rand);
-		Guard.IsGreaterThanOrEqualTo(maxValue, 0);
+		ArgumentNullException.ThrowIfNull(rand);
+		ArgumentOutOfRangeException.ThrowIfNegative(maxValue);
 
 		return RandomImpl(rand, r => r.Next(maxValue));
 	}
@@ -129,8 +129,8 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="minValue"/> is greater than <paramref name="maxValue"/>.</exception>
 	public static IAsyncEnumerable<int> Random(Random rand, int minValue, int maxValue)
 	{
-		Guard.IsNotNull(rand);
-		Guard.IsLessThanOrEqualTo(minValue, maxValue);
+		ArgumentNullException.ThrowIfNull(rand);
+		ArgumentOutOfRangeException.ThrowIfLessThan(maxValue, minValue);
 
 		return RandomImpl(rand, r => r.Next(minValue, maxValue));
 	}
@@ -170,7 +170,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<double> RandomDouble(Random rand)
 	{
-		Guard.IsNotNull(rand);
+		ArgumentNullException.ThrowIfNull(rand);
 
 		return RandomImpl(rand, r => r.NextDouble());
 	}
@@ -234,7 +234,7 @@ public static partial class AsyncSuperEnumerable
 			// randomizing operator from the outer class then they will
 			// need to be overriden.
 
-			throw new NotSupportedException("Should never reach this code.");
+			return ThrowHelper.ThrowNotSupportedException<double>();
 		}
 	}
 #endif

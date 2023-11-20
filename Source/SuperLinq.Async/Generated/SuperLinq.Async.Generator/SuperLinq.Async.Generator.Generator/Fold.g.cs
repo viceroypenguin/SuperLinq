@@ -19,8 +19,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, TResult> folder)
         {
@@ -46,8 +46,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, TResult> folder)
         {
@@ -73,8 +73,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, TResult> folder)
         {
@@ -100,8 +100,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, TResult> folder)
         {
@@ -127,8 +127,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, TResult> folder)
         {
@@ -154,8 +154,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, TResult> folder)
         {
@@ -181,8 +181,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, TResult> folder)
         {
@@ -208,8 +208,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, TResult> folder)
         {
@@ -235,8 +235,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, TResult> folder)
         {
@@ -262,8 +262,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
@@ -289,8 +289,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
@@ -316,8 +316,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
@@ -343,8 +343,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
@@ -370,8 +370,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
@@ -397,8 +397,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
@@ -424,8 +424,8 @@ public static partial class AsyncSuperEnumerable
     /// </exception>
     public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         return Core(source, folder);
         static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {

@@ -144,9 +144,9 @@ public partial class SuperEnumerable
 		where TState : notnull
 		where TCost : notnull
 	{
-		Guard.IsNotNull(start);
-		Guard.IsNotNull(getNeighbors);
-		Guard.IsNotNull(end);
+		ArgumentNullException.ThrowIfNull(start);
+		ArgumentNullException.ThrowIfNull(getNeighbors);
+		ArgumentNullException.ThrowIfNull(end);
 
 		stateComparer ??= EqualityComparer<TState>.Default;
 
@@ -281,9 +281,9 @@ public partial class SuperEnumerable
 		where TState : notnull
 		where TCost : notnull
 	{
-		Guard.IsNotNull(start);
-		Guard.IsNotNull(getNeighbors);
-		Guard.IsNotNull(predicate);
+		ArgumentNullException.ThrowIfNull(start);
+		ArgumentNullException.ThrowIfNull(getNeighbors);
+		ArgumentNullException.ThrowIfNull(predicate);
 
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
@@ -316,7 +316,7 @@ public partial class SuperEnumerable
 
 				var cost = from.traversed;
 				var newStates = getNeighbors(current, cost);
-				Guard.IsNotNull(newStates, $"{nameof(getNeighbors)}()");
+				ArgumentNullException.ThrowIfNull(newStates, $"{nameof(getNeighbors)}()");
 
 				foreach (var (s, p, h) in newStates)
 					queue.EnqueueMinimum(s, (current, h, p));

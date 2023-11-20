@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ExceptionServices;
 
 namespace SuperLinq;
@@ -42,7 +42,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IBuffer<TSource> Memoize<TSource>(this IEnumerable<TSource> source, bool forceCache = true)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return (source, forceCache) switch
 		{
@@ -79,7 +79,7 @@ public static partial class SuperEnumerable
 			lock (_lock)
 			{
 				if (_disposed)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 
 				_buffer = new();
 				_initialized = false;
@@ -101,13 +101,13 @@ public static partial class SuperEnumerable
 			lock (_lock)
 			{
 				if (_disposed)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 
 				Assert.NotNull(_source);
 
 				if (_exceptionIndex == -1)
 				{
-					Guard.IsNotNull(_exception);
+					ArgumentNullException.ThrowIfNull(_exception);
 					_exception.Throw();
 				}
 
@@ -143,7 +143,7 @@ public static partial class SuperEnumerable
 				lock (_lock)
 				{
 					if (_disposed)
-						ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+						ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 					if (!_initialized
 						|| buffer != _buffer)
 					{
@@ -195,6 +195,7 @@ public static partial class SuperEnumerable
 			}
 		}
 
+		[ExcludeFromCodeCoverage]
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		public void Dispose()
@@ -267,11 +268,12 @@ public static partial class SuperEnumerable
 					}
 
 					case State.Disposed:
-						ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+						ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 						break;
 
 					default:
-						throw new UnreachableException();
+						ThrowHelper.ThrowUnreachableException();
+						return;
 				}
 			}
 		}
@@ -333,7 +335,7 @@ public static partial class SuperEnumerable
 						return h.Buffer;
 
 					case State.Disposed:
-						ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+						ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 						break;
 
 					case State.Error:
@@ -341,7 +343,8 @@ public static partial class SuperEnumerable
 						break;
 
 					default:
-						throw new UnreachableException();
+						ThrowHelper.ThrowUnreachableException();
+						return default!;
 				}
 			}
 		}
@@ -351,7 +354,7 @@ public static partial class SuperEnumerable
 			foreach (var i in buffer)
 			{
 				if (_state.State == State.Disposed)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 
 				if (_state.State != State.Initialized
 					|| _state.Buffer != buffer)
@@ -363,6 +366,7 @@ public static partial class SuperEnumerable
 			}
 		}
 
+		[ExcludeFromCodeCoverage]
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		public void Dispose()
@@ -381,18 +385,27 @@ public static partial class SuperEnumerable
 		}
 
 		private ICollection<T>? _source;
-		private ICollection<T> Source =>
-			_source ?? ThrowHelper.ThrowObjectDisposedException<ICollection<T>>(nameof(IBuffer<T>));
+		private ICollection<T> Source
+		{
+			get
+			{
+				if (_source == null)
+					ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
+				return _source;
+			}
+		}
 
 		public void Reset()
 		{
 			if (_source == null)
-				ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+				ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 		}
 
 		public int Count => Source.Count;
 
 		public IEnumerator<T> GetEnumerator() => Source.GetEnumerator();
+
+		[ExcludeFromCodeCoverage]
 		IEnumerator IEnumerable.GetEnumerator() => Source.GetEnumerator();
 
 		public void Dispose() => _source = null;

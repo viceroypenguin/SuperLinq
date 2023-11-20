@@ -30,9 +30,9 @@ public static partial class AsyncSuperEnumerable
 	/// </exception>
 	public static IAsyncEnumerable<T> Insert<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, int index)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
-		Guard.IsGreaterThanOrEqualTo(index, 0);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
+		ArgumentOutOfRangeException.ThrowIfNegative(index);
 
 		return Core(first, second, index);
 
@@ -88,8 +88,8 @@ public static partial class AsyncSuperEnumerable
 	/// </exception>
 	public static IAsyncEnumerable<T> Insert<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, Index index)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		return !index.IsFromEnd ? Insert(first, second, index) :
 			index.Value == 0 ? first.Concat(second) :

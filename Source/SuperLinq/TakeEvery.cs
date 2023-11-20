@@ -25,8 +25,8 @@ public static partial class SuperEnumerable
 	/// </example>
 	public static IEnumerable<TSource> TakeEvery<TSource>(this IEnumerable<TSource> source, int step)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(step, 1);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(step);
 		return source.Where((e, i) => i % step == 0);
 	}
 }

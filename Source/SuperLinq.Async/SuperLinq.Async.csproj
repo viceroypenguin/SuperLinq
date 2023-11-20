@@ -112,7 +112,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Using Include="CommunityToolkit.Diagnostics" />
+		<Using Include="SuperLinq.Exceptions" />
 		<Using Include="System.Runtime.CompilerServices" />
 	</ItemGroup>
 

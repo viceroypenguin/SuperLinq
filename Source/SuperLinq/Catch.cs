@@ -21,8 +21,8 @@ public static partial class SuperEnumerable
 		Func<TException, IEnumerable<TSource>> handler)
 		where TException : Exception
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(handler);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(handler);
 
 		return Core(source, handler);
 
@@ -70,8 +70,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> Catch<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		return Catch(new[] { first, second, });
 	}
@@ -88,7 +88,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> Catch<TSource>(params IEnumerable<TSource>[] sources)
 	{
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return sources.AsEnumerable().Catch();
 	}
@@ -105,7 +105,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> Catch<TSource>(this IEnumerable<IEnumerable<TSource>> sources)
 	{
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return Core(sources);
 
@@ -126,7 +126,7 @@ public static partial class SuperEnumerable
 			// make it outside of the inner `while (true)`
 			while (true)
 			{
-				Guard.IsNotNull(source);
+				ArgumentNullException.ThrowIfNull(source);
 				using var e = source.GetEnumerator();
 
 				while (true)

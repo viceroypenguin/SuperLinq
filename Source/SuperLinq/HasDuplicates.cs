@@ -68,8 +68,8 @@ public static partial class SuperEnumerable
 	public static bool HasDuplicates<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		var enumeratedElements = source.TryGetCollectionCount() is { } collectionCount
 			? new HashSet<TKey>(collectionCount, comparer)

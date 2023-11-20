@@ -27,11 +27,11 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<TSource> source,
 		params IAsyncEnumerable<TSource>[] otherSources)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(otherSources);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(otherSources);
 
 		foreach (var s in otherSources)
-			Guard.IsNotNull(s, nameof(otherSources));
+			ArgumentNullException.ThrowIfNull(s, nameof(otherSources));
 
 		return Amb(otherSources.Prepend(source));
 	}
@@ -58,7 +58,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TSource> Amb<TSource>(
 		this IEnumerable<IAsyncEnumerable<TSource>> sources)
 	{
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return Core(sources);
 

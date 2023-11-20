@@ -23,8 +23,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static ValueTask<bool> EndsWith<T>(this IAsyncEnumerable<T> first, IEnumerable<T> second, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		return EndsWith(first, second.ToAsyncEnumerable(), comparer: null, cancellationToken);
 	}
@@ -74,8 +74,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static ValueTask<bool> EndsWith<T>(this IAsyncEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T>? comparer, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		return EndsWith(first, second.ToAsyncEnumerable(), comparer, cancellationToken);
 	}
@@ -101,8 +101,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static ValueTask<bool> EndsWith<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, IEqualityComparer<T>? comparer, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		comparer ??= EqualityComparer<T>.Default;
 

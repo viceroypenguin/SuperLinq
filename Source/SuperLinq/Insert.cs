@@ -30,7 +30,7 @@ public static partial class SuperEnumerable
 	/// </exception>
 	public static IEnumerable<T> Insert<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
 	{
-		Guard.IsGreaterThanOrEqualTo(index, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(index);
 
 		return Insert(first, second, (Index)index);
 	}
@@ -63,8 +63,8 @@ public static partial class SuperEnumerable
 	/// </exception>
 	public static IEnumerable<T> Insert<T>(this IEnumerable<T> first, IEnumerable<T> second, Index index)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		if (first is IList<T> fList && second is IList<T> sList)
 			return new InsertListIterator<T>(fList, sList, index);
@@ -149,7 +149,9 @@ public static partial class SuperEnumerable
 			{
 				var fCount = _first.GetCollectionCount();
 				var idx = _index.GetOffset(fCount);
-				Guard.IsBetweenOrEqualTo(idx, 0, fCount);
+				ArgumentOutOfRangeException.ThrowIfNegative(idx);
+				ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, fCount);
+
 				return fCount + _second.GetCollectionCount();
 			}
 		}
@@ -158,15 +160,17 @@ public static partial class SuperEnumerable
 		{
 			var fCount = _first.GetCollectionCount();
 			var idx = _index.GetOffset(fCount);
-			Guard.IsBetweenOrEqualTo(idx, 0, fCount);
+			ArgumentOutOfRangeException.ThrowIfNegative(idx);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, fCount);
 
 			return InsertCore(_first, _second, idx);
 		}
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+			ArgumentNullException.ThrowIfNull(array);
+			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
 			_ = _first.CopyTo(array, arrayIndex);
 
@@ -197,7 +201,9 @@ public static partial class SuperEnumerable
 			get
 			{
 				var idx = _index.GetOffset(_first.Count);
-				Guard.IsBetweenOrEqualTo(idx, 0, _first.Count);
+				ArgumentOutOfRangeException.ThrowIfNegative(idx);
+				ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, _first.Count);
+
 				return _first.Count + _second.Count;
 			}
 		}
@@ -205,7 +211,8 @@ public static partial class SuperEnumerable
 		protected override IEnumerable<T> GetEnumerable()
 		{
 			var idx = _index.GetOffset(_first.Count);
-			Guard.IsBetweenOrEqualTo(idx, 0, _first.Count);
+			ArgumentOutOfRangeException.ThrowIfNegative(idx);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, _first.Count);
 
 			for (var i = 0; i < (uint)idx; i++)
 				yield return _first[i];
@@ -221,8 +228,9 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+			ArgumentNullException.ThrowIfNull(array);
+			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
 			_first.CopyTo(array, arrayIndex);
 
@@ -236,9 +244,12 @@ public static partial class SuperEnumerable
 
 		protected override T ElementAt(int index)
 		{
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
+
 			var idx = _index.GetOffset(_first.Count);
-			Guard.IsBetweenOrEqualTo(idx, 0, _first.Count);
-			Guard.IsBetweenOrEqualTo(index, 0, _first.Count + _second.Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(idx);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, _first.Count);
 
 			return index < idx ? _first[index] :
 				index < idx + _second.Count ? _second[index - idx] :

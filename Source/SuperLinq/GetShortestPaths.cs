@@ -145,8 +145,8 @@ public partial class SuperEnumerable
 		where TState : notnull
 		where TCost : notnull
 	{
-		Guard.IsNotNull(start);
-		Guard.IsNotNull(getNeighbors);
+		ArgumentNullException.ThrowIfNull(start);
+		ArgumentNullException.ThrowIfNull(getNeighbors);
 
 		stateComparer ??= EqualityComparer<TState>.Default;
 		costComparer ??= Comparer<TCost>.Default;
@@ -166,7 +166,7 @@ public partial class SuperEnumerable
 
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
-			Guard.IsNotNull(newStates, $"{nameof(getNeighbors)}()");
+			ArgumentNullException.ThrowIfNull(newStates, $"{nameof(getNeighbors)}()");
 
 			foreach (var (s, p) in newStates)
 			{

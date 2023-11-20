@@ -28,11 +28,11 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException">Any of the items in <paramref name="otherSources"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<T> Interleave<T>(this IEnumerable<T> source, params IEnumerable<T>[] otherSources)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(otherSources);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(otherSources);
 
 		foreach (var s in otherSources)
-			Guard.IsNotNull(s, nameof(otherSources));
+			ArgumentNullException.ThrowIfNull(s, nameof(otherSources));
 
 		if (source is ICollection<T> && otherSources.All(s => s is ICollection<T>))
 			return new InterleaveIterator<T>(otherSources.Prepend(source).Cast<ICollection<T>>());
@@ -61,7 +61,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="sources"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<T> Interleave<T>(this IEnumerable<IEnumerable<T>> sources)
 	{
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		if (sources is IEnumerable<ICollection<T>> sourcesColl)
 			return new InterleaveIterator<T>(sourcesColl.ToList());

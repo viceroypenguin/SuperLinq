@@ -39,8 +39,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<IList<TSource>> WindowRight<TSource>(this IAsyncEnumerable<TSource> source, int size)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(size, 1);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
 
 		return Core(source, size);
 

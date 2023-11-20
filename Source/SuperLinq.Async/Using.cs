@@ -30,8 +30,8 @@ public static partial class AsyncSuperEnumerable
 		Func<TResource, IAsyncEnumerable<TSource>> enumerableFactory)
 		where TResource : IAsyncDisposable
 	{
-		Guard.IsNotNull(resourceFactory);
-		Guard.IsNotNull(enumerableFactory);
+		ArgumentNullException.ThrowIfNull(resourceFactory);
+		ArgumentNullException.ThrowIfNull(enumerableFactory);
 
 		return Core(resourceFactory, enumerableFactory);
 

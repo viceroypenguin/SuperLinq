@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 
 	public static bool AtLeast<T>(this IEnumerable<T> source, int count)
 	{
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return QuantityIterator(source, count, count, int.MaxValue);
 	}
@@ -51,7 +51,7 @@ public static partial class SuperEnumerable
 
 	public static bool AtMost<T>(this IEnumerable<T> source, int count)
 	{
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return QuantityIterator(source, count + 1, 0, count);
 	}
@@ -77,7 +77,7 @@ public static partial class SuperEnumerable
 
 	public static bool Exactly<T>(this IEnumerable<T> source, int count)
 	{
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return QuantityIterator(source, count + 1, count, count);
 	}
@@ -106,15 +106,15 @@ public static partial class SuperEnumerable
 
 	public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
 	{
-		Guard.IsGreaterThanOrEqualTo(min, 0);
-		Guard.IsGreaterThanOrEqualTo(max, min);
+		ArgumentOutOfRangeException.ThrowIfNegative(min);
+		ArgumentOutOfRangeException.ThrowIfLessThan(max, min);
 
 		return QuantityIterator(source, max + 1, min, max);
 	}
 
 	private static bool QuantityIterator<T>(IEnumerable<T> source, int limit, int min, int max)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		var count = source.TryGetCollectionCount() ?? source.CountUpTo(limit);
 
@@ -144,8 +144,8 @@ public static partial class SuperEnumerable
 
 	public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		if (first.TryGetCollectionCount() is int firstCount)
 		{
@@ -177,8 +177,8 @@ public static partial class SuperEnumerable
 
 	private static int CountUpTo<T>(this IEnumerable<T> source, int max)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(max, 0);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegative(max);
 
 		var count = 0;
 

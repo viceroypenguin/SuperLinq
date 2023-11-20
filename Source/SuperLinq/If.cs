@@ -44,9 +44,9 @@ public static partial class SuperEnumerable
 		IEnumerable<TResult> thenSource,
 		IEnumerable<TResult> elseSource)
 	{
-		Guard.IsNotNull(condition);
-		Guard.IsNotNull(thenSource);
-		Guard.IsNotNull(elseSource);
+		ArgumentNullException.ThrowIfNull(condition);
+		ArgumentNullException.ThrowIfNull(thenSource);
+		ArgumentNullException.ThrowIfNull(elseSource);
 
 		return Case(
 			condition,

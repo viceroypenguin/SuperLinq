@@ -49,9 +49,9 @@ public static partial class SuperEnumerable
 		int size,
 		Func<IReadOnlyList<TSource>, TResult> selector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(selector);
-		Guard.IsGreaterThanOrEqualTo(size, 1);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(selector);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
 
 		return WindowImpl(source, new TSource[size], size, WindowType.Right, selector);
 	}
@@ -102,9 +102,9 @@ public static partial class SuperEnumerable
 		TSource[] array,
 		Func<IReadOnlyList<TSource>, TResult> selector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(array);
-		Guard.IsNotNull(selector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(array);
+		ArgumentNullException.ThrowIfNull(selector);
 
 		return WindowImpl(source, array, array.Length, WindowType.Right, selector);
 	}
@@ -160,10 +160,11 @@ public static partial class SuperEnumerable
 		int size,
 		Func<IReadOnlyList<TSource>, TResult> selector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(array);
-		Guard.IsNotNull(selector);
-		Guard.IsBetweenOrEqualTo(size, 1, array.Length);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(array);
+		ArgumentNullException.ThrowIfNull(selector);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
+		ArgumentOutOfRangeException.ThrowIfGreaterThan(size, array.Length);
 
 		return WindowImpl(source, array, size, WindowType.Right, selector);
 	}

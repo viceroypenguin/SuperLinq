@@ -73,9 +73,9 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		int count, Func<TSource, int?, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
-		Guard.IsGreaterThanOrEqualTo(count, 1);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
 
 		if (source is IList<TSource> list)
 			return new CountDownListIterator<TSource, TResult>(list, count, resultSelector);
@@ -161,7 +161,9 @@ public static partial class SuperEnumerable
 
 		protected override TResult ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
+
 			return _resultSelector(
 				_source[index],
 				_source.Count - index < _count ? _source.Count - index - 1 : null);

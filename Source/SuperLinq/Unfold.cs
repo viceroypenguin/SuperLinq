@@ -36,10 +36,10 @@ public static partial class SuperEnumerable
 		Func<T, TState> stateSelector,
 		Func<T, TResult> resultSelector)
 	{
-		Guard.IsNotNull(generator);
-		Guard.IsNotNull(predicate);
-		Guard.IsNotNull(stateSelector);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(generator);
+		ArgumentNullException.ThrowIfNull(predicate);
+		ArgumentNullException.ThrowIfNull(stateSelector);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return Core(state, generator, predicate, stateSelector, resultSelector);
 

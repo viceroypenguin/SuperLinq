@@ -38,8 +38,8 @@ public static partial class SuperEnumerable
 	/// </example>
 	public static IEnumerable<IList<TSource>> WindowLeft<TSource>(this IEnumerable<TSource> source, int size)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(size, 1);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
 
 		if (source is IList<TSource> list)
 			return new WindowLeftIterator<TSource>(list, size);
@@ -147,7 +147,8 @@ skipLoop:
 
 		protected override IList<T> ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
 			if (index < _source.Count - _size)
 			{

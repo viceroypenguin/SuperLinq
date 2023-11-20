@@ -21,8 +21,8 @@ public static partial class AsyncSuperEnumerable
 		Func<TException, IAsyncEnumerable<TSource>> handler)
 		where TException : Exception
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(handler);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(handler);
 
 		return Core(source, handler);
 
@@ -71,8 +71,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> Catch<TSource>(this IAsyncEnumerable<TSource> first, IAsyncEnumerable<TSource> second)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		return Catch(new[] { first, second, });
 	}
@@ -89,7 +89,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> Catch<TSource>(params IAsyncEnumerable<TSource>[] sources)
 	{
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return sources.ToAsyncEnumerable().Catch();
 	}
@@ -106,7 +106,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> Catch<TSource>(this IEnumerable<IAsyncEnumerable<TSource>> sources)
 	{
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return sources.ToAsyncEnumerable().Catch();
 	}
@@ -123,7 +123,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> Catch<TSource>(this IAsyncEnumerable<IAsyncEnumerable<TSource>> sources)
 	{
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return Core(sources);
 
@@ -146,7 +146,7 @@ public static partial class AsyncSuperEnumerable
 			// make it outside of the inner `while (true)`
 			while (true)
 			{
-				Guard.IsNotNull(source);
+				ArgumentNullException.ThrowIfNull(source);
 				await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
 
 				while (true)

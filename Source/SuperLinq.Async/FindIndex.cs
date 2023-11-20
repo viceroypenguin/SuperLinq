@@ -113,9 +113,9 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static ValueTask<int> FindIndex<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return Core(source, predicate, index, count, cancellationToken);
 

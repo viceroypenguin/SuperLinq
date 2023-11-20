@@ -28,9 +28,9 @@ public static partial class SuperEnumerable
     /// <param name = "second">The second sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<TResult> Cartesian<T1, T2, TResult>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Func<T1, T2, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         return Core(first, second, resultSelector);
         static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Func<T1, T2, TResult> resultSelector)
         {
@@ -91,10 +91,10 @@ public static partial class SuperEnumerable
     /// <param name = "third">The third sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<TResult> Cartesian<T1, T2, T3, TResult>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Func<T1, T2, T3, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         return Core(first, second, third, resultSelector);
         static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Func<T1, T2, T3, TResult> resultSelector)
         {
@@ -161,11 +161,11 @@ public static partial class SuperEnumerable
     /// <param name = "fourth">The fourth sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<TResult> Cartesian<T1, T2, T3, T4, TResult>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Func<T1, T2, T3, T4, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(fourth);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         return Core(first, second, third, fourth, resultSelector);
         static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Func<T1, T2, T3, T4, TResult> resultSelector)
         {
@@ -238,12 +238,12 @@ public static partial class SuperEnumerable
     /// <param name = "fifth">The fifth sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<TResult> Cartesian<T1, T2, T3, T4, T5, TResult>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Collections.Generic.IEnumerable<T5> fifth, global::System.Func<T1, T2, T3, T4, T5, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fifth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(fourth);
+        ArgumentNullException.ThrowIfNull(fifth);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         return Core(first, second, third, fourth, fifth, resultSelector);
         static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Collections.Generic.IEnumerable<T5> fifth, global::System.Func<T1, T2, T3, T4, T5, TResult> resultSelector)
         {
@@ -322,13 +322,13 @@ public static partial class SuperEnumerable
     /// <param name = "sixth">The sixth sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<TResult> Cartesian<T1, T2, T3, T4, T5, T6, TResult>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Collections.Generic.IEnumerable<T5> fifth, global::System.Collections.Generic.IEnumerable<T6> sixth, global::System.Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fifth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(sixth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(fourth);
+        ArgumentNullException.ThrowIfNull(fifth);
+        ArgumentNullException.ThrowIfNull(sixth);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         return Core(first, second, third, fourth, fifth, sixth, resultSelector);
         static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Collections.Generic.IEnumerable<T5> fifth, global::System.Collections.Generic.IEnumerable<T6> sixth, global::System.Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
         {
@@ -413,14 +413,14 @@ public static partial class SuperEnumerable
     /// <param name = "seventh">The seventh sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<TResult> Cartesian<T1, T2, T3, T4, T5, T6, T7, TResult>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Collections.Generic.IEnumerable<T5> fifth, global::System.Collections.Generic.IEnumerable<T6> sixth, global::System.Collections.Generic.IEnumerable<T7> seventh, global::System.Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fifth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(sixth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(seventh);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(fourth);
+        ArgumentNullException.ThrowIfNull(fifth);
+        ArgumentNullException.ThrowIfNull(sixth);
+        ArgumentNullException.ThrowIfNull(seventh);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         return Core(first, second, third, fourth, fifth, sixth, seventh, resultSelector);
         static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Collections.Generic.IEnumerable<T5> fifth, global::System.Collections.Generic.IEnumerable<T6> sixth, global::System.Collections.Generic.IEnumerable<T7> seventh, global::System.Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector)
         {
@@ -511,15 +511,15 @@ public static partial class SuperEnumerable
     /// <param name = "eighth">The eighth sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<TResult> Cartesian<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(this global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Collections.Generic.IEnumerable<T5> fifth, global::System.Collections.Generic.IEnumerable<T6> sixth, global::System.Collections.Generic.IEnumerable<T7> seventh, global::System.Collections.Generic.IEnumerable<T8> eighth, global::System.Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fifth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(sixth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(seventh);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(eighth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(fourth);
+        ArgumentNullException.ThrowIfNull(fifth);
+        ArgumentNullException.ThrowIfNull(sixth);
+        ArgumentNullException.ThrowIfNull(seventh);
+        ArgumentNullException.ThrowIfNull(eighth);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         return Core(first, second, third, fourth, fifth, sixth, seventh, eighth, resultSelector);
         static global::System.Collections.Generic.IEnumerable<TResult> Core(global::System.Collections.Generic.IEnumerable<T1> first, global::System.Collections.Generic.IEnumerable<T2> second, global::System.Collections.Generic.IEnumerable<T3> third, global::System.Collections.Generic.IEnumerable<T4> fourth, global::System.Collections.Generic.IEnumerable<T5> fifth, global::System.Collections.Generic.IEnumerable<T6> sixth, global::System.Collections.Generic.IEnumerable<T7> seventh, global::System.Collections.Generic.IEnumerable<T8> eighth, global::System.Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector)
         {

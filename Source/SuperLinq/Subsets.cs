@@ -24,7 +24,7 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
 	{
-		Guard.IsNotNull(sequence);
+		ArgumentNullException.ThrowIfNull(sequence);
 
 		return Core(sequence);
 
@@ -73,8 +73,8 @@ public static partial class SuperEnumerable
 
 	public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence, int subsetSize)
 	{
-		Guard.IsNotNull(sequence);
-		Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
+		ArgumentNullException.ThrowIfNull(sequence);
+		ArgumentOutOfRangeException.ThrowIfNegative(subsetSize);
 
 		// NOTE: There's an interesting trade-off that we have to make in this operator.
 		// Ideally, we would throw an exception here if the {subsetSize} parameter is
@@ -191,12 +191,12 @@ public static partial class SuperEnumerable
 
 		public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
 		{
-			Guard.IsNotNull(sequence);
+			ArgumentNullException.ThrowIfNull(sequence);
 			_sequence = sequence;
 
-			Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
+			ArgumentOutOfRangeException.ThrowIfNegative(subsetSize);
 			if (sequence.TryGetCollectionCount() is int cnt)
-				Guard.IsLessThanOrEqualTo(subsetSize, cnt - 1);
+				ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(subsetSize, cnt);
 
 			_subsetSize = subsetSize;
 		}

@@ -65,8 +65,8 @@ public static partial class AsyncSuperEnumerable
 		Func<TSource, TKey> keySelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return GroupAdjacent(source, keySelector, Identity, comparer);
 	}
@@ -105,9 +105,9 @@ public static partial class AsyncSuperEnumerable
 		Func<TSource, TKey> keySelector,
 		Func<TSource, TElement> elementSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
-		Guard.IsNotNull(elementSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
+		ArgumentNullException.ThrowIfNull(elementSelector);
 
 		return GroupAdjacentImpl(
 			source, keySelector, elementSelector,
@@ -153,9 +153,9 @@ public static partial class AsyncSuperEnumerable
 		Func<TSource, TElement> elementSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
-		Guard.IsNotNull(elementSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
+		ArgumentNullException.ThrowIfNull(elementSelector);
 
 		return GroupAdjacentImpl(
 			source, keySelector, elementSelector,
@@ -197,9 +197,9 @@ public static partial class AsyncSuperEnumerable
 		Func<TSource, TKey> keySelector,
 		Func<TKey, IEnumerable<TSource>, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return GroupAdjacentImpl(
 			source, keySelector, Identity,
@@ -244,9 +244,9 @@ public static partial class AsyncSuperEnumerable
 		Func<TKey, IEnumerable<TSource>, TResult> resultSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return GroupAdjacentImpl(
 			source, keySelector, Identity,

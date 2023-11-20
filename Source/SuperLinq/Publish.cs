@@ -33,7 +33,7 @@ public static partial class SuperEnumerable
 	/// </example>
 	public static IBuffer<TSource> Publish<TSource>(this IEnumerable<TSource> source)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return new PublishBuffer<TSource>(source);
 	}
@@ -66,7 +66,7 @@ public static partial class SuperEnumerable
 			lock (_lock)
 			{
 				if (_disposed)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 
 				_initialized = false;
 				_version++;
@@ -91,7 +91,7 @@ public static partial class SuperEnumerable
 			lock (_lock)
 			{
 				if (_disposed)
-					ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+					ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 
 				Assert.NotNull(_source);
 
@@ -134,7 +134,7 @@ public static partial class SuperEnumerable
 					lock (_lock)
 					{
 						if (_disposed)
-							ThrowHelper.ThrowObjectDisposedException(nameof(IBuffer<T>));
+							ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 						if (!_initialized
 							|| version != _version)
 						{

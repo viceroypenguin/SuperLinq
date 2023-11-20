@@ -28,9 +28,9 @@ public static partial class AsyncSuperEnumerable
     /// <param name = "second">The second sequence of elements.</param>
     public static global::System.Collections.Generic.IAsyncEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<TFirst> first, global::System.Collections.Generic.IAsyncEnumerable<TSecond> second, global::System.Func<TFirst, TSecond, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         return Core(first, second, resultSelector);
         static async global::System.Collections.Generic.IAsyncEnumerable<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<TFirst> first, global::System.Collections.Generic.IAsyncEnumerable<TSecond> second, global::System.Func<TFirst, TSecond, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -42,14 +42,14 @@ public static partial class AsyncSuperEnumerable
                 {
                     if (await e2.MoveNextAsync())
                     {
-                        global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
+                        ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
                     }
 
                     yield break;
                 }
 
                 if (!await e2.MoveNextAsync())
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("Second sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException("Second sequence too short.");
                 yield return resultSelector(e1.Current, e2.Current);
             }
         }
@@ -102,10 +102,10 @@ public static partial class AsyncSuperEnumerable
     /// <param name = "third">The third sequence of elements.</param>
     public static global::System.Collections.Generic.IAsyncEnumerable<TResult> EquiZip<TFirst, TSecond, TThird, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<TFirst> first, global::System.Collections.Generic.IAsyncEnumerable<TSecond> second, global::System.Collections.Generic.IAsyncEnumerable<TThird> third, global::System.Func<TFirst, TSecond, TThird, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         return Core(first, second, third, resultSelector);
         static async global::System.Collections.Generic.IAsyncEnumerable<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<TFirst> first, global::System.Collections.Generic.IAsyncEnumerable<TSecond> second, global::System.Collections.Generic.IAsyncEnumerable<TThird> third, global::System.Func<TFirst, TSecond, TThird, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -118,16 +118,16 @@ public static partial class AsyncSuperEnumerable
                 {
                     if (await e2.MoveNextAsync() || await e3.MoveNextAsync())
                     {
-                        global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
+                        ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
                     }
 
                     yield break;
                 }
 
                 if (!await e2.MoveNextAsync())
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("Second sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException("Second sequence too short.");
                 if (!await e3.MoveNextAsync())
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("Third sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException("Third sequence too short.");
                 yield return resultSelector(e1.Current, e2.Current, e3.Current);
             }
         }
@@ -184,11 +184,11 @@ public static partial class AsyncSuperEnumerable
     /// <param name = "fourth">The fourth sequence of elements.</param>
     public static global::System.Collections.Generic.IAsyncEnumerable<TResult> EquiZip<TFirst, TSecond, TThird, TFourth, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<TFirst> first, global::System.Collections.Generic.IAsyncEnumerable<TSecond> second, global::System.Collections.Generic.IAsyncEnumerable<TThird> third, global::System.Collections.Generic.IAsyncEnumerable<TFourth> fourth, global::System.Func<TFirst, TSecond, TThird, TFourth, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(fourth);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         return Core(first, second, third, fourth, resultSelector);
         static async global::System.Collections.Generic.IAsyncEnumerable<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<TFirst> first, global::System.Collections.Generic.IAsyncEnumerable<TSecond> second, global::System.Collections.Generic.IAsyncEnumerable<TThird> third, global::System.Collections.Generic.IAsyncEnumerable<TFourth> fourth, global::System.Func<TFirst, TSecond, TThird, TFourth, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -202,18 +202,18 @@ public static partial class AsyncSuperEnumerable
                 {
                     if (await e2.MoveNextAsync() || await e3.MoveNextAsync() || await e4.MoveNextAsync())
                     {
-                        global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
+                        ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
                     }
 
                     yield break;
                 }
 
                 if (!await e2.MoveNextAsync())
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("Second sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException("Second sequence too short.");
                 if (!await e3.MoveNextAsync())
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("Third sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException("Third sequence too short.");
                 if (!await e4.MoveNextAsync())
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("Fourth sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException("Fourth sequence too short.");
                 yield return resultSelector(e1.Current, e2.Current, e3.Current, e4.Current);
             }
         }

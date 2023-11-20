@@ -24,8 +24,8 @@ public static partial class SuperEnumerable
 	public static IEnumerable<IList<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
 	{
 		// yes this operator duplicates on net6+; but no name overlap, so leave alone
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(size, 1);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
 
 		if (source is IList<TSource> list)
 			return new BatchIterator<TSource>(list, size);
@@ -112,7 +112,8 @@ public static partial class SuperEnumerable
 
 		protected override IList<T> ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
 			var start = index * _size;
 			var max = (uint)Math.Min(_source.Count, start + _size);

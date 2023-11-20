@@ -18,9 +18,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		IEnumerable<int> indices)
 	{
-#pragma warning disable MA0015
-		return BindByIndex(source, indices, static (e, i) => e, static i => throw new ArgumentOutOfRangeException(nameof(indices), "Index is greater than the length of the first sequence."));
-#pragma warning restore MA0015
+		return BindByIndex(source, indices, static (e, i) => e, static i => ThrowHelper.ThrowArgumentOutOfRangeException<TSource>(nameof(indices), "Index is greater than the length of the first sequence."));
 	}
 
 	/// <summary>
@@ -51,17 +49,17 @@ public static partial class SuperEnumerable
 		Func<TSource, int, TResult> resultSelector,
 		Func<int, TResult> missingSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(indices);
-		Guard.IsNotNull(resultSelector);
-		Guard.IsNotNull(missingSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(indices);
+		ArgumentNullException.ThrowIfNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(missingSelector);
 
 		return Core(source, indices, resultSelector, missingSelector);
 
 		static IEnumerable<TResult> Core(IEnumerable<TSource> source, IEnumerable<int> indices, Func<TSource, int, TResult> resultSelector, Func<int, TResult> missingSelector)
 		{
 			// keeps track of the order of indices to know what order items should be output in
-			var lookup = indices.Index().ToDictionary(x => { Guard.IsGreaterThanOrEqualTo(x.item, 0, nameof(indices)); return x.item; }, x => x.index);
+			var lookup = indices.Index().ToDictionary(x => { ArgumentOutOfRangeException.ThrowIfNegative(x.item, nameof(indices)); return x.item; }, x => x.index);
 			// keep track of items out of output order
 			var lookback = new Dictionary<int, TSource>();
 

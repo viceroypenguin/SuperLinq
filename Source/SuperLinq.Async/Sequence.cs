@@ -16,9 +16,11 @@ public static partial class AsyncSuperEnumerable
 	/// </exception>
 	public static IAsyncEnumerable<int> Range(int start, int count, int step)
 	{
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 		var max = start + ((count - 1) * (long)step);
-		Guard.IsBetweenOrEqualTo(max, int.MinValue, int.MaxValue, name: nameof(count));
+		ArgumentOutOfRangeException.ThrowIfLessThan(max, int.MinValue, nameof(count));
+		ArgumentOutOfRangeException.ThrowIfGreaterThan(max, int.MaxValue, nameof(count));
+
 		return Core(start, count, step);
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously

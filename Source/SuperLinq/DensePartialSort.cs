@@ -238,9 +238,9 @@ public static partial class SuperEnumerable
 		IComparer<TKey>? comparer,
 		OrderByDirection direction)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 1);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		comparer ??= Comparer<TKey>.Default;
 		if (direction == OrderByDirection.Descending)

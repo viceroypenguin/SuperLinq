@@ -64,9 +64,9 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
-		Guard.IsGreaterThanOrEqualTo(offset, 1);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(offset);
 
 		if (source is IList<TSource> list)
 			return new LeadIterator<TSource, TResult>(list, offset, defaultLeadValue, resultSelector);
@@ -118,7 +118,9 @@ public static partial class SuperEnumerable
 
 		protected override TResult ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
+
 			return _resultSelector(
 				_source[index],
 				index < Math.Max(_source.Count - _offset, 0)

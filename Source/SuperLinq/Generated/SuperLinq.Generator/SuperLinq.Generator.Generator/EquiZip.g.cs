@@ -28,9 +28,9 @@ public static partial class SuperEnumerable
     /// <param name = "second">The second sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(this global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Func<TFirst, TSecond, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         if (first is global::System.Collections.Generic.IList<TFirst> list1 && second is global::System.Collections.Generic.IList<TSecond> list2)
         {
             return new EquiZipIterator<TFirst, TSecond, TResult>(list1, list2, resultSelector);
@@ -47,14 +47,14 @@ public static partial class SuperEnumerable
                 {
                     if (e2.MoveNext())
                     {
-                        global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
+                        ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
                     }
 
                     yield break;
                 }
 
                 if (!e2.MoveNext())
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("Second sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException("Second sequence too short.");
                 yield return resultSelector(e1.Current, e2.Current);
             }
         }
@@ -98,7 +98,7 @@ public static partial class SuperEnumerable
                 var count = _list1.Count;
                 if (_list2.Count != count)
                 {
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException((count < _list2.Count ? "First" : "Second") + " sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException((count < _list2.Count ? "First" : "Second") + " sequence too short.");
                 }
 
                 return count;
@@ -116,7 +116,8 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
             return _resultSelector(_list1[index], _list2[index]);
         }
     }
@@ -149,10 +150,10 @@ public static partial class SuperEnumerable
     /// <param name = "third">The third sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<TResult> EquiZip<TFirst, TSecond, TThird, TResult>(this global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Collections.Generic.IEnumerable<TThird> third, global::System.Func<TFirst, TSecond, TThird, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         if (first is global::System.Collections.Generic.IList<TFirst> list1 && second is global::System.Collections.Generic.IList<TSecond> list2 && third is global::System.Collections.Generic.IList<TThird> list3)
         {
             return new EquiZipIterator<TFirst, TSecond, TThird, TResult>(list1, list2, list3, resultSelector);
@@ -170,16 +171,16 @@ public static partial class SuperEnumerable
                 {
                     if (e2.MoveNext() || e3.MoveNext())
                     {
-                        global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
+                        ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
                     }
 
                     yield break;
                 }
 
                 if (!e2.MoveNext())
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("Second sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException("Second sequence too short.");
                 if (!e3.MoveNext())
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("Third sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException("Third sequence too short.");
                 yield return resultSelector(e1.Current, e2.Current, e3.Current);
             }
         }
@@ -227,12 +228,12 @@ public static partial class SuperEnumerable
                 var count = _list1.Count;
                 if (_list2.Count != count)
                 {
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException((count < _list2.Count ? "First" : "Second") + " sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException((count < _list2.Count ? "First" : "Second") + " sequence too short.");
                 }
 
                 if (_list3.Count != count)
                 {
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException((count < _list3.Count ? "First" : "Third") + " sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException((count < _list3.Count ? "First" : "Third") + " sequence too short.");
                 }
 
                 return count;
@@ -250,7 +251,8 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
             return _resultSelector(_list1[index], _list2[index], _list3[index]);
         }
     }
@@ -285,11 +287,11 @@ public static partial class SuperEnumerable
     /// <param name = "fourth">The fourth sequence of elements.</param>
     public static global::System.Collections.Generic.IEnumerable<TResult> EquiZip<TFirst, TSecond, TThird, TFourth, TResult>(this global::System.Collections.Generic.IEnumerable<TFirst> first, global::System.Collections.Generic.IEnumerable<TSecond> second, global::System.Collections.Generic.IEnumerable<TThird> third, global::System.Collections.Generic.IEnumerable<TFourth> fourth, global::System.Func<TFirst, TSecond, TThird, TFourth, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(fourth);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         if (first is global::System.Collections.Generic.IList<TFirst> list1 && second is global::System.Collections.Generic.IList<TSecond> list2 && third is global::System.Collections.Generic.IList<TThird> list3 && fourth is global::System.Collections.Generic.IList<TFourth> list4)
         {
             return new EquiZipIterator<TFirst, TSecond, TThird, TFourth, TResult>(list1, list2, list3, list4, resultSelector);
@@ -308,18 +310,18 @@ public static partial class SuperEnumerable
                 {
                     if (e2.MoveNext() || e3.MoveNext() || e4.MoveNext())
                     {
-                        global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
+                        ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
                     }
 
                     yield break;
                 }
 
                 if (!e2.MoveNext())
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("Second sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException("Second sequence too short.");
                 if (!e3.MoveNext())
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("Third sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException("Third sequence too short.");
                 if (!e4.MoveNext())
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("Fourth sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException("Fourth sequence too short.");
                 yield return resultSelector(e1.Current, e2.Current, e3.Current, e4.Current);
             }
         }
@@ -371,17 +373,17 @@ public static partial class SuperEnumerable
                 var count = _list1.Count;
                 if (_list2.Count != count)
                 {
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException((count < _list2.Count ? "First" : "Second") + " sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException((count < _list2.Count ? "First" : "Second") + " sequence too short.");
                 }
 
                 if (_list3.Count != count)
                 {
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException((count < _list3.Count ? "First" : "Third") + " sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException((count < _list3.Count ? "First" : "Third") + " sequence too short.");
                 }
 
                 if (_list4.Count != count)
                 {
-                    global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException((count < _list4.Count ? "First" : "Fourth") + " sequence too short.");
+                    ThrowHelper.ThrowInvalidOperationException((count < _list4.Count ? "First" : "Fourth") + " sequence too short.");
                 }
 
                 return count;
@@ -399,7 +401,8 @@ public static partial class SuperEnumerable
 
         protected override TResult ElementAt(int index)
         {
-            global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
             return _resultSelector(_list1[index], _list2[index], _list3[index], _list4[index]);
         }
     }

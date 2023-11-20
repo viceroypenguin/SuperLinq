@@ -28,7 +28,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> ScanRight<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
 	{
-		Guard.IsNotNull(func);
+		ArgumentNullException.ThrowIfNull(func);
 
 		return source.ScanRight((a, b, ct) => new ValueTask<TSource>(func(a, b)));
 	}
@@ -59,7 +59,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> ScanRight<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, ValueTask<TSource>> func)
 	{
-		Guard.IsNotNull(func);
+		ArgumentNullException.ThrowIfNull(func);
 
 		return source.ScanRight((a, b, ct) => func(a, b));
 	}
@@ -90,8 +90,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> ScanRight<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, CancellationToken, ValueTask<TSource>> func)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(func);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(func);
 
 		return Core(source, func);
 
@@ -144,7 +144,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
 	{
-		Guard.IsNotNull(func);
+		ArgumentNullException.ThrowIfNull(func);
 
 		return source.ScanRight(seed, (a, b, ct) => new ValueTask<TAccumulate>(func(a, b)));
 	}
@@ -176,7 +176,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, ValueTask<TAccumulate>> func)
 	{
-		Guard.IsNotNull(func);
+		ArgumentNullException.ThrowIfNull(func);
 
 		return source.ScanRight(seed, (a, b, ct) => func(a, b));
 	}
@@ -208,8 +208,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(func);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(func);
 
 		return Core(source, seed, func);
 

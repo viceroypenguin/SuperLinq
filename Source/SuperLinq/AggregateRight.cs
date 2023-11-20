@@ -24,8 +24,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static TSource AggregateRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(func);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(func);
 
 		var list = source is IList<TSource> l ? l : source.ToList();
 
@@ -67,8 +67,8 @@ public static partial class SuperEnumerable
 
 	public static TAccumulate AggregateRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(func);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(func);
 
 		var list = source is IList<TSource> l ? l : source.ToList();
 
@@ -109,9 +109,9 @@ public static partial class SuperEnumerable
 
 	public static TResult AggregateRight<TSource, TAccumulate, TResult>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func, Func<TAccumulate, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(func);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(func);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return resultSelector(source.AggregateRight(seed, func));
 	}

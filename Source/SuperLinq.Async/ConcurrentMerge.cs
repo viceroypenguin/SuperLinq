@@ -24,8 +24,8 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<TSource> source,
 		params IAsyncEnumerable<TSource>[] otherSources)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(otherSources);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(otherSources);
 
 		return ConcurrentMerge(otherSources.Prepend(source), int.MaxValue);
 	}
@@ -73,11 +73,11 @@ public static partial class AsyncSuperEnumerable
 		this IEnumerable<IAsyncEnumerable<TSource>> sources,
 		int maxConcurrency)
 	{
-		Guard.IsNotNull(sources);
-		Guard.IsGreaterThanOrEqualTo(maxConcurrency, 1);
+		ArgumentNullException.ThrowIfNull(sources);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxConcurrency);
 
 		foreach (var s in sources)
-			Guard.IsNotNull(s, nameof(sources));
+			ArgumentNullException.ThrowIfNull(s, nameof(sources));
 
 		return Core(sources, maxConcurrency);
 

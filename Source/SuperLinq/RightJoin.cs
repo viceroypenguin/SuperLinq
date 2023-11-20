@@ -45,7 +45,7 @@ public static partial class SuperEnumerable
 		Func<TSource, TResult> secondSelector,
 		Func<TSource, TSource, TResult> bothSelector)
 	{
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return RightJoin(
 			first, second,
@@ -101,7 +101,7 @@ public static partial class SuperEnumerable
 		Func<TSource, TSource, TResult> bothSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return RightJoin(
 			first, second,
@@ -157,12 +157,12 @@ public static partial class SuperEnumerable
 		Func<TSecond, TResult> secondSelector,
 		Func<TFirst, TSecond, TResult> bothSelector)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
-		Guard.IsNotNull(firstKeySelector);
-		Guard.IsNotNull(secondKeySelector);
-		Guard.IsNotNull(secondSelector);
-		Guard.IsNotNull(bothSelector);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
+		ArgumentNullException.ThrowIfNull(firstKeySelector);
+		ArgumentNullException.ThrowIfNull(secondKeySelector);
+		ArgumentNullException.ThrowIfNull(secondSelector);
+		ArgumentNullException.ThrowIfNull(bothSelector);
 
 		return HashJoin(
 			second, first,
@@ -225,12 +225,12 @@ public static partial class SuperEnumerable
 		Func<TFirst, TSecond, TResult> bothSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
-		Guard.IsNotNull(firstKeySelector);
-		Guard.IsNotNull(secondKeySelector);
-		Guard.IsNotNull(secondSelector);
-		Guard.IsNotNull(bothSelector);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
+		ArgumentNullException.ThrowIfNull(firstKeySelector);
+		ArgumentNullException.ThrowIfNull(secondKeySelector);
+		ArgumentNullException.ThrowIfNull(secondSelector);
+		ArgumentNullException.ThrowIfNull(bothSelector);
 
 		return HashJoin(
 				second, first,

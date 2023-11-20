@@ -27,7 +27,7 @@ public class AssertCountTest
 		using (seq)
 		{
 			var result = seq.AssertCount(11);
-			_ = Assert.Throws<ArgumentException>("source.Count()",
+			_ = Assert.Throws<ArgumentOutOfRangeException>("source.Count()",
 				() => result.Consume());
 		}
 	}
@@ -52,7 +52,7 @@ public class AssertCountTest
 		using (seq)
 		{
 			var result = seq.AssertCount(9);
-			_ = Assert.Throws<ArgumentException>("source.Count()",
+			_ = Assert.Throws<ArgumentOutOfRangeException>("source.Count()",
 				() => result.Consume());
 		}
 	}
@@ -86,7 +86,7 @@ public class AssertCountTest
 	{
 		var stack = new Stack<int>(Enumerable.Range(1, 3));
 		var result = stack.AssertCount(4);
-		_ = Assert.Throws<ArgumentException>("source.Count()",
+		_ = Assert.Throws<ArgumentOutOfRangeException>("source.Count()",
 			() => result.Consume());
 		stack.Push(4);
 		result.Consume();

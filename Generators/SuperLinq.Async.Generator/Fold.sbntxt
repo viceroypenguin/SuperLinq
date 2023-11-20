@@ -26,8 +26,8 @@ public static partial class AsyncSuperEnumerable
 		{{~ end ~}}
 		TResult> folder)
     {
-		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-		global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(folder);
 
 		return Core(source, folder);
 

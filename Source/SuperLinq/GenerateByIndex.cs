@@ -22,7 +22,7 @@ public static partial class SuperEnumerable
 	[Obsolete("Will be removed in v6.0.0; better implemented as `Enumerable.Range().Select()`")]
 	public static IEnumerable<TResult> GenerateByIndex<TResult>(Func<int, TResult> generator)
 	{
-		Guard.IsNotNull(generator);
+		ArgumentNullException.ThrowIfNull(generator);
 
 		return Sequence(0, int.MaxValue)
 			.Select(generator);

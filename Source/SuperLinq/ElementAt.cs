@@ -25,7 +25,7 @@ public static partial class SuperEnumerable
 	public static TSource ElementAt<TSource>(IEnumerable<TSource> source, Index index)
 #endif
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		if (!index.IsFromEnd)
 		{
@@ -62,7 +62,7 @@ public static partial class SuperEnumerable
 	public static TSource? ElementAtOrDefault<TSource>(IEnumerable<TSource> source, Index index)
 #endif
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		if (!index.IsFromEnd)
 		{

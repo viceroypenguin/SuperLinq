@@ -23,7 +23,7 @@ public partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> DoWhile<TSource>(this IAsyncEnumerable<TSource> source, Func<bool> condition)
 	{
-		Guard.IsNotNull(condition);
+		ArgumentNullException.ThrowIfNull(condition);
 
 		return DoWhile(source, condition.ToAsync());
 	}
@@ -50,8 +50,8 @@ public partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TSource> DoWhile<TSource>(this IAsyncEnumerable<TSource> source, Func<ValueTask<bool>> condition)
 	{
 
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(condition);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(condition);
 
 		return Core(source, condition);
 

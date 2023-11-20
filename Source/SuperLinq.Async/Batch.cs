@@ -24,8 +24,8 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<IList<TSource>> Batch<TSource>(this IAsyncEnumerable<TSource> source, int size)
 	{
 		// yes this operator duplicates on net6+; but no name overlap, so leave alone
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(size, 1);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
 
 		return Core(source, size);
 

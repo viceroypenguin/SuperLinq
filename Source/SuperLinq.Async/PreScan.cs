@@ -42,8 +42,8 @@ public static partial class AsyncSuperEnumerable
 		Func<TSource, TSource, TSource> transformation,
 		TSource identity)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(transformation);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(transformation);
 
 		return Core(source, transformation, identity);
 

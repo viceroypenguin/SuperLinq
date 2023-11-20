@@ -24,7 +24,7 @@ public partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> Repeat<TSource>(this IAsyncEnumerable<TSource> source)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return Core(source);
 
@@ -58,8 +58,8 @@ public partial class AsyncSuperEnumerable
 	/// <c>0</c>.</exception>
 	public static IAsyncEnumerable<TSource> Repeat<TSource>(this IAsyncEnumerable<TSource> source, int count)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThan(count, 0);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
 
 		return Core(source, count);
 

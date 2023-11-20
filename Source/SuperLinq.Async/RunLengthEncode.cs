@@ -27,7 +27,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<(T value, int count)> RunLengthEncode<T>(this IAsyncEnumerable<T> sequence, IEqualityComparer<T>? comparer)
 	{
-		Guard.IsNotNull(sequence);
+		ArgumentNullException.ThrowIfNull(sequence);
 
 		return Core(sequence, comparer ?? EqualityComparer<T>.Default);
 

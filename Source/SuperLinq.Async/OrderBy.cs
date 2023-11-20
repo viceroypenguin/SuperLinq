@@ -14,8 +14,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IOrderedAsyncEnumerable<T> OrderBy<T, TKey>(this IAsyncEnumerable<T> source, Func<T, TKey> keySelector, OrderByDirection direction)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 		return direction == OrderByDirection.Ascending
 			? source.OrderBy(keySelector)
 			: source.OrderByDescending(keySelector);
@@ -34,8 +34,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IOrderedAsyncEnumerable<T> OrderBy<T, TKey>(this IAsyncEnumerable<T> source, Func<T, TKey> keySelector, IComparer<TKey> comparer, OrderByDirection direction)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 		return direction == OrderByDirection.Ascending
 			? source.OrderBy(keySelector, comparer)
 			: source.OrderByDescending(keySelector, comparer);
@@ -53,8 +53,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IOrderedAsyncEnumerable<T> ThenBy<T, TKey>(this IOrderedAsyncEnumerable<T> source, Func<T, TKey> keySelector, OrderByDirection direction)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 		return direction == OrderByDirection.Ascending
 			? source.ThenBy(keySelector)
 			: source.ThenByDescending(keySelector);
@@ -73,8 +73,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IOrderedAsyncEnumerable<T> ThenBy<T, TKey>(this IOrderedAsyncEnumerable<T> source, Func<T, TKey> keySelector, IComparer<TKey> comparer, OrderByDirection direction)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 		return direction == OrderByDirection.Ascending
 			? source.ThenBy(keySelector, comparer)
 			: source.ThenByDescending(keySelector, comparer);

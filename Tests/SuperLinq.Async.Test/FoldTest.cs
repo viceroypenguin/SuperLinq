@@ -5,21 +5,21 @@ public class FoldTest
 	[Fact]
 	public async Task FoldWithTooFewItems()
 	{
-		_ = await Assert.ThrowsAsync<ArgumentException>(async () =>
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await AsyncEnumerable.Range(1, 3).Fold(AsyncBreakingFunc.Of<int, int, int, int, int>()));
 	}
 
 	[Fact]
 	public async Task FoldWithEmptySequence()
 	{
-		_ = await Assert.ThrowsAsync<ArgumentException>(async () =>
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await AsyncEnumerable.Empty<int>().Fold(AsyncBreakingFunc.Of<int, int>()));
 	}
 
 	[Fact]
 	public async Task FoldWithTooManyItems()
 	{
-		_ = await Assert.ThrowsAsync<ArgumentException>(async () =>
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await AsyncEnumerable.Range(1, 3).Fold(AsyncBreakingFunc.Of<int, int, int>()));
 	}
 

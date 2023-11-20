@@ -62,9 +62,9 @@ public static partial class SuperEnumerable
 		Func<T, bool> predicate,
 		Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		var lookup = source.ToLookup(predicate);
 		return resultSelector(lookup[true], lookup[false]);
@@ -91,8 +91,8 @@ public static partial class SuperEnumerable
 		this IEnumerable<IGrouping<bool, T>> source,
 		Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return source.Partition(
 			key1: true, key2: false,
@@ -121,8 +121,8 @@ public static partial class SuperEnumerable
 		this IEnumerable<IGrouping<bool?, T>> source,
 		Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return source.Partition(
 			key1: true, key2: false, key3: null,
@@ -186,8 +186,8 @@ public static partial class SuperEnumerable
 		TKey key, IEqualityComparer<TKey>? comparer,
 		Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return PartitionImpl(
 			source, 1, key, key2: default, key3: default, comparer,
@@ -255,8 +255,8 @@ public static partial class SuperEnumerable
 		TKey key1, TKey key2, IEqualityComparer<TKey>? comparer,
 		Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return PartitionImpl(
 			source, 2, key1, key2, key3: default, comparer,
@@ -326,8 +326,8 @@ public static partial class SuperEnumerable
 		TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey>? comparer,
 		Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return PartitionImpl(source, 3, key1, key2, key3, comparer, resultSelector);
 	}

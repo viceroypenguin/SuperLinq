@@ -30,8 +30,8 @@ public static partial class SuperEnumerable
 		Func<TResource, IEnumerable<TSource>> enumerableFactory)
 		where TResource : IDisposable
 	{
-		Guard.IsNotNull(resourceFactory);
-		Guard.IsNotNull(enumerableFactory);
+		ArgumentNullException.ThrowIfNull(resourceFactory);
+		ArgumentNullException.ThrowIfNull(enumerableFactory);
 
 		return Core(resourceFactory, enumerableFactory);
 

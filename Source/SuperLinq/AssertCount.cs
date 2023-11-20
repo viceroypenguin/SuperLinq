@@ -21,8 +21,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, int count)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		if (source is IList<TSource> list)
 			return new AssertCountListIterator<TSource>(list, count);
@@ -41,7 +41,8 @@ public static partial class SuperEnumerable
 					break;
 				yield return item;
 			}
-			Guard.IsEqualTo(c, count, $"{nameof(source)}.Count()");
+
+			ArgumentOutOfRangeException.ThrowIfNotEqual(c, count, $"{nameof(source)}.Count()");
 		}
 	}
 
@@ -60,14 +61,14 @@ public static partial class SuperEnumerable
 		{
 			get
 			{
-				Guard.IsEqualTo(_source.GetCollectionCount(), _count, "source.Count()");
+				ArgumentOutOfRangeException.ThrowIfNotEqual(_source.GetCollectionCount(), _count, "source.Count()");
 				return _count;
 			}
 		}
 
 		protected override IEnumerable<T> GetEnumerable()
 		{
-			Guard.IsEqualTo(_source.GetCollectionCount(), _count, "source.Count()");
+			ArgumentOutOfRangeException.ThrowIfNotEqual(_source.GetCollectionCount(), _count, "source.Count()");
 
 			foreach (var item in _source)
 				yield return item;
@@ -75,8 +76,9 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+			ArgumentNullException.ThrowIfNull(array);
+			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
 			_ = _source.CopyTo(array, arrayIndex);
 		}
@@ -97,7 +99,7 @@ public static partial class SuperEnumerable
 		{
 			get
 			{
-				Guard.IsEqualTo(_source.Count, _count, "source.Count()");
+				ArgumentOutOfRangeException.ThrowIfNotEqual(_source.Count, _count, "source.Count()");
 				return _count;
 			}
 		}
@@ -113,15 +115,18 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+			ArgumentNullException.ThrowIfNull(array);
+			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
 			_source.CopyTo(array, arrayIndex);
 		}
 
 		protected override T ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
+
 			return _source[index];
 		}
 	}

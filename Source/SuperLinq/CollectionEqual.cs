@@ -79,8 +79,8 @@ public static partial class SuperEnumerable
 		IEnumerable<TSource> second,
 		IEqualityComparer<TSource>? comparer)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		var cmp = ValueTupleEqualityComparer.Create<TSource, int>(comparer, comparer2: null);
 		var firstSet = first.CountBy(Identity, comparer)

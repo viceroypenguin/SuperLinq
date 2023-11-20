@@ -19,8 +19,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="selector"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<(TSource item, TResult result)> ZipMap<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(selector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(selector);
 
 		if (source is IList<TSource> list)
 			return new ZipMapIterator<TSource, TResult>(list, selector);
@@ -60,7 +60,8 @@ public static partial class SuperEnumerable
 
 		protected override (TSource, TResult) ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
 			var el = _source[index];
 			return (el, _selector(el));

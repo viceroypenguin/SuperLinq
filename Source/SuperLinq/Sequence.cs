@@ -16,10 +16,11 @@ public static partial class SuperEnumerable
 	/// </exception>
 	public static IEnumerable<int> Range(int start, int count, int step)
 	{
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		var max = start + ((count - 1) * (long)step);
-		Guard.IsBetweenOrEqualTo(max, int.MinValue, int.MaxValue, name: nameof(count));
+		ArgumentOutOfRangeException.ThrowIfLessThan(max, int.MinValue, nameof(count));
+		ArgumentOutOfRangeException.ThrowIfGreaterThan(max, int.MaxValue, nameof(count));
 
 		return new SequenceIterator(start, step, count);
 	}
@@ -105,7 +106,9 @@ public static partial class SuperEnumerable
 
 		protected override int ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
+
 			return _start + (_step * index);
 		}
 	}

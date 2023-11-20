@@ -24,9 +24,9 @@ public static partial class AsyncSuperEnumerable
     /// <param name = "second">The second sequence of elements.</param>
     public static global::System.Collections.Generic.IAsyncEnumerable<TResult> ZipLongest<T1, T2, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T1> first, global::System.Collections.Generic.IAsyncEnumerable<T2> second, global::System.Func<T1?, T2?, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         return Core(first, second, resultSelector);
         static async global::System.Collections.Generic.IAsyncEnumerable<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T1> first, global::System.Collections.Generic.IAsyncEnumerable<T2> second, global::System.Func<T1?, T2?, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -88,10 +88,10 @@ public static partial class AsyncSuperEnumerable
     /// <param name = "third">The third sequence of elements.</param>
     public static global::System.Collections.Generic.IAsyncEnumerable<TResult> ZipLongest<T1, T2, T3, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T1> first, global::System.Collections.Generic.IAsyncEnumerable<T2> second, global::System.Collections.Generic.IAsyncEnumerable<T3> third, global::System.Func<T1?, T2?, T3?, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         return Core(first, second, third, resultSelector);
         static async global::System.Collections.Generic.IAsyncEnumerable<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T1> first, global::System.Collections.Generic.IAsyncEnumerable<T2> second, global::System.Collections.Generic.IAsyncEnumerable<T3> third, global::System.Func<T1?, T2?, T3?, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -160,11 +160,11 @@ public static partial class AsyncSuperEnumerable
     /// <param name = "fourth">The fourth sequence of elements.</param>
     public static global::System.Collections.Generic.IAsyncEnumerable<TResult> ZipLongest<T1, T2, T3, T4, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T1> first, global::System.Collections.Generic.IAsyncEnumerable<T2> second, global::System.Collections.Generic.IAsyncEnumerable<T3> third, global::System.Collections.Generic.IAsyncEnumerable<T4> fourth, global::System.Func<T1?, T2?, T3?, T4?, TResult> resultSelector)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(first);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(second);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(third);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(fourth);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+        ArgumentNullException.ThrowIfNull(third);
+        ArgumentNullException.ThrowIfNull(fourth);
+        ArgumentNullException.ThrowIfNull(resultSelector);
         return Core(first, second, third, fourth, resultSelector);
         static async global::System.Collections.Generic.IAsyncEnumerable<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T1> first, global::System.Collections.Generic.IAsyncEnumerable<T2> second, global::System.Collections.Generic.IAsyncEnumerable<T3> third, global::System.Collections.Generic.IAsyncEnumerable<T4> fourth, global::System.Func<T1?, T2?, T3?, T4?, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {

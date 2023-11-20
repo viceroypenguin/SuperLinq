@@ -30,8 +30,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> ScanRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(func);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(func);
 
 		if (source is ICollection<TSource> coll)
 			return new ScanRightIterator<TSource>(coll, func);
@@ -79,8 +79,9 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+			ArgumentNullException.ThrowIfNull(array);
+			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
 			var (sList, b, cnt) = _source is IList<T> s
 				? (s, 0, s.Count)
@@ -125,8 +126,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(func);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(func);
 
 		return Core(source, seed, func);
 

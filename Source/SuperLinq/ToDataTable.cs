@@ -75,9 +75,9 @@ public static partial class SuperEnumerable
 	public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
 		where TTable : DataTable
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(table);
-		Guard.IsNotNull(expressions);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(table);
+		ArgumentNullException.ThrowIfNull(expressions);
 
 		var members = PrepareMemberInfos(expressions).ToArray();
 		members = BuildOrBindSchema(table, members);
@@ -112,44 +112,35 @@ public static partial class SuperEnumerable
 		//
 		// If no lambda expressions supplied then reflect them off the source element type.
 		//
-
 		if (expressions.Count == 0)
 		{
-			return from m in typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
-				   where m.MemberType == MemberTypes.Field
-					  || (m is PropertyInfo { CanRead: true } p && p.GetIndexParameters().Length == 0)
-				   select m;
+			return typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
+				.Where(m => m.MemberType == MemberTypes.Field
+					  || (m is PropertyInfo { CanRead: true } p && p.GetIndexParameters().Length == 0));
 		}
-
-		//
-		// Ensure none of the expressions is <see langword="null"/>.
-		//
-
-		if (expressions.Any(e => e == null))
-			throw new ArgumentException("One of the supplied expressions was null.", nameof(expressions));
-		try
+		else
 		{
-			return expressions.Select(GetAccessedMember);
-		}
-		catch (ArgumentException e)
-		{
-			throw new ArgumentException("One of the supplied expressions is not allowed.", nameof(expressions), e);
-		}
+			return expressions
+				.Select(static lambda =>
+				{
+					var body = lambda.Body;
 
-		static MemberInfo GetAccessedMember(LambdaExpression lambda)
-		{
-			var body = lambda.Body;
+					// If it's a field access, boxing was used, we need the field
+					if (body.NodeType is ExpressionType.Convert or ExpressionType.ConvertChecked)
+					{
+						body = ((UnaryExpression)body).Operand;
+					}
 
-			// If it's a field access, boxing was used, we need the field
-			if (body.NodeType is ExpressionType.Convert or ExpressionType.ConvertChecked)
-				body = ((UnaryExpression)body).Operand;
+					// Check if the member expression is valid and is a "first level"
+					// member access e.g. not a.b.c
+					if (body is not MemberExpression me
+						|| me.Expression?.NodeType != ExpressionType.Parameter)
+					{
+						return ThrowHelper.ThrowArgumentException<MemberInfo>(nameof(lambda), $"Illegal expression: {lambda}");
+					}
 
-			// Check if the member expression is valid and is a "first level"
-			// member access e.g. not a.b.c
-			return body is MemberExpression memberExpression
-				   && memberExpression.Expression?.NodeType == ExpressionType.Parameter
-				 ? memberExpression.Member
-				 : throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
+					return me.Member;
+				});
 		}
 	}
 

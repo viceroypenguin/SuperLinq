@@ -52,9 +52,9 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TSource> WhereLead<TSource>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, bool> predicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
-		Guard.IsGreaterThanOrEqualTo(offset, 1);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(offset);
 
 		return Core(source, offset, defaultLeadValue, predicate);
 

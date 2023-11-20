@@ -16,8 +16,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="filter"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, IEnumerable<bool> filter)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(filter);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(filter);
 
 		return Core(source, filter);
 

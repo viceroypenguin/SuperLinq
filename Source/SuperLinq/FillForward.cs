@@ -45,8 +45,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
 
 		return source is ICollection<T> coll
 			? new FillForwardCollection<T>(coll, predicate, fillSelector: default)
@@ -78,9 +78,9 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(predicate);
-		Guard.IsNotNull(fillSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(predicate);
+		ArgumentNullException.ThrowIfNull(fillSelector);
 
 		return source is ICollection<T> coll
 			? new FillForwardCollection<T>(coll, predicate, fillSelector)
@@ -131,8 +131,9 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+			ArgumentNullException.ThrowIfNull(array);
+			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(arrayIndex, Count);
 
 			_source.CopyTo(array, arrayIndex);
 

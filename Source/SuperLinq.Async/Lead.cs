@@ -16,7 +16,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<(TSource current, TSource? lead)> Lead<TSource>(this IAsyncEnumerable<TSource> source, int offset)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return source.Select(Some)
 					 .Lead(offset, default, (curr, lead) => (curr.Value, lead is (true, var some) ? some : default));
@@ -39,8 +39,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TResult> Lead<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return source.Select(Some)
 					 .Lead(offset, default, (curr, lead) => resultSelector(curr.Value, lead is (true, var some) ? some : default));
@@ -62,8 +62,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TResult> Lead<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return source.Lead(offset, defaultLeadValue, (curr, lead) => new ValueTask<TResult>(resultSelector(curr, lead)));
 	}
@@ -84,9 +84,9 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TResult> Lead<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, ValueTask<TResult>> resultSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(resultSelector);
-		Guard.IsGreaterThanOrEqualTo(offset, 1);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(resultSelector);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(offset);
 
 		return Core(source, offset, defaultLeadValue, resultSelector);
 

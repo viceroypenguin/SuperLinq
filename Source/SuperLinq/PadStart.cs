@@ -90,9 +90,9 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
 	public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(paddingSelector);
-		Guard.IsGreaterThanOrEqualTo(width, 0);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(paddingSelector);
+		ArgumentOutOfRangeException.ThrowIfNegative(width);
 
 		if (source is IList<TSource> list)
 			return new PadStartListIterator<TSource>(list, width, paddingSelector);
@@ -164,8 +164,9 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+			ArgumentNullException.ThrowIfNull(array);
+			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
 			var offset = Math.Max(_width - _source.GetCollectionCount(), 0);
 			for (var i = 0; i < offset; i++)
@@ -201,8 +202,9 @@ public static partial class SuperEnumerable
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
-			Guard.IsNotNull(array);
-			Guard.IsBetweenOrEqualTo(arrayIndex, 0, array.Length - Count);
+			ArgumentNullException.ThrowIfNull(array);
+			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
 			var offset = Math.Max(_width - _source.Count, 0);
 			for (var i = 0; i < offset; i++)
@@ -213,7 +215,8 @@ public static partial class SuperEnumerable
 
 		protected override T ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
 			var offset = Math.Max(_width - _source.Count, 0);
 			return index < offset

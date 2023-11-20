@@ -51,7 +51,7 @@ public static partial class SuperEnumerable
 #endif
 		where TKey : notnull
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		return source.ToDictionary(e => e.Key, e => e.Value, comparer);
 	}
 
@@ -105,7 +105,7 @@ public static partial class SuperEnumerable
 #endif
 		where TKey : notnull
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		return source.ToDictionary(e => e.Key, e => e.Value, comparer);
 	}
 }

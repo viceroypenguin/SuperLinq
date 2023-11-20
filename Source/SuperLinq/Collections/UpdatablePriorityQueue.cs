@@ -6,6 +6,7 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace SuperLinq.Collections;
 
@@ -142,7 +143,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// </exception>
 	public UpdatablePriorityQueue(int initialCapacity, IComparer<TPriority>? priorityComparer, IEqualityComparer<TElement>? elementComparer)
 	{
-		Guard.IsGreaterThanOrEqualTo(initialCapacity, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(initialCapacity);
 
 		_nodes = new (TElement, TPriority)[initialCapacity];
 		_priorityComparer = InitializeComparer(priorityComparer);
@@ -190,7 +191,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// </remarks>
 	public UpdatablePriorityQueue(IEnumerable<(TElement Element, TPriority Priority)> items, IComparer<TPriority>? priorityComparer, IEqualityComparer<TElement>? elementComparer)
 	{
-		Guard.IsNotNull(items);
+		ArgumentNullException.ThrowIfNull(items);
 
 		_nodes = items.ToArray();
 		_priorityComparer = InitializeComparer(priorityComparer);
@@ -458,7 +459,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <remarks>Any existing elements will be unconditionally updated to the new priority.</remarks>
 	public void EnqueueRange(IEnumerable<(TElement Element, TPriority Priority)> items)
 	{
-		Guard.IsNotNull(items);
+		ArgumentNullException.ThrowIfNull(items);
 
 		var count = 0;
 		var collection = items as ICollection<(TElement Element, TPriority Priority)>;
@@ -522,7 +523,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <remarks>Any existing elements will be unconditionally updated to the new priority.</remarks>
 	public void EnqueueRange(IEnumerable<TElement> elements, TPriority priority)
 	{
-		Guard.IsNotNull(elements);
+		ArgumentNullException.ThrowIfNull(elements);
 
 		int count;
 		if (elements is ICollection<(TElement Element, TPriority Priority)> collection &&
@@ -575,7 +576,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <remarks>Any existing elements will be updated to the new priority if and only if the new priority is lower than the existing priority.</remarks>
 	public void EnqueueRangeMinimum(IEnumerable<(TElement Element, TPriority Priority)> items)
 	{
-		Guard.IsNotNull(items);
+		ArgumentNullException.ThrowIfNull(items);
 
 		var count = 0;
 		var collection = items as ICollection<(TElement Element, TPriority Priority)>;
@@ -639,7 +640,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <remarks>Any existing elements will be updated to the new priority if and only if the new priority is lower than the existing priority.</remarks>
 	public void EnqueueRangeMinimum(IEnumerable<TElement> elements, TPriority priority)
 	{
-		Guard.IsNotNull(elements);
+		ArgumentNullException.ThrowIfNull(elements);
 
 		int count;
 		if (elements is ICollection<(TElement Element, TPriority Priority)> collection &&
@@ -708,7 +709,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// <returns>The current capacity of the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>.</returns>
 	public int EnsureCapacity(int capacity)
 	{
-		Guard.IsGreaterThanOrEqualTo(capacity, 0);
+		ArgumentOutOfRangeException.ThrowIfNegative(capacity);
 
 		if (_nodes.Length < capacity)
 		{
@@ -1069,16 +1070,9 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 
 		void ICollection.CopyTo(Array array, int index)
 		{
-			Guard.IsNotNull(array);
+			ArgumentNullException.ThrowIfNull(array);
 
-			try
-			{
-				Array.Copy(Queue._nodes, 0, array, index, Queue.Count);
-			}
-			catch (ArrayTypeMismatchException)
-			{
-				ThrowHelper.ThrowArrayTypeMismatchException();
-			}
+			Array.Copy(Queue._nodes, 0, array, index, Queue.Count);
 		}
 
 		/// <summary>
@@ -1174,7 +1168,7 @@ internal sealed class PriorityQueueDebugView<TElement, TPriority>
 
 	public PriorityQueueDebugView(UpdatablePriorityQueue<TElement, TPriority> queue)
 	{
-		Guard.IsNotNull(queue);
+		ArgumentNullException.ThrowIfNull(queue);
 
 		_queue = queue;
 		_sort = true;
@@ -1182,7 +1176,9 @@ internal sealed class PriorityQueueDebugView<TElement, TPriority>
 
 	public PriorityQueueDebugView(UpdatablePriorityQueue<TElement, TPriority>.UnorderedItemsCollection collection)
 	{
-		_queue = collection?.Queue ?? throw new ArgumentNullException(nameof(collection));
+		ArgumentNullException.ThrowIfNull(collection);
+
+		_queue = collection.Queue;
 	}
 
 	[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]

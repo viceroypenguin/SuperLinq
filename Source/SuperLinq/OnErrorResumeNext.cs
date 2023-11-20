@@ -13,8 +13,8 @@ public static partial class SuperEnumerable
 	/// langword="null"/>.</exception>
 	public static IEnumerable<TSource> OnErrorResumeNext<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second)
 	{
-		Guard.IsNotNull(first);
-		Guard.IsNotNull(second);
+		ArgumentNullException.ThrowIfNull(first);
+		ArgumentNullException.ThrowIfNull(second);
 
 		return OnErrorResumeNext(new[] { first, second, });
 	}
@@ -29,7 +29,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="sources"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> OnErrorResumeNext<TSource>(params IEnumerable<TSource>[] sources)
 	{
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return sources.AsEnumerable().OnErrorResumeNext();
 	}
@@ -44,7 +44,7 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="sources"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> OnErrorResumeNext<TSource>(this IEnumerable<IEnumerable<TSource>> sources)
 	{
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return Core(sources);
 
@@ -52,7 +52,7 @@ public static partial class SuperEnumerable
 		{
 			foreach (var source in sources)
 			{
-				Guard.IsNotNull(source);
+				ArgumentNullException.ThrowIfNull(source);
 				using var e = source.GetEnumerator();
 
 				while (true)

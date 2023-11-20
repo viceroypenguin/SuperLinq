@@ -21,8 +21,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> AssertCount<TSource>(this IAsyncEnumerable<TSource> source, int count)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		return Core(source, count);
 
@@ -38,7 +38,8 @@ public static partial class AsyncSuperEnumerable
 					break;
 				yield return item;
 			}
-			Guard.IsEqualTo(c, count, $"{nameof(source)}.Count()");
+
+			ArgumentOutOfRangeException.ThrowIfNotEqual(c, count, $"{nameof(source)}.Count()");
 		}
 	}
 }

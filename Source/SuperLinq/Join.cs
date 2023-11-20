@@ -22,17 +22,17 @@ public static partial class SuperEnumerable
 		Func<TRight, TResult>? rightResultSelector,
 		Func<TLeft, TRight, TResult> bothResultSelector)
 	{
-		Guard.IsNotNull(left);
-		Guard.IsNotNull(right);
-		Guard.IsNotNull(leftKeySelector);
-		Guard.IsNotNull(rightKeySelector);
+		ArgumentNullException.ThrowIfNull(left);
+		ArgumentNullException.ThrowIfNull(right);
+		ArgumentNullException.ThrowIfNull(leftKeySelector);
+		ArgumentNullException.ThrowIfNull(rightKeySelector);
 
 		if (joinOperation.HasFlag(JoinOperation.LeftOuter))
-			Guard.IsNotNull(leftResultSelector);
+			ArgumentNullException.ThrowIfNull(leftResultSelector);
 		if (joinOperation.HasFlag(JoinOperation.RightOuter))
-			Guard.IsNotNull(rightResultSelector);
+			ArgumentNullException.ThrowIfNull(rightResultSelector);
 
-		Guard.IsNotNull(bothResultSelector);
+		ArgumentNullException.ThrowIfNull(bothResultSelector);
 
 		return joinType switch
 		{
@@ -85,18 +85,18 @@ public static partial class SuperEnumerable
 		TComparer comparer)
 		where TComparer : notnull, IComparer<TKey>, IEqualityComparer<TKey>
 	{
-		Guard.IsNotNull(left);
-		Guard.IsNotNull(right);
-		Guard.IsNotNull(leftKeySelector);
-		Guard.IsNotNull(rightKeySelector);
+		ArgumentNullException.ThrowIfNull(left);
+		ArgumentNullException.ThrowIfNull(right);
+		ArgumentNullException.ThrowIfNull(leftKeySelector);
+		ArgumentNullException.ThrowIfNull(rightKeySelector);
 
 		if (joinOperation.HasFlag(JoinOperation.LeftOuter))
-			Guard.IsNotNull(leftResultSelector);
+			ArgumentNullException.ThrowIfNull(leftResultSelector);
 		if (joinOperation.HasFlag(JoinOperation.RightOuter))
-			Guard.IsNotNull(rightResultSelector);
+			ArgumentNullException.ThrowIfNull(rightResultSelector);
 
-		Guard.IsNotNull(bothResultSelector);
-		Guard.IsNotNull(comparer);
+		ArgumentNullException.ThrowIfNull(bothResultSelector);
+		ArgumentNullException.ThrowIfNull(comparer);
 
 		return joinType switch
 		{

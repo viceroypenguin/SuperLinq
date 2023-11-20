@@ -28,8 +28,8 @@ public static partial class AsyncSuperEnumerable
 		IDictionary<TValue, IAsyncEnumerable<TResult>> sources)
 		where TValue : notnull
 	{
-		Guard.IsNotNull(selector);
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(selector);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return Case(selector.ToAsync(), sources, AsyncEnumerable.Empty<TResult>());
 	}
@@ -60,8 +60,8 @@ public static partial class AsyncSuperEnumerable
 		IDictionary<TValue, IAsyncEnumerable<TResult>> sources)
 		where TValue : notnull
 	{
-		Guard.IsNotNull(selector);
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(selector);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return Case(selector, sources, AsyncEnumerable.Empty<TResult>());
 	}
@@ -89,8 +89,8 @@ public static partial class AsyncSuperEnumerable
 		IAsyncEnumerable<TResult> defaultSource)
 		where TValue : notnull
 	{
-		Guard.IsNotNull(selector);
-		Guard.IsNotNull(sources);
+		ArgumentNullException.ThrowIfNull(selector);
+		ArgumentNullException.ThrowIfNull(sources);
 
 		return Case(selector.ToAsync(), sources, defaultSource);
 	}
@@ -118,9 +118,9 @@ public static partial class AsyncSuperEnumerable
 		IAsyncEnumerable<TResult> defaultSource)
 		where TValue : notnull
 	{
-		Guard.IsNotNull(selector);
-		Guard.IsNotNull(sources);
-		Guard.IsNotNull(defaultSource);
+		ArgumentNullException.ThrowIfNull(selector);
+		ArgumentNullException.ThrowIfNull(sources);
+		ArgumentNullException.ThrowIfNull(defaultSource);
 
 		return Core(selector, sources, defaultSource);
 

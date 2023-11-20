@@ -23,7 +23,7 @@ public static partial class AsyncSuperEnumerable
 	/// </example>
 	public static IAsyncEnumerable<TResult> Generate<TResult>(TResult initial, Func<TResult, ValueTask<TResult>> generator)
 	{
-		Guard.IsNotNull(generator);
+		ArgumentNullException.ThrowIfNull(generator);
 		return Generate(initial, (r, ct) => generator(r));
 	}
 
@@ -48,7 +48,7 @@ public static partial class AsyncSuperEnumerable
 	/// </example>
 	public static IAsyncEnumerable<TResult> Generate<TResult>(TResult initial, Func<TResult, CancellationToken, ValueTask<TResult>> generator)
 	{
-		Guard.IsNotNull(generator);
+		ArgumentNullException.ThrowIfNull(generator);
 
 		return Core(initial, generator);
 

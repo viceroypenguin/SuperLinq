@@ -21,7 +21,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> Retry<TSource>(this IAsyncEnumerable<TSource> source)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		return Repeat<IAsyncEnumerable<TSource>>(source).Catch();
 	}
@@ -51,8 +51,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> Retry<TSource>(this IAsyncEnumerable<TSource> source, int count)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThan(count, 0);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
 
 		return Enumerable.Repeat(source, count).Catch();
 	}

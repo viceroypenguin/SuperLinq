@@ -33,8 +33,8 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<T> source,
 		Func<T, (bool, TResult)> chooser)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(chooser);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(chooser);
 
 		return Choose(source, (x, ct) => new ValueTask<(bool, TResult)>(chooser(x)));
 	}
@@ -70,8 +70,8 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<T> source,
 		Func<T, ValueTask<(bool, TResult)>> chooser)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(chooser);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(chooser);
 
 		return Choose(source, (x, ct) => chooser(x));
 	}
@@ -107,8 +107,8 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<T> source,
 		Func<T, CancellationToken, ValueTask<(bool, TResult)>> chooser)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(chooser);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(chooser);
 
 		return Core(source, chooser);
 

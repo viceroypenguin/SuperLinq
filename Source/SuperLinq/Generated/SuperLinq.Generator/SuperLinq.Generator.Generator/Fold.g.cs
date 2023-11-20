@@ -19,8 +19,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(1).ToList();
         return folder(elements[0]);
     }
@@ -42,8 +42,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(2).ToList();
         return folder(elements[0], elements[1]);
     }
@@ -65,8 +65,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(3).ToList();
         return folder(elements[0], elements[1], elements[2]);
     }
@@ -88,8 +88,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(4).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3]);
     }
@@ -111,8 +111,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(5).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4]);
     }
@@ -134,8 +134,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(6).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5]);
     }
@@ -157,8 +157,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(7).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6]);
     }
@@ -180,8 +180,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(8).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7]);
     }
@@ -203,8 +203,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(9).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8]);
     }
@@ -226,8 +226,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(10).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9]);
     }
@@ -249,8 +249,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(11).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10]);
     }
@@ -272,8 +272,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(12).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11]);
     }
@@ -295,8 +295,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(13).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12]);
     }
@@ -318,8 +318,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(14).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13]);
     }
@@ -341,8 +341,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(15).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14]);
     }
@@ -364,8 +364,8 @@ public static partial class SuperEnumerable
     /// </exception>
     public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
     {
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(source);
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(folder);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(folder);
         var elements = source.AssertCount(16).ToList();
         return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14], elements[15]);
     }

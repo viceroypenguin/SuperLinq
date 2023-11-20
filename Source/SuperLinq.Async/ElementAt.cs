@@ -21,7 +21,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static ValueTask<TSource> ElementAtAsync<TSource>(this IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		if (!index.IsFromEnd)
 		{
@@ -54,7 +54,7 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static ValueTask<TSource?> ElementAtOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken = default)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 
 		if (!index.IsFromEnd)
 		{

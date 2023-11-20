@@ -42,10 +42,10 @@ public static partial class SuperEnumerable
         global::System.Func<{{ for $j in 1..$i }}T{{ $cardinals[$j] }}, {{ end }}TResult> resultSelector)
 	{
 		{{~ for $j in 1..$i ~}}
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull({{ $ordinals[$j] }});
+        ArgumentNullException.ThrowIfNull({{ $ordinals[$j] }});
 		{{~ end ~}}
 
-        global::CommunityToolkit.Diagnostics.Guard.IsNotNull(resultSelector);
+        ArgumentNullException.ThrowIfNull(resultSelector);
 
 		if (
 			{{~ for $j in 1..$i ~}}
@@ -88,7 +88,7 @@ public static partial class SuperEnumerable
 							end ~}}
 						)
 					{
-                        global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
+                        ThrowHelper.ThrowInvalidOperationException("First sequence too short.");
  					}
 
 					yield break;
@@ -96,7 +96,7 @@ public static partial class SuperEnumerable
 
 				{{~ for $j in 2..$i ~}}
 				if (!e{{$j}}.MoveNext())
-					global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException(
+					ThrowHelper.ThrowInvalidOperationException(
 						"{{ $cardinals[$j] }} sequence too short.");
 				{{~ end ~}}
 
@@ -162,7 +162,7 @@ public static partial class SuperEnumerable
 				{{~ for $j in 2..$i ~}}
 				if (_list{{ $j }}.Count != count)
 				{
-					global::CommunityToolkit.Diagnostics.ThrowHelper.ThrowInvalidOperationException(
+					ThrowHelper.ThrowInvalidOperationException(
 						(count < _list{{ $j }}.Count ? "First" : "{{ $cardinals[$j] }}") + " sequence too short.");
 				}
 				{{~ end ~}}
@@ -185,7 +185,8 @@ public static partial class SuperEnumerable
 
 		protected override TResult ElementAt(int index)
 		{
-			global::CommunityToolkit.Diagnostics.Guard.IsLessThan(index, Count);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
 			return _resultSelector(
 				{{~ for $j in 1..$i ~}}

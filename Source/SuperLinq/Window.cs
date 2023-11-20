@@ -15,8 +15,8 @@ public static partial class SuperEnumerable
 	/// <returns>A series of sequences representing each sliding window subsequence</returns>
 	public static IEnumerable<IList<TSource>> Window<TSource>(this IEnumerable<TSource> source, int size)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsGreaterThanOrEqualTo(size, 1);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
 
 		if (source is IList<TSource> list)
 			return new WindowIterator<TSource>(list, size);
@@ -92,7 +92,8 @@ public static partial class SuperEnumerable
 
 		protected override IList<T> ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
 			var arr = new T[_size];
 			var max = (uint)(index + _size);

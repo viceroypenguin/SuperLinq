@@ -16,9 +16,9 @@ public static partial class SuperEnumerable
 	/// </exception>
 	public static IEnumerable<T> Exclude<T>(this IEnumerable<T> sequence, int startIndex, int count)
 	{
-		Guard.IsNotNull(sequence);
-		Guard.IsGreaterThanOrEqualTo(startIndex, 0);
-		Guard.IsGreaterThanOrEqualTo(count, 0);
+		ArgumentNullException.ThrowIfNull(sequence);
+		ArgumentOutOfRangeException.ThrowIfNegative(startIndex);
+		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		if (count == 0)
 			return sequence;
@@ -72,7 +72,8 @@ public static partial class SuperEnumerable
 
 		protected override T ElementAt(int index)
 		{
-			Guard.IsBetweenOrEqualTo(index, 0, Count - 1);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
 			return index < _startIndex
 				? _source[index]

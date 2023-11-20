@@ -24,7 +24,7 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource>(this IAsyncEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
 	{
-		Guard.IsNotNull(source);
+		ArgumentNullException.ThrowIfNull(source);
 		return DistinctUntilChanged(source, Identity, comparer);
 	}
 
@@ -41,7 +41,7 @@ public static partial class AsyncSuperEnumerable
 	/// langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 	{
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(keySelector);
 		return DistinctUntilChanged<TSource, TKey>(source, keySelector.ToAsync(), comparer: null);
 	}
 
@@ -74,7 +74,7 @@ public static partial class AsyncSuperEnumerable
 	/// langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(keySelector);
 		return DistinctUntilChanged(source, keySelector.ToAsync(), comparer);
 	}
 
@@ -91,8 +91,8 @@ public static partial class AsyncSuperEnumerable
 	/// langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<TKey>> keySelector, IEqualityComparer<TKey>? comparer)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(keySelector);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return Core(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 

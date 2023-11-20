@@ -37,8 +37,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="fallback"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, IEnumerable<T> fallback)
 	{
-		Guard.IsNotNull(source);
-		Guard.IsNotNull(fallback);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(fallback);
 
 		return source.TryGetCollectionCount() is not null
 			   && fallback.TryGetCollectionCount() is not null
