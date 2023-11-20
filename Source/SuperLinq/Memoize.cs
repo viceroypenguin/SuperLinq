@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ExceptionServices;
 
 namespace SuperLinq;
@@ -194,6 +195,7 @@ public static partial class SuperEnumerable
 			}
 		}
 
+		[ExcludeFromCodeCoverage]
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		public void Dispose()
@@ -364,6 +366,7 @@ public static partial class SuperEnumerable
 			}
 		}
 
+		[ExcludeFromCodeCoverage]
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		public void Dispose()
@@ -401,6 +404,8 @@ public static partial class SuperEnumerable
 		public int Count => Source.Count;
 
 		public IEnumerator<T> GetEnumerator() => Source.GetEnumerator();
+
+		[ExcludeFromCodeCoverage]
 		IEnumerator IEnumerable.GetEnumerator() => Source.GetEnumerator();
 
 		public void Dispose() => _source = null;

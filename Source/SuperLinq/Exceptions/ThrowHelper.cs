@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq.Exceptions;
 
+[ExcludeFromCodeCoverage]
 internal static class ThrowHelper
 {
 	[DoesNotReturn]

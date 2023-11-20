@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 namespace SuperLinq.Exceptions;
 
 [Browsable(false)]
+[ExcludeFromCodeCoverage]
 internal static class ArgumentNullException
 {
 	/// <summary>Throws an <see cref="ArgumentNullException"/> if <paramref name="argument"/> is null.</summary>

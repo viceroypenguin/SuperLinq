@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 namespace SuperLinq.Exceptions;
 
 [Browsable(false)]
+[ExcludeFromCodeCoverage]
 internal static class ArgumentOutOfRangeException
 {
 	[DoesNotReturn]
