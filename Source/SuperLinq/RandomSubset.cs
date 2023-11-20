@@ -40,12 +40,10 @@ public static partial class SuperEnumerable
 		Guard.IsNotNull(source);
 		Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
 
-		return RandomSubsetImpl(source, rand, seq => (seq.ToArray(), subsetSize));
+		return RandomSubsetImpl(source, rand, subsetSize);
 	}
 
-#pragma warning disable MA0050 // arguments validated in both callers
-	private static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, Func<IEnumerable<T>, (T[], int)> seeder)
-#pragma warning restore MA0050
+	private static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, int? subsetSize)
 	{
 		// The simplest and most efficient way to return a random subset is to perform
 		// an in-place, partial Fisher-Yates shuffle of the sequence. While we could do
@@ -53,9 +51,10 @@ public static partial class SuperEnumerable
 		// than the length of the sequence.
 		// See: http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 
-		var (array, subsetSize) = seeder(source);
+		var list = source.ToList();
+		subsetSize ??= list.Count;
 
-		if (array.Length < subsetSize)
+		if (list.Count < subsetSize)
 		{
 			ThrowHelper.ThrowArgumentOutOfRangeException(
 				nameof(subsetSize),
@@ -63,20 +62,20 @@ public static partial class SuperEnumerable
 		}
 
 		var m = 0;                // keeps track of count items shuffled
-		var w = array.Length;     // upper bound of shrinking swap range
+		var w = list.Count;       // upper bound of shrinking swap range
 		var g = w - 1;            // used to compute the second swap index
 
 		// perform in-place, partial Fisher-Yates shuffle
 		while (m < subsetSize)
 		{
 			var k = g - rand.Next(w);
-			(array[m], array[k]) = (array[k], array[m]);
+			(list[m], list[k]) = (list[k], list[m]);
 			++m;
 			--w;
 		}
 
 		// yield the random subset as a new sequence
 		for (var i = 0; i < subsetSize; i++)
-			yield return array[i];
+			yield return list[i];
 	}
 }
