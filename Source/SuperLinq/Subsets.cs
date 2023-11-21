@@ -196,7 +196,7 @@ public static partial class SuperEnumerable
 
 			ArgumentOutOfRangeException.ThrowIfNegative(subsetSize);
 			if (sequence.TryGetCollectionCount() is int cnt)
-				ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(subsetSize, cnt);
+				ArgumentOutOfRangeException.ThrowIfGreaterThan(subsetSize, cnt);
 
 			_subsetSize = subsetSize;
 		}

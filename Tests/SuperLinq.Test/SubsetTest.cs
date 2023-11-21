@@ -25,18 +25,25 @@ public class SubsetTest
 			new BreakingSequence<int>().Subsets(-5));
 	}
 
+	public static IEnumerable<object?[]> GetSubsetSequences() =>
+		Enumerable.Range(1, 10)
+			.GetCollectionSequences()
+			.Select(x => new object?[] { x, });
+
 	/// <summary>
 	/// Verify that requesting subsets larger than the original sequence length result in an exception.
 	/// </summary>
-	[Fact]
-	public void TestSubsetLargerThanSequence()
+	[Theory]
+	[MemberData(nameof(GetSubsetSequences))]
+	public void TestSubsetLargerThanSequence(IDisposableEnumerable<int> seq)
 	{
-		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
-
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			sequence
-				.Subsets(15)
-				.Consume());
+		using (seq)
+		{
+			_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
+				seq
+					.Subsets(15)
+					.Consume());
+		}
 	}
 
 	/// <summary>
@@ -54,30 +61,35 @@ public class SubsetTest
 	/// <summary>
 	/// Verify that subsets are returned in increasing size, starting with the empty set.
 	/// </summary>
-	[Fact]
-	public void TestSubsetsInIncreasingOrder()
+	[Theory]
+	[MemberData(nameof(GetSubsetSequences))]
+	public void TestSubsetsInIncreasingOrder(IDisposableEnumerable<int> seq)
 	{
-		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
-
-		var result = sequence.Subsets();
-		var prevSubsetCount = -1;
-		foreach (var subset in result)
+		using (seq)
 		{
-			Assert.True(subset.Count >= prevSubsetCount);
-			prevSubsetCount = subset.Count;
+			var result = seq.Subsets();
+
+			var prevSubsetCount = -1;
+			foreach (var subset in result)
+			{
+				Assert.True(subset.Count >= prevSubsetCount);
+				prevSubsetCount = subset.Count;
+			}
 		}
 	}
 
 	/// <summary>
 	/// Verify that the number of subsets returned is correct, but don't verify the subset contents.
 	/// </summary>
-	[Fact]
-	public void TestAllSubsetsExpectedCount()
+	[Theory]
+	[MemberData(nameof(GetSubsetSequences))]
+	public void TestAllSubsetsExpectedCount(IDisposableEnumerable<int> seq)
 	{
-		using var sequence = Enumerable.Range(1, 20).AsTestingSequence();
-
-		var result = sequence.Subsets();
-		Assert.Equal(Math.Pow(2, 20), result.Count());
+		using (seq)
+		{
+			var result = seq.Subsets().Count();
+			Assert.Equal(Math.Pow(2, 10), result);
+		}
 	}
 
 	/// <summary>
@@ -103,20 +115,31 @@ public class SubsetTest
 	}
 
 	public static IEnumerable<object[]> SubsetSizes() =>
-		Enumerable.Range(1, 20).Select(i => new object[] { i, });
+		Enumerable.Range(1, 20)
+			.SelectMany(size =>
+				Enumerable.Range(1, 20)
+					.GetCollectionSequences()
+					.Select(seq => new object[]
+					{
+						seq,
+						size,
+					}));
 
 	/// <summary>
 	/// Verify that the number of subsets for a given subset-size is correct.
 	/// </summary>
-	[Theory, MemberData(nameof(SubsetSizes))]
-	public void TestKSubsetExpectedCount(int subsetSize)
+	[Theory]
+	[MemberData(nameof(SubsetSizes))]
+	public void TestKSubsetExpectedCount(IDisposableEnumerable<int> seq, int subsetSize)
 	{
-		using var sequence = Enumerable.Range(1, 20).AsTestingSequence();
+		using (seq)
+		{
+			var result = seq.Subsets(subsetSize).Count();
 
-		var result = sequence.Subsets(subsetSize);
-
-		// number of subsets of a given size is defined by the binomial coefficient: c! / ((c-s)!*s!)
-		Assert.Equal(Combinatorics.Binomial(20, subsetSize), result.Count());
+			// number of subsets of a given size is defined by the binomial coefficient: c! / ((c-s)!*s!)
+			var expected = Combinatorics.Binomial(20, subsetSize);
+			Assert.Equal(expected, result);
+		}
 	}
 
 	/// <summary>
