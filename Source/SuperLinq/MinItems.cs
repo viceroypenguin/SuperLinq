@@ -11,6 +11,9 @@ public static partial class SuperEnumerable
 	/// <param name="source">
 	///	    The source sequence.
 	/// </param>
+	/// <returns>
+	///		An <see cref="IEnumerable{T}"/> containing all of the items that share the minimum value.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
@@ -41,6 +44,9 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">
 	///	    A <see cref="IComparer{T}"/> to compare elements.
 	/// </param>
+	/// <returns>
+	///		An <see cref="IEnumerable{T}"/> containing all of the items that share the minimum value.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
@@ -74,6 +80,9 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">
 	///	    A function to extract a key from an element.
 	/// </param>
+	/// <returns>
+	///		An <see cref="IEnumerable{T}"/> containing all of the items that share the minimum value.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
@@ -108,6 +117,9 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">
 	///	    A function to extract a key from an element.
 	/// </param>
+	/// <returns>
+	///		An <see cref="IEnumerable{T}"/> containing all of the items that share the minimum value.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
@@ -145,6 +157,9 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">
 	///	    A <see cref="IComparer{T}"/> to compare keys.
 	/// </param>
+	/// <returns>
+	///		An <see cref="IEnumerable{T}"/> containing all of the items that share the minimum value.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
@@ -182,6 +197,9 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">
 	///	    A <see cref="IComparer{T}"/> to compare keys.
 	/// </param>
+	/// <returns>
+	///		An <see cref="IEnumerable{T}"/> containing all of the items that share the minimum value.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>

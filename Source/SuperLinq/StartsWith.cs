@@ -19,6 +19,9 @@ public static partial class SuperEnumerable
 	///	    <see langword="true"/> if <paramref name="first" /> begins with elements equivalent to <paramref
 	///     name="second" />.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="first"/> or <paramref name="second"/> is <see langword="null" />.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This is the <see cref="IEnumerable{T}" /> equivalent of <see cref="string.StartsWith(string)" />.
@@ -52,6 +55,9 @@ public static partial class SuperEnumerable
 	///	    <see langword="true"/> if <paramref name="first" /> begins with elements equivalent to <paramref
 	///     name="second" />.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="first"/> or <paramref name="second"/> is <see langword="null" />.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This is the <see cref="IEnumerable{T}" /> equivalent of <see cref="string.StartsWith(string)" />.
