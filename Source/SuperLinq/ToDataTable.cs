@@ -7,17 +7,29 @@ namespace SuperLinq;
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Appends elements in the sequence as rows of a given <see cref="DataTable"/> object.
+	///	    Appends elements in the sequence as rows of a given <see cref="DataTable"/> object.
 	/// </summary>
-	/// <typeparam name="T">The type of the elements of <paramref name="source"/>.</typeparam>
-	/// <typeparam name="TTable"></typeparam>
-	/// <param name="source">The source.</param>
-	/// <param name="table"></param>
+	/// <typeparam name="T">
+	///	    The type of the elements of <paramref name="source"/>.
+	/// </typeparam>
+	/// <typeparam name="TTable">
+	///	    The type of the <see cref="DataTable"/> in which to store data.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source.
+	/// </param>
+	/// <param name="table">
+	///	    A <typeparamref name="TTable"/> to hold the data from <paramref name="source"/>.
+	/// </param>
 	/// <returns>
-	/// A <see cref="DataTable"/> or subclass representing the source.
+	///	    The value passed in as <paramref name="table"/>.
 	/// </returns>
-	/// <remarks>This operator uses immediate execution.</remarks>
-
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="table"/> is <see langword="null"/>
+	/// </exception>
+	/// <remarks>
+	///	    This operator uses immediate execution.
+	/// </remarks>
 	public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
 		where TTable : DataTable
 	{
@@ -25,53 +37,86 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Appends elements in the sequence as rows of a given <see cref="DataTable"/>
-	/// object with a set of lambda expressions specifying which members (property
-	/// or field) of each element in the sequence will supply the column values.
+	///	    Appends elements in the sequence as rows of a given <see cref="DataTable"/> object with a set of lambda
+	///     expressions specifying which members (property or field) of each element in the sequence will supply the
+	///     column values.
 	/// </summary>
-	/// <typeparam name="T">The type of the elements of <paramref name="source"/>.</typeparam>
-	/// <param name="source">The source.</param>
-	/// <param name="expressions">Expressions providing access to element members.</param>
+	/// <typeparam name="T">
+	///	    The type of the elements of <paramref name="source"/>.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source.
+	/// </param>
+	/// <param name="expressions">
+	///	    Expressions providing access to element members.
+	/// </param>
 	/// <returns>
-	/// A <see cref="DataTable"/> representing the source.
+	///	    A <see cref="DataTable"/> representing the source.
 	/// </returns>
-	/// <remarks>This operator uses immediate execution.</remarks>
-
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>
+	/// </exception>
+	/// <remarks>
+	///	    This operator uses immediate execution.
+	/// </remarks>
 	public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object>>[] expressions)
 	{
 		return ToDataTable(source, new DataTable(), expressions);
 	}
 
 	/// <summary>
-	/// Converts a sequence to a <see cref="DataTable"/> object.
+	///	    Converts a sequence to a <see cref="DataTable"/> object.
 	/// </summary>
-	/// <typeparam name="T">The type of the elements of <paramref name="source"/>.</typeparam>
-	/// <param name="source">The source.</param>
+	/// <typeparam name="T">
+	///	    The type of the elements of <paramref name="source"/>.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source.
+	/// </param>
 	/// <returns>
-	/// A <see cref="DataTable"/> representing the source.
+	///	    A <see cref="DataTable"/> representing the source.
 	/// </returns>
-	/// <remarks>This operator uses immediate execution.</remarks>
-
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>
+	/// </exception>
+	/// <remarks>
+	///	    This operator uses immediate execution.
+	/// </remarks>
 	public static DataTable ToDataTable<T>(this IEnumerable<T> source)
 	{
 		return ToDataTable(source, new DataTable(), []);
 	}
 
 	/// <summary>
-	/// Appends elements in the sequence as rows of a given <see cref="DataTable"/>
-	/// object with a set of lambda expressions specifying which members (property
-	/// or field) of each element in the sequence will supply the column values.
+	///	    Appends elements in the sequence as rows of a given <see cref="DataTable"/> object with a set of lambda
+	///     expressions specifying which members (property or field) of each element in the sequence will supply the
+	///     column values.
 	/// </summary>
-	/// <typeparam name="T">The type of the elements of <paramref name="source"/>.</typeparam>
-	/// <typeparam name="TTable">The type of the input and resulting <see cref="DataTable"/> object.</typeparam>
-	/// <param name="source">The source.</param>
-	/// <param name="table">The <see cref="DataTable"/> type of object where to add rows</param>
-	/// <param name="expressions">Expressions providing access to element members.</param>
+	/// <typeparam name="T">
+	///	    The type of the elements of <paramref name="source"/>.
+	/// </typeparam>
+	/// <typeparam name="TTable">
+	///	    The type of the <see cref="DataTable"/> in which to store data.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source.
+	/// </param>
+	/// <param name="table">
+	///	    A <typeparamref name="TTable"/> to hold the data from <paramref name="source"/>.
+	/// </param>
+	/// <param name="expressions">
+	///	    Expressions providing access to element members.
+	/// </param>
 	/// <returns>
-	/// A <see cref="DataTable"/> or subclass representing the source.
+	///	    The value passed in as <paramref name="table"/>.
 	/// </returns>
-	/// <remarks>This operator uses immediate execution.</remarks>
-
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/>, <paramref name="table"/>, or <paramref name="expressions"/> is <see
+	///     langword="null"/>
+	/// </exception>
+	/// <remarks>
+	///	    This operator uses immediate execution.
+	/// </remarks>
 	public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
 		where TTable : DataTable
 	{

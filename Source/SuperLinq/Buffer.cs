@@ -6,25 +6,36 @@ namespace SuperLinq;
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Generates a sequence of non-overlapping adjacent buffers over the source sequence.
+	///	    Generates a sequence of non-overlapping adjacent buffers over the source sequence.
 	/// </summary>
-	/// <typeparam name="TSource">Source sequence element type.</typeparam>
-	/// <param name="source">Source sequence.</param>
-	/// <param name="count">Number of elements for allocated buffers.</param>
-	/// <returns>Sequence of buffers containing source sequence elements.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than or equal to
-	/// <c>0</c>.</exception>
+	/// <typeparam name="TSource">
+	///	    Source sequence element type.
+	///	</typeparam>
+	/// <param name="source">
+	///	    Source sequence.
+	///	</param>
+	/// <param name="count">
+	///	    Number of elements for allocated buffers.
+	///	</param>
+	/// <returns>
+	///	    Sequence of buffers containing source sequence elements.
+	///	</returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	///	</exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is less than or equal to <c>0</c>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
-	/// A chunk can contain fewer elements than <paramref name="count"/>, specifically the final buffer of <paramref
-	/// name="source"/>.
+	///	    A chunk can contain fewer elements than <paramref name="count"/>, specifically the final buffer of <paramref
+	///     name="source"/>.
 	/// </para>
 	/// <para>
-	/// This method is a synonym for <see cref="Batch{TSource}(IEnumerable{TSource}, int)"/>.
+	///	    This method is a synonym for <see cref="Batch{TSource}(IEnumerable{TSource}, int)"/>.
 	/// </para>
 	/// <para>
-	/// Returned subsequences are buffered, but the overall operation is streamed.<br/>
+	///	    Returned subsequences are buffered, but the overall operation is streamed.<br/>
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<IList<TSource>> Buffer<TSource>(this IEnumerable<TSource> source, int count)
@@ -33,23 +44,36 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Generates a sequence of buffers over the source sequence, with specified length and possible overlap.
+	///	    Generates a sequence of buffers over the source sequence, with specified length and possible overlap.
 	/// </summary>
-	/// <typeparam name="TSource">Source sequence element type.</typeparam>
-	/// <param name="source">Source sequence.</param>
-	/// <param name="count">Number of elements for allocated buffers.</param>
-	/// <param name="skip">Number of elements to skip between the start of consecutive buffers.</param>
-	/// <returns>Sequence of buffers containing source sequence elements.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> or <paramref name="skip"/> is less than
-	/// or equal to <c>0</c>.</exception>
+	/// <typeparam name="TSource">
+	///	    Source sequence element type.
+	/// </typeparam>
+	/// <param name="source">
+	///	    Source sequence.
+	/// </param>
+	/// <param name="count">
+	///	    Number of elements for allocated buffers.
+	/// </param>
+	/// <param name="skip">
+	///	    Number of elements to skip between the start of consecutive buffers.
+	/// </param>
+	/// <returns>
+	///	    Sequence of buffers containing source sequence elements.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> or <paramref name="skip"/> is less than or equal to <c>0</c>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
-	/// A chunk can contain fewer elements than <paramref name="count"/>, specifically the final buffers of <paramref
-	/// name="source"/>.
+	///	    A chunk can contain fewer elements than <paramref name="count"/>, specifically the final buffer(s) of
+	///     <paramref name="source"/>.
 	/// </para>
 	/// <para>
-	/// Returned subsequences are buffered, but the overall operation is streamed.<br/>
+	///	    Returned subsequences are buffered, but the overall operation is streamed.<br/>
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<IList<TSource>> Buffer<TSource>(this IEnumerable<TSource> source, int count, int skip)

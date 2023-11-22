@@ -4,25 +4,43 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Performs a Full Group Join between the <paramref name="first"/> and <paramref name="second"/> sequences.
+	///	    Performs a Full Group Join between the <paramref name="first"/> and <paramref name="second"/> sequences.
 	/// </summary>
-	/// <remarks>
-	/// This operator uses deferred execution and streams the results.
-	/// The results are yielded in the order of the elements found in the first sequence
-	/// followed by those found only in the second. In addition, the callback responsible
-	/// for projecting the results is supplied with sequences which preserve their source order.
-	/// </remarks>
-	/// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
-	/// <typeparam name="TSecond">The type of the elements in the second input sequence</typeparam>
-	/// <typeparam name="TKey">The type of the key to use to join</typeparam>
-	/// <param name="first">First sequence</param>
-	/// <param name="second">Second sequence</param>
-	/// <param name="firstKeySelector">The mapping from first sequence to key</param>
-	/// <param name="secondKeySelector">The mapping from second sequence to key</param>
-	/// <returns>A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
+	/// <typeparam name="TFirst">
+	///	    The type of the elements in the first input sequence
+	/// </typeparam>
+	/// <typeparam name="TSecond">
+	///	    The type of the elements in the second input sequence
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key to use to join
+	/// </typeparam>
+	/// <param name="first">
+	///	    First sequence
+	/// </param>
+	/// <param name="second">
+	///	    Second sequence
+	/// </param>
+	/// <param name="firstKeySelector">
+	///	    The mapping from first sequence to key
+	/// </param>
+	/// <param name="secondKeySelector">
+	///	    The mapping from second sequence to key
+	/// </param>
+	/// <returns>
+	///	    A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
 	/// </returns>
-
-	public static IEnumerable<(TKey Key, IEnumerable<TFirst> First, IEnumerable<TSecond> Second)> FullGroupJoin<TFirst, TSecond, TKey>(this IEnumerable<TFirst> first,
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="first"/>, <paramref name="second"/>, <paramref name="firstKeySelector"/>, or <paramref
+	///     name="secondKeySelector"/> is <see langword="null"/>.
+	/// </exception>
+	/// <remarks>
+	///	    This operator uses deferred execution and streams the results. The results are yielded in the order of the
+	///     elements found in the first sequence followed by those found only in the second. In addition, the callback
+	///     responsible for projecting the results is supplied with sequences which preserve their source order.
+	/// </remarks>
+	public static IEnumerable<(TKey Key, IEnumerable<TFirst> First, IEnumerable<TSecond> Second)> FullGroupJoin<TFirst, TSecond, TKey>(
+		this IEnumerable<TFirst> first,
 		IEnumerable<TSecond> second,
 		Func<TFirst, TKey> firstKeySelector,
 		Func<TSecond, TKey> secondKeySelector)
@@ -31,27 +49,47 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Performs a Full Group Join between the <paramref name="first"/> and <paramref name="second"/> sequences.
+	///	    Performs a Full Group Join between the <paramref name="first"/> and <paramref name="second"/> sequences.
 	/// </summary>
-	/// <remarks>
-	/// This operator uses deferred execution and streams the results.
-	/// The results are yielded in the order of the elements found in the first sequence
-	/// followed by those found only in the second. In addition, the callback responsible
-	/// for projecting the results is supplied with sequences which preserve their source order.
-	/// </remarks>
-	/// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
-	/// <typeparam name="TSecond">The type of the elements in the second input sequence</typeparam>
-	/// <typeparam name="TKey">The type of the key to use to join</typeparam>
-	/// <param name="first">First sequence</param>
-	/// <param name="second">Second sequence</param>
-	/// <param name="firstKeySelector">The mapping from first sequence to key</param>
-	/// <param name="secondKeySelector">The mapping from second sequence to key</param>
-	/// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
-	/// If null, the default equality comparer for <typeparamref name="TKey"/> is used.</param>
-	/// <returns>A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
+	/// <typeparam name="TFirst">
+	///	    The type of the elements in the first input sequence
+	/// </typeparam>
+	/// <typeparam name="TSecond">
+	///	    The type of the elements in the second input sequence
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key to use to join
+	/// </typeparam>
+	/// <param name="first">
+	///	    First sequence
+	/// </param>
+	/// <param name="second">
+	///	    Second sequence
+	/// </param>
+	/// <param name="firstKeySelector">
+	///	    The mapping from first sequence to key
+	/// </param>
+	/// <param name="secondKeySelector">
+	///	    The mapping from second sequence to key
+	/// </param>
+	/// <param name="comparer">
+	///	    The equality comparer to use to determine whether or not keys are equal. If <see langword="null"/>, the
+	///     default equality comparer for <typeparamref name="TKey"/> is used.
+	/// </param>
+	/// <returns>
+	///	    A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
 	/// </returns>
-
-	public static IEnumerable<(TKey Key, IEnumerable<TFirst> First, IEnumerable<TSecond> Second)> FullGroupJoin<TFirst, TSecond, TKey>(this IEnumerable<TFirst> first,
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="first"/>, <paramref name="second"/>, <paramref name="firstKeySelector"/>, or <paramref
+	///     name="secondKeySelector"/> is <see langword="null"/>.
+	/// </exception>
+	/// <remarks>
+	///	    This operator uses deferred execution and streams the results. The results are yielded in the order of the
+	///     elements found in the first sequence followed by those found only in the second. In addition, the callback
+	///     responsible for projecting the results is supplied with sequences which preserve their source order.
+	/// </remarks>
+	public static IEnumerable<(TKey Key, IEnumerable<TFirst> First, IEnumerable<TSecond> Second)> FullGroupJoin<TFirst, TSecond, TKey>(
+		this IEnumerable<TFirst> first,
 		IEnumerable<TSecond> second,
 		Func<TFirst, TKey> firstKeySelector,
 		Func<TSecond, TKey> secondKeySelector,
@@ -61,27 +99,49 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Performs a full group-join between two sequences.
+	///	    Performs a full group-join between two sequences.
 	/// </summary>
-	/// <remarks>
-	/// This operator uses deferred execution and streams the results.
-	/// The results are yielded in the order of the elements found in the first sequence
-	/// followed by those found only in the second. In addition, the callback responsible
-	/// for projecting the results is supplied with sequences which preserve their source order.
-	/// </remarks>
-	/// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
-	/// <typeparam name="TSecond">The type of the elements in the second input sequence</typeparam>
-	/// <typeparam name="TKey">The type of the key to use to join</typeparam>
-	/// <typeparam name="TResult">The type of the elements of the resulting sequence</typeparam>
-	/// <param name="first">First sequence</param>
-	/// <param name="second">Second sequence</param>
-	/// <param name="firstKeySelector">The mapping from first sequence to key</param>
-	/// <param name="secondKeySelector">The mapping from second sequence to key</param>
-	/// <param name="resultSelector">Function to apply to each pair of elements plus the key</param>
-	/// <returns>A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
+	/// <typeparam name="TFirst">
+	///	    The type of the elements in the first input sequence
+	/// </typeparam>
+	/// <typeparam name="TSecond">
+	///	    The type of the elements in the second input sequence
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key to use to join
+	/// </typeparam>
+	/// <typeparam name="TResult">
+	///	    The type of the elements of the resulting sequence
+	/// </typeparam>
+	/// <param name="first">
+	///	    First sequence
+	/// </param>
+	/// <param name="second">
+	///	    Second sequence
+	/// </param>
+	/// <param name="firstKeySelector">
+	///	    The mapping from first sequence to key
+	/// </param>
+	/// <param name="secondKeySelector">
+	///	    The mapping from second sequence to key
+	/// </param>
+	/// <param name="resultSelector">
+	///	    Function to apply to each pair of elements plus the key
+	/// </param>
+	/// <returns>
+	///	    A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
 	/// </returns>
-
-	public static IEnumerable<TResult> FullGroupJoin<TFirst, TSecond, TKey, TResult>(this IEnumerable<TFirst> first,
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="first"/>, <paramref name="second"/>, <paramref name="firstKeySelector"/>, <paramref
+	///     name="secondKeySelector"/>, or <paramref name="resultSelector"/> is <see langword="null"/>.
+	/// </exception>
+	/// <remarks>
+	///	    This operator uses deferred execution and streams the results. The results are yielded in the order of the
+	///     elements found in the first sequence followed by those found only in the second. In addition, the callback
+	///     responsible for projecting the results is supplied with sequences which preserve their source order.
+	/// </remarks>
+	public static IEnumerable<TResult> FullGroupJoin<TFirst, TSecond, TKey, TResult>(
+		this IEnumerable<TFirst> first,
 		IEnumerable<TSecond> second,
 		Func<TFirst, TKey> firstKeySelector,
 		Func<TSecond, TKey> secondKeySelector,
@@ -91,29 +151,53 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Performs a full group-join between two sequences.
+	///	    Performs a full group-join between two sequences.
 	/// </summary>
-	/// <remarks>
-	/// This operator uses deferred execution and streams the results.
-	/// The results are yielded in the order of the elements found in the first sequence
-	/// followed by those found only in the second. In addition, the callback responsible
-	/// for projecting the results is supplied with sequences which preserve their source order.
-	/// </remarks>
-	/// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
-	/// <typeparam name="TSecond">The type of the elements in the second input sequence</typeparam>
-	/// <typeparam name="TKey">The type of the key to use to join</typeparam>
-	/// <typeparam name="TResult">The type of the elements of the resulting sequence</typeparam>
-	/// <param name="first">First sequence</param>
-	/// <param name="second">Second sequence</param>
-	/// <param name="firstKeySelector">The mapping from first sequence to key</param>
-	/// <param name="secondKeySelector">The mapping from second sequence to key</param>
-	/// <param name="resultSelector">Function to apply to each pair of elements plus the key</param>
-	/// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
-	/// If null, the default equality comparer for <typeparamref name="TKey"/> is used.</param>
-	/// <returns>A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
+	/// <typeparam name="TFirst">
+	///	    The type of the elements in the first input sequence
+	/// </typeparam>
+	/// <typeparam name="TSecond">
+	///	    The type of the elements in the second input sequence
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key to use to join
+	/// </typeparam>
+	/// <typeparam name="TResult">
+	///	    The type of the elements of the resulting sequence
+	/// </typeparam>
+	/// <param name="first">
+	///	    First sequence
+	/// </param>
+	/// <param name="second">
+	///	    Second sequence
+	/// </param>
+	/// <param name="firstKeySelector">
+	///	    The mapping from first sequence to key
+	/// </param>
+	/// <param name="secondKeySelector">
+	///	    The mapping from second sequence to key
+	/// </param>
+	/// <param name="resultSelector">
+	///	    Function to apply to each pair of elements plus the key
+	/// </param>
+	/// <param name="comparer">
+	///	    The equality comparer to use to determine whether or not keys are equal. If <see langword="null"/>, the
+	///     default equality comparer for <typeparamref name="TKey"/> is used.
+	/// </param>
+	/// <returns>
+	///	    A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
 	/// </returns>
-
-	public static IEnumerable<TResult> FullGroupJoin<TFirst, TSecond, TKey, TResult>(this IEnumerable<TFirst> first,
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="first"/>, <paramref name="second"/>, <paramref name="firstKeySelector"/>, <paramref
+	///     name="secondKeySelector"/>, or <paramref name="resultSelector"/> is <see langword="null"/>.
+	/// </exception>
+	/// <remarks>
+	///	    This operator uses deferred execution and streams the results. The results are yielded in the order of the
+	///     elements found in the first sequence followed by those found only in the second. In addition, the callback
+	///     responsible for projecting the results is supplied with sequences which preserve their source order.
+	/// </remarks>
+	public static IEnumerable<TResult> FullGroupJoin<TFirst, TSecond, TKey, TResult>(
+		this IEnumerable<TFirst> first,
 		IEnumerable<TSecond> second,
 		Func<TFirst, TKey> firstKeySelector,
 		Func<TSecond, TKey> secondKeySelector,

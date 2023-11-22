@@ -6,31 +6,33 @@ namespace SuperLinq;
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Creates a buffer with a view over the source sequence, causing each enumerator to obtain access to the remainder
-	/// of the sequence from the current index in the buffer.
+	///	    Creates a buffer with a view over the source sequence, causing each enumerator to obtain access to the
+	///     remainder of the sequence from the current index in the buffer.
 	/// </summary>
-	/// <typeparam name="TSource">Source sequence element type.</typeparam>
-	/// <param name="source">Source sequence.</param>
+	/// <typeparam name="TSource">
+	///	    Source sequence element type.
+	/// </typeparam>
+	/// <param name="source">
+	///	    Source sequence.
+	/// </param>
 	/// <returns>
-	/// Buffer enabling each enumerator to retrieve elements from the shared source sequence, starting from the index at
-	/// the point of obtaining the enumerator.
+	///	    Buffer enabling each enumerator to retrieve elements from the shared source sequence, starting from the
+	///     index at the point of obtaining the enumerator.
 	/// </returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <example>
-	/// <code><![CDATA[
-	///		var rng = Enumerable.Range(0, 10).Publish();
-	///		var e1 = rng.GetEnumerator();    // e1 has a view on the source starting from element 0
-	///		Assert.IsTrue(e1.MoveNext());
-	///		Assert.AreEqual(0, e1.Current);
-	///		Assert.IsTrue(e1.MoveNext());
-	///		Assert.AreEqual(1, e1.Current);
-	///		var e2 = rng.GetEnumerator();
-	///		Assert.IsTrue(e2.MoveNext());    // e2 has a view on the source starting from element 2
-	///		Assert.AreEqual(2, e2.Current);
-	///		Assert.IsTrue(e1.MoveNext());    // e1 continues to enumerate over its view
-	///		Assert.AreEqual(2, e1.Current);
-	/// ]]></code>
-	/// </example>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <remarks>
+	/// <para>
+	///	    A separate buffer will be maintained for each <see cref="IEnumerator{T}"/> created from the returned <see
+	///	    cref="IEnumerable{T}"/>. This buffer will be maintained until the enumerator is disposed, and will contain
+	///	    all elements returned by <paramref name="source"/> from the time that the <see cref="IEnumerator{T}"/> is
+	///	    created.  
+	/// </para>
+	/// <para>
+	///	    This operator uses deferred execution and streams its result.
+	///	</para>
+	///	</remarks>
 	public static IBuffer<TSource> Publish<TSource>(this IEnumerable<TSource> source)
 	{
 		ArgumentNullException.ThrowIfNull(source);
