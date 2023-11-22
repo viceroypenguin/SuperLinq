@@ -5,7 +5,6 @@ namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
-#if !NET6_0_OR_GREATER
 	/// <summary>
 	///	    Returns a specified range of contiguous elements from a sequence.
 	/// </summary>
@@ -34,7 +33,11 @@ public static partial class SuperEnumerable
 	///	    This method is implemented by using deferred execution.
 	/// </para>
 	/// </remarks>
+#if !NET6_0_OR_GREATER
 	public static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, Range range)
+#else
+	public static IEnumerable<TSource> Take<TSource>(IEnumerable<TSource> source, Range range)
+#endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
 
@@ -164,5 +167,4 @@ public static partial class SuperEnumerable
 			}
 		}
 	}
-#endif
 }
