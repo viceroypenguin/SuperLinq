@@ -11,13 +11,13 @@ public static partial class SuperEnumerable
 	/// <param name="source">
 	///	    The sequence to check.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///     <see langword="true" /> if any element of the sequence <paramref name="source" /> is duplicated, <see
 	///     langword="false" /> otherwise.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method executes immediately.
@@ -41,13 +41,13 @@ public static partial class SuperEnumerable
 	///     The equality comparer to use to determine whether or not keys are equal. If <see langword="null"/>, the
 	///     default equality comparer for <typeparamref name="T"/> is used.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///     <see langword="true" /> if any element of the sequence <paramref name="source" /> is duplicated, <see
 	///     langword="false" /> otherwise.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method executes immediately.
@@ -73,13 +73,13 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">
 	///	    A function to extract the key for each element.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///     <see langword="true" /> if any element of the sequence <paramref name="source" /> is duplicated, <see
 	///     langword="false" /> otherwise.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method executes immediately.
@@ -110,13 +110,13 @@ public static partial class SuperEnumerable
 	///     The equality comparer to use to determine whether or not keys are equal. If <see langword="null"/>, the
 	///     default equality comparer for <typeparamref name="TKey"/> is used.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///     <see langword="true" /> if any element of the sequence <paramref name="source" /> is duplicated, <see
 	///     langword="false" /> otherwise.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method executes immediately.

@@ -15,16 +15,16 @@ public static partial class SuperEnumerable
 	/// <param name="count">
 	///     The minimum number of items a sequence must have for this function to return <see langword="true"/>.
 	/// </param>
+	/// <returns>
+	///	    <see langword="true"/> if the number of elements in the sequence is greater than or equal to the given
+	///     integer, <see langword="false"/> otherwise.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="count"/> is negative.
 	/// </exception>
-	/// <returns>
-	///	    <see langword="true"/> if the number of elements in the sequence is greater than or equal to the given
-	///     integer, <see langword="false"/> otherwise.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This method executes immediately.
@@ -50,16 +50,16 @@ public static partial class SuperEnumerable
 	/// <param name="count">
 	///	    The maximum number of items a sequence must have for this function to return <see langword="true"/>.
 	/// </param>
+	/// <returns>
+	///	    <see langword="true"/> if the number of elements in the sequence is lesser than or equal to the given
+	///     integer, <see langword="false"/> otherwise.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="count"/> is negative.
 	/// </exception>
-	/// <returns>
-	///	    <see langword="true"/> if the number of elements in the sequence is lesser than or equal to the given
-	///     integer, <see langword="false"/> otherwise.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This method executes immediately.
@@ -84,16 +84,16 @@ public static partial class SuperEnumerable
 	/// <param name="count">
 	///	    The exactly number of items a sequence must have for this function to return <see langword="true"/>.
 	/// </param>
+	/// <returns>
+	///	    <see langword="true"/> if the number of elements in the sequence is equals to the given integer, <see
+	///     langword="false"/> otherwise.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="count"/> is negative.
 	/// </exception>
-	/// <returns>
-	///	    <see langword="true"/> if the number of elements in the sequence is equals to the given integer, <see
-	///     langword="false"/> otherwise.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This method executes immediately.
@@ -122,16 +122,16 @@ public static partial class SuperEnumerable
 	/// <param name="max">
 	///	    The maximum number of items a sequence must have for this function to return <see langword="true"/>.
 	/// </param>
+	/// <returns>
+	///	    <see langword="true"/> if the number of elements in the sequence is between (inclusive) the min and max
+	///     given integers, <see langword="false"/> otherwise.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="min"/> is negative, or <paramref name="max"/> is less than <paramref name="min"/>.
 	/// </exception>
-	/// <returns>
-	///	    <see langword="true"/> if the number of elements in the sequence is between (inclusive) the min and max
-	///     given integers, <see langword="false"/> otherwise.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This method executes immediately.
@@ -170,13 +170,13 @@ public static partial class SuperEnumerable
 	/// <param name="second">
 	///	    The second sequence.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="first"/> or <paramref name="second"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    <c>-1</c> if the first sequence has the fewest elements, <c>0</c> if the two sequences have the same number
 	///     of elements or <c>1</c> if the first sequence has the most elements.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="first"/> or <paramref name="second"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method executes immediately.

@@ -12,12 +12,12 @@ public static partial class SuperEnumerable
 	/// <param name="sequence">
 	///	    The sequence to run length encode
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="sequence"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sequence of tuples containing the element and the occurrence count
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="sequence"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This operator evaluates in a deferred and streaming manner.
@@ -42,12 +42,12 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">
 	///	    The comparer used to identify equivalent items
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="sequence"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sequence of tuples containing the element and the occurrence count
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="sequence"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This operator evaluates in a deferred and streaming manner.

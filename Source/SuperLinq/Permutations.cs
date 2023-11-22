@@ -187,15 +187,15 @@ public static partial class SuperEnumerable
 	/// <param name="sequence">
 	///	    The original sequence to permute
 	/// </param>
+	/// <returns>
+	///	    A sequence of lists representing permutations of the original sequence
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="sequence"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentException">
 	///	    <paramref name="sequence"/> has too many elements to permute properly.
 	/// </exception>
-	/// <returns>
-	///	    A sequence of lists representing permutations of the original sequence
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    A permutation is a unique re-ordering of the elements of the sequence.

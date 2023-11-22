@@ -14,13 +14,13 @@ public static partial class SuperEnumerable
 	/// <param name="step">
 	///	    The step increment for each returned value.
 	/// </param>
+	/// <returns>
+	///	    An <see cref="IEnumerable{Int32}"/>that contains a range of sequential integral numbers.
+	/// </returns>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="count"/> is less than 0. -or- <paramref name="start"/> + (<paramref name="count"/> -1) *
 	///     <paramref name="step"/> cannot be contained by an <see cref="int"/>.
 	/// </exception>
-	/// <returns>
-	///	    An <see cref="IEnumerable{Int32}"/>that contains a range of sequential integral numbers.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///		This operator uses deferred execution and streams its results.

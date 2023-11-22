@@ -12,12 +12,12 @@ public static partial class SuperEnumerable
 	/// <param name="source">
 	///	    The source sequence.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sequence of tuples.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	///	    This operator uses deferred execution and streams its results.
 	/// </remarks>
@@ -39,12 +39,12 @@ public static partial class SuperEnumerable
 	/// <param name="startIndex">
 	///	    The index of the first value returned.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sequence of tuples.
 	///	</returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	///	    This operator uses deferred execution and streams its results.
 	/// </remarks>

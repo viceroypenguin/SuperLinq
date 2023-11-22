@@ -20,12 +20,12 @@ public static partial class SuperEnumerable
 	/// <param name="direction">
 	///	    A direction in which to order the elements (ascending, descending)
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    An ordered copy of the source sequence
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
@@ -58,12 +58,12 @@ public static partial class SuperEnumerable
 	/// <param name="direction">
 	///	    A direction in which to order the elements (ascending, descending)
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    An ordered copy of the source sequence
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
@@ -97,12 +97,12 @@ public static partial class SuperEnumerable
 	/// <param name="direction">
 	///	    A direction in which to order the elements (ascending, descending)
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    An ordered copy of the source sequence
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
@@ -135,12 +135,12 @@ public static partial class SuperEnumerable
 	/// <param name="direction">
 	///	    A direction in which to order the elements (ascending, descending)
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    An ordered copy of the source sequence
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed

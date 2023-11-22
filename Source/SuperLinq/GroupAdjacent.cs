@@ -208,8 +208,8 @@ public static partial class SuperEnumerable
 	///	    A function to map each key and associated source elements to a result object.
 	/// </param>
 	/// <returns>
-	///	    A collection of elements of type
-	/// <typeparamref name="TResult" /> where each element represents a projection over a group and its key.
+	///	    A collection of elements of type <typeparamref name="TResult" /> where each element represents a projection
+	///     over a group and its key.
 	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/>, <paramref name="keySelector"/>, or <paramref name="resultSelector"/> is <see
@@ -261,8 +261,9 @@ public static partial class SuperEnumerable
 	///	    An <see cref="IEqualityComparer{TKey}"/> to compare keys.
 	/// </param>
 	/// <returns>
-	///	    A collection of elements of type
-	/// <typeparamref name="TResult" /> where each element represents a projection over a group and its key.</returns>
+	///	    A collection of elements of type <typeparamref name="TResult" /> where each element represents a projection
+	///     over a group and its key.
+	///	</returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/>, <paramref name="keySelector"/>, or <paramref name="resultSelector"/> is <see
 	///     langword="null"/>.

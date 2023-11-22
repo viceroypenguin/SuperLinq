@@ -32,13 +32,13 @@ public static partial class SuperEnumerable
 	///	    The equality comparer to use to determine whether or not keys are equal. If <see langword="null" />, the
 	///     default equality comparer for <typeparamref name="TKey"/> is used.
 	/// </param>
+	/// <returns>
+	///	    A sequence of unique keys and their accumulated value.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/>, <paramref name="keySelector"/>, or <paramref name="func"/> is <see
 	///     langword="null" />.
 	/// </exception>
-	/// <returns>
-	///	    A sequence of unique keys and their accumulated value.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. The operator will be executed in it's entirety
@@ -85,13 +85,13 @@ public static partial class SuperEnumerable
 	///	    The equality comparer to use to determine whether or not keys are equal. If <see langword="null" />, the
 	///     default equality comparer for <typeparamref name="TKey"/> is used.
 	/// </param>
+	/// <returns>
+	///	    A sequence of unique keys and their accumulated value.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/>, <paramref name="seedSelector"/>, <paramref name="keySelector"/>, or <paramref
 	///     name="func"/> is <see langword="null" />.
 	/// </exception>
-	/// <returns>
-	///	    A sequence of unique keys and their accumulated value.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. The operator will be executed in it's entirety

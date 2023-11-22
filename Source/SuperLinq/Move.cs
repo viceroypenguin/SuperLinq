@@ -20,15 +20,15 @@ public static partial class SuperEnumerable
 	/// <param name="toIndex">
 	///	    The index where the specified range will be moved.
 	/// </param>
+	/// <returns>
+	///	    A sequence with the specified range moved to the new position.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="fromIndex"/>, <paramref name="count"/>, or <paramref name="toIndex"/> is less than <c>0</c>.
 	/// </exception>
-	/// <returns>
-	///	    A sequence with the specified range moved to the new position.
-	/// </returns>
 	/// <remarks>
 	///	    This operator uses deferred execution and streams its results.
 	/// </remarks>

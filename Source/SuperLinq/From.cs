@@ -124,7 +124,7 @@ public partial class SuperEnumerable
 	///	    A sequence with the values resulting from invoking all of the <paramref name="functions"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException">
-	/// <paramref name="functions"/> is <see langword="null"/>.
+	///	    <paramref name="functions"/> is <see langword="null"/>.
 	/// </exception>
 	/// <remarks>
 	///	    This operator uses deferred execution and streams the results. If the resulting sequence is enumerated

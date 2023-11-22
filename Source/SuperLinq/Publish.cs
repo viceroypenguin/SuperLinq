@@ -15,13 +15,13 @@ public static partial class SuperEnumerable
 	/// <param name="source">
 	///	    Source sequence.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    Buffer enabling each enumerator to retrieve elements from the shared source sequence, starting from the
 	///     index at the point of obtaining the enumerator.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    A separate buffer will be maintained for each <see cref="IEnumerator{T}"/> created from the returned <see

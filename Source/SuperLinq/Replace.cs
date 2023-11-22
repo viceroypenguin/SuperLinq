@@ -17,13 +17,13 @@ public static partial class SuperEnumerable
 	/// <param name="value">
 	///	    The replacement value to use at <paramref name="index"/>.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sequence with the original values from <paramref name="source"/>, except for position <paramref
 	///     name="index"/> which has the value <paramref name="value"/>.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	///	    This operator evaluates in a deferred and streaming manner.
 	/// </remarks>
@@ -65,13 +65,13 @@ public static partial class SuperEnumerable
 	/// <param name="value">
 	///	    The replacement value to use at <paramref name="index"/>.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sequence with the original values from <paramref name="source"/>, except for position <paramref
 	///     name="index"/> which has the value <paramref name="value"/>.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	///	    This operator evaluates in a deferred and streaming manner.
 	/// </remarks>

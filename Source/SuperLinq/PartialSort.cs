@@ -217,16 +217,16 @@ public static partial class SuperEnumerable
 	/// <param name="count">
 	///	    Number of (maximum) elements to return.
 	/// </param>
+	/// <returns>
+	///	    A sequence containing at most top <paramref name="count"/> elements from source, in ascending order of their
+	///     keys.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="count"/> is less than <c>1</c>.
 	/// </exception>
-	/// <returns>
-	///	    A sequence containing at most top <paramref name="count"/> elements from source, in ascending order of their
-	///     keys.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
@@ -265,16 +265,16 @@ public static partial class SuperEnumerable
 	/// <param name="direction">
 	///	    The direction in which to sort the elements
 	/// </param>
+	/// <returns>
+	///	    A sequence containing at most top <paramref name="count"/> elements from source, in the specified order of
+	///     their keys.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="count"/> is less than <c>1</c>.
 	/// </exception>
-	/// <returns>
-	///	    A sequence containing at most top <paramref name="count"/> elements from source, in the specified order of
-	///     their keys.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
@@ -313,16 +313,16 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">
 	///	    A <see cref="IComparer{T}"/> to compare elements.
 	/// </param>
+	/// <returns>
+	///	    A sequence containing at most top <paramref name="count"/> elements from source, in ascending order of their
+	///     keys.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="count"/> is less than <c>1</c>.
 	/// </exception>
-	/// <returns>
-	///	    A sequence containing at most top <paramref name="count"/> elements from source, in ascending order of their
-	///     keys.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
@@ -366,16 +366,16 @@ public static partial class SuperEnumerable
 	/// <param name="direction">
 	///	    The direction in which to sort the elements
 	/// </param>
+	/// <returns>
+	///	    A sequence containing at most top <paramref name="count"/> elements from source, in the specified order of
+	///     their keys.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="count"/> is less than <c>1</c>.
 	/// </exception>
-	/// <returns>
-	///	    A sequence containing at most top <paramref name="count"/> elements from source, in the specified order of
-	///     their keys.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.

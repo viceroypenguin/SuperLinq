@@ -13,12 +13,12 @@ public static partial class SuperEnumerable
 	/// <param name="source">
 	///	    The sequence whose items will be ranked
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sorted sequence of items and their rank.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
@@ -45,12 +45,12 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">
 	///	    A object that defines comparison semantics for the elements in the sequence
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sorted sequence of items and their rank.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
@@ -80,12 +80,12 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">
 	///	    A key selector function which returns the value by which to rank items in the sequence
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sorted sequence of items and their rank.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
@@ -121,12 +121,12 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">
 	///	    An object that defines the comparison semantics for keys used to rank items
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sorted sequence of items and their rank.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
@@ -154,12 +154,12 @@ public static partial class SuperEnumerable
 	/// <param name="source">
 	///	    The sequence whose items will be ranked
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sorted sequence of items and their rank.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
@@ -185,12 +185,12 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">
 	///	    A object that defines comparison semantics for the elements in the sequence
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sorted sequence of items and their rank.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
@@ -220,12 +220,12 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">
 	///	    A key selector function which returns the value by which to rank items in the sequence
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sorted sequence of items and their rank.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
@@ -261,12 +261,12 @@ public static partial class SuperEnumerable
 	/// <param name="comparer">
 	///	    An object that defines the comparison semantics for keys used to rank items
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sorted sequence of items and their rank.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed

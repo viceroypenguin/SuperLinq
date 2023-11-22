@@ -24,12 +24,12 @@ public static partial class SuperEnumerable
 	/// <param name="rand">
 	///	    Random generator used to produce random numbers
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="rand"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    An infinite sequence of random integers
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="rand"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This operator uses deferred execution and streams its result.
@@ -73,12 +73,12 @@ public static partial class SuperEnumerable
 	/// <param name="maxValue">
 	///	    Exclusive upper bound for random values returned
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="rand"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    An infinite sequence of random integers
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="rand"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This operator uses deferred execution and streams its result.
@@ -101,12 +101,12 @@ public static partial class SuperEnumerable
 	/// <param name="maxValue">
 	///		Exclusive upper bound for random values returned.
 	/// </param>
-	/// <exception cref="ArgumentOutOfRangeException">
-	///		<paramref name="minValue"/> is greater than <paramref name="maxValue"/>.
-	/// </exception>
 	/// <returns>
 	///	    An infinite sequence of random integers
 	/// </returns>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///		<paramref name="minValue"/> is greater than <paramref name="maxValue"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This operator uses deferred execution and streams its result.
@@ -130,15 +130,15 @@ public static partial class SuperEnumerable
 	/// <param name="maxValue">
 	///	    Exclusive upper bound for random values returned
 	/// </param>
+	/// <returns>
+	///	    An infinite sequence of random integers
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="rand"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///		<paramref name="minValue"/> is greater than <paramref name="maxValue"/>.
 	/// </exception>
-	/// <returns>
-	///	    An infinite sequence of random integers
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This operator uses deferred execution and streams its result.
@@ -174,12 +174,12 @@ public static partial class SuperEnumerable
 	/// <param name="rand">
 	///	    Random generator used to produce values
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="rand"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    An infinite sequence of random doubles
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="rand"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This operator uses deferred execution and streams its result.
@@ -192,14 +192,6 @@ public static partial class SuperEnumerable
 		return RandomImpl(rand, r => r.NextDouble());
 	}
 
-	/// <summary>
-	/// This is the underlying implementation that all random operators use to
-	/// produce a sequence of random values.
-	/// </summary>
-	/// <typeparam name="T">The type of value returned (either Int32 or Double)</typeparam>
-	/// <param name="rand">Random generators used to produce the sequence</param>
-	/// <param name="nextValue">Generator function that actually produces the next value - specific to T</param>
-	/// <returns>An infinite sequence of random numbers of type T</returns>
 	private static IEnumerable<T> RandomImpl<T>(Random rand, Func<Random, T> nextValue)
 	{
 		while (true)

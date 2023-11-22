@@ -14,15 +14,15 @@ public static partial class SuperEnumerable
 	/// <param name="subsetSize">
 	///	    The size of the random subset to return.
 	/// </param>
+	/// <returns>
+	///	    A random sequence of elements in random order from the original sequence.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///		<paramref name="subsetSize"/> is negative or larger than the length of <paramref name="source"/>.
 	/// </exception>
-	/// <returns>
-	///	    A random sequence of elements in random order from the original sequence.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
@@ -49,15 +49,15 @@ public static partial class SuperEnumerable
 	/// <param name="rand">
 	///		A random generator used as part of the selection algorithm.
 	/// </param>
+	/// <returns>
+	///	    A random sequence of elements in random order from the original sequence.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> or <paramref name="rand"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///		<paramref name="subsetSize"/> is negative or larger than the length of <paramref name="source"/>.
 	/// </exception>
-	/// <returns>
-	///	    A random sequence of elements in random order from the original sequence.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed

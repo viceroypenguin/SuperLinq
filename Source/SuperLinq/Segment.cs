@@ -15,12 +15,12 @@ public static partial class SuperEnumerable
 	///	    A function, which returns <see langword="true"/> if the given element begins a new segment, and <see
 	///     langword="false"/> otherwise
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="newSegmentPredicate"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sequence of segment, each of which is a portion of the original sequence
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="newSegmentPredicate"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution and streams the groupings. The grouping elements,
@@ -48,12 +48,12 @@ public static partial class SuperEnumerable
 	///	    A function, which returns <see langword="true"/> if the given element and index begins a new segment, and
 	///     <see langword="false"/> otherwise
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="newSegmentPredicate"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sequence of segment, each of which is a portion of the original sequence
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="newSegmentPredicate"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution and streams the groupings. The grouping elements,

@@ -27,13 +27,13 @@ public static partial class SuperEnumerable
 	/// <param name="accumulator">
 	///	    An accumulator function invoked for each element.
 	/// </param>
+	/// <returns>
+	///	    A sequence of keys paired with intermediate accumulator states.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/>, <paramref name="keySelector"/>, <paramref name="seedSelector"/>, or <paramref
 	///     name="accumulator"/> is <see langword="null"/>.
 	/// </exception>
-	/// <returns>
-	///	    A sequence of keys paired with intermediate accumulator states.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This operator uses deferred execution and streams its result.
@@ -77,13 +77,13 @@ public static partial class SuperEnumerable
 	///	    The equality comparer to use to determine whether or not keys are equal. If <see langword="null"/>, the
 	///     default equality comparer for <typeparamref name="TSource"/> is used.
 	/// </param>
+	/// <returns>
+	///	    A sequence of keys paired with intermediate accumulator states.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/>, <paramref name="keySelector"/>, <paramref name="seedSelector"/>, or <paramref
 	///     name="accumulator"/> is <see langword="null"/>.
 	/// </exception>
-	/// <returns>
-	///	    A sequence of keys paired with intermediate accumulator states.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This operator uses deferred execution and streams its result.

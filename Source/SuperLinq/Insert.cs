@@ -17,6 +17,10 @@ public static partial class SuperEnumerable
 	/// <param name="index">
 	///	    The zero-based index at which to insert elements from <paramref name="second"/>.
 	/// </param>
+	/// <returns>
+	///	    A sequence that contains the elements of <paramref name="first"/> plus the elements of <paramref
+	///     name="second"/> inserted at the given index.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="first"/> or <paramref name="second"/> is <see langword="null"/>.
 	/// </exception>
@@ -27,10 +31,6 @@ public static partial class SuperEnumerable
 	///	    Thrown lazily if <paramref name="index"/> is greater than the length of <paramref name="first"/>. The
 	///     validation occurs when yielding the next element after having iterated <paramref name="first"/> entirely.
 	/// </exception>
-	/// <returns>
-	///	    A sequence that contains the elements of <paramref name="first"/> plus the elements of <paramref
-	///     name="second"/> inserted at the given index.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This method uses deferred execution and streams its results.
@@ -58,6 +58,10 @@ public static partial class SuperEnumerable
 	/// <param name="index">
 	///	    The zero-based index at which to insert elements from <paramref name="second"/>.
 	/// </param>
+	/// <returns>
+	///	    A sequence that contains the elements of <paramref name="first"/> plus the elements of <paramref
+	///     name="second"/> inserted at the given index.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="first"/> or <paramref name="second"/> is <see langword="null"/>.
 	/// </exception>
@@ -68,10 +72,6 @@ public static partial class SuperEnumerable
 	///	    Thrown lazily if <paramref name="index"/> is greater than the length of <paramref name="first"/>. The
 	///     validation occurs when yielding the next element after having iterated <paramref name="first"/> entirely.
 	/// </exception>
-	/// <returns>
-	///	    A sequence that contains the elements of <paramref name="first"/> plus the elements of <paramref
-	///     name="second"/> inserted at the given index.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This method uses deferred execution and streams its results.

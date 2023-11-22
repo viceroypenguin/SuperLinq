@@ -14,12 +14,12 @@ public static partial class SuperEnumerable
 	/// <param name="second">
 	///	    Second sequence.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="first"/> or <paramref name="second"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    Sequence concatenating the elements of both sequences, ignoring errors.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="first"/> or <paramref name="second"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    <paramref name="first"/> is enumerated until either the sequence completes or an error occurs during
@@ -47,12 +47,12 @@ public static partial class SuperEnumerable
 	/// <param name="sources">
 	///	    Source sequences.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="sources"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    Sequence concatenating the elements of the given sequences, ignoring errors.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="sources"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    Each sequence of <paramref name="sources"/> is enumerated until either the sequence completes or an error occurs during
@@ -79,12 +79,12 @@ public static partial class SuperEnumerable
 	/// <param name="sources">
 	///	    Source sequences.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="sources"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    Sequence concatenating the elements of the given sequences, ignoring errors.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="sources"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    Each sequence of <paramref name="sources"/> is enumerated until either the sequence completes or an error occurs during

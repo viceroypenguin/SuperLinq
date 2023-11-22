@@ -14,15 +14,12 @@ public static partial class SuperEnumerable
 	/// <typeparam name="T">
 	///	    Type of source elements.
 	/// </typeparam>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A tuple of elements satisfying the predicate and those that do not, respectively.
 	/// </returns>
-	/// <remarks>
-	///		
-	/// </remarks>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This method executes immediately.
@@ -53,13 +50,13 @@ public static partial class SuperEnumerable
 	/// <typeparam name="TResult">
 	///	    Type of the result.
 	/// </typeparam>
+	/// <returns>
+	///	    The return value from <paramref name="resultSelector"/>.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/>, <paramref name="predicate"/>, or <paramref name="resultSelector"/> is <see
 	///     langword="null"/>.
 	/// </exception>
-	/// <returns>
-	///	    The return value from <paramref name="resultSelector"/>.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    This method executes immediately.

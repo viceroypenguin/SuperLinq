@@ -18,13 +18,13 @@ public static partial class SuperEnumerable
 	/// <param name="keySelector">
 	///	    Function that projects the key given an element in the source sequence.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sequence of elements paired with their index within the key-group. The index is the key and the element is
 	///     the value of the pair.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This operator uses deferred execution and streams its results.
@@ -57,16 +57,15 @@ public static partial class SuperEnumerable
 	/// </param>
 	/// <param name="comparer">
 	///	    The equality comparer to use to determine whether or not keys are equal. If <see langword="null"/>, the
-	///     default equality comparer for
-	/// <typeparamref name="TSource"/> is used.
+	///     default equality comparer for <typeparamref name="TSource"/> is used.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    A sequence of elements paired with their index within the key-group. The index is the key and the element is
 	///     the value of the pair.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    This operator uses deferred execution and streams its results.

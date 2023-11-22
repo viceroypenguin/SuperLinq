@@ -19,15 +19,15 @@ public static partial class SuperEnumerable
 	/// <param name="index">
 	///	    The index of the element to retrieve, which is either from the start or the end.
 	/// </param>
+	/// <returns>
+	///	    The element at the specified position in the <paramref name="source" /> sequence.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source" /> is <see langword="null" />.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="index" /> is outside the bounds of the <paramref name="source" /> sequence.
 	/// </exception>
-	/// <returns>
-	///	    The element at the specified position in the <paramref name="source" /> sequence.
-	/// </returns>
 	/// <remarks>
 	/// <para>
 	///	    If the type of <paramref name="source" /> implements <see cref="IList{T}" />, that implementation is used to
@@ -81,13 +81,13 @@ public static partial class SuperEnumerable
 	/// <param name="index">
 	///	    The index of the element to retrieve, which is either from the start or the end.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source" /> is <see langword="null" />.
-	/// </exception>
 	/// <returns>
 	///	    <see langword="default" /> if <paramref name="index" /> is outside the bounds of the <paramref name="source"
 	///     /> sequence; otherwise, the element at the specified position in the <paramref name="source" /> sequence.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source" /> is <see langword="null" />.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    If the type of <paramref name="source" /> implements <see cref="IList{T}" />, that implementation is used to

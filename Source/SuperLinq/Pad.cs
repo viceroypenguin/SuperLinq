@@ -14,16 +14,16 @@ public static partial class SuperEnumerable
 	/// <param name="width">
 	///	    The width/length below which to pad.
 	/// </param>
+	/// <returns>
+	///	    Returns a sequence that is at least as wide/long as the width/length specified by the <paramref
+	///     name="width"/> parameter.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="width"/> is less than <c>0</c>.
 	/// </exception>
-	/// <returns>
-	///	    Returns a sequence that is at least as wide/long as the width/length specified by the <paramref
-	///     name="width"/> parameter.
-	/// </returns>
 	/// <remarks>
 	///	    This operator uses deferred execution and streams its results.
 	/// </remarks>
@@ -48,16 +48,16 @@ public static partial class SuperEnumerable
 	/// <param name="padding">
 	///		The value to use for padding.
 	/// </param>
+	/// <returns>
+	///	    Returns a sequence that is at least as wide/long as the width/length specified by the <paramref
+	///     name="width"/> parameter.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="width"/> is less than <c>0</c>.
 	/// </exception>
-	/// <returns>
-	///	    Returns a sequence that is at least as wide/long as the width/length specified by the <paramref
-	///     name="width"/> parameter.
-	/// </returns>
 	/// <remarks>
 	///	    This operator uses deferred execution and streams its results.
 	/// </remarks>
@@ -81,16 +81,16 @@ public static partial class SuperEnumerable
 	/// <param name="paddingSelector">
 	///		A function to generate the value used as padding.
 	/// </param>
+	/// <returns>
+	///	    Returns a sequence that is at least as wide/long as the width/length specified by the <paramref
+	///     name="width"/> parameter.
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> or <paramref name="paddingSelector"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="width"/> is less than <c>0</c>.
 	/// </exception>
-	/// <returns>
-	///	    Returns a sequence that is at least as wide/long as the width/length specified by the <paramref
-	///     name="width"/> parameter.
-	/// </returns>
 	/// <remarks>
 	///	    This operator uses deferred execution and streams its results.
 	/// </remarks>

@@ -17,12 +17,12 @@ public static partial class SuperEnumerable
 	/// <param name="identity">
 	///	    The initial accumulator value.
 	/// </param>
-	/// <exception cref="ArgumentNullException">
-	///	    <paramref name="source"/> or <paramref name="transformation"/> is <see langword="null"/>.
-	/// </exception>
 	/// <returns>
 	///	    The scanned sequence
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="transformation"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    An exclusive prefix scan returns an equal-length sequence where the N-th element is the aggregation of the
