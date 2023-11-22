@@ -5,7 +5,8 @@ public static partial class SuperEnumerable
 	/// <summary>
 	///	    Returns a sequence of elements in random order from the original sequence.
 	/// </summary>
-	/// <typeparam name="T">The type of source sequence elements.
+	/// <typeparam name="T">
+	///		The type of source sequence elements.
 	/// </typeparam>
 	/// <param name="source">
 	///	    The sequence from which to return random elements.

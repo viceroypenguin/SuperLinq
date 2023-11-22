@@ -98,8 +98,10 @@ public static partial class SuperEnumerable
 	/// </param>
 	/// <param name="resultSelector">
 	///	    A projection function which accepts the current and subsequent (lead) element (in that order) and produces a
-	///     result</param>
-	/// <returns>A sequence produced by projecting each element of the sequence with its lead pairing
+	///     result
+	/// </param>
+	/// <returns>
+	///		A sequence produced by projecting each element of the sequence with its lead pairing
 	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> or <paramref name="resultSelector"/> is <see langword="null"/>.

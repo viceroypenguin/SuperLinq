@@ -2,7 +2,6 @@
 
 public static partial class SuperEnumerable
 {
-
 	/// <summary>
 	///	    Splits the source sequence by a separator.
 	/// </summary>
