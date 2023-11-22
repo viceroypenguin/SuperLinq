@@ -14,5 +14,5 @@ Console.WriteLine(
 	string.Join(", ", result) +
 	"]");
 
-// One possible random output is as follows:
+// This code produces the following output:
 // [1, 2, 3, 4, 5]

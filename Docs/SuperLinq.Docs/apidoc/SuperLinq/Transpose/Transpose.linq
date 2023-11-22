@@ -20,7 +20,7 @@ Console.WriteLine(
 		result.Select(c => "   [" + string.Join(", ", c) + "]")) +
 	Environment.NewLine + "]");
 
-// One possible random output is as follows:
+// This code produces the following output:
 // [
 //    [10, 20, 30],
 //    [11, 31],
