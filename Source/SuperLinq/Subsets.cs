@@ -5,23 +5,33 @@ namespace SuperLinq;
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Returns a sequence of <see cref="IList{T}"/> representing all of
-	/// the subsets of any size that are part of the original sequence. In
-	/// mathematics, it is equivalent to the <em>power set</em> of a set.
+	///	    Returns a sequence of <see cref="IList{T}"/> representing all of the subsets of any size that are part of
+	///     the original sequence. In mathematics, it is equivalent to the <em>power set</em> of a set.
 	/// </summary>
+	/// <param name="sequence">
+	///	    Sequence for which to produce subsets
+	/// </param>
+	/// <typeparam name="T">
+	///	    The type of the elements in the sequence
+	/// </typeparam>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="sequence"/> is <see langword="null"/>
+	/// </exception>
+	/// <returns>
+	///	    A sequence of lists that represent the all subsets of the original sequence
+	/// </returns>
 	/// <remarks>
-	/// This operator produces all of the subsets of a given sequence. Subsets are returned
-	/// in increasing cardinality, starting with the empty set and terminating with the
-	/// entire original sequence.<br/>
-	/// Subsets are produced in a deferred, streaming manner; however, each subset is returned
-	/// as a materialized list.<br/>
-	/// There are 2^N subsets of a given sequence, where N => sequence.Count().
+	/// <para>
+	///	    This operator produces all of the subsets of a given sequence. Subsets are returned in increasing
+	///     cardinality, starting with the empty set and terminating with the entire original sequence. Subsets are
+	///     produced in a deferred, streaming manner; however, each subset is returned as a materialized list. There are
+	///     2^N subsets of a given sequence, where <c>N = sequence.Count()</c>.
+	/// </para>
+	/// <para>
+	///	    This method is implemented by using deferred execution. However, <paramref name="sequence"/> will be
+	///     consumed in it's entirety immediately when first element of the returned sequence is consumed. 
+	/// </para>
 	/// </remarks>
-	/// <param name="sequence">Sequence for which to produce subsets</param>
-	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
-	/// <returns>A sequence of lists that represent the all subsets of the original sequence</returns>
-	/// <exception cref="ArgumentNullException">Thrown if <paramref name="sequence"/> is <see langword="null"/></exception>
-
 	public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
 	{
 		ArgumentNullException.ThrowIfNull(sequence);
@@ -55,39 +65,35 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Returns a sequence of <see cref="IList{T}"/> representing all
-	/// subsets of a given size that are part of the original sequence. In
-	/// mathematics, it is equivalent to the <em>combinations</em> or
-	/// <em>k-subsets</em> of a set.
+	///	    Returns a sequence of <see cref="IList{T}"/> representing all subsets of a given size that are part of the
+	///     original sequence. In mathematics, it is equivalent to the <em>combinations</em> or <em>k-subsets</em> of a
+	///     set.
 	/// </summary>
-	/// <param name="sequence">Sequence for which to produce subsets</param>
-	/// <param name="subsetSize">The size of the subsets to produce</param>
-	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
-	/// <returns>A sequence of lists that represents of K-sized subsets of the original sequence</returns>
+	/// <param name="sequence">
+	///	    Sequence for which to produce subsets
+	/// </param>
+	/// <param name="subsetSize">
+	///	    The size of the subsets to produce
+	/// </param>
+	/// <typeparam name="T">
+	///	    The type of the elements in the sequence
+	/// </typeparam>
 	/// <exception cref="ArgumentNullException">
-	/// Thrown if <paramref name="sequence"/> is <see langword="null"/>
+	///	    <paramref name="sequence"/> is <see langword="null"/>
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
-	/// Thrown if <paramref name="subsetSize"/> is less than zero.
+	///	    <paramref name="subsetSize"/> is less than <c>0</c>.
 	/// </exception>
-
+	/// <returns>
+	///	    A sequence of lists that represents of K-sized subsets of the original sequence
+	/// </returns>
 	public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence, int subsetSize)
 	{
 		ArgumentNullException.ThrowIfNull(sequence);
 		ArgumentOutOfRangeException.ThrowIfNegative(subsetSize);
 
-		// NOTE: There's an interesting trade-off that we have to make in this operator.
-		// Ideally, we would throw an exception here if the {subsetSize} parameter is
-		// greater than the sequence length. Unfortunately, determining the length of a
-		// sequence is not always possible without enumerating it. Herein lies the rub.
-		// We want Subsets() to be a deferred operation that only iterates the sequence
-		// when the caller is ready to consume the results. However, this forces us to
-		// defer the precondition check on the {subsetSize} upper bound. This can result
-		// in an exception that is far removed from the point of failure - an unfortunate
-		// and undesirable outcome.
-		// At the moment, this operator prioritizes deferred execution over fail-fast
-		// preconditions. This however, needs to be carefully considered - and perhaps
-		// may change after further thought and review.
+		if (sequence.TryGetCollectionCount() is int length)
+			Guard.IsLessThanOrEqualTo(subsetSize, length);
 
 		return new SubsetGenerator<T>(sequence, subsetSize);
 	}
@@ -119,13 +125,7 @@ public static partial class SuperEnumerable
 
 			public SubsetEnumerator(IList<T> set, int subsetSize)
 			{
-				// precondition: subsetSize <= set.Count
-				if (subsetSize > set.Count)
-				{
-					ThrowHelper.ThrowArgumentOutOfRangeException(
-						nameof(subsetSize),
-						"Subset size must be <= sequence.Count()");
-				}
+				Guard.IsLessThanOrEqualTo(subsetSize, set.Count);
 
 				// initialize set arrays...
 				_set = set;

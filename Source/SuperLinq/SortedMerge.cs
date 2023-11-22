@@ -3,31 +3,31 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Merges two or more sequences that are in a common order (either ascending or descending) into
-	/// a single sequence that preserves that order.
+	///	    Merges two or more sequences that are in a common order into a single sequence that preserves that order.
 	/// </summary>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of the sequence
+	/// </typeparam>
+	/// <param name="source">
+	///	    The primary sequence with which to merge
+	/// </param>
+	/// <param name="otherSequences">
+	///	    A variable argument array of zero or more other sequences to merge with
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="otherSequences"/> is <see langword="null"/>.
+	/// </exception>
+	/// <returns>
+	///	    A merged, order-preserving sequence containing all of the elements of the original sequences
+	/// </returns>
 	/// <remarks>
-	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
-	/// undefined results.<br/>
-	/// This method uses deferred execution and streams its results.<br />
-	///
-	/// Here is an example of a merge, as well as the produced result:
-	/// <code><![CDATA[
-	///   var s1 = new[] { 3, 7, 11 };
-	///   var s2 = new[] { 2, 4, 20 };
-	///   var s3 = new[] { 17, 19, 25 };
-	///   var merged = s1.SortedMerge( OrderByDirection.Ascending, s2, s3 );
-	///   var result = merged.ToArray();
-	///   // result will be:
-	///   // { 2, 3, 4, 7, 11, 17, 19, 20, 25 }
-	/// ]]></code>
+	/// <para>
+	///	    Using SortedMerge on sequences that are not ordered or are not in the same order produces undefined results.
+	/// </para>
+	/// <para>
+	///	    This method uses deferred execution and streams its results.
+	/// </para>
 	/// </remarks>
-	/// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
-	/// <param name="source">The primary sequence with which to merge</param>
-	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
-	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, params IEnumerable<TSource>[] otherSequences)
 	{
 		return SortedMerge(source, OrderByDirection.Ascending, comparer: null, otherSequences);
@@ -65,32 +65,34 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Merges two or more sequences that are in a common order (either ascending or descending) into
-	/// a single sequence that preserves that order.
+	///	    Merges two or more sequences that are in a common order into a single sequence that preserves that order.
 	/// </summary>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of the sequence
+	/// </typeparam>
+	/// <param name="source">
+	///	    The primary sequence with which to merge
+	/// </param>
+	/// <param name="otherSequences">
+	///	    A variable argument array of zero or more other sequences to merge with
+	/// </param>
+	/// <param name="comparer">
+	///		An <see cref="IComparer{T}"/> to compare elements
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="otherSequences"/> is <see langword="null"/>.
+	/// </exception>
+	/// <returns>
+	///	    A merged, order-preserving sequence containing all of the elements of the original sequences
+	/// </returns>
 	/// <remarks>
-	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
-	/// undefined results.<br/>
-	/// This method uses deferred execution and streams its results.<br />
-	///
-	/// Here is an example of a merge, as well as the produced result:
-	/// <code><![CDATA[
-	///   var s1 = new[] { 3, 7, 11 };
-	///   var s2 = new[] { 2, 4, 20 };
-	///   var s3 = new[] { 17, 19, 25 };
-	///   var merged = s1.SortedMerge( OrderByDirection.Ascending, s2, s3 );
-	///   var result = merged.ToArray();
-	///   // result will be:
-	///   // { 2, 3, 4, 7, 11, 17, 19, 20, 25 }
-	/// ]]></code>
+	/// <para>
+	///	    Using SortedMerge on sequences that are not ordered or are not in the same order produces undefined results.
+	/// </para>
+	/// <para>
+	///	    This method uses deferred execution and streams its results.
+	/// </para>
 	/// </remarks>
-	/// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
-	/// <param name="source">The primary sequence with which to merge</param>
-	/// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
-	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
-	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, IComparer<TSource>? comparer, params IEnumerable<TSource>[] otherSequences)
 	{
 		return SortedMerge(source, OrderByDirection.Ascending, comparer, otherSequences);
@@ -129,88 +131,111 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Merges two or more sequences that are in a common order (either ascending or descending) into
-	/// a single sequence that preserves that order.
+	///	    Merges two or more sequences that are in a common order (either ascending or descending) into a single sequence that preserves that order.
 	/// </summary>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of the sequence
+	/// </typeparam>
+	/// <param name="source">
+	///	    The primary sequence with which to merge
+	/// </param>
+	/// <param name="otherSequences">
+	///	    A variable argument array of zero or more other sequences to merge with
+	/// </param>
+	/// <param name="direction">
+	///	    A direction in which to order the elements (ascending, descending)
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="otherSequences"/> is <see langword="null"/>.
+	/// </exception>
+	/// <returns>
+	///	    A merged, order-preserving sequence containing all of the elements of the original sequences
+	/// </returns>
 	/// <remarks>
-	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
-	/// undefined results.<br/>
-	/// This method uses deferred execution and streams its results.<br />
-	///
-	/// Here is an example of a merge, as well as the produced result:
-	/// <code><![CDATA[
-	///   var s1 = new[] { 3, 7, 11 };
-	///   var s2 = new[] { 2, 4, 20 };
-	///   var s3 = new[] { 17, 19, 25 };
-	///   var merged = s1.SortedMerge( OrderByDirection.Ascending, s2, s3 );
-	///   var result = merged.ToArray();
-	///   // result will be:
-	///   // { 2, 3, 4, 7, 11, 17, 19, 20, 25 }
-	/// ]]></code>
+	/// <para>
+	///	    Using <c>SortedMerge</c> on sequences that are not ordered or are not in the same order produces undefined results.
+	/// </para>
+	/// <para>
+	///	    This method uses deferred execution and streams its results.
+	/// </para>
 	/// </remarks>
-	/// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
-	/// <param name="source">The primary sequence with which to merge</param>
-	/// <param name="direction">The ordering that all sequences must already exhibit</param>
-	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
-	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, params IEnumerable<TSource>[] otherSequences)
 	{
 		return SortedMerge(source, direction, comparer: null, otherSequences);
 	}
 
 	/// <summary>
-	/// Merges two or more sequences that are in a common order (either ascending or descending) into
-	/// a single sequence that preserves that order.
+	///	    Merges two or more sequences that are in a common order (either ascending or descending) into a single sequence that preserves that order.
 	/// </summary>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of the sequence
+	/// </typeparam>
+	/// <param name="source">
+	///	    The primary sequence with which to merge
+	/// </param>
+	/// <param name="otherSequences">
+	///	    A variable argument array of zero or more other sequences to merge with
+	/// </param>
+	/// <param name="direction">
+	///	    A direction in which to order the elements (ascending, descending)
+	/// </param>
+	/// <param name="comparer">
+	///		An <see cref="IComparer{T}"/> to compare elements
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="otherSequences"/> is <see langword="null"/>.
+	/// </exception>
+	/// <returns>
+	///	    A merged, order-preserving sequence containing all of the elements of the original sequences
+	/// </returns>
 	/// <remarks>
-	/// Using SortedMerge on sequences that are not ordered or are not in the same order produces
-	/// undefined results.<br/>
-	/// This method uses deferred execution and streams its results.<br />
-	///
-	/// Here is an example of a merge, as well as the produced result:
-	/// <code><![CDATA[
-	///   var s1 = new[] { 3, 7, 11 };
-	///   var s2 = new[] { 2, 4, 20 };
-	///   var s3 = new[] { 17, 19, 25 };
-	///   var merged = s1.SortedMerge( OrderByDirection.Ascending, s2, s3 );
-	///   var result = merged.ToArray();
-	///   // result will be:
-	///   // { 2, 3, 4, 7, 11, 17, 19, 20, 25 }
-	/// ]]></code>
+	/// <para>
+	///	    Using <c>SortedMerge</c> on sequences that are not ordered or are not in the same order produces undefined results.
+	/// </para>
+	/// <para>
+	///	    This method uses deferred execution and streams its results.
+	/// </para>
 	/// </remarks>
-	/// <typeparam name="TSource">The type of the elements in the sequence</typeparam>
-	/// <param name="source">The primary sequence with which to merge</param>
-	/// <param name="direction">The ordering that all sequences must already exhibit</param>
-	/// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
-	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
-	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource>? comparer, params IEnumerable<TSource>[] otherSequences)
 	{
 		return SortedMergeBy(source, Identity, direction, comparer, otherSequences);
 	}
 
 	/// <summary>
-	/// Merges two or more sequences that are in a common order (either ascending or descending)
-	/// according to a key into a single sequence that preserves that order.
+	///	    Merges two or more sequences that are in a common order according to a key into a single sequence that
+	///     preserves that order.
 	/// </summary>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of the sequence
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key used to order elements
+	/// </typeparam>
+	/// <param name="source">
+	///	    The primary sequence with which to merge
+	/// </param>
+	/// <param name="keySelector">
+	///	    A key selector function
+	/// </param>
+	/// <param name="otherSequences">
+	///	    A variable argument array of zero or more other sequences to merge with
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/>, <paramref name="keySelector"/> or <paramref name="otherSequences"/> is <see
+	///     langword="null"/>.
+	/// </exception>
+	/// <returns>
+	///	    A merged, order-preserving sequence containing all of the elements of the original sequences
+	/// </returns>
 	/// <remarks>
-	/// Using SortedMergeBy on sequences that are not ordered or are not in the same order produces
-	/// undefined results.<br/>
-	/// This method uses deferred execution and streams its results.<br />
+	/// <para>
+	///	    Using <c>SortedMergeBy</c> on sequences that are not ordered or are not in the same order produces undefined
+	///     results.
+	/// </para>
+	/// <para>
+	///	    This method uses deferred execution and streams its results.
+	/// </para>
 	/// </remarks>
-	/// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
-	/// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/></typeparam>
-	/// <param name="source">The primary sequence with which to merge</param>
-	/// <param name="keySelector">A function to extract a key from an element.</param>
-	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
-	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> SortedMergeBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, params IEnumerable<TSource>[] otherSequences)
 	{
 		return SortedMergeBy(source, keySelector, OrderByDirection.Ascending, comparer: null, otherSequences);
@@ -240,24 +265,43 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Merges two or more sequences that are in a common order (either ascending or descending)
-	/// according to a key into a single sequence that preserves that order.
+	///	    Merges two or more sequences that are in a common order according to a key into a single sequence that
+	///     preserves that order.
 	/// </summary>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of the sequence
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key used to order elements
+	/// </typeparam>
+	/// <param name="source">
+	///	    The primary sequence with which to merge
+	/// </param>
+	/// <param name="keySelector">
+	///	    A key selector function
+	/// </param>
+	/// <param name="otherSequences">
+	///	    A variable argument array of zero or more other sequences to merge with
+	/// </param>
+	/// <param name="comparer">
+	///		An <see cref="IComparer{T}"/> to compare keys
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/>, <paramref name="keySelector"/> or <paramref name="otherSequences"/> is <see
+	///     langword="null"/>.
+	/// </exception>
+	/// <returns>
+	///	    A merged, order-preserving sequence containing all of the elements of the original sequences
+	/// </returns>
 	/// <remarks>
-	/// Using SortedMergeBy on sequences that are not ordered or are not in the same order produces
-	/// undefined results.<br/>
-	/// This method uses deferred execution and streams its results.<br />
+	/// <para>
+	///	    Using <c>SortedMergeBy</c> on sequences that are not ordered or are not in the same order produces undefined
+	///     results.
+	/// </para>
+	/// <para>
+	///	    This method uses deferred execution and streams its results.
+	/// </para>
 	/// </remarks>
-	/// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
-	/// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/></typeparam>
-	/// <param name="source">The primary sequence with which to merge</param>
-	/// <param name="keySelector">A function to extract a key from an element.</param>
-	/// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
-	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
-	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> SortedMergeBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer, params IEnumerable<TSource>[] otherSequences)
 	{
 		return SortedMergeBy(source, keySelector, OrderByDirection.Ascending, comparer, otherSequences);
@@ -288,49 +332,89 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Merges two or more sequences that are in a common order (either ascending or descending)
-	/// according to a key into a single sequence that preserves that order.
+	///	    Merges two or more sequences that are in a common order (either ascending or descending) according to a key
+	///     into a single sequence that preserves that order.
 	/// </summary>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of the sequence
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key used to order elements
+	/// </typeparam>
+	/// <param name="source">
+	///	    The primary sequence with which to merge
+	/// </param>
+	/// <param name="keySelector">
+	///	    A key selector function
+	/// </param>
+	/// <param name="otherSequences">
+	///	    A variable argument array of zero or more other sequences to merge with
+	/// </param>
+	/// <param name="direction">
+	///	    A direction in which to order the elements (ascending, descending)
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/>, <paramref name="keySelector"/> or <paramref name="otherSequences"/> is <see
+	///     langword="null"/>.
+	/// </exception>
+	/// <returns>
+	///	    A merged, order-preserving sequence containing all of the elements of the original sequences
+	/// </returns>
 	/// <remarks>
-	/// Using SortedMergeBy on sequences that are not ordered or are not in the same order produces
-	/// undefined results.<br/>
-	/// This method uses deferred execution and streams its results.<br />
+	/// <para>
+	///	    Using <c>SortedMergeBy</c> on sequences that are not ordered or are not in the same order produces undefined
+	///     results.
+	/// </para>
+	/// <para>
+	///	    This method uses deferred execution and streams its results.
+	/// </para>
 	/// </remarks>
-	/// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
-	/// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/></typeparam>
-	/// <param name="source">The primary sequence with which to merge</param>
-	/// <param name="keySelector">A function to extract a key from an element.</param>
-	/// <param name="direction">The ordering that all sequences must already exhibit</param>
-	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
-	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> SortedMergeBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, OrderByDirection direction, params IEnumerable<TSource>[] otherSequences)
 	{
 		return SortedMergeBy(source, keySelector, direction, comparer: null, otherSequences);
 	}
 
 	/// <summary>
-	/// Merges two or more sequences that are in a common order (either ascending or descending)
-	/// according to a key into a single sequence that preserves that order.
+	///	    Merges two or more sequences that are in a common order (either ascending or descending) according to a key
+	///     into a single sequence that preserves that order.
 	/// </summary>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of the sequence
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key used to order elements
+	/// </typeparam>
+	/// <param name="source">
+	///	    The primary sequence with which to merge
+	/// </param>
+	/// <param name="keySelector">
+	///	    A key selector function
+	/// </param>
+	/// <param name="otherSequences">
+	///	    A variable argument array of zero or more other sequences to merge with
+	/// </param>
+	/// <param name="direction">
+	///	    A direction in which to order the elements (ascending, descending)
+	/// </param>
+	/// <param name="comparer">
+	///		An <see cref="IComparer{T}"/> to compare keys
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/>, <paramref name="keySelector"/> or <paramref name="otherSequences"/> is <see
+	///     langword="null"/>.
+	/// </exception>
+	/// <returns>
+	///	    A merged, order-preserving sequence containing all of the elements of the original sequences
+	/// </returns>
 	/// <remarks>
-	/// Using SortedMergeBy on sequences that are not ordered or are not in the same order produces
-	/// undefined results.<br/>
-	/// This method uses deferred execution and streams its results.<br />
+	/// <para>
+	///	    Using <c>SortedMergeBy</c> on sequences that are not ordered or are not in the same order produces undefined
+	///     results.
+	/// </para>
+	/// <para>
+	///	    This method uses deferred execution and streams its results.
+	/// </para>
 	/// </remarks>
-	/// <typeparam name="TSource">The type of the elements in the sequence</typeparam>
-	/// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/></typeparam>
-	/// <param name="source">The primary sequence with which to merge</param>
-	/// <param name="keySelector">A function to extract a key from an element.</param>
-	/// <param name="direction">The ordering that all sequences must already exhibit</param>
-	/// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
-	/// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
-	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
 	public static IEnumerable<TSource> SortedMergeBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, OrderByDirection direction, IComparer<TKey>? comparer, params IEnumerable<TSource>[] otherSequences)
 	{
 		ArgumentNullException.ThrowIfNull(source);

@@ -3,25 +3,53 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Returns consecutive distinct elements by using the default equality comparer to compare values.
+	///		Returns consecutive distinct elements by using the default equality comparer to compare values.
 	/// </summary>
-	/// <typeparam name="TSource">Source sequence element type.</typeparam>
-	/// <param name="source">Source sequence.</param>
-	/// <returns>Sequence without adjacent non-distinct elements.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <typeparam name="TSource">
+	///		Source sequence element type.
+	/// </typeparam>
+	/// <param name="source">
+	///		Source sequence.
+	/// </param>
+	/// <returns>
+	///		Sequence without adjacent non-distinct elements.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///		<paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <remarks>
+	/// <para>
+	///		This method uses deferred execution semantics and streams its results.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<TSource> DistinctUntilChanged<TSource>(this IEnumerable<TSource> source)
 	{
 		return DistinctUntilChanged(source, Identity, comparer: null);
 	}
 
 	/// <summary>
-	/// Returns consecutive distinct elements by using the specified equality comparer to compare values.
+	///		Returns consecutive distinct elements by using the specified equality comparer to compare values.
 	/// </summary>
-	/// <typeparam name="TSource">Source sequence element type.</typeparam>
-	/// <param name="source">Source sequence.</param>
-	/// <param name="comparer">Comparer used to compare values.</param>
-	/// <returns>Sequence without adjacent non-distinct elements.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+	/// <typeparam name="TSource">
+	///		Source sequence element type.
+	/// </typeparam>
+	/// <param name="source">
+	///		Source sequence.
+	/// </param>
+	/// <param name="comparer">
+	///		Comparer used to compare values.
+	/// </param>
+	///	<returns>
+	///		Sequence without adjacent non-distinct elements.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///		<paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <remarks>
+	/// <para>
+	///		This method uses deferred execution semantics and streams its results.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<TSource> DistinctUntilChanged<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
 	{
 		ArgumentNullException.ThrowIfNull(source);
@@ -29,32 +57,67 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Returns consecutive distinct elements based on a key value by using the specified equality comparer to compare
-	/// key values.
+	///	    Returns consecutive distinct elements based on a key value by using the specified equality comparer to
+	///	    compare key values.
 	/// </summary>
-	/// <typeparam name="TSource">Source sequence element type.</typeparam>
-	/// <typeparam name="TKey">Key type.</typeparam>
-	/// <param name="source">Source sequence.</param>
-	/// <param name="keySelector">Key selector.</param>
-	/// <returns>Sequence without adjacent non-distinct elements.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="keySelector"/> is <see
-	/// langword="null"/>.</exception>
+	/// <typeparam name="TSource">
+	///	    Source sequence element type.
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    Key type.
+	/// </typeparam>
+	/// <param name="source">
+	///	    Source sequence.
+	/// </param>
+	/// <param name="keySelector">
+	///	    Key selector.
+	/// </param>
+	/// <returns>
+	///	    Sequence without adjacent non-distinct elements.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
+	/// <remarks>
+	/// <para>
+	///	    This method uses deferred execution semantics and streams its results.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 	{
 		return DistinctUntilChanged(source, keySelector, comparer: null);
 	}
 
 	/// <summary>
-	/// Returns consecutive distinct elements based on a key value by using the specified equality comparer to compare key values.
+	///	    Returns consecutive distinct elements based on a key value by using the specified equality comparer to
+	///     compare key values.
 	/// </summary>
-	/// <typeparam name="TSource">Source sequence element type.</typeparam>
-	/// <typeparam name="TKey">Key type.</typeparam>
-	/// <param name="source">Source sequence.</param>
-	/// <param name="keySelector">Key selector.</param>
-	/// <param name="comparer">Comparer used to compare key values.</param>
-	/// <returns>Sequence without adjacent non-distinct elements.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="keySelector"/> is <see
-	/// langword="null"/>.</exception>
+	/// <typeparam name="TSource">
+	///	    Source sequence element type.
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    Key type.
+	/// </typeparam>
+	/// <param name="source">
+	///	    Source sequence.
+	/// </param>
+	/// <param name="keySelector">
+	///	    Key selector.
+	/// </param>
+	/// <param name="comparer">
+	///	    Comparer used to compare key values.
+	/// </param>
+	/// <returns>
+	///	    Sequence without adjacent non-distinct elements.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
+	/// <remarks>
+	/// <para>
+	///	    This method uses deferred execution semantics and streams its results.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
 	{
 		ArgumentNullException.ThrowIfNull(source);

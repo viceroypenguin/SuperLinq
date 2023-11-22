@@ -3,31 +3,39 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Inserts the elements of a sequence into another sequence at a
-	/// specified index.
+	///	    Inserts the elements of a sequence into another sequence at a specified index.
 	/// </summary>
-	/// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
-	/// <param name="first">The source sequence.</param>
-	/// <param name="second">The sequence that will be inserted.</param>
+	/// <typeparam name="T">
+	///	    Type of the elements of the source sequence.
+	/// </typeparam>
+	/// <param name="first">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="second">
+	///	    The sequence that will be inserted.
+	/// </param>
 	/// <param name="index">
-	/// The zero-based index at which to insert elements from
-	/// <paramref name="second"/>.</param>
+	///	    The zero-based index at which to insert elements from <paramref name="second"/>.
+	/// </param>
 	/// <returns>
-	/// A sequence that contains the elements of <paramref name="first"/>
-	/// plus the elements of <paramref name="second"/> inserted at
-	/// the given index.
+	///	    A sequence that contains the elements of <paramref name="first"/> plus the elements of <paramref
+	///     name="second"/> inserted at the given index.
 	/// </returns>
-	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException">
-	/// Thrown if <paramref name="index"/> is negative.
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="first"/> or <paramref name="second"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
-	/// Thrown lazily if <paramref name="index"/> is greater than the
-	/// length of <paramref name="first"/>. The validation occurs when
-	/// yielding the next element after having iterated
-	/// <paramref name="first"/> entirely.
+	///	    Thrown if <paramref name="index"/> is negative.
 	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    Thrown lazily if <paramref name="index"/> is greater than the length of <paramref name="first"/>. The
+	///     validation occurs when yielding the next element after having iterated <paramref name="first"/> entirely.
+	/// </exception>
+	/// <remarks>
+	/// <para>
+	///	    This method uses deferred execution and streams its results.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<T> Insert<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
 	{
 		ArgumentOutOfRangeException.ThrowIfNegative(index);
@@ -36,31 +44,39 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Inserts the elements of a sequence into another sequence at a
-	/// specified index.
+	///	    Inserts the elements of a sequence into another sequence at a specified index.
 	/// </summary>
-	/// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
-	/// <param name="first">The source sequence.</param>
-	/// <param name="second">The sequence that will be inserted.</param>
+	/// <typeparam name="T">
+	///	    Type of the elements of the source sequence.
+	/// </typeparam>
+	/// <param name="first">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="second">
+	///	    The sequence that will be inserted.
+	/// </param>
 	/// <param name="index">
-	/// The zero-based index at which to insert elements from
-	/// <paramref name="second"/>.</param>
+	///	    The zero-based index at which to insert elements from <paramref name="second"/>.
+	/// </param>
 	/// <returns>
-	/// A sequence that contains the elements of <paramref name="first"/>
-	/// plus the elements of <paramref name="second"/> inserted at
-	/// the given index.
+	///	    A sequence that contains the elements of <paramref name="first"/> plus the elements of <paramref
+	///     name="second"/> inserted at the given index.
 	/// </returns>
-	/// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException">
-	/// Thrown if <paramref name="index"/> is negative.
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="first"/> or <paramref name="second"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
-	/// Thrown lazily if <paramref name="index"/> is greater than the
-	/// length of <paramref name="first"/>. The validation occurs when
-	/// yielding the next element after having iterated
-	/// <paramref name="first"/> entirely.
+	///	    Thrown if <paramref name="index"/> is negative.
 	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    Thrown lazily if <paramref name="index"/> is greater than the length of <paramref name="first"/>. The
+	///     validation occurs when yielding the next element after having iterated <paramref name="first"/> entirely.
+	/// </exception>
+	/// <remarks>
+	/// <para>
+	///	    This method uses deferred execution and streams its results.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<T> Insert<T>(this IEnumerable<T> first, IEnumerable<T> second, Index index)
 	{
 		ArgumentNullException.ThrowIfNull(first);

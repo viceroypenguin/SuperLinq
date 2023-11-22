@@ -3,16 +3,31 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Divides a sequence into multiple sequences by using a segment detector based on the original sequence
+	///	    Divides a sequence into multiple sequences by using a segment detector based on the original sequence
 	/// </summary>
-	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
-	/// <param name="source">The sequence to segment</param>
-	/// <param name="newSegmentPredicate">A function, which returns <see langword="true"/> if the given element begins a new segment, and <see langword="false"/> otherwise</param>
-	/// <returns>A sequence of segment, each of which is a portion of the original sequence</returns>
+	/// <typeparam name="T">
+	///	    The type of the elements in the sequence
+	/// </typeparam>
+	/// <param name="source">
+	///	    The sequence to segment
+	/// </param>
+	/// <param name="newSegmentPredicate">
+	///	    A function, which returns <see langword="true"/> if the given element begins a new segment, and <see
+	///     langword="false"/> otherwise
+	/// </param>
+	/// <returns>
+	///	    A sequence of segment, each of which is a portion of the original sequence
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
-	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
+	///	    <paramref name="source"/> or <paramref name="newSegmentPredicate"/> is <see langword="null"/>.
 	/// </exception>
-
+	/// <remarks>
+	/// <para>
+	///	    This method is implemented by using deferred execution and streams the groupings. The grouping elements,
+	///     however, are buffered. Each grouping is therefore yielded as soon as it is complete and before the next
+	///     grouping occurs.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, bool> newSegmentPredicate)
 	{
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
@@ -21,16 +36,31 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Divides a sequence into multiple sequences by using a segment detector based on the original sequence
+	///	    Divides a sequence into multiple sequences by using a segment detector based on the original sequence
 	/// </summary>
-	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
-	/// <param name="source">The sequence to segment</param>
-	/// <param name="newSegmentPredicate">A function, which returns <see langword="true"/> if the given element or index indicate a new segment, and <see langword="false"/> otherwise</param>
-	/// <returns>A sequence of segment, each of which is a portion of the original sequence</returns>
+	/// <typeparam name="T">
+	///	    The type of the elements in the sequence
+	/// </typeparam>
+	/// <param name="source">
+	///	    The sequence to segment
+	/// </param>
+	/// <param name="newSegmentPredicate">
+	///	    A function, which returns <see langword="true"/> if the given element and index begins a new segment, and
+	///     <see langword="false"/> otherwise
+	/// </param>
+	/// <returns>
+	///	    A sequence of segment, each of which is a portion of the original sequence
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
-	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
+	///	    <paramref name="source"/> or <paramref name="newSegmentPredicate"/> is <see langword="null"/>.
 	/// </exception>
-
+	/// <remarks>
+	/// <para>
+	///	    This method is implemented by using deferred execution and streams the groupings. The grouping elements,
+	///     however, are buffered. Each grouping is therefore yielded as soon as it is complete and before the next
+	///     grouping occurs.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
 	{
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
@@ -39,16 +69,31 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Divides a sequence into multiple sequences by using a segment detector based on the original sequence
+	///	    Divides a sequence into multiple sequences by using a segment detector based on the original sequence
 	/// </summary>
-	/// <typeparam name="T">The type of the elements in the sequence</typeparam>
-	/// <param name="source">The sequence to segment</param>
-	/// <param name="newSegmentPredicate">A function, which returns <see langword="true"/> if the given current element, previous element or index indicate a new segment, and <see langword="false"/> otherwise</param>
-	/// <returns>A sequence of segment, each of which is a portion of the original sequence</returns>
+	/// <typeparam name="T">
+	///	    The type of the elements in the sequence
+	/// </typeparam>
+	/// <param name="source">
+	///	    The sequence to segment
+	/// </param>
+	/// <param name="newSegmentPredicate">
+	///	    A function, which returns <see langword="true"/> if the given current element, previous element, and index
+	///     begins a new segment, and <see langword="false"/> otherwise
+	/// </param>
 	/// <exception cref="ArgumentNullException">
-	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
+	///	    <paramref name="source"/> or <paramref name="newSegmentPredicate"/> is <see langword="null"/>.
 	/// </exception>
-
+	/// <returns>
+	///	    A sequence of segment, each of which is a portion of the original sequence
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	///	    This method is implemented by using deferred execution and streams the groupings. The grouping elements,
+	///     however, are buffered. Each grouping is therefore yielded as soon as it is complete and before the next
+	///     grouping occurs.
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
 	{
 		ArgumentNullException.ThrowIfNull(source);
