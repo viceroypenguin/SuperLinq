@@ -101,7 +101,7 @@ public static partial class SuperEnumerable
 			if (!sources.TryGetValue(selector(), out var source))
 				source = defaultSource;
 
-			Guard.IsNotNull(source);
+			ArgumentNullException.ThrowIfNull(source);
 			foreach (var el in source)
 				yield return el;
 		}

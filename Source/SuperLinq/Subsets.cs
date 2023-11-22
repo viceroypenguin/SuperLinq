@@ -93,7 +93,7 @@ public static partial class SuperEnumerable
 		ArgumentOutOfRangeException.ThrowIfNegative(subsetSize);
 
 		if (sequence.TryGetCollectionCount() is int length)
-			Guard.IsLessThanOrEqualTo(subsetSize, length);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(subsetSize, length);
 
 		return new SubsetGenerator<T>(sequence, subsetSize);
 	}
@@ -125,7 +125,7 @@ public static partial class SuperEnumerable
 
 			public SubsetEnumerator(IList<T> set, int subsetSize)
 			{
-				Guard.IsLessThanOrEqualTo(subsetSize, set.Count);
+				ArgumentOutOfRangeException.ThrowIfGreaterThan(subsetSize, set.Count);
 
 				// initialize set arrays...
 				_set = set;

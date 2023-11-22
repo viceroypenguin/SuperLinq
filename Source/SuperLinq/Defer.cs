@@ -45,7 +45,7 @@ public static partial class SuperEnumerable
 		static IEnumerable<TResult> Core(Func<IEnumerable<TResult>> enumerableFactory)
 		{
 			var source = enumerableFactory();
-			Guard.IsNotNull(source);
+			ArgumentNullException.ThrowIfNull(source);
 
 			foreach (var el in source)
 				yield return el;
