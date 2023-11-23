@@ -1,0 +1,28 @@
+﻿---
+uid: SuperLinq.SuperEnumerable.HasDuplicates``1(System.Collections.Generic.IEnumerable{``0})
+example: [*content]
+---
+The following code example demonstrates how to check if a sequence has duplicate values using `HasDuplicates`.
+[!code-csharp[](SuperLinq/HasDuplicates/HasDuplicates1.linq#L6-)]
+
+---
+uid: SuperLinq.SuperEnumerable.HasDuplicates``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})
+example: [*content]
+---
+The following code example demonstrates how to check if a sequence has duplicate values using `HasDuplicates`.
+[!code-csharp[](SuperLinq/HasDuplicates/HasDuplicates2.linq#L6-)]
+
+---
+uid: SuperLinq.SuperEnumerable.HasDuplicates``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})
+example: [*content]
+---
+The following code example demonstrates how to check if a sequence has duplicate values using `HasDuplicates`.
+[!code-csharp[](SuperLinq/HasDuplicates/HasDuplicates3.linq#L6-)]
+
+---
+uid: SuperLinq.SuperEnumerable.HasDuplicates``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IEqualityComparer{``1})
+example: [*content]
+---
+The following code example demonstrates how to check if a sequence has duplicate values using `HasDuplicates`.
+[!code-csharp[](SuperLinq/HasDuplicates/HasDuplicates4.linq#L6-)]
+
