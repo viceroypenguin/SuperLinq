@@ -1,5 +1,5 @@
 <Query Kind="Statements">
-  <Reference Relative="..\..\..\..\..\Source\SuperLinq\bin\Release\net7.0\SuperLinq.dll">C:\Users\stuar\source\repos\viceroypenguin\SuperLinq\Source\SuperLinq\bin\Release\net7.0\SuperLinq.dll</Reference>
+  <NuGetReference>SuperLinq</NuGetReference>
   <Namespace>SuperLinq</Namespace>
 </Query>
 
