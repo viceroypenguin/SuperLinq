@@ -3,23 +3,34 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence. If <paramref name="count"/>
-	/// is less than the total number of elements in <paramref name="source"/>, then this method will improve
-	/// performance.
+	///	    Executes a partial sort of the top <paramref name="count"/> elements of a sequence. If <paramref
+	///     name="count"/> is less than the total number of elements in <paramref name="source"/>, then this method will
+	///     improve performance.
 	/// </summary>
-	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="count">Number of (maximum) elements to return.</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in their ascending
-	/// order.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
+	/// <typeparam name="T">
+	///	    Type of elements in the sequence.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="count">
+	///	    Number of (maximum) elements to return.
+	/// </param>
+	/// <returns>
+	///	    A sequence containing at most top <paramref name="count"/> elements from source, in their ascending order.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is less than <c>1</c>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
-	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	///	    This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
 	/// </para>
 	/// <para>
-	/// This operator uses deferred execution and streams it results.
+	///	    This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source, int count)
@@ -28,24 +39,37 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence.
-	/// If <paramref name="count"/> is less than the total number of elements in <paramref name="source"/>, then this
-	/// method will improve performance.
+	///	    Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a
+	///     sequence. If <paramref name="count"/> is less than the total number of elements in <paramref
+	///     name="source"/>, then this method will improve performance.
 	/// </summary>
-	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="count">Number of (maximum) elements to return.</param>
-	/// <param name="direction">The direction in which to sort the elements</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in the specified
-	/// order.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
+	/// <typeparam name="T">
+	///	    Type of elements in the sequence.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="count">
+	///	    Number of (maximum) elements to return.
+	/// </param>
+	/// <param name="direction">
+	///	    The direction in which to sort the elements
+	/// </param>
+	/// <returns>
+	///	    A sequence containing at most top <paramref name="count"/> elements from source, in the specified order.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is less than <c>1</c>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
-	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	///	    This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
 	/// </para>
 	/// <para>
-	/// This operator uses deferred execution and streams it results.
+	///	    This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<T> PartialSort<T>(
@@ -55,24 +79,37 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence, using <paramref
-	/// name="comparer"/> to compare elements. If <paramref name="count"/> is less than the total number of elements in
-	/// <paramref name="source"/>, then this method will improve performance.
+	///	    Executes a partial sort of the top <paramref name="count"/> elements of a sequence, using <paramref
+	///     name="comparer"/> to compare elements. If <paramref name="count"/> is less than the total number of elements
+	///     in <paramref name="source"/>, then this method will improve performance.
 	/// </summary>
-	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="count">Number of (maximum) elements to return.</param>
-	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in their ascending
-	/// order.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
+	/// <typeparam name="T">
+	///	    Type of elements in the sequence.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="count">
+	///	    Number of (maximum) elements to return.
+	/// </param>
+	/// <param name="comparer">
+	///	    A <see cref="IComparer{T}"/> to compare elements.
+	/// </param>
+	/// <returns>
+	///	    A sequence containing at most top <paramref name="count"/> elements from source, in their ascending order.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is less than <c>1</c>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
-	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	///	    This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
 	/// </para>
 	/// <para>
-	/// This operator uses deferred execution and streams it results.
+	///	    This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<T> PartialSort<T>(
@@ -83,25 +120,40 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence,
-	/// using <paramref name="comparer"/> to compare elements. If <paramref name="count"/> is less than the total number
-	/// of elements in <paramref name="source"/>, then this method will improve performance.
+	///	    Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a
+	///     sequence, using <paramref name="comparer"/> to compare elements. If <paramref name="count"/> is less than
+	///     the total number of elements in <paramref name="source"/>, then this method will improve performance.
 	/// </summary>
-	/// <typeparam name="T">Type of elements in the sequence.</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="count">Number of (maximum) elements to return.</param>
-	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
-	/// <param name="direction">The direction in which to sort the elements</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in the specified
-	/// order.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
+	/// <typeparam name="T">
+	///	    Type of elements in the sequence.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="count">
+	///	    Number of (maximum) elements to return.
+	/// </param>
+	/// <param name="comparer">
+	///	    A <see cref="IComparer{T}"/> to compare elements.
+	/// </param>
+	/// <param name="direction">
+	///	    The direction in which to sort the elements
+	/// </param>
+	/// <returns>
+	///	    A sequence containing at most top <paramref name="count"/> elements from source, in the specified order.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is less than <c>1</c>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
-	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	///	    This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
 	/// </para>
 	/// <para>
-	/// This operator uses deferred execution and streams it results.
+	///	    This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<T> PartialSort<T>(
@@ -146,26 +198,41 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence according to the key for each
-	/// element. If <paramref name="count"/> is less than the total number of elements in <paramref name="source"/>,
-	/// then this method will improve performance.
+	///	    Executes a partial sort of the top <paramref name="count"/> elements of a sequence according to the key for
+	///     each element. If <paramref name="count"/> is less than the total number of elements in <paramref
+	///     name="source"/>, then this method will improve performance.
 	/// </summary>
-	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
-	/// <typeparam name="TKey">Type of keys.</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="keySelector">A function to extract a key from an element.</param>
-	/// <param name="count">Number of (maximum) elements to return.</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in ascending order of
-	/// their keys.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
+	/// <typeparam name="TSource">
+	///	    Type of elements in the sequence.
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    Type of keys.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="keySelector">
+	///	    A function to extract a key from an element.
+	/// </param>
+	/// <param name="count">
+	///	    Number of (maximum) elements to return.
+	/// </param>
+	/// <returns>
+	///	    A sequence containing at most top <paramref name="count"/> elements from source, in ascending order of their
+	///     keys.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is less than <c>1</c>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
-	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	///	    This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
 	/// </para>
 	/// <para>
-	/// This operator uses deferred execution and streams it results.
+	///	    This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
@@ -176,27 +243,44 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence
-	/// according to the key for each element. If <paramref name="count"/> is less than the total number of elements in
-	/// <paramref name="source"/>, then this method will improve performance.
+	///	    Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a
+	///     sequence according to the key for each element. If <paramref name="count"/> is less than the total number of
+	///     elements in <paramref name="source"/>, then this method will improve performance.
 	/// </summary>
-	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
-	/// <typeparam name="TKey">Type of keys.</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="keySelector">A function to extract a key from an element.</param>
-	/// <param name="count">Number of (maximum) elements to return.</param>
-	/// <param name="direction">The direction in which to sort the elements</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in the specified order
-	/// of their keys.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
+	/// <typeparam name="TSource">
+	///	    Type of elements in the sequence.
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    Type of keys.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="keySelector">
+	///	    A function to extract a key from an element.
+	/// </param>
+	/// <param name="count">
+	///	    Number of (maximum) elements to return.
+	/// </param>
+	/// <param name="direction">
+	///	    The direction in which to sort the elements
+	/// </param>
+	/// <returns>
+	///	    A sequence containing at most top <paramref name="count"/> elements from source, in the specified order of
+	///     their keys.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is less than <c>1</c>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
-	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	///	    This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
 	/// </para>
 	/// <para>
-	/// This operator uses deferred execution and streams it results.
+	///	    This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
@@ -207,27 +291,44 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Executes a partial sort of the top <paramref name="count"/> elements of a sequence according to the key for each
-	/// element, using <paramref name="comparer"/> to compare the keys. If <paramref name="count"/> is less than the
-	/// total number of elements in <paramref name="source"/>, then this method will improve performance.
+	///	    Executes a partial sort of the top <paramref name="count"/> elements of a sequence according to the key for
+	///     each element, using <paramref name="comparer"/> to compare the keys. If <paramref name="count"/> is less
+	///     than the total number of elements in <paramref name="source"/>, then this method will improve performance.
 	/// </summary>
-	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
-	/// <typeparam name="TKey">Type of keys.</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="keySelector">A function to extract a key from an element.</param>
-	/// <param name="count">Number of (maximum) elements to return.</param>
-	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in ascending order of
-	/// their keys.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
+	/// <typeparam name="TSource">
+	///	    Type of elements in the sequence.
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    Type of keys.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="keySelector">
+	///	    A function to extract a key from an element.
+	/// </param>
+	/// <param name="count">
+	///	    Number of (maximum) elements to return.
+	/// </param>
+	/// <param name="comparer">
+	///	    A <see cref="IComparer{T}"/> to compare elements.
+	/// </param>
+	/// <returns>
+	///	    A sequence containing at most top <paramref name="count"/> elements from source, in ascending order of their
+	///     keys.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is less than <c>1</c>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
-	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	///	    This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
 	/// </para>
 	/// <para>
-	/// This operator uses deferred execution and streams it results.
+	///	    This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
@@ -239,29 +340,48 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a sequence
-	/// according to the key for each element, using <paramref name="comparer"/> to compare the keys. If <paramref
-	/// name="count"/> is less than the total number of elements in <paramref name="source"/>, then this method will
-	/// improve performance.
+	///	    Executes a <paramref name="direction"/> partial sort of the top <paramref name="count"/> elements of a
+	///     sequence according to the key for each element, using <paramref name="comparer"/> to compare the keys. If
+	///     <paramref name="count"/> is less than the total number of elements in <paramref name="source"/>, then this
+	///     method will improve performance.
 	/// </summary>
-	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
-	/// <typeparam name="TKey">Type of keys.</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="keySelector">A function to extract a key from an element.</param>
-	/// <param name="count">Number of (maximum) elements to return.</param>
-	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
-	/// <param name="direction">The direction in which to sort the elements</param>
-	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in the specified order
-	/// of their keys.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
+	/// <typeparam name="TSource">
+	///	    Type of elements in the sequence.
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    Type of keys.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="keySelector">
+	///	    A function to extract a key from an element.
+	/// </param>
+	/// <param name="count">
+	///	    Number of (maximum) elements to return.
+	/// </param>
+	/// <param name="comparer">
+	///	    A <see cref="IComparer{T}"/> to compare elements.
+	/// </param>
+	/// <param name="direction">
+	///	    The direction in which to sort the elements
+	/// </param>
+	/// <returns>
+	///	    A sequence containing at most top <paramref name="count"/> elements from source, in the specified order of
+	///     their keys.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is less than <c>1</c>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
-	/// This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
+	///	    This operation is an <c>O(n * log(K))</c> where <c>K</c> is <paramref name="count"/>.
 	/// </para>
 	/// <para>
-	/// This operator uses deferred execution and streams it results.
+	///	    This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(

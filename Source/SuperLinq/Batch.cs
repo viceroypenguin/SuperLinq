@@ -3,22 +3,38 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Split the elements of a sequence into chunks of size at most <paramref name="size"/>.
+	///	    Split the elements of a sequence into chunks of size at most <paramref name="size"/>.
 	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
-	/// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to chunk.</param>
-	/// <param name="size">The maximum size of each chunk.</param>
-	/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements the input sequence split into chunks of size
-	/// size.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="size"/> is below 1.</exception>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of <paramref name="source"/>.
+	///	</typeparam>
+	/// <param name="source">
+	///	    An <see cref="IEnumerable{T}"/> whose elements to chunk.
+	///	</param>
+	/// <param name="size">
+	///	    The maximum size of each chunk.
+	///	</param>
+	/// <returns>
+	///	    An <see cref="IEnumerable{T}"/> that contains the elements the input sequence split into chunks of size
+	///     size.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	///	</exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="size"/> is below <c>1</c>.
+	/// </exception>
 	/// <remarks>
 	/// <para>
-	/// A chunk can contain fewer elements than <paramref name="size"/>, specifically the final buffer of <paramref
-	/// name="source"/>.
+	///	    A chunk can contain fewer elements than <paramref name="size"/>, specifically the final buffer of <paramref
+	///     name="source"/>.
 	/// </para>
 	/// <para>
-	/// Returned subsequences are buffered, but the overall operation is streamed.<br/>
+	///	    A separate array is allocated for each returned chunk. Other overloads of <c>Batch</c> are available which
+	///	    do not require additional array allocations for each chunk.
+	///	</para>
+	/// <para>
+	///	    Returned subsequences are buffered, but the overall operation is streamed.<br/>
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<IList<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)

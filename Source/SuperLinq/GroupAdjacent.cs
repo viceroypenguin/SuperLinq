@@ -5,27 +5,31 @@ namespace SuperLinq;
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Groups the adjacent elements of a sequence according to a
-	/// specified key selector function.
+	///	    Groups the adjacent elements of a sequence according to a specified key selector function.
 	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of
-	/// <paramref name="source"/>.</typeparam>
-	/// <typeparam name="TKey">The type of the key returned by
-	/// <paramref name="keySelector"/>.</typeparam>
-	/// <param name="source">A sequence whose elements to group.</param>
-	/// <param name="keySelector">A function to extract the key for each
-	/// element.</param>
-	/// <returns>A sequence of groupings where each grouping
-	/// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
-	/// and the adjacent elements in the same order as found in the
-	/// source sequence.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of <paramref name="source"/>.
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key returned by <paramref name="keySelector"/>.
+	/// </typeparam>
+	/// <param name="source">
+	///	    A sequence whose elements to group.
+	/// </param>
+	/// <param name="keySelector">
+	///	    A function to extract the key for each element.
+	/// </param>
+	/// <returns>
+	///	    A sequence of groupings where each grouping (<see cref="IGrouping{TKey,TElement}"/>) contains the key and
+	///     the adjacent elements in the same order as found in the source sequence.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
-	/// This method is implemented by using deferred execution and
-	/// streams the groupings. The grouping elements, however, are
-	/// buffered. Each grouping is therefore yielded as soon as it
-	/// is complete and before the next grouping occurs.
+	///	    This method is implemented by using deferred execution and streams the groupings. The grouping elements,
+	///     however, are buffered. Each grouping is therefore yielded as soon as it is complete and before the next
+	///     grouping occurs.
 	/// </remarks>
 	public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
 		this IEnumerable<TSource> source,
@@ -35,30 +39,35 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Groups the adjacent elements of a sequence according to a
-	/// specified key selector function and compares the keys by using a
-	/// specified comparer.
+	///	    Groups the adjacent elements of a sequence according to a specified key selector function and compares the
+	///     keys by using a specified comparer.
 	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of
-	/// <paramref name="source"/>.</typeparam>
-	/// <typeparam name="TKey">The type of the key returned by
-	/// <paramref name="keySelector"/>.</typeparam>
-	/// <param name="source">A sequence whose elements to group.</param>
-	/// <param name="keySelector">A function to extract the key for each
-	/// element.</param>
-	/// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to
-	/// compare keys.</param>
-	/// <returns>A sequence of groupings where each grouping
-	/// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
-	/// and the adjacent elements in the same order as found in the
-	/// source sequence.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of <paramref name="source"/>.
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key returned by <paramref name="keySelector"/>.
+	/// </typeparam>
+	/// <param name="source">
+	///	    A sequence whose elements to group.
+	/// </param>
+	/// <param name="keySelector">
+	///	    A function to extract the key for each element.
+	/// </param>
+	/// <param name="comparer">
+	///	    An <see cref="IEqualityComparer{T}"/> to compare keys.
+	/// </param>
+	/// <returns>
+	///	    A sequence of groupings where each grouping (<see cref="IGrouping{TKey,TElement}"/>) contains the key and
+	///     the adjacent elements in the same order as found in the source sequence.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
 	/// <remarks>
-	/// This method is implemented by using deferred execution and
-	/// streams the groupings. The grouping elements, however, are
-	/// buffered. Each grouping is therefore yielded as soon as it
-	/// is complete and before the next grouping occurs.
+	///	    This method is implemented by using deferred execution and streams the groupings. The grouping elements,
+	///     however, are buffered. Each grouping is therefore yielded as soon as it is complete and before the next
+	///     grouping occurs.
 	/// </remarks>
 	public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
 		this IEnumerable<TSource> source,
@@ -72,33 +81,40 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Groups the adjacent elements of a sequence according to a
-	/// specified key selector function and projects the elements for
-	/// each group by using a specified function.
+	///	    Groups the adjacent elements of a sequence according to a specified key selector function and projects the
+	///     elements for each group by using a specified function.
 	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of
-	/// <paramref name="source"/>.</typeparam>
-	/// <typeparam name="TKey">The type of the key returned by
-	/// <paramref name="keySelector"/>.</typeparam>
-	/// <typeparam name="TElement">The type of the elements in the
-	/// resulting groupings.</typeparam>
-	/// <param name="source">A sequence whose elements to group.</param>
-	/// <param name="keySelector">A function to extract the key for each
-	/// element.</param>
-	/// <param name="elementSelector">A function to map each source
-	/// element to an element in the resulting grouping.</param>
-	/// <returns>A sequence of groupings where each grouping
-	/// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
-	/// and the adjacent elements (of type <typeparamref name="TElement"/>)
-	/// in the same order as found in the source sequence.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="elementSelector"/> is <see langword="null"/>.</exception>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of <paramref name="source"/>.
+	///	</typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key returned by <paramref name="keySelector"/>.
+	///	</typeparam>
+	/// <typeparam name="TElement">
+	///	    The type of the elements in the resulting groupings.
+	///	</typeparam>
+	/// <param name="source">
+	///	    A sequence whose elements to group.
+	///	</param>
+	/// <param name="keySelector">
+	///	    A function to extract the key for each element.
+	///	</param>
+	/// <param name="elementSelector">
+	///	    A function to map each source element to an element in the resulting grouping.
+	///	</param>
+	/// <returns>
+	///	    A sequence of groupings where each grouping (<see cref="IGrouping{TKey,TElement}"/>) contains the key and
+	///     the adjacent elements (of type <typeparamref name="TElement"/>) in the same order as found in the source
+	///     sequence.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/>, <paramref name="keySelector"/>, or <paramref name="elementSelector"/> is <see
+	///     langword="null"/>.
+	/// </exception>
 	/// <remarks>
-	/// This method is implemented by using deferred execution and
-	/// streams the groupings. The grouping elements, however, are
-	/// buffered. Each grouping is therefore yielded as soon as it
-	/// is complete and before the next grouping occurs.
+	///	    This method is implemented by using deferred execution and streams the groupings. The grouping elements,
+	///     however, are buffered. Each grouping is therefore yielded as soon as it is complete and before the next
+	///     grouping occurs.
 	/// </remarks>
 	public static IEnumerable<IGrouping<TKey, TElement>> GroupAdjacent<TSource, TKey, TElement>(
 		this IEnumerable<TSource> source,
@@ -116,36 +132,42 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Groups the adjacent elements of a sequence according to a
-	/// specified key selector function. The keys are compared by using
-	/// a comparer and each group's elements are projected by using a
-	/// specified function.
+	///	    Groups the adjacent elements of a sequence according to a specified key selector function. The keys are
+	///     compared by using a comparer and each group's elements are projected by using a specified function.
 	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of
-	/// <paramref name="source"/>.</typeparam>
-	/// <typeparam name="TKey">The type of the key returned by
-	/// <paramref name="keySelector"/>.</typeparam>
-	/// <typeparam name="TElement">The type of the elements in the
-	/// resulting groupings.</typeparam>
-	/// <param name="source">A sequence whose elements to group.</param>
-	/// <param name="keySelector">A function to extract the key for each
-	/// element.</param>
-	/// <param name="elementSelector">A function to map each source
-	/// element to an element in the resulting grouping.</param>
-	/// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to
-	/// compare keys.</param>
-	/// <returns>A sequence of groupings where each grouping
-	/// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
-	/// and the adjacent elements (of type <typeparamref name="TElement"/>)
-	/// in the same order as found in the source sequence.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="elementSelector"/> is <see langword="null"/>.</exception>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of <paramref name="source"/>.
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key returned by <paramref name="keySelector"/>.
+	/// </typeparam>
+	/// <typeparam name="TElement">
+	///	    The type of the elements in the resulting groupings.
+	/// </typeparam>
+	/// <param name="source">
+	///	    A sequence whose elements to group.
+	/// </param>
+	/// <param name="keySelector">
+	///	    A function to extract the key for each element.
+	/// </param>
+	/// <param name="elementSelector">
+	///	    A function to map each source element to an element in the resulting grouping.
+	/// </param>
+	/// <param name="comparer">
+	///	    An <see cref="IEqualityComparer{T}"/> to compare keys.</param>
+	/// <returns>
+	///	    A sequence of groupings where each grouping (<see cref="IGrouping{TKey,TElement}"/>) contains the key and
+	///     the adjacent elements (of type <typeparamref name="TElement"/>) in the same order as found in the source
+	///     sequence.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/>, <paramref name="keySelector"/>, or <paramref name="elementSelector"/> is <see
+	///     langword="null"/>.
+	/// </exception>
 	/// <remarks>
-	/// This method is implemented by using deferred execution and
-	/// streams the groupings. The grouping elements, however, are
-	/// buffered. Each grouping is therefore yielded as soon as it
-	/// is complete and before the next grouping occurs.
+	///	    This method is implemented by using deferred execution and streams the groupings. The grouping elements,
+	///     however, are buffered. Each grouping is therefore yielded as soon as it is complete and before the next
+	///     grouping occurs.
 	/// </remarks>
 	public static IEnumerable<IGrouping<TKey, TElement>> GroupAdjacent<TSource, TKey, TElement>(
 		this IEnumerable<TSource> source,
@@ -164,33 +186,39 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Groups the adjacent elements of a sequence according to a
-	/// specified key selector function. The keys are compared by using
-	/// a comparer and each group's elements are projected by using a
-	/// specified function.
+	///	    Groups the adjacent elements of a sequence according to a specified key selector function. The keys are
+	///     compared by using a comparer and each group's elements are projected by using a specified function.
 	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of
-	/// <paramref name="source"/>.</typeparam>
-	/// <typeparam name="TKey">The type of the key returned by
-	/// <paramref name="keySelector"/>.</typeparam>
-	/// <typeparam name="TResult">The type of the elements in the
-	/// resulting sequence.</typeparam>
-	/// <param name="source">A sequence whose elements to group.</param>
-	/// <param name="keySelector">A function to extract the key for each
-	/// element.</param>
-	/// <param name="resultSelector">A function to map each key and
-	/// associated source elements to a result object.</param>
-	/// <returns>A collection of elements of type
-	/// <typeparamref name="TResult" /> where each element represents
-	/// a projection over a group and its key.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of <paramref name="source"/>.
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key returned by <paramref name="keySelector"/>.
+	/// </typeparam>
+	/// <typeparam name="TResult">
+	///	    The type of the elements in the resulting sequence.
+	/// </typeparam>
+	/// <param name="source">
+	///	    A sequence whose elements to group.
+	/// </param>
+	/// <param name="keySelector">
+	///	    A function to extract the key for each element.
+	/// </param>
+	/// <param name="resultSelector">
+	///	    A function to map each key and associated source elements to a result object.
+	/// </param>
+	/// <returns>
+	///	    A collection of elements of type <typeparamref name="TResult" /> where each element represents a projection
+	///     over a group and its key.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/>, <paramref name="keySelector"/>, or <paramref name="resultSelector"/> is <see
+	///     langword="null"/>.
+	/// </exception>
 	/// <remarks>
-	/// This method is implemented by using deferred execution and
-	/// streams the groupings. The grouping elements, however, are
-	/// buffered. Each grouping is therefore yielded as soon as it
-	/// is complete and before the next grouping occurs.
+	///	    This method is implemented by using deferred execution and streams the groupings. The grouping elements,
+	///     however, are buffered. Each grouping is therefore yielded as soon as it is complete and before the next
+	///     grouping occurs.
 	/// </remarks>
 	public static IEnumerable<TResult> GroupAdjacent<TSource, TKey, TResult>(
 		this IEnumerable<TSource> source,
@@ -203,40 +231,47 @@ public static partial class SuperEnumerable
 
 		return GroupAdjacentImpl(
 			source, keySelector, Identity,
-			(key, group) => resultSelector(key, group),
+			resultSelector,
 			comparer: null);
 	}
 
 	/// <summary>
-	/// Groups the adjacent elements of a sequence according to a
-	/// specified key selector function. The keys are compared by using
-	/// a comparer and each group's elements are projected by using a
-	/// specified function.
+	///	    Groups the adjacent elements of a sequence according to a specified key selector function. The keys are
+	///     compared by using a comparer and each group's elements are projected by using a specified function.
 	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of
-	/// <paramref name="source"/>.</typeparam>
-	/// <typeparam name="TKey">The type of the key returned by
-	/// <paramref name="keySelector"/>.</typeparam>
-	/// <typeparam name="TResult">The type of the elements in the
-	/// resulting sequence.</typeparam>
-	/// <param name="source">A sequence whose elements to group.</param>
-	/// <param name="keySelector">A function to extract the key for each
-	/// element.</param>
-	/// <param name="resultSelector">A function to map each key and
-	/// associated source elements to a result object.</param>
-	/// <param name="comparer">An <see cref="IEqualityComparer{TKey}"/> to
-	/// compare keys.</param>
-	/// <returns>A collection of elements of type
-	/// <typeparamref name="TResult" /> where each element represents
-	/// a projection over a group and its key.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of <paramref name="source"/>.
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    The type of the key returned by <paramref name="keySelector"/>.
+	/// </typeparam>
+	/// <typeparam name="TResult">
+	///	    The type of the elements in the resulting sequence.
+	/// </typeparam>
+	/// <param name="source">
+	///	    A sequence whose elements to group.
+	/// </param>
+	/// <param name="keySelector">
+	///	    A function to extract the key for each element.
+	/// </param>
+	/// <param name="resultSelector">
+	///	    A function to map each key and associated source elements to a result object.
+	/// </param>
+	/// <param name="comparer">
+	///	    An <see cref="IEqualityComparer{TKey}"/> to compare keys.
+	/// </param>
+	/// <returns>
+	///	    A collection of elements of type <typeparamref name="TResult" /> where each element represents a projection
+	///     over a group and its key.
+	///	</returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/>, <paramref name="keySelector"/>, or <paramref name="resultSelector"/> is <see
+	///     langword="null"/>.
+	/// </exception>
 	/// <remarks>
-	/// This method is implemented by using deferred execution and
-	/// streams the groupings. The grouping elements, however, are
-	/// buffered. Each grouping is therefore yielded as soon as it
-	/// is complete and before the next grouping occurs.
+	///	    This method is implemented by using deferred execution and streams the groupings. The grouping elements,
+	///     however, are buffered. Each grouping is therefore yielded as soon as it is complete and before the next
+	///     grouping occurs.
 	/// </remarks>
 	public static IEnumerable<TResult> GroupAdjacent<TSource, TKey, TResult>(
 		this IEnumerable<TSource> source,
@@ -250,7 +285,7 @@ public static partial class SuperEnumerable
 
 		return GroupAdjacentImpl(
 			source, keySelector, Identity,
-			(key, group) => resultSelector(key, group),
+			resultSelector,
 			comparer);
 	}
 

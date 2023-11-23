@@ -5,18 +5,39 @@ namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
-#if !NET6_0_OR_GREATER
-	/// <summary>Returns a specified range of contiguous elements from a sequence.</summary>
-	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
-	/// <param name="source">The sequence to return elements from.</param>
-	/// <param name="range">The range of elements to return, which has start and end indexes either from the start or the end.</param>
-	/// <exception cref="ArgumentNullException"><paramref name="source" /> is <see langword="null" />.</exception>
-	/// <returns>An <see cref="IEnumerable{T}" /> that contains the specified <paramref name="range" /> of elements from the <paramref name="source" /> sequence.</returns>
+	/// <summary>
+	///	    Returns a specified range of contiguous elements from a sequence.
+	/// </summary>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of <paramref name="source" />.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The sequence to return elements from.
+	/// </param>
+	/// <param name="range">
+	///	    The range of elements to return, which has start and end indexes either from the start or the end.
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source" /> is <see langword="null" />.
+	/// </exception>
+	///	<returns>
+	///	    An <see cref="IEnumerable{T}" /> that contains the specified <paramref name="range" /> of elements from the
+	///     <paramref name="source" /> sequence.
+	/// </returns>
 	/// <remarks>
-	/// <para>This method is implemented by using deferred execution. The immediate return value is an object that stores all the information that is required to perform the action. The query represented by this method is not executed until the object is enumerated either by calling its `GetEnumerator` method directly or by using `foreach` in Visual C# or `For Each` in Visual Basic.</para>
-	/// <para><see cref="SuperEnumerable.Take" /> enumerates <paramref name="source" /> and yields elements whose indices belong to the specified <paramref name="range"/>.</para>
+	/// <para>
+	///	    <see cref="Take" /> enumerates <paramref name="source" /> and yields elements whose indices belong to the
+	///     specified <paramref name="range"/>.
+	/// </para>
+	/// <para>
+	///	    This method is implemented by using deferred execution.
+	/// </para>
 	/// </remarks>
+#if !NET6_0_OR_GREATER
 	public static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, Range range)
+#else
+	public static IEnumerable<TSource> Take<TSource>(IEnumerable<TSource> source, Range range)
+#endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
 
@@ -146,5 +167,4 @@ public static partial class SuperEnumerable
 			}
 		}
 	}
-#endif
 }

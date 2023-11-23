@@ -3,33 +3,71 @@
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Applies a key-generating function to each element of a sequence and returns a sequence of
-	/// unique keys and their number of occurrences in the original sequence.
+	///	    Applies a key-generating function to each element of a sequence and returns a sequence of unique keys and
+	///     their number of occurrences in the original sequence.
 	/// </summary>
-	/// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
-	/// <typeparam name="TKey">Type of the projected element.</typeparam>
-	/// <param name="source">Source sequence.</param>
-	/// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
-	/// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
-
+	/// <typeparam name="TSource">
+	///	    Type of the elements of the source sequence.
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    Type of the projected element.
+	/// </typeparam>
+	/// <param name="source">
+	///	    Source sequence.
+	/// </param>
+	/// <param name="keySelector">
+	///	    Function that transforms each item of source sequence into a key to be compared against the others.
+	/// </param>
+	/// <returns>
+	///	    A sequence of unique keys and their number of occurrences in the original sequence.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
+	/// <remarks>
+	/// <para>
+	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
+	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<(TKey key, int count)> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 	{
 		return source.CountBy(keySelector, comparer: null);
 	}
 
 	/// <summary>
-	/// Applies a key-generating function to each element of a sequence and returns a sequence of
-	/// unique keys and their number of occurrences in the original sequence.
-	/// An additional argument specifies a comparer to use for testing equivalence of keys.
+	///	    Applies a key-generating function to each element of a sequence and returns a sequence of unique keys and
+	///     their number of occurrences in the original sequence. An additional argument specifies a comparer to use for
+	///     testing equivalence of keys.
 	/// </summary>
-	/// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
-	/// <typeparam name="TKey">Type of the projected element.</typeparam>
-	/// <param name="source">Source sequence.</param>
-	/// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
-	/// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
-	/// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
-	/// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
-
+	/// <typeparam name="TSource">
+	///	    Type of the elements of the source sequence.
+	/// </typeparam>
+	/// <typeparam name="TKey">
+	///	    Type of the projected element.
+	/// </typeparam>
+	/// <param name="source">
+	///	    Source sequence.
+	/// </param>
+	/// <param name="keySelector">
+	///	    Function that transforms each item of source sequence into a key to be compared against the others.
+	/// </param>
+	/// <param name="comparer">
+	///	    The equality comparer to use to determine whether or not keys are equal. If null, the default equality
+	///     comparer for <typeparamref name="TSource"/> is used.
+	/// </param>
+	/// <returns>
+	///	    A sequence of unique keys and their number of occurrences in the original sequence.
+	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.
+	/// </exception>
+	/// <remarks>
+	/// <para>
+	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
+	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	/// </para>
+	/// </remarks>
 	public static IEnumerable<(TKey key, int count)> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
 	{
 		ArgumentNullException.ThrowIfNull(source);
