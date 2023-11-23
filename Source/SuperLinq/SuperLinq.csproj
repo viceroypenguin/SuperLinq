@@ -11,7 +11,7 @@
 		<Title>SuperLinq</Title>
 
 		<Authors>SuperLinq Developers</Authors>
-		<PackageTags>linq;extensions</PackageTags>
+		<PackageTags>linq;extensions;linqpad-samples</PackageTags>
 
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
@@ -141,8 +141,14 @@
 		<Copyright>$([System.Text.RegularExpressions.Regex]::Replace($(Copyright), `\s+`, ` `).Trim())</Copyright>
 	</PropertyGroup>
 
-	<ItemGroup>
+	<ItemGroup Label="Nuget Package">
 		<None Include="readme.md" Pack="true" PackagePath="\" />
+		<None Include="..\..\Docs\SuperLinq.Docs\apidoc\SuperLinq\**"
+					Visible="false"
+					Pack="true" PackagePath="\linqpad-samples\%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Shipped.txt" />
 		<AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Unshipped.txt" />
 	</ItemGroup>
