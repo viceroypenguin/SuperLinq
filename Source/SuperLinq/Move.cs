@@ -67,4 +67,30 @@ public static partial class SuperEnumerable
 				yield return e.Current;
 		}
 	}
+
+	/// <summary>
+	/// Returns a sequence with a range of elements in the source sequence
+	/// moved to a new offset.
+	/// </summary>
+	/// <typeparam name="T">Type of the source sequence.</typeparam>
+	/// <param name="source">The source sequence.</param>
+	/// <param name="range">The range of values to move.></param>
+	/// <param name="toIndex">
+	/// The index where the specified range will be moved.</param>
+	/// <returns>
+	/// A sequence with the specified range moved to the new position.
+	/// </returns>
+	/// <remarks>
+	/// This operator uses deferred execution and streams its results.
+	/// </remarks>
+	/// <example>
+	/// <code><![CDATA[
+	/// var result = Enumerable.Range(0, 6).Move(3..5, 0);
+	/// ]]></code>
+	/// The <c>result</c> variable will contain <c>{ 3, 4, 0, 1, 2, 5 }</c>.
+	/// </example>
+	public static IEnumerable<T> Move<T>(this IEnumerable<T> source, Range range, int toIndex)
+	{
+		return source.Move(range.Start.Value, range.End.Value - range.Start.Value, toIndex);
+	}
 }
