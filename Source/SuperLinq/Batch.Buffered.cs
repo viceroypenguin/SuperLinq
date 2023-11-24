@@ -155,7 +155,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(array);
 		ArgumentNullException.ThrowIfNull(resultSelector);
 		ArgumentOutOfRangeException.ThrowIfLessThan(size, 1);
-		ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(size, array.Length);
+		ArgumentOutOfRangeException.ThrowIfGreaterThan(size, array.Length);
 
 		return BatchImpl(source, array, size, resultSelector);
 	}
