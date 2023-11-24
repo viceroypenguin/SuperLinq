@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace SuperLinq;
+﻿namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -43,24 +41,22 @@ public static partial class SuperEnumerable
 			var sequenceAsList = sequence.ToList();
 			var sequenceLength = sequenceAsList.Count;
 
-			// the first subset is the empty set
-			yield return new List<T>();
+			yield return []; // the first subset is the empty set
 
-			// all other subsets are computed using the subset generator
-			// this check also resolves the case of permuting empty sets
-			if (sequenceLength > 0)
+			// next check also resolves the case of permuting empty sets
+			if (sequenceLength is 0)
+				yield break;
+
+			// all other subsets are computed using the subset generator...
+
+			for (var k = 1; k < sequenceLength; k++)
 			{
-				for (var i = 1; i < sequenceLength; i++)
-				{
-					// each intermediate subset is a lexographically ordered K-subset
-					var subsetGenerator = new SubsetGenerator<T>(sequenceAsList, i);
-					foreach (var subset in subsetGenerator)
-						yield return subset;
-				}
-
-				// the last subset is the original set itself
-				yield return sequenceAsList;
+				// each intermediate subset is a lexographically ordered K-subset
+				foreach (var subset in Subsets(sequenceAsList, k))
+					yield return subset;
 			}
+
+			yield return sequenceAsList; // the last subset is the original set itself
 		}
 	}
 
@@ -95,122 +91,62 @@ public static partial class SuperEnumerable
 		if (sequence.TryGetCollectionCount() is int length)
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(subsetSize, length);
 
-		return new SubsetGenerator<T>(sequence, subsetSize);
+		return Core(sequence, subsetSize);
+
+		static IEnumerable<IList<T>> Core(IEnumerable<T> sequence, int subsetSize)
+		{
+			if (subsetSize == 0)
+			{
+				yield return [];
+				yield break;
+			}
+
+			foreach (var subset in Subsets(sequence.ToList(), subsetSize))
+				yield return subset;
+		}
 	}
 
 	/// <summary>
-	/// This class is responsible for producing the lexographically ordered k-subsets
+	///	    Produces lexographically ordered k-subsets.
 	/// </summary>
-
-	private sealed class SubsetGenerator<T> : IEnumerable<IList<T>>
+	/// <remarks>
+	///	    It uses a snapshot of the original sequence, and an iterative, reductive swap algorithm to produce all
+	///     subsets of a predetermined size less than or equal to the original set size.
+	/// </remarks>
+	private static IEnumerable<IList<T>> Subsets<T>(List<T> set, int subsetSize)
 	{
-		/// <summary>
-		/// SubsetEnumerator uses a snapshot of the original sequence, and an
-		/// iterative, reductive swap algorithm to produce all subsets of a
-		/// predetermined size less than or equal to the original set size.
-		/// </summary>
+		ArgumentOutOfRangeException.ThrowIfGreaterThan(subsetSize, set.Count);
 
-		private sealed class SubsetEnumerator : IEnumerator<IList<T>>
+		var indices = new int[subsetSize];  // indices into the original set
+		var prevSwapIndex = subsetSize;     // previous swap index (upper index)
+		var currSwapIndex = -1;             // current swap index (lower index)
+		var setSize = set.Count;
+
+		do
 		{
-			private readonly IList<T> _set;   // the original set of elements
-			private readonly T[] _subset;     // the current subset to return
-			private readonly int[] _indices;  // indices into the original set
-			private readonly int _subsetSize; // size of the subset being produced
-
-			private bool _continue;  // termination indicator, set when all subsets have been produced
-
-			private int _prevIndex;  // previous swap index (upper index)
-			private int _curIndex;   // current swap index (lower index)
-			private int _seqSize;    // size of the original set (sequence)
-
-			public SubsetEnumerator(IList<T> set, int subsetSize)
+			if (currSwapIndex == -1)
 			{
-				ArgumentOutOfRangeException.ThrowIfGreaterThan(subsetSize, set.Count);
+				currSwapIndex = 0;
+				prevSwapIndex = subsetSize;
+			}
+			else
+			{
+				if (currSwapIndex < setSize - prevSwapIndex)
+					prevSwapIndex = 0;
 
-				// initialize set arrays...
-				_set = set;
-				_subsetSize = subsetSize;
-				_subset = new T[subsetSize];
-				_indices = new int[subsetSize];
-				// initialize index counters...
-				Reset();
+				prevSwapIndex++;
+				currSwapIndex = indices[subsetSize - prevSwapIndex];
 			}
 
-			public void Reset()
-			{
-				_prevIndex = _subset.Length;
-				_curIndex = -1;
-				_seqSize = _set.Count;
-				_continue = _subset.Length > 0;
-			}
+			for (var i = 1; i <= prevSwapIndex; i++)
+				indices[subsetSize + i - prevSwapIndex - 1] = currSwapIndex + i;
 
-			public IList<T> Current => (IList<T>)_subset.Clone();
+			var subset = new T[subsetSize];     // the current subset to return
+			for (var i = 0; i < subsetSize; i++)
+				subset[i] = set[indices[i] - 1];
 
-			object IEnumerator.Current => Current;
-
-			public bool MoveNext()
-			{
-				if (!_continue)
-					return false;
-
-				if (_curIndex == -1)
-				{
-					_curIndex = 0;
-					_prevIndex = _subsetSize;
-				}
-				else
-				{
-					if (_curIndex < _seqSize - _prevIndex)
-					{
-						_prevIndex = 0;
-					}
-					_prevIndex++;
-					_curIndex = _indices[_subsetSize - _prevIndex];
-				}
-
-				for (var j = 1; j <= _prevIndex; j++)
-					_indices[_subsetSize + j - _prevIndex - 1] = _curIndex + j;
-
-				ExtractSubset();
-
-				_continue = _indices[0] != _seqSize - _subsetSize + 1;
-				return true;
-			}
-
-			void IDisposable.Dispose() { }
-
-			private void ExtractSubset()
-			{
-				for (var i = 0; i < _subsetSize; i++)
-					_subset[i] = _set[_indices[i] - 1];
-			}
+			yield return subset;
 		}
-
-		private readonly IEnumerable<T> _sequence;
-		private readonly int _subsetSize;
-
-		public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
-		{
-			ArgumentNullException.ThrowIfNull(sequence);
-			_sequence = sequence;
-
-			ArgumentOutOfRangeException.ThrowIfNegative(subsetSize);
-			if (sequence.TryGetCollectionCount() is int cnt)
-				ArgumentOutOfRangeException.ThrowIfGreaterThan(subsetSize, cnt);
-
-			_subsetSize = subsetSize;
-		}
-
-		/// <summary>
-		/// Returns an enumerator that produces all of the k-sized
-		/// subsets of the initial value set. The enumerator returns
-		/// and <see cref="IList{T}"/> for each subset.
-		/// </summary>
-		/// <returns>an <see cref="IEnumerator"/> that enumerates all k-sized subsets</returns>
-
-		public IEnumerator<IList<T>> GetEnumerator() =>
-			new SubsetEnumerator(_sequence.ToList(), _subsetSize);
-
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		while (indices[0] != setSize - subsetSize + 1);
 	}
 }

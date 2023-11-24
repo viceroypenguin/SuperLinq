@@ -58,6 +58,15 @@ public class SubsetTest
 		result.Single().AssertSequenceEqual();
 	}
 
+	[Fact]
+	public void TestSizeZeroSubsets()
+	{
+		using var sequence = TestingSequence.Of(1, 2, 3);
+
+		var result = sequence.Subsets(0);
+		result.Single().AssertSequenceEqual();
+	}
+
 	/// <summary>
 	/// Verify that subsets are returned in increasing size, starting with the empty set.
 	/// </summary>
