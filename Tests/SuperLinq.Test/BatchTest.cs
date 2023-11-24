@@ -2,12 +2,18 @@
 
 public class BatchTest
 {
-	#region Regular
 	[Fact]
 	public void BatchIsLazy()
 	{
 		_ = new BreakingSequence<int>().Batch(1);
 		_ = new BreakingSequence<int>().Buffer(1);
+
+		_ = new BreakingSequence<int>()
+			.Batch(1, BreakingFunc.Of<IReadOnlyList<int>, int>());
+		_ = new BreakingSequence<int>()
+			.Batch(new int[2], BreakingFunc.Of<IReadOnlyList<int>, int>());
+		_ = new BreakingSequence<int>()
+			.Batch(new int[2], 1, BreakingFunc.Of<IReadOnlyList<int>, int>());
 	}
 
 	[Fact]
@@ -16,6 +22,21 @@ public class BatchTest
 		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
 			() => new BreakingSequence<int>()
 				.Batch(0));
+
+		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
+			() => new BreakingSequence<int>()
+				.Batch(0, BreakingFunc.Of<IReadOnlyList<int>, int>()));
+
+		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
+			() => new BreakingSequence<int>()
+				.Batch([], 0, BreakingFunc.Of<IReadOnlyList<int>, int>()));
+
+		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
+			() => new BreakingSequence<int>()
+				.Batch(new int[5], 6, BreakingFunc.Of<IReadOnlyList<int>, int>()));
+
+		_ = new BreakingSequence<int>()
+			.Batch(new int[5], 5, BreakingFunc.Of<IReadOnlyList<int>, int>());
 	}
 
 	public static IEnumerable<object[]> GetFourElementSequences() =>
@@ -77,98 +98,137 @@ public class BatchTest
 		}
 	}
 
+	public enum BatchMethod
+	{
+		Traditional,
+		BufferSize,
+		BufferArray,
+		BufferSizeArray,
+	}
+
+	private static IEnumerable<object[]> GetBatchTestSequences(IEnumerable<int> source)
+	{
+		foreach (var seq in source.GetListSequences())
+			yield return new object[] { seq, BatchMethod.Traditional, };
+		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), BatchMethod.BufferSize, };
+		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), BatchMethod.BufferArray, };
+		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), BatchMethod.BufferSizeArray, };
+	}
+
+	private static IEnumerable<IList<T>> GetBatches<T>(
+			IEnumerable<T> seq,
+			BatchMethod method,
+			int size) =>
+		method switch
+		{
+			BatchMethod.Traditional => seq.Batch(size),
+			BatchMethod.BufferSize => seq.Batch(size, arr => arr.ToList()),
+			BatchMethod.BufferArray => seq.Batch(new T[size], arr => arr.ToList()),
+			BatchMethod.BufferSizeArray => seq.Batch(new T[size + 10], size, arr => arr.ToList()),
+			_ => throw new NotSupportedException(),
+		};
+
 	public static IEnumerable<object[]> GetEmptySequences() =>
-		Array.Empty<int>()
-			.GetAllSequences()
-			.Select(x => new object[] { x });
+		GetBatchTestSequences(Enumerable.Empty<int>());
 
 	[Theory]
 	[MemberData(nameof(GetEmptySequences))]
-	public void BatchWithEmptySource(IDisposableEnumerable<int> seq)
+	public void BatchWithEmptySource(IDisposableEnumerable<int> seq, BatchMethod bm)
 	{
 		using (seq)
-			Assert.Empty(seq.Batch(1));
-	}
-
-	[Fact]
-	// branch not able to run with `BreakingList<>`
-	public void BatchWithEmptyIListProvider()
-	{
-		Enumerable.Range(0, 0)
-			.Batch(1)
-			.AssertSequenceEqual();
+		{
+			var result = GetBatches(seq, bm, 5);
+			result.AssertSequenceEqual();
+		}
 	}
 
 	public static IEnumerable<object[]> GetSequences() =>
-		Enumerable.Range(1, 9)
-			.GetListSequences()
-			.Select(x => new object[] { x });
+		GetBatchTestSequences(Enumerable.Range(1, 9));
 
 	[Theory]
 	[MemberData(nameof(GetSequences))]
-	public void BatchEvenlyDivisibleSequence(IDisposableEnumerable<int> seq)
+	public void BatchEvenlyDivisibleSequence(IDisposableEnumerable<int> seq, BatchMethod bm)
 	{
 		using (seq)
 		{
-			var result = seq.Batch(3);
-
+			var result = GetBatches(seq, bm, 3);
 			result.AssertSequenceEqual(
-				Seq(1, 2, 3),
-				Seq(4, 5, 6),
-				Seq(7, 8, 9));
+				[1, 2, 3],
+				[4, 5, 6],
+				[7, 8, 9]);
 		}
 	}
 
 	[Theory]
 	[MemberData(nameof(GetSequences))]
-	public void BatchUnevenlyDivisibleSequence(IDisposableEnumerable<int> seq)
+	public void BatchUnevenlyDivisibleSequence(IDisposableEnumerable<int> seq, BatchMethod bm)
 	{
 		using (seq)
 		{
-			var result = seq.Batch(4);
-
+			var result = GetBatches(seq, bm, 4);
 			result.AssertSequenceEqual(
-				Seq(1, 2, 3, 4),
-				Seq(5, 6, 7, 8),
-				Seq(9));
+				[1, 2, 3, 4],
+				[5, 6, 7, 8],
+				[9]);
 		}
 	}
 
 	[Theory]
 	[MemberData(nameof(GetSequences))]
-	public void BatchSmallSequence(IDisposableEnumerable<int> seq)
+	public void BatchSmallSequence(IDisposableEnumerable<int> seq, BatchMethod bm)
 	{
 		using (seq)
 		{
-			var result = seq.Batch(10);
-
+			var result = GetBatches(seq, bm, 10);
 			result.AssertSequenceEqual(
-				Seq(1, 2, 3, 4, 5, 6, 7, 8, 9));
+				[1, 2, 3, 4, 5, 6, 7, 8, 9]);
 		}
 	}
 
-	[Fact]
-	public void BatchWithCollectionSmallerThanBatchSize()
+	public static IEnumerable<object[]> GetBreakingCollections()
 	{
-		using var seq = new BreakingCollection<int>(Enumerable.Range(1, 9));
-		seq.Batch(10).Consume();
+		var source = Enumerable.Range(1, 9);
+		yield return new object[] { source.AsBreakingCollection(), BatchMethod.Traditional, };
+		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferSize, };
+		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferArray, };
+		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferSizeArray, };
 	}
 
-	[Fact]
-	public void BatchCollectionSizeNotEvaluatedEarly()
+	[Theory]
+	[MemberData(nameof(GetBreakingCollections))]
+	public void BatchWithCollectionSmallerThanBatchSize(IDisposableEnumerable<int> seq, BatchMethod bm)
 	{
-		var list = new List<int>(Enumerable.Range(1, 3));
-		var result = list.Batch(3);
+		using (seq)
+		{
+			var result = GetBatches(seq, bm, 10);
+			result.AssertSequenceEqual(
+				[1, 2, 3, 4, 5, 6, 7, 8, 9]);
+		}
+	}
+
+	[Theory]
+	[InlineData(BatchMethod.Traditional)]
+	[InlineData(BatchMethod.BufferSize)]
+	[InlineData(BatchMethod.BufferArray)]
+	[InlineData(BatchMethod.BufferSizeArray)]
+	public void BatchCollectionSizeNotEvaluatedEarly(BatchMethod bm)
+	{
+		var list = new List<int>() { 1, 2, 3, };
+		var result = GetBatches(list, bm, 3);
 		list.Add(4);
 		result.AssertCount(2).Consume();
 	}
 
-	[Fact]
-	public void BatchUsesCollectionCountAtIterationTime()
+	[Theory]
+	[InlineData(BatchMethod.Traditional)]
+	[InlineData(BatchMethod.BufferSize)]
+	[InlineData(BatchMethod.BufferArray)]
+	[InlineData(BatchMethod.BufferSizeArray)]
+	public void BatchUsesCollectionCountAtIterationTime(BatchMethod bm)
 	{
 		var list = new List<int>(Enumerable.Range(1, 3));
 		using var ts = new BreakingCollection<int>(list);
-		var result = ts.Batch(3);
+		var result = GetBatches(ts, bm, 3);
 
 		// should use `CopyTo`
 		result.AssertCount(1).Consume();
@@ -208,89 +268,4 @@ public class BatchTest
 		Assert.Equal(Enumerable.Range(9_980, 20), result.ElementAt(^2));
 		Assert.Equal(Enumerable.Range(10_000, 2), result.ElementAt(^1));
 	}
-	#endregion
-
-	#region Buffered
-	[Fact]
-	public void BatchBufferedIsLazy()
-	{
-		_ = new BreakingSequence<int>()
-			.Batch(1, BreakingFunc.Of<IReadOnlyList<int>, int>());
-		_ = new BreakingSequence<int>()
-			.Batch(new int[2], BreakingFunc.Of<IReadOnlyList<int>, int>());
-		_ = new BreakingSequence<int>()
-			.Batch(new int[2], 1, BreakingFunc.Of<IReadOnlyList<int>, int>());
-	}
-
-	[Fact]
-	public void BatchBufferedValidatesSize()
-	{
-		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
-			() => new BreakingSequence<int>()
-				.Batch(0, BreakingFunc.Of<IReadOnlyList<int>, int>()));
-		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
-			() => new BreakingSequence<int>()
-				.Batch(new int[2], 0, BreakingFunc.Of<IReadOnlyList<int>, int>()));
-		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
-			() => new BreakingSequence<int>()
-				.Batch(new int[2], 3, BreakingFunc.Of<IReadOnlyList<int>, int>()));
-	}
-
-	[Fact]
-	public void BatchBufferedWithEmptySource()
-	{
-		using var xs = TestingSequence.Of<int>();
-		Assert.Empty(xs.Batch(1, BreakingFunc.Of<IReadOnlyList<int>, int>()));
-	}
-
-	[Fact]
-	public void BatchBufferedEvenlyDivisibleSequence()
-	{
-		using var seq = Enumerable.Range(1, 9).AsTestingSequence();
-
-		var result = seq.Batch(3, l => string.Join(",", l));
-		using var reader = result.Read();
-		Assert.Equal("1,2,3", reader.Read());
-		Assert.Equal("4,5,6", reader.Read());
-		Assert.Equal("7,8,9", reader.Read());
-		reader.ReadEnd();
-	}
-
-	[Fact]
-	public void BatchBufferedUnevenlyDivisibleSequence()
-	{
-		using var seq = Enumerable.Range(1, 9).AsTestingSequence();
-
-		var result = seq.Batch(4, l => string.Join(",", l));
-		using var reader = result.Read();
-		Assert.Equal("1,2,3,4", reader.Read());
-		Assert.Equal("5,6,7,8", reader.Read());
-		Assert.Equal("9", reader.Read());
-		reader.ReadEnd();
-	}
-
-	[Fact]
-	public void BatchBufferedWithCollectionSmallerThanBatchSize()
-	{
-		using var seq = new BreakingCollection<int>(Enumerable.Range(1, 9));
-		seq.Batch(10, i => i.Sum()).Consume();
-	}
-
-	[Fact]
-	public void BatchBufferedUsesCollectionCountAtIterationTime()
-	{
-		var list = new List<int>(Enumerable.Range(1, 3));
-		using var ts = new BreakingCollection<int>(list);
-		var result = ts.Batch(3, w => w[0]);
-
-		// should use `CopyTo`
-		result.AssertCount(1).Consume();
-
-		list.Add(4);
-
-		// should fail trying to enumerate
-		_ = Assert.Throws<TestException>(
-			() => result.AssertCount(2).Consume());
-	}
-	#endregion
 }
