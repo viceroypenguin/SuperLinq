@@ -185,9 +185,8 @@ public class BatchTest
 		}
 	}
 
-	public static IEnumerable<object[]> GetBreakingCollections()
+	public static IEnumerable<object[]> GetBreakingCollections(IEnumerable<int> source)
 	{
-		var source = Enumerable.Range(1, 9);
 		yield return new object[] { source.AsBreakingCollection(), BatchMethod.Traditional, };
 		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferSize, };
 		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferArray, };
@@ -195,7 +194,18 @@ public class BatchTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetBreakingCollections))]
+	[MemberData(nameof(GetBreakingCollections), new int[] { })]
+	public void BatchWithEmptyCollection(IDisposableEnumerable<int> seq, BatchMethod bm)
+	{
+		using (seq)
+		{
+			var result = GetBatches(seq, bm, 10);
+			result.AssertSequenceEqual();
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetBreakingCollections), new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 })]
 	public void BatchWithCollectionSmallerThanBatchSize(IDisposableEnumerable<int> seq, BatchMethod bm)
 	{
 		using (seq)
