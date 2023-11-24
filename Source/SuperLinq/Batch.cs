@@ -65,10 +65,6 @@ public static partial class SuperEnumerable
 					yield break;
 				}
 			}
-			else if (source.TryGetCollectionCount() == 0)
-			{
-				yield break;
-			}
 
 			var n = 0;
 			foreach (var item in source)
@@ -101,7 +97,7 @@ public static partial class SuperEnumerable
 			_size = size;
 		}
 
-		public override int Count => ((_source.Count - 1) / _size) + 1;
+		public override int Count => _source.Count == 0 ? 0 : ((_source.Count - 1) / _size) + 1;
 
 		protected override IEnumerable<IList<T>> GetEnumerable()
 		{
