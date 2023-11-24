@@ -166,12 +166,17 @@ public static partial class SuperEnumerable
 		int size,
 		Func<IReadOnlyList<TSource>, TResult> resultSelector)
 	{
-		if (source is ICollection<TSource> coll
-			&& coll.Count <= size)
+		if (source is ICollection<TSource> coll)
 		{
-			coll.CopyTo(array, 0);
-			yield return resultSelector(new ArraySegment<TSource>(array, 0, coll.Count));
-			yield break;
+			if (coll.Count == 0)
+				yield break;
+
+			if (coll.Count <= size)
+			{
+				coll.CopyTo(array, 0);
+				yield return resultSelector(new ArraySegment<TSource>(array, 0, coll.Count));
+				yield break;
+			}
 		}
 
 		var n = 0;
