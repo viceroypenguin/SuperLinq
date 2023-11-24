@@ -16,7 +16,7 @@ public class SliceTests
 
 	public static IEnumerable<object[]> GetSequences() =>
 		Enumerable.Range(1, 5)
-			.GetAllSequences()
+			.GetCollectionSequences()
 			.Select(x => new object[] { x });
 
 	[Theory]
