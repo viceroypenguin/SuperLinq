@@ -65,10 +65,6 @@ public static partial class SuperEnumerable
 					yield break;
 				}
 			}
-			else if (source.TryGetCollectionCount() == 0)
-			{
-				yield break;
-			}
 
 			var n = 0;
 			foreach (var item in source)
