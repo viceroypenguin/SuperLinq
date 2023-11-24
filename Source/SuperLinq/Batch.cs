@@ -101,7 +101,7 @@ public static partial class SuperEnumerable
 			_size = size;
 		}
 
-		public override int Count => ((_source.Count - 1) / _size) + 1;
+		public override int Count => _source.Count == 0 ? 0 : ((_source.Count - 1) / _size) + 1;
 
 		protected override IEnumerable<IList<T>> GetEnumerable()
 		{
