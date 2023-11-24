@@ -22,10 +22,10 @@ public static partial class SuperEnumerable
 			}
 			else
 			{
-				array.AsSpan()[1..].CopyTo(array);
-				array[^1] = i;
+				array.AsSpan()[1..n].CopyTo(array);
+				array[n - 1] = i;
 
-				yield return projector(new ArraySegment<TSource>(array));
+				yield return projector(new ArraySegment<TSource>(array, 0, n));
 			}
 		}
 
