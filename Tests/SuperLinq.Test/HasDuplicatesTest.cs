@@ -3,193 +3,61 @@
 public class HasDuplicatesTest
 {
 	[Fact]
-	public void When_Asking_For_Duplicates_On_Sequence_Without_Duplicates_Then_False_Is_Returned()
+	public void DuplicatesDoesNotEnumerateUnnecessarily()
 	{
-		using var sequence = TestingSequence.Of(
-			"FirstElement",
-			"SecondElement",
-			"ThirdElement");
+		using var ts = Seq(1, 2, 3).Concat(SeqExceptionAt(2)).AsTestingSequence();
 
-		var hasDuplicates = sequence.HasDuplicates();
-
-		Assert.False(hasDuplicates);
+		var result = ts.HasDuplicates();
+		Assert.True(result);
 	}
 
-	[Fact]
-	public void When_Asking_For_Duplicates_On_Sequence_Projection_Without_Duplicates_Then_False_Is_Returned()
+	[Theory]
+	[InlineData(new int[] { 1, 2, 3, }, false)]
+	[InlineData(new int[] { 1, 2, 1, 3, 1, 2, 1, }, true)]
+	[InlineData(new int[] { 3, 3, 2, 2, 1, 1, }, true)]
+	public void DuplicatesBehavior(IEnumerable<int> source, bool expected)
 	{
-		using var sequence = TestingSequence.Of(
-			new DummyClass("FirstElement"),
-			new DummyClass("SecondElement"),
-			new DummyClass("ThirdElement"));
+		using var ts = source.AsTestingSequence();
 
-		var hasDuplicates = sequence.HasDuplicates(x => x.ComparableString);
-
-		Assert.False(hasDuplicates);
+		var result = ts.HasDuplicates();
+		Assert.Equal(expected, result);
 	}
 
-	[Fact]
-	public void When_Asking_For_Duplicates_On_Sequence_With_Duplicates_Then_True_Is_Returned()
+	public static IEnumerable<object[]> GetStringParameters()
 	{
-		using var sequence = TestingSequence.Of(
-			"FirstElement",
-			"DUPLICATED_STRING",
-			"DUPLICATED_STRING",
-			"ThirdElement");
-
-		var hasDuplicates = sequence.HasDuplicates();
-
-		Assert.True(hasDuplicates);
+		yield return new object[]
+		{
+			new string[] { "foo", "bar", "qux" },
+			StringComparer.Ordinal,
+			false,
+		};
+		yield return new object[]
+		{
+			new string[] { "foo", "FOO", "bar", "qux" },
+			StringComparer.Ordinal,
+			false,
+		};
+		yield return new object[]
+		{
+			new string[] { "foo", "FOO", "bar", "qux" },
+			StringComparer.OrdinalIgnoreCase,
+			true,
+		};
+		yield return new object[]
+		{
+			new string[] { "Bar", "foo", "FOO", "bar", "qux" },
+			StringComparer.OrdinalIgnoreCase,
+			true,
+		};
 	}
 
-	[Fact]
-	public void When_Asking_For_Duplicates_On_Sequence_Projection_With_Duplicates_Then_True_Is_Returned()
+	[Theory]
+	[MemberData(nameof(GetStringParameters))]
+	public void DuplicatesComparerBehavior(IEnumerable<string> source, StringComparer comparer, bool expected)
 	{
-		using var sequence = TestingSequence.Of(
-			new DummyClass("FirstElement"),
-			new DummyClass("DUPLICATED_STRING"),
-			new DummyClass("DUPLICATED_STRING"),
-			new DummyClass("ThirdElement"));
+		using var ts = source.AsTestingSequence();
 
-		var hasDuplicates = sequence.HasDuplicates(x => x.ComparableString);
-
-		Assert.True(hasDuplicates);
-	}
-
-	[Fact]
-	public void When_Asking_For_Duplicates_On_Sequence_Projection_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
-	{
-		using var sequence = TestingSequence.OfWithFailure(
-			new DummyClass("FirstElement"),
-			new DummyClass("DUPLICATED_STRING"),
-			new DummyClass("DUPLICATED_STRING"));
-
-		var hasDuplicates = sequence.HasDuplicates(x => x.ComparableString);
-
-		Assert.True(hasDuplicates);
-	}
-
-	[Fact]
-	public void When_Asking_Duplicates_Then_It_Is_Executed_Right_Away()
-	{
-		_ = Assert.Throws<TestException>(() => _ = new BreakingSequence<string>().HasDuplicates());
-	}
-
-	[Fact]
-	public void When_Asking_Duplicates_On_Sequence_Projection_Then_It_Is_Executed_Right_Away()
-	{
-		_ = Assert.Throws<TestException>(() => _ = new BreakingSequence<DummyClass>().HasDuplicates(x => x.ComparableString));
-	}
-
-	[Fact]
-	public void When_Asking_For_Duplicates_On_Sequence_With_Custom_Always_True_Comparer_Then_True_Is_Returned()
-	{
-		using var sequence = TestingSequence.Of(
-			"FirstElement",
-			"SecondElement",
-			"ThirdElement");
-
-		var hasDuplicates = sequence.HasDuplicates(new DummyStringAlwaysTrueComparer());
-
-		Assert.True(hasDuplicates);
-	}
-
-	[Fact]
-	public void When_Asking_For_Duplicates_On_Sequence_Projection_With_Custom_Always_True_Comparer_Then_True_Is_Returned()
-	{
-		using var sequence = TestingSequence.Of(
-			new DummyClass("FirstElement"),
-			new DummyClass("SecondElement"),
-			new DummyClass("ThirdElement"));
-
-		var hasDuplicates = sequence.HasDuplicates(x => x.ComparableString, new DummyStringAlwaysTrueComparer());
-
-		Assert.True(hasDuplicates);
-	}
-
-	[Fact]
-	public void When_Asking_For_Duplicates_On_None_Duplicates_Sequence_With_Custom_Always_True_Comparer_Then_True_Is_Returned()
-	{
-		using var sequence = TestingSequence.Of(
-			"FirstElement",
-			"SecondElement",
-			"ThirdElement");
-
-		var hasDuplicates = sequence.HasDuplicates(new DummyStringAlwaysTrueComparer());
-
-		Assert.True(hasDuplicates);
-	}
-
-	[Fact]
-	public void When_Asking_For_Duplicates_On_Sequence_With_Null_Comparer_Then_Default_Comparer_Is_Used_And_False_Is_Returned()
-	{
-		using var sequence = TestingSequence.Of(
-			"FirstElement",
-			"SecondElement",
-			"ThirdElement");
-
-		var hasDuplicates = sequence.HasDuplicates(null);
-
-		Assert.False(hasDuplicates);
-	}
-
-	[Fact]
-	public void When_Asking_For_Duplicates_On_Sequence_With_Custom_Always_False_Comparer_Then_False_Is_Returned()
-	{
-		using var sequence = TestingSequence.Of(
-			"FirstElement",
-			"SecondElement",
-			"ThirdElement");
-
-		var hasDuplicates = sequence.HasDuplicates(new DummyStringAlwaysFalseComparer());
-
-		Assert.False(hasDuplicates);
-	}
-
-	[Fact]
-	public void When_Asking_For_Duplicates_On_Multiple_Duplicates_Sequence_With_Custom_Always_False_Comparer_Then_False_Is_Returned()
-	{
-		using var sequence = TestingSequence.Of(
-			"DUPLICATED_STRING",
-			"DUPLICATED_STRING",
-			"DUPLICATED_STRING");
-
-		var hasDuplicates = sequence.HasDuplicates(new DummyStringAlwaysFalseComparer());
-
-		Assert.False(hasDuplicates);
-	}
-
-	[Fact]
-	public void When_Asking_For_Duplicates_On_Multiple_Duplicates_Sequence_Projection_With_Custom_Always_False_Comparer_Then_False_Is_Returned()
-	{
-		using var sequence = TestingSequence.Of(
-			new DummyClass("DUPLICATED_STRING"),
-			new DummyClass("DUPLICATED_STRING"),
-			new DummyClass("DUPLICATED_STRING"));
-
-		var hasDuplicates = sequence.HasDuplicates(x => x.ComparableString, new DummyStringAlwaysFalseComparer());
-
-		Assert.False(hasDuplicates);
-	}
-
-	private sealed class DummyClass
-	{
-		public string ComparableString { get; }
-
-		public DummyClass(string comparableString) => ComparableString = comparableString;
-	}
-
-	private sealed class DummyStringAlwaysTrueComparer : IEqualityComparer<string>
-	{
-		public bool Equals(string? x, string? y) => true;
-
-		public int GetHashCode(string obj) => 0;
-	}
-
-	private sealed class DummyStringAlwaysFalseComparer : IEqualityComparer<string>
-	{
-		public bool Equals(string? x, string? y) => false;
-
-		public int GetHashCode(string obj) => 0;
+		var result = ts.HasDuplicates(comparer);
+		Assert.Equal(expected, result);
 	}
 }

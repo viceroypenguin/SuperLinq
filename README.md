@@ -72,6 +72,7 @@ equivalent elements within the same or separate collections (or sets).
 | Method Name        | Description | Sync doc | Async doc |
 | -----------        | --- | --- | --- |
 | DistinctBy         | Removes duplicate values from a collection. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.DistinctBy.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.DistinctBy.html) |
+| Duplicates	     | Returns the sequence of elements that are in the source sequence more than once. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.Duplicates.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.Duplicates.html) |
 | ExceptBy	         | Returns the set difference, which means the elements of one collection that do not appear in a second collection. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.ExceptBy.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.ExceptBy.html) |
 
 </details>

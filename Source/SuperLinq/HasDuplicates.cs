@@ -130,18 +130,9 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);
 
-		var enumeratedElements = source.TryGetCollectionCount() is { } collectionCount
-			? new HashSet<TKey>(collectionCount, comparer)
-			: new HashSet<TKey>(comparer);
-
-		foreach (var element in source)
-		{
-			if (!enumeratedElements.Add(keySelector(element)))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return source
+			.Select(keySelector)
+			.Duplicates(comparer)
+			.Any();
 	}
 }
