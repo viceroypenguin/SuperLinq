@@ -41,8 +41,7 @@ public static partial class SuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(sequence);
 
-		if (sequence.TryGetCollectionCount() is int count
-			&& count > 21)
+		if (sequence.TryGetCollectionCount() is int and > 21)
 		{
 			ThrowHelper.ThrowArgumentException(nameof(sequence), "Input set is too large to permute properly.");
 		}
