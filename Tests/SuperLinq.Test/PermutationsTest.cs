@@ -22,15 +22,23 @@ public class PermutationsTest
 		permutations.Single().AssertSequenceEqual();
 	}
 
-	[Fact]
-	public void TestExceptionWhenTooLong()
+	public static IEnumerable<object[]> GetTooLongSequences() =>
+		Enumerable.Range(1, 22)
+			.GetBreakingCollectionSequences()
+			.Select(x => new object[] { x, });
+
+	[Theory]
+	[MemberData(nameof(GetTooLongSequences))]
+	public void TestExceptionWhenTooLong(IDisposableEnumerable<int> seq)
 	{
-		using var emptySet = Enumerable.Range(1, 22).AsTestingSequence();
+		using (seq)
+		{
+			var ex = Assert.Throws<ArgumentException>(
+				"sequence",
+				() => seq.Permutations().Consume());
 
-		var result = emptySet.Permutations();
-
-		var ex = Assert.Throws<ArgumentException>("sequence", result.Consume);
-		Assert.Equal("Input set is too large to permute properly. (Parameter 'sequence')", ex.Message);
+			Assert.Equal("Input set is too large to permute properly. (Parameter 'sequence')", ex.Message);
+		}
 	}
 
 	/// <summary>
