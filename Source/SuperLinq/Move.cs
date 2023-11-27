@@ -74,28 +74,50 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	/// Returns a sequence with a range of elements in the source sequence
-	/// moved to a new offset.
+	/// 	Returns a sequence with a range of elements in the source sequence moved to a new offset.
 	/// </summary>
-	/// <typeparam name="T">Type of the source sequence.</typeparam>
-	/// <param name="source">The source sequence.</param>
-	/// <param name="range">The range of values to move.></param>
+	/// <typeparam name="T">
+	/// 	Type of the source sequence.
+	/// </typeparam>
+	/// <param name="source">
+	/// 	The source sequence.
+	/// </param>
+	/// <param name="range">
+	/// 	The range of values to move.
+	/// </param>
 	/// <param name="toIndex">
-	/// The index where the specified range will be moved.</param>
+	/// 	The index where the specified range will be moved.</param>
 	/// <returns>
-	/// A sequence with the specified range moved to the new position.
+	/// 	A sequence with the specified range moved to the new position.
 	/// </returns>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="range"/>'s start is less than <c>0</c> or <paramref name="range"/>'s end is before start in the sequence.
+	/// </exception>
 	/// <remarks>
-	/// This operator uses deferred execution and streams its results.
+	/// 	This operator uses deferred executing and streams its results.
 	/// </remarks>
-	/// <example>
-	/// <code><![CDATA[
-	/// var result = Enumerable.Range(0, 6).Move(3..5, 0);
-	/// ]]></code>
-	/// The <c>result</c> variable will contain <c>{ 3, 4, 0, 1, 2, 5 }</c>.
-	/// </example>
-	public static IEnumerable<T> Move<T>(this IEnumerable<T> source, Range range, int toIndex)
+	public static IEnumerable<T> Move<T>(this IEnumerable<T> source, Range range, Index toIndex)
 	{
-		return source.Move(range.Start.Value, range.End.Value - range.Start.Value, toIndex);
+		int? length = 0;
+		if (range.Start.IsFromEnd || range.End.IsFromEnd || toIndex.IsFromEnd)
+		{
+			length = source.TryGetCollectionCount();
+			if (!length.HasValue)
+			{
+				length = source.GetCollectionCount();
+			}
+		}
+		var fromIndex = range.Start.IsFromEnd ? range.Start.GetOffset(length.Value) : range.Start.Value;
+		var count = (range.End.IsFromEnd ? range.End.GetOffset(length.Value) : range.End.Value) - fromIndex;
+		var to = toIndex.IsFromEnd ? toIndex.GetOffset(length.Value) : toIndex.Value;
+		return source.Move
+		(
+			fromIndex,
+			count,
+			to
+		);
 	}
 }
