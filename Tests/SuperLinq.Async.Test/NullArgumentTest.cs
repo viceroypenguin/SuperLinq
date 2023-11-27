@@ -74,10 +74,16 @@ public class NullArgumentTest
 
 	private static readonly string[] s_joinMethods =
 	[
-		nameof(AsyncSuperEnumerable.InnerJoin),
-		nameof(AsyncSuperEnumerable.LeftOuterJoin),
-		nameof(AsyncSuperEnumerable.RightOuterJoin),
-		nameof(AsyncSuperEnumerable.FullOuterJoin),
+		nameof(AsyncSuperEnumerable.InnerLoopJoin),
+		nameof(AsyncSuperEnumerable.InnerHashJoin),
+		nameof(AsyncSuperEnumerable.InnerMergeJoin),
+		nameof(AsyncSuperEnumerable.LeftOuterLoopJoin),
+		nameof(AsyncSuperEnumerable.LeftOuterHashJoin),
+		nameof(AsyncSuperEnumerable.LeftOuterMergeJoin),
+		nameof(AsyncSuperEnumerable.RightOuterHashJoin),
+		nameof(AsyncSuperEnumerable.RightOuterMergeJoin),
+		nameof(AsyncSuperEnumerable.FullOuterHashJoin),
+		nameof(AsyncSuperEnumerable.FullOuterMergeJoin),
 	];
 
 	private static MethodInfo InstantiateMethod(MethodInfo definition)
@@ -100,7 +106,8 @@ public class NullArgumentTest
 					: typeof(int);
 			}
 
-			if (constraints.Length == 1) return constraints.Single();
+			if (constraints.Length == 1)
+				return constraints.Single();
 
 			if (constraints
 					.Select(c => c.GetGenericTypeDefinition())
@@ -136,7 +143,6 @@ public class NullArgumentTest
 	{
 		if (type == typeof(int)) return 7; // int is used as size/length/range etc. avoid ArgumentOutOfRange for '0'.
 		if (type == typeof(string)) return "";
-		if (type == typeof(JoinType)) return JoinType.Hash;
 		if (type == typeof(StringComparer)) return StringComparer.Ordinal;
 		if (type == typeof(TaskScheduler)) return TaskScheduler.Default;
 		if (type == typeof(IDisposable)) return new Disposable();

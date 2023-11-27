@@ -62,22 +62,9 @@ public static partial class AsyncSuperEnumerable
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);
 
-		return Core(source, keySelector, comparer);
-
-		static async ValueTask<bool> Core(IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
-		{
-			var enumeratedElements = new HashSet<TKey>(comparer);
-
-			await foreach (var element in source.ConfigureAwait(false))
-			{
-				if (!enumeratedElements.Add(keySelector(element)))
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
+		return source
+			.Select(keySelector)
+			.Duplicates(comparer)
+			.AnyAsync();
 	}
 }
-

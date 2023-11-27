@@ -45,7 +45,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> Batch<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		int size,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<ArraySegment<TSource>, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
@@ -94,7 +94,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> Batch<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		TSource[] array,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<ArraySegment<TSource>, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(array);
@@ -149,13 +149,13 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		TSource[] array,
 		int size,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<ArraySegment<TSource>, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(array);
 		ArgumentNullException.ThrowIfNull(resultSelector);
 		ArgumentOutOfRangeException.ThrowIfLessThan(size, 1);
-		ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(size, array.Length);
+		ArgumentOutOfRangeException.ThrowIfGreaterThan(size, array.Length);
 
 		return BatchImpl(source, array, size, resultSelector);
 	}
@@ -164,14 +164,19 @@ public static partial class SuperEnumerable
 		IEnumerable<TSource> source,
 		TSource[] array,
 		int size,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<ArraySegment<TSource>, TResult> resultSelector)
 	{
-		if (source is ICollection<TSource> coll
-			&& coll.Count <= size)
+		if (source is ICollection<TSource> coll)
 		{
-			coll.CopyTo(array, 0);
-			yield return resultSelector(new ArraySegment<TSource>(array, 0, coll.Count));
-			yield break;
+			if (coll.Count == 0)
+				yield break;
+
+			if (coll.Count <= size)
+			{
+				coll.CopyTo(array, 0);
+				yield return resultSelector(new ArraySegment<TSource>(array, 0, coll.Count));
+				yield break;
+			}
 		}
 
 		var n = 0;

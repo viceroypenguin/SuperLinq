@@ -45,7 +45,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> WindowRight<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		int size,
-		Func<IReadOnlyList<TSource>, TResult> selector)
+		Func<ArraySegment<TSource>, TResult> selector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(selector);
@@ -94,7 +94,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> WindowRight<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		TSource[] array,
-		Func<IReadOnlyList<TSource>, TResult> selector)
+		Func<ArraySegment<TSource>, TResult> selector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(array);
@@ -151,7 +151,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		TSource[] array,
 		int size,
-		Func<IReadOnlyList<TSource>, TResult> selector)
+		Func<ArraySegment<TSource>, TResult> selector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(array);

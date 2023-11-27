@@ -6,6 +6,9 @@ public partial class WindowRightTest
 	public void WindowRightIsLazy()
 	{
 		_ = new BreakingSequence<int>().WindowRight(1);
+		_ = new BreakingSequence<int>().WindowRight(1, BreakingFunc.Of<ArraySegment<int>, int>());
+		_ = new BreakingSequence<int>().WindowRight(new int[3], BreakingFunc.Of<ArraySegment<int>, int>());
+		_ = new BreakingSequence<int>().WindowRight(new int[3], 1, BreakingFunc.Of<ArraySegment<int>, int>());
 	}
 
 	[Fact]
@@ -14,7 +17,19 @@ public partial class WindowRightTest
 		var sequence = Enumerable.Repeat(1, 10);
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			sequence.WindowRight(-5));
+			new BreakingSequence<int>().WindowRight(-5));
+
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
+			new BreakingSequence<int>().WindowRight(-5, SuperEnumerable.Identity));
+
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
+			new BreakingSequence<int>().WindowRight([], -5, SuperEnumerable.Identity));
+
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
+			new BreakingSequence<int>().WindowRight(new int[5], 6, SuperEnumerable.Identity));
+
+		_ = new BreakingSequence<int>()
+			.WindowRight(new int[5], 5, SuperEnumerable.Identity);
 	}
 
 	public static IEnumerable<object[]> GetThreeElementSequences() =>
@@ -76,35 +91,60 @@ public partial class WindowRightTest
 		}
 	}
 
+	public enum WindowMethod
+	{
+		Traditional,
+		BufferSize,
+		BufferArray,
+		BufferSizeArray,
+	}
+
+	private static IEnumerable<object[]> GetWindowTestSequences(IEnumerable<int> source)
+	{
+		foreach (var seq in source.GetListSequences())
+			yield return new object[] { seq, WindowMethod.Traditional, };
+		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), WindowMethod.BufferSize, };
+		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), WindowMethod.BufferArray, };
+		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), WindowMethod.BufferSizeArray, };
+	}
+
+	private static IEnumerable<IList<T>> GetWindows<T>(
+			IEnumerable<T> seq,
+			WindowMethod method,
+			int size) =>
+		method switch
+		{
+			WindowMethod.Traditional => seq.WindowRight(size),
+			WindowMethod.BufferSize => seq.WindowRight(size, arr => arr.ToList()),
+			WindowMethod.BufferArray => seq.WindowRight(new T[size], arr => arr.ToList()),
+			WindowMethod.BufferSizeArray => seq.WindowRight(new T[size + 10], size, arr => arr.ToList()),
+			_ => throw new NotSupportedException(),
+		};
+
 	public static IEnumerable<object[]> GetEmptySequences() =>
-		Enumerable.Empty<int>()
-			.GetListSequences()
-			.Select(x => new object[] { x });
+		GetWindowTestSequences(Enumerable.Empty<int>());
 
 	[Theory]
 	[MemberData(nameof(GetEmptySequences))]
-	public void WindowRightEmptySequence(IDisposableEnumerable<int> seq)
+	public void WindowRightEmptySequence(IDisposableEnumerable<int> seq, WindowMethod wm)
 	{
 		using (seq)
 		{
-			var result = seq.WindowRight(5);
+			var result = GetWindows(seq, wm, 5);
 			result.AssertSequenceEqual();
 		}
 	}
 
 	public static IEnumerable<object[]> GetHundredElementSequences() =>
-		Enumerable.Range(0, 100)
-			.GetListSequences()
-			.Select(x => new object[] { x });
+		GetWindowTestSequences(Enumerable.Range(0, 100));
 
 	[Theory]
 	[MemberData(nameof(GetHundredElementSequences))]
-	public void WindowRightOfSingleElement(IDisposableEnumerable<int> seq)
+	public void WindowRightOfSingleElement(IDisposableEnumerable<int> seq, WindowMethod wm)
 	{
 		using (seq)
 		{
-			var result = seq.WindowRight(1);
-
+			var result = GetWindows(seq, wm, 1);
 			foreach (var (actual, expected) in result.Zip(Enumerable.Range(0, 100)))
 				Assert.Equal(SuperEnumerable.Return(expected), actual);
 		}
@@ -112,11 +152,11 @@ public partial class WindowRightTest
 
 	[Theory]
 	[MemberData(nameof(GetHundredElementSequences))]
-	public void WindowRightWithWindowSizeLargerThanSequence(IDisposableEnumerable<int> seq)
+	public void WindowRightWithWindowSizeSmallerThanSequence(IDisposableEnumerable<int> seq, WindowMethod wm)
 	{
 		using (seq)
 		{
-			var result = seq.WindowRight(10);
+			var result = GetWindows(seq, wm, 10);
 			result.AssertSequenceEqual(
 				Enumerable.Range(0, 10)
 					.Select(x => Enumerable.Range(0, x + 1))
@@ -127,11 +167,11 @@ public partial class WindowRightTest
 
 	[Theory]
 	[MemberData(nameof(GetHundredElementSequences))]
-	public void WindowRightWithWindowSizeSmallerThanSequence(IDisposableEnumerable<int> seq)
+	public void WindowRightWithWindowSizeLargerThanSequence(IDisposableEnumerable<int> seq, WindowMethod wm)
 	{
 		using (seq)
 		{
-			var result = seq.WindowRight(110);
+			var result = GetWindows(seq, wm, 110);
 			result.AssertSequenceEqual(
 				Enumerable.Range(0, 100)
 					.Select(i => Enumerable.Range(0, i + 1)));

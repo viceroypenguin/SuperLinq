@@ -28,7 +28,6 @@ public static partial class SuperEnumerable
 	///     return all elements up to that point. There is no guarantee that the resulting sequence will contain the
 	///     number of elements requested - it may have anywhere from 0 to <paramref name="count"/>.
 	/// </remarks>
-	[Obsolete("Slice has been replaced by Take(Range).")]
 	public static IEnumerable<T> Slice<T>(this IEnumerable<T> source, int startIndex, int count)
 	{
 		return source.Take(startIndex..(startIndex + count));

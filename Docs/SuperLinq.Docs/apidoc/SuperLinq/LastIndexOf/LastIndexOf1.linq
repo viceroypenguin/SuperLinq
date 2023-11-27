@@ -1,0 +1,19 @@
+<Query Kind="Statements">
+  <NuGetReference>SuperLinq</NuGetReference>
+  <Namespace>SuperLinq</Namespace>
+</Query>
+
+var sequence = new[]
+{
+	1, 2, 3, 4, 5,
+	1, 2, 3, 4, 5,
+}.AsEnumerable();
+
+// Find the element `3` in the sequence
+var result = sequence
+	.LastIndexOf(3);
+
+Console.WriteLine($"Index: {result}");
+
+// This code produces the following output:
+// Index: 7
