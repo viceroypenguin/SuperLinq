@@ -96,7 +96,7 @@ public class SegmentTests
 
 		var result = sequence.Segment((x, i) => i % 2 == 0).ToList();
 		Assert.Equal(100 / 2, result.Count);
-		Assert.True(result.All(s => s.Count() == 2));
+		Assert.True(result.All(s => s.Count == 2));
 	}
 
 	/// <summary>
@@ -114,7 +114,7 @@ public class SegmentTests
 			.ToList();
 
 		Assert.Equal(sequence.Distinct().Count(), result.Count);
-		Assert.True(result.All(s => s.Count() == 5));
+		Assert.True(result.All(s => s.Count == 5));
 	}
 
 	public static readonly IEnumerable<object[]> TestData =
