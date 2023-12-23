@@ -62,8 +62,8 @@ public static partial class AsyncSuperEnumerable
 	/// A function that receives the cardinality and, if the
 	/// sequence has just one element, the value of that element as
 	/// argument and projects a resulting value of type
-	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <typeparamref name="TResult"/>.</param>
+	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
 	/// <typeparam name="T">
 	/// The type of the elements of <paramref name="source"/>.</typeparam>
 	/// <typeparam name="TCardinality">
