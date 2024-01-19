@@ -232,8 +232,9 @@ span.sidebar-item {
 }
 
 .main-panel {
-    background-color: var(--main-bg-color);
-    flex: 1
+	background-color: var(--main-bg-color);
+	flex: 1;
+	overflow-x: hidden;
 }
 
 .top-navbar {
