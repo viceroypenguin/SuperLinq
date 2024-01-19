@@ -7,7 +7,7 @@ function toggleMenu() {
 
     if (sidebar.style.left === "0px") 
     {
-        sidebar.style.left = "-" + sidebar.offsetWidth + "px";
+        sidebar.style.left = "-" + sidebar.getBoundingClientRect().width + "px";
         blackout.classList.remove("showThat");
         blackout.classList.add("hideThat");
     } 

@@ -10,6 +10,8 @@
     {{>partials/head}}
 
     <body>
+        <!-- Header required for docfx anchor scroll to work -->
+        <header id="head"></header>
         <div class="top-navbar">
             <a class="burger-icon" onclick="toggleMenu()">
                 <svg name="Hamburger" 
@@ -39,10 +41,20 @@
                 {{>partials/searchResults}}
                 {{/_enableSearch}}
 
+ 
+
                 <div role="main" class="hide-when-search" >
                     {{^_disableBreadcrumb}}
                         {{>partials/breadcrumb}}
                     {{/_disableBreadcrumb}}
+
+                   {{^_disableContribution}}
+                         <div id="contribution">
+                             {{#docurl}}
+                               <a href="{{docurl}}" class="contribution-link">{{__global.improveThisDoc}}</a>
+                             {{/docurl}}
+                         </div>
+                    {{/_disableContribution}}
 
                     <article class="content wrap" id="_content" data-uid="{{uid}}">
                       {{!body}}
