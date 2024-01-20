@@ -343,8 +343,6 @@ Concatenation refers to the operation of appending one sequence to another.
 | OnErrorResumeNext		  | Concatenates one or more sequences regardless of if an error occurs in any of them. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.OnErrorResumeNext.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.OnErrorResumeNext.html) |
 | SortedMerge			  | Merges already-sorted sequences into a new correctly-sorted sequence. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.SortedMerge.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.SortedMerge.html) |
 | SortedMergeBy			  | Merges already-sorted sequences into a new correctly-sorted sequence according to a key value. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.SortedMergeBy.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.SortedMergeBy.html) |
-| SortedMergeByDescending | Merges already-sorted sequences into a new correctly-sorted sequence according to a key value. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.SortedMergeByDescending.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.SortedMergeByDescending.html) |
-| SortedMergeDescending	  | Merges already-sorted sequences into a new correctly-sorted sequence. | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.SuperEnumerable.SortedMergeDescending.html) | [link](https://viceroypenguin.github.io/SuperLinq/api/SuperLinq.Async.AsyncSuperEnumerable.SortedMergeDescending.html) |
 
 </details>
 

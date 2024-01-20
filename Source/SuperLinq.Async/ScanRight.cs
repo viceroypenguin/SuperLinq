@@ -5,7 +5,7 @@ public static partial class AsyncSuperEnumerable
 	/// <summary>
 	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// This operator is the right-associative version of the
-	/// <see cref="ScanEx{TSource}(IAsyncEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
+	/// <see cref="Scan{TSource}(IAsyncEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in source sequence.</typeparam>
 	/// <param name="source">Source sequence.</param>
@@ -36,7 +36,7 @@ public static partial class AsyncSuperEnumerable
 	/// <summary>
 	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// This operator is the right-associative version of the
-	/// <see cref="ScanEx{TSource}(IAsyncEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
+	/// <see cref="Scan{TSource}(IAsyncEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in source sequence.</typeparam>
 	/// <param name="source">Source sequence.</param>
@@ -67,7 +67,7 @@ public static partial class AsyncSuperEnumerable
 	/// <summary>
 	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// This operator is the right-associative version of the
-	/// <see cref="ScanEx{TSource}(IAsyncEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
+	/// <see cref="Scan{TSource}(IAsyncEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in source sequence.</typeparam>
 	/// <param name="source">Source sequence.</param>
@@ -121,7 +121,7 @@ public static partial class AsyncSuperEnumerable
 	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// The specified seed value is used as the initial accumulator value.
 	/// This operator is the right-associative version of the
-	/// <see cref="ScanEx{TSource, TAccumulate}(IAsyncEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.
+	/// <see cref="Scan{TSource, TAccumulate}(IAsyncEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.
 	/// </summary>
 	/// <typeparam name="TSource">The type of the elements of source.</typeparam>
 	/// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
@@ -153,7 +153,7 @@ public static partial class AsyncSuperEnumerable
 	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// The specified seed value is used as the initial accumulator value.
 	/// This operator is the right-associative version of the
-	/// <see cref="ScanEx{TSource, TAccumulate}(IAsyncEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.
+	/// <see cref="Scan{TSource, TAccumulate}(IAsyncEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.
 	/// </summary>
 	/// <typeparam name="TSource">The type of the elements of source.</typeparam>
 	/// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
@@ -185,7 +185,7 @@ public static partial class AsyncSuperEnumerable
 	/// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
 	/// The specified seed value is used as the initial accumulator value.
 	/// This operator is the right-associative version of the
-	/// <see cref="ScanEx{TSource, TAccumulate}(IAsyncEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.
+	/// <see cref="Scan{TSource, TAccumulate}(IAsyncEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.
 	/// </summary>
 	/// <typeparam name="TSource">The type of the elements of source.</typeparam>
 	/// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>

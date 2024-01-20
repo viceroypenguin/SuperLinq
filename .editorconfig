@@ -213,9 +213,6 @@ dotnet_diagnostic.IDE0290.severity = none				# IDE0290: Use primary constructor
 dotnet_diagnostic.IDE0028.severity = none				# IDE0028: Simplify collection initialization
 dotnet_diagnostic.IDE0305.severity = none				# IDE0305: Simplify collection initialization
 
-# For ScanEx()
-dotnet_code_quality.ca1711.allowed_suffixes = Ex
-
 # XML Documentation
 dotnet_diagnostic.CS0105.severity = error               # CS0105: Using directive is unnecessary.
 dotnet_diagnostic.CS1573.severity = error               # CS1573: Missing XML comment for parameter
@@ -240,7 +237,7 @@ dotnet_diagnostic.IDE0251.severity = none               # IDE0251: Make member r
 dotnet_diagnostic.RS0016.severity = error				# RS0016: Add public types and members to the declared API
 dotnet_diagnostic.RS0017.severity = error				# RS0017: Remove deleted types and members from the declared API
 # false positive for SuperLinq.Async CancellationTokens
-dotnet_diagnostic.RS0026.severity = none				# RS0026: Do not add multiple public overloads with optional parameters 
+dotnet_diagnostic.RS0026.severity = none				# RS0026: Do not add multiple public overloads with optional parameters
 
 # Bug in compiler
 dotnet_diagnostic.CA1861.severity = none				# CA1861: Avoid constant arrays as arguments
