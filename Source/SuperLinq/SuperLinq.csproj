@@ -58,7 +58,6 @@
 			- FullGroupJoin
 			- FullJoin
 			- Generate
-			- GenerateByIndex
 			- GetShortestPath
 			- GetShortestPathCost
 			- GetShortestPaths
@@ -77,7 +76,6 @@
 			- PadStart
 			- PartialSort
 			- PartialSortBy
-			- Partition
 			- Permutations
 			- Pipe
 			- PreScan
@@ -97,7 +95,6 @@
 			- SkipUntil
 			- Slice
 			- SortedMerge
-			- SortedMergeDescending
 			- Split
 			- StartsWith
 			- Subsets
@@ -116,7 +113,6 @@
 			- TraverseBreadthFirst
 			- TraverseDepthFirst
 			- TrySingle
-			- Unfold
 			- Where
 			- Window
 			- WindowLeft

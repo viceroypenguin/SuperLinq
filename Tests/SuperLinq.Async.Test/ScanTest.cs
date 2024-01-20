@@ -26,7 +26,6 @@ public class ScanTest
 	public void ScanIsLazy()
 	{
 		_ = new AsyncBreakingSequence<object>().Scan(BreakingFunc.Of<object, object, object>());
-		_ = new AsyncBreakingSequence<object>().ScanEx(BreakingFunc.Of<object, object, object>());
 	}
 
 	[Fact]
@@ -63,8 +62,6 @@ public class ScanTest
 	public void SeededScanIsLazy()
 	{
 		_ = new AsyncBreakingSequence<object>().Scan(seed: null,
-			BreakingFunc.Of<object?, object, object>());
-		_ = new AsyncBreakingSequence<object>().ScanEx(seed: null,
 			BreakingFunc.Of<object?, object, object>());
 	}
 

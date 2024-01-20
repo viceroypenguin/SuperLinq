@@ -16,8 +16,8 @@ you to use on the types they extend (typically some instantiation of
 `IEnumerable<T>`).
 
 Apart from extension methods, SuperLinq also offers regular static method
-that *generate* (instead of operating on) sequences, like `Unfold`,
-`Random`, `Sequence` and others. 
+that *generate* (instead of operating on) sequences, like `Random`, `Sequence` 
+and others. 
 
 ## Migration from MoreLINQ
 

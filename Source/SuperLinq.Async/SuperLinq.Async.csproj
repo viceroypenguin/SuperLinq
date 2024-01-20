@@ -52,7 +52,6 @@
 			- Fold
 			- From
 			- Generate
-			- GenerateByIndex
 			- GroupAdjacent
 			- Index
 			- IndexBy
@@ -73,7 +72,6 @@
 			- Sequence
 			- SkipUntil
 			- SortedMerge
-			- SortedMergeDescending
 			- Split
 			- StartsWith
 			- TagFirstLast

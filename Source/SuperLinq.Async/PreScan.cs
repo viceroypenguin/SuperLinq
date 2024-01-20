@@ -14,7 +14,7 @@ public static partial class AsyncSuperEnumerable
 	/// not just a sum.
 	/// </para>
 	/// <para>
-	/// The inclusive version of PreScan is <see cref="ScanEx{TSource}"/>.
+	/// The inclusive version of PreScan is <see cref="Scan{TSource}"/>.
 	/// </para>
 	/// <para>
 	/// This operator uses deferred execution and streams its result.
@@ -26,7 +26,7 @@ public static partial class AsyncSuperEnumerable
 	/// var scan = values.Scan((a, b) => a + b);
 	/// ]]></code>
 	/// <c>prescan</c> will yield <c>{ 0, 1, 3, 6 }</c>, while <c>scan</c>
-	/// will yield <c>{ 1, 3, 6, 10 }</c>. This shows the relationship 
+	/// will yield <c>{ 1, 3, 6, 10 }</c>. This shows the relationship
 	/// between the inclusive and exclusive prefix sum.
 	/// </example>
 	/// </remarks>
