@@ -76,6 +76,7 @@
 			- PadStart
 			- PartialSort
 			- PartialSortBy
+			- Partition
 			- Permutations
 			- Pipe
 			- PreScan
