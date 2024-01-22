@@ -40,19 +40,19 @@ public static partial class SuperEnumerable
 
 		return sequence switch
 		{
-			IList<T> list => new ExcludeIterator<T>(list, startIndex, count),
+			IList<T> list => new ExcludeListIterator<T>(list, startIndex, count),
 			ICollection<T> collection => new ExcludeCollectionIterator<T>(collection, startIndex, count),
 			_ => ExcludeCore(sequence, startIndex, count)
 		};
 	}
 
-	private sealed class ExcludeIterator<T> : ListIterator<T>
+	private sealed class ExcludeListIterator<T> : ListIterator<T>
 	{
 		private readonly IList<T> _source;
 		private readonly int _startIndex;
 		private readonly int _count;
 
-		public ExcludeIterator(IList<T> source, int startIndex, int count)
+		public ExcludeListIterator(IList<T> source, int startIndex, int count)
 		{
 			_source = source;
 			_startIndex = startIndex;
