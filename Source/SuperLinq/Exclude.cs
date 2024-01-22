@@ -38,23 +38,12 @@ public static partial class SuperEnumerable
 		if (count == 0)
 			return sequence;
 
-		if (sequence is IList<T> list)
-			return new ExcludeIterator<T>(list, startIndex, count);
-
-		return Core(sequence, startIndex, count);
-
-		static IEnumerable<T> Core(IEnumerable<T> sequence, int startIndex, int count)
+		return sequence switch
 		{
-			var index = 0;
-			var endIndex = startIndex + count;
-
-			foreach (var item in sequence)
-			{
-				if (index < startIndex || index >= endIndex)
-					yield return item;
-				index++;
-			}
-		}
+			IList<T> list => new ExcludeIterator<T>(list, startIndex, count),
+			ICollection<T> collection => new ExcludeCollectionIterator<T>(collection, startIndex, count),
+			_ => ExcludeCore(sequence, startIndex, count)
+		};
 	}
 
 	private sealed class ExcludeIterator<T> : ListIterator<T>
@@ -93,6 +82,43 @@ public static partial class SuperEnumerable
 			return index < _startIndex
 				? _source[index]
 				: _source[index + _count];
+		}
+	}
+
+	private sealed class ExcludeCollectionIterator<T> : CollectionIterator<T>
+	{
+		private readonly ICollection<T> _source;
+		private readonly int _startIndex;
+		private readonly int _count;
+
+		public ExcludeCollectionIterator(ICollection<T> source, int startIndex, int count)
+		{
+			_source = source;
+			_startIndex = startIndex;
+			_count = count;
+		}
+
+		public override int Count =>
+			_source.Count < _startIndex ? _source.Count :
+			_source.Count < _startIndex + _count ? _startIndex :
+			_source.Count - _count;
+
+		protected override IEnumerable<T> GetEnumerable()
+		{
+			return ExcludeCore(_source, _startIndex, _count);
+		}
+	}
+
+	private static IEnumerable<T> ExcludeCore<T>(IEnumerable<T> sequence, int startIndex, int count)
+	{
+		var index = 0;
+		var endIndex = startIndex + count;
+
+		foreach (var item in sequence)
+		{
+			if (index < startIndex || index >= endIndex)
+				yield return item;
+			index++;
 		}
 	}
 }
