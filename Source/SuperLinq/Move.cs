@@ -85,7 +85,7 @@ public static partial class SuperEnumerable
 	/// <param name="range">
 	/// 	The range of values to move.
 	/// </param>
-	/// <param name="toIndex">
+	/// <param name="to">
 	/// 	The index where the specified range will be moved.</param>
 	/// <returns>
 	/// 	A sequence with the specified range moved to the new position.
@@ -99,25 +99,45 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// 	This operator uses deferred executing and streams its results.
 	/// </remarks>
-	public static IEnumerable<T> Move<T>(this IEnumerable<T> source, Range range, Index toIndex)
+	public static IEnumerable<T> Move<T>(this IEnumerable<T> source, Range range, Index to)
 	{
-		int? length = 0;
-		if (range.Start.IsFromEnd || range.End.IsFromEnd || toIndex.IsFromEnd)
+		if (range.Start.IsFromEnd || range.End.IsFromEnd || to.IsFromEnd)
 		{
-			length = source.TryGetCollectionCount();
-			if (!length.HasValue)
+			int startIndex;
+			int endIndex;
+			int toIndex;
+
+			if (source.TryGetCollectionCount() is int count)
 			{
-				length = source.GetCollectionCount();
+				startIndex = range.Start.GetOffset(count);
+				endIndex = range.End.GetOffset(count);
+				toIndex = to.GetOffset(count);
+			} 
+			else 
+			{
+				using var e = source.GetEnumerator();
+				if (!e.MoveNext())
+				{
+					yield break;
+				}
+				count = 1;
+				while (e.MoveNext())
+				{
+					count++;
+				}
+				startIndex = range.Start.Value;
+				endIndex = range.End.Value;
+				toIndex = to.GetOffset(count);
 			}
+			foreach (var e in Move(source, startIndex, endIndex - startIndex, toIndex))
+			{
+				yield return e;
+			}
+			yield break;
 		}
-		var fromIndex = range.Start.IsFromEnd ? range.Start.GetOffset(length.Value) : range.Start.Value;
-		var count = (range.End.IsFromEnd ? range.End.GetOffset(length.Value) : range.End.Value) - fromIndex;
-		var to = toIndex.IsFromEnd ? toIndex.GetOffset(length.Value) : toIndex.Value;
-		return source.Move
-		(
-			fromIndex,
-			count,
-			to
-		);
+		foreach (var e in Move(source, range.Start.Value, range.End.Value - range.Start.Value, to.Value))
+		{
+			yield return e;
+		}
 	}
 }
