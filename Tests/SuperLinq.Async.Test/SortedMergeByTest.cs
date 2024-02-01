@@ -114,20 +114,6 @@ public class SortedMergeByTests
 	}
 
 	/// <summary>
-	/// Verify that sorted merge correctly merges descending-ordered sequences.
-	/// </summary>
-	[Fact]
-	public async Task TestSortedMergeByDescendingOrder()
-	{
-		await using var sequenceA = Enumerable.Range(0, 10).Select(x => (x * 3) + 0).Reverse().AsTestingSequence();
-		await using var sequenceB = Enumerable.Range(0, 10).Select(x => (x * 3) + 1).Reverse().AsTestingSequence();
-		await using var sequenceC = Enumerable.Range(0, 10).Select(x => (x * 3) + 2).Reverse().AsTestingSequence();
-
-		var result = sequenceA.SortedMergeByDescending(SuperEnumerable.Identity, sequenceB, sequenceC);
-		await result.AssertSequenceEqual(Enumerable.Range(0, 10 * 3).Reverse());
-	}
-
-	/// <summary>
 	/// Verify that sorted merge correctly uses a custom comparer supplied to it.
 	/// </summary>
 	[Fact]

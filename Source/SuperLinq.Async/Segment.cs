@@ -13,7 +13,7 @@ public static partial class AsyncSuperEnumerable
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
 	/// </exception>
 
-	public static IAsyncEnumerable<IEnumerable<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, bool> newSegmentPredicate)
+	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, bool> newSegmentPredicate)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
@@ -32,7 +32,7 @@ public static partial class AsyncSuperEnumerable
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
 	/// </exception>
 
-	public static IAsyncEnumerable<IEnumerable<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> newSegmentPredicate)
+	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> newSegmentPredicate)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
@@ -51,7 +51,7 @@ public static partial class AsyncSuperEnumerable
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
 	/// </exception>
 
-	public static IAsyncEnumerable<IEnumerable<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
+	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
@@ -70,7 +70,7 @@ public static partial class AsyncSuperEnumerable
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
 	/// </exception>
 
-	public static IAsyncEnumerable<IEnumerable<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, int, ValueTask<bool>> newSegmentPredicate)
+	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, int, ValueTask<bool>> newSegmentPredicate)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
@@ -89,7 +89,7 @@ public static partial class AsyncSuperEnumerable
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
 	/// </exception>
 
-	public static IAsyncEnumerable<IEnumerable<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
+	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
@@ -108,14 +108,14 @@ public static partial class AsyncSuperEnumerable
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
 	/// </exception>
 
-	public static IAsyncEnumerable<IEnumerable<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, T, int, ValueTask<bool>> newSegmentPredicate)
+	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, T, int, ValueTask<bool>> newSegmentPredicate)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
 
 		return Core(source, newSegmentPredicate);
 
-		static async IAsyncEnumerable<IEnumerable<T>> Core(IAsyncEnumerable<T> source, Func<T, T, int, ValueTask<bool>> newSegmentPredicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<IReadOnlyList<T>> Core(IAsyncEnumerable<T> source, Func<T, T, int, ValueTask<bool>> newSegmentPredicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
 

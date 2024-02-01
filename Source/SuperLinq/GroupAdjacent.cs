@@ -223,7 +223,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> GroupAdjacent<TSource, TKey, TResult>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
-		Func<TKey, IEnumerable<TSource>, TResult> resultSelector)
+		Func<TKey, IReadOnlyList<TSource>, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);
@@ -276,7 +276,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> GroupAdjacent<TSource, TKey, TResult>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
-		Func<TKey, IEnumerable<TSource>, TResult> resultSelector,
+		Func<TKey, IReadOnlyList<TSource>, TResult> resultSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
 		ArgumentNullException.ThrowIfNull(source);

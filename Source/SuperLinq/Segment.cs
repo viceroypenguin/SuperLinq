@@ -28,7 +28,7 @@ public static partial class SuperEnumerable
 	///     grouping occurs.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, bool> newSegmentPredicate)
+	public static IEnumerable<IReadOnlyList<T>> Segment<T>(this IEnumerable<T> source, Func<T, bool> newSegmentPredicate)
 	{
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
 
@@ -61,7 +61,7 @@ public static partial class SuperEnumerable
 	///     grouping occurs.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
+	public static IEnumerable<IReadOnlyList<T>> Segment<T>(this IEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
 	{
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
 
@@ -94,14 +94,14 @@ public static partial class SuperEnumerable
 	///     grouping occurs.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
+	public static IEnumerable<IReadOnlyList<T>> Segment<T>(this IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
 
 		return Core(source, newSegmentPredicate);
 
-		static IEnumerable<IEnumerable<T>> Core(IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
+		static IEnumerable<IReadOnlyList<T>> Core(IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
 		{
 			using var e = source.GetEnumerator();
 

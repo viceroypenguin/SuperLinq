@@ -195,7 +195,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TResult> GroupAdjacent<TSource, TKey, TResult>(
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
-		Func<TKey, IEnumerable<TSource>, TResult> resultSelector)
+		Func<TKey, IReadOnlyList<TSource>, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);
@@ -241,7 +241,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TResult> GroupAdjacent<TSource, TKey, TResult>(
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
-		Func<TKey, IEnumerable<TSource>, TResult> resultSelector,
+		Func<TKey, IReadOnlyList<TSource>, TResult> resultSelector,
 		IEqualityComparer<TKey>? comparer)
 	{
 		ArgumentNullException.ThrowIfNull(source);

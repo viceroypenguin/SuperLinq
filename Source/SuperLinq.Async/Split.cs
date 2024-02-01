@@ -11,7 +11,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="separator">Separator element.</param>
 	/// <returns>A sequence of splits of elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<IEnumerable<TSource>> Split<TSource>(
+	public static IAsyncEnumerable<IReadOnlyList<TSource>> Split<TSource>(
 		this IAsyncEnumerable<TSource> source,
 		TSource separator)
 	{
@@ -28,7 +28,7 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>A sequence of splits of elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
-	public static IAsyncEnumerable<IEnumerable<TSource>> Split<TSource>(
+	public static IAsyncEnumerable<IReadOnlyList<TSource>> Split<TSource>(
 		this IAsyncEnumerable<TSource> source,
 		TSource separator, int count)
 	{
@@ -53,7 +53,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TResult> Split<TSource, TResult>(
 		this IAsyncEnumerable<TSource> source,
 		TSource separator,
-		Func<IEnumerable<TSource>, TResult> resultSelector)
+		Func<IReadOnlyList<TSource>, TResult> resultSelector)
 	{
 		return Split(source, separator, int.MaxValue, resultSelector);
 	}
@@ -78,7 +78,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TResult> Split<TSource, TResult>(
 		this IAsyncEnumerable<TSource> source,
 		TSource separator, int count,
-		Func<IEnumerable<TSource>, TResult> resultSelector)
+		Func<IReadOnlyList<TSource>, TResult> resultSelector)
 	{
 		return Split(source, separator, null, count, resultSelector);
 	}
@@ -94,7 +94,7 @@ public static partial class AsyncSuperEnumerable
 	/// element equality.</param>
 	/// <returns>A sequence of splits of elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<IEnumerable<TSource>> Split<TSource>(
+	public static IAsyncEnumerable<IReadOnlyList<TSource>> Split<TSource>(
 		this IAsyncEnumerable<TSource> source,
 		TSource separator, IEqualityComparer<TSource>? comparer)
 	{
@@ -115,7 +115,7 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>A sequence of splits of elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
-	public static IAsyncEnumerable<IEnumerable<TSource>> Split<TSource>(
+	public static IAsyncEnumerable<IReadOnlyList<TSource>> Split<TSource>(
 		this IAsyncEnumerable<TSource> source,
 		TSource separator, IEqualityComparer<TSource>? comparer, int count)
 	{
@@ -143,7 +143,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TResult> Split<TSource, TResult>(
 		this IAsyncEnumerable<TSource> source,
 		TSource separator, IEqualityComparer<TSource> comparer,
-		Func<IEnumerable<TSource>, TResult> resultSelector)
+		Func<IReadOnlyList<TSource>, TResult> resultSelector)
 	{
 		return Split(source, separator, comparer, int.MaxValue, resultSelector);
 	}
@@ -171,7 +171,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TResult> Split<TSource, TResult>(
 		this IAsyncEnumerable<TSource> source,
 		TSource separator, IEqualityComparer<TSource>? comparer, int count,
-		Func<IEnumerable<TSource>, TResult> resultSelector)
+		Func<IReadOnlyList<TSource>, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
@@ -192,7 +192,7 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>A sequence of splits of elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="separatorFunc"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<IEnumerable<TSource>> Split<TSource>(
+	public static IAsyncEnumerable<IReadOnlyList<TSource>> Split<TSource>(
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, bool> separatorFunc)
 	{
@@ -212,7 +212,7 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="separatorFunc"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than 1.</exception>
-	public static IAsyncEnumerable<IEnumerable<TSource>> Split<TSource>(
+	public static IAsyncEnumerable<IReadOnlyList<TSource>> Split<TSource>(
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, bool> separatorFunc, int count)
 	{
@@ -239,7 +239,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TResult> Split<TSource, TResult>(
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, bool> separatorFunc,
-		Func<IEnumerable<TSource>, TResult> resultSelector)
+		Func<IReadOnlyList<TSource>, TResult> resultSelector)
 	{
 		return Split(source, separatorFunc, int.MaxValue, resultSelector);
 	}
@@ -267,7 +267,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TResult> Split<TSource, TResult>(
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, bool> separatorFunc, int count,
-		Func<IEnumerable<TSource>, TResult> resultSelector)
+		Func<IReadOnlyList<TSource>, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(separatorFunc);
@@ -279,7 +279,7 @@ public static partial class AsyncSuperEnumerable
 		static async IAsyncEnumerable<TResult> Core(
 			IAsyncEnumerable<TSource> source,
 			Func<TSource, bool> separatorFunc, int count,
-			Func<IEnumerable<TSource>, TResult> resultSelector,
+			Func<IReadOnlyList<TSource>, TResult> resultSelector,
 			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var items = new List<TSource>();

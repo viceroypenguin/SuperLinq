@@ -58,7 +58,6 @@
 			- FullGroupJoin
 			- FullJoin
 			- Generate
-			- GenerateByIndex
 			- GetShortestPath
 			- GetShortestPathCost
 			- GetShortestPaths
@@ -97,7 +96,6 @@
 			- SkipUntil
 			- Slice
 			- SortedMerge
-			- SortedMergeDescending
 			- Split
 			- StartsWith
 			- Subsets
@@ -116,7 +114,6 @@
 			- TraverseBreadthFirst
 			- TraverseDepthFirst
 			- TrySingle
-			- Unfold
 			- Where
 			- Window
 			- WindowLeft

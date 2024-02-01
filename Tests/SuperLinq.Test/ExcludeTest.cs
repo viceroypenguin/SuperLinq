@@ -36,7 +36,7 @@ public class ExcludeTests
 
 	public static IEnumerable<object[]> GetIntSequences() =>
 		Enumerable.Range(1, 100)
-			.GetListSequences()
+			.GetAllSequences()
 			.Select(x => new object[] { x });
 
 	[Theory]
@@ -161,5 +161,14 @@ public class ExcludeTests
 		_ = Assert.Throws<ArgumentOutOfRangeException>(
 			"index",
 			() => result.ElementAt(0));
+	}
+
+	[Fact]
+	public void ExcludeCollectionBehavior()
+	{
+		using var seq = Enumerable.Range(0, 10_000).AsBreakingCollection();
+		var result = seq.Exclude(0, 1_000);
+
+		result.AssertCollectionErrorChecking(9_000);
 	}
 }

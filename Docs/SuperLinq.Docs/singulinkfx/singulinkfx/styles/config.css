@@ -84,6 +84,16 @@
 
     --breadcrumb-bg-color: #2f3136;
 
+    /* Tabs */
+
+    --nav-tabs-border-width: 1px;
+    --nav-tabs-border-color: #495057;
+    --nav-tabs-border-radius: .375rem;
+    --nav-tabs-link-hover-border-color: #303336 #303336 transparent;
+    --nav-tabs-link-active-color: white;
+    --nav-tabs-link-active-bg: var(--main-bg-color);
+    --nav-tabs-link-active-border-color: var(--nav-tabs-border-color) var(--nav-tabs-border-color) var(--main-bg-color);
+
     /* Inline Code */
 
     --ref-bg-color: black;

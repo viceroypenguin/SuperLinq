@@ -1,8 +1,5 @@
 ﻿namespace Test;
 
-// Keep testing `GenerateByIndex` for now
-#pragma warning disable CS0618
-
 public class GenerateTest
 {
 	[Fact]
@@ -33,18 +30,5 @@ public class GenerateTest
 		SuperEnumerable.Generate(0, BreakingFunc.Of<int, int>())
 					  .Take(1)
 					  .Consume();
-	}
-
-	[Fact]
-	public void GenerateByIndexIsLazy()
-	{
-		_ = SuperEnumerable.GenerateByIndex(BreakingFunc.Of<int, int>());
-	}
-
-	[Fact]
-	public void GenerateByIndex()
-	{
-		var sequence = SuperEnumerable.GenerateByIndex(x => x.ToString()).Take(3);
-		sequence.AssertSequenceEqual("0", "1", "2");
 	}
 }
