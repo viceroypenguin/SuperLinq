@@ -242,7 +242,7 @@ dotnet_diagnostic.RS0026.severity = none				# RS0026: Do not add multiple public
 dotnet_diagnostic.CA1861.severity = none				# CA1861: Avoid constant arrays as arguments
 
 # Primary Constructors
-dotnet_diagnostic.CS9107.severity = error				# CS9107: Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor. The value might be captured by the base class as well. This warning indicates that your code may be allocated two copies of a primary constructor parameter. Because the parameter is passed to the base class, the base class likely uses it. Because the derived class accesses it, it may have a second copy of the same parameter. That extra storage may not be intended
-dotnet_diagnostic.CS9113.severity = error				# CS9113: Parameter is not being used
-dotnet_diagnostic.CS9124.severity = error				# CS9124: Use primary constructor
-dotnet_diagnostic.CS9179.severity = error				# CS9179: Use primary constructor
+dotnet_diagnostic.CS9107.severity = error				# CS9107: Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor
+dotnet_diagnostic.CS9113.severity = error				# CS9113: Your class never references the primary constructor
+dotnet_diagnostic.CS9124.severity = error				# CS9124: Parameter is captured into the state of the enclosing type and its value is also used to initialize a field, property, or event
+dotnet_diagnostic.CS9179.severity = error				# CS9179: Primary constructor parameter is shadowed by a member from base
