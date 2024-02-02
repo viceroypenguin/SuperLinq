@@ -24,20 +24,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
-		<PackageReference Include="xunit" Version="2.6.1" />
-		<PackageReference Include="coverlet.collector" Version="6.0.0" PrivateAssets="All" />
-		<PackageReference Include="coverlet.msbuild" Version="6.0.0" PrivateAssets="All" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-		<PackageReference Include="GitHubActionsTestLogger" Version="2.3.3" PrivateAssets="All" />
-	</ItemGroup>
-
-	<ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp3.1' ">
-		<PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" PrivateAssets="All" />
-	</ItemGroup>
-
-	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="All" />
+		<PackageReference Include="CommunityToolkit.Diagnostics" />
+		<PackageReference Include="coverlet.collector" PrivateAssets="All" />
+		<PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
+		<PackageReference Include="GitHubActionsTestLogger" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="xunit" />
+		<PackageReference Include="xunit.runner.visualstudio" PrivateAssets="All" />
 	</ItemGroup>
 
 </Project>
