@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -135,17 +137,19 @@ public static partial class SuperEnumerable
 		Index index
 	) : ListIterator<TSource>
 	{
+		private readonly IList<TSource> _source = source;
+		private readonly TSource _value = value;
 		private readonly Index _index = index;
 
-		public override int Count => source.Count;
+		public override int Count => _source.Count;
 
 		protected override IEnumerable<TSource> GetEnumerable()
 		{
-			var cnt = (uint)source.Count;
-			var idx = _index.GetOffset(source.Count);
+			var cnt = (uint)_source.Count;
+			var idx = _index.GetOffset(_source.Count);
 
 			for (var i = 0; i < cnt; i++)
-				yield return i == idx ? value : source[i];
+				yield return i == idx ? _value : _source[i];
 		}
 
 		public override void CopyTo(TSource[] array, int arrayIndex)
@@ -154,11 +158,11 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
-			source.CopyTo(array, arrayIndex);
+			_source.CopyTo(array, arrayIndex);
 
-			var idx = _index.GetOffset(source.Count);
-			if (idx >= 0 && idx < source.Count)
-				array[arrayIndex + idx] = value;
+			var idx = _index.GetOffset(_source.Count);
+			if (idx >= 0 && idx < _source.Count)
+				array[arrayIndex + idx] = _value;
 		}
 
 		protected override TSource ElementAt(int index)
@@ -166,9 +170,9 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			return index == _index.GetOffset(source.Count)
-				? value
-				: source[index];
+			return index == _index.GetOffset(_source.Count)
+				? _value
+				: _source[index];
 		}
 	}
 }

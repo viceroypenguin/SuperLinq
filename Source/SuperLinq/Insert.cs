@@ -198,36 +198,38 @@ public static partial class SuperEnumerable
 		Index index
 	) : ListIterator<T>
 	{
+		private readonly IList<T> _first = first;
+		private readonly IList<T> _second = second;
 		private readonly Index _index = index;
 
 		public override int Count
 		{
 			get
 			{
-				var idx = _index.GetOffset(first.Count);
+				var idx = _index.GetOffset(_first.Count);
 				ArgumentOutOfRangeException.ThrowIfNegative(idx);
-				ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, first.Count);
+				ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, _first.Count);
 
-				return first.Count + second.Count;
+				return _first.Count + _second.Count;
 			}
 		}
 
 		protected override IEnumerable<T> GetEnumerable()
 		{
-			var idx = _index.GetOffset(first.Count);
+			var idx = _index.GetOffset(_first.Count);
 			ArgumentOutOfRangeException.ThrowIfNegative(idx);
-			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, first.Count);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, _first.Count);
 
 			for (var i = 0; i < (uint)idx; i++)
-				yield return first[i];
+				yield return _first[i];
 
-			var cnt = (uint)second.Count;
+			var cnt = (uint)_second.Count;
 			for (var j = 0; j < cnt; j++)
-				yield return second[j];
+				yield return _second[j];
 
-			cnt = (uint)first.Count;
+			cnt = (uint)_first.Count;
 			for (var i = idx; i < cnt; i++)
-				yield return first[i];
+				yield return _first[i];
 		}
 
 		public override void CopyTo(T[] array, int arrayIndex)
@@ -236,14 +238,14 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
-			first.CopyTo(array, arrayIndex);
+			_first.CopyTo(array, arrayIndex);
 
 			var span = array.AsSpan()[arrayIndex..];
-			var cnt = first.Count;
+			var cnt = _first.Count;
 			var idx = _index.GetOffset(cnt);
-			span[idx..cnt].CopyTo(span[(idx + second.Count)..]);
+			span[idx..cnt].CopyTo(span[(idx + _second.Count)..]);
 
-			second.CopyTo(array, arrayIndex + idx);
+			_second.CopyTo(array, arrayIndex + idx);
 		}
 
 		protected override T ElementAt(int index)
@@ -251,13 +253,13 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			var idx = _index.GetOffset(first.Count);
+			var idx = _index.GetOffset(_first.Count);
 			ArgumentOutOfRangeException.ThrowIfNegative(idx);
-			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, first.Count);
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, _first.Count);
 
-			return index < idx ? first[index] :
-				index < idx + second.Count ? second[index - idx] :
-				first[index - second.Count];
+			return index < idx ? _first[index] :
+				index < idx + _second.Count ? _second[index - idx] :
+				_first[index - _second.Count];
 		}
 	}
 }
