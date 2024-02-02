@@ -47,27 +47,21 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class ZipMapIterator<TSource, TResult> : ListIterator<(TSource, TResult)>
+	private sealed class ZipMapIterator<TSource, TResult>(
+		IList<TSource> source,
+		Func<TSource, TResult> selector
+	) : ListIterator<(TSource, TResult)>
 	{
-		private readonly IList<TSource> _source;
-		private readonly Func<TSource, TResult> _selector;
-
-		public ZipMapIterator(IList<TSource> source, Func<TSource, TResult> selector)
-		{
-			_source = source;
-			_selector = selector;
-		}
-
-		public override int Count => _source.Count;
+		public override int Count => source.Count;
 
 		protected override IEnumerable<(TSource, TResult)> GetEnumerable()
 		{
-			var src = _source;
+			var src = source;
 			var cnt = (uint)src.Count;
 			for (var i = 0; i < cnt; i++)
 			{
 				var el = src[i];
-				yield return (el, _selector(el));
+				yield return (el, selector(el));
 			}
 		}
 
@@ -76,8 +70,8 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			var el = _source[index];
-			return (el, _selector(el));
+			var el = source[index];
+			return (el, selector(el));
 		}
 	}
 }

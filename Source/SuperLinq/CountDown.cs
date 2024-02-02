@@ -19,7 +19,7 @@ public static partial class SuperEnumerable
 	/// <returns>
 	///	    A sequence of tuples containing the element and it's count from the end of the sequence, or <see
 	///     langword="null"/>.
-	/// </returns>  
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
@@ -110,60 +110,46 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class CountDownCollectionIterator<TSource, TResult> : CollectionIterator<TResult>
+	private sealed class CountDownCollectionIterator<TSource, TResult>(
+		IEnumerable<TSource> source,
+		int count,
+		Func<TSource, int?, TResult> resultSelector
+	) : CollectionIterator<TResult>
 	{
-		private readonly IEnumerable<TSource> _source;
-		private readonly int _count;
-		private readonly Func<TSource, int?, TResult> _resultSelector;
-
-		public CountDownCollectionIterator(IEnumerable<TSource> source, int count, Func<TSource, int?, TResult> resultSelector)
-		{
-			_source = source;
-			_count = count;
-			_resultSelector = resultSelector;
-		}
-
-		public override int Count => _source.GetCollectionCount();
+		public override int Count => source.GetCollectionCount();
 
 		protected override IEnumerable<TResult> GetEnumerable()
 		{
 			var i = Count;
-			foreach (var item in _source)
-				yield return _resultSelector(item, i-- <= _count ? i : null);
+			foreach (var item in source)
+				yield return resultSelector(item, i-- <= count ? i : null);
 		}
 	}
 
-	private sealed class CountDownListIterator<TSource, TResult> : ListIterator<TResult>
+	private sealed class CountDownListIterator<TSource, TResult>(
+		IList<TSource> source,
+		int count,
+		Func<TSource, int?, TResult> resultSelector
+	) : ListIterator<TResult>
 	{
-		private readonly IList<TSource> _source;
-		private readonly int _count;
-		private readonly Func<TSource, int?, TResult> _resultSelector;
-
-		public CountDownListIterator(IList<TSource> source, int count, Func<TSource, int?, TResult> resultSelector)
-		{
-			_source = source;
-			_count = count;
-			_resultSelector = resultSelector;
-		}
-
-		public override int Count => _source.Count;
+		public override int Count => source.Count;
 
 		protected override IEnumerable<TResult> GetEnumerable()
 		{
-			var cnt = (uint)_source.Count - _count;
+			var cnt = (uint)source.Count - count;
 			var i = 0;
 			for (; i < cnt; i++)
 			{
-				yield return _resultSelector(
-					_source[i],
+				yield return resultSelector(
+					source[i],
 					null);
 			}
 
-			cnt = (uint)_source.Count;
+			cnt = (uint)source.Count;
 			for (; i < cnt; i++)
 			{
-				yield return _resultSelector(
-					_source[i],
+				yield return resultSelector(
+					source[i],
 					(int)cnt - i - 1);
 			}
 		}
@@ -173,9 +159,9 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			return _resultSelector(
-				_source[index],
-				_source.Count - index < _count ? _source.Count - index - 1 : null);
+			return resultSelector(
+				source[index],
+				source.Count - index < count ? source.Count - index - 1 : null);
 		}
 	}
 }

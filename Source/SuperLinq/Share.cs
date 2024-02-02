@@ -33,11 +33,13 @@ public static partial class SuperEnumerable
 		return new SharedBuffer<TSource>(source);
 	}
 
-	private sealed class SharedBuffer<T> : IBuffer<T>
+	private sealed class SharedBuffer<T>(
+		IEnumerable<T> source
+	) : IBuffer<T>
 	{
 		private readonly object _lock = new();
 
-		private IEnumerable<T>? _source;
+		private IEnumerable<T>? _source = source;
 
 		private IEnumerator<T>? _enumerator;
 		private bool _initialized;
@@ -46,11 +48,6 @@ public static partial class SuperEnumerable
 		private ExceptionDispatchInfo? _exception;
 
 		private bool _disposed;
-
-		public SharedBuffer(IEnumerable<T> source)
-		{
-			_source = source;
-		}
 
 		public int Count => 0;
 

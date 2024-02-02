@@ -86,36 +86,30 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private class TagFirstLastIterator<TSource, TResult> : ListIterator<TResult>
+	private class TagFirstLastIterator<TSource, TResult>(
+		IList<TSource> source,
+		Func<TSource, bool, bool, TResult> resultSelector
+	) : ListIterator<TResult>
 	{
-		private readonly IList<TSource> _source;
-		private readonly Func<TSource, bool, bool, TResult> _resultSelector;
-
-		public TagFirstLastIterator(IList<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
-		{
-			_source = source;
-			_resultSelector = resultSelector;
-		}
-
-		public override int Count => _source.Count;
+		public override int Count => source.Count;
 
 		protected override IEnumerable<TResult> GetEnumerable()
 		{
-			if (_source.Count <= 1)
+			if (source.Count <= 1)
 			{
-				if (_source.Count == 1)
-					yield return _resultSelector(_source[0], true, true);
+				if (source.Count == 1)
+					yield return resultSelector(source[0], true, true);
 				yield break;
 			}
 
-			yield return _resultSelector(_source[0], true, false);
+			yield return resultSelector(source[0], true, false);
 
-			var cnt = (uint)_source.Count - 1;
+			var cnt = (uint)source.Count - 1;
 
 			for (var i = 1; i < cnt; i++)
-				yield return _resultSelector(_source[i], false, false);
+				yield return resultSelector(source[i], false, false);
 
-			yield return _resultSelector(_source[^1], false, true);
+			yield return resultSelector(source[^1], false, true);
 		}
 
 		protected override TResult ElementAt(int index)
@@ -123,7 +117,7 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			return _resultSelector(_source[index], index == 0, index == _source.Count - 1);
+			return resultSelector(source[index], index == 0, index == source.Count - 1);
 		}
 	}
 }

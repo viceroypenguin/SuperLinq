@@ -146,40 +146,33 @@ public static partial class SuperEnumerable
 			yield return iter.Current;
 	}
 
-	private sealed class InsertCollectionIterator<T> : CollectionIterator<T>
+	private sealed class InsertCollectionIterator<T>(
+		IEnumerable<T> first,
+		IEnumerable<T> second,
+		Index index
+	) : CollectionIterator<T>
 	{
-		private readonly IEnumerable<T> _first;
-		private readonly IEnumerable<T> _second;
-		private readonly Index _index;
-
-		public InsertCollectionIterator(IEnumerable<T> first, IEnumerable<T> second, Index index)
-		{
-			_first = first;
-			_second = second;
-			_index = index;
-		}
-
 		public override int Count
 		{
 			get
 			{
-				var fCount = _first.GetCollectionCount();
-				var idx = _index.GetOffset(fCount);
+				var fCount = first.GetCollectionCount();
+				var idx = index.GetOffset(fCount);
 				ArgumentOutOfRangeException.ThrowIfNegative(idx);
 				ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, fCount);
 
-				return fCount + _second.GetCollectionCount();
+				return fCount + second.GetCollectionCount();
 			}
 		}
 
 		protected override IEnumerable<T> GetEnumerable()
 		{
-			var fCount = _first.GetCollectionCount();
-			var idx = _index.GetOffset(fCount);
+			var fCount = first.GetCollectionCount();
+			var idx = index.GetOffset(fCount);
 			ArgumentOutOfRangeException.ThrowIfNegative(idx);
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, fCount);
 
-			return InsertCore(_first, _second, idx);
+			return InsertCore(first, second, idx);
 		}
 
 		public override void CopyTo(T[] array, int arrayIndex)
@@ -188,29 +181,26 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
-			_ = _first.CopyTo(array, arrayIndex);
+			_ = first.CopyTo(array, arrayIndex);
 
 			var span = array.AsSpan()[arrayIndex..];
-			var cnt = _first.GetCollectionCount();
-			var idx = _index.GetOffset(cnt);
-			span[idx..cnt].CopyTo(span[(idx + _second.GetCollectionCount())..]);
+			var cnt = first.GetCollectionCount();
+			var idx = index.GetOffset(cnt);
+			span[idx..cnt].CopyTo(span[(idx + second.GetCollectionCount())..]);
 
-			_ = _second.CopyTo(array, arrayIndex + idx);
+			_ = second.CopyTo(array, arrayIndex + idx);
 		}
 	}
 
-	private sealed class InsertListIterator<T> : ListIterator<T>
+	private sealed class InsertListIterator<T>(
+		IList<T> first,
+		IList<T> second,
+		Index index
+	) : ListIterator<T>
 	{
-		private readonly IList<T> _first;
-		private readonly IList<T> _second;
-		private readonly Index _index;
-
-		public InsertListIterator(IList<T> first, IList<T> second, Index index)
-		{
-			_first = first;
-			_second = second;
-			_index = index;
-		}
+		private readonly IList<T> _first = first;
+		private readonly IList<T> _second = second;
+		private readonly Index _index = index;
 
 		public override int Count
 		{

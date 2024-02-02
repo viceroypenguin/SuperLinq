@@ -50,18 +50,15 @@ public class TrySingleTest
 		Assert.Equal(10, value);
 	}
 
-	private sealed class BreakingSingleElementCollection<T> : ICollection<T>
+	private sealed class BreakingSingleElementCollection<T>(
+		T element
+	) : ICollection<T>
 	{
-		private readonly T _element;
-
-		public BreakingSingleElementCollection(T element) =>
-			_element = element;
-
 		public int Count { get; } = 1;
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			yield return _element;
+			yield return element;
 			throw new InvalidOperationException($"{nameof(SuperEnumerable.TrySingle)} should not have attempted to consume a second element.");
 		}
 

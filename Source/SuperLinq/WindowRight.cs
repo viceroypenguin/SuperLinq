@@ -80,44 +80,38 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class WindowRightIterator<T> : ListIterator<IList<T>>
+	private sealed class WindowRightIterator<T>(
+		IList<T> source,
+		int size
+	) : ListIterator<IList<T>>
 	{
-		private readonly IList<T> _source;
-		private readonly int _size;
-
-		public WindowRightIterator(IList<T> source, int size)
-		{
-			_source = source;
-			_size = size;
-		}
-
-		public override int Count => _source.Count;
+		public override int Count => source.Count;
 
 		protected override IEnumerable<IList<T>> GetEnumerable()
 		{
-			if (_source.Count == 0)
+			if (source.Count == 0)
 			{
 				yield break;
 			}
 
-			var window = new T[1] { _source[0], };
-			var max = (uint)Math.Min(_source.Count, _size);
+			var window = new T[1] { source[0], };
+			var max = (uint)Math.Min(source.Count, size);
 			for (var i = 1; i < max; i++)
 			{
 				var newWindow = new T[i + 1];
 				window.AsSpan()[..].CopyTo(newWindow);
-				newWindow[^1] = _source[i];
+				newWindow[^1] = source[i];
 
 				yield return window;
 				window = newWindow;
 			}
 
-			max = (uint)_source.Count;
+			max = (uint)source.Count;
 			for (var i = window.Length; i < max; i++)
 			{
-				var newWindow = new T[_size];
+				var newWindow = new T[size];
 				window.AsSpan()[1..].CopyTo(newWindow);
-				newWindow[^1] = _source[i];
+				newWindow[^1] = source[i];
 
 				yield return window;
 				window = newWindow;
@@ -131,21 +125,21 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			if (index < _size)
+			if (index < size)
 			{
 				var arr = new T[index];
 				var max = (uint)index;
 				for (var i = 0; i < max; i++)
-					arr[i] = _source[i];
+					arr[i] = source[i];
 
 				return arr;
 			}
 			else
 			{
-				var arr = new T[_size];
+				var arr = new T[size];
 				var max = (uint)index + 1;
-				for (int i = 0, j = index - _size + 1; i < arr.Length && j < max; i++, j++)
-					arr[i] = _source[j];
+				for (int i = 0, j = index - size + 1; i < arr.Length && j < max; i++, j++)
+					arr[i] = source[j];
 				return arr;
 			}
 		}

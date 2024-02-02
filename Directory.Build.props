@@ -8,7 +8,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<CheckEolTargetFramework>false</CheckEolTargetFramework>
-		
+
 		<AnalysisLevel>latest-all</AnalysisLevel>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 

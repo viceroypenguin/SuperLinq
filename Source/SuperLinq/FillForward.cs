@@ -127,24 +127,17 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class FillForwardCollection<T> : CollectionIterator<T>
+	private sealed class FillForwardCollection<T>(
+		ICollection<T> source,
+		Func<T, bool> predicate,
+		Func<T, T, T>? fillSelector
+	) : CollectionIterator<T>
 	{
-		private readonly ICollection<T> _source;
-		private readonly Func<T, bool> _predicate;
-		private readonly Func<T, T, T>? _fillSelector;
-
-		public FillForwardCollection(ICollection<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
-		{
-			_source = source;
-			_predicate = predicate;
-			_fillSelector = fillSelector;
-		}
-
-		public override int Count => _source.Count;
+		public override int Count => source.Count;
 
 		[ExcludeFromCodeCoverage]
 		protected override IEnumerable<T> GetEnumerable() =>
-			FillForwardCore(_source, _predicate, _fillSelector);
+			FillForwardCore(source, predicate, fillSelector);
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
@@ -152,11 +145,11 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(arrayIndex, Count);
 
-			_source.CopyTo(array, arrayIndex);
+			source.CopyTo(array, arrayIndex);
 
 			var i = arrayIndex;
-			var max = arrayIndex + _source.Count;
-			for (; i < max && _predicate(array[i]); i++)
+			var max = arrayIndex + source.Count;
+			for (; i < max && predicate(array[i]); i++)
 				;
 
 			if (i >= max)
@@ -165,10 +158,10 @@ public static partial class SuperEnumerable
 			var last = array[i++];
 			for (; i < max; i++)
 			{
-				if (_predicate(array[i]))
+				if (predicate(array[i]))
 				{
-					array[i] = _fillSelector != null
-						? _fillSelector(array[i], last)
+					array[i] = fillSelector != null
+						? fillSelector(array[i], last)
 						: last;
 				}
 				else

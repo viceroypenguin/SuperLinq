@@ -46,54 +46,40 @@ public static partial class SuperEnumerable
 		};
 	}
 
-	private sealed class ExcludeCollectionIterator<T> : CollectionIterator<T>
+	private sealed class ExcludeCollectionIterator<T>(
+		ICollection<T> source,
+		int startIndex,
+		int count
+	) : CollectionIterator<T>
 	{
-		private readonly ICollection<T> _source;
-		private readonly int _startIndex;
-		private readonly int _count;
-
-		public ExcludeCollectionIterator(ICollection<T> source, int startIndex, int count)
-		{
-			_source = source;
-			_startIndex = startIndex;
-			_count = count;
-		}
-
 		public override int Count =>
-			_source.Count < _startIndex ? _source.Count :
-			_source.Count < _startIndex + _count ? _startIndex :
-			_source.Count - _count;
+			source.Count < startIndex ? source.Count :
+			source.Count < startIndex + count ? startIndex :
+			source.Count - count;
 
 		protected override IEnumerable<T> GetEnumerable() =>
-			ExcludeCore(_source, _startIndex, _count);
+			ExcludeCore(source, startIndex, count);
 	}
 
-	private sealed class ExcludeListIterator<T> : ListIterator<T>
+	private sealed class ExcludeListIterator<T>(
+		IList<T> source,
+		int startIndex,
+		int count
+	) : ListIterator<T>
 	{
-		private readonly IList<T> _source;
-		private readonly int _startIndex;
-		private readonly int _count;
-
-		public ExcludeListIterator(IList<T> source, int startIndex, int count)
-		{
-			_source = source;
-			_startIndex = startIndex;
-			_count = count;
-		}
-
 		public override int Count =>
-			_source.Count < _startIndex ? _source.Count :
-			_source.Count < _startIndex + _count ? _startIndex :
-			_source.Count - _count;
+			source.Count < startIndex ? source.Count :
+			source.Count < startIndex + count ? startIndex :
+			source.Count - count;
 
 		protected override IEnumerable<T> GetEnumerable()
 		{
-			var cnt = (uint)_source.Count;
-			for (var i = 0; i < cnt && i < _startIndex; i++)
-				yield return _source[i];
+			var cnt = (uint)source.Count;
+			for (var i = 0; i < cnt && i < startIndex; i++)
+				yield return source[i];
 
-			for (var i = _startIndex + _count; i < cnt; i++)
-				yield return _source[i];
+			for (var i = startIndex + count; i < cnt; i++)
+				yield return source[i];
 		}
 
 		protected override T ElementAt(int index)
@@ -101,9 +87,9 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			return index < _startIndex
-				? _source[index]
-				: _source[index + _count];
+			return index < startIndex
+				? source[index]
+				: source[index + count];
 		}
 	}
 

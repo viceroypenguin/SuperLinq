@@ -129,18 +129,15 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class ReplaceIterator<TSource> : ListIterator<TSource>
+	private sealed class ReplaceIterator<TSource>(
+		IList<TSource> source,
+		TSource value,
+		Index index
+	) : ListIterator<TSource>
 	{
-		private readonly IList<TSource> _source;
-		private readonly TSource _value;
-		private readonly Index _index;
-
-		public ReplaceIterator(IList<TSource> source, TSource value, Index index)
-		{
-			_source = source;
-			_value = value;
-			_index = index;
-		}
+		private readonly IList<TSource> _source = source;
+		private readonly TSource _value = value;
+		private readonly Index _index = index;
 
 		public override int Count => _source.Count;
 

@@ -28,7 +28,7 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TSource> ScanRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
@@ -63,22 +63,16 @@ public static partial class SuperEnumerable
 			yield return item;
 	}
 
-	private sealed class ScanRightIterator<T> : CollectionIterator<T>
+	private sealed class ScanRightIterator<T>(
+		ICollection<T> source,
+		Func<T, T, T> func
+	) : CollectionIterator<T>
 	{
-		private readonly ICollection<T> _source;
-		private readonly Func<T, T, T> _func;
-
-		public ScanRightIterator(ICollection<T> source, Func<T, T, T> func)
-		{
-			_source = source;
-			_func = func;
-		}
-
-		public override int Count => _source.Count;
+		public override int Count => source.Count;
 
 		[ExcludeFromCodeCoverage]
 		protected override IEnumerable<T> GetEnumerable() =>
-			ScanRightCore(_source, _func);
+			ScanRightCore(source, func);
 
 		public override void CopyTo(T[] array, int arrayIndex)
 		{
@@ -86,9 +80,9 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
-			var (sList, b, cnt) = _source is IList<T> s
+			var (sList, b, cnt) = source is IList<T> s
 				? (s, 0, s.Count)
-				: (array, arrayIndex, SuperEnumerable.CopyTo(_source, array, arrayIndex));
+				: (array, arrayIndex, SuperEnumerable.CopyTo(source, array, arrayIndex));
 
 			var i = cnt - 1;
 			var state = sList[b + i];
@@ -96,7 +90,7 @@ public static partial class SuperEnumerable
 
 			for (i--; i >= 0; i--)
 			{
-				state = _func(sList[b + i], state);
+				state = func(sList[b + i], state);
 				array[arrayIndex + i] = state;
 			}
 		}
@@ -132,7 +126,7 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)

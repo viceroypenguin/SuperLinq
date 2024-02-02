@@ -443,20 +443,12 @@ public class MemoizeTest
 		Assert.Equal(42, memo.Count);
 	}
 
-	private class ProxyCollection : ICollection<int>
+	private class ProxyCollection(
+		Func<IEnumerator<int>> enumeratorFunc,
+		Func<int> countFunc
+	) : ICollection<int>
 	{
-		private readonly Func<IEnumerator<int>> _enumeratorFunc;
-		private readonly Func<int> _countFunc;
-
-		public ProxyCollection(
-			Func<IEnumerator<int>> enumeratorFunc,
-			Func<int> countFunc)
-		{
-			_enumeratorFunc = enumeratorFunc;
-			_countFunc = countFunc;
-		}
-
-		public int Count => _countFunc();
+		public int Count => countFunc();
 
 		public void Add(int item) => throw new TestException();
 		public void Clear() => throw new TestException();
@@ -466,8 +458,8 @@ public class MemoizeTest
 
 		public virtual void CopyTo(int[] array, int arrayIndex) => throw new TestException();
 
-		public IEnumerator<int> GetEnumerator() => _enumeratorFunc();
-		IEnumerator IEnumerable.GetEnumerator() => _enumeratorFunc();
+		public IEnumerator<int> GetEnumerator() => enumeratorFunc();
+		IEnumerator IEnumerable.GetEnumerator() => enumeratorFunc();
 	}
 
 #if false

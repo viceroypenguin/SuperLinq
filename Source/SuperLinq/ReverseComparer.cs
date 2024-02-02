@@ -1,12 +1,9 @@
 ﻿namespace SuperLinq;
 
-internal sealed class ReverseComparer<T> : IComparer<T>
+internal sealed class ReverseComparer<T>(
+	IComparer<T> underlying
+) : IComparer<T>
 {
-	private readonly IComparer<T> _underlying;
-
-	public ReverseComparer(IComparer<T> underlying) =>
-		_underlying = underlying;
-
 	public int Compare(T? x, T? y) =>
-		-_underlying.Compare(x, y);
+		-underlying.Compare(x, y);
 }

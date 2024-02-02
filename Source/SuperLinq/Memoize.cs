@@ -56,11 +56,13 @@ public static partial class SuperEnumerable
 		};
 	}
 
-	private sealed class EnumerableMemoizedBuffer<T> : IBuffer<T>
+	private sealed class EnumerableMemoizedBuffer<T>(
+		IEnumerable<T> source
+	) : IBuffer<T>
 	{
 		private readonly object _lock = new();
 
-		private IEnumerable<T>? _source;
+		private IEnumerable<T>? _source = source;
 
 		private IEnumerator<T>? _enumerator;
 		private List<T> _buffer = new();
@@ -70,11 +72,6 @@ public static partial class SuperEnumerable
 		private int? _exceptionIndex;
 
 		private bool _disposed;
-
-		public EnumerableMemoizedBuffer(IEnumerable<T> source)
-		{
-			_source = source;
-		}
 
 		public int Count => _buffer.Count;
 
@@ -215,7 +212,9 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class CollectionMemoizedBuffer<T> : IBuffer<T>
+	private sealed class CollectionMemoizedBuffer<T>(
+		ICollection<T> source
+	) : IBuffer<T>
 	{
 		private enum State
 		{
@@ -228,15 +227,9 @@ public static partial class SuperEnumerable
 
 		private sealed record CmbHelper(State State, T[]? Buffer = null, ExceptionDispatchInfo? Exception = null);
 
-		private ICollection<T>? _source;
+		private ICollection<T>? _source = source;
 
-		private volatile CmbHelper _state;
-
-		public CollectionMemoizedBuffer(ICollection<T> source)
-		{
-			_source = source;
-			_state = new(State.Uninitialized, null);
-		}
+		private volatile CmbHelper _state = new(State.Uninitialized, null);
 
 		public int Count
 		{
@@ -381,14 +374,11 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class CollectionProxyBuffer<T> : IBuffer<T>
+	private sealed class CollectionProxyBuffer<T>(
+		ICollection<T> source
+	) : IBuffer<T>
 	{
-		public CollectionProxyBuffer(ICollection<T> source)
-		{
-			_source = source;
-		}
-
-		private ICollection<T>? _source;
+		private ICollection<T>? _source = source;
 		private ICollection<T> Source
 		{
 			get

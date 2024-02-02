@@ -140,30 +140,22 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class LagIterator<TSource, TResult> : ListIterator<TResult>
+	private sealed class LagIterator<TSource, TResult>(
+		IList<TSource> source,
+		int offset,
+		TSource defaultLagValue,
+		Func<TSource, TSource, TResult> resultSelector
+	) : ListIterator<TResult>
 	{
-		private readonly IList<TSource> _source;
-		private readonly int _offset;
-		private readonly TSource _defaultLagValue;
-		private readonly Func<TSource, TSource, TResult> _resultSelector;
-
-		public LagIterator(IList<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
-		{
-			_source = source;
-			_offset = offset;
-			_defaultLagValue = defaultLagValue;
-			_resultSelector = resultSelector;
-		}
-
-		public override int Count => _source.Count;
+		public override int Count => source.Count;
 
 		protected override IEnumerable<TResult> GetEnumerable()
 		{
-			var cnt = (uint)_source.Count;
+			var cnt = (uint)source.Count;
 			for (var i = 0; i < cnt; i++)
-				yield return _resultSelector(
-					_source[i],
-					i < _offset ? _defaultLagValue : _source[i - _offset]);
+				yield return resultSelector(
+					source[i],
+					i < offset ? defaultLagValue : source[i - offset]);
 		}
 
 		protected override TResult ElementAt(int index)
@@ -171,9 +163,9 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			return _resultSelector(
-				_source[index],
-				index < _offset ? _defaultLagValue : _source[index - _offset]);
+			return resultSelector(
+				source[index],
+				index < offset ? defaultLagValue : source[index - offset]);
 		}
 	}
 }

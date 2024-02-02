@@ -19,28 +19,26 @@ public partial class SuperEnumerable
 	public static IEnumerable<T> Return<T>(T item) =>
 		new SingleElementList<T>(item);
 
-	private sealed class SingleElementList<T> : IList<T>, IReadOnlyList<T>
+	private sealed class SingleElementList<T>(
+		T item
+	) : IList<T>, IReadOnlyList<T>
 	{
-		private readonly T _item;
-
-		public SingleElementList(T item) => _item = item;
-
 		public int Count => 1;
 		public bool IsReadOnly => true;
 
 		public T this[int index]
 		{
-			get => index == 0 ? _item : ThrowHelper.ThrowArgumentOutOfRangeException<T>(nameof(index));
+			get => index == 0 ? item : ThrowHelper.ThrowArgumentOutOfRangeException<T>(nameof(index));
 			set => throw ReadOnlyException();
 		}
 
-		public IEnumerator<T> GetEnumerator() { yield return _item; }
+		public IEnumerator<T> GetEnumerator() { yield return item; }
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		public int IndexOf(T item) => Contains(item) ? 0 : -1;
-		public bool Contains(T item) => EqualityComparer<T>.Default.Equals(_item, item);
+		public bool Contains(T item1) => EqualityComparer<T>.Default.Equals(item, item1);
 
-		public void CopyTo(T[] array, int arrayIndex) => array[arrayIndex] = _item;
+		public void CopyTo(T[] array, int arrayIndex) => array[arrayIndex] = item;
 
 		// Following methods are unsupported as this is a read-only list.
 

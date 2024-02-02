@@ -57,31 +57,25 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class AssertCountCollectionIterator<T> : CollectionIterator<T>
+	private sealed class AssertCountCollectionIterator<T>(
+		IEnumerable<T> source,
+		int count
+	) : CollectionIterator<T>
 	{
-		private readonly IEnumerable<T> _source;
-		private readonly int _count;
-
-		public AssertCountCollectionIterator(IEnumerable<T> source, int count)
-		{
-			_source = source;
-			_count = count;
-		}
-
 		public override int Count
 		{
 			get
 			{
-				ArgumentOutOfRangeException.ThrowIfNotEqual(_source.GetCollectionCount(), _count, "source.Count()");
-				return _count;
+				ArgumentOutOfRangeException.ThrowIfNotEqual(source.GetCollectionCount(), count, "source.Count()");
+				return count;
 			}
 		}
 
 		protected override IEnumerable<T> GetEnumerable()
 		{
-			ArgumentOutOfRangeException.ThrowIfNotEqual(_source.GetCollectionCount(), _count, "source.Count()");
+			ArgumentOutOfRangeException.ThrowIfNotEqual(source.GetCollectionCount(), count, "source.Count()");
 
-			foreach (var item in _source)
+			foreach (var item in source)
 				yield return item;
 		}
 
@@ -91,27 +85,21 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
-			_ = _source.CopyTo(array, arrayIndex);
+			_ = source.CopyTo(array, arrayIndex);
 		}
 	}
 
-	private sealed class AssertCountListIterator<T> : ListIterator<T>
+	private sealed class AssertCountListIterator<T>(
+		IList<T> source,
+		int count
+	) : ListIterator<T>
 	{
-		private readonly IList<T> _source;
-		private readonly int _count;
-
-		public AssertCountListIterator(IList<T> source, int count)
-		{
-			_source = source;
-			_count = count;
-		}
-
 		public override int Count
 		{
 			get
 			{
-				ArgumentOutOfRangeException.ThrowIfNotEqual(_source.Count, _count, "source.Count()");
-				return _count;
+				ArgumentOutOfRangeException.ThrowIfNotEqual(source.Count, count, "source.Count()");
+				return count;
 			}
 		}
 
@@ -120,7 +108,7 @@ public static partial class SuperEnumerable
 			var cnt = (uint)Count;
 			for (var i = 0; i < cnt; i++)
 			{
-				yield return _source[i];
+				yield return source[i];
 			}
 		}
 
@@ -130,7 +118,7 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
-			_source.CopyTo(array, arrayIndex);
+			source.CopyTo(array, arrayIndex);
 		}
 
 		protected override T ElementAt(int index)
@@ -138,7 +126,7 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			return _source[index];
+			return source[index];
 		}
 	}
 }

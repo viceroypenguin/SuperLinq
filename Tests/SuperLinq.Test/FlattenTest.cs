@@ -343,18 +343,16 @@ public class FlattenTest
 		public int[] Values { get; init; } = [];
 	}
 
-	private class Tree<T>
+	private class Tree<T>(
+		Tree<T>? left,
+		T value,
+		Tree<T>? right
+	)
 	{
-		public readonly T Value;
-		public readonly Tree<T>? Left;
-		public readonly Tree<T>? Right;
+		public readonly T Value = value;
+		public readonly Tree<T>? Left = left;
+		public readonly Tree<T>? Right = right;
 
 		public Tree(T value) : this(null, value, null) { }
-		public Tree(Tree<T>? left, T value, Tree<T>? right)
-		{
-			Left = left;
-			Value = value;
-			Right = right;
-		}
 	}
 }

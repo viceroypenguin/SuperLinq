@@ -145,31 +145,23 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class LeadIterator<TSource, TResult> : ListIterator<TResult>
+	private sealed class LeadIterator<TSource, TResult>(
+		IList<TSource> source,
+		int offset,
+		TSource defaultLeadValue,
+		Func<TSource, TSource, TResult> resultSelector
+	) : ListIterator<TResult>
 	{
-		private readonly IList<TSource> _source;
-		private readonly int _offset;
-		private readonly TSource _defaultLeadValue;
-		private readonly Func<TSource, TSource, TResult> _resultSelector;
-
-		public LeadIterator(IList<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
-		{
-			_source = source;
-			_offset = offset;
-			_defaultLeadValue = defaultLeadValue;
-			_resultSelector = resultSelector;
-		}
-
-		public override int Count => _source.Count;
+		public override int Count => source.Count;
 
 		protected override IEnumerable<TResult> GetEnumerable()
 		{
-			var cnt = (uint)_source.Count;
-			var maxOffset = Math.Max(_source.Count - _offset, 0);
+			var cnt = (uint)source.Count;
+			var maxOffset = Math.Max(source.Count - offset, 0);
 			for (var i = 0; i < cnt; i++)
-				yield return _resultSelector(
-					_source[i],
-					i < maxOffset ? _source[i + _offset] : _defaultLeadValue);
+				yield return resultSelector(
+					source[i],
+					i < maxOffset ? source[i + offset] : defaultLeadValue);
 		}
 
 		protected override TResult ElementAt(int index)
@@ -177,11 +169,11 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			return _resultSelector(
-				_source[index],
-				index < Math.Max(_source.Count - _offset, 0)
-					? _source[index + _offset]
-					: _defaultLeadValue);
+			return resultSelector(
+				source[index],
+				index < Math.Max(source.Count - offset, 0)
+					? source[index + offset]
+					: defaultLeadValue);
 		}
 	}
 }

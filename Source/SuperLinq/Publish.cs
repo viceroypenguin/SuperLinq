@@ -27,7 +27,7 @@ public static partial class SuperEnumerable
 	///	    A separate buffer will be maintained for each <see cref="IEnumerator{T}"/> created from the returned <see
 	///	    cref="IEnumerable{T}"/>. This buffer will be maintained until the enumerator is disposed, and will contain
 	///	    all elements returned by <paramref name="source"/> from the time that the <see cref="IEnumerator{T}"/> is
-	///	    created.  
+	///	    created.
 	/// </para>
 	/// <para>
 	///	    This operator uses deferred execution and streams its result.
@@ -40,11 +40,13 @@ public static partial class SuperEnumerable
 		return new PublishBuffer<TSource>(source);
 	}
 
-	private sealed class PublishBuffer<T> : IBuffer<T>
+	private sealed class PublishBuffer<T>(
+		IEnumerable<T> source
+	) : IBuffer<T>
 	{
 		private readonly object _lock = new();
 
-		private IEnumerable<T>? _source;
+		private IEnumerable<T>? _source = source;
 
 		private IEnumerator<T>? _enumerator;
 		private List<Queue<T>>? _buffers;
@@ -55,11 +57,6 @@ public static partial class SuperEnumerable
 		private bool? _exceptionOnGetEnumerator;
 
 		private bool _disposed;
-
-		public PublishBuffer(IEnumerable<T> source)
-		{
-			_source = source;
-		}
 
 		public int Count => _buffers?.Count > 0 ? _buffers.Max(x => x.Count) : 0;
 

@@ -85,40 +85,34 @@ skipLoop:
 		}
 	}
 
-	private sealed class WindowLeftIterator<T> : ListIterator<IList<T>>
+	private sealed class WindowLeftIterator<T>(
+		IList<T> source,
+		int size
+	) : ListIterator<IList<T>>
 	{
-		private readonly IList<T> _source;
-		private readonly int _size;
-
-		public WindowLeftIterator(IList<T> source, int size)
-		{
-			_source = source;
-			_size = size;
-		}
-
-		public override int Count => _source.Count;
+		public override int Count => source.Count;
 
 		protected override IEnumerable<IList<T>> GetEnumerable()
 		{
 			T[] window;
 
-			if (_source.Count == 0)
+			if (source.Count == 0)
 			{
 				yield break;
 			}
-			else if (_source.Count > _size)
+			else if (source.Count > size)
 			{
-				window = new T[_size];
+				window = new T[size];
 
-				for (var i = 0; i < _size; i++)
-					window[i] = _source[i];
+				for (var i = 0; i < size; i++)
+					window[i] = source[i];
 
-				var count = (uint)_source.Count;
-				for (var i = _size; i < count; i++)
+				var count = (uint)source.Count;
+				for (var i = size; i < count; i++)
 				{
-					var newWindow = new T[_size];
+					var newWindow = new T[size];
 					window.AsSpan()[1..].CopyTo(newWindow);
-					newWindow[^1] = _source[i];
+					newWindow[^1] = source[i];
 
 					yield return window;
 					window = newWindow;
@@ -126,7 +120,7 @@ skipLoop:
 			}
 			else
 			{
-				window = _source.ToArray();
+				window = source.ToArray();
 			}
 
 			while (window.Length > 1)
@@ -146,21 +140,21 @@ skipLoop:
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			if (index < _source.Count - _size)
+			if (index < source.Count - size)
 			{
-				var arr = new T[_size];
-				var max = (uint)(index + _size);
-				for (int i = 0, j = index; i < _size && j < max; i++, j++)
-					arr[i] = _source[j];
+				var arr = new T[size];
+				var max = (uint)(index + size);
+				for (int i = 0, j = index; i < size && j < max; i++, j++)
+					arr[i] = source[j];
 
 				return arr;
 			}
 			else
 			{
-				var arr = new T[_source.Count - index];
-				var max = (uint)_source.Count;
+				var arr = new T[source.Count - index];
+				var max = (uint)source.Count;
 				for (int i = 0, j = index; i < arr.Length && j < max; i++, j++)
-					arr[i] = _source[j];
+					arr[i] = source[j];
 				return arr;
 			}
 		}

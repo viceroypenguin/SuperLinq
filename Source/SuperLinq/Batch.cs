@@ -86,28 +86,22 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class BatchIterator<T> : ListIterator<IList<T>>
+	private sealed class BatchIterator<T>(
+		IList<T> source,
+		int size
+	) : ListIterator<IList<T>>
 	{
-		private readonly IList<T> _source;
-		private readonly int _size;
-
-		public BatchIterator(IList<T> source, int size)
-		{
-			_source = source;
-			_size = size;
-		}
-
-		public override int Count => _source.Count == 0 ? 0 : ((_source.Count - 1) / _size) + 1;
+		public override int Count => source.Count == 0 ? 0 : ((source.Count - 1) / size) + 1;
 
 		protected override IEnumerable<IList<T>> GetEnumerable()
 		{
 			var sourceIndex = 0;
-			var count = (uint)_source.Count;
-			while (sourceIndex + _size - 1 < count)
+			var count = (uint)source.Count;
+			while (sourceIndex + size - 1 < count)
 			{
-				var window = new T[_size];
-				for (var i = 0; i < _size && sourceIndex < count; sourceIndex++, i++)
-					window[i] = _source[sourceIndex];
+				var window = new T[size];
+				for (var i = 0; i < size && sourceIndex < count; sourceIndex++, i++)
+					window[i] = source[sourceIndex];
 
 				yield return window;
 			}
@@ -116,7 +110,7 @@ public static partial class SuperEnumerable
 			{
 				var window = new T[count - sourceIndex];
 				for (var j = 0; sourceIndex < count; sourceIndex++, j++)
-					window[j] = _source[sourceIndex];
+					window[j] = source[sourceIndex];
 
 				yield return window;
 			}
@@ -127,11 +121,11 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			var start = index * _size;
-			var max = (uint)Math.Min(_source.Count, start + _size);
-			var arr = new T[Math.Min(_size, max - start)];
-			for (int i = 0, j = start; i < _size && j < max; i++, j++)
-				arr[i] = _source[j];
+			var start = index * size;
+			var max = (uint)Math.Min(source.Count, start + size);
+			var arr = new T[Math.Min(size, max - start)];
+			for (int i = 0, j = start; i < size && j < max; i++, j++)
+				arr[i] = source[j];
 
 			return arr;
 		}

@@ -144,29 +144,20 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class PadStartCollectionIterator<T> : CollectionIterator<T>
+	private sealed class PadStartCollectionIterator<T>(
+		IEnumerable<T> source,
+		int width,
+		Func<int, T> paddingSelector
+	) : CollectionIterator<T>
 	{
-		private readonly IEnumerable<T> _source;
-		private readonly int _width;
-		private readonly Func<int, T> _paddingSelector;
-
-		public PadStartCollectionIterator(
-			IEnumerable<T> source, int width,
-			Func<int, T> paddingSelector)
-		{
-			_source = source;
-			_width = width;
-			_paddingSelector = paddingSelector;
-		}
-
-		public override int Count => Math.Max(_source.GetCollectionCount(), _width);
+		public override int Count => Math.Max(source.GetCollectionCount(), width);
 
 		protected override IEnumerable<T> GetEnumerable()
 		{
-			var cnt = _width - _source.GetCollectionCount();
+			var cnt = width - source.GetCollectionCount();
 			for (var i = 0; i < cnt; i++)
-				yield return _paddingSelector(i);
-			foreach (var item in _source)
+				yield return paddingSelector(i);
+			foreach (var item in source)
 				yield return item;
 		}
 
@@ -176,36 +167,29 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
-			var offset = Math.Max(_width - _source.GetCollectionCount(), 0);
+			var offset = Math.Max(width - source.GetCollectionCount(), 0);
 			for (var i = 0; i < offset; i++)
-				array[arrayIndex + i] = _paddingSelector(i);
+				array[arrayIndex + i] = paddingSelector(i);
 
-			_ = _source.CopyTo(array, arrayIndex + offset);
+			_ = source.CopyTo(array, arrayIndex + offset);
 		}
 	}
 
-	private sealed class PadStartListIterator<T> : ListIterator<T>
+	private sealed class PadStartListIterator<T>(
+		IList<T> source,
+		int width,
+		Func<int, T> paddingSelector
+	) : ListIterator<T>
 	{
-		private readonly IList<T> _source;
-		private readonly int _width;
-		private readonly Func<int, T> _paddingSelector;
-
-		public PadStartListIterator(IList<T> source, int width, Func<int, T> paddingSelector)
-		{
-			_source = source;
-			_width = width;
-			_paddingSelector = paddingSelector;
-		}
-
-		public override int Count => Math.Max(_source.Count, _width);
+		public override int Count => Math.Max(source.Count, width);
 
 		protected override IEnumerable<T> GetEnumerable()
 		{
-			var cnt = (uint)_source.Count;
-			for (var i = 0; i < _width - cnt; i++)
-				yield return _paddingSelector(i);
+			var cnt = (uint)source.Count;
+			for (var i = 0; i < width - cnt; i++)
+				yield return paddingSelector(i);
 			for (var i = 0; i < cnt; i++)
-				yield return _source[i];
+				yield return source[i];
 		}
 
 		public override void CopyTo(T[] array, int arrayIndex)
@@ -214,11 +198,11 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
-			var offset = Math.Max(_width - _source.Count, 0);
+			var offset = Math.Max(width - source.Count, 0);
 			for (var i = 0; i < offset; i++)
-				array[arrayIndex + i] = _paddingSelector(i);
+				array[arrayIndex + i] = paddingSelector(i);
 
-			_source.CopyTo(array, arrayIndex + offset);
+			source.CopyTo(array, arrayIndex + offset);
 		}
 
 		protected override T ElementAt(int index)
@@ -226,10 +210,10 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			var offset = Math.Max(_width - _source.Count, 0);
+			var offset = Math.Max(width - source.Count, 0);
 			return index < offset
-				? _paddingSelector(index)
-				: _source[index - offset];
+				? paddingSelector(index)
+				: source[index - offset];
 		}
 	}
 }

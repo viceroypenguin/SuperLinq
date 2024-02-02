@@ -209,7 +209,6 @@ dotnet_analyzer_diagnostic.category-Style.severity = warning
 
 dotnet_diagnostic.IDE0011.severity = silent				# IDE0011: Add braces
 dotnet_diagnostic.IDE0046.severity = silent				# IDE0046: Convert to conditional expression
-dotnet_diagnostic.IDE0290.severity = none				# IDE0290: Use primary constructor
 dotnet_diagnostic.IDE0028.severity = none				# IDE0028: Simplify collection initialization
 dotnet_diagnostic.IDE0305.severity = none				# IDE0305: Simplify collection initialization
 
@@ -241,3 +240,9 @@ dotnet_diagnostic.RS0026.severity = none				# RS0026: Do not add multiple public
 
 # Bug in compiler
 dotnet_diagnostic.CA1861.severity = none				# CA1861: Avoid constant arrays as arguments
+
+# Primary Constructors
+dotnet_diagnostic.CS9107.severity = error				# CS9107: Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor
+dotnet_diagnostic.CS9113.severity = error				# CS9113: Your class never references the primary constructor
+dotnet_diagnostic.CS9124.severity = error				# CS9124: Parameter is captured into the state of the enclosing type and its value is also used to initialize a field, property, or event
+dotnet_diagnostic.CS9179.severity = error				# CS9179: Primary constructor parameter is shadowed by a member from base

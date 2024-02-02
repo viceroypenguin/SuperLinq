@@ -92,27 +92,21 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class FallbackIfEmptyCollectionIterator<T> : CollectionIterator<T>
+	private sealed class FallbackIfEmptyCollectionIterator<T>(
+		IEnumerable<T> source,
+		IEnumerable<T> fallback
+	) : CollectionIterator<T>
 	{
-		private readonly IEnumerable<T> _source;
-		private readonly IEnumerable<T> _fallback;
-
-		public FallbackIfEmptyCollectionIterator(IEnumerable<T> source, IEnumerable<T> fallback)
-		{
-			_source = source;
-			_fallback = fallback;
-		}
-
 		public override int Count =>
-			_source.GetCollectionCount() == 0
-				? _fallback.Count()
-				: _source.GetCollectionCount();
+			source.GetCollectionCount() == 0
+				? fallback.Count()
+				: source.GetCollectionCount();
 
 		protected override IEnumerable<T> GetEnumerable()
 		{
-			return _source.GetCollectionCount() == 0
-				? _fallback
-				: _source;
+			return source.GetCollectionCount() == 0
+				? fallback
+				: source;
 		}
 	}
 }
