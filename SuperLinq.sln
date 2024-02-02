@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{835F8FFA
 		.gitignore = .gitignore
 		.github\dependabot.yml = .github\dependabot.yml
 		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
 		license.txt = license.txt
 		README.md = README.md
 		TargetFrameworks.props = TargetFrameworks.props

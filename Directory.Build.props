@@ -19,8 +19,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.PerformanceSensitiveAnalyzers" Version="3.3.1" PrivateAssets="All" />
-		<PackageReference Include="PolySharp" Version="1.14.1" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.CodeAnalysis.PerformanceSensitiveAnalyzers" PrivateAssets="All" />
+		<PackageReference Include="PolySharp" PrivateAssets="All" />
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">

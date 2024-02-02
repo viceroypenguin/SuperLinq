@@ -1,0 +1,34 @@
+<Project>
+	<PropertyGroup>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
+		<PackageVersion Include="coverlet.collector" Version="6.0.0" />
+		<PackageVersion Include="coverlet.msbuild" Version="6.0.0" />
+		<PackageVersion Include="DocFx.App" Version="2.75.2" />
+		<PackageVersion Include="GitHubActionsTestLogger" Version="2.3.3" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.PerformanceSensitiveAnalyzers" Version="3.3.1" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.4" />
+		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+		<PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+		<PackageVersion Include="MinVer" Version="4.3.0" />
+		<PackageVersion Include="PolySharp" Version="1.14.1" />
+		<PackageVersion Include="Scriban" Version="5.9.1" />
+		<PackageVersion Include="System.Linq.Async" Version="6.0.1" />
+		<PackageVersion Include="ThisAssembly.Resources" Version="1.4.3" />
+		<PackageVersion Include="xunit" Version="2.6.6" />
+	</ItemGroup>
+	
+	<ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp3.1' ">
+		<PackageVersion Include="xunit.runner.visualstudio" Version="2.5.6" PrivateAssets="All" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+		<PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="All" />
+	</ItemGroup>
+
+</Project>
