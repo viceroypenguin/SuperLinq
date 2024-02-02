@@ -135,12 +135,14 @@ public static partial class SuperEnumerable
 		Index index
 	) : ListIterator<TSource>
 	{
+		private readonly Index _index = index;
+
 		public override int Count => source.Count;
 
 		protected override IEnumerable<TSource> GetEnumerable()
 		{
 			var cnt = (uint)source.Count;
-			var idx = index.GetOffset(source.Count);
+			var idx = _index.GetOffset(source.Count);
 
 			for (var i = 0; i < cnt; i++)
 				yield return i == idx ? value : source[i];
@@ -154,19 +156,19 @@ public static partial class SuperEnumerable
 
 			source.CopyTo(array, arrayIndex);
 
-			var idx = index.GetOffset(source.Count);
+			var idx = _index.GetOffset(source.Count);
 			if (idx >= 0 && idx < source.Count)
 				array[arrayIndex + idx] = value;
 		}
 
-		protected override TSource ElementAt(int index1)
+		protected override TSource ElementAt(int index)
 		{
-			ArgumentOutOfRangeException.ThrowIfNegative(index1);
-			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index1, Count);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			return index1 == index.GetOffset(source.Count)
+			return index == _index.GetOffset(source.Count)
 				? value
-				: source[index1];
+				: source[index];
 		}
 	}
 }

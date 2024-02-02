@@ -198,11 +198,13 @@ public static partial class SuperEnumerable
 		Index index
 	) : ListIterator<T>
 	{
+		private readonly Index _index = index;
+
 		public override int Count
 		{
 			get
 			{
-				var idx = index.GetOffset(first.Count);
+				var idx = _index.GetOffset(first.Count);
 				ArgumentOutOfRangeException.ThrowIfNegative(idx);
 				ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, first.Count);
 
@@ -212,7 +214,7 @@ public static partial class SuperEnumerable
 
 		protected override IEnumerable<T> GetEnumerable()
 		{
-			var idx = index.GetOffset(first.Count);
+			var idx = _index.GetOffset(first.Count);
 			ArgumentOutOfRangeException.ThrowIfNegative(idx);
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, first.Count);
 
@@ -238,24 +240,24 @@ public static partial class SuperEnumerable
 
 			var span = array.AsSpan()[arrayIndex..];
 			var cnt = first.Count;
-			var idx = index.GetOffset(cnt);
+			var idx = _index.GetOffset(cnt);
 			span[idx..cnt].CopyTo(span[(idx + second.Count)..]);
 
 			second.CopyTo(array, arrayIndex + idx);
 		}
 
-		protected override T ElementAt(int index1)
+		protected override T ElementAt(int index)
 		{
-			ArgumentOutOfRangeException.ThrowIfNegative(index1);
-			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index1, Count);
+			ArgumentOutOfRangeException.ThrowIfNegative(index);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			var idx = index.GetOffset(first.Count);
+			var idx = _index.GetOffset(first.Count);
 			ArgumentOutOfRangeException.ThrowIfNegative(idx);
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, first.Count);
 
-			return index1 < idx ? first[index1] :
-				index1 < idx + second.Count ? second[index1 - idx] :
-				first[index1 - second.Count];
+			return index < idx ? first[index] :
+				index < idx + second.Count ? second[index - idx] :
+				first[index - second.Count];
 		}
 	}
 }
