@@ -129,28 +129,21 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class ReplaceIterator<TSource> : ListIterator<TSource>
+	private sealed class ReplaceIterator<TSource>(
+		IList<TSource> source,
+		TSource value,
+		Index index
+	) : ListIterator<TSource>
 	{
-		private readonly IList<TSource> _source;
-		private readonly TSource _value;
-		private readonly Index _index;
-
-		public ReplaceIterator(IList<TSource> source, TSource value, Index index)
-		{
-			_source = source;
-			_value = value;
-			_index = index;
-		}
-
-		public override int Count => _source.Count;
+		public override int Count => source.Count;
 
 		protected override IEnumerable<TSource> GetEnumerable()
 		{
-			var cnt = (uint)_source.Count;
-			var idx = _index.GetOffset(_source.Count);
+			var cnt = (uint)source.Count;
+			var idx = index.GetOffset(source.Count);
 
 			for (var i = 0; i < cnt; i++)
-				yield return i == idx ? _value : _source[i];
+				yield return i == idx ? value : source[i];
 		}
 
 		public override void CopyTo(TSource[] array, int arrayIndex)
@@ -159,21 +152,21 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(arrayIndex, array.Length - Count);
 
-			_source.CopyTo(array, arrayIndex);
+			source.CopyTo(array, arrayIndex);
 
-			var idx = _index.GetOffset(_source.Count);
-			if (idx >= 0 && idx < _source.Count)
-				array[arrayIndex + idx] = _value;
+			var idx = index.GetOffset(source.Count);
+			if (idx >= 0 && idx < source.Count)
+				array[arrayIndex + idx] = value;
 		}
 
-		protected override TSource ElementAt(int index)
+		protected override TSource ElementAt(int index1)
 		{
-			ArgumentOutOfRangeException.ThrowIfNegative(index);
-			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
+			ArgumentOutOfRangeException.ThrowIfNegative(index1);
+			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index1, Count);
 
-			return index == _index.GetOffset(_source.Count)
-				? _value
-				: _source[index];
+			return index1 == index.GetOffset(source.Count)
+				? value
+				: source[index1];
 		}
 	}
 }

@@ -32,11 +32,13 @@ public static partial class AsyncSuperEnumerable
 		return new EnumerableMemoizedBuffer<TSource>(source);
 	}
 
-	private sealed class EnumerableMemoizedBuffer<T> : IAsyncBuffer<T>
+	private sealed class EnumerableMemoizedBuffer<T>(
+		IAsyncEnumerable<T> source
+	) : IAsyncBuffer<T>
 	{
 		private readonly SemaphoreSlim _lock = new(initialCount: 1);
 
-		private IAsyncEnumerable<T>? _source;
+		private IAsyncEnumerable<T>? _source = source;
 
 		private IAsyncEnumerator<T>? _enumerator;
 		private List<T> _buffer = new();
@@ -46,11 +48,6 @@ public static partial class AsyncSuperEnumerable
 		private int? _exceptionIndex;
 
 		private bool _disposed;
-
-		public EnumerableMemoizedBuffer(IAsyncEnumerable<T> source)
-		{
-			_source = source;
-		}
 
 		public int Count => _buffer.Count;
 

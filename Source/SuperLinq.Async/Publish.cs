@@ -22,11 +22,13 @@ public static partial class AsyncSuperEnumerable
 		return new PublishBuffer<TSource>(source);
 	}
 
-	private sealed class PublishBuffer<T> : IAsyncBuffer<T>
+	private sealed class PublishBuffer<T>(
+		IAsyncEnumerable<T> source
+	) : IAsyncBuffer<T>
 	{
 		private readonly SemaphoreSlim _lock = new(initialCount: 1);
 
-		private IAsyncEnumerable<T>? _source;
+		private IAsyncEnumerable<T>? _source = source;
 
 		private IAsyncEnumerator<T>? _enumerator;
 		private List<Queue<T>>? _buffers;
@@ -37,11 +39,6 @@ public static partial class AsyncSuperEnumerable
 		private bool? _exceptionOnGetEnumerator;
 
 		private bool _disposed;
-
-		public PublishBuffer(IAsyncEnumerable<T> source)
-		{
-			_source = source;
-		}
 
 		public int Count => _buffers?.Count > 0 ? _buffers.Max(x => x.Count) : 0;
 

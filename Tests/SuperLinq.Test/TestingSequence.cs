@@ -48,10 +48,7 @@ internal static class TestingSequence
 	}
 }
 
-public class TestingSequenceException : Exception
-{
-	public TestingSequenceException(string message) : base(message) { }
-}
+public class TestingSequenceException(string message) : Exception(message);
 
 /// <summary>
 /// Sequence that asserts whether its iterator has been disposed

@@ -96,28 +96,21 @@ public static partial class SuperEnumerable
 		return new SequenceIterator(start, step, (((long)stop - start) / step) + 1);
 	}
 
-	private sealed class SequenceIterator : ListIterator<int>
+	private sealed class SequenceIterator(
+		int start,
+		int step,
+		long count
+	) : ListIterator<int>
 	{
-		private readonly int _start;
-		private readonly int _step;
-		private readonly long _count;
-
-		public SequenceIterator(int start, int step, long count)
-		{
-			_start = start;
-			_step = step;
-			_count = count;
-		}
-
-		public override int Count => _count <= int.MaxValue ? (int)_count : int.MaxValue;
+		public override int Count => count <= int.MaxValue ? (int)count : int.MaxValue;
 
 		protected override IEnumerable<int> GetEnumerable()
 		{
-			var value = _start;
+			var value = start;
 			for (var i = 0; i < Count; i++)
 			{
 				yield return value;
-				value += _step;
+				value += step;
 			}
 		}
 
@@ -126,7 +119,7 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			return _start + (_step * index);
+			return start + (step * index);
 		}
 	}
 }

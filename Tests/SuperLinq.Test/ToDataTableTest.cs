@@ -5,29 +5,19 @@ namespace Test;
 
 public class ToDataTableTest
 {
-	private class TestObject
+	private class TestObject(int key)
 	{
-		public int _keyField;
-		public Guid? _aNullableGuidField;
+		public int _keyField = key;
+		public Guid? _aNullableGuidField = Guid.NewGuid();
 
-		public string AString { get; }
-		public decimal? ANullableDecimal { get; }
+		public string AString { get; } = "ABCDEFGHIKKLMNOPQRSTUVWXYSZ";
+		public decimal? ANullableDecimal { get; } = key / 3;
 		public object Unreadable { set => throw new NotImplementedException(); }
 
 		public object this[int index]
 		{
 			get => new();
 			set { }
-		}
-
-
-		public TestObject(int key)
-		{
-			_keyField = key;
-			_aNullableGuidField = Guid.NewGuid();
-
-			ANullableDecimal = key / 3;
-			AString = "ABCDEFGHIKKLMNOPQRSTUVWXYSZ";
 		}
 	}
 

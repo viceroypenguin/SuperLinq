@@ -27,15 +27,11 @@ internal static class ValueTupleEqualityComparer
 			? EqualityComparer<ValueTuple<T1>>.Default
 			: new ItemEqualityComparer<T1>(comparer1);
 
-	private sealed class ItemEqualityComparer<T1> : IEqualityComparer<ValueTuple<T1>>
+	private sealed class ItemEqualityComparer<T1>(
+		IEqualityComparer<T1>? comparer1
+	) : IEqualityComparer<ValueTuple<T1>>
 	{
-		private readonly IEqualityComparer<T1> _comparer1;
-
-		public ItemEqualityComparer(
-			IEqualityComparer<T1>? comparer1)
-		{
-			_comparer1 = comparer1 ?? EqualityComparer<T1>.Default;
-		}
+		private readonly IEqualityComparer<T1> _comparer1 = comparer1 ?? EqualityComparer<T1>.Default;
 
 		public bool Equals(ValueTuple<T1> x,
 						   ValueTuple<T1> y)
@@ -74,18 +70,13 @@ internal static class ValueTupleEqualityComparer
 			comparer1,
 			comparer2);
 
-	private sealed class ItemEqualityComparer<T1, T2> : IEqualityComparer<(T1, T2)>
+	private sealed class ItemEqualityComparer<T1, T2>(
+		IEqualityComparer<T1>? comparer1,
+		IEqualityComparer<T2>? comparer2
+	) : IEqualityComparer<(T1, T2)>
 	{
-		private readonly IEqualityComparer<T1> _comparer1;
-		private readonly IEqualityComparer<T2> _comparer2;
-
-		public ItemEqualityComparer(
-			IEqualityComparer<T1>? comparer1,
-			IEqualityComparer<T2>? comparer2)
-		{
-			_comparer1 = comparer1 ?? EqualityComparer<T1>.Default;
-			_comparer2 = comparer2 ?? EqualityComparer<T2>.Default;
-		}
+		private readonly IEqualityComparer<T1> _comparer1 = comparer1 ?? EqualityComparer<T1>.Default;
+		private readonly IEqualityComparer<T2> _comparer2 = comparer2 ?? EqualityComparer<T2>.Default;
 
 		public bool Equals((T1, T2) x,
 						   (T1, T2) y)

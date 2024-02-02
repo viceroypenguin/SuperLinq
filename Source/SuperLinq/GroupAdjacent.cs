@@ -328,17 +328,14 @@ public static partial class SuperEnumerable
 		new(key, members.AsReadOnly());
 
 	[Serializable]
-	private sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>
+	private sealed class Grouping<TKey, TElement>(
+		TKey key,
+		IEnumerable<TElement> members
+	) : IGrouping<TKey, TElement>
 	{
-		private readonly IEnumerable<TElement> _members;
+		private readonly IEnumerable<TElement> _members = members;
 
-		public Grouping(TKey key, IEnumerable<TElement> members)
-		{
-			Key = key;
-			_members = members;
-		}
-
-		public TKey Key { get; }
+		public TKey Key { get; } = key;
 
 		public IEnumerator<TElement> GetEnumerator() => _members.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

@@ -35,18 +35,13 @@ internal static class KeyValuePairEqualityComparer
 			keyComparer,
 			valueComparer);
 
-	private sealed class ItemEqualityComparer<TKey, TValue> : IEqualityComparer<KeyValuePair<TKey, TValue>>
+	private sealed class ItemEqualityComparer<TKey, TValue>(
+		IEqualityComparer<TKey>? keyComparer,
+		IEqualityComparer<TValue>? valueComparer
+	) : IEqualityComparer<KeyValuePair<TKey, TValue>>
 	{
-		private readonly IEqualityComparer<TKey> _keyComparer;
-		private readonly IEqualityComparer<TValue> _valueComparer;
-
-		public ItemEqualityComparer(
-			IEqualityComparer<TKey>? keyComparer,
-			IEqualityComparer<TValue>? valueComparer)
-		{
-			_keyComparer = keyComparer ?? EqualityComparer<TKey>.Default;
-			_valueComparer = valueComparer ?? EqualityComparer<TValue>.Default;
-		}
+		private readonly IEqualityComparer<TKey> _keyComparer = keyComparer ?? EqualityComparer<TKey>.Default;
+		private readonly IEqualityComparer<TValue> _valueComparer = valueComparer ?? EqualityComparer<TValue>.Default;
 
 		public bool Equals(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y)
 			=> _keyComparer.Equals(x.Key, y.Key)

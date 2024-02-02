@@ -717,15 +717,10 @@ public static partial class AsyncSuperEnumerable
 	}
 }
 
-file sealed class ComparerEqualityComparer<TKey> : IEqualityComparer<TKey>
+file sealed class ComparerEqualityComparer<TKey>(
+	IComparer<TKey> comparer
+) : IEqualityComparer<TKey>
 {
-	private readonly IComparer<TKey> _comparer;
-
-	public ComparerEqualityComparer(IComparer<TKey> comparer)
-	{
-		_comparer = comparer;
-	}
-
-	public bool Equals([AllowNull] TKey x, [AllowNull] TKey y) => _comparer.Compare(x, y) == 0;
+	public bool Equals([AllowNull] TKey x, [AllowNull] TKey y) => comparer.Compare(x, y) == 0;
 	public int GetHashCode([DisallowNull] TKey obj) => ThrowHelper.ThrowNotSupportedException<int>();
 }

@@ -19,11 +19,13 @@ public static partial class AsyncSuperEnumerable
 		return new SharedBuffer<TSource>(source);
 	}
 
-	private sealed class SharedBuffer<T> : IAsyncBuffer<T>
+	private sealed class SharedBuffer<T>(
+		IAsyncEnumerable<T> source
+	) : IAsyncBuffer<T>
 	{
 		private readonly SemaphoreSlim _lock = new(initialCount: 1);
 
-		private IAsyncEnumerable<T>? _source;
+		private IAsyncEnumerable<T>? _source = source;
 
 		private IAsyncEnumerator<T>? _enumerator;
 		private bool _initialized;
@@ -32,11 +34,6 @@ public static partial class AsyncSuperEnumerable
 		private ExceptionDispatchInfo? _exception;
 
 		private bool _disposed;
-
-		public SharedBuffer(IAsyncEnumerable<T> source)
-		{
-			_source = source;
-		}
 
 		public int Count => 0;
 

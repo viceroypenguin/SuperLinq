@@ -67,46 +67,34 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class IndexCollectionIterator<T> : CollectionIterator<(int index, T item)>
+	private sealed class IndexCollectionIterator<T>(
+		IEnumerable<T> source,
+		int startIndex
+	) : CollectionIterator<(int index, T item)>
 	{
-		private readonly IEnumerable<T> _source;
-		private readonly int _startIndex;
-
-		public IndexCollectionIterator(IEnumerable<T> source, int startIndex)
-		{
-			_source = source;
-			_startIndex = startIndex;
-		}
-
-		public override int Count => _source.GetCollectionCount();
+		public override int Count => source.GetCollectionCount();
 
 		protected override IEnumerable<(int index, T item)> GetEnumerable()
 		{
-			var index = _startIndex;
-			foreach (var item in _source)
+			var index = startIndex;
+			foreach (var item in source)
 				yield return (index++, item);
 		}
 	}
 
-	private sealed class IndexListIterator<T> : ListIterator<(int index, T item)>
+	private sealed class IndexListIterator<T>(
+		IList<T> source,
+		int startIndex
+	) : ListIterator<(int index, T item)>
 	{
-		private readonly IList<T> _source;
-		private readonly int _startIndex;
-
-		public IndexListIterator(IList<T> source, int startIndex)
-		{
-			_source = source;
-			_startIndex = startIndex;
-		}
-
-		public override int Count => _source.Count;
+		public override int Count => source.Count;
 
 		protected override IEnumerable<(int index, T item)> GetEnumerable()
 		{
 			var cnt = (uint)Count;
 			for (var i = 0; i < cnt; i++)
 			{
-				yield return (_startIndex + i, _source[i]);
+				yield return (startIndex + i, source[i]);
 			}
 		}
 
@@ -115,7 +103,7 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			return (_startIndex + index, _source[index]);
+			return (startIndex + index, source[index]);
 		}
 	}
 }

@@ -87,19 +87,14 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private sealed class InterleaveIterator<T> : CollectionIterator<T>
+	private sealed class InterleaveIterator<T>(
+		IEnumerable<ICollection<T>> sources
+	) : CollectionIterator<T>
 	{
-		private readonly IEnumerable<ICollection<T>> _sources;
-
-		public InterleaveIterator(IEnumerable<ICollection<T>> sources)
-		{
-			_sources = sources;
-		}
-
-		public override int Count => _sources.Sum(static s => s.Count);
+		public override int Count => sources.Sum(static s => s.Count);
 
 		[ExcludeFromCodeCoverage]
 		protected override IEnumerable<T> GetEnumerable() =>
-			InterleaveCore(_sources);
+			InterleaveCore(sources);
 	}
 }
