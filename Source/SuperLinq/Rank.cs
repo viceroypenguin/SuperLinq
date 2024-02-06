@@ -4,8 +4,7 @@ public static partial class SuperEnumerable
 {
 	/// <summary>
 	///	    Ranks each item in the sequence in ascending order using a default comparer, with no gaps in the ranking
-	///     values. The rank of a specific item is one plus the number of distinct rank values that come before that
-	///     specific item.
+	///     values. The rank starts at one and keeps incrementing by one for each different item.
 	/// </summary>
 	/// <typeparam name="TSource">
 	///	    Type of item in the sequence
@@ -33,8 +32,7 @@ public static partial class SuperEnumerable
 
 	/// <summary>
 	///	    Ranks each item in the sequence in ascending order using a caller-supplied comparer, with no gaps in the
-	///     ranking values. The rank of a specific item is one plus the number of distinct rank values that come before
-	///     that specific item.
+	///     ranking values. The rank starts at one and keeps incrementing by one for each different item.
 	/// </summary>
 	/// <typeparam name="TSource">
 	///	    The type of the elements in the source sequence
@@ -65,8 +63,7 @@ public static partial class SuperEnumerable
 
 	/// <summary>
 	///	    Ranks each item in the sequence in ascending order by a specified key using a default comparer, with no gaps
-	///     in the ranking values. The rank of a specific item is one plus the number of distinct rank values that come
-	///     before that specific item.
+	///     in the ranking values. The rank starts at one and keeps incrementing by one for each different item.
 	/// </summary>
 	/// <typeparam name="TSource">
 	///	    The type of the elements in the source sequence
@@ -103,8 +100,7 @@ public static partial class SuperEnumerable
 
 	/// <summary>
 	///	    Ranks each item in the sequence in ascending order by a specified key using a caller-supplied comparer, with
-	///     no gaps in the ranking values. The rank  of a specific item is one plus the number of distinct rank values
-	///     that come before that specific item.
+	///     no gaps in the ranking values. The rank starts at one and keeps incrementing by one for each different item.
 	/// </summary>
 	/// <typeparam name="TSource">
 	///	    The type of the elements in the source sequence
@@ -145,8 +141,8 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	///	    Ranks each item in the sequence in ascending order using a default comparer. The rank of a specific item is
-	///     one plus the number of items that come before the first item in the current equivalence set.
+	///	    Ranks each item in the sequence in ascending order using a default comparer. The rank is equal to
+	///		index + 1 of the first next different item, the first item has a rank of 1 (index 0 + 1).
 	/// </summary>
 	/// <typeparam name="TSource">
 	///	    Type of item in the sequence
@@ -173,8 +169,8 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	///	    Ranks each item in the sequence in ascending order using a caller-supplied comparer. The rank of a specific
-	///     item is one plus the number of items that come before the first item in the current equivalence set.
+	///	    Ranks each item in the sequence in ascending order using a caller-supplied comparer. The rank is equal to
+	///		index + 1 of the first next different item, the first item has a rank of 1 (index 0 + 1).
 	/// </summary>
 	/// <typeparam name="TSource">
 	///	    The type of the elements in the source sequence
@@ -204,9 +200,8 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	///	    Ranks each item in the sequence in ascending order by a specified key using a default comparer. The rank of
-	///     a specific item is one plus the number of items that come before the first item in the current equivalence
-	///     set.
+	///	    Ranks each item in the sequence in ascending order by a specified key using a default comparer. The rank is
+	///		equal to index + 1 of the first next different item, the first item has a rank of 1 (index 0 + 1).
 	/// </summary>
 	/// <typeparam name="TSource">
 	///	    The type of the elements in the source sequence
@@ -243,8 +238,7 @@ public static partial class SuperEnumerable
 
 	/// <summary>
 	///	    Ranks each item in the sequence in ascending order by a specified key using a caller-supplied comparer. The
-	///     rank of a specific item is one plus the number of items that come before the first item in the current
-	///     equivalence set.
+	///		rank is equal to index + 1 of the first next different item, the first item has a rank of 1 (index 0 + 1).
 	/// </summary>
 	/// <typeparam name="TSource">
 	///	    The type of the elements in the source sequence
@@ -284,40 +278,10 @@ public static partial class SuperEnumerable
 		return RankByCore(source, keySelector, comparer, isDense: false);
 	}
 
-	private static IEnumerable<(TSource, int)> RankByCore<TSource, TKey>(
-		IEnumerable<TSource> source,
-		Func<TSource, TKey> keySelector,
-		IComparer<TKey>? comparer,
-		bool isDense,
-		OrderByDirection sortDirection = OrderByDirection.Ascending)
-	{
-		comparer ??= Comparer<TKey>.Default;
-
-		var rank = 0;
-		var count = 1;
-		foreach (var (cur, lag) in source
-			.OrderBy(keySelector, comparer, sortDirection)
-			.Lag(1))
-		{
-			if (rank == 0
-				|| comparer.Compare(
-					keySelector(cur),
-					keySelector(Debug.AssertNotNull(lag))) != 0)
-			{
-				rank += isDense ? 1 : count;
-				count = 0;
-			}
-
-			count++;
-
-			yield return (cur, rank);
-		}
-	}
-
 	///  <summary>
-	///		Ranks each item in the sequence in ascending order using a default comparer, with no gaps in the ranking
-	///     values. The rank of a specific item is one plus the number of distinct rank values that come before that
-	///     specific item.
+	///		Ranks each item in the sequence in the order defined by <paramref name="sortDirection"/> using a default
+	///		comparer, with no gaps in the ranking values. The rank starts at one and keeps incrementing by one for each
+	///		different item.
 	///  </summary>
 	///  <typeparam name="TSource">
 	/// 	Type of item in the sequence
@@ -347,9 +311,9 @@ public static partial class SuperEnumerable
 	}
 
 	///  <summary>
-	///		Ranks each item in the sequence in ascending order using a caller-supplied comparer, with no gaps in the
-	///     ranking values. The rank of a specific item is one plus the number of distinct rank values that come before
-	///     that specific item.
+	///		Ranks each item in the sequence in the order defined by <paramref name="sortDirection"/> using a
+	///		caller-supplied comparer, with no gaps in the ranking values. The rank starts at one and keeps incrementing
+	///		by one for each different item.
 	///  </summary>
 	///  <typeparam name="TSource">
 	/// 	The type of the elements in the source sequence
@@ -384,9 +348,9 @@ public static partial class SuperEnumerable
 	}
 
 	///  <summary>
-	/// 	Ranks each item in the sequence in ascending order by a specified key using a default comparer, with no gaps
-	///     in the ranking values. The rank of a specific item is one plus the number of distinct rank values that come
-	///     before that specific item.
+	/// 	Ranks each item in the sequence in the order defined by <paramref name="sortDirection"/> by a specified key
+	///		using a default comparer, with no gaps in the ranking values. The rank starts at one and keeps incrementing
+	///		by one for each different item.
 	///  </summary>
 	///  <typeparam name="TSource">
 	/// 	The type of the elements in the source sequence
@@ -427,9 +391,9 @@ public static partial class SuperEnumerable
 	}
 
 	///  <summary>
-	/// 	Ranks each item in the sequence in ascending order by a specified key using a caller-supplied comparer, with
-	///     no gaps in the ranking values. The rank  of a specific item is one plus the number of distinct rank values
-	///     that come before that specific item.
+	/// 	Ranks each item in the sequence in the order defined by <paramref name="sortDirection"/> by a specified key
+	///		using a caller-supplied comparer, with no gaps in the ranking values. The rank starts at one and keeps
+	///		incrementing by one for each different item.
 	///  </summary>
 	///  <typeparam name="TSource">
 	/// 	The type of the elements in the source sequence
@@ -474,8 +438,9 @@ public static partial class SuperEnumerable
 	}
 
 	///  <summary>
-	/// 	Ranks each item in the sequence in ascending order using a default comparer. The rank of a specific item is
-	///     one plus the number of items that come before the first item in the current equivalence set.
+	/// 	Ranks each item in the sequence in the order defined by <paramref name="sortDirection"/> using a default
+	///		comparer. The rank is equal to index + 1 of the first next different item, the first item has a rank of 1
+	///		(index 0 + 1).
 	///  </summary>
 	///  <typeparam name="TSource">
 	/// 	Type of item in the sequence
@@ -505,8 +470,9 @@ public static partial class SuperEnumerable
 	}
 
 	///  <summary>
-	/// 	Ranks each item in the sequence in ascending order using a caller-supplied comparer. The rank of a specific
-	///     item is one plus the number of items that come before the first item in the current equivalence set.
+	/// 	Ranks each item in the sequence in the order defined by <paramref name="sortDirection"/> using a
+	///		caller-supplied comparer. The rank is equal to index + 1 of the first next different item, the first item
+	///		has a rank of 1 (index 0 + 1).
 	///  </summary>
 	///  <typeparam name="TSource">
 	/// 	The type of the elements in the source sequence
@@ -541,9 +507,9 @@ public static partial class SuperEnumerable
 	}
 
 	///  <summary>
-	/// 	Ranks each item in the sequence in ascending order by a specified key using a default comparer. The rank of
-	///     a specific item is one plus the number of items that come before the first item in the current equivalence
-	///     set.
+	/// 	Ranks each item in the sequence in the order defined by <paramref name="sortDirection"/> by a specified key
+	///		using a default comparer. The rank is equal to index + 1 of the first next different item, the first item
+	///		has a rank of 1 (index 0 + 1).
 	///  </summary>
 	///  <typeparam name="TSource">
 	/// 	The type of the elements in the source sequence
@@ -584,9 +550,9 @@ public static partial class SuperEnumerable
 	}
 
 	///  <summary>
-	/// 	Ranks each item in the sequence in ascending order by a specified key using a caller-supplied comparer. The
-	///     rank of a specific item is one plus the number of items that come before the first item in the current
-	///     equivalence set.
+	/// 	Ranks each item in the sequence in the order defined by <paramref name="sortDirection"/> by a specified key
+	///		using a caller-supplied comparer. The rank is equal to index + 1 of the first next different item, the first
+	///		item has a rank of 1 (index 0 + 1).
 	///  </summary>
 	///  <typeparam name="TSource">
 	/// 	The type of the elements in the source sequence
@@ -628,5 +594,35 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return RankByCore(source, keySelector, comparer, isDense: false, sortDirection);
+	}
+
+	private static IEnumerable<(TSource, int)> RankByCore<TSource, TKey>(
+		IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IComparer<TKey>? comparer,
+		bool isDense,
+		OrderByDirection sortDirection = OrderByDirection.Ascending)
+	{
+		comparer ??= Comparer<TKey>.Default;
+
+		var rank = 0;
+		var count = 1;
+		foreach (var (cur, lag) in source
+			.OrderBy(keySelector, comparer, sortDirection)
+			.Lag(1))
+		{
+			if (rank == 0
+				|| comparer.Compare(
+					keySelector(cur),
+					keySelector(Debug.AssertNotNull(lag))) != 0)
+			{
+				rank += isDense ? 1 : count;
+				count = 0;
+			}
+
+			count++;
+
+			yield return (cur, rank);
+		}
 	}
 }
