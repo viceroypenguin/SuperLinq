@@ -218,11 +218,10 @@ public static partial class SuperEnumerable
 	private static IEnumerable<T> ExcludeCore<T>(IEnumerable<T> sequence, Range range)
 	{
 		var index = 0;
-		var endIndex = range.Start.Value + range.End.Value;
 
 		foreach (var item in sequence)
 		{
-			if (index < range.Start.Value || index >= endIndex)
+			if (index < range.Start.Value || index >= range.End.Value)
 				yield return item;
 
 			index++;
