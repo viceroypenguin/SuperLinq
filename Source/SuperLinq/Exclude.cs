@@ -126,11 +126,10 @@ public static partial class SuperEnumerable
 		/// <summary>
 		/// Gets the number of elements in the source collection after excluding the specified portion of elements.
 		/// </summary>
-		public override int Count => _source.Count < _startIndex
-			? _source.Count
-			: _source.Count < _startIndex + _count
-				? _startIndex
-				: _source.Count - _count;
+		public override int Count =>
+			_source.Count < _startIndex ? _source.Count :
+			_source.Count < _startIndex + _count ? _startIndex :
+			_source.Count - _count;
 
 		/// <inheritdoc cref="IEnumerable{T}" /> 
 		protected override IEnumerable<T> GetEnumerable() =>
@@ -172,11 +171,10 @@ public static partial class SuperEnumerable
 		/// <summary>
 		/// Gets the number of elements in the source collection after excluding the specified portion of elements.
 		/// </summary>
-		public override int Count => _source.Count < _startIndex
-			? _source.Count
-			: _source.Count < _startIndex + _count
-				? _startIndex
-				: _source.Count - _count;
+		public override int Count =>
+			_source.Count < _startIndex ? _source.Count :
+			_source.Count < _startIndex + _count ? _startIndex :
+			_source.Count - _count;
 
 		/// <inheritdoc cref="IEnumerable{T}" />
 		protected override IEnumerable<T> GetEnumerable()
