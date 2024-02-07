@@ -289,7 +289,7 @@ public class DenseRankTests
 		await using (var xs = sequence.AsTestingSequence(maxEnumerations: 2))
 		{
 			// with identity function
-			var resultA = xs.Rank(
+			var resultA = xs.DenseRank(
 				Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)),
 				OrderByDirection.Ascending
 			);
@@ -297,7 +297,7 @@ public class DenseRankTests
 
 			// with key selector
 			var resultB =
-				xs.RankBy(
+				xs.DenseRankBy(
 					x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)),
 					OrderByDirection.Ascending
 				);

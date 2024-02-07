@@ -305,7 +305,7 @@ public class DenseRankTests
 
 			// Rank called with a reverse comparer and key selector should be ordered correctly with OrderByDirection.Ascending
 			var resultRankByWithSortDirection =
-				seq.RankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)),
+				seq.DenseRankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)),
 				OrderByDirection.Ascending
 			);
 			resultRankByWithSortDirection.AssertSequenceEqual(expected);
