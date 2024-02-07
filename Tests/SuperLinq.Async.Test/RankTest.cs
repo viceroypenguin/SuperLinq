@@ -116,6 +116,30 @@ public class RankTests
 	}
 
 	/// <summary>
+	/// Verify that calling Rank with null comparer on a source in ascending order
+	/// results in a sequence in descending order, using OrderByDirection.Descending
+	/// with the default comparer for the given element.
+	/// </summary>
+	[Fact]
+	public async Task TestRankOrderByDescending()
+	{
+		await using var sequence =
+			Enumerable
+				.Range(456, 100)
+				.AsTestingSequence();
+
+		var expected =
+			Enumerable
+				.Range(456, 100)
+				.Reverse()
+				.Select((x, i) => (x, i + 1));
+
+		await sequence
+			.Rank(OrderByDirection.Descending)
+			.AssertSequenceEqual(expected);
+	}
+
+	/// <summary>
 	/// Verify that the rank of equivalent items in a sequence is the same.
 	/// </summary>
 	[Fact]
@@ -132,9 +156,12 @@ public class RankTests
 		var expectedSequence =
 			SuperEnumerable
 				.Range(1, 10, 3)
-				.SelectMany((x, i) => Enumerable.Repeat(x, 3)
-				// should be 0-9, repeated three times, with ranks 1,4,...,28
-				.Select(y => (item: i, index: y)));
+				.SelectMany((x, i) =>
+					Enumerable
+						.Repeat(x, 3)
+						// should be 0-9, repeated three times, with ranks 1,4,...,28
+						.Select(y => (item: i, index: y))
+				);
 
 		var resultRank = await sequence.Rank().ToListAsync();
 		Assert.Equal(expectedLength, resultRank.Distinct().Count());
@@ -165,38 +192,57 @@ public class RankTests
 		Assert.Equal(expected, (await resultRankWithSortDirection.OrderBy(SuperEnumerable.Identity).FirstAsync()).rank);
 	}
 
+	public record Person(string Name, int Age, int ExpectedRank);
+
 	/// <summary>
 	/// Verify that we can rank items by an arbitrary key produced from the item.
 	/// </summary>
 	[Fact]
 	public async Task TestRankByKeySelector()
 	{
-		var sequence = new[]
+		var sequences = new List<Person[]>
 		{
-			new { Name = "Bob", Age = 24, ExpectedRank = 4 },
-			new { Name = "Sam", Age = 51, ExpectedRank = 7 },
-			new { Name = "Kim", Age = 18, ExpectedRank = 2 },
-			new { Name = "Tim", Age = 23, ExpectedRank = 3 },
-			new { Name = "Joe", Age = 31, ExpectedRank = 6 },
-			new { Name = "Mel", Age = 28, ExpectedRank = 5 },
-			new { Name = "Jim", Age = 74, ExpectedRank = 8 },
-			new { Name = "Jes", Age = 11, ExpectedRank = 1 },
+			new Person[]
+			{
+				new(Name: "Bob", Age: 24, ExpectedRank: 4),
+				new(Name: "Sam", Age: 51, ExpectedRank: 7),
+				new(Name: "Kim", Age: 18, ExpectedRank: 2),
+				new(Name: "Tim", Age: 23, ExpectedRank: 3),
+				new(Name: "Joe", Age: 31, ExpectedRank: 6),
+				new(Name: "Mel", Age: 28, ExpectedRank: 5),
+				new(Name: "Jim", Age: 74, ExpectedRank: 8),
+				new(Name: "Jes", Age: 11, ExpectedRank: 1)
+			},
+			new Person[]
+			{
+				new(Name: "Bob", Age: 11, ExpectedRank: 1),
+				new(Name: "Sam", Age: 11, ExpectedRank: 1),
+				new(Name: "Kim", Age: 11, ExpectedRank: 1),
+				new(Name: "Tim", Age: 23, ExpectedRank: 4),
+				new(Name: "Joe", Age: 23, ExpectedRank: 4),
+				new(Name: "Mel", Age: 28, ExpectedRank: 6),
+				new(Name: "Jim", Age: 28, ExpectedRank: 6),
+				new(Name: "Jes", Age: 30, ExpectedRank: 8),
+			},
 		};
 
-		await using var xs = sequence.AsTestingSequence(maxEnumerations: 2);
+		foreach (var seq in sequences)
+		{
+			await using var xs = seq.AsTestingSequence(maxEnumerations: 2);
 
-		var expected =
-			sequence
-				.OrderBy(x => x.ExpectedRank)
-				.Select(x => (x, x.ExpectedRank));
+			var expected =
+				seq
+					.OrderBy(x => x.ExpectedRank)
+					.Select(x => (x, x.ExpectedRank));
 
-		var resultRankBy = await xs.RankBy(x => x.Age).ToArrayAsync();
-		Assert.Equal(sequence.Length, resultRankBy.Length);
-		resultRankBy.AssertSequenceEqual(expected);
+			var resultRankBy = await xs.RankBy(x => x.Age).ToArrayAsync();
+			Assert.Equal(seq.Length, resultRankBy.Length);
+			resultRankBy.AssertSequenceEqual(expected);
 
-		var resultRankByWithSortDirection = await xs.RankBy(x => x.Age, OrderByDirection.Ascending).ToArrayAsync();
-		Assert.Equal(sequence.Length, resultRankByWithSortDirection.Length);
-		resultRankByWithSortDirection.AssertSequenceEqual(expected);
+			var resultRankByWithSortDirection = await xs.RankBy(x => x.Age, OrderByDirection.Ascending).ToArrayAsync();
+			Assert.Equal(seq.Length, resultRankByWithSortDirection.Length);
+			resultRankByWithSortDirection.AssertSequenceEqual(expected);
+		}
 	}
 
 	/// <summary>

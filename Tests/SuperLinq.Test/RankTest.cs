@@ -132,6 +132,29 @@ public class RankTests
 		}
 	}
 
+	/// <summary>
+	/// Verify that calling Rank with null comparer on a source in ascending order
+	/// results in a sequence in descending order, using OrderByDirection.Descending
+	/// with the default comparer for the given element.
+	/// </summary>
+	[Theory]
+	[MemberData(nameof(GetAscendingIntSequences))]
+	public void TestRankOrderByDescending(IDisposableEnumerable<int> seq)
+	{
+		var expected =
+			Enumerable
+				.Range(456, 100)
+				.Reverse()
+				.Select((x, i) => (x, i + 1));
+
+		using (seq)
+		{
+			seq
+				.Rank(OrderByDirection.Descending)
+				.AssertSequenceEqual(expected);
+		}
+	}
+
 	public static IEnumerable<object[]> GetGroupedSequences() =>
 		Enumerable.Range(0, 10)
 			.Concat(Enumerable.Range(0, 10))
@@ -149,9 +172,12 @@ public class RankTests
 		var expected =
 			SuperEnumerable
 				.Range(1, 10, 3)
-				.SelectMany((x, i) => Enumerable.Repeat(x, 3)
-				// should be 0-9, repeated three times, with ranks 1,2,...,10
-				.Select(y => (item: i, index: y)));
+				.SelectMany((x, i) =>
+					Enumerable
+						.Repeat(x, 3)
+						// should be 0-9, repeated three times, with ranks 1,2,...,10
+						.Select(y => (item: i, index: y))
+				);
 
 		using (seq)
 		{
@@ -166,7 +192,7 @@ public class RankTests
 	}
 
 	public sealed record Person(string Name, int Age, int ExpectedRank);
-	public static IEnumerable<object[]> GetPersonSequences() =>
+	public static IEnumerable<object[]> GetPersonSequences1() =>
 		new[]
 		{
 				new Person(Name: "Bob", Age: 24, ExpectedRank: 4),
@@ -181,11 +207,27 @@ public class RankTests
 			.GetTestingSequence(maxEnumerations: 3)
 			.Select(x => new object[] { x, });
 
+	public static IEnumerable<object[]> GetPersonSequences2() =>
+		new[]
+		{
+				new Person(Name: "Bob", Age: 11, ExpectedRank: 1),
+				new Person(Name: "Sam", Age: 11, ExpectedRank: 1),
+				new Person(Name: "Kim", Age: 11, ExpectedRank: 1),
+				new Person(Name: "Tim", Age: 23, ExpectedRank: 4),
+				new Person(Name: "Joe", Age: 23, ExpectedRank: 4),
+				new Person(Name: "Mel", Age: 28, ExpectedRank: 6),
+				new Person(Name: "Jim", Age: 28, ExpectedRank: 6),
+				new Person(Name: "Jes", Age: 30, ExpectedRank: 8),
+		}
+			.GetTestingSequence(maxEnumerations: 3)
+			.Select(x => new object[] { x, });
+
 	/// <summary>
 	/// Verify that we can rank items by an arbitrary key produced from the item.
 	/// </summary>
 	[Theory]
-	[MemberData(nameof(GetPersonSequences))]
+	[MemberData(nameof(GetPersonSequences1))]
+	[MemberData(nameof(GetPersonSequences2))]
 	public void TestRankByKeySelector(IDisposableEnumerable<Person> seq)
 	{
 		var expectedLength = 8;
