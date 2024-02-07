@@ -2,85 +2,133 @@
 
 public class RankTests
 {
+	/// <summary>
+	/// Verify that Rank uses deferred execution with lazy evaluation.
+	/// </summary>
 	[Fact]
 	public void TestRankIsLazy()
 	{
 		_ = new BreakingSequence<int>().Rank();
+		_ = new BreakingSequence<int>().Rank(OrderByDirection.Ascending);
 	}
 
+	/// <summary>
+	/// Verify that RankBy uses deferred execution with lazy evaluation.
+	/// </summary>
 	[Fact]
 	public void TestRankByIsLazy()
 	{
 		_ = new BreakingSequence<int>().RankBy(BreakingFunc.Of<int, int>());
+		_ = new BreakingSequence<int>().RankBy(BreakingFunc.Of<int, int>(), OrderByDirection.Ascending);
 	}
 
 	public static IEnumerable<object[]> GetSimpleSequences() =>
 		Enumerable.Repeat(1, 10)
-			.GetTestingSequence()
+			.GetTestingSequence(maxEnumerations: 3)
 			.Select(x => new object[] { x, });
 
+	/// <summary>
+	/// Verify that calling Rank with null comparer results in a sequence
+	/// ordered using the default comparer for the given element.
+	/// </summary>
 	[Theory]
 	[MemberData(nameof(GetSimpleSequences))]
 	public void TestRankNullComparer(IDisposableEnumerable<int> seq)
 	{
+		var expected = Enumerable.Repeat((1, 1), 10);
 		using (seq)
 		{
 			seq
 				.Rank()
-				.AssertSequenceEqual(
-					Enumerable.Repeat((1, 1), 10));
+				.AssertSequenceEqual(expected);
+
+			seq
+				.Rank(OrderByDirection.Ascending)
+				.AssertSequenceEqual(expected);
 		}
 	}
 
+	/// <summary>
+	/// Verify that calling RankBy with null comparer results in a sequence
+	/// ordered using the default comparer for the given element.
+	/// </summary>
 	[Theory]
 	[MemberData(nameof(GetSimpleSequences))]
 	public void TestRankByNullComparer(IDisposableEnumerable<int> seq)
 	{
+		var expected = Enumerable.Repeat((1, 1), 10);
 		using (seq)
 		{
 			seq
 				.RankBy(SuperEnumerable.Identity)
-				.AssertSequenceEqual(
-					Enumerable.Repeat((1, 1), 10));
+				.AssertSequenceEqual(expected);
+
+			seq
+				.RankBy(SuperEnumerable.Identity, OrderByDirection.Ascending)
+				.AssertSequenceEqual(expected);
 		}
 	}
 
 	public static IEnumerable<object[]> GetDescendingIntSequences() =>
 		Enumerable.Range(456, 100)
 			.Reverse()
-			.GetTestingSequence()
+			.GetTestingSequence(maxEnumerations: 3)
 			.Select(x => new object[] { x, });
 
+	/// <summary>
+	/// Verify that calling Rank with null comparer on a source in reverse order
+	/// results in a sequence in ascending order, using the default comparer for
+	/// the given element.
+	/// </summary>
 	[Theory]
 	[MemberData(nameof(GetDescendingIntSequences))]
 	public void TestRankDescendingSequence(IDisposableEnumerable<int> seq)
 	{
+		var expected =
+			Enumerable
+				.Range(456, 100)
+				.Select((x, i) => (x, i + 1));
+
 		using (seq)
 		{
 			seq
 				.Rank()
-				.AssertSequenceEqual(
-					Enumerable.Range(456, 100)
-						.Select((x, i) => (x, i + 1)));
+				.AssertSequenceEqual(expected);
+
+			seq
+				.Rank(OrderByDirection.Ascending)
+				.AssertSequenceEqual(expected);
 		}
 	}
 
 	public static IEnumerable<object[]> GetAscendingIntSequences() =>
 		Enumerable.Range(456, 100)
-			.GetTestingSequence()
+			.GetTestingSequence(maxEnumerations: 3)
 			.Select(x => new object[] { x, });
 
+	/// <summary>
+	/// Verify that calling Rank with null comparer on a source in ascending order
+	/// results in a sequence in ascending order, using the default comparer for
+	/// the given element.
+	/// </summary>
 	[Theory]
-	[MemberData(nameof(GetDescendingIntSequences))]
+	[MemberData(nameof(GetAscendingIntSequences))]
 	public void TestRankAscendingSequence(IDisposableEnumerable<int> seq)
 	{
+		var expected =
+			Enumerable
+				.Range(456, 100)
+				.Select((x, i) => (x, i + 1));
+
 		using (seq)
 		{
 			seq
 				.Rank()
-				.AssertSequenceEqual(
-					Enumerable.Range(456, 100)
-						.Select((x, i) => (x, i + 1)));
+				.AssertSequenceEqual(expected);
+
+			seq
+				.Rank(OrderByDirection.Ascending)
+				.AssertSequenceEqual(expected);
 		}
 	}
 
@@ -88,7 +136,7 @@ public class RankTests
 		Enumerable.Range(0, 10)
 			.Concat(Enumerable.Range(0, 10))
 			.Concat(Enumerable.Range(0, 10))
-			.GetTestingSequence()
+			.GetTestingSequence(maxEnumerations: 3)
 			.Select(x => new object[] { x, });
 
 	/// <summary>
@@ -98,15 +146,21 @@ public class RankTests
 	[MemberData(nameof(GetGroupedSequences))]
 	public void TestRankGroupedItems(IDisposableEnumerable<int> seq)
 	{
+		var expected =
+			SuperEnumerable
+				.Range(1, 10, 3)
+				.SelectMany((x, i) => Enumerable.Repeat(x, 3)
+				// should be 0-9, repeated three times, with ranks 1,2,...,10
+				.Select(y => (item: i, index: y)));
+
 		using (seq)
 		{
-			var expected =
-				SuperEnumerable.Range(1, 10, 3)
-					.SelectMany((x, i) => Enumerable.Repeat(x, 3)
-						// should be 0-9, repeated three times, with ranks 1,2,...,10
-						.Select(y => (item: i, index: y)));
 			seq
 				.Rank()
+				.AssertSequenceEqual(expected);
+
+			seq
+				.Rank(OrderByDirection.Ascending)
 				.AssertSequenceEqual(expected);
 		}
 	}
@@ -124,7 +178,7 @@ public class RankTests
 				new Person(Name: "Jim", Age: 74, ExpectedRank: 8),
 				new Person(Name: "Jes", Age: 11, ExpectedRank: 1),
 		}
-			.GetTestingSequence()
+			.GetTestingSequence(maxEnumerations: 3)
 			.Select(x => new object[] { x, });
 
 	/// <summary>
@@ -134,18 +188,27 @@ public class RankTests
 	[MemberData(nameof(GetPersonSequences))]
 	public void TestRankByKeySelector(IDisposableEnumerable<Person> seq)
 	{
+		var expectedLength = 8;
+
 		using (seq)
 		{
-			var result = seq.RankBy(x => x.Age).ToArray();
-			Assert.Equal(8, result.Length);
-			Assert.True(result.All(x => x.rank == x.item.ExpectedRank));
+			var resultRankBy = seq.RankBy(x => x.Age).ToArray();
+			Assert.Equal(expectedLength, resultRankBy.Length);
+			Assert.True(HasExpectedRank(resultRankBy));
+
+			var resultRankByWithSortDirection = seq.RankBy(x => x.Age, OrderByDirection.Ascending).ToArray();
+			Assert.Equal(expectedLength, resultRankByWithSortDirection.Length);
+			Assert.True(HasExpectedRank(resultRankByWithSortDirection));
 		}
+
+		static bool HasExpectedRank(IEnumerable<(Person item, int rank)> result)
+			=> result.All(x => x.rank == x.item.ExpectedRank);
 	}
 
 	public static IEnumerable<object[]> GetDateTimeSequences() =>
 		Enumerable.Range(1, 10)
 			.Select(x => new DateTime(2010, x, 20 - x))
-			.GetTestingSequence()
+			.GetTestingSequence(maxEnumerations: 3)
 			.Select(x => new object[] { x, });
 
 	/// <summary>
@@ -155,32 +218,55 @@ public class RankTests
 	[MemberData(nameof(GetDateTimeSequences))]
 	public void TestRankCustomComparer1(IDisposableEnumerable<DateTime> seq)
 	{
+		var expected =
+			Enumerable
+				.Range(1, 10)
+				.Select(x => new DateTime(2010, x, 20 - x))
+				.OrderByDescending(SuperEnumerable.Identity)
+				.Select((x, i) => (x, i + 1));
+
 		using (seq)
 		{
 			// invert the CompareTo operation to Rank in reverse order
-			var resultA = seq.Rank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
-			resultA
-				.AssertSequenceEqual(
-					Enumerable.Range(1, 10)
-						.Select(x => new DateTime(2010, x, 20 - x))
-						.OrderByDescending(SuperEnumerable.Identity)
-						.Select((x, i) => (x, i + 1)));
+			var resultRank = seq.Rank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
+			resultRank.AssertSequenceEqual(expected);
+
+			// Rank called with a reverse comparer should be ordered correctly with OrderByDirection.Ascending
+			var resultRankWithSortDirection =
+				seq.Rank(
+					Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)),
+					OrderByDirection.Ascending
+				);
+			resultRankWithSortDirection.AssertSequenceEqual(expected);
 		}
 	}
 
+	/// <summary>
+	/// Verify that RankBy can use a custom comparer with a key selector
+	/// </summary>
 	[Theory]
 	[MemberData(nameof(GetDateTimeSequences))]
 	public void TestRankCustomComparer2(IDisposableEnumerable<DateTime> seq)
 	{
+		var expected =
+			Enumerable
+				.Range(1, 10)
+				.Select(x => new DateTime(2010, x, 20 - x))
+				.OrderByDescending(x => x.Day)
+				.Select((x, i) => (x, i + 1));
+
 		using (seq)
 		{
-			var resultB = seq.RankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
-			resultB
-				.AssertSequenceEqual(
-					Enumerable.Range(1, 10)
-						.Select(x => new DateTime(2010, x, 20 - x))
-						.OrderByDescending(x => x.Day)
-						.Select((x, i) => (x, i + 1)));
+			// invert the CompareTo operation to Rank in reverse order and specify a key selector
+			var resultRankBy = seq.RankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
+			resultRankBy.AssertSequenceEqual(expected);
+
+			// Rank called with a reverse comparer and key selector should be ordered correctly with OrderByDirection.Ascending
+			var resultRankByWithSortDirection =
+				seq.RankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)),
+				OrderByDirection.Ascending
+			);
+			resultRankByWithSortDirection.AssertSequenceEqual(expected);
 		}
 	}
 }

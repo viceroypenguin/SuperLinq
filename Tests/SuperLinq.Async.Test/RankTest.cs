@@ -2,59 +2,117 @@
 
 public class RankTests
 {
+	/// <summary>
+	/// Verify that Rank uses deferred execution with lazy evaluation.
+	/// </summary>
 	[Fact]
 	public void TestRankIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Rank();
+		_ = new AsyncBreakingSequence<int>().Rank(OrderByDirection.Ascending);
 	}
 
+	/// <summary>
+	/// Verify that RankBy uses deferred execution with lazy evaluation.
+	/// </summary>
 	[Fact]
 	public void TestRankByIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().RankBy(BreakingFunc.Of<int, int>());
+		_ = new AsyncBreakingSequence<int>().RankBy(BreakingFunc.Of<int, int>(), OrderByDirection.Ascending);
 	}
 
+	/// <summary>
+	/// Verify that calling Rank with null comparer results in a sequence
+	/// ordered using the default comparer for the given element.
+	/// </summary>
 	[Fact]
 	public async Task TestRankNullComparer()
 	{
-		await using var sequence = Enumerable.Repeat(1, 10)
-			.AsTestingSequence();
-		await sequence.Rank().AssertSequenceEqual(
-			Enumerable.Repeat((1, 1), 10));
+		await using var sequence =
+			Enumerable
+				.Repeat(1, 10)
+				.AsTestingSequence(maxEnumerations: 2);
+
+		var expected = Enumerable.Repeat((1, 1), 10);
+
+		await sequence.Rank().AssertSequenceEqual(expected);
+		await sequence.Rank(OrderByDirection.Ascending).AssertSequenceEqual(expected);
 	}
 
+	/// <summary>
+	/// Verify that calling RankBy with null comparer results in a sequence
+	/// ordered using the default comparer for the given element.
+	/// </summary>
 	[Fact]
 	public async Task TestRankByNullComparer()
 	{
-		await using var sequence = Enumerable.Repeat(1, 10)
-			.AsTestingSequence();
-		await sequence.RankBy(SuperEnumerable.Identity).AssertSequenceEqual(
-			Enumerable.Repeat((1, 1), 10));
+		await using var sequence =
+			Enumerable
+				.Repeat(1, 10)
+				.AsTestingSequence(maxEnumerations: 2);
+
+		var expected = Enumerable.Repeat((1, 1), 10);
+
+		await sequence.RankBy(SuperEnumerable.Identity).AssertSequenceEqual(expected);
+		await sequence.RankBy(SuperEnumerable.Identity, OrderByDirection.Ascending).AssertSequenceEqual(expected);
 	}
 
+	/// <summary>
+	/// Verify that calling Rank with null comparer on a source in reverse order
+	/// results in a sequence in ascending order, using the default comparer for
+	/// the given element.
+	/// </summary>
 	[Fact]
 	public async Task TestRankDescendingSequence()
 	{
-		await using var sequence = Enumerable.Range(456, 100).Reverse()
-			.AsTestingSequence();
-		var expectedResult = Enumerable.Range(456, 100)
-			.Select((x, i) => (x, i + 1));
+		await using var sequence =
+			Enumerable
+				.Range(456, 100)
+				.Reverse()
+				.AsTestingSequence(maxEnumerations: 2);
 
-		var result = await sequence.Rank().ToArrayAsync();
-		Assert.Equal(100, result.Length);
-		result.AssertSequenceEqual(expectedResult);
+		var expectedLength = 100;
+		var expectedSequence =
+			Enumerable
+				.Range(456, 100)
+				.Select((x, i) => (x, i + 1));
+
+		var resultRank = await sequence.Rank().ToArrayAsync();
+		Assert.Equal(expectedLength, resultRank.Length);
+		resultRank.AssertSequenceEqual(expectedSequence);
+
+		var resultRankWithSortDirection = await sequence.Rank(OrderByDirection.Ascending).ToArrayAsync();
+		Assert.Equal(expectedLength, resultRankWithSortDirection.Length);
+		resultRankWithSortDirection.AssertSequenceEqual(expectedSequence);
 	}
 
+	/// <summary>
+	/// Verify that calling Rank with null comparer on a source in ascending order
+	/// results in a sequence in ascending order, using the default comparer for
+	/// the given element.
+	/// </summary>
 	[Fact]
 	public async Task TestRankByAscendingSeries()
 	{
-		await using var sequence = Enumerable.Range(456, 100).AsTestingSequence();
-		var expectedResult = Enumerable.Range(456, 100)
-			.Select((x, i) => (x, i + 1));
+		await using var sequence =
+			Enumerable
+				.Range(456, 100)
+				.AsTestingSequence(maxEnumerations: 2);
 
-		var result = await sequence.Rank().ToArrayAsync();
-		Assert.Equal(100, result.Length);
-		result.AssertSequenceEqual(expectedResult);
+		var expectedLength = 100;
+		var expectedSequence =
+			Enumerable
+				.Range(456, 100)
+				.Select((x, i) => (x, i + 1));
+
+		var resultRank = await sequence.Rank().ToArrayAsync();
+		Assert.Equal(expectedLength, resultRank.Length);
+		resultRank.AssertSequenceEqual(expectedSequence);
+
+		var resultRankWithSortDirection = await sequence.Rank(OrderByDirection.Ascending).ToArrayAsync();
+		Assert.Equal(expectedLength, resultRankWithSortDirection.Length);
+		resultRankWithSortDirection.AssertSequenceEqual(expectedSequence);
 	}
 
 	/// <summary>
@@ -63,18 +121,28 @@ public class RankTests
 	[Fact]
 	public async Task TestRankGroupedItems()
 	{
-		await using var sequence = Enumerable.Range(0, 10)
-			.Concat(Enumerable.Range(0, 10))
-			.Concat(Enumerable.Range(0, 10))
-			.AsTestingSequence();
+		await using var sequence =
+			Enumerable
+				.Range(0, 10)
+				.Concat(Enumerable.Range(0, 10))
+				.Concat(Enumerable.Range(0, 10))
+				.AsTestingSequence(maxEnumerations: 2);
 
-		var result = await sequence.Rank().ToListAsync();
-		Assert.Equal(10, result.Distinct().Count());
-		result.AssertSequenceEqual(
-			SuperLinq.SuperEnumerable.Range(1, 10, 3)
+		var expectedLength = 10;
+		var expectedSequence =
+			SuperEnumerable
+				.Range(1, 10, 3)
 				.SelectMany((x, i) => Enumerable.Repeat(x, 3)
-					// should be 0-9, repeated three times, with ranks 1,4,...,28
-					.Select(y => (item: i, index: y))));
+				// should be 0-9, repeated three times, with ranks 1,4,...,28
+				.Select(y => (item: i, index: y)));
+
+		var resultRank = await sequence.Rank().ToListAsync();
+		Assert.Equal(expectedLength, resultRank.Distinct().Count());
+		resultRank.AssertSequenceEqual(expectedSequence);
+
+		var resultRankWithSortDirection = await sequence.Rank(OrderByDirection.Ascending).ToListAsync();
+		Assert.Equal(expectedLength, resultRankWithSortDirection.Distinct().Count());
+		resultRankWithSortDirection.AssertSequenceEqual(expectedSequence);
 	}
 
 	/// <summary>
@@ -83,11 +151,18 @@ public class RankTests
 	[Fact]
 	public async Task TestRankOfHighestItemIsOne()
 	{
-		await using var sequence = Enumerable.Range(1, 10)
-			.AsTestingSequence();
+		await using var sequence =
+			Enumerable
+				.Range(1, 10)
+				.AsTestingSequence(maxEnumerations: 2);
 
-		var result = sequence.Rank();
-		Assert.Equal(1, (await result.OrderBy(SuperEnumerable.Identity).FirstAsync()).rank);
+		var expected = 1;
+
+		var resultRank = sequence.Rank();
+		Assert.Equal(expected, (await resultRank.OrderBy(SuperEnumerable.Identity).FirstAsync()).rank);
+
+		var resultRankWithSortDirection = sequence.Rank(OrderByDirection.Ascending);
+		Assert.Equal(expected, (await resultRankWithSortDirection.OrderBy(SuperEnumerable.Identity).FirstAsync()).rank);
 	}
 
 	/// <summary>
@@ -108,13 +183,20 @@ public class RankTests
 			new { Name = "Jes", Age = 11, ExpectedRank = 1 },
 		};
 
-		await using var xs = sequence.AsTestingSequence();
-		var result = await xs.RankBy(x => x.Age).ToArrayAsync();
+		await using var xs = sequence.AsTestingSequence(maxEnumerations: 2);
 
-		Assert.Equal(sequence.Length, result.Length);
-		result.AssertSequenceEqual(sequence
-			.OrderBy(x => x.ExpectedRank)
-			.Select(x => (x, x.ExpectedRank)));
+		var expected =
+			sequence
+				.OrderBy(x => x.ExpectedRank)
+				.Select(x => (x, x.ExpectedRank));
+
+		var resultRankBy = await xs.RankBy(x => x.Age).ToArrayAsync();
+		Assert.Equal(sequence.Length, resultRankBy.Length);
+		resultRankBy.AssertSequenceEqual(expected);
+
+		var resultRankByWithSortDirection = await xs.RankBy(x => x.Age, OrderByDirection.Ascending).ToArrayAsync();
+		Assert.Equal(sequence.Length, resultRankByWithSortDirection.Length);
+		resultRankByWithSortDirection.AssertSequenceEqual(expected);
 	}
 
 	/// <summary>
@@ -126,21 +208,45 @@ public class RankTests
 		var ordinals = Enumerable.Range(1, 10);
 		var sequence = ordinals.Select(x => new DateTime(2010, x, 20 - x));
 
-		// invert the CompareTo operation to Rank in reverse order
-		await using (var xs = sequence.AsTestingSequence())
-		{
-			var resultA = xs.Rank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
-			await resultA.AssertSequenceEqual(sequence
+		var expectedWithIdentityFunction =
+			sequence
 				.OrderByDescending(SuperEnumerable.Identity)
-				.Select((x, i) => (x, i + 1)));
+				.Select((x, i) => (x, i + 1));
+
+		var expectedWithKeySelector =
+			sequence
+				.OrderByDescending(x => x.Day)
+				.Select((x, i) => (x, i + 1));
+
+		// invert the CompareTo operation to Rank in reverse order
+		await using (var xs = sequence.AsTestingSequence(maxEnumerations: 2))
+		{
+			// with identity function
+			var resultA = xs.Rank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
+			await resultA.AssertSequenceEqual(expectedWithIdentityFunction);
+
+			// with key selector
+			var resultB = xs.RankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
+			await resultB.AssertSequenceEqual(expectedWithKeySelector);
 		}
 
-		await using (var xs = sequence.AsTestingSequence())
+		// Rank called with a reverse comparer should be ordered correctly with OrderByDirection.Ascending
+		await using (var xs = sequence.AsTestingSequence(maxEnumerations: 2))
 		{
-			var resultB = xs.RankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
-			await resultB.AssertSequenceEqual(sequence
-				.OrderByDescending(x => x.Day)
-				.Select((x, i) => (x, i + 1)));
+			// with identity function
+			var resultA = xs.Rank(
+				Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)),
+				OrderByDirection.Ascending
+			);
+			await resultA.AssertSequenceEqual(expectedWithIdentityFunction);
+
+			// with key selector
+			var resultB =
+				xs.RankBy(
+					x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)),
+					OrderByDirection.Ascending
+				);
+			await resultB.AssertSequenceEqual(expectedWithKeySelector);
 		}
 	}
 }

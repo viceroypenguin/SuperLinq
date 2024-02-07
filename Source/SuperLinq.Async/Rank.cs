@@ -154,41 +154,6 @@ public static partial class AsyncSuperEnumerable
 		return RankByImpl(source, keySelector, comparer, isDense: false);
 	}
 
-	private static async IAsyncEnumerable<(TSource, int)> RankByImpl<TSource, TKey>(
-		IAsyncEnumerable<TSource> source,
-		Func<TSource, TKey> keySelector,
-		IComparer<TKey>? comparer,
-		bool isDense,
-		OrderByDirection sortDirection = OrderByDirection.Ascending,
-		[EnumeratorCancellation] CancellationToken cancellationToken = default)
-	{
-		comparer ??= Comparer<TKey>.Default;
-
-		var rank = 0;
-		var count = 1;
-		await foreach (var (cur, lag) in source
-			.OrderBy(keySelector, comparer, sortDirection)
-			.Lag(1)
-			.WithCancellation(cancellationToken)
-			.ConfigureAwait(false))
-		{
-#pragma warning disable CA1508 // Avoid dead conditional code
-			if (rank == 0
-				|| comparer.Compare(
-					keySelector(cur),
-					keySelector(Debug.AssertNotNull(lag))) != 0)
-			{
-				rank += isDense ? 1 : count;
-				count = 0;
-			}
-#pragma warning restore CA1508 // Avoid dead conditional code
-
-			count++;
-
-			yield return (cur, rank);
-		}
-	}
-
 	/// <summary>
 	/// Ranks each item in the sequence in the order defined by <paramref name="sortDirection"/>
 	/// using a default comparer, with no gaps in the ranking values. The rank starts at one
@@ -357,5 +322,40 @@ public static partial class AsyncSuperEnumerable
 		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return RankByImpl(source, keySelector, comparer, isDense: false, sortDirection);
+	}
+
+	private static async IAsyncEnumerable<(TSource, int)> RankByImpl<TSource, TKey>(
+		IAsyncEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IComparer<TKey>? comparer,
+		bool isDense,
+		OrderByDirection sortDirection = OrderByDirection.Ascending,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
+	{
+		comparer ??= Comparer<TKey>.Default;
+
+		var rank = 0;
+		var count = 1;
+		await foreach (var (cur, lag) in source
+			.OrderBy(keySelector, comparer, sortDirection)
+			.Lag(1)
+			.WithCancellation(cancellationToken)
+			.ConfigureAwait(false))
+		{
+#pragma warning disable CA1508 // Avoid dead conditional code
+			if (rank == 0
+				|| comparer.Compare(
+					keySelector(cur),
+					keySelector(Debug.AssertNotNull(lag))) != 0)
+			{
+				rank += isDense ? 1 : count;
+				count = 0;
+			}
+#pragma warning restore CA1508 // Avoid dead conditional code
+
+			count++;
+
+			yield return (cur, rank);
+		}
 	}
 }
