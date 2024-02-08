@@ -3,7 +3,7 @@
 public class DenseRankTests
 {
 	/// <summary>
-	/// Verify that DenseRank uses deferred execution with lazy evaluation.
+	/// Verify that DenseRank uses deferred execution
 	/// </summary>
 	[Fact]
 	public void TestDenseRankIsLazy()
@@ -13,7 +13,7 @@ public class DenseRankTests
 	}
 
 	/// <summary>
-	/// Verify that DenseRankBy uses deferred execution with lazy evaluation.
+	/// Verify that DenseRankBy uses deferred execution
 	/// </summary>
 	[Fact]
 	public void TestDenseRankByIsLazy()
