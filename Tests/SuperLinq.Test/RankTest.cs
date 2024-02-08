@@ -3,7 +3,7 @@
 public class RankTests
 {
 	/// <summary>
-	/// Verify that Rank uses deferred execution with lazy evaluation.
+	/// Verify that Rank uses deferred execution
 	/// </summary>
 	[Fact]
 	public void TestRankIsLazy()
@@ -13,7 +13,7 @@ public class RankTests
 	}
 
 	/// <summary>
-	/// Verify that RankBy uses deferred execution with lazy evaluation.
+	/// Verify that RankBy uses deferred execution
 	/// </summary>
 	[Fact]
 	public void TestRankByIsLazy()
