@@ -5,8 +5,7 @@ public class MoveTest
 	[Fact]
 	public void MoveWithNegativeFromIndex()
 	{
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new[] { 1 }.Move(-1, 0, 0));
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.Move(-1, 0, 0));
 	}
 
 	[Fact]
@@ -18,29 +17,25 @@ public class MoveTest
 	[Fact]
 	public void MoveWithNegativeCount()
 	{
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new[] { 1 }.Move(0, -1, 0));
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.Move(0, -1, 0));
 	}
 
 	[Fact]
 	public void MoveRangeWithDecendingRange()
 	{
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new[] { 1 }.Move(0..-1, 0));
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.Move(0..-1, 0));
 	}
 
 	[Fact]
 	public void MoveWithNegativeToIndex()
 	{
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new[] { 1 }.Move(0, 0, -1));
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.Move(0, 0, -1));
 	}
 
 	[Fact]
 	public void MoveRangeWithNegativeToIndex()
 	{
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new[] { 1 }.Move(0..0, -1));
+		_ = Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.Move(0..0, -1));
 	}
 
 	[Fact]
@@ -82,8 +77,7 @@ public class MoveTest
 	public static IEnumerable<object[]> MoveSource()
 	{
 		const int Length = 10;
-		return
-			from index in Enumerable.Range(0, Length)
+		return from index in Enumerable.Range(0, Length)
 			from count in Enumerable.Range(0, Length + 1)
 			from tcd in new object[][]
 			{
@@ -96,8 +90,7 @@ public class MoveTest
 	public static IEnumerable<object[]> MoveRangeSource()
 	{
 		const int Length = 10;
-		return
-			from index in Enumerable.Range(0, Length)
+		return from index in Enumerable.Range(0, Length)
 			from count in Enumerable.Range(0, Length + 1)
 			from tcd in new object[][]
 			{
@@ -108,7 +101,12 @@ public class MoveTest
 	}
 
 	[Theory, MemberData(nameof(MoveWithSequenceShorterThanToIndexSource))]
-	public void MoveWithSequenceShorterThanToIndex(int length, int fromIndex, int count, int toIndex)
+	public void MoveWithSequenceShorterThanToIndex(
+		int length,
+		int fromIndex,
+		int count,
+		int toIndex
+	)
 	{
 		var source = Enumerable.Range(0, length);
 
@@ -116,7 +114,9 @@ public class MoveTest
 
 		var result = test.Move(fromIndex, count, toIndex);
 
-		var expectations = source.Exclude(fromIndex, count).Concat(source.Take(fromIndex..(fromIndex + count)));
+		var expectations = source
+			.Exclude(fromIndex, count)
+			.Concat(source.Take(fromIndex..(fromIndex + count)));
 		Assert.Equal(expectations, result);
 	}
 
@@ -129,17 +129,17 @@ public class MoveTest
 
 		var result = test.Move(range, toIndex);
 
-		var expectations = source.Exclude(range.Start.Value, range.End.Value - range.Start.Value).Concat(source.Take(range));
+		var expectations = source
+			.Exclude(range.Start.Value, range.End.Value - range.Start.Value)
+			.Concat(source.Take(range));
 		Assert.Equal(expectations, result);
 	}
 
 	public static IEnumerable<object[]> MoveWithSequenceShorterThanToIndexSource() =>
-		Enumerable.Range(10, 10 + 5)
-				  .Select(toIndex => new object[] { 10, 5, 2, toIndex, });
+		Enumerable.Range(10, 10 + 5).Select(toIndex => new object[] { 10, 5, 2, toIndex, });
 
 	public static IEnumerable<object[]> MoveRangeWithSequenceShorterThanToIndexSource() =>
-		Enumerable.Range(10, 10 + 5)
-				  .Select(toIndex => new object[] { 10, 5..7, toIndex, });
+		Enumerable.Range(10, 10 + 5).Select(toIndex => new object[] { 10, 5..7, toIndex, });
 
 	[Fact]
 	public void MoveIsRepeatable()
@@ -193,5 +193,13 @@ public class MoveTest
 
 		var result = source.Move(5..5, 999);
 		result.AssertSequenceEqual(Enumerable.Range(0, 10));
+	}
+
+	[Fact]
+	public void MoveRangeFromEndIndex()
+	{
+		using var source = Enumerable.Range(0, 8).AsTestingSequence();
+		var result = source.Move(1..4, ^3);
+		result.AssertSequenceEqual([0, 4, 1, 2, 3, 5, 6, 7]);
 	}
 }

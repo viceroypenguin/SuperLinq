@@ -32,21 +32,30 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	///	    This operator uses deferred execution and streams its results.
 	/// </remarks>
-	public static IEnumerable<T> Move<T>(this IEnumerable<T> source, int fromIndex, int count, int toIndex)
+	public static IEnumerable<T> Move<T>(
+		this IEnumerable<T> source,
+		int fromIndex,
+		int count,
+		int toIndex
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentOutOfRangeException.ThrowIfNegative(fromIndex);
 		ArgumentOutOfRangeException.ThrowIfNegative(count);
 		ArgumentOutOfRangeException.ThrowIfNegative(toIndex);
 
-		return
-			toIndex == fromIndex || count == 0
-				? source :
-			toIndex < fromIndex
-				 ? Core(source, toIndex, fromIndex - toIndex, count)
-				 : Core(source, fromIndex, count, toIndex - fromIndex);
+		return toIndex == fromIndex || count == 0
+			? source
+			: toIndex < fromIndex
+				? Core(source, toIndex, fromIndex - toIndex, count)
+				: Core(source, fromIndex, count, toIndex - fromIndex);
 
-		static IEnumerable<T> Core(IEnumerable<T> source, int bufferStartIndex, int bufferSize, int bufferYieldIndex)
+		static IEnumerable<T> Core(
+			IEnumerable<T> source,
+			int bufferStartIndex,
+			int bufferSize,
+			int bufferYieldIndex
+		)
 		{
 			var hasMore = true;
 			bool MoveNext(IEnumerator<T> e) => hasMore && (hasMore = e.MoveNext());
@@ -112,32 +121,98 @@ public static partial class SuperEnumerable
 				startIndex = range.Start.GetOffset(count);
 				endIndex = range.End.GetOffset(count);
 				toIndex = to.GetOffset(count);
-			} 
-			else 
-			{
-				using var e = source.GetEnumerator();
-				if (!e.MoveNext())
-				{
-					yield break;
-				}
-				count = 1;
-				while (e.MoveNext())
-				{
-					count++;
-				}
-				startIndex = range.Start.Value;
-				endIndex = range.End.Value;
-				toIndex = to.GetOffset(count);
+				yield return (T)Move(source, startIndex, endIndex - startIndex, toIndex);
 			}
-			foreach (var e in Move(source, startIndex, endIndex - startIndex, toIndex))
+			else
+			{
+				switch ((range.Start.IsFromEnd, range.End.IsFromEnd, to.IsFromEnd))
+				{
+					case (false, false, true):
+						using (var e = source.GetEnumerator())
+						{
+							if (!e.MoveNext())
+							{
+								yield break;
+							}
+
+							var bufferCap = to.Value;
+							var moveCap = range.End.Value - range.Start.Value;
+							var buffer = new Queue<T>(bufferCap);
+							var move = new Queue<T>(moveCap);
+
+							buffer.Enqueue(e.Current);
+							count = 1;
+
+							while (e.MoveNext())
+							{
+								buffer.Enqueue(e.Current);
+								checked
+								{
+									++count;
+								}
+								if (count > to.Value)
+								{
+									var idx = count - bufferCap;
+									if (idx > range.Start.Value && idx <= range.End.Value)
+									{
+										move.Enqueue(buffer.Dequeue());
+									}
+									else
+									{
+										yield return buffer.Dequeue();
+									}
+								}
+							}
+							while (move.TryDequeue(out var element))
+							{
+								yield return element;
+							}
+							while (buffer.TryDequeue(out var element))
+							{
+								yield return element;
+							}
+						}
+						yield break;
+					case (false, true, false):
+						// [4, 5, 2, 4, 1, §, 5] Move(1..^4, 2)
+						break;
+					case (false, true, true):
+						// [4, 5, 2, 4, 1, §, 5] Move(1..^4, ^2)
+						break;
+					case (true, false, false):
+						// [4, 5, 2, 4, 1, §, 5] Move(^5..4, 2)
+						break;
+					case (true, false, true):
+						// [4, 5, 2, 4, 1, §, 5] Move(^5..4, ^2)
+						break;
+					case (true, true, false):
+						if (range.End.Value > range.Start.Value)
+						{
+							yield break;
+						}
+						// [4, 5, 2, 4, 1, §, 5] Move(^5..^2, 4)
+						// Cannot yield any elements until count is known.
+						// Once count is known, can proceed to yield elements
+						break;
+					case (true, true, true):
+						// [4, 5, 2, 4, 1, §, 5] Move(^5..^3, ^2)
+						break;
+				}
+			}
+		}
+		else
+		{
+			foreach (
+				var e in Move(
+					source,
+					range.Start.Value,
+					range.End.Value - range.Start.Value,
+					to.Value
+				)
+			)
 			{
 				yield return e;
 			}
-			yield break;
-		}
-		foreach (var e in Move(source, range.Start.Value, range.End.Value - range.Start.Value, to.Value))
-		{
-			yield return e;
 		}
 	}
 }
