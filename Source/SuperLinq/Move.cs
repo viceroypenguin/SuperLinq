@@ -110,7 +110,21 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<T> Move<T>(this IEnumerable<T> source, Range range, Index to)
 	{
-		if (range.Start.IsFromEnd || range.End.IsFromEnd || to.IsFromEnd)
+		if (!range.Start.IsFromEnd && !range.End.IsFromEnd && !to.IsFromEnd)
+		{
+			foreach (
+				var e in Move(
+					source,
+					range.Start.Value,
+					range.End.Value - range.Start.Value,
+					to.Value
+				)
+			)
+			{
+				yield return e;
+			}
+		}
+		else
 		{
 			int startIndex;
 			int endIndex;
@@ -198,20 +212,6 @@ public static partial class SuperEnumerable
 						// [4, 5, 2, 4, 1, §, 5] Move(^5..^3, ^2)
 						break;
 				}
-			}
-		}
-		else
-		{
-			foreach (
-				var e in Move(
-					source,
-					range.Start.Value,
-					range.End.Value - range.Start.Value,
-					to.Value
-				)
-			)
-			{
-				yield return e;
 			}
 		}
 	}
