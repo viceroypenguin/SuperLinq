@@ -210,14 +210,14 @@ public class RankTests
 	public static IEnumerable<object[]> GetPersonSequences2() =>
 		new[]
 		{
+				new Person(Name: "Tim", Age: 23, ExpectedRank: 4),
+				new Person(Name: "Joe", Age: 23, ExpectedRank: 4),
+				new Person(Name: "Jes", Age: 30, ExpectedRank: 8),
 				new Person(Name: "Bob", Age: 11, ExpectedRank: 1),
 				new Person(Name: "Sam", Age: 11, ExpectedRank: 1),
 				new Person(Name: "Kim", Age: 11, ExpectedRank: 1),
-				new Person(Name: "Tim", Age: 23, ExpectedRank: 4),
-				new Person(Name: "Joe", Age: 23, ExpectedRank: 4),
 				new Person(Name: "Mel", Age: 28, ExpectedRank: 6),
 				new Person(Name: "Jim", Age: 28, ExpectedRank: 6),
-				new Person(Name: "Jes", Age: 30, ExpectedRank: 8),
 		}
 			.GetTestingSequence(maxEnumerations: 3)
 			.Select(x => new object[] { x, });

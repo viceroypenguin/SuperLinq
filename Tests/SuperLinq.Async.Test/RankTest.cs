@@ -215,14 +215,14 @@ public class RankTests
 			},
 			new Person[]
 			{
+				new(Name: "Tim", Age: 23, ExpectedRank: 4),
+				new(Name: "Joe", Age: 23, ExpectedRank: 4),
+				new(Name: "Jes", Age: 30, ExpectedRank: 8),
 				new(Name: "Bob", Age: 11, ExpectedRank: 1),
 				new(Name: "Sam", Age: 11, ExpectedRank: 1),
 				new(Name: "Kim", Age: 11, ExpectedRank: 1),
-				new(Name: "Tim", Age: 23, ExpectedRank: 4),
-				new(Name: "Joe", Age: 23, ExpectedRank: 4),
 				new(Name: "Mel", Age: 28, ExpectedRank: 6),
 				new(Name: "Jim", Age: 28, ExpectedRank: 6),
-				new(Name: "Jes", Age: 30, ExpectedRank: 8),
 			},
 		};
 

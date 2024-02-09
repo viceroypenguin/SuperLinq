@@ -4,7 +4,7 @@ public static partial class SuperEnumerable
 {
 	/// <summary>
 	///	    Ranks each item in the sequence in ascending order using a default comparer. The rank is equal to
-	///		index + 1 of the first next different item, the first item has a rank of 1 (index 0 + 1).
+	///		index + 1 of the first element of the item's equality set.
 	/// </summary>
 	/// <typeparam name="TSource">
 	///	    Type of item in the sequence
@@ -32,7 +32,7 @@ public static partial class SuperEnumerable
 
 	/// <summary>
 	///	    Ranks each item in the sequence in ascending order using a caller-supplied comparer. The rank is equal to
-	///		index + 1 of the first next different item, the first item has a rank of 1 (index 0 + 1).
+	///		index + 1 of the first element of the item's equality set.
 	/// </summary>
 	/// <typeparam name="TSource">
 	///	    The type of the elements in the source sequence
@@ -63,8 +63,7 @@ public static partial class SuperEnumerable
 
 	///  <summary>
 	/// 	Ranks each item in the sequence in the order defined by <paramref name="sortDirection"/> using a default
-	///		comparer. The rank is equal to index + 1 of the first next different item, the first item has a rank of 1
-	///		(index 0 + 1).
+	///		comparer. The rank is equal to index + 1 of the first element of the item's equality set.
 	///  </summary>
 	///  <typeparam name="TSource">
 	/// 	Type of item in the sequence
@@ -95,8 +94,7 @@ public static partial class SuperEnumerable
 
 	///  <summary>
 	/// 	Ranks each item in the sequence in the order defined by <paramref name="sortDirection"/> using a
-	///		caller-supplied comparer. The rank is equal to index + 1 of the first next different item, the first item
-	///		has a rank of 1 (index 0 + 1).
+	///		caller-supplied comparer. The rank is equal to index + 1 of the first element of the item's equality set.
 	///  </summary>
 	///  <typeparam name="TSource">
 	/// 	The type of the elements in the source sequence

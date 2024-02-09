@@ -225,14 +225,14 @@ public class DenseRankTests
 			},
 			new Person[]
 			{
+				new(Name: "Jes", Age: 30, ExpectedRank: 4),
+				new(Name: "Tim", Age: 23, ExpectedRank: 2),
+				new(Name: "Joe", Age: 23, ExpectedRank: 2),
 				new(Name: "Bob", Age: 11, ExpectedRank: 1),
 				new(Name: "Sam", Age: 11, ExpectedRank: 1),
 				new(Name: "Kim", Age: 11, ExpectedRank: 1),
-				new(Name: "Tim", Age: 23, ExpectedRank: 2),
-				new(Name: "Joe", Age: 23, ExpectedRank: 2),
 				new(Name: "Mel", Age: 28, ExpectedRank: 3),
 				new(Name: "Jim", Age: 28, ExpectedRank: 3),
-				new(Name: "Jes", Age: 30, ExpectedRank: 4),
 			},
 		};
 
