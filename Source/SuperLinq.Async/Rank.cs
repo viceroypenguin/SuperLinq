@@ -3,87 +3,8 @@
 public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
-	/// Ranks each item in the sequence in ascending order using a default comparer,
-	/// with no gaps in the ranking values. The rank of a specific item is one plus 
-	/// the number of distinct rank values that come before that specific item.
-	/// </summary>
-	/// <typeparam name="TSource">Type of item in the sequence</typeparam>
-	/// <param name="source">The sequence whose items will be ranked</param>
-	/// <returns>A sorted sequence of items and their rank.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<(TSource item, int rank)> DenseRank<TSource>(
-		this IAsyncEnumerable<TSource> source)
-	{
-		return source.DenseRankBy(Identity);
-	}
-
-	/// <summary>
-	/// Ranks each item in the sequence in ascending order using a caller-supplied comparer,
-	/// with no gaps in the ranking values. The rank of a specific item is one plus 
-	/// the number of distinct rank values that come before that specific item.
-	/// </summary>
-	/// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
-	/// <param name="source">The sequence of items to rank</param>
-	/// <param name="comparer">A object that defines comparison semantics for the elements in the sequence</param>
-	/// <returns>A sorted sequence of items and their rank.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<(TSource item, int rank)> DenseRank<TSource>(
-		this IAsyncEnumerable<TSource> source, IComparer<TSource> comparer)
-	{
-		return source.DenseRankBy(Identity, comparer);
-	}
-
-	/// <summary>
-	/// Ranks each item in the sequence in ascending order by a specified key
-	/// using a default comparer, with no gaps in the ranking values. The rank 
-	/// of a specific item is one plus the number of distinct rank values that 
-	/// come before that specific item.
-	/// </summary>
-	/// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
-	/// <typeparam name="TKey">The type of the key used to rank items in the sequence</typeparam>
-	/// <param name="source">The sequence of items to rank</param>
-	/// <param name="keySelector">A key selector function which returns the value by which to rank items in the sequence</param>
-	/// <returns>A sorted sequence of items and their rank.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<(TSource item, int rank)> DenseRankBy<TSource, TKey>(
-		this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector)
-	{
-		ArgumentNullException.ThrowIfNull(source);
-		ArgumentNullException.ThrowIfNull(keySelector);
-
-		return RankByImpl(source, keySelector, comparer: null, isDense: true);
-	}
-
-	/// <summary>
-	/// Ranks each item in the sequence in ascending order by a specified key
-	/// using a caller-supplied comparer, with no gaps in the ranking values. 
-	/// The rank  of a specific item is one plus the number of distinct rank 
-	/// values that come before that specific item.
-	/// </summary>
-	/// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
-	/// <typeparam name="TKey">The type of the key used to rank items in the sequence</typeparam>
-	/// <param name="source">The sequence of items to rank</param>
-	/// <param name="keySelector">A key selector function which returns the value by which to rank items in the sequence</param>
-	/// <param name="comparer">An object that defines the comparison semantics for keys used to rank items</param>
-	/// <returns>A sorted sequence of items and their rank.</returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<(TSource item, int rank)> DenseRankBy<TSource, TKey>(
-		this IAsyncEnumerable<TSource> source,
-		Func<TSource, TKey> keySelector,
-		IComparer<TKey> comparer)
-	{
-		ArgumentNullException.ThrowIfNull(source);
-		ArgumentNullException.ThrowIfNull(keySelector);
-
-		return RankByImpl(source, keySelector, comparer, isDense: true);
-	}
-
-	/// <summary>
 	/// Ranks each item in the sequence in ascending order using a default comparer.
-	/// The rank of a specific item is one plus the number of items that come before 
-	/// the first item in the current equivalence set.
+	/// The rank is equal to index + 1 of the first element of the item's equality set.
 	/// </summary>
 	/// <typeparam name="TSource">Type of item in the sequence</typeparam>
 	/// <param name="source">The sequence whose items will be ranked</param>
@@ -97,8 +18,7 @@ public static partial class AsyncSuperEnumerable
 
 	/// <summary>
 	/// Ranks each item in the sequence in ascending order using a caller-supplied comparer.
-	/// The rank of a specific item is one plus the number of items that come before 
-	/// the first item in the current equivalence set.
+	/// The rank is equal to index + 1 of the first element of the item's equality set.
 	/// </summary>
 	/// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
 	/// <param name="source">The sequence of items to rank</param>
@@ -112,57 +32,44 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Ranks each item in the sequence in ascending order by a specified key
-	/// using a default comparer. The rank of a specific item is one plus the 
-	/// number of items that come before the first item in the current equivalence
-	/// set.
+	/// Ranks each item in the sequence in the order defined by <paramref name="sortDirection"/>
+	/// using a default comparer. The rank is equal to index + 1 of the first element of the item's equality set.
 	/// </summary>
-	/// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
-	/// <typeparam name="TKey">The type of the key used to rank items in the sequence</typeparam>
-	/// <param name="source">The sequence of items to rank</param>
-	/// <param name="keySelector">A key selector function which returns the value by which to rank items in the sequence</param>
+	/// <typeparam name="TSource">Type of item in the sequence</typeparam>
+	/// <param name="source">The sequence whose items will be ranked</param>
+	/// <param name="sortDirection">Defines the ordering direction for the sequence</param>
 	/// <returns>A sorted sequence of items and their rank.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<(TSource item, int rank)> RankBy<TSource, TKey>(
-		this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+	public static IAsyncEnumerable<(TSource item, int rank)> Rank<TSource>(
+		this IAsyncEnumerable<TSource> source, OrderByDirection sortDirection)
 	{
-		ArgumentNullException.ThrowIfNull(source);
-		ArgumentNullException.ThrowIfNull(keySelector);
-
-		return RankByImpl(source, keySelector, comparer: null, isDense: false);
+		return source.RankBy(Identity, sortDirection);
 	}
 
 	/// <summary>
-	/// Ranks each item in the sequence in ascending order by a specified key
-	/// using a caller-supplied comparer. The rank of a specific item is one plus the 
-	/// number of items that come before the first item in the current equivalence
-	/// set.
+	/// Ranks each item in the sequence in the order defined by <paramref name="sortDirection"/>
+	/// using a caller-supplied comparer. The rank is equal to index + 1 of the first element of the item's equality set.
 	/// </summary>
 	/// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
-	/// <typeparam name="TKey">The type of the key used to rank items in the sequence</typeparam>
 	/// <param name="source">The sequence of items to rank</param>
-	/// <param name="keySelector">A key selector function which returns the value by which to rank items in the sequence</param>
-	/// <param name="comparer">An object that defines the comparison semantics for keys used to rank items</param>
+	/// <param name="comparer">A object that defines comparison semantics for the elements in the sequence</param>
+	/// <param name="sortDirection">Defines the ordering direction for the sequence</param>
 	/// <returns>A sorted sequence of items and their rank.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<(TSource item, int rank)> RankBy<TSource, TKey>(
+	public static IAsyncEnumerable<(TSource item, int rank)> Rank<TSource>(
 		this IAsyncEnumerable<TSource> source,
-		Func<TSource, TKey> keySelector,
-		IComparer<TKey> comparer)
+		IComparer<TSource> comparer,
+		OrderByDirection sortDirection)
 	{
-		ArgumentNullException.ThrowIfNull(source);
-		ArgumentNullException.ThrowIfNull(keySelector);
-
-		return RankByImpl(source, keySelector, comparer, isDense: false);
+		return source.RankBy(Identity, comparer, sortDirection);
 	}
 
-	private static async IAsyncEnumerable<(TSource, int)> RankByImpl<TSource, TKey>(
+	private static async IAsyncEnumerable<(TSource, int)> RankCore<TSource, TKey>(
 		IAsyncEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
 		IComparer<TKey>? comparer,
 		bool isDense,
+		OrderByDirection sortDirection = OrderByDirection.Ascending,
 		[EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
 		comparer ??= Comparer<TKey>.Default;
@@ -170,7 +77,7 @@ public static partial class AsyncSuperEnumerable
 		var rank = 0;
 		var count = 1;
 		await foreach (var (cur, lag) in source
-			.OrderBy(keySelector, comparer)
+			.OrderBy(keySelector, comparer, sortDirection)
 			.Lag(1)
 			.WithCancellation(cancellationToken)
 			.ConfigureAwait(false))
