@@ -215,14 +215,23 @@ public static partial class SuperEnumerable
 
 	private static IEnumerable<T> ExcludeCore<T>(IEnumerable<T> sequence, Range range)
 	{
-		var index = 0;
+		using var enumerator = sequence.GetEnumerator();
+		var resultQueue = new Queue<T>();
+		while (enumerator.MoveNext())
+			resultQueue.Enqueue(enumerator.Current);
 
-		foreach (var item in sequence)
+		var (startIndex, length) = range.GetOffsetAndLength(resultQueue.Count);
+		var currentIndex = 0;
+		while (resultQueue.TryDequeue(out var element))
 		{
-			if (index < range.Start.Value || index >= range.End.Value)
-				yield return item;
+			if (currentIndex < startIndex)
+				continue;
 
-			index++;
+			if (currentIndex < startIndex + length)
+				continue;
+
+			yield return element;
+			currentIndex++;
 		}
 	}
 }
