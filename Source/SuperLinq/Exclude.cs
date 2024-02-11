@@ -73,18 +73,19 @@ public static partial class SuperEnumerable
 	public static IEnumerable<T> Exclude<T>(this IEnumerable<T> sequence, Range range)
 	{
 		ArgumentNullException.ThrowIfNull(sequence);
-		ArgumentOutOfRangeException.ThrowIfNegative(range.Start.Value);
-		ArgumentOutOfRangeException.ThrowIfNegative(range.End.Value);
 
-		if (range.Start.Value - range.End.Value == 0)
-			return sequence;
-
-		return sequence switch
+		if ((range.Start.IsFromEnd, range.End.IsFromEnd) == (false, false))
 		{
-			IList<T> list => new ExcludeListIterator<T>(list, range),
-			ICollection<T> collection => new ExcludeCollectionIterator<T>(collection, range),
-			_ => ExcludeCore(sequence, range)
-		};
+			return Exclude(sequence, range.Start.Value, range.End.Value - range.Start.Value);
+		}
+
+		if (sequence.TryGetNonEnumeratedCount(out var count))
+		{
+			var (start, length) = range.GetOffsetAndLength(count);
+			return Exclude(sequence, start, length);
+		}
+
+		return ExcludeCore(sequence, range);
 	}
 
 	/// <summary>
