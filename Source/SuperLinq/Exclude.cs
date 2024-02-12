@@ -74,18 +74,27 @@ public static partial class SuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(sequence);
 
-		if ((range.Start.IsFromEnd, range.End.IsFromEnd) == (false, false))
+		var startFromEnd = range.Start.IsFromEnd;
+		var endFromEnd = range.End.IsFromEnd;
+		if ((startFromEnd, endFromEnd) == (false, false))
 		{
 			return Exclude(sequence, range.Start.Value, range.End.Value - range.Start.Value);
 		}
 
-		if (sequence.TryGetNonEnumeratedCount(out var count))
+		if (sequence.TryGetCollectionCount() is int count)
 		{
 			var (start, length) = range.GetOffsetAndLength(count);
 			return Exclude(sequence, start, length);
 		}
 
-		return ExcludeCore(sequence, range);
+		return (startFromEnd, endFromEnd) switch
+		{
+			(false, true) => ExcludeEndFromEnd(sequence, range),
+			(true, false) => ExcludeStartFromEnd(sequence, range),
+			(true, true) when range.Start.Value < range.End.Value =>
+				ThrowHelper.ThrowArgumentOutOfRangeException<IEnumerable<T>>("length"),
+			_ => ExcludeRange(sequence, range),
+		};
 	}
 
 	/// <summary>
@@ -214,25 +223,85 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private static IEnumerable<T> ExcludeCore<T>(IEnumerable<T> sequence, Range range)
+	private static IEnumerable<T> ExcludeRange<T>(IEnumerable<T> sequence, Range range)
 	{
-		using var enumerator = sequence.GetEnumerator();
-		var resultQueue = new Queue<T>();
-		while (enumerator.MoveNext())
-			resultQueue.Enqueue(enumerator.Current);
-
-		var (startIndex, length) = range.GetOffsetAndLength(resultQueue.Count);
-		var currentIndex = 0;
-		while (resultQueue.TryDequeue(out var element))
+		var start = range.Start.Value;
+		var queue = new Queue<T>(start + 1);
+		foreach (var e in sequence)
 		{
-			if (currentIndex < startIndex)
-				continue;
-
-			if (currentIndex < startIndex + length)
-				continue;
-
-			yield return element;
-			currentIndex++;
+			queue.Enqueue(e);
+			if (queue.Count > start)
+				yield return queue.Dequeue();
 		}
+
+		var length = start - range.End.Value;
+		while (length > 0)
+		{
+			if (!queue.TryDequeue(out var _))
+				yield break;
+			length--;
+		}
+
+		while (queue.TryDequeue(out var element))
+			yield return element;
+	}
+
+	private static IEnumerable<T> ExcludeStartFromEnd<T>(IEnumerable<T> sequence, Range range)
+	{
+		var count = 0;
+		var start = range.Start.Value;
+		var queue = new Queue<T>(start + 1);
+		foreach (var e in sequence)
+		{
+			count++;
+			queue.Enqueue(e);
+			if (queue.Count > start)
+				yield return queue.Dequeue();
+		}
+
+		start = range.Start.GetOffset(count);
+		var length = range.End.Value - start;
+
+		while (length > 0)
+		{
+			if (!queue.TryDequeue(out var _))
+				yield break;
+			length--;
+		}
+
+		while (queue.TryDequeue(out var element))
+			yield return element;
+	}
+
+	private static IEnumerable<T> ExcludeEndFromEnd<T>(IEnumerable<T> sequence, Range range)
+	{
+		var count = 0;
+		var start = range.Start.Value;
+		var end = range.End.Value;
+		var queue = new Queue<T>(end + 1);
+		foreach (var e in sequence)
+		{
+			count++;
+			queue.Enqueue(e);
+			if (queue.Count > end)
+			{
+				var el = queue.Dequeue();
+				if (count < start)
+					yield return el;
+			}
+		}
+
+		end = range.End.GetOffset(count);
+		var length = end - start;
+
+		while (length > 0)
+		{
+			if (!queue.TryDequeue(out var _))
+				yield break;
+			length--;
+		}
+
+		while (queue.TryDequeue(out var element))
+			yield return element;
 	}
 }
