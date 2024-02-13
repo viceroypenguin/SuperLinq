@@ -11,8 +11,8 @@ public class PartialSortByTests
 			.Reverse().AsTestingSequence();
 
 		await sequence
-			.PartialSortBy(5, e => e.index)
-			.Select(e => e.item)
+			.PartialSortBy(5, e => e.Index)
+			.Select(e => e.Item)
 			.AssertSequenceEqual(ns.Take(5));
 	}
 
@@ -25,13 +25,13 @@ public class PartialSortByTests
 			.Reverse().AsTestingSequence(maxEnumerations: 5);
 
 		await sequence
-			.PartialSortBy(5, e => e.index, OrderByDirection.Ascending)
-			.Select(e => e.item)
+			.PartialSortBy(5, e => e.Index, OrderByDirection.Ascending)
+			.Select(e => e.Item)
 			.AssertSequenceEqual(ns.Take(5));
 
 		await sequence
-			.PartialSortBy(5, e => e.index, OrderByDirection.Descending)
-			.Select(e => e.item)
+			.PartialSortBy(5, e => e.Index, OrderByDirection.Descending)
+			.Select(e => e.Item)
 			.AssertSequenceEqual(ns.Reverse().Take(5));
 	}
 

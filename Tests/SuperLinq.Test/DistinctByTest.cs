@@ -1,7 +1,6 @@
 ﻿namespace Test;
 
-#pragma warning disable CS0618
-
+[Obsolete("References `DistinctBy` which is obsolete in net6+")]
 public class DistinctByTest
 {
 	[Fact]
@@ -40,5 +39,3 @@ public class DistinctByTest
 		_ = SuperEnumerable.DistinctBy(new BreakingSequence<string>(), BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
 	}
 }
-
-#pragma warning restore CS0618 // Type or member is obsolete

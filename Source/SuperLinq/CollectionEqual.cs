@@ -82,9 +82,12 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(second);
 
 		var cmp = KeyValuePairEqualityComparer.Create<TSource, int>(comparer, valueComparer: null);
-		var firstSet = first.CountBy(Identity, comparer)
-			.ToHashSet(cmp);
-		var secondSet = second.CountBy(Identity, comparer);
+
+#pragma warning disable CS0618 // Type or member is obsolete
+		var firstSet = CountBy(first, Identity, comparer).ToHashSet(cmp);
+		var secondSet = CountBy(second, Identity, comparer);
+#pragma warning restore CS0618 // Type or member is obsolete
+
 		return firstSet.SetEquals(secondSet);
 	}
 }

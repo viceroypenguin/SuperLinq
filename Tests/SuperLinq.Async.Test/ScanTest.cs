@@ -1,7 +1,5 @@
 ﻿namespace Test.Async;
 
-#pragma warning disable CS0618
-
 public class ScanTest
 {
 	[Fact]

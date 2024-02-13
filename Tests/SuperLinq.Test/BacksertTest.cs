@@ -1,7 +1,6 @@
 ﻿namespace Test;
 
-#pragma warning disable CS0618 // Type or member is obsolete
-
+[Obsolete("References `Backsert` which is obsolete in favor of `Insert`")]
 public class BacksertTest
 {
 	[Fact]
@@ -42,5 +41,3 @@ public class BacksertTest
 		Assert.Equal(expected, test1.Backsert(test2, index).ToArray());
 	}
 }
-
-#pragma warning restore CS0618 // Type or member is obsolete
