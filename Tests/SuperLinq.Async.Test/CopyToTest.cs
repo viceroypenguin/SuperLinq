@@ -9,10 +9,10 @@ public class CopyToTest
 	{
 		_ = await Assert.ThrowsAsync<ArgumentNullException>(
 			"source",
-			async () => await default(IAsyncEnumerable<int>)!.CopyTo(Array.Empty<int>()));
+			async () => await default(IAsyncEnumerable<int>)!.CopyTo([]));
 		_ = await Assert.ThrowsAsync<ArgumentNullException>(
 			"source",
-			async () => await default(IAsyncEnumerable<int>)!.CopyTo(Array.Empty<int>(), 1));
+			async () => await default(IAsyncEnumerable<int>)!.CopyTo([], 1));
 		_ = await Assert.ThrowsAsync<ArgumentNullException>(
 			"list",
 			async () => await AsyncSeq<int>().CopyTo(default(int[])!));
@@ -26,14 +26,14 @@ public class CopyToTest
 	{
 		return Assert.ThrowsAsync<ArgumentOutOfRangeException>(
 			"index",
-			async () => await AsyncSeq<int>().CopyTo(Array.Empty<int>(), -1));
+			async () => await AsyncSeq<int>().CopyTo([], -1));
 	}
 
 	[Fact]
 	public Task ThrowsOnTooMuchDataForArray()
 	{
 		return Assert.ThrowsAsync<IndexOutOfRangeException>(
-			async () => await AsyncSeq(1).CopyTo(Array.Empty<int>()));
+			async () => await AsyncSeq(1).CopyTo([]));
 	}
 
 	[Fact]

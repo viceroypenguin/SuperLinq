@@ -12,7 +12,7 @@ public class InsertTest
 	public void InsertWithNegativeIndex()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			 new BreakingSequence<int>().Insert(new[] { 97, 98, 99 }, -1));
+			 new BreakingSequence<int>().Insert([97, 98, 99], -1));
 	}
 
 	public static IEnumerable<object[]> GetSequences()

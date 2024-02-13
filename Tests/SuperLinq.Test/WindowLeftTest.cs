@@ -120,7 +120,7 @@ public partial class WindowLeftTest
 		};
 
 	public static IEnumerable<object[]> GetEmptySequences() =>
-		GetWindowTestSequences(Enumerable.Empty<int>());
+		GetWindowTestSequences([]);
 
 	[Theory]
 	[MemberData(nameof(GetEmptySequences))]

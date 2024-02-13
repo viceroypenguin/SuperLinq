@@ -91,7 +91,7 @@ public static partial class SuperEnumerable
 			return Return(start);
 
 		if (Math.Sign((long)stop - start) != Math.Sign(step))
-			return Enumerable.Empty<int>();
+			return [];
 
 		return new SequenceIterator(start, step, (((long)stop - start) / step) + 1);
 	}

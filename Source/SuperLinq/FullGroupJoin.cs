@@ -225,7 +225,7 @@ public static partial class SuperEnumerable
 				if (alookup.Contains(b.Key))
 					continue;
 				// We can skip the lookup because we are iterating over keys not found in the first sequence
-				yield return resultSelector(b.Key, Enumerable.Empty<TFirst>(), b);
+				yield return resultSelector(b.Key, [], b);
 			}
 		}
 	}

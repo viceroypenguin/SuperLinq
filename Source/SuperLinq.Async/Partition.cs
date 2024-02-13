@@ -83,42 +83,4 @@ public static partial class AsyncSuperEnumerable
 			return resultSelector(lookup[true], lookup[false]);
 		}
 	}
-
-	private static async ValueTask<TResult> PartitionImpl<TKey, TElement, TResult>(
-		IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> source,
-		int count, TKey? key1, TKey? key2, TKey? key3, IEqualityComparer<TKey>? comparer,
-		Func<IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<TElement>, IAsyncEnumerable<IAsyncGrouping<TKey, TElement>>, TResult> resultSelector,
-		CancellationToken cancellationToken)
-	{
-		comparer ??= EqualityComparer<TKey>.Default;
-
-		List<IAsyncGrouping<TKey, TElement>>? etc = null;
-
-		var groups = new[]
-		{
-			AsyncEnumerable.Empty<TElement>(),
-			AsyncEnumerable.Empty<TElement>(),
-			AsyncEnumerable.Empty<TElement>(),
-		};
-
-		await foreach (var e in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-		{
-			var i = count > 0 && comparer.Equals(e.Key, key1) ? 0
-				  : count > 1 && comparer.Equals(e.Key, key2) ? 1
-				  : count > 2 && comparer.Equals(e.Key, key3) ? 2
-				  : -1;
-
-			if (i < 0)
-			{
-				etc ??= new List<IAsyncGrouping<TKey, TElement>>();
-				etc.Add(e);
-			}
-			else
-			{
-				groups[i] = e;
-			}
-		}
-
-		return resultSelector(groups[0], groups[1], groups[2], etc?.ToAsyncEnumerable() ?? AsyncEnumerable.Empty<IAsyncGrouping<TKey, TElement>>());
-	}
 }
