@@ -33,7 +33,7 @@ public class CopyToTest
 	public Task ThrowsOnTooMuchDataForArray()
 	{
 		return Assert.ThrowsAsync<IndexOutOfRangeException>(
-			async () => await AsyncSeq(1).CopyTo([]));
+			async () => await AsyncSeq(1).CopyTo(Array.Empty<int>()));
 	}
 
 	[Fact]
