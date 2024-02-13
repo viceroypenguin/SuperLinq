@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Test.Async;
 
@@ -30,10 +31,15 @@ public class CopyToTest
 	}
 
 	[Fact]
+	[SuppressMessage(
+		"Style",
+		"IDE0301:Simplify collection initialization",
+		Justification = "`[]` uses a list by default."
+	)]
 	public Task ThrowsOnTooMuchDataForArray()
 	{
 		return Assert.ThrowsAsync<IndexOutOfRangeException>(
-			async () => await AsyncSeq(1).CopyTo([]));
+			async () => await AsyncSeq(1).CopyTo(Array.Empty<int>()));
 	}
 
 	[Fact]
