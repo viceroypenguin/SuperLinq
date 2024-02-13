@@ -28,7 +28,7 @@ public class AggregateByTest
 			seedSelector: x => 0,
 			func: (x, y) => x + y,
 			comparer: null,
-			expected: Enumerable.Empty<KeyValuePair<int, int>>());
+			expected: []);
 
 		yield return WrapArgs(
 			source: Enumerable.Range(0, 10),
@@ -134,7 +134,7 @@ public class AggregateByTest
 			});
 
 		static object?[] WrapArgs<TSource, TKey, TAccumulate>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, TAccumulate> seedSelector, Func<TAccumulate, TSource, TAccumulate> func, IEqualityComparer<TKey>? comparer, IEnumerable<KeyValuePair<TKey, TAccumulate>> expected)
-			=> new object?[] { source, keySelector, seedSelector, func, comparer, expected };
+			=> [source, keySelector, seedSelector, func, comparer, expected];
 	}
 
 	[Fact]
@@ -154,8 +154,8 @@ public class AggregateByTest
 				i => i % 2 == 0)
 			.ToDictionaryAsync(x => x.Key, x => x.Value);
 
-		Assert.True(oddsEvens[true].CollectionEqual(new[] { 2, 4, }));
-		Assert.True(oddsEvens[false].CollectionEqual(new[] { 1, 3, }));
+		Assert.True(oddsEvens[true].CollectionEqual([2, 4,]));
+		Assert.True(oddsEvens[false].CollectionEqual([1, 3,]));
 	}
 
 	[Fact]

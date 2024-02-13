@@ -152,12 +152,12 @@ public static partial class SuperEnumerable
 		return table;
 	}
 
-	private static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
+	private static IEnumerable<MemberInfo> PrepareMemberInfos<T>(Expression<Func<T, object>>[] expressions)
 	{
 		//
 		// If no lambda expressions supplied then reflect them off the source element type.
 		//
-		if (expressions.Count == 0)
+		if (expressions.Length == 0)
 		{
 			return typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
 				.Where(m => m.MemberType == MemberTypes.Field

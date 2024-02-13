@@ -129,7 +129,7 @@ public class BatchTest
 		};
 
 	public static IEnumerable<object[]> GetEmptySequences() =>
-		GetBatchTestSequences(Enumerable.Empty<int>());
+		GetBatchTestSequences([]);
 
 	[Theory]
 	[MemberData(nameof(GetEmptySequences))]

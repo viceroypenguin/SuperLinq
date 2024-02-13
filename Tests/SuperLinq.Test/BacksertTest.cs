@@ -14,7 +14,7 @@ public class BacksertTest
 	public void BacksertWithNegativeIndex()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			 new BreakingSequence<int>().Backsert(new[] { 97, 98, 99 }, -1));
+			 new BreakingSequence<int>().Backsert([97, 98, 99], -1));
 	}
 
 	[Theory]

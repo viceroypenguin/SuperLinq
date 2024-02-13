@@ -28,7 +28,7 @@ public class AggregateByTest
 			seedSelector: x => 0,
 			func: (x, y) => x + y,
 			comparer: null,
-			expected: Enumerable.Empty<KeyValuePair<int, int>>());
+			expected: []);
 
 		yield return WrapArgs(
 			source: Enumerable.Range(0, 10),
@@ -134,7 +134,7 @@ public class AggregateByTest
 			});
 
 		static object?[] WrapArgs<TSource, TKey, TAccumulate>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, TAccumulate> seedSelector, Func<TAccumulate, TSource, TAccumulate> func, IEqualityComparer<TKey>? comparer, IEnumerable<KeyValuePair<TKey, TAccumulate>> expected)
-			=> new object?[] { source, keySelector, seedSelector, func, comparer, expected };
+			=> [source, keySelector, seedSelector, func, comparer, expected];
 	}
 
 	[Fact]

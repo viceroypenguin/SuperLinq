@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Test;
 
@@ -11,16 +12,16 @@ public class CopyToTest
 	{
 		_ = Assert.Throws<ArgumentNullException>(
 			"source",
-			() => default(IEnumerable<int>)!.CopyTo(Array.Empty<int>()));
+			() => default(IEnumerable<int>)!.CopyTo((int[])[]));
 		_ = Assert.Throws<ArgumentNullException>(
 			"source",
 			() => default(IEnumerable<int>)!.CopyTo((IList<int>)[]));
 		_ = Assert.Throws<ArgumentNullException>(
 			"source",
-			() => default(IEnumerable<int>)!.CopyTo(Array.Empty<int>(), 1));
+			() => default(IEnumerable<int>)!.CopyTo([], 1));
 		_ = Assert.Throws<ArgumentNullException>(
 			"source",
-			() => default(IEnumerable<int>)!.CopyTo(Array.Empty<int>().AsSpan()));
+			() => default(IEnumerable<int>)!.CopyTo([]));
 		_ = Assert.Throws<ArgumentNullException>(
 			"array",
 			() => Seq<int>().CopyTo(default(int[])!));
@@ -37,7 +38,7 @@ public class CopyToTest
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(
 			"index",
-			() => Seq<int>().CopyTo(Array.Empty<int>(), -1));
+			() => Seq<int>().CopyTo([], -1));
 	}
 
 	[Fact]
@@ -52,9 +53,13 @@ public class CopyToTest
 	}
 
 	[Fact]
+	[SuppressMessage(
+		"Style",
+		"IDE0301:Simplify collection initialization",
+		Justification = "`[]` uses a list by default."
+	)]
 	public void ThrowsOnTooMuchDataForIListArray()
 	{
-#pragma warning disable IDE0301 // Simplify collection initialization
 		_ = Assert.ThrowsAny<ArgumentException>(
 			() => Seq(1).CopyTo((IList<int>)Array.Empty<int>()));
 		_ = Assert.ThrowsAny<ArgumentException>(
@@ -63,7 +68,6 @@ public class CopyToTest
 			() => new List<int> { 1 }.AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
 		_ = Assert.ThrowsAny<ArgumentException>(
 			() => new List<int> { 1 }.AsReadOnly().AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
-#pragma warning restore IDE0301 // Simplify collection initialization
 	}
 
 	[Fact]

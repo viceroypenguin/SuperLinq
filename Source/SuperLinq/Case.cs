@@ -42,7 +42,7 @@ public static partial class SuperEnumerable
 		IDictionary<TValue, IEnumerable<TResult>> sources)
 		where TValue : notnull
 	{
-		return Case(selector, sources, Enumerable.Empty<TResult>());
+		return Case(selector, sources, []);
 	}
 
 	/// <summary>

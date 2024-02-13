@@ -76,7 +76,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// </summary>
 	public UpdatablePriorityQueue()
 	{
-		_nodes = Array.Empty<(TElement, TPriority)>();
+		_nodes = [];
 		_priorityComparer = InitializeComparer(comparer: null);
 		_elementIndex = new(_elementComparer = EqualityComparer<TElement>.Default);
 	}
@@ -104,7 +104,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// </param>
 	public UpdatablePriorityQueue(IComparer<TPriority>? priorityComparer)
 	{
-		_nodes = Array.Empty<(TElement, TPriority)>();
+		_nodes = [];
 		_priorityComparer = InitializeComparer(priorityComparer);
 		_elementIndex = new(_elementComparer = EqualityComparer<TElement>.Default);
 	}
@@ -119,7 +119,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// </param>
 	public UpdatablePriorityQueue(IEqualityComparer<TElement>? elementComparer)
 	{
-		_nodes = Array.Empty<(TElement, TPriority)>();
+		_nodes = [];
 		_priorityComparer = InitializeComparer(comparer: null);
 		_elementComparer = elementComparer ?? EqualityComparer<TElement>.Default;
 		_elementIndex = new(_elementComparer);

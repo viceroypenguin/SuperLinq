@@ -21,15 +21,10 @@ public class ToDataTableTest
 		}
 	}
 
-	private readonly IReadOnlyCollection<TestObject> _testObjects;
-
-	public ToDataTableTest()
-	{
-		_testObjects = Enumerable
-			.Range(0, 3)
-			.Select(i => new TestObject(i))
-			.ToArray();
-	}
+	private readonly TestObject[] _testObjects = Enumerable
+		.Range(0, 3)
+		.Select(i => new TestObject(i))
+		.ToArray();
 
 	[Fact]
 	public void ToDataTableTableWithWrongColumnNames()
@@ -106,7 +101,7 @@ public class ToDataTableTest
 	{
 		using var xs = _testObjects.AsTestingSequence();
 		using var dt = xs.ToDataTable();
-		Assert.Equal(_testObjects.Count, dt.Rows.Count);
+		Assert.Equal(_testObjects.Length, dt.Rows.Count);
 	}
 
 	[Fact]
