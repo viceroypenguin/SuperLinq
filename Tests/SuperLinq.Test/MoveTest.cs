@@ -202,4 +202,20 @@ public class MoveTest
 		var result = source.Move(1..4, ^3);
 		result.AssertSequenceEqual([0, 4, 1, 2, 3, 5, 6, 7]);
 	}
+
+	[Fact]
+	public void MoveRangeWithRangeEndFromEnd_Forward()
+	{
+		using var source = Enumerable.Range(0, 8).AsTestingSequence();
+		var result = source.Move(1..^4, 2);
+		result.AssertSequenceEqual([0, 4, 1, 2, 3, 5, 6, 7]);
+	}
+
+	[Fact]
+	public void MoveRangeWithRangeEndFromEnd_Backward()
+	{
+		using var source = Enumerable.Range(0, 8).AsTestingSequence();
+		var result = source.Move(1..^4, 0);
+		result.AssertSequenceEqual([1, 2, 3, 0, 4, 5, 6, 7]);
+	}
 }

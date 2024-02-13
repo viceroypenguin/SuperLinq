@@ -126,15 +126,11 @@ public static partial class SuperEnumerable
 		}
 		else
 		{
-			int startIndex;
-			int endIndex;
-			int toIndex;
-
 			if (source.TryGetCollectionCount() is int count)
 			{
-				startIndex = range.Start.GetOffset(count);
-				endIndex = range.End.GetOffset(count);
-				toIndex = to.GetOffset(count);
+				var startIndex = range.Start.GetOffset(count);
+				var endIndex = range.End.GetOffset(count);
+				var toIndex = to.GetOffset(count);
 				yield return (T)Move(source, startIndex, endIndex - startIndex, toIndex);
 			}
 			else
@@ -142,6 +138,7 @@ public static partial class SuperEnumerable
 				switch ((range.Start.IsFromEnd, range.End.IsFromEnd, to.IsFromEnd))
 				{
 					case (false, false, true):
+						// TODO: Does not work for moving ranges to an earlier position
 						using (var e = source.GetEnumerator())
 						{
 							if (!e.MoveNext())
@@ -189,12 +186,67 @@ public static partial class SuperEnumerable
 						yield break;
 					case (false, true, false):
 						// [4, 5, 2, 4, 1, §, 5] Move(1..^4, 2)
+						using (var e = source.GetEnumerator())
+						{
+							// TODO: Does not work for moving ranges to an earlier position
+							if (!e.MoveNext())
+							{
+								yield break;
+							}
+							count = 1;
+							// [a0, a2, a3, a4, a5, a6][b0, b1, b2, b3]
+							var toMove = new Queue<T>();
+							var b = new Queue<T>(range.End.Value);
+							var min = Math.Min(range.Start.Value, to.Value);
+							b.Enqueue(e.Current);
+
+							while (e.MoveNext())
+							{
+								if (count <= min)
+								{
+									yield return b.Dequeue();
+								}
+								else
+								{
+									if (count - min >= range.End.Value)
+									{
+										toMove.Enqueue(b.Dequeue());
+									}
+								}
+								b.Enqueue(e.Current);
+								checked
+								{
+									++count;
+								}
+							}
+
+							var dir = range.Start.Value - to.Value;
+							for (; dir < 0; dir++)
+								yield return b.Dequeue();
+
+							var tmpQ = new Queue<T>(dir);
+							for (; dir > 0; dir--)
+							{
+								tmpQ.Enqueue(toMove.Dequeue());
+							}
+
+							while (toMove.TryDequeue(out var el))
+								yield return el;
+
+							while (tmpQ.TryDequeue(out var el))
+								yield return el;
+
+							while (b.TryDequeue(out var el))
+								yield return el;
+						}
 						break;
 					case (false, true, true):
 						// [4, 5, 2, 4, 1, §, 5] Move(1..^4, ^2)
+						// Optimisitc approach - yield elements until start.
 						break;
 					case (true, false, false):
 						// [4, 5, 2, 4, 1, §, 5] Move(^5..4, 2)
+
 						break;
 					case (true, false, true):
 						// [4, 5, 2, 4, 1, §, 5] Move(^5..4, ^2)
@@ -202,11 +254,9 @@ public static partial class SuperEnumerable
 					case (true, true, false):
 						if (range.End.Value > range.Start.Value)
 						{
+							// Invalid range provided
 							yield break;
 						}
-						// [4, 5, 2, 4, 1, §, 5] Move(^5..^2, 4)
-						// Cannot yield any elements until count is known.
-						// Once count is known, can proceed to yield elements
 						break;
 					case (true, true, true):
 						// [4, 5, 2, 4, 1, §, 5] Move(^5..^3, ^2)
