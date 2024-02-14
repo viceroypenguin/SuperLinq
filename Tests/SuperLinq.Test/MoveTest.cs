@@ -196,11 +196,19 @@ public class MoveTest
 	}
 
 	[Fact]
-	public void MoveRangeFromEndIndex()
+	public void MoveRangeFromEndIndex_Forward()
 	{
 		using var source = Enumerable.Range(0, 8).AsTestingSequence();
 		var result = source.Move(1..4, ^3);
 		result.AssertSequenceEqual([0, 4, 1, 2, 3, 5, 6, 7]);
+	}
+
+	[Fact]
+	public void MoveRangeFromEndIndex_Backward()
+	{
+		using var source = Enumerable.Range(0, 10).AsTestingSequence();
+		var result = source.Move(3..4, ^9);
+		result.AssertSequenceEqual([0, 3, 1, 2, 4, 5, 6, 7, 8, 9]);
 	}
 
 	[Fact]

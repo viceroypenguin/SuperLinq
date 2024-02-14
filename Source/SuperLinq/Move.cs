@@ -138,7 +138,6 @@ public static partial class SuperEnumerable
 				switch ((range.Start.IsFromEnd, range.End.IsFromEnd, to.IsFromEnd))
 				{
 					case (false, false, true):
-						// TODO: Does not work for moving ranges to an earlier position
 						using (var e = source.GetEnumerator())
 						{
 							if (!e.MoveNext())
@@ -174,14 +173,28 @@ public static partial class SuperEnumerable
 									}
 								}
 							}
-							while (move.TryDequeue(out var element))
+
+							var preQSize = range.Start.Value - to.GetOffset(count);
+							var preQ = new Queue<T>(Math.Abs(preQSize));
+							for (var i = 0; i < preQSize; i++)
+								preQ.Enqueue(buffer.Dequeue());
+
+							if (move.Count == 0)
 							{
-								yield return element;
+								for (var i = 0; i < moveCap && buffer.TryDequeue(out var el); i++)
+									yield return el;
 							}
+							else
+							{
+								while (move.TryDequeue(out var element))
+									yield return element;
+							}
+
+							while (preQ.TryDequeue(out var el))
+								yield return el;
+
 							while (buffer.TryDequeue(out var element))
-							{
 								yield return element;
-							}
 						}
 						yield break;
 					case (false, true, false):
