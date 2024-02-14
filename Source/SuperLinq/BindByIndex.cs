@@ -89,7 +89,7 @@ public static partial class SuperEnumerable
 		static IEnumerable<TResult> Core(IEnumerable<TSource> source, IEnumerable<int> indices, Func<TSource, int, TResult> resultSelector, Func<int, TResult> missingSelector)
 		{
 			// keeps track of the order of indices to know what order items should be output in
-			var lookup = indices.Index().ToDictionary(x => { ArgumentOutOfRangeException.ThrowIfNegative(x.item, nameof(indices)); return x.item; }, x => x.index);
+			var lookup = indices.Index().ToDictionary(x => { ArgumentOutOfRangeException.ThrowIfNegative(x.Item, nameof(indices)); return x.Item; }, x => x.Index);
 			// keep track of items out of output order
 			var lookback = new Dictionary<int, TSource>();
 

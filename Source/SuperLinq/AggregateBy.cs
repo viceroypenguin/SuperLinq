@@ -45,12 +45,22 @@ public static partial class SuperEnumerable
 	///	    immediately when the sequence is first enumerated.
 	/// </para>
 	/// </remarks>
+#if NET9_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static IEnumerable<KeyValuePair<TKey, TAccumulate>> AggregateBy<TSource, TKey, TAccumulate>(
+		IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		TAccumulate seed,
+		Func<TAccumulate, TSource, TAccumulate> func,
+		IEqualityComparer<TKey>? comparer = null) where TKey : notnull
+#else
 	public static IEnumerable<KeyValuePair<TKey, TAccumulate>> AggregateBy<TSource, TKey, TAccumulate>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
 		TAccumulate seed,
 		Func<TAccumulate, TSource, TAccumulate> func,
 		IEqualityComparer<TKey>? comparer = null) where TKey : notnull
+#endif
 	{
 		return AggregateBy(source, keySelector, _ => seed, func, comparer);
 	}
@@ -98,12 +108,22 @@ public static partial class SuperEnumerable
 	///	    immediately when the sequence is first enumerated.
 	/// </para>
 	/// </remarks>
+#if NET9_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static IEnumerable<KeyValuePair<TKey, TAccumulate>> AggregateBy<TSource, TKey, TAccumulate>(
+		IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		Func<TKey, TAccumulate> seedSelector,
+		Func<TAccumulate, TSource, TAccumulate> func,
+		IEqualityComparer<TKey>? comparer = null) where TKey : notnull
+#else
 	public static IEnumerable<KeyValuePair<TKey, TAccumulate>> AggregateBy<TSource, TKey, TAccumulate>(
 		this IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
 		Func<TKey, TAccumulate> seedSelector,
 		Func<TAccumulate, TSource, TAccumulate> func,
 		IEqualityComparer<TKey>? comparer = null) where TKey : notnull
+#endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);

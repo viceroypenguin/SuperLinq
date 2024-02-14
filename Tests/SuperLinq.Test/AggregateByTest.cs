@@ -3,6 +3,7 @@
 
 namespace Test;
 
+[Obsolete("References `DistinctBy` which is obsolete in net9+")]
 public class AggregateByTest
 {
 	[Theory]
@@ -16,7 +17,8 @@ public class AggregateByTest
 		IEnumerable<KeyValuePair<TKey, TAccumulate>> expected) where TKey : notnull
 	{
 		using var ts = source.AsTestingSequence();
-		ts.AggregateBy(keySelector, seedSelector, func, comparer)
+		SuperEnumerable
+			.AggregateBy(ts, keySelector, seedSelector, func, comparer)
 			.AssertCollectionEqual(expected);
 	}
 
@@ -142,7 +144,8 @@ public class AggregateByTest
 	{
 		static IEnumerable<KeyValuePair<TKey, List<TSource>>> GroupBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 			where TKey : notnull =>
-			source.AggregateBy(
+			SuperEnumerable.AggregateBy(
+				source,
 				keySelector,
 				seedSelector: _ => new List<TSource>(),
 				(group, element) => { group.Add(element); return group; });
@@ -163,7 +166,8 @@ public class AggregateByTest
 	{
 		static IEnumerable<KeyValuePair<TKey, long>> LongCountBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 			where TKey : notnull =>
-			source.AggregateBy(
+			SuperEnumerable.AggregateBy(
+				source,
 				keySelector,
 				seed: 0L,
 				(count, _) => ++count);
@@ -191,8 +195,9 @@ public class AggregateByTest
 			("1", 10),
 			("0", 25));
 
-		var scores = data
+		var scores = SuperEnumerable
 			.AggregateBy(
+				data,
 				keySelector: entry => entry.id,
 				seed: 0,
 				(totalScore, curr) => totalScore + curr.score)
