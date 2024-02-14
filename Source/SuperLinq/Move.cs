@@ -185,16 +185,14 @@ public static partial class SuperEnumerable
 						}
 						yield break;
 					case (false, true, false):
-						// [4, 5, 2, 4, 1, §, 5] Move(1..^4, 2)
 						using (var e = source.GetEnumerator())
 						{
-							// TODO: Does not work for moving ranges to an earlier position
 							if (!e.MoveNext())
 							{
 								yield break;
 							}
+
 							count = 1;
-							// [a0, a2, a3, a4, a5, a6][b0, b1, b2, b3]
 							var toMove = new Queue<T>();
 							var b = new Queue<T>(range.End.Value);
 							var min = Math.Min(range.Start.Value, to.Value);
@@ -224,7 +222,7 @@ public static partial class SuperEnumerable
 							for (; dir < 0; dir++)
 								yield return b.Dequeue();
 
-							var tmpQ = new Queue<T>(dir);
+							var tmpQ = new Queue<T>(Math.Abs(dir));
 							for (; dir > 0; dir--)
 							{
 								tmpQ.Enqueue(toMove.Dequeue());
