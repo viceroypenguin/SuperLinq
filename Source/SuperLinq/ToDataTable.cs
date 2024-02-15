@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -30,6 +31,8 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	///	    This operator uses immediate execution.
 	/// </remarks>
+	[RequiresUnreferencedCode("`ToDataTable` does not support Trimming")]
+	[RequiresDynamicCode("`ToDataTable` does not support AOT")]
 	public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
 		where TTable : DataTable
 	{
@@ -59,6 +62,8 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	///	    This operator uses immediate execution.
 	/// </remarks>
+	[RequiresUnreferencedCode("`ToDataTable` does not support Trimming")]
+	[RequiresDynamicCode("`ToDataTable` does not support AOT")]
 	public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object>>[] expressions)
 	{
 		return ToDataTable(source, new DataTable(), expressions);
@@ -82,6 +87,8 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	///	    This operator uses immediate execution.
 	/// </remarks>
+	[RequiresUnreferencedCode("`ToDataTable` does not support Trimming")]
+	[RequiresDynamicCode("`ToDataTable` does not support AOT")]
 	public static DataTable ToDataTable<T>(this IEnumerable<T> source)
 	{
 		return ToDataTable(source, new DataTable(), []);
@@ -117,6 +124,8 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	///	    This operator uses immediate execution.
 	/// </remarks>
+	[RequiresUnreferencedCode("`ToDataTable` does not support Trimming")]
+	[RequiresDynamicCode("`ToDataTable` does not support AOT")]
 	public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
 		where TTable : DataTable
 	{
@@ -152,7 +161,11 @@ public static partial class SuperEnumerable
 		return table;
 	}
 
-	private static IEnumerable<MemberInfo> PrepareMemberInfos<T>(Expression<Func<T, object>>[] expressions)
+	[RequiresUnreferencedCode("`ToDataTable` does not support Trimming")]
+	[RequiresDynamicCode("`ToDataTable` does not support AOT")]
+	private static IEnumerable<MemberInfo> PrepareMemberInfos<T>(
+		Expression<Func<T, object>>[] expressions
+	)
 	{
 		//
 		// If no lambda expressions supplied then reflect them off the source element type.
@@ -160,8 +173,10 @@ public static partial class SuperEnumerable
 		if (expressions.Length == 0)
 		{
 			return typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
-				.Where(m => m.MemberType == MemberTypes.Field
-					  || (m is PropertyInfo { CanRead: true } p && p.GetIndexParameters().Length == 0));
+				.Where(m =>
+					m.MemberType == MemberTypes.Field
+					|| (m is PropertyInfo { CanRead: true } p && p.GetIndexParameters().Length == 0)
+				);
 		}
 		else
 		{
@@ -193,7 +208,8 @@ public static partial class SuperEnumerable
 	/// The resulting array may contain null entries and those represent
 	/// columns for which there is no source member supplying a value.
 	/// </remarks>
-
+	[RequiresUnreferencedCode("`ToDataTable` does not support Trimming")]
+	[RequiresDynamicCode("`ToDataTable` does not support AOT")]
 	private static MemberInfo[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
 	{
 		//
@@ -203,19 +219,23 @@ public static partial class SuperEnumerable
 
 		var columns = table.Columns;
 
-		var schemas = from m in members
-					  let type = m.MemberType == MemberTypes.Property
-							   ? ((PropertyInfo)m).PropertyType
-							   : ((FieldInfo)m).FieldType
-					  select new
-					  {
-						  Member = m,
-						  Type = type.IsGenericType
-								 && typeof(Nullable<>) == type.GetGenericTypeDefinition()
-							   ? type.GetGenericArguments()[0]
-							   : type,
-						  Column = columns[m.Name],
-					  };
+		var schemas = members
+			.Select(m =>
+			{
+				var type = m.MemberType == MemberTypes.Property
+					? ((PropertyInfo)m).PropertyType
+					: ((FieldInfo)m).FieldType;
+
+				return (
+					Member: m,
+					Type:
+						type.IsGenericType
+							&& type.GetGenericTypeDefinition() == typeof(Nullable<>)
+						? type.GetGenericArguments()[0]
+						: type,
+					Column: columns[m.Name]
+				);
+			});
 
 		//
 		// If the table has no columns then build the schema.
@@ -225,7 +245,9 @@ public static partial class SuperEnumerable
 
 		if (columns.Count == 0)
 		{
-			columns.AddRange(schemas.Select(m => new DataColumn(m.Member.Name, m.Type)).ToArray());
+			columns.AddRange(
+				schemas.Select(m => new DataColumn(m.Member.Name, m.Type)).ToArray()
+			);
 		}
 		else
 		{
@@ -249,6 +271,8 @@ public static partial class SuperEnumerable
 		return members;
 	}
 
+	[RequiresUnreferencedCode("`ToDataTable` does not support Trimming")]
+	[RequiresDynamicCode("`ToDataTable` does not support AOT")]
 	private static Func<T, object[]> CreateShredder<T>(IEnumerable<MemberInfo> members)
 	{
 		var parameter = Expression.Parameter(typeof(T), "e");
@@ -259,12 +283,13 @@ public static partial class SuperEnumerable
 		// row values array.
 		//
 
-		var initializers = members.Select(m => m != null
-											   ? (Expression)CreateMemberAccessor(m)
-											   : Expression.Constant(null, typeof(object)));
+		var initializers = members
+			.Select(m => m != null
+				? (Expression)CreateMemberAccessor(m)
+				: Expression.Constant(null, typeof(object))
+			);
 
 		var array = Expression.NewArrayInit(typeof(object), initializers);
-
 		var lambda = Expression.Lambda<Func<T, object[]>>(array, parameter);
 
 		return lambda.Compile();
