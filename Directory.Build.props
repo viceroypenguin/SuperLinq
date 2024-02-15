@@ -12,8 +12,7 @@
 		<AnalysisLevel>latest-all</AnalysisLevel>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 
-		<!-- Don't care that PolySharp has nothing to do on net7... -->
-		<NoWarn>CS8033;$(NoWarn)</NoWarn>
+		<PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
 
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
