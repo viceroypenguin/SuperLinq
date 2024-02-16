@@ -112,4 +112,25 @@ public static partial class SuperEnumerable
 				: resultSelector(many, default);
 		}
 	}
+
+	/// <summary>
+	///	    Returns a single value if the sequence is 1 element long, otherwise returns default.
+	/// </summary>
+	/// <typeparam name="TSource">
+	///	    The type of the elements of <paramref name="source"/>.
+	/// </typeparam>
+	/// <returns>
+	///	    The value returned by <paramref name="source"/>.
+	/// </returns>
+	/// 	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <remarks>
+	///	    Alternatively, you can use source.SingleOrDefault();
+	/// </remarks>
+	public static TSource? TrySingle<TSource>(this IEnumerable<TSource> source)
+	{
+		return source.SingleOrDefault();
+	}
+
 }
