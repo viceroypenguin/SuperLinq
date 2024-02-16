@@ -68,8 +68,8 @@ public class EquiZipTest
 	{
 		return new List<object[]>
 		{
-			new object[] { Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2), Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2), },
-			new object[] { Enumerable.Range(1, 3).ToList(), Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2), },
+			new object[] { Enumerable.Range(1, 3).AsTestingSequence(), Enumerable.Range(1, 3).AsTestingSequence(), },
+			new object[] { Enumerable.Range(1, 3).ToList(), Enumerable.Range(1, 3).AsTestingSequence(), },
 			new object[] { Enumerable.Range(1, 3).AsBreakingList(), Enumerable.Range(1, 3).AsBreakingList(), },
 		};
 	}
@@ -100,7 +100,7 @@ public class EquiZipTest
 			parameters.Add(
 				[first.AsBreakingList(), second.AsBreakingList(), s_cardinals[i + 1],]);
 			parameters.Add(
-				[first.AsTestingSequence(maxEnumerations: 2), second.AsTestingSequence(maxEnumerations: 2), s_cardinals[i + 1],]);
+				[first.AsTestingSequence(), second.AsTestingSequence(), s_cardinals[i + 1],]);
 #pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
@@ -163,21 +163,21 @@ public class EquiZipTest
 		{
 			new object[]
 			{
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
 			},
 			new object[]
 			{
 				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
 			},
 			new object[]
 			{
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(),
 			},
 			new object[]
 			{
@@ -222,9 +222,9 @@ public class EquiZipTest
 				]);
 			parameters.Add(
 				[
-					first.AsTestingSequence(maxEnumerations: 2),
-					second.AsTestingSequence(maxEnumerations: 2),
-					third.AsTestingSequence(maxEnumerations: 2),
+					first.AsTestingSequence(),
+					second.AsTestingSequence(),
+					third.AsTestingSequence(),
 					s_cardinals[i + 1],
 				]);
 #pragma warning restore CA2000 // Dispose objects before losing scope
@@ -293,31 +293,31 @@ public class EquiZipTest
 		{
 			new object[]
 			{
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
 			},
 			new object[]
 			{
 				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-			},
-			new object[]
-			{
-				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
 			},
 			new object[]
 			{
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+			},
+			new object[]
+			{
 				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
 			},
 			new object[]
 			{
@@ -366,10 +366,10 @@ public class EquiZipTest
 				]);
 			parameters.Add(
 				[
-					first.AsTestingSequence(maxEnumerations: 2),
-					second.AsTestingSequence(maxEnumerations: 2),
-					third.AsTestingSequence(maxEnumerations: 2),
-					fourth.AsTestingSequence(maxEnumerations: 2),
+					first.AsTestingSequence(),
+					second.AsTestingSequence(),
+					third.AsTestingSequence(),
+					fourth.AsTestingSequence(),
 					s_cardinals[i + 1],
 				]);
 #pragma warning restore CA2000 // Dispose objects before losing scope

@@ -22,8 +22,8 @@ public class InsertTest
 
 		return new List<object[]>
 		{
-			new object[] { baseSeq.AsTestingSequence(maxEnumerations: 2), insSeq.AsTestingSequence(maxEnumerations: 2), },
-			new object[] { baseSeq.AsTestingCollection(maxEnumerations: 2), insSeq.AsTestingCollection(maxEnumerations: 2), },
+			new object[] { baseSeq.AsTestingSequence(), insSeq.AsTestingSequence(), },
+			new object[] { baseSeq.AsTestingCollection(), insSeq.AsTestingCollection(), },
 			new object[] { baseSeq.AsBreakingList(), insSeq.AsBreakingList(), },
 		};
 	}

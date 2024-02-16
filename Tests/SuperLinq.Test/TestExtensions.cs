@@ -113,7 +113,7 @@ internal static partial class TestExtensions
 	#region Testing Sequence Generation
 	internal static IEnumerable<IDisposableEnumerable<T>> GetTestingSequence<T>(
 		this IEnumerable<T> input,
-		int maxEnumerations = 2
+		int maxEnumerations = 1
 	)
 	{
 		// UI will consume one enumeration
@@ -123,29 +123,29 @@ internal static partial class TestExtensions
 	internal static IEnumerable<IDisposableEnumerable<T>> GetCollectionSequences<T>(this IEnumerable<T> input)
 	{
 		// UI will consume one enumeration
-		yield return input.AsTestingSequence(maxEnumerations: 2);
-		yield return input.AsTestingCollection(maxEnumerations: 2);
+		yield return input.AsTestingSequence();
+		yield return input.AsTestingCollection();
 	}
 
 	internal static IEnumerable<IDisposableEnumerable<T>> GetBreakingCollectionSequences<T>(this IEnumerable<T> input)
 	{
 		// UI will consume one enumeration
-		yield return input.AsTestingSequence(maxEnumerations: 2);
+		yield return input.AsTestingSequence();
 		yield return input.AsBreakingCollection();
 	}
 
 	internal static IEnumerable<IDisposableEnumerable<T>> GetListSequences<T>(this IEnumerable<T> input)
 	{
 		// UI will consume one enumeration
-		yield return input.AsTestingSequence(maxEnumerations: 2);
+		yield return input.AsTestingSequence();
 		yield return new BreakingList<T>(input);
 	}
 
 	internal static IEnumerable<IDisposableEnumerable<T>> GetAllSequences<T>(this IEnumerable<T> input)
 	{
 		// UI will consume one enumeration
-		yield return input.AsTestingSequence(maxEnumerations: 2);
-		yield return input.AsTestingCollection(maxEnumerations: 2);
+		yield return input.AsTestingSequence();
+		yield return input.AsTestingCollection();
 		yield return input.AsBreakingList();
 	}
 	#endregion
