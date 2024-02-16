@@ -132,5 +132,4 @@ public static partial class SuperEnumerable
 	{
 		return source.SingleOrDefault();
 	}
-
 }
