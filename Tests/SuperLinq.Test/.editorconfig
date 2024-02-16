@@ -15,3 +15,4 @@ dotnet_diagnostic.CS1712.severity = none                # CS1712: Type parameter
 # xUnit errors
 dotnet_diagnostic.xUnit1008.severity = error			# xUnit1008: Test data attribute should only be used on a Theory
 dotnet_diagnostic.xUnit1013.severity = error			# xUnit1013: Public method should be marked as test
+dotnet_diagnostic.xUnit1042.severity = none				# xUnit1042: The member referenced by the MemberData attribute returns untyped data rows
