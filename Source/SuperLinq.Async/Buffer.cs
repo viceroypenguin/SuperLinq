@@ -68,7 +68,7 @@ public static partial class AsyncSuperEnumerable
 			await foreach (var el in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
 				if (i++ % skip == 0)
-					lists.Enqueue(new());
+					lists.Enqueue([]);
 
 				foreach (var l in lists)
 					l.Add(el);

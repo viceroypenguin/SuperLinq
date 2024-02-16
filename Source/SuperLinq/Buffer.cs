@@ -92,7 +92,7 @@ public static partial class SuperEnumerable
 			foreach (var el in source)
 			{
 				if (i++ % skip == 0)
-					lists.Enqueue(new());
+					lists.Enqueue([]);
 
 				foreach (var l in lists)
 					l.Add(el);

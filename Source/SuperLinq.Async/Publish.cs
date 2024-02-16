@@ -100,7 +100,7 @@ public static partial class AsyncSuperEnumerable
 					try
 					{
 						_enumerator = _source.GetAsyncEnumerator(cancellationToken);
-						_buffers = new();
+						_buffers = [];
 						_initialized = true;
 					}
 					catch (Exception ex)

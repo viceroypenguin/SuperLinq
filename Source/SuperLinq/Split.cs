@@ -503,7 +503,7 @@ public static partial class SuperEnumerable
 				{
 					yield return resultSelector(items);
 					count--;
-					items = new();
+					items = [];
 				}
 				else
 				{

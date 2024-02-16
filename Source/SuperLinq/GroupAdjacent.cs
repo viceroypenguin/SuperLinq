@@ -315,7 +315,7 @@ public static partial class SuperEnumerable
 			{
 				yield return resultSelector(k, members);
 				k = key;
-				members = new List<TElement>();
+				members = [];
 			}
 
 			members.Add(element);

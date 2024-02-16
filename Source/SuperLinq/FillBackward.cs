@@ -112,7 +112,7 @@ public static partial class SuperEnumerable
 			var isBlank = predicate(item);
 			if (isBlank)
 			{
-				(blanks ??= new List<T>()).Add(item);
+				(blanks ??= []).Add(item);
 			}
 			else
 			{
