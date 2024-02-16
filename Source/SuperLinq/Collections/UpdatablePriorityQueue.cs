@@ -1133,8 +1133,8 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 			/// <summary>
 			/// Gets the element at the current position of the enumerator.
 			/// </summary>
-			public (TElement Element, TPriority Priority) Current => _current;
-			object IEnumerator.Current => _current;
+			public readonly (TElement Element, TPriority Priority) Current => _current;
+			readonly object IEnumerator.Current => _current;
 
 			void IEnumerator.Reset()
 			{

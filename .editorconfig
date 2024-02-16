@@ -228,9 +228,6 @@ dotnet_diagnostic.CA2000.severity = error               # CA2000: Dispose object
 dotnet_diagnostic.CA2007.severity = none                # CA2007: Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA5394.severity = none                # CA5394: Random is an insecure random number generator. Use cryptographically secure random number generators when randomness is required for security.
 
-# False Positive
-dotnet_diagnostic.IDE0251.severity = none               # IDE0251: Make member readonly
-
 # Public API Documentation
 dotnet_diagnostic.RS0016.severity = error				# RS0016: Add public types and members to the declared API
 dotnet_diagnostic.RS0017.severity = error				# RS0017: Remove deleted types and members from the declared API
