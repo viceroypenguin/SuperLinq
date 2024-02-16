@@ -35,7 +35,6 @@ public class SequenceTest
 			.Select(i => start + (step * i)));
 	}
 
-
 	[Theory]
 	[InlineData(-10, -4)]
 	[InlineData(-1, 5)]

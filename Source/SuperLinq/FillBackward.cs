@@ -127,6 +127,7 @@ public static partial class SuperEnumerable
 
 					blanks.Clear();
 				}
+
 				yield return item;
 			}
 		}

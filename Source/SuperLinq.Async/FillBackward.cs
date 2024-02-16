@@ -234,6 +234,7 @@ public static partial class AsyncSuperEnumerable
 
 					blanks.Clear();
 				}
+
 				yield return item;
 			}
 		}

@@ -75,9 +75,11 @@ public class MemoizeTest
 								break;
 							}
 						}
+
 						yield return "exit inner loop";
 					}
 				}
+
 				yield return "exit outer loop";
 
 				yield return "enter last loop";
@@ -86,6 +88,7 @@ public class MemoizeTest
 				{
 					yield return k;
 				}
+
 				yield return "exit last loop";
 			}
 		}
@@ -276,6 +279,7 @@ public class MemoizeTest
 			Guard.IsTrue(xs.IsDisposed);
 			_ = Assert.Throws<TestException>(() => r2.Read());
 		}
+
 		Assert.Equal(0, buffer.Count);
 
 		buffer.Reset();
@@ -312,6 +316,7 @@ public class MemoizeTest
 				_started = true;
 				throw new TestException();
 			}
+
 			return Enumerable.Range(1, 1).GetEnumerator();
 		}
 
@@ -388,6 +393,7 @@ public class MemoizeTest
 				_started = true;
 				throw new TestException();
 			}
+
 			base.CopyTo(array, arrayIndex);
 		}
 	}

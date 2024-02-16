@@ -1,4 +1,6 @@
-﻿namespace Test;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Test;
 
 public class EquiZipTest
 {
@@ -64,15 +66,17 @@ public class EquiZipTest
 			s1.EquiZip(new BreakingSequence<int>()).Consume());
 	}
 
-	public static IEnumerable<object[]> GetTwoParamEqualSequences()
-	{
-		return new List<object[]>
-		{
-			new object[] { Enumerable.Range(1, 3).AsTestingSequence(), Enumerable.Range(1, 3).AsTestingSequence(), },
-			new object[] { Enumerable.Range(1, 3).ToList(), Enumerable.Range(1, 3).AsTestingSequence(), },
-			new object[] { Enumerable.Range(1, 3).AsBreakingList(), Enumerable.Range(1, 3).AsBreakingList(), },
-		};
-	}
+	[SuppressMessage(
+		"Reliability",
+		"CA2000:Dispose objects before losing scope",
+		Justification = "Will be properly disposed in method"
+	)]
+	public static IEnumerable<object[]> GetTwoParamEqualSequences() =>
+		[
+			[Enumerable.Range(1, 3).AsTestingSequence(), Enumerable.Range(1, 3).AsTestingSequence(),],
+			[Enumerable.Range(1, 3).ToList(), Enumerable.Range(1, 3).AsTestingSequence(),],
+			[Enumerable.Range(1, 3).AsBreakingList(), Enumerable.Range(1, 3).AsBreakingList(),],
+		];
 
 	[Theory]
 	[MemberData(nameof(GetTwoParamEqualSequences))]
@@ -157,36 +161,34 @@ public class EquiZipTest
 			s1.EquiZip(s2, new BreakingSequence<int>()).Consume());
 	}
 
-	public static IEnumerable<object[]> GetThreeParamEqualSequences()
-	{
-		return new List<object[]>
-		{
-			new object[]
-			{
+	[SuppressMessage(
+		"Reliability",
+		"CA2000:Dispose objects before losing scope",
+		Justification = "Will be properly disposed in method"
+	)]
+	public static IEnumerable<object[]> GetThreeParamEqualSequences() =>
+		[
+			[
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-			},
-			new object[]
-			{
+			],
+			[
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-			},
-			new object[]
-			{
+			],
+			[
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-			},
-			new object[]
-			{
+			],
+			[
 				Enumerable.Range(1, 3).AsBreakingList(),
 				Enumerable.Range(1, 3).AsBreakingList(),
 				Enumerable.Range(1, 3).AsBreakingList(),
-			},
-		};
-	}
+			],
+		];
 
 	[Theory]
 	[MemberData(nameof(GetThreeParamEqualSequences))]
@@ -287,47 +289,44 @@ public class EquiZipTest
 			s1.EquiZip(s2, s3, new BreakingSequence<int>()).Consume());
 	}
 
-	public static IEnumerable<object[]> GetFourParamEqualSequences()
-	{
-		return new List<object[]>
-		{
-			new object[]
-			{
+	[SuppressMessage(
+		"Reliability",
+		"CA2000:Dispose objects before losing scope",
+		Justification = "Will be properly disposed in method"
+	)]
+	public static IEnumerable<object[]> GetFourParamEqualSequences() =>
+		[
+			[
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-			},
-			new object[]
-			{
+			],
+			[
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-			},
-			new object[]
-			{
+			],
+			[
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-			},
-			new object[]
-			{
+			],
+			[
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-			},
-			new object[]
-			{
+			],
+			[
 				Enumerable.Range(1, 3).AsBreakingList(),
 				Enumerable.Range(1, 3).AsBreakingList(),
 				Enumerable.Range(1, 3).AsBreakingList(),
 				Enumerable.Range(1, 3).AsBreakingList(),
-			},
-		};
-	}
+			],
+		];
 
 	[Theory]
 	[MemberData(nameof(GetFourParamEqualSequences))]

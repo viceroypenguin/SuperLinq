@@ -283,6 +283,7 @@ public class PublishTest
 				_started = true;
 				throw new TestException();
 			}
+
 			return Enumerable.Range(1, 1).GetEnumerator();
 		}
 

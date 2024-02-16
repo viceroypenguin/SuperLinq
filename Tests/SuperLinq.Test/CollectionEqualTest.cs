@@ -82,7 +82,6 @@ public class CollectionEqualTest
 		Assert.False(xs.CollectionEqual(ys));
 	}
 
-
 	[Fact]
 	public void CollectionEqualIntSequenceInOrderComparer()
 	{

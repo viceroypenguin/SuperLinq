@@ -317,6 +317,6 @@ public class TestingSequenceTest
 	private static void AssertSequenceBehavior(Action act, string message)
 	{
 		var ex = Assert.Throws<TestingSequenceException>(act);
-		Assert.StartsWith(message, ex.Message);
+		Assert.StartsWith(message, ex.Message, StringComparison.Ordinal);
 	}
 }

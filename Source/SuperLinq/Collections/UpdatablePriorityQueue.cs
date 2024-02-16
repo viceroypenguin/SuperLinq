@@ -694,6 +694,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 			Array.Clear(_nodes, 0, Count);
 			_elementIndex.Clear();
 		}
+
 		Count = 0;
 		_version++;
 	}
@@ -1191,6 +1192,7 @@ internal sealed class PriorityQueueDebugView<TElement, TPriority>
 			{
 				list.Sort((i1, i2) => _queue.Comparer.Compare(i1.Priority, i2.Priority));
 			}
+
 			return list.ToArray();
 		}
 	}

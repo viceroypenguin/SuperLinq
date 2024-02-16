@@ -62,7 +62,6 @@ public class UsingTest
 		Assert.Equal(1, starts);
 	}
 
-
 	[Fact]
 	public void UsingDisposesOnFunctionError()
 	{

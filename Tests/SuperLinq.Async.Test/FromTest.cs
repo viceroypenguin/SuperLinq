@@ -56,8 +56,11 @@ public class FromTest
 	{
 		var evals = new[] { 0, 0, 0, 0 };
 		Task<int> F1() { evals[0]++; return Task.FromResult(-2); }
+
 		Task<int> F2() { evals[1]++; return Task.FromResult(-2); }
+
 		Task<int> F3() { evals[2]++; return Task.FromResult(-2); }
+
 		Task<int> F4() { evals[3]++; return Task.FromResult(-2); }
 
 		var results = numArgs switch
