@@ -265,7 +265,7 @@ public static partial class AsyncSuperEnumerable
 				if (top.Count < count)
 				{
 					_ = top.Add(key);
-					dic[key] = new() { item, };
+					dic[key] = [item];
 					continue;
 				}
 
@@ -276,7 +276,7 @@ public static partial class AsyncSuperEnumerable
 				_ = dic.Remove(max);
 				_ = top.Remove(max);
 				_ = top.Add(key);
-				dic[key] = new() { item, };
+				dic[key] = [item];
 			}
 
 			foreach (var entry in top)

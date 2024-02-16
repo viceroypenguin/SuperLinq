@@ -31,7 +31,6 @@ public static partial class AsyncSuperEnumerable
 		return Interleave(otherSources.Prepend(source));
 	}
 
-
 	/// <summary>
 	/// Interleaves the elements of two or more sequences into a single sequence, skipping sequences as they are consumed
 	/// </summary>

@@ -1,4 +1,6 @@
-﻿namespace Test;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Test;
 
 public class InsertTest
 {
@@ -15,17 +17,22 @@ public class InsertTest
 			 new BreakingSequence<int>().Insert([97, 98, 99], -1));
 	}
 
+	[SuppressMessage(
+		"Reliability",
+		"CA2000:Dispose objects before losing scope",
+		Justification = "Will be properly disposed in method"
+	)]
 	public static IEnumerable<object[]> GetSequences()
 	{
 		var baseSeq = Enumerable.Range(0, 10);
 		var insSeq = Seq(97, 98, 99);
 
-		return new List<object[]>
-		{
-			new object[] { baseSeq.AsTestingSequence(maxEnumerations: 2), insSeq.AsTestingSequence(maxEnumerations: 2), },
-			new object[] { baseSeq.AsTestingCollection(maxEnumerations: 2), insSeq.AsTestingCollection(maxEnumerations: 2), },
-			new object[] { baseSeq.AsBreakingList(), insSeq.AsBreakingList(), },
-		};
+		return
+		[
+			[baseSeq.AsTestingSequence(), insSeq.AsTestingSequence(),],
+			[baseSeq.AsTestingCollection(), insSeq.AsTestingCollection(),],
+			[baseSeq.AsBreakingList(), insSeq.AsBreakingList(),],
+		];
 	}
 
 	[Theory]

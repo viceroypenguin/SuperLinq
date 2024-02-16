@@ -59,7 +59,6 @@ public class RepeatTest
 
 		var result = sequence.Repeat();
 
-
 		var expected = Enumerable.Empty<int>();
 		for (var i = 0; i < repeats; i++)
 			expected = expected.Concat(Enumerable.Range(1, 10));

@@ -32,7 +32,6 @@ public static partial class SuperEnumerable
 		return Pad(source, width, padding: default);
 	}
 
-
 	/// <summary>
 	///	    Pads a sequence with default values if it is narrower (shorter in length) than a given width.
 	/// </summary>

@@ -31,7 +31,6 @@ public class SequenceTest
 		return result.AssertSequenceEqual(expectations);
 	}
 
-
 	[Theory]
 	[InlineData(-10, -4)]
 	[InlineData(-1, 5)]

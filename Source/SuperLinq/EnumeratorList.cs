@@ -2,7 +2,7 @@
 
 internal sealed class EnumeratorList<T> : IDisposable
 {
-	private readonly List<IEnumerator<T>> _iter = new();
+	private readonly List<IEnumerator<T>> _iter = [];
 
 	public EnumeratorList(IEnumerable<IEnumerable<T>> sources)
 	{

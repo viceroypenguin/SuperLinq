@@ -22,7 +22,7 @@ public class PartialSortByTests
 		var ns = SuperEnumerable.RandomDouble()
 			.Take(10).ToArray();
 		using var sequence = ns.Index()
-			.Reverse().AsTestingSequence(maxEnumerations: 5);
+			.Reverse().AsTestingSequence(maxEnumerations: 2);
 
 		sequence
 			.PartialSortBy(5, e => e.Index, OrderByDirection.Ascending)

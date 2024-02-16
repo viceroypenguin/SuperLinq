@@ -122,7 +122,7 @@ public static partial class SuperEnumerable
 				if (newSegmentPredicate(current, previous, index))
 				{
 					yield return segment;
-					segment = new List<T>();
+					segment = [];
 				}
 
 				segment.Add(current);

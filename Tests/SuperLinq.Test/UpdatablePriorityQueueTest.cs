@@ -302,12 +302,12 @@ public class UpdatableUpdatablePriorityQueueTest
 	{
 		protected static UpdatablePriorityQueue<string, int> CreateSmallUpdatablePriorityQueue(out HashSet<(string, int)> items)
 		{
-			items = new HashSet<(string, int)>
-			{
+			items =
+			[
 				("one", 1),
 				("two", 2),
 				("three", 3),
-			};
+			];
 			var queue = new UpdatablePriorityQueue<string, int>(items);
 
 			return queue;

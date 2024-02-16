@@ -63,7 +63,6 @@ public class UsingTest
 		Assert.Equal(1, starts);
 	}
 
-
 	[Fact]
 	public async Task UsingDisposesOnFunctionError()
 	{

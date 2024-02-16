@@ -136,7 +136,7 @@ public static partial class AsyncSuperEnumerable
 				if (await newSegmentPredicate(current, previous, index).ConfigureAwait(false))
 				{
 					yield return segment;              // yield the completed segment
-					segment = new List<T> { current }; // start a new segment
+					segment = [current]; // start a new segment
 				}
 				else // not a new segment, append and continue
 				{

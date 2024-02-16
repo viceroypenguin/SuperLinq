@@ -343,6 +343,6 @@ public class TestingSequenceTest
 	private static async Task AssertSequenceBehavior(Func<Task> act, string message)
 	{
 		var ex = await Assert.ThrowsAsync<TestingSequenceException>(act);
-		Assert.StartsWith(message, ex.Message);
+		Assert.StartsWith(message, ex.Message, StringComparison.Ordinal);
 	}
 }

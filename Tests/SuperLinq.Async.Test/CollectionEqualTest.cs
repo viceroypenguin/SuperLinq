@@ -82,7 +82,6 @@ public class CollectionEqualTest
 		Assert.False(await xs.CollectionEqual(ys));
 	}
 
-
 	[Fact]
 	public async Task CollectionEqualIntSequenceInOrderComparer()
 	{

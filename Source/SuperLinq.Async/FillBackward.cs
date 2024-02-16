@@ -219,7 +219,7 @@ public static partial class AsyncSuperEnumerable
 			var isBlank = await predicate(item).ConfigureAwait(false);
 			if (isBlank)
 			{
-				(blanks ??= new List<T>()).Add(item);
+				(blanks ??= []).Add(item);
 			}
 			else
 			{
@@ -234,6 +234,7 @@ public static partial class AsyncSuperEnumerable
 
 					blanks.Clear();
 				}
+
 				yield return item;
 			}
 		}

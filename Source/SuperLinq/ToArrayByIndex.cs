@@ -305,6 +305,7 @@ public static partial class SuperEnumerable
 
 			array[i] = resultSelector(e, i);
 		}
+
 		return array;
 	}
 }
