@@ -1135,6 +1135,8 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 			/// Gets the element at the current position of the enumerator.
 			/// </summary>
 			public readonly (TElement Element, TPriority Priority) Current => _current;
+
+			[ExcludeFromCodeCoverage]
 			readonly object IEnumerator.Current => _current;
 
 			void IEnumerator.Reset()
@@ -1193,7 +1195,7 @@ internal sealed class PriorityQueueDebugView<TElement, TPriority>
 				list.Sort((i1, i2) => _queue.Comparer.Compare(i1.Priority, i2.Priority));
 			}
 
-			return list.ToArray();
+			return [.. list];
 		}
 	}
 }
