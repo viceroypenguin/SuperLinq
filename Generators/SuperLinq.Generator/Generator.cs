@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Scriban;
@@ -33,14 +33,6 @@ public class Generator : IIncrementalGenerator
 	private static SourceText GenerateArgumentNamesTemplate(string template)
 	{
 		var output = Template.Parse(template).Render(ArgumentNames.Instance);
-
-		// Apply formatting since indenting isn't that nice in Scriban when rendering nested 
-		// structures via functions.
-		output = Microsoft.CodeAnalysis.CSharp.SyntaxFactory.ParseCompilationUnit(output)
-			.NormalizeWhitespace()
-			.GetText()
-			.ToString();
-
 		return SourceText.From(output, Encoding.UTF8);
 	}
 }
