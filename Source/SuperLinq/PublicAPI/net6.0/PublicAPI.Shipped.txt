@@ -189,8 +189,8 @@ static SuperLinq.SuperEnumerable.HasDuplicates<TSource, TKey>(this System.Collec
 static SuperLinq.SuperEnumerable.Identity<T>(T x) -> T
 static SuperLinq.SuperEnumerable.If<TResult>(System.Func<bool>! condition, System.Collections.Generic.IEnumerable<TResult>! thenSource) -> System.Collections.Generic.IEnumerable<TResult>!
 static SuperLinq.SuperEnumerable.If<TResult>(System.Func<bool>! condition, System.Collections.Generic.IEnumerable<TResult>! thenSource, System.Collections.Generic.IEnumerable<TResult>! elseSource) -> System.Collections.Generic.IEnumerable<TResult>!
-static SuperLinq.SuperEnumerable.Index<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<(int index, TSource item)>!
-static SuperLinq.SuperEnumerable.Index<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int startIndex) -> System.Collections.Generic.IEnumerable<(int index, TSource item)>!
+static SuperLinq.SuperEnumerable.Index<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.IEnumerable<(int Index, TSource Item)>!
+static SuperLinq.SuperEnumerable.Index<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int startIndex) -> System.Collections.Generic.IEnumerable<(int Index, TSource Item)>!
 static SuperLinq.SuperEnumerable.IndexBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<(int index, TSource item)>!
 static SuperLinq.SuperEnumerable.IndexBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Collections.Generic.IEnumerable<(int index, TSource item)>!
 static SuperLinq.SuperEnumerable.IndexOf<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, TSource item) -> int

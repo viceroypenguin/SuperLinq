@@ -98,6 +98,7 @@ public static partial class AsyncSuperEnumerable
 				await onNext(el).ConfigureAwait(false);
 				yield return el;
 			}
+
 			await onCompleted().ConfigureAwait(false);
 		}
 	}
@@ -220,6 +221,7 @@ public static partial class AsyncSuperEnumerable
 				await onNext(current).ConfigureAwait(false);
 				yield return current;
 			}
+
 			await onCompleted().ConfigureAwait(false);
 		}
 	}

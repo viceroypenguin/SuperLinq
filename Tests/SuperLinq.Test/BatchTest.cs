@@ -110,9 +110,9 @@ public class BatchTest
 	{
 		foreach (var seq in source.GetListSequences())
 			yield return new object[] { seq, BatchMethod.Traditional, };
-		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), BatchMethod.BufferSize, };
-		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), BatchMethod.BufferArray, };
-		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), BatchMethod.BufferSizeArray, };
+		yield return new object[] { source.AsTestingSequence(), BatchMethod.BufferSize, };
+		yield return new object[] { source.AsTestingSequence(), BatchMethod.BufferArray, };
+		yield return new object[] { source.AsTestingSequence(), BatchMethod.BufferSizeArray, };
 	}
 
 	private static IEnumerable<IList<T>> GetBatches<T>(
@@ -129,7 +129,7 @@ public class BatchTest
 		};
 
 	public static IEnumerable<object[]> GetEmptySequences() =>
-		GetBatchTestSequences(Enumerable.Empty<int>());
+		GetBatchTestSequences([]);
 
 	[Theory]
 	[MemberData(nameof(GetEmptySequences))]

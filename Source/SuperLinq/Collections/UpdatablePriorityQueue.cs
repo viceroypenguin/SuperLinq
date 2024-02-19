@@ -76,7 +76,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// </summary>
 	public UpdatablePriorityQueue()
 	{
-		_nodes = Array.Empty<(TElement, TPriority)>();
+		_nodes = [];
 		_priorityComparer = InitializeComparer(comparer: null);
 		_elementIndex = new(_elementComparer = EqualityComparer<TElement>.Default);
 	}
@@ -104,7 +104,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// </param>
 	public UpdatablePriorityQueue(IComparer<TPriority>? priorityComparer)
 	{
-		_nodes = Array.Empty<(TElement, TPriority)>();
+		_nodes = [];
 		_priorityComparer = InitializeComparer(priorityComparer);
 		_elementIndex = new(_elementComparer = EqualityComparer<TElement>.Default);
 	}
@@ -119,7 +119,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	/// </param>
 	public UpdatablePriorityQueue(IEqualityComparer<TElement>? elementComparer)
 	{
-		_nodes = Array.Empty<(TElement, TPriority)>();
+		_nodes = [];
 		_priorityComparer = InitializeComparer(comparer: null);
 		_elementComparer = elementComparer ?? EqualityComparer<TElement>.Default;
 		_elementIndex = new(_elementComparer);
@@ -694,6 +694,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 			Array.Clear(_nodes, 0, Count);
 			_elementIndex.Clear();
 		}
+
 		Count = 0;
 		_version++;
 	}
@@ -1133,8 +1134,10 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 			/// <summary>
 			/// Gets the element at the current position of the enumerator.
 			/// </summary>
-			public (TElement Element, TPriority Priority) Current => _current;
-			object IEnumerator.Current => _current;
+			public readonly (TElement Element, TPriority Priority) Current => _current;
+
+			[ExcludeFromCodeCoverage]
+			readonly object IEnumerator.Current => _current;
 
 			void IEnumerator.Reset()
 			{
@@ -1191,7 +1194,8 @@ internal sealed class PriorityQueueDebugView<TElement, TPriority>
 			{
 				list.Sort((i1, i2) => _queue.Comparer.Compare(i1.Priority, i2.Priority));
 			}
-			return list.ToArray();
+
+			return [.. list];
 		}
 	}
 }

@@ -48,12 +48,13 @@ public static partial class SuperEnumerable
 		{
 			if (start.Value == 0 || (end.IsFromEnd && end.Value >= start.Value))
 			{
-				return Array.Empty<TSource>();
+				return [];
 			}
 		}
 		else if (!end.IsFromEnd)
 		{
-			return start.Value >= end.Value ? Array.Empty<TSource>()
+			return start.Value >= end.Value
+				? []
 				: TakeRangeIterator(source, start.Value, end.Value);
 		}
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Test.Async;
 
@@ -9,10 +10,10 @@ public class CopyToTest
 	{
 		_ = await Assert.ThrowsAsync<ArgumentNullException>(
 			"source",
-			async () => await default(IAsyncEnumerable<int>)!.CopyTo(Array.Empty<int>()));
+			async () => await default(IAsyncEnumerable<int>)!.CopyTo([]));
 		_ = await Assert.ThrowsAsync<ArgumentNullException>(
 			"source",
-			async () => await default(IAsyncEnumerable<int>)!.CopyTo(Array.Empty<int>(), 1));
+			async () => await default(IAsyncEnumerable<int>)!.CopyTo([], 1));
 		_ = await Assert.ThrowsAsync<ArgumentNullException>(
 			"list",
 			async () => await AsyncSeq<int>().CopyTo(default(int[])!));
@@ -26,10 +27,15 @@ public class CopyToTest
 	{
 		return Assert.ThrowsAsync<ArgumentOutOfRangeException>(
 			"index",
-			async () => await AsyncSeq<int>().CopyTo(Array.Empty<int>(), -1));
+			async () => await AsyncSeq<int>().CopyTo([], -1));
 	}
 
 	[Fact]
+	[SuppressMessage(
+		"Style",
+		"IDE0301:Simplify collection initialization",
+		Justification = "`[]` uses a list by default."
+	)]
 	public Task ThrowsOnTooMuchDataForArray()
 	{
 		return Assert.ThrowsAsync<IndexOutOfRangeException>(

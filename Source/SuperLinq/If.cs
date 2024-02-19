@@ -29,7 +29,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TResult> If<TResult>(Func<bool> condition, IEnumerable<TResult> thenSource)
 	{
-		return If(condition, thenSource, Enumerable.Empty<TResult>());
+		return If(condition, thenSource, []);
 	}
 
 	/// <summary>

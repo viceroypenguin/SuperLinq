@@ -77,7 +77,7 @@ public class InterleaveTest
 		using var sequenceB = TestingSequence.Of<int>();
 
 		var result = sequenceA.Interleave(sequenceB);
-		Assert.Equal(Enumerable.Empty<int>(), result);
+		Assert.Equal([], result);
 	}
 
 	/// <summary>

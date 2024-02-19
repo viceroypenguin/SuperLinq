@@ -65,7 +65,7 @@ public static partial class SuperEnumerable
 		private IEnumerable<T>? _source = source;
 
 		private IEnumerator<T>? _enumerator;
-		private List<T> _buffer = new();
+		private List<T> _buffer = [];
 		private bool _initialized;
 
 		private ExceptionDispatchInfo? _exception;
@@ -82,7 +82,7 @@ public static partial class SuperEnumerable
 				if (_disposed)
 					ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 
-				_buffer = new();
+				_buffer = [];
 				_initialized = false;
 				_enumerator?.Dispose();
 				_enumerator = null;

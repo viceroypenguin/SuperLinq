@@ -5,6 +5,8 @@
 	<PropertyGroup>
 		<AssemblyName>SuperLinq</AssemblyName>
 		<RootNamespace>SuperLinq</RootNamespace>
+
+		<IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
 	</PropertyGroup>
 
 	<PropertyGroup Label="Nuget">

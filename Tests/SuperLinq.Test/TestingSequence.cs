@@ -11,16 +11,11 @@ internal static class TestingSequence
 	internal static TestingSequence<T> Of<T>(params T[] elements) =>
 		new(elements, Options.None, maxEnumerations: 1);
 
-	internal static TestingSequence<T> OfWithFailure<T>(params T[] elements) =>
-		new(elements.Concat(new BreakingSequence<T>()), Options.None, maxEnumerations: 1);
-
-	internal static TestingSequence<T> Of<T>(Options options, params T[] elements) =>
-		elements.AsTestingSequence(options, maxEnumerations: 1);
-
-	internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source,
-															Options options = Options.None,
-															int maxEnumerations = 1) =>
-		source != null
+	internal static TestingSequence<T> AsTestingSequence<T>(
+		this IEnumerable<T> source,
+		Options options = Options.None,
+		int maxEnumerations = 1
+	) => source != null
 		? new TestingSequence<T>(source, options, maxEnumerations)
 		: throw new ArgumentNullException(nameof(source));
 
@@ -322,6 +317,6 @@ public class TestingSequenceTest
 	private static void AssertSequenceBehavior(Action act, string message)
 	{
 		var ex = Assert.Throws<TestingSequenceException>(act);
-		Assert.StartsWith(message, ex.Message);
+		Assert.StartsWith(message, ex.Message, StringComparison.Ordinal);
 	}
 }

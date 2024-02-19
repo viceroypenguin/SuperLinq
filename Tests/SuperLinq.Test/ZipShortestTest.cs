@@ -51,8 +51,8 @@ public class ZipShortestTest
 	{
 		var parameters = new List<object[]>
 		{
-			new object[] { Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2), Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2), false, },
-			new object[] { Enumerable.Range(1, 3).ToList(), Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2), false, },
+			new object[] { Enumerable.Range(1, 3).AsTestingSequence(), Enumerable.Range(1, 3).AsTestingSequence(), false, },
+			new object[] { Enumerable.Range(1, 3).ToList(), Enumerable.Range(1, 3).AsTestingSequence(), false, },
 			new object[] { Enumerable.Range(1, 3).AsBreakingList(), Enumerable.Range(1, 3).AsBreakingList(), false, },
 		};
 
@@ -64,7 +64,7 @@ public class ZipShortestTest
 			parameters.Add(
 				[first.AsBreakingList(), second.AsBreakingList(), true,]);
 			parameters.Add(
-				[first.AsTestingSequence(maxEnumerations: 2), second.AsTestingSequence(maxEnumerations: 2), true,]);
+				[first.AsTestingSequence(), second.AsTestingSequence(), true,]);
 #pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
@@ -122,23 +122,23 @@ public class ZipShortestTest
 		{
 			new object[]
 			{
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
 				false,
 			},
 			new object[]
 			{
 				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
 				false,
 			},
 			new object[]
 			{
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(),
 				false,
 			},
 			new object[]
@@ -165,9 +165,9 @@ public class ZipShortestTest
 				]);
 			parameters.Add(
 				[
-					first.AsTestingSequence(maxEnumerations: 2),
-					second.AsTestingSequence(maxEnumerations: 2),
-					third.AsTestingSequence(maxEnumerations: 2),
+					first.AsTestingSequence(),
+					second.AsTestingSequence(),
+					third.AsTestingSequence(),
 					true,
 				]);
 #pragma warning restore CA2000 // Dispose objects before losing scope
@@ -230,34 +230,34 @@ public class ZipShortestTest
 		{
 			new object[]
 			{
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
 				false,
 			},
 			new object[]
 			{
 				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				false,
-			},
-			new object[]
-			{
-				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
 				false,
 			},
 			new object[]
 			{
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
+				false,
+			},
+			new object[]
+			{
 				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).AsTestingSequence(maxEnumerations: 2),
+				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).ToList(),
+				Enumerable.Range(1, 3).AsTestingSequence(),
 				false,
 			},
 			new object[]
@@ -287,10 +287,10 @@ public class ZipShortestTest
 				]);
 			parameters.Add(
 				[
-					first.AsTestingSequence(maxEnumerations: 2),
-					second.AsTestingSequence(maxEnumerations: 2),
-					third.AsTestingSequence(maxEnumerations: 2),
-					fourth.AsTestingSequence(maxEnumerations: 2),
+					first.AsTestingSequence(),
+					second.AsTestingSequence(),
+					third.AsTestingSequence(),
+					fourth.AsTestingSequence(),
 					true,
 				]);
 #pragma warning restore CA2000 // Dispose objects before losing scope

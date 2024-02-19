@@ -290,7 +290,7 @@ public static partial class AsyncSuperEnumerable
 				{
 					yield return resultSelector(items);
 					count--;
-					items = new();
+					items = [];
 				}
 				else
 				{

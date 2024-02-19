@@ -302,12 +302,12 @@ public class UpdatableUpdatablePriorityQueueTest
 	{
 		protected static UpdatablePriorityQueue<string, int> CreateSmallUpdatablePriorityQueue(out HashSet<(string, int)> items)
 		{
-			items = new HashSet<(string, int)>
-			{
+			items =
+			[
 				("one", 1),
 				("two", 2),
 				("three", 3),
-			};
+			];
 			var queue = new UpdatablePriorityQueue<string, int>(items);
 
 			return queue;
@@ -396,9 +396,9 @@ public class UpdatableUpdatablePriorityQueueTest
 		{
 			var queue = new UpdatablePriorityQueue<string?, int>();
 
-			queue.EnqueueRange(new string?[] { null, null, null }, 0);
-			queue.EnqueueRange(new string?[] { "not null" }, 1);
-			queue.EnqueueRange(new string?[] { null, null, null }, 0);
+			queue.EnqueueRange([null, null, null], 0);
+			queue.EnqueueRange(["not null"], 1);
+			queue.EnqueueRange([null, null, null], 0);
 
 			Assert.Null(queue.Dequeue());
 			Assert.Equal("not null", queue.Dequeue());
@@ -409,7 +409,7 @@ public class UpdatableUpdatablePriorityQueueTest
 		{
 			var queue = new UpdatablePriorityQueue<string, int>();
 
-			queue.EnqueueRange(new[] { "alpha", "bravo", "charlie", "delta", "echo", }, 30);
+			queue.EnqueueRange(["alpha", "bravo", "charlie", "delta", "echo",], 30);
 
 			queue.Enqueue("alpha", 50);
 			queue.Enqueue("bravo", 40);
@@ -436,7 +436,7 @@ public class UpdatableUpdatablePriorityQueueTest
 		{
 			var queue = new UpdatablePriorityQueue<string, int>();
 
-			queue.EnqueueRange(new[] { "alpha", "bravo", "charlie", "delta", "echo", }, 30);
+			queue.EnqueueRange(["alpha", "bravo", "charlie", "delta", "echo",], 30);
 
 			queue.EnqueueRange(
 				new[]
@@ -467,7 +467,7 @@ public class UpdatableUpdatablePriorityQueueTest
 		{
 			var queue = new UpdatablePriorityQueue<string, int>();
 
-			queue.EnqueueRange(new[] { "alpha", "bravo", "charlie", "delta", "echo", }, 30);
+			queue.EnqueueRange(["alpha", "bravo", "charlie", "delta", "echo",], 30);
 
 			queue.EnqueueMinimum("alpha", 50);
 			queue.EnqueueMinimum("bravo", 40);
@@ -491,7 +491,7 @@ public class UpdatableUpdatablePriorityQueueTest
 		{
 			var queue = new UpdatablePriorityQueue<string, int>();
 
-			queue.EnqueueRange(new[] { "alpha", "bravo", "charlie", "delta", "echo", }, 30);
+			queue.EnqueueRange(["alpha", "bravo", "charlie", "delta", "echo",], 30);
 
 			queue.EnqueueRangeMinimum(
 				new[]
@@ -671,15 +671,15 @@ public class UpdatableUpdatablePriorityQueueTest
 			yield return WrapArg(queue => queue.TryDequeue(out _, out _), 5);
 			yield return WrapArg(queue => queue.EnqueueDequeue(5, priority: int.MaxValue), 5);
 			yield return WrapArg(queue => queue.EnqueueDequeue(5, priority: int.MaxValue), 5);
-			yield return WrapArg(queue => queue.EnqueueRange(new[] { (1, 2) }), 0);
-			yield return WrapArg(queue => queue.EnqueueRange(new[] { (1, 2) }), 10);
-			yield return WrapArg(queue => queue.EnqueueRange(new[] { 1, 2 }, 42), 0);
-			yield return WrapArg(queue => queue.EnqueueRange(new[] { 1, 2 }, 42), 10);
+			yield return WrapArg(queue => queue.EnqueueRange([(1, 2)]), 0);
+			yield return WrapArg(queue => queue.EnqueueRange([(1, 2)]), 10);
+			yield return WrapArg(queue => queue.EnqueueRange([1, 2], 42), 0);
+			yield return WrapArg(queue => queue.EnqueueRange([1, 2], 42), 10);
 			yield return WrapArg(queue => queue.EnsureCapacity(2 * queue.Count), 4);
 			yield return WrapArg(queue => queue.Clear(), 5);
 			yield return WrapArg(queue => queue.Clear(), 0);
 
-			static object[] WrapArg(Action<UpdatablePriorityQueue<int, int>> arg, int queueCount) => new object[] { arg, queueCount };
+			static object[] WrapArg(Action<UpdatablePriorityQueue<int, int>> arg, int queueCount) => [arg, queueCount];
 		}
 
 		public static IEnumerable<object[]> GetNonModifyingOperations()
@@ -689,11 +689,11 @@ public class UpdatableUpdatablePriorityQueueTest
 			yield return WrapArg(queue => queue.TryDequeue(out _, out _), 0);
 			yield return WrapArg(queue => queue.EnqueueDequeue(5, priority: int.MinValue), 1);
 			yield return WrapArg(queue => queue.EnqueueDequeue(5, priority: int.MaxValue), 0);
-			yield return WrapArg(queue => queue.EnqueueRange(Array.Empty<(int, int)>()), 5);
-			yield return WrapArg(queue => queue.EnqueueRange(Array.Empty<int>(), 42), 5);
+			yield return WrapArg(queue => queue.EnqueueRange([]), 5);
+			yield return WrapArg(queue => queue.EnqueueRange([], 42), 5);
 			yield return WrapArg(queue => queue.EnsureCapacity(5), 5);
 
-			static object[] WrapArg(Action<UpdatablePriorityQueue<int, int>> arg, int queueCount) => new object[] { arg, queueCount };
+			static object[] WrapArg(Action<UpdatablePriorityQueue<int, int>> arg, int queueCount) => [arg, queueCount];
 		}
 
 		#endregion

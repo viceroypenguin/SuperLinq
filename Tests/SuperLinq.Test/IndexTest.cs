@@ -1,11 +1,12 @@
 ﻿namespace Test;
 
+[Obsolete("References `Index` which is obsolete in net9+")]
 public class IndexTest
 {
 	[Fact]
 	public void IndexIsLazy()
 	{
-		_ = new BreakingSequence<object>().Index();
+		_ = SuperEnumerable.Index(new BreakingSequence<object>());
 		_ = new BreakingSequence<object>().Index(0);
 	}
 
@@ -24,7 +25,7 @@ public class IndexTest
 	{
 		using (seq)
 		{
-			var result = seq.Index();
+			var result = SuperEnumerable.Index(seq);
 			result.AssertSequenceEqual(
 				(0, One),
 				(1, Two),

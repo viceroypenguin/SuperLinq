@@ -1,7 +1,6 @@
 ﻿namespace Test;
 
-#pragma warning disable CS0618
-
+[Obsolete("References `ToDictionary` which is obsolete in net8+")]
 public class ToDictionaryTest
 {
 	[Fact]
@@ -64,5 +63,3 @@ public class ToDictionaryTest
 		Assert.Equal(789, dict["BAZ"]);
 	}
 }
-
-#pragma warning restore CS0618

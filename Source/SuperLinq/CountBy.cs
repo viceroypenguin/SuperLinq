@@ -30,9 +30,14 @@ public static partial class SuperEnumerable
 	///     in it's entirety immediately when first element of the returned sequence is consumed. 
 	/// </para>
 	/// </remarks>
+#if NET9_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+#else
 	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+#endif
 	{
-		return source.CountBy(keySelector, comparer: null);
+		return CountBy(source, keySelector, comparer: null);
 	}
 
 	/// <summary>
@@ -68,7 +73,12 @@ public static partial class SuperEnumerable
 	///     in it's entirety immediately when first element of the returned sequence is consumed. 
 	/// </para>
 	/// </remarks>
+#if NET9_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+#else
 	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+#endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);

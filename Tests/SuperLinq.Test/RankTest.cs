@@ -24,7 +24,7 @@ public class RankTests
 
 	public static IEnumerable<object[]> GetSimpleSequences() =>
 		Enumerable.Repeat(1, 10)
-			.GetTestingSequence(maxEnumerations: 3)
+			.GetTestingSequence(maxEnumerations: 2)
 			.Select(x => new object[] { x, });
 
 	/// <summary>
@@ -72,7 +72,7 @@ public class RankTests
 	public static IEnumerable<object[]> GetDescendingIntSequences() =>
 		Enumerable.Range(456, 100)
 			.Reverse()
-			.GetTestingSequence(maxEnumerations: 3)
+			.GetTestingSequence(maxEnumerations: 2)
 			.Select(x => new object[] { x, });
 
 	/// <summary>
@@ -103,7 +103,7 @@ public class RankTests
 
 	public static IEnumerable<object[]> GetAscendingIntSequences() =>
 		Enumerable.Range(456, 100)
-			.GetTestingSequence(maxEnumerations: 3)
+			.GetTestingSequence(maxEnumerations: 2)
 			.Select(x => new object[] { x, });
 
 	/// <summary>
@@ -159,7 +159,7 @@ public class RankTests
 		Enumerable.Range(0, 10)
 			.Concat(Enumerable.Range(0, 10))
 			.Concat(Enumerable.Range(0, 10))
-			.GetTestingSequence(maxEnumerations: 3)
+			.GetTestingSequence(maxEnumerations: 2)
 			.Select(x => new object[] { x, });
 
 	/// <summary>
@@ -204,7 +204,7 @@ public class RankTests
 				new Person(Name: "Jim", Age: 74, ExpectedRank: 8),
 				new Person(Name: "Jes", Age: 11, ExpectedRank: 1),
 		}
-			.GetTestingSequence(maxEnumerations: 3)
+			.GetTestingSequence(maxEnumerations: 2)
 			.Select(x => new object[] { x, });
 
 	public static IEnumerable<object[]> GetPersonSequences2() =>
@@ -219,7 +219,7 @@ public class RankTests
 				new Person(Name: "Mel", Age: 28, ExpectedRank: 6),
 				new Person(Name: "Jim", Age: 28, ExpectedRank: 6),
 		}
-			.GetTestingSequence(maxEnumerations: 3)
+			.GetTestingSequence(maxEnumerations: 2)
 			.Select(x => new object[] { x, });
 
 	/// <summary>
@@ -250,7 +250,7 @@ public class RankTests
 	public static IEnumerable<object[]> GetDateTimeSequences() =>
 		Enumerable.Range(1, 10)
 			.Select(x => new DateTime(2010, x, 20 - x))
-			.GetTestingSequence(maxEnumerations: 3)
+			.GetTestingSequence(maxEnumerations: 2)
 			.Select(x => new object[] { x, });
 
 	/// <summary>

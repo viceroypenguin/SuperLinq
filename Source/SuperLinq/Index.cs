@@ -21,7 +21,12 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	///	    This operator uses deferred execution and streams its results.
 	/// </remarks>
-	public static IEnumerable<(int index, TSource item)> Index<TSource>(this IEnumerable<TSource> source)
+#if NET9_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static IEnumerable<(int Index, TSource Item)> Index<TSource>(IEnumerable<TSource> source)
+#else
+	public static IEnumerable<(int Index, TSource Item)> Index<TSource>(this IEnumerable<TSource> source)
+#endif
 	{
 		return source.Index(0);
 	}
@@ -48,7 +53,7 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	///	    This operator uses deferred execution and streams its results.
 	/// </remarks>
-	public static IEnumerable<(int index, TSource item)> Index<TSource>(this IEnumerable<TSource> source, int startIndex)
+	public static IEnumerable<(int Index, TSource Item)> Index<TSource>(this IEnumerable<TSource> source, int startIndex)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 

@@ -22,14 +22,15 @@ public class AggregateTest
 		from m in typeof(SuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static)
 		where m.Name == nameof(SuperEnumerable.Aggregate)
 		   && m.IsGenericMethodDefinition
-		where !m.ReturnType.Name.Contains(nameof(ValueTuple))
+		where !m.ReturnType.Name.Contains(nameof(ValueTuple), StringComparison.Ordinal)
 		select new
 		{
 			Source = source,
 			Expectation = sum,
-			Instantiation = m.MakeGenericMethod(Enumerable.Repeat(typeof(int), m.GetGenericArguments().Length - 1)
-											 .Append(typeof(int[])) // TResult
-											 .ToArray()),
+			Instantiation = m.MakeGenericMethod(
+				Enumerable.Repeat(typeof(int), m.GetGenericArguments().Length - 1)
+					.Append(typeof(int[])) // TResult
+					.ToArray()),
 		}
 		into m
 		let rst = m.Instantiation.GetParameters().Last().ParameterType

@@ -1,41 +1,39 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 #nullable enable
 
 public static partial class AsyncSuperEnumerable
 {
 	{{~ for $i in 1..16 ~}}
-    /// <summary>
-    /// Returns the result of applying a function to a sequence of {{$i}} element{{if $i != 1}}s{{end}}.
-    /// </summary>
-    /// <remarks>
-    /// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
-    /// </remarks>
-    /// <typeparam name="T">Type of element in the source sequence</typeparam>
-    /// <typeparam name="TResult">Type of the result</typeparam>
-    /// <param name="source">The sequence of items to fold.</param>
-    /// <param name="folder">Function to apply to the elements in the sequence.</param>
-    /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-    /// <exception cref="global::System.ArgumentNullException"><paramref name="source"/> or <paramref name="folder"/> is null.</exception>
-    /// <exception cref="global::System.InvalidOperationException">
+	/// <summary>
+	/// Returns the result of applying a function to a sequence of {{$i}} element{{if $i != 1}}s{{end}}.
+	/// </summary>
+	/// <remarks>
+	/// This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+	/// </remarks>
+	/// <typeparam name="T">Type of element in the source sequence</typeparam>
+	/// <typeparam name="TResult">Type of the result</typeparam>
+	/// <param name="source">The sequence of items to fold.</param>
+	/// <param name="folder">Function to apply to the elements in the sequence.</param>
+	/// <returns>The folded value returned by <paramref name="folder"/>.</returns>
+	/// <exception cref="global::System.ArgumentNullException"><paramref name="source"/> or <paramref name="folder"/> is null.</exception>
+	/// <exception cref="global::System.InvalidOperationException">
 	/// <paramref name="source"/> does not contain exactly {{$i}} element{{if $i != 1}}s{{end}}.
 	/// </exception>
-    public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(this global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<
-		{{~ for $j in 1..$i ~}}
-		T,
-		{{~ end ~}}
-		TResult> folder)
-    {
+	public static global::System.Threading.Tasks.ValueTask<TResult> Fold<T, TResult>(
+		this global::System.Collections.Generic.IAsyncEnumerable<T> source, 
+		global::System.Func<{{~ for $j in 1..$i ~}}T, {{ end ~}}TResult> folder
+	)
+	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(folder);
 
 		return Core(source, folder);
 
-		static async global::System.Threading.Tasks.ValueTask<TResult> Core(global::System.Collections.Generic.IAsyncEnumerable<T> source, global::System.Func<
-			{{~ for $j in 1..$i ~}}
-			T,
-			{{~ end ~}}
-			TResult> folder)
+		static async global::System.Threading.Tasks.ValueTask<TResult> Core(
+			global::System.Collections.Generic.IAsyncEnumerable<T> source, 
+			global::System.Func<{{~ for $j in 1..$i ~}}T, {{ end ~}}TResult> folder
+		)
 		{
 			var elements = await source.AssertCount({{$i}}).ToListAsync().ConfigureAwait(false);
 
@@ -46,5 +44,6 @@ public static partial class AsyncSuperEnumerable
 			);
 		}
 	}
-	{{ end ~}}
+
+	{{~ end ~}}
 }

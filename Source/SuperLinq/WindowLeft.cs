@@ -58,6 +58,7 @@ public static partial class SuperEnumerable
 					Array.Resize(ref window, i);
 					goto skipLoop;
 				}
+
 				window[i] = e.Current;
 			}
 

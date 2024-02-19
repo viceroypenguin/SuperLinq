@@ -61,6 +61,7 @@ public static partial class AsyncSuperEnumerable
 					Array.Resize(ref window, i);
 					goto skipLoop;
 				}
+
 				window[i] = e.Current;
 			}
 

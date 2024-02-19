@@ -101,9 +101,9 @@ public partial class WindowLeftTest
 	{
 		foreach (var seq in source.GetListSequences())
 			yield return new object[] { seq, WindowMethod.Traditional, };
-		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), WindowMethod.BufferSize, };
-		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), WindowMethod.BufferArray, };
-		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), WindowMethod.BufferSizeArray, };
+		yield return new object[] { source.AsTestingSequence(), WindowMethod.BufferSize, };
+		yield return new object[] { source.AsTestingSequence(), WindowMethod.BufferArray, };
+		yield return new object[] { source.AsTestingSequence(), WindowMethod.BufferSizeArray, };
 	}
 
 	private static IEnumerable<IList<T>> GetWindows<T>(
@@ -120,7 +120,7 @@ public partial class WindowLeftTest
 		};
 
 	public static IEnumerable<object[]> GetEmptySequences() =>
-		GetWindowTestSequences(Enumerable.Empty<int>());
+		GetWindowTestSequences([]);
 
 	[Theory]
 	[MemberData(nameof(GetEmptySequences))]

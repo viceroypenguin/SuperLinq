@@ -1,9 +1,8 @@
-﻿{{ 
-    $arity = arity
-    $ordinals = ordinals
-    $cardinals = cardinals
-}}
-
+{{~
+	$arity = arity
+	$ordinals = ordinals
+	$cardinals = cardinals
+~}}
 namespace SuperLinq;
 
 #nullable enable
@@ -23,11 +22,11 @@ public static partial class SuperEnumerable
 	}
 
 	{{~ for $i in 2..4 ~}}
-    /// <summary>
-    ///	    Returns a projection of tuples, where each tuple contains the N-th element from each of the argument
-    ///     sequences. The resulting sequence will always be as long as the longest of input sequences where the default
-    ///     value of each of the shorter sequence element types is used for padding.
-    /// </summary>
+	/// <summary>
+	///	    Returns a projection of tuples, where each tuple contains the N-th element from each of the argument
+	///     sequences. The resulting sequence will always be as long as the longest of input sequences where the default
+	///     value of each of the shorter sequence element types is used for padding.
+	/// </summary>
 	/// <typeparam name = "TResult">
 	///	    The type of the elements of the result sequence.
 	/// </typeparam>
@@ -40,28 +39,29 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	///	    This method uses deferred execution and streams its results.
 	/// </remarks>
-    /// <exception cref="global::System.ArgumentNullException">
+	/// <exception cref="global::System.ArgumentNullException">
 	///	    <paramref name="resultSelector"/> or any of the input sequences is <see langword="null"/>.
 	/// </exception>
 	{{~ for $j in 1..$i ~}}
-    /// <typeparam name="T{{ $j }}">
+	/// <typeparam name="T{{ $j }}">
 	///     The type of the elements of <paramref name="{{ $ordinals[$j] }}" />.
 	/// </typeparam>
 	/// <param name="{{ $ordinals[$j] }}">
 	///     The {{ $ordinals[$j] }} sequence of elements.
 	/// </param>
 	{{~ end ~}}
-    public static global::System.Collections.Generic.IEnumerable<TResult> ZipLongest<{{ for $j in 1..$i }}T{{ $j }}, {{ end }}TResult>(this 
+	public static global::System.Collections.Generic.IEnumerable<TResult> ZipLongest<{{ for $j in 1..$i }}T{{ $j }}, {{ end }}TResult>(this 
 		{{~ for $j in 1..$i ~}}
-        global::System.Collections.Generic.IEnumerable<T{{ $j }}> {{ $ordinals[$j] }},
+		global::System.Collections.Generic.IEnumerable<T{{ $j }}> {{ $ordinals[$j] }},
 		{{~ end ~}}
-        global::System.Func<{{ for $j in 1..$i }}T{{ $j }}?, {{ end }}TResult> resultSelector)
+		global::System.Func<{{ for $j in 1..$i }}T{{ $j }}?, {{ end }}TResult> resultSelector
+	)
 	{
 		{{~ for $j in 1..$i ~}}
-        ArgumentNullException.ThrowIfNull({{ $ordinals[$j] }});
+		ArgumentNullException.ThrowIfNull({{ $ordinals[$j] }});
 		{{~ end ~}}
 
-        ArgumentNullException.ThrowIfNull(resultSelector);
+		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		if (
 			{{~ for $j in 1..$i ~}}
@@ -72,20 +72,23 @@ public static partial class SuperEnumerable
 				{{~ for $j in 1..$i ~}}
 				list{{ $j }},
 				{{~ end ~}}
-				resultSelector);
+				resultSelector
+			);
 		}
 
 		return Core(
 			{{~ for $j in 1..$i ~}}
 			{{ $ordinals[$j] }},
 			{{~ end ~}}
-			resultSelector);
+			resultSelector
+		);
 
 		static global::System.Collections.Generic.IEnumerable<TResult> Core(
 			{{~ for $j in 1..$i ~}}
 			global::System.Collections.Generic.IEnumerable<T{{ $j }}> {{ $ordinals[$j] }},
 			{{~ end ~}}
-			global::System.Func<{{ for $j in 1..$i }}T{{ $j }}?, {{ end }}TResult> resultSelector)
+			global::System.Func<{{ for $j in 1..$i }}T{{ $j }}?, {{ end }}TResult> resultSelector
+		)
 		{
 			{{~ for $j in 1..$i ~}}
 			using var e{{ $j }} = {{ $ordinals[$j] }}.GetEnumerator();
@@ -94,10 +97,9 @@ public static partial class SuperEnumerable
 
 			while (
 				{{~ for $j in 1..$i ~}}
-				{{ if !for.first }}|{{ end }}
-				(f{{$j}} = DoRead(f{{$j}}, e{{$j}}, out var v{{$j}}))
+				{{ if !for.first }}| {{ end }}(f{{$j}} = DoRead(f{{$j}}, e{{$j}}, out var v{{$j}}))
 				{{~ end ~}}
-				)
+			)
 			{
 				yield return resultSelector(
 					{{~ for $j in 1..$i ~}}
@@ -113,30 +115,30 @@ public static partial class SuperEnumerable
 	///     sequences. The resulting sequence will always be as long as the longest of input sequences where the default
 	///     value of each of the shorter sequence element types is used for padding.
 	/// </summary>
-    /// <returns>
+	/// <returns>
 	///		A sequence of <see cref="global::System.ValueTuple{ {{~ for $j in 1..$i ~}}T{{$j}}{{ if !for.last }},{{ end }}{{ end }} }" /> containing corresponding elements from each
-    ///     of the sequences.
+	///     of the sequences.
 	/// </returns>
 	/// <remarks>
 	///	    This method uses deferred execution and streams its results.
 	/// </remarks>
-    /// <exception cref="global::System.ArgumentNullException">
+	/// <exception cref="global::System.ArgumentNullException">
 	///	    Any of the input sequences is <see langword="null"/>.
 	/// </exception>
 	{{~ for $j in 1..$i ~}}
-    /// <typeparam name="T{{ $j }}">
+	/// <typeparam name="T{{ $j }}">
 	///     The type of the elements of <paramref name="{{ $ordinals[$j] }}" />.
 	/// </typeparam>
 	/// <param name="{{ $ordinals[$j] }}">
 	///     The {{ $ordinals[$j] }} sequence of elements.
 	/// </param>
 	{{~ end ~}}
-    public static global::System.Collections.Generic.IEnumerable<({{~ for $j in 1..$i ~}}T{{ $j }}?{{ if !for.last }},{{ end }}{{ end }})> 
+	public static global::System.Collections.Generic.IEnumerable<({{~ for $j in 1..$i ~}}T{{ $j }}?{{ if !for.last }},{{ end }}{{ end }})> 
 		ZipLongest<{{~ for $j in 1..$i ~}}T{{ $j }}{{ if !for.last }},{{ end }}{{ end }}>(this
 			{{~ for $j in 1..$i ~}}
 			global::System.Collections.Generic.IEnumerable<T{{ $j }}> {{ $ordinals[$j] }}{{ if !for.last }},{{ end }}
-			{{~ end ~}}) =>
-		ZipLongest({{~ for $j in 1..$i ~}}{{ $ordinals[$j] }}, {{ end }}global::System.ValueTuple.Create);
+			{{~ end ~}}
+	) => ZipLongest({{~ for $j in 1..$i ~}}{{ $ordinals[$j] }}, {{ end }}global::System.ValueTuple.Create);
 
 	private sealed class ZipLongestIterator<{{ for $j in 1..$i }}T{{ $j }}, {{ end }}TResult> : ListIterator<TResult>
 	{
@@ -149,7 +151,8 @@ public static partial class SuperEnumerable
 			{{~ for $j in 1..$i ~}}
 			global::System.Collections.Generic.IList<T{{ $j }}> {{ $ordinals[$j] }},
 			{{~ end ~}}
-			global::System.Func<{{ for $j in 1..$i }}T{{ $j }}?, {{ end }}TResult> resultSelector)
+			global::System.Func<{{ for $j in 1..$i }}T{{ $j }}?, {{ end }}TResult> resultSelector
+		)
 		{
 			{{~ for $j in 1..$i ~}}
 			_list{{ $j }} = {{ $ordinals[$j] }};
@@ -167,7 +170,8 @@ public static partial class SuperEnumerable
 				yield return _resultSelector(
 					{{~ for $j in 1..$i ~}}
 					i < _list{{ $j }}.Count ? _list{{ $j }}[i] : default{{ if !for.last }}, {{ end }}
-					{{~ end ~}});
+					{{~ end ~}}
+				);
 			}
 		}
 
@@ -179,8 +183,10 @@ public static partial class SuperEnumerable
 			return _resultSelector(
 				{{~ for $j in 1..$i ~}}
 				index < _list{{ $j }}.Count ? _list{{ $j }}[index] : default{{ if !for.last }}, {{ end }}
-				{{~ end ~}});
+				{{~ end ~}}
+			);
 		}
 	}
-	{{ end ~}}
+
+	{{~ end ~}}
 }

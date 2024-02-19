@@ -18,9 +18,9 @@ public class ToLookupTest
 		var dict = pairs.ToLookup();
 
 		Assert.Equal(3, dict.Count);
-		Assert.Equal(new[] { 1, 2 }, dict["foo"]);
-		Assert.Equal(new[] { 3 }, dict["bar"]);
-		Assert.Equal(new[] { 4, 5, 6 }, dict["baz"]);
+		Assert.Equal([1, 2], dict["foo"]);
+		Assert.Equal([3], dict["bar"]);
+		Assert.Equal([4, 5, 6], dict["baz"]);
 	}
 
 	[Fact]
@@ -39,9 +39,9 @@ public class ToLookupTest
 		var dict = pairs.ToLookup();
 
 		Assert.Equal(3, dict.Count);
-		Assert.Equal(new[] { 1, 2 }, dict["foo"]);
-		Assert.Equal(new[] { 3 }, dict["bar"]);
-		Assert.Equal(new[] { 4, 5, 6 }, dict["baz"]);
+		Assert.Equal([1, 2], dict["foo"]);
+		Assert.Equal([3], dict["bar"]);
+		Assert.Equal([4, 5, 6], dict["baz"]);
 	}
 
 	[Fact]
@@ -60,9 +60,9 @@ public class ToLookupTest
 		var dict = pairs.ToLookup(StringComparer.OrdinalIgnoreCase);
 
 		Assert.Equal(3, dict.Count);
-		Assert.Equal(new[] { 1, 2 }, dict["FOO"]);
-		Assert.Equal(new[] { 3 }, dict["BAR"]);
-		Assert.Equal(new[] { 4, 5, 6 }, dict["BAZ"]);
+		Assert.Equal([1, 2], dict["FOO"]);
+		Assert.Equal([3], dict["BAR"]);
+		Assert.Equal([4, 5, 6], dict["BAZ"]);
 	}
 
 	[Fact]
@@ -81,8 +81,8 @@ public class ToLookupTest
 		var dict = pairs.ToLookup(StringComparer.OrdinalIgnoreCase);
 
 		Assert.Equal(3, dict.Count);
-		Assert.Equal(new[] { 1, 2 }, dict["FOO"]);
-		Assert.Equal(new[] { 3 }, dict["BAR"]);
-		Assert.Equal(new[] { 4, 5, 6 }, dict["BAZ"]);
+		Assert.Equal([1, 2], dict["FOO"]);
+		Assert.Equal([3], dict["BAR"]);
+		Assert.Equal([4, 5, 6], dict["BAZ"]);
 	}
 }

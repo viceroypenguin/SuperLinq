@@ -41,7 +41,7 @@ public static partial class AsyncSuperEnumerable
 		private IAsyncEnumerable<T>? _source = source;
 
 		private IAsyncEnumerator<T>? _enumerator;
-		private List<T> _buffer = new();
+		private List<T> _buffer = [];
 		private bool _initialized;
 
 		private ExceptionDispatchInfo? _exception;
@@ -62,7 +62,7 @@ public static partial class AsyncSuperEnumerable
 				if (_disposed)
 					ThrowHelper.ThrowObjectDisposedException<IAsyncBuffer<T>>();
 
-				_buffer = new();
+				_buffer = [];
 				_initialized = false;
 				if (_enumerator != null)
 					await _enumerator.DisposeAsync().ConfigureAwait(false);

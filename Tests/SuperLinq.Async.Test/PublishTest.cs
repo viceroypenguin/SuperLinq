@@ -286,6 +286,7 @@ public class PublishTest
 				_started = true;
 				throw new TestException();
 			}
+
 			return AsyncEnumerable.Range(1, 1).GetAsyncEnumerator(cancellationToken);
 		}
 	}

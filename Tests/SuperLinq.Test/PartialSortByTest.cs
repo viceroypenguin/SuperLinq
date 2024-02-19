@@ -11,8 +11,8 @@ public class PartialSortByTests
 			.Reverse().AsTestingSequence();
 
 		sequence
-			.PartialSortBy(5, e => e.index)
-			.Select(e => e.item)
+			.PartialSortBy(5, e => e.Index)
+			.Select(e => e.Item)
 			.AssertSequenceEqual(ns.Take(5));
 	}
 
@@ -22,16 +22,16 @@ public class PartialSortByTests
 		var ns = SuperEnumerable.RandomDouble()
 			.Take(10).ToArray();
 		using var sequence = ns.Index()
-			.Reverse().AsTestingSequence(maxEnumerations: 5);
+			.Reverse().AsTestingSequence(maxEnumerations: 2);
 
 		sequence
-			.PartialSortBy(5, e => e.index, OrderByDirection.Ascending)
-			.Select(e => e.item)
+			.PartialSortBy(5, e => e.Index, OrderByDirection.Ascending)
+			.Select(e => e.Item)
 			.AssertSequenceEqual(ns.Take(5));
 
 		sequence
-			.PartialSortBy(5, e => e.index, OrderByDirection.Descending)
-			.Select(e => e.item)
+			.PartialSortBy(5, e => e.Index, OrderByDirection.Descending)
+			.Select(e => e.Item)
 			.AssertSequenceEqual(ns.Reverse().Take(5));
 	}
 

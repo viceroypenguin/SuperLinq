@@ -105,7 +105,7 @@ public static partial class SuperEnumerable
 					try
 					{
 						_enumerator = _source.GetEnumerator();
-						_buffers = new();
+						_buffers = [];
 						_initialized = true;
 					}
 					catch (Exception ex)

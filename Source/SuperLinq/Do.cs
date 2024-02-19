@@ -69,6 +69,7 @@ public partial class SuperEnumerable
 			onNext(el);
 			yield return el;
 		}
+
 		onCompleted();
 	}
 
@@ -174,6 +175,7 @@ public partial class SuperEnumerable
 			onNext(current);
 			yield return current;
 		}
+
 		onCompleted();
 	}
 

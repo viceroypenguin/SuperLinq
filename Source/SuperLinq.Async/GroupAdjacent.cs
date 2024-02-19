@@ -286,7 +286,7 @@ public static partial class AsyncSuperEnumerable
 			{
 				yield return resultSelector(k, members);
 				k = key;
-				members = new List<TElement> { element };
+				members = [element];
 			}
 		}
 
