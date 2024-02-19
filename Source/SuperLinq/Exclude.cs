@@ -234,6 +234,7 @@ public static partial class SuperEnumerable
 				yield return queue.Dequeue();
 		}
 
+		start = Math.Min(start, queue.Count);
 		var length = start - range.End.Value;
 		while (length > 0)
 		{
@@ -259,7 +260,7 @@ public static partial class SuperEnumerable
 				yield return queue.Dequeue();
 		}
 
-		start = range.Start.GetOffset(count);
+		start = Math.Max(range.Start.GetOffset(count), 0);
 		var length = range.End.Value - start;
 
 		while (length > 0)
@@ -286,19 +287,9 @@ public static partial class SuperEnumerable
 			if (queue.Count > end)
 			{
 				var el = queue.Dequeue();
-				if (count < start)
+				if ((count - end) <= start)
 					yield return el;
 			}
-		}
-
-		end = range.End.GetOffset(count);
-		var length = end - start;
-
-		while (length > 0)
-		{
-			if (!queue.TryDequeue(out var _))
-				yield break;
-			length--;
 		}
 
 		while (queue.TryDequeue(out var element))
