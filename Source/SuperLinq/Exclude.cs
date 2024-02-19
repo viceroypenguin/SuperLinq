@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -101,100 +101,42 @@ public static partial class SuperEnumerable
 	/// Represents an iterator for excluding elements from a collection.
 	/// </summary>
 	/// <typeparam name="T">Specifies the type of elements in the collection.</typeparam>
-	private sealed class ExcludeCollectionIterator<T>
+	private sealed class ExcludeCollectionIterator<T>(ICollection<T> source, int startIndex, int count)
 		: CollectionIterator<T>
 	{
-		private readonly ICollection<T> _source;
-		private readonly int _startIndex;
-		private readonly int _count;
-
-		/// <summary>
-		/// Creates a new collection iterator for excluding elements from the specified <paramref name="source"/> collection.
-		/// </summary>
-		/// <param name="source">The source collection to exclude elements from.</param>
-		/// <param name="startIndex">The zero-based index at which to begin excluding elements.</param>
-		/// <param name="count">The number of elements to exclude.</param>
-		internal ExcludeCollectionIterator(ICollection<T> source, int startIndex, int count)
-		{
-			_source = source;
-			_startIndex = startIndex;
-			_count = count;
-		}
-
-		/// <summary>
-		/// Creates a new collection iterator for excluding elements from the specified <paramref name="source"/> collection.
-		/// </summary>
-		/// <param name="source">The source collection to exclude elements from.</param>
-		/// <param name="range">The range of elements to exclude.</param>
-		internal ExcludeCollectionIterator(ICollection<T> source, Range range)
-		{
-			_source = source;
-			_startIndex = range.Start.Value;
-			_count = range.End.Value - _startIndex;
-		}
-
 		/// <summary>
 		/// Gets the number of elements in the source collection after excluding the specified portion of elements.
 		/// </summary>
 		public override int Count =>
-			_source.Count < _startIndex ? _source.Count :
-			_source.Count < _startIndex + _count ? _startIndex :
-			_source.Count - _count;
+			source.Count < startIndex ? source.Count :
+			source.Count < startIndex + count ? startIndex :
+			source.Count - count;
 
 		/// <inheritdoc cref="IEnumerable{T}" /> 
 		protected override IEnumerable<T> GetEnumerable() =>
-			ExcludeCore(_source, _startIndex, _count);
+			ExcludeCore(source, startIndex, count);
 	}
 
-	private sealed class ExcludeListIterator<T>
+	private sealed class ExcludeListIterator<T>(IList<T> source, int startIndex, int count)
 		: ListIterator<T>
 	{
-		private readonly IList<T> _source;
-		private readonly int _startIndex;
-		private readonly int _count;
-
-		/// <summary>
-		/// Creates a new list iterator for excluding elements from the specified <paramref name="source"/> collection.
-		/// </summary>
-		/// <param name="source">The source collection to exclude elements from.</param>
-		/// <param name="startIndex">The zero-based index at which to begin excluding elements.</param>
-		/// <param name="count">The number of elements to exclude.</param>
-		internal ExcludeListIterator(IList<T> source, int startIndex, int count)
-		{
-			_source = source;
-			_startIndex = startIndex;
-			_count = count;
-		}
-
-		/// <summary>
-		/// Creates a new list iterator for excluding elements from the specified <paramref name="source"/> collection.
-		/// </summary>
-		/// <param name="source">The source collection to exclude elements from.</param>
-		/// <param name="range">The range of elements to exclude.</param>
-		internal ExcludeListIterator(IList<T> source, Range range)
-		{
-			_source = source;
-			_startIndex = range.Start.Value;
-			_count = range.End.Value - _startIndex;
-		}
-
 		/// <summary>
 		/// Gets the number of elements in the source collection after excluding the specified portion of elements.
 		/// </summary>
 		public override int Count =>
-			_source.Count < _startIndex ? _source.Count :
-			_source.Count < _startIndex + _count ? _startIndex :
-			_source.Count - _count;
+			source.Count < startIndex ? source.Count :
+			source.Count < startIndex + count ? startIndex :
+			source.Count - count;
 
 		/// <inheritdoc cref="IEnumerable{T}" />
 		protected override IEnumerable<T> GetEnumerable()
 		{
-			var cnt = (uint)_source.Count;
-			for (var i = 0; i < cnt && i < _startIndex; i++)
-				yield return _source[i];
+			var cnt = (uint)source.Count;
+			for (var i = 0; i < cnt && i < startIndex; i++)
+				yield return source[i];
 
-			for (var i = _startIndex + _count; i < cnt; i++)
-				yield return _source[i];
+			for (var i = startIndex + count; i < cnt; i++)
+				yield return source[i];
 		}
 
 		/// <inheritdoc cref="IEnumerable{T}"/>
@@ -203,9 +145,9 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(index);
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-			return index < _startIndex
-				? _source[index]
-				: _source[index + _count];
+			return index < startIndex
+				? source[index]
+				: source[index + count];
 		}
 	}
 
