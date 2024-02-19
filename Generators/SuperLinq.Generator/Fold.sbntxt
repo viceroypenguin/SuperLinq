@@ -1,43 +1,42 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 #nullable enable
 
 public static partial class SuperEnumerable
 {
 	{{~ for $i in 1..16 ~}}
-    /// <summary>
-    ///		Returns the result of applying a function to a sequence of {{$i}} element{{if $i != 1}}s{{end}}.
-    /// </summary>
-    /// <remarks>
-    ///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
-    /// </remarks>
-    /// <typeparam name="T">
+	/// <summary>
+	///		Returns the result of applying a function to a sequence of {{$i}} element{{if $i != 1}}s{{end}}.
+	/// </summary>
+	/// <remarks>
+	///		This operator uses immediate execution and buffers as many items of the source sequence as necessary.
+	/// </remarks>
+	/// <typeparam name="T">
 	///		Type of element in the source sequence
 	/// </typeparam>
-    /// <typeparam name="TResult">
+	/// <typeparam name="TResult">
 	///		Type of the result
 	/// </typeparam>
-    /// <param name="source">
+	/// <param name="source">
 	///		The sequence of items to fold.
 	/// </param>
-    /// <param name="folder">
+	/// <param name="folder">
 	///		Function to apply to the elements in the sequence.
 	/// </param>
-    /// <returns>
+	/// <returns>
 	///		The folded value returned by <paramref name="folder"/>.
 	/// </returns>
-    /// <exception cref="global::System.ArgumentNullException">
+	/// <exception cref="global::System.ArgumentNullException">
 	///		<paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
 	/// </exception>
-    /// <exception cref="global::System.InvalidOperationException">
+	/// <exception cref="global::System.InvalidOperationException">
 	///		<paramref name="source"/> does not contain exactly {{$i}} element{{if $i != 1}}s{{end}}.
 	/// </exception>
-    public static TResult Fold<T, TResult>(this global::System.Collections.Generic.IEnumerable<T> source, global::System.Func<
-		{{~ for $j in 1..$i ~}}
-		T,
-		{{~ end ~}}
-		TResult> folder)
-    {
+	public static TResult Fold<T, TResult>(
+		this global::System.Collections.Generic.IEnumerable<T> source,
+		global::System.Func<{{~ for $j in 1..$i ~}}T, {{ end ~}}TResult> folder
+	)
+	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(folder);
 
@@ -49,5 +48,6 @@ public static partial class SuperEnumerable
 			{{~ end ~}}
 		);
 	}
-	{{ end ~}}
+
+	{{~ end ~}}
 }
