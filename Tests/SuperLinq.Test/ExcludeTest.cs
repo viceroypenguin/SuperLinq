@@ -171,4 +171,50 @@ public class ExcludeTests
 
 		result.AssertCollectionErrorChecking(9_000);
 	}
+
+	public static IEnumerable<object[]> GetExcludeRangeCases() =>
+		[
+			[3..7, false, new int[] { 0, 1, 2, 7, 8, 9 }],
+			[3..3, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[3..2, true, Array.Empty<int>()],
+			[3..15, false, new int[] { 0, 1, 2 }],
+
+			[3..^3, false, new int[] { 0, 1, 2, 7, 8, 9 }],
+			[6..^3, false, new int[] { 0, 1, 2, 3, 4, 5, 7, 8, 9 }],
+			[7..^3, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[8..^3, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[15..^3, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[3..^15, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+
+			[^7..2, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[^7..3, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[^7..4, false, new int[] { 0, 1, 2, 4, 5, 6, 7, 8, 9 }],
+			[^7..7, false, new int[] { 0, 1, 2, 7, 8, 9 }],
+			[^7..15, false, new int[] { 0, 1, 2 }],
+			[^15..7, false, new int[] { 7, 8, 9 }],
+
+			[^2..^3, true, Array.Empty<int>()],
+			[^3..^3, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[^7..^3, false, new int[] { 0, 1, 2, 7, 8, 9 }],
+			[^15..^3, false, new int[] { 7, 8, 9 }],
+		];
+
+	[Theory]
+	[MemberData(nameof(GetExcludeRangeCases))]
+	public void ExcludeRangeBehavior(Range range, bool shouldThrow, int[] expected)
+	{
+		using var ts = Enumerable.Range(0, 10)
+			.AsTestingSequence();
+
+		if (shouldThrow)
+		{
+			_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
+				ts.Exclude(range));
+			return;
+		}
+
+		var result = ts.Exclude(range);
+
+		result.AssertSequenceEqual(expected);
+	}
 }
