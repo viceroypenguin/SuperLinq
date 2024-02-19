@@ -35,13 +35,11 @@ public static partial class SuperEnumerable
 		ArgumentOutOfRangeException.ThrowIfNegative(startIndex);
 		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
-		if (count == 0)
-			return sequence;
-
-		return sequence switch
+		return (count, sequence) switch
 		{
-			IList<T> list => new ExcludeListIterator<T>(list, startIndex, count),
-			ICollection<T> collection => new ExcludeCollectionIterator<T>(collection, startIndex, count),
+			(0, _) => sequence,
+			(_, IList<T> list) => new ExcludeListIterator<T>(list, startIndex, count),
+			(_, ICollection<T> collection) => new ExcludeCollectionIterator<T>(collection, startIndex, count),
 			_ => ExcludeCore(sequence, startIndex, count)
 		};
 	}
