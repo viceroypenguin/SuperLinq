@@ -20,3 +20,9 @@ internal static class BreakingFunc
 	internal static Func<T1, T2, T3, T4, TResult> Of<T1, T2, T3, T4, TResult>() =>
 		(t1, t2, t3, t4) => throw new TestException();
 }
+
+internal static class BreakingReadOnlySpanFunc
+{
+	internal static SuperEnumerable.ReadOnlySpanFunc<T, TResult> Of<T, TResult>() =>
+		t => throw new TestException();
+}

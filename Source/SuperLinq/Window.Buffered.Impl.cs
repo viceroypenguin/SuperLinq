@@ -8,7 +8,7 @@ public static partial class SuperEnumerable
 		TSource[] array,
 		int size,
 		WindowType type,
-		Func<ArraySegment<TSource>, TResult> projector)
+		ReadOnlySpanFunc<TSource, TResult> projector)
 	{
 		var n = 0;
 
@@ -18,14 +18,14 @@ public static partial class SuperEnumerable
 			{
 				array[n++] = i;
 				if (type == WindowType.Right || n == size)
-					yield return projector(new ArraySegment<TSource>(array, 0, n));
+					yield return projector(new ReadOnlySpan<TSource>(array, 0, n));
 			}
 			else
 			{
 				array.AsSpan()[1..n].CopyTo(array);
 				array[n - 1] = i;
 
-				yield return projector(new ArraySegment<TSource>(array, 0, n));
+				yield return projector(new ReadOnlySpan<TSource>(array, 0, n));
 			}
 		}
 
