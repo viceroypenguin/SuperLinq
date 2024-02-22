@@ -6,9 +6,9 @@ public partial class WindowRightTest
 	public void WindowRightIsLazy()
 	{
 		_ = new BreakingSequence<int>().WindowRight(1);
-		_ = new BreakingSequence<int>().WindowRight(1, BreakingFunc.OfSpan<int, int>());
-		_ = new BreakingSequence<int>().WindowRight(new int[3], BreakingFunc.OfSpan<int, int>());
-		_ = new BreakingSequence<int>().WindowRight(new int[3], 1, BreakingFunc.OfSpan<int, int>());
+		_ = new BreakingSequence<int>().WindowRight(1, BreakingReadOnlySpanFunc.Of<int, int>());
+		_ = new BreakingSequence<int>().WindowRight(new int[3], BreakingReadOnlySpanFunc.Of<int, int>());
+		_ = new BreakingSequence<int>().WindowRight(new int[3], 1, BreakingReadOnlySpanFunc.Of<int, int>());
 	}
 
 	[Fact]
@@ -20,16 +20,16 @@ public partial class WindowRightTest
 			new BreakingSequence<int>().WindowRight(-5));
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new BreakingSequence<int>().WindowRight(-5, BreakingFunc.OfSpan<int, int>()));
+			new BreakingSequence<int>().WindowRight(-5, BreakingReadOnlySpanFunc.Of<int, int>()));
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new BreakingSequence<int>().WindowRight([], -5, BreakingFunc.OfSpan<int, int>()));
+			new BreakingSequence<int>().WindowRight([], -5, BreakingReadOnlySpanFunc.Of<int, int>()));
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new BreakingSequence<int>().WindowRight(new int[5], 6, BreakingFunc.OfSpan<int, int>()));
+			new BreakingSequence<int>().WindowRight(new int[5], 6, BreakingReadOnlySpanFunc.Of<int, int>()));
 
 		_ = new BreakingSequence<int>()
-			.WindowRight(new int[5], 5, BreakingFunc.OfSpan<int, int>());
+			.WindowRight(new int[5], 5, BreakingReadOnlySpanFunc.Of<int, int>());
 	}
 
 	public static IEnumerable<object[]> GetThreeElementSequences() =>

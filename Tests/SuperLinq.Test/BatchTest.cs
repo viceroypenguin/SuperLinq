@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 public class BatchTest
 {
@@ -9,11 +9,11 @@ public class BatchTest
 		_ = new BreakingSequence<int>().Buffer(1);
 
 		_ = new BreakingSequence<int>()
-			.Batch(1, BreakingFunc.OfSpan<int, int>());
+			.Batch(1, BreakingReadOnlySpanFunc.Of<int, int>());
 		_ = new BreakingSequence<int>()
-			.Batch(new int[2], BreakingFunc.OfSpan<int, int>());
+			.Batch(new int[2], BreakingReadOnlySpanFunc.Of<int, int>());
 		_ = new BreakingSequence<int>()
-			.Batch(new int[2], 1, BreakingFunc.OfSpan<int, int>());
+			.Batch(new int[2], 1, BreakingReadOnlySpanFunc.Of<int, int>());
 	}
 
 	[Fact]
@@ -25,18 +25,18 @@ public class BatchTest
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
 			() => new BreakingSequence<int>()
-				.Batch(0, BreakingFunc.OfSpan<int, int>()));
+				.Batch(0, BreakingReadOnlySpanFunc.Of<int, int>()));
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
 			() => new BreakingSequence<int>()
-				.Batch([], 0, BreakingFunc.OfSpan<int, int>()));
+				.Batch([], 0, BreakingReadOnlySpanFunc.Of<int, int>()));
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
 			() => new BreakingSequence<int>()
-				.Batch(new int[5], 6, BreakingFunc.OfSpan<int, int>()));
+				.Batch(new int[5], 6, BreakingReadOnlySpanFunc.Of<int, int>()));
 
 		_ = new BreakingSequence<int>()
-			.Batch(new int[5], 5, BreakingFunc.OfSpan<int, int>());
+			.Batch(new int[5], 5, BreakingReadOnlySpanFunc.Of<int, int>());
 	}
 
 	public static IEnumerable<object[]> GetFourElementSequences() =>
