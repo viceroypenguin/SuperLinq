@@ -5,7 +5,7 @@
 /// </summary>
 internal static class BreakingFunc
 {
-	#region Func Delegates
+	#region Func
 
 	internal static Func<TResult> Of<TResult>() =>
 		() => throw new TestException();
@@ -23,7 +23,7 @@ internal static class BreakingFunc
 		(t1, t2, t3, t4) => throw new TestException();
 	#endregion
 
-	#region Span Delegates
+	#region ReadOnlySpanFunc
 	internal static SuperEnumerable.ReadOnlySpanFunc<T, TResult> OfSpan<T, TResult>() =>
 		t => throw new TestException();
 	#endregion

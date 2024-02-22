@@ -3,19 +3,27 @@
 namespace SuperLinq;
 
 /// <summary>
-/// Provides a set of static methods for querying objects that
-/// implement <see cref="IEnumerable{T}" />.
+///		Provides a set of static methods for querying objects that
+///		implement <see cref="IEnumerable{T}" />.
 /// </summary>
 public static partial class SuperEnumerable
 {
 	/// <summary>
-	/// Delegate that receives a <see cref="ReadOnlySpan{T}">ReadOnlySpan&lt;TSource&gt;</see>
-	/// and outputs a value of type <see langword="out"/> <typeparamref name="TResult"/>.
+	///		Delegate that receives a <see cref="ReadOnlySpan{T}">ReadOnlySpan&lt;TSource&gt;</see>
+	///		and outputs a value of type <see langword="out"/> <typeparamref name="TResult"/>.
 	/// </summary>
-	/// <param name="span">The parameter of the method that this delegate encapsulates.</param>
-	/// <typeparam name="TSource">The type of items in the <see cref="ReadOnlySpan{T}">ReadOnlySpan</see>.</typeparam>
-	/// <typeparam name="TResult">The type of the returned value.</typeparam>
-	/// <returns>Value of type <see langword="out"/> <typeparamref name="TResult"/>.</returns>
+	/// <typeparam name="TSource">
+	///		The type of items in the <see cref="ReadOnlySpan{T}">ReadOnlySpan</see>.
+	/// </typeparam>
+	/// <typeparam name="TResult">
+	///		The type of the returned value.
+	/// </typeparam>
+	/// <param name="span">
+	///		The parameter of the method that this delegate encapsulates.
+	/// </param>
+	/// <returns>
+	///		Value of type <see langword="out"/> <typeparamref name="TResult"/>.
+	/// </returns>
 	public delegate TResult ReadOnlySpanFunc<TSource, out TResult>(ReadOnlySpan<TSource> span);
 
 	[ExcludeFromCodeCoverage]
