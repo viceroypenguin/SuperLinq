@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 /// <summary>
 /// Functions which throw NotImplementedException if they're ever called.

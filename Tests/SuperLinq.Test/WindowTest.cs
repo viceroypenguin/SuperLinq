@@ -9,9 +9,9 @@ public partial class WindowTests
 	public void TestWindowIsLazy()
 	{
 		_ = new BreakingSequence<int>().Window(1);
-		_ = new BreakingSequence<int>().Window(1, BreakingFunc.Of<ArraySegment<int>, int>());
-		_ = new BreakingSequence<int>().Window(new int[3], BreakingFunc.Of<ArraySegment<int>, int>());
-		_ = new BreakingSequence<int>().Window(new int[3], 1, BreakingFunc.Of<ArraySegment<int>, int>());
+		_ = new BreakingSequence<int>().Window(1, BreakingReadOnlySpanFunc.Of<int, int>());
+		_ = new BreakingSequence<int>().Window(new int[3], BreakingReadOnlySpanFunc.Of<int, int>());
+		_ = new BreakingSequence<int>().Window(new int[3], 1, BreakingReadOnlySpanFunc.Of<int, int>());
 	}
 
 	[Fact]
@@ -21,16 +21,16 @@ public partial class WindowTests
 			new BreakingSequence<int>().Window(-5));
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new BreakingSequence<int>().Window(-5, SuperEnumerable.Identity));
+			new BreakingSequence<int>().Window(-5, BreakingReadOnlySpanFunc.Of<int, int>()));
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new BreakingSequence<int>().Window([], -5, SuperEnumerable.Identity));
+			new BreakingSequence<int>().Window([], -5, BreakingReadOnlySpanFunc.Of<int, int>()));
 
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new BreakingSequence<int>().Window(new int[5], 6, SuperEnumerable.Identity));
+			new BreakingSequence<int>().Window(new int[5], 6, BreakingReadOnlySpanFunc.Of<int, int>()));
 
 		_ = new BreakingSequence<int>()
-			.Window(new int[5], 5, SuperEnumerable.Identity);
+			.Window(new int[5], 5, BreakingReadOnlySpanFunc.Of<int, int>());
 	}
 
 	public static IEnumerable<object[]> GetThreeElementSequences() =>
@@ -116,9 +116,9 @@ public partial class WindowTests
 		method switch
 		{
 			WindowMethod.Traditional => seq.Window(size),
-			WindowMethod.BufferSize => seq.Window(size, arr => arr.ToList()),
-			WindowMethod.BufferArray => seq.Window(new T[size], arr => arr.ToList()),
-			WindowMethod.BufferSizeArray => seq.Window(new T[size + 10], size, arr => arr.ToList()),
+			WindowMethod.BufferSize => seq.Window(size, arr => arr.ToArray()),
+			WindowMethod.BufferArray => seq.Window(new T[size], arr => arr.ToArray()),
+			WindowMethod.BufferSizeArray => seq.Window(new T[size + 10], size, arr => arr.ToArray()),
 			_ => throw new NotSupportedException(),
 		};
 
