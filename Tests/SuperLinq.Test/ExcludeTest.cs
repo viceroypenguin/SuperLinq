@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 /// <summary>
 /// Verify the behavior of the Exclude operator
@@ -170,5 +170,72 @@ public class ExcludeTests
 		var result = seq.Exclude(0, 1_000);
 
 		result.AssertCollectionErrorChecking(9_000);
+	}
+
+	public static IEnumerable<object[]> GetExcludeRangeCases() =>
+		[
+			[3..7, false, false, new int[] { 0, 1, 2, 7, 8, 9 }],
+			[3..3, false, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[3..2, true, true, Array.Empty<int>()],
+			[3..15, false, false, new int[] { 0, 1, 2 }],
+
+			[3..^3, false, false, new int[] { 0, 1, 2, 7, 8, 9 }],
+			[6..^3, false, false, new int[] { 0, 1, 2, 3, 4, 5, 7, 8, 9 }],
+			[7..^3, false, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[8..^3, false, true, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[15..^3, false, true, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[3..^15, false, true, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+
+			[^7..2, false, true, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[^7..3, false, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[^7..4, false, false, new int[] { 0, 1, 2, 4, 5, 6, 7, 8, 9 }],
+			[^7..7, false, false, new int[] { 0, 1, 2, 7, 8, 9 }],
+			[^7..15, false, true, new int[] { 0, 1, 2 }],
+			[^15..7, false, true, new int[] { 7, 8, 9 }],
+
+			[^2..^3, true, true, Array.Empty<int>()],
+			[^3..^3, false, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[^7..^3, false, false, new int[] { 0, 1, 2, 7, 8, 9 }],
+			[^15..^3, false, true, new int[] { 7, 8, 9 }],
+		];
+
+	[Theory]
+	[MemberData(nameof(GetExcludeRangeCases))]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1026:Theory methods should use all of their parameters")]
+	public void ExcludeRangeBehavior(Range range, bool shouldThrow, bool __, int[] expected)
+	{
+		using var ts = Enumerable.Range(0, 10)
+			.AsTestingSequence();
+
+		if (shouldThrow)
+		{
+			_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
+				ts.Exclude(range));
+			return;
+		}
+
+		var result = ts.Exclude(range);
+
+		result.AssertSequenceEqual(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(GetExcludeRangeCases))]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1026:Theory methods should use all of their parameters")]
+	public void ExcludeRangeCollectionBehavior(Range range, bool __, bool shouldThrow, int[] expected)
+	{
+		using var ts = Enumerable.Range(0, 10)
+			.AsTestingCollection();
+
+		if (shouldThrow)
+		{
+			_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
+				ts.Exclude(range));
+			return;
+		}
+
+		var result = ts.Exclude(range);
+
+		result.AssertSequenceEqual(expected);
 	}
 }
