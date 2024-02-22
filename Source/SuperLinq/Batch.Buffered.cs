@@ -45,7 +45,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> Batch<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		int size,
-		Func<ArraySegment<TSource>, TResult> resultSelector)
+		ReadOnlySpanFunc<TSource, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
@@ -94,7 +94,7 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> Batch<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		TSource[] array,
-		Func<ArraySegment<TSource>, TResult> resultSelector)
+		ReadOnlySpanFunc<TSource, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(array);
@@ -149,7 +149,7 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		TSource[] array,
 		int size,
-		Func<ArraySegment<TSource>, TResult> resultSelector)
+		ReadOnlySpanFunc<TSource, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(array);
@@ -164,7 +164,7 @@ public static partial class SuperEnumerable
 		IEnumerable<TSource> source,
 		TSource[] array,
 		int size,
-		Func<ArraySegment<TSource>, TResult> resultSelector)
+		ReadOnlySpanFunc<TSource, TResult> resultSelector)
 	{
 		if (source is ICollection<TSource> coll)
 		{
@@ -174,7 +174,7 @@ public static partial class SuperEnumerable
 			if (coll.Count <= size)
 			{
 				coll.CopyTo(array, 0);
-				yield return resultSelector(new ArraySegment<TSource>(array, 0, coll.Count));
+				yield return resultSelector(new ReadOnlySpan<TSource>(array, 0, coll.Count));
 				yield break;
 			}
 		}
@@ -185,12 +185,12 @@ public static partial class SuperEnumerable
 			array[n++] = item;
 			if (n == size)
 			{
-				yield return resultSelector(new ArraySegment<TSource>(array, 0, n));
+				yield return resultSelector(new ReadOnlySpan<TSource>(array, 0, n));
 				n = 0;
 			}
 		}
 
 		if (n != 0)
-			yield return resultSelector(new ArraySegment<TSource>(array, 0, n));
+			yield return resultSelector(new ReadOnlySpan<TSource>(array, 0, n));
 	}
 }
