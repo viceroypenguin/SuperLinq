@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -205,7 +205,7 @@ public static partial class AsyncSuperEnumerable
 		ArgumentNullException.ThrowIfNull(leftKeySelector);
 		ArgumentNullException.ThrowIfNull(rightKeySelector);
 
-		return LoopJoin(
+		return LoopJoin<TLeft, TRight, TKey, (TLeft, TRight?)>(
 			left, right,
 			leftKeySelector, rightKeySelector,
 			static left => (left, default),

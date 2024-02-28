@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -210,7 +210,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(leftKeySelector);
 		ArgumentNullException.ThrowIfNull(rightKeySelector);
 
-		return JoinHash(
+		return JoinHash<TLeft, TRight, TKey, (TLeft, TRight?)>(
 			left, right,
 			leftKeySelector, rightKeySelector,
 			static left => (left, default),
@@ -366,7 +366,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(leftKeySelector);
 		ArgumentNullException.ThrowIfNull(rightKeySelector);
 
-		return JoinHash(
+		return JoinHash<TLeft, TRight, TKey, (TLeft?, TRight)>(
 			left, right,
 			leftKeySelector, rightKeySelector,
 			leftResultSelector: default,
@@ -522,7 +522,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(leftKeySelector);
 		ArgumentNullException.ThrowIfNull(rightKeySelector);
 
-		return JoinHash(
+		return JoinHash<TLeft, TRight, TKey, (TLeft?, TRight?)>(
 			left, right,
 			leftKeySelector, rightKeySelector,
 			static left => (left, default),

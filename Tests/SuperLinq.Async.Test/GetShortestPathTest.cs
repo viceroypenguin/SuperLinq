@@ -1,4 +1,4 @@
-﻿namespace Test.Async;
+namespace Test.Async;
 
 public static class GetShortestPathTest
 {
@@ -85,7 +85,7 @@ public static class GetShortestPathTest
 		[Theory]
 		[MemberData(nameof(GetStringIntCostData))]
 		public async Task GetStringIntCostByFunction(
-			IEqualityComparer<string> stateComparer,
+			IEqualityComparer<string>? stateComparer,
 			IComparer<int>? costComparer,
 			int expectedCost,
 			int expectedCount)
@@ -189,7 +189,7 @@ public static class GetShortestPathTest
 				[
 					null,
 					null,
-					Seq(
+					Seq<(string, (string?, int))>(
 						("start", (null, 0)),
 						("a", ("start", 1)),
 						("b", ("a", 3)),
@@ -205,7 +205,7 @@ public static class GetShortestPathTest
 				[
 					StringComparer.InvariantCultureIgnoreCase,
 					null,
-					Seq(
+					Seq<(string, (string?, int))>(
 						("start", (null, 0)),
 						("a", ("start", 1)),
 						("b", ("a", 3)),
@@ -216,7 +216,7 @@ public static class GetShortestPathTest
 				[
 					null,
 					Comparer<int>.Create((x, y) => -x.CompareTo(y)),
-					Seq(
+					Seq<(string, (string?, int))>(
 						("start", (null, 0)),
 						("a", ("start", 1)),
 						("b", ("a", 3)),
@@ -232,7 +232,7 @@ public static class GetShortestPathTest
 				[
 					StringComparer.InvariantCultureIgnoreCase,
 					Comparer<int>.Create((x, y) => -x.CompareTo(y)),
-					Seq(
+					Seq<(string, (string?, int))>(
 						("start", (null, 0)),
 						("a", ("start", 10)),
 						("b", ("a", 30)),

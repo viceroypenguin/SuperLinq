@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -205,7 +205,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(leftKeySelector);
 		ArgumentNullException.ThrowIfNull(rightKeySelector);
 
-		return LoopJoin(
+		return LoopJoin<TLeft, TRight, TKey, (TLeft, TRight?)>(
 			left, right,
 			leftKeySelector, rightKeySelector,
 			static left => (left, default),
