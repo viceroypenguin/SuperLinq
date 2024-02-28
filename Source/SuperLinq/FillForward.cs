@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq;
 
@@ -112,10 +112,12 @@ public static partial class SuperEnumerable
 		{
 			if (predicate(item))
 			{
+				// ! is valid here - could be `null` because `predicate` returned true when an item is `null` but in
+				// that case, `T` will be nullable as well. using forgiveness here protects `T` in other cases.
 				yield return (seed, fillSelector) switch
 				{
-					((true, var s), { } f) => f(item, s),
-					((true, var s), _) => s,
+					((true, var s), { } f) => f(item, s!),
+					((true, var s), _) => s!,
 					_ => item,
 				};
 			}
