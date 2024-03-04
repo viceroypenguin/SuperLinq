@@ -10,7 +10,7 @@
 		<PackageVersion Include="DocFx.App" Version="2.75.3" />
 		<PackageVersion Include="GitHubActionsTestLogger" Version="2.3.3" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" />
-		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.PerformanceSensitiveAnalyzers" Version="3.3.1" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.4" />
 		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
