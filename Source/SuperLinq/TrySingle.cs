@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -110,6 +110,44 @@ public static partial class SuperEnumerable
 			return !e.MoveNext()
 				? resultSelector(one, current)
 				: resultSelector(many, default);
+		}
+	}
+
+	/// <summary>
+	///     Returns the single element in the sequence if it contains exactly one element.
+	///     Similar to <see cref="Enumerable.SingleOrDefault{TSource}(IEnumerable{TSource})"/>.
+	/// </summary>
+	/// <typeparam name="TSource">
+	///		The type of the elements of <paramref name="source"/>.
+	/// </typeparam>
+	/// <param name="source">
+	///		The source sequence.
+	/// </param>
+	/// <returns>
+	///		The single element or the default value of <typeparamref name="TSource"/>.
+	/// </returns>
+	public static TSource? TrySingle<TSource>(this IEnumerable<TSource> source)
+	{
+		ArgumentNullException.ThrowIfNull(source);
+
+		if (source.TryGetCollectionCount() is int n)
+		{
+			return n switch
+			{
+				1 => source.First(),
+				0 or _ => default
+			};
+		}
+		else
+		{
+			using var e = source.GetEnumerator();
+			if (!e.MoveNext())
+				return default;
+
+			var current = e.Current;
+			return !e.MoveNext()
+				? current
+				: default;
 		}
 	}
 }

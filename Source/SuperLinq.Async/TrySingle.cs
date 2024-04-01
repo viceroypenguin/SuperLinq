@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -105,6 +105,45 @@ public static partial class AsyncSuperEnumerable
 			return !await e.MoveNextAsync()
 				? resultSelector(one, current)
 				: resultSelector(many, default);
+		}
+	}
+
+	/// <summary>
+	///		Returns the single element in the sequence if it contains exactly one element.
+	///		Similar to <see cref="AsyncEnumerable.SingleOrDefaultAsync{TSource}(IAsyncEnumerable{TSource}, CancellationToken)"/>.
+	/// </summary>
+	/// <typeparam name="TSource">
+	///		The type of the elements of <paramref name="source"/>.
+	/// </typeparam>
+	/// <param name="source">
+	///		The source sequence.
+	///	</param>
+	/// <param name="cancellationToken">
+	///		The optional cancellation token to be used for cancelling the sequence at any time.
+	/// </param>
+	/// <returns>
+	///		The single element or the default value of <typeparamref name="TSource"/>.
+	/// </returns>
+	public static ValueTask<TSource?> TrySingle<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		CancellationToken cancellationToken = default)
+	{
+		ArgumentNullException.ThrowIfNull(source);
+
+		return Core(source, cancellationToken);
+
+		static async ValueTask<TSource?> Core(
+			IAsyncEnumerable<TSource> source,
+			CancellationToken cancellationToken)
+		{
+			await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
+			if (!await e.MoveNextAsync())
+				return default;
+
+			var current = e.Current;
+			return !await e.MoveNextAsync()
+				? current
+				: default;
 		}
 	}
 }

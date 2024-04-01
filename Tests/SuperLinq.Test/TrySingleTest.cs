@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace Test;
 
@@ -109,5 +109,54 @@ public class TrySingleTest
 		using var seq = Enumerable.Range(1, numberOfElements).AsTestingSequence();
 		var (cardinality, _) = seq.TrySingle("zero", "one", "many");
 		Assert.Equal(expectedCardinality, cardinality);
+	}
+
+	[Theory]
+	[InlineData(0, 0)]
+	[InlineData(1, 1)]
+	[InlineData(2, 0)]
+	public void TrySingleShouldReturnDefaultOrSingleValue(int numberOfElements, int expectedResult)
+	{
+		using var seq = Enumerable.Range(1, numberOfElements).AsTestingSequence();
+		var result = seq.TrySingle();
+		Assert.Equal(expectedResult, result);
+	}
+
+	public static IEnumerable<object[]> GetListOfSequences(IEnumerable<int> seq) =>
+		seq.Select(x => (int?)x)
+			.GetListSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetListOfSequences), new int[] { })]
+	public void TrySingleShouldReturnWhenProvidedEmptyList(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
+			var value = seq.TrySingle();
+			Assert.Null(value);
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetListOfSequences), new int[] { 1, 2 })]
+	public void TrySingleShouldReturnWhenProvidedLongerList(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
+			var value = seq.TrySingle();
+			Assert.Null(value);
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetListOfSequences), new int[] { 1 })]
+	public void TrySingleShouldReturnWhenProvidedListWithSingleItem(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
+			var value = seq.TrySingle();
+			Assert.Equal(1, value);
+		}
 	}
 }
