@@ -121,4 +121,42 @@ public class TrySingleTest
 		var result = seq.TrySingle();
 		Assert.Equal(expectedResult, result);
 	}
+
+	public static IEnumerable<object[]> GetListOfSequences(IEnumerable<int> seq) =>
+		seq.Select(x => (int?)x)
+			.GetListSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetListOfSequences), new int[] { })]
+	public void TrySingleShouldReturnWhenProvidedEmptyList(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
+			var value = seq.TrySingle();
+			Assert.Null(value);
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetListOfSequences), new int[] { 1, 2 })]
+	public void TrySingleShouldReturnWhenProvidedLongerList(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
+			var value = seq.TrySingle();
+			Assert.Null(value);
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetListOfSequences), new int[] { 1 })]
+	public void TrySingleShouldReturnWhenProvidedListWithSingleItem(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
+			var value = seq.TrySingle();
+			Assert.Equal(1, value);
+		}
+	}
 }
