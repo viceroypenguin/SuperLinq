@@ -1,4 +1,4 @@
-﻿namespace Test.Async;
+namespace Test.Async;
 
 public class TrySingleTest
 {
@@ -60,5 +60,16 @@ public class TrySingleTest
 		await using var seq = AsyncEnumerable.Range(1, numberOfElements).AsTestingSequence();
 		var (cardinality, _) = await seq.TrySingle("zero", "one", "many");
 		Assert.Equal(expectedCardinality, cardinality);
+	}
+
+	[Theory]
+	[InlineData(0, 0)]
+	[InlineData(1, 1)]
+	[InlineData(2, 0)]
+	public async Task TrySingleShouldReturnDefaultOrSingleValue(int numberOfElements, int expectedResult)
+	{
+		await using var seq = AsyncEnumerable.Range(1, numberOfElements).AsTestingSequence();
+		var result = await seq.TrySingle();
+		Assert.Equal(expectedResult, result);
 	}
 }
