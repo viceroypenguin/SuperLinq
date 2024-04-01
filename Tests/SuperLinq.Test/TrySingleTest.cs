@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace Test;
 
@@ -109,5 +109,16 @@ public class TrySingleTest
 		using var seq = Enumerable.Range(1, numberOfElements).AsTestingSequence();
 		var (cardinality, _) = seq.TrySingle("zero", "one", "many");
 		Assert.Equal(expectedCardinality, cardinality);
+	}
+
+	[Theory]
+	[InlineData(0, 0)]
+	[InlineData(1, 1)]
+	[InlineData(2, 0)]
+	public void TrySingleShouldReturnDefaultOrSingleValue(int numberOfElements, int expectedResult)
+	{
+		using var seq = Enumerable.Range(1, numberOfElements).AsTestingSequence();
+		var result = seq.TrySingle();
+		Assert.Equal(expectedResult, result);
 	}
 }

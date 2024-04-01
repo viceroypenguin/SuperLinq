@@ -114,7 +114,8 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
-	///     Returns the single element in the sequence if it contains exactly one element. similar to <see cref="Enumerable.SingleOrDefault{TSource}(IEnumerable{TSource})"/>.
+	///     Returns the single element in the sequence if it contains exactly one element.
+	///     Similar to <see cref="Enumerable.SingleOrDefault{TSource}(IEnumerable{TSource})"/>.
 	/// </summary>
 	/// <typeparam name="TSource">
 	///		The type of the elements of <paramref name="source"/>.
