@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // copied from https://github.com/dotnet/runtime/tree/main/src/libraries/System.Collections/tests/Generic/PriorityQueue
 // and further edited
@@ -439,14 +439,13 @@ public class UpdatableUpdatablePriorityQueueTest
 			queue.EnqueueRange(["alpha", "bravo", "charlie", "delta", "echo",], 30);
 
 			queue.EnqueueRange(
-				new[]
-				{
+				[
 					("alpha", 50),
 					("bravo", 40),
 					("charlie", 30),
 					("delta", 20),
 					("echo", 10),
-				});
+				]);
 
 			queue.UnorderedItems.AssertCollectionEqual(
 				("alpha", 50),
@@ -494,14 +493,13 @@ public class UpdatableUpdatablePriorityQueueTest
 			queue.EnqueueRange(["alpha", "bravo", "charlie", "delta", "echo",], 30);
 
 			queue.EnqueueRangeMinimum(
-				new[]
-				{
+				[
 					("alpha", 50),
 					("bravo", 40),
 					("charlie", 30),
 					("delta", 20),
 					("echo", 10),
-				});
+				]);
 
 			queue.UnorderedItems.AssertCollectionEqual(
 				("alpha", 30),
