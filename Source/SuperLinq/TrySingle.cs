@@ -134,9 +134,8 @@ public static partial class SuperEnumerable
 		{
 			return n switch
 			{
-				0 => default,
 				1 => source.First(),
-				_ => default
+				0 or _ => default
 			};
 		}
 		else
