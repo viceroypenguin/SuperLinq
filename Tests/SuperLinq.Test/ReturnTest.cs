@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 public class ReturnTest
 {
@@ -91,6 +91,7 @@ public class ReturnTest
 	}
 
 #pragma warning disable IDE0200 // Remove unnecessary lambda expression
+#pragma warning disable IDE0300 // Collection initialization can be simplified
 	public static IEnumerable<object[]> UnsupportedActions() =>
 		new Action[][]
 		{
@@ -101,6 +102,7 @@ public class ReturnTest
 			[() => SomeSingleton.List.Insert(0, new object()),],
 			[() => SomeSingleton.List[0] = new object(),],
 		};
+#pragma warning restore IDE0300 // Collection initialization can be simplified
 #pragma warning restore IDE0200 // Remove unnecessary lambda expression
 
 	[Theory, MemberData(nameof(UnsupportedActions))]
