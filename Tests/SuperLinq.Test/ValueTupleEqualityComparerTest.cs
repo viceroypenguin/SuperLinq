@@ -22,6 +22,19 @@ public class ValueTupleEqualityComparerTest
 	}
 
 	[Fact]
+	public void ValueTupleEqualityComparerWithOneTypeArgShouldGetHashCode()
+	{
+		var comparer = ValueTupleEqualityComparer.Create<int?>(null);
+		ValueTuple<int?> first = new(null);
+		var firstHashCode = comparer.GetHashCode(first);
+		Assert.Equal(0, firstHashCode);
+
+		ValueTuple<int?> second = new(2);
+		var secondHashCode = comparer.GetHashCode(second);
+		Assert.Equal(2.GetHashCode(), secondHashCode);
+	}
+
+	[Fact]
 	public void ValueTupleEqualityComparerWithOneTypeArgShouldCreateWhenComparerProvided()
 	{
 		var innerComparer = new TestComparer<TestObject>((x, y) => x?.Value == y?.Value);
@@ -40,5 +53,27 @@ public class ValueTupleEqualityComparerTest
 		ValueTuple<int, int> right = new(1, 2);
 		var result = comparer.Equals(left, right);
 		Assert.True(result);
+	}
+
+	[Fact]
+	public void ValueTupleEqualityComparerWithTwoTypeArgsShouldCreateWhenComparerProvided()
+	{
+		var innerComparerLeft = new TestComparer<TestObject>((x, y) => x?.Value == y?.Value);
+		var innerComparerRight = new TestComparer<TestObject>((x, y) => x?.Value == y?.Value);
+		var comparer = ValueTupleEqualityComparer.Create(innerComparerLeft, innerComparerRight);
+		ValueTuple<TestObject, TestObject> left = new(new("1"), new("2"));
+		ValueTuple<TestObject, TestObject> right = new(new("1"), new("2"));
+		var result = comparer.Equals(left, right);
+		Assert.True(result);
+	}
+
+	[Fact]
+	public void ValueTupleEqualityComparerWithTwoTypeArgsShouldGetHashCode()
+	{
+		var comparer = ValueTupleEqualityComparer.Create<int, int>(null, null);
+		ValueTuple<int, int> first = new(1, 2);
+		var firstHashCode = comparer.GetHashCode(first);
+		var expectedHashCode = HashCode.Combine(1.GetHashCode(), 2.GetHashCode());
+		Assert.Equal(expectedHashCode, firstHashCode);
 	}
 }
