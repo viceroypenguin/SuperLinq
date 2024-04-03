@@ -3,7 +3,9 @@
 
 #pragma warning disable IDE0130
 
+#if !NET7_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
+#endif
 
 namespace System.Diagnostics;
 
