@@ -12,7 +12,7 @@ public class ValueTupleEqualityComparerTest
 	}
 
 	[Fact]
-	public void ValueTupleEqualityComparerShouldCreateWhenNoComparerProvided()
+	public void ValueTupleEqualityComparerWithOneTypeArgShouldCreateWhenNoComparerProvided()
 	{
 		var comparer = ValueTupleEqualityComparer.Create<int>(null);
 		ValueTuple<int> left = new(1);
@@ -22,12 +22,22 @@ public class ValueTupleEqualityComparerTest
 	}
 
 	[Fact]
-	public void ValueTupleEqualityComparerShouldCreateWhenComparerProvided()
+	public void ValueTupleEqualityComparerWithOneTypeArgShouldCreateWhenComparerProvided()
 	{
 		var innerComparer = new TestComparer<TestObject>((x, y) => x?.Value == y?.Value);
 		var comparer = ValueTupleEqualityComparer.Create(innerComparer);
 		ValueTuple<TestObject> left = new(new("testing"));
 		ValueTuple<TestObject> right = new(new("testing"));
+		var result = comparer.Equals(left, right);
+		Assert.True(result);
+	}
+
+	[Fact]
+	public void ValueTupleEqualityComparerWithTwoTypeArgsShouldCreateWhenNoComparerProvided()
+	{
+		var comparer = ValueTupleEqualityComparer.Create<int, int>(null, null);
+		ValueTuple<int, int> left = new(1, 2);
+		ValueTuple<int, int> right = new(1, 2);
 		var result = comparer.Equals(left, right);
 		Assert.True(result);
 	}
