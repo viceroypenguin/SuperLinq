@@ -147,4 +147,9 @@ static SuperLinq.SuperEnumerable.WindowLeft<TSource, TResult>(this System.Collec
 static SuperLinq.SuperEnumerable.WindowRight<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, int size, SuperLinq.SuperEnumerable.ReadOnlySpanFunc<TSource, TResult>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
 static SuperLinq.SuperEnumerable.WindowRight<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, TSource[]! array, int size, SuperLinq.SuperEnumerable.ReadOnlySpanFunc<TSource, TResult>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
 static SuperLinq.SuperEnumerable.WindowRight<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, TSource[]! array, SuperLinq.SuperEnumerable.ReadOnlySpanFunc<TSource, TResult>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
+static SuperLinq.ValueTupleComparer.Create<T1, T2>(System.Collections.Generic.IComparer<T1>? comparer1, System.Collections.Generic.IComparer<T2>? comparer2) -> System.Collections.Generic.IComparer<(T1, T2)>!
+static SuperLinq.ValueTupleEqualityComparer.Create<T1, T2>(System.Collections.Generic.IEqualityComparer<T1>? comparer1, System.Collections.Generic.IEqualityComparer<T2>? comparer2) -> System.Collections.Generic.IEqualityComparer<(T1, T2)>!
+static SuperLinq.ValueTupleEqualityComparer.Create<T1>(System.Collections.Generic.IEqualityComparer<T1>? comparer1) -> System.Collections.Generic.IEqualityComparer<System.ValueTuple<T1>>!
 SuperLinq.SuperEnumerable.ReadOnlySpanFunc<TSource, TResult>
+SuperLinq.ValueTupleComparer
+SuperLinq.ValueTupleEqualityComparer

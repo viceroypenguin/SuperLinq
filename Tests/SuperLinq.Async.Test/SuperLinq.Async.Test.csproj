@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="../../TargetFrameworks.props" />
 
@@ -22,7 +22,6 @@
 		<Compile Include="..\SuperLinq.Test\EqualityComparer.cs" Link="EqualityComparer.cs" />
 		<Compile Include="..\SuperLinq.Test\FuncModule.cs" Link="FuncModule.cs" />
 		<Compile Include="..\SuperLinq.Test\TestException.cs" Link="TestException.cs" />
-		<Compile Include="..\..\Source\SuperLinq\ValueTupleEqualityComparer.cs" Link="ValueTupleEqualityComparer.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
