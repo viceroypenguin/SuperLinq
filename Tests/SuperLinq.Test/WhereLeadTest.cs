@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class WhereLeadTest
+public sealed class WhereLeadTest
 {
 	[Fact]
 	public void WhereLeadIsLazy()

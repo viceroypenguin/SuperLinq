@@ -1,8 +1,8 @@
-﻿using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace Test;
 
-public class FillForwardTest
+public sealed class FillForwardTest
 {
 	[Fact]
 	public void FillForwardIsLazy()
@@ -77,18 +77,18 @@ public class FillForwardTest
 			from line in Table.Split('\n')
 			select line.Trim() into line
 			where !string.IsNullOrEmpty(line)
-			let x = Regex.Split(line, "\x20+")
+			let x = line.Split(' ', StringSplitOptions.RemoveEmptyEntries)
 			select new
 			{
 				Continent = x[0],
 				Country = x[1],
 				City = x[2],
-				Value = int.Parse(x[3]),
+				Value = int.Parse(x[3], CultureInfo.InvariantCulture),
 			}).AsTestingSequence();
 
 		data
-			.FillForward(e => e.Continent == "-", (e, f) => new { f.Continent, e.Country, e.City, e.Value })
-			.FillForward(e => e.Country == "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value })
+			.FillForward(e => e.Continent is "-", (e, f) => new { f.Continent, e.Country, e.City, e.Value })
+			.FillForward(e => e.Country is "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value })
 			.AssertSequenceEqual(
 				new { Continent = "Europe", Country = "UK", City = "London", Value = 123 },
 				new { Continent = "Europe", Country = "UK", City = "Manchester", Value = 234 },

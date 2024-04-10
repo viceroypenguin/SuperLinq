@@ -5,7 +5,7 @@ namespace Test;
 
 #pragma warning disable IDE0034
 
-public class CopyToTest
+public sealed class CopyToTest
 {
 	[Fact]
 	public void NullArgumentTest()

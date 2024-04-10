@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class DoTest
+public sealed class DoTest
 {
 	[Fact]
 	public void DoOverloadsAreLazy()

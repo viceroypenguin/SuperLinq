@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class UsingTest
+public sealed class UsingTest
 {
 	[Fact]
 	public void UsingIsLazy()
@@ -78,7 +78,7 @@ public class UsingTest
 		Assert.True(dis.IsDisposed);
 	}
 
-	private class TestDisposable : IAsyncDisposable
+	private sealed class TestDisposable : IAsyncDisposable
 	{
 		public bool IsDisposed { get; set; }
 		public ValueTask DisposeAsync()

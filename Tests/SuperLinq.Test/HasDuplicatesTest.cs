@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class HasDuplicatesTest
+public sealed class HasDuplicatesTest
 {
 	[Fact]
 	public void DuplicatesDoesNotEnumerateUnnecessarily()

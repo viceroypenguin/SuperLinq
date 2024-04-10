@@ -3,7 +3,7 @@
 /// <summary>
 /// Verify the behavior of the Slice operator
 /// </summary>
-public class SliceTests
+public sealed class SliceTests
 {
 	/// <summary>
 	/// Verify that Slice evaluates in a lazy manner.

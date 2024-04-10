@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class InsertTest
+public sealed class InsertTest
 {
 	[Fact]
 	public void InsertWithNegativeIndex()

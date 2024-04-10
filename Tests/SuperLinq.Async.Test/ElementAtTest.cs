@@ -3,7 +3,7 @@
 
 namespace Test.Async;
 
-public class ElementAtTest
+public sealed class ElementAtTest
 {
 	[Fact]
 	public async Task FromStartIndexInt()

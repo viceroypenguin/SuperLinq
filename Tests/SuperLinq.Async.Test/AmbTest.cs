@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class AmbTest
+public sealed class AmbTest
 {
 	[Fact]
 	public void AmbIsLazy()

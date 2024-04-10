@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -21,7 +21,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillForward<T>(this IAsyncEnumerable<T> source)
 	{
-		return source.FillForward(e => new ValueTask<bool>(e == null));
+		return source.FillForward(e => new ValueTask<bool>(e is null));
 	}
 
 	/// <summary>
@@ -218,11 +218,12 @@ public static partial class AsyncSuperEnumerable
 		{
 			if (await predicate(item).ConfigureAwait(false))
 			{
-				yield return seed is (true, { } someSeed)
-						   ? fillSelector != null
-							 ? await fillSelector(item, someSeed).ConfigureAwait(false)
-							 : someSeed
-						   : item;
+				yield return (seed, fillSelector) switch
+				{
+					((true, var s), { } f) => await f(item, s!).ConfigureAwait(false),
+					((true, var s), _) => s!,
+					_ => item,
+				};
 			}
 			else
 			{

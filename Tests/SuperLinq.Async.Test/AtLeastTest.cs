@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class AtLeastTest
+public sealed class AtLeastTest
 {
 	[Fact]
 	public async Task AtLeastWithNegativeCount()

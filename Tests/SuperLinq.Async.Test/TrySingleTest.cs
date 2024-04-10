@@ -1,6 +1,6 @@
 namespace Test.Async;
 
-public class TrySingleTest
+public sealed class TrySingleTest
 {
 	[Fact]
 	public async Task TrySingleWithEmptySource()

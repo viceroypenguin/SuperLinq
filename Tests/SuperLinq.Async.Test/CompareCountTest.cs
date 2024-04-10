@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class CompareCountTest
+public sealed class CompareCountTest
 {
 	[Theory]
 	[InlineData(0, 0, 0)]

@@ -29,7 +29,7 @@ public static partial class SuperEnumerable
 	public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(
 		this IEnumerable<KeyValuePair<TKey, TValue>> source)
 	{
-		return source.ToLookup(null);
+		return source.ToLookup(comparer: null);
 	}
 
 	/// <summary>
@@ -94,7 +94,7 @@ public static partial class SuperEnumerable
 	public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(
 		this IEnumerable<(TKey Key, TValue Value)> source)
 	{
-		return source.ToLookup(null);
+		return source.ToLookup(comparer: null);
 	}
 
 	/// <summary>

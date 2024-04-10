@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ExceptionServices;
 
@@ -159,7 +159,7 @@ public static partial class SuperEnumerable
 							_exception.Throw();
 						}
 
-						if (_enumerator == null)
+						if (_enumerator is null)
 							break;
 
 						var moved = false;
@@ -229,7 +229,7 @@ public static partial class SuperEnumerable
 
 		private ICollection<T>? _source = source;
 
-		private volatile CmbHelper _state = new(State.Uninitialized, null);
+		private volatile CmbHelper _state = new(State.Uninitialized, Buffer: null);
 
 		public int Count
 		{
@@ -383,7 +383,7 @@ public static partial class SuperEnumerable
 		{
 			get
 			{
-				if (_source == null)
+				if (_source is null)
 					ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 				return _source;
 			}
@@ -391,7 +391,7 @@ public static partial class SuperEnumerable
 
 		public void Reset()
 		{
-			if (_source == null)
+			if (_source is null)
 				ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 		}
 

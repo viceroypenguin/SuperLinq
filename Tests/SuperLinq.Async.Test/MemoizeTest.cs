@@ -3,7 +3,7 @@ using CommunityToolkit.Diagnostics;
 
 namespace Test.Async;
 
-public class MemoizeTest
+public sealed class MemoizeTest
 {
 	[Fact]
 	public void MemoizeIsLazy()
@@ -289,7 +289,7 @@ public class MemoizeTest
 		Assert.Equal(1, buffer.Count);
 	}
 
-	private class FailingEnumerable : IEnumerable<int>
+	private sealed class FailingEnumerable : IEnumerable<int>
 	{
 		private bool _started;
 		public IEnumerator<int> GetEnumerator()

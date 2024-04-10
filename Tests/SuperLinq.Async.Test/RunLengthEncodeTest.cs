@@ -3,7 +3,7 @@
 /// <summary>
 /// Verify the behavior of the RunLengthEncode() operator
 /// </summary>
-public class RunLengthEncodeTests
+public sealed class RunLengthEncodeTests
 {
 	/// <summary>
 	/// Verify that the RunLengthEncode() methods behave in a lazy manner.

@@ -4,7 +4,7 @@ namespace Test;
 
 public enum JoinOperation { None, Loop, Hash, Merge, }
 
-public class FullOuterJoinTest
+public sealed class FullOuterJoinTest
 {
 	private static IEnumerable<((string, string) Left, (string, string) Right)> ExecuteJoin(
 		IEnumerable<(string, string)> left,

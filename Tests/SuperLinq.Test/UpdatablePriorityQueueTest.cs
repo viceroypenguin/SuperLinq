@@ -8,7 +8,7 @@ using SuperLinq.Collections;
 
 namespace Test;
 
-public class UpdatableUpdatablePriorityQueueTest
+public sealed class UpdatableUpdatablePriorityQueueTest
 {
 	public abstract class TestBase
 	{
@@ -283,24 +283,24 @@ public class UpdatableUpdatablePriorityQueueTest
 		}
 	}
 
-	public class PriorityQueue_Generic_Tests_string_string_CustomPriorityComparer : UpdatablePriorityQueue_Generic_Tests_string_string
+	public sealed class PriorityQueue_Generic_Tests_string_string_CustomPriorityComparer : UpdatablePriorityQueue_Generic_Tests_string_string
 	{
 		protected override IComparer<string> GetPriorityComparer() => StringComparer.InvariantCultureIgnoreCase;
 	}
 
-	public class PriorityQueue_Generic_Tests_string_string_CustomElementComparer : UpdatablePriorityQueue_Generic_Tests_string_string
+	public sealed class PriorityQueue_Generic_Tests_string_string_CustomElementComparer : UpdatablePriorityQueue_Generic_Tests_string_string
 	{
 		protected override IEqualityComparer<string>? GetElementComparer() => StringComparer.InvariantCultureIgnoreCase;
 	}
 
-	public class PriorityQueue_Generic_Tests_int_int_CustomComparer : UpdatablePriorityQueue_Generic_Tests_int_int
+	public sealed class PriorityQueue_Generic_Tests_int_int_CustomComparer : UpdatablePriorityQueue_Generic_Tests_int_int
 	{
 		protected override IComparer<int> GetPriorityComparer() => Comparer<int>.Create((x, y) => -x.CompareTo(y));
 	}
 
-	public class UpdatablePriorityQueue_NonGeneric_Tests : TestBase
+	public sealed class UpdatablePriorityQueue_NonGeneric_Tests : TestBase
 	{
-		protected static UpdatablePriorityQueue<string, int> CreateSmallUpdatablePriorityQueue(out HashSet<(string, int)> items)
+		private static UpdatablePriorityQueue<string, int> CreateSmallUpdatablePriorityQueue(out HashSet<(string, int)> items)
 		{
 			items =
 			[
@@ -313,7 +313,7 @@ public class UpdatableUpdatablePriorityQueueTest
 			return queue;
 		}
 
-		protected static UpdatablePriorityQueue<int, int> CreateUpdatablePriorityQueue(int initialCapacity, int count)
+		private static UpdatablePriorityQueue<int, int> CreateUpdatablePriorityQueue(int initialCapacity, int count)
 		{
 			var pq = new UpdatablePriorityQueue<int, int>(initialCapacity);
 			for (var i = 0; i < count; i++)
@@ -327,7 +327,7 @@ public class UpdatableUpdatablePriorityQueueTest
 		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueDequeue_Empty()
 		{
-			var queue = new UpdatablePriorityQueue<string, int>();
+			var queue = new UpdatablePriorityQueue<string, int>(StringComparer.Ordinal);
 
 			Assert.Equal("hello", queue.EnqueueDequeue("hello", 42));
 			Assert.Equal(0, queue.Count);
@@ -380,7 +380,7 @@ public class UpdatableUpdatablePriorityQueueTest
 		[Fact]
 		public void UpdatablePriorityQueue_Generic_Enqueue_Null()
 		{
-			var queue = new UpdatablePriorityQueue<string?, int>();
+			var queue = new UpdatablePriorityQueue<string?, int>(StringComparer.Ordinal);
 
 			queue.Enqueue(element: null, 1);
 			queue.Enqueue(element: "zero", 0);
@@ -394,7 +394,7 @@ public class UpdatableUpdatablePriorityQueueTest
 		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueRange_Null()
 		{
-			var queue = new UpdatablePriorityQueue<string?, int>();
+			var queue = new UpdatablePriorityQueue<string?, int>(StringComparer.Ordinal);
 
 			queue.EnqueueRange([null, null, null], 0);
 			queue.EnqueueRange(["not null"], 1);
@@ -407,7 +407,7 @@ public class UpdatableUpdatablePriorityQueueTest
 		[Fact]
 		public void UpdatablePriorityQueue_Generic_Enqueue_ChangesPriority()
 		{
-			var queue = new UpdatablePriorityQueue<string, int>();
+			var queue = new UpdatablePriorityQueue<string, int>(StringComparer.Ordinal);
 
 			queue.EnqueueRange(["alpha", "bravo", "charlie", "delta", "echo",], 30);
 
@@ -434,7 +434,7 @@ public class UpdatableUpdatablePriorityQueueTest
 		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueRange_ChangesPriority()
 		{
-			var queue = new UpdatablePriorityQueue<string, int>();
+			var queue = new UpdatablePriorityQueue<string, int>(StringComparer.Ordinal);
 
 			queue.EnqueueRange(["alpha", "bravo", "charlie", "delta", "echo",], 30);
 
@@ -464,7 +464,7 @@ public class UpdatableUpdatablePriorityQueueTest
 		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueMinimum_UsesLowestPriority()
 		{
-			var queue = new UpdatablePriorityQueue<string, int>();
+			var queue = new UpdatablePriorityQueue<string, int>(StringComparer.Ordinal);
 
 			queue.EnqueueRange(["alpha", "bravo", "charlie", "delta", "echo",], 30);
 
@@ -488,7 +488,7 @@ public class UpdatableUpdatablePriorityQueueTest
 		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueRangeMinimum_UsesLowestPriority()
 		{
-			var queue = new UpdatablePriorityQueue<string, int>();
+			var queue = new UpdatablePriorityQueue<string, int>(StringComparer.Ordinal);
 
 			queue.EnqueueRange(["alpha", "bravo", "charlie", "delta", "echo",], 30);
 

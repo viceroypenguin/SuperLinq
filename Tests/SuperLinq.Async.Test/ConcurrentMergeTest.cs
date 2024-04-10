@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class ConcurrentMergeTest
+public sealed class ConcurrentMergeTest
 {
 	[Fact]
 	public void ConcurrentMergeIsLazy()

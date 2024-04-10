@@ -1,7 +1,7 @@
 ﻿namespace Test;
 
 [Obsolete("References `Backsert` which is obsolete in favor of `Insert`")]
-public class BacksertTest
+public sealed class BacksertTest
 {
 	[Fact]
 	public void BacksertIsLazy()

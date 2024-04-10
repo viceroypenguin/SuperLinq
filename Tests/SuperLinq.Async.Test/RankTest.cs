@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class RankTests
+public sealed class RankTests
 {
 	/// <summary>
 	/// Verify that Rank uses deferred execution
@@ -211,7 +211,7 @@ public class RankTests
 				new(Name: "Joe", Age: 31, ExpectedRank: 6),
 				new(Name: "Mel", Age: 28, ExpectedRank: 5),
 				new(Name: "Jim", Age: 74, ExpectedRank: 8),
-				new(Name: "Jes", Age: 11, ExpectedRank: 1)
+				new(Name: "Jes", Age: 11, ExpectedRank: 1),
 			},
 			new Person[]
 			{

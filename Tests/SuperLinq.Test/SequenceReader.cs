@@ -78,7 +78,7 @@ internal sealed class SequenceReader<T> : IDisposable
 	[MemberNotNull(nameof(_enumerator))]
 	private void EnsureNotDisposed()
 	{
-		if (_enumerator == null)
+		if (_enumerator is null)
 			Assert.Fail("Sequence was disposed before completing.");
 	}
 
@@ -88,7 +88,7 @@ internal sealed class SequenceReader<T> : IDisposable
 	public void Dispose()
 	{
 		var e = _enumerator;
-		if (e == null) return;
+		if (e is null) return;
 		_enumerator = null;
 		e.Dispose();
 	}

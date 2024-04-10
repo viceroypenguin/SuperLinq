@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -258,7 +258,7 @@ public static partial class SuperEnumerable
 				var member = info.Member;
 				var column = info.Column;
 
-				if (column == null)
+				if (column is null)
 					ThrowHelper.ThrowArgumentException(nameof(table), $"Column named '{member.Name}' is missing.");
 
 				if (info.Type != column.DataType)

@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class CollectionEqualTest
+public sealed class CollectionEqualTest
 {
 	[Fact]
 	public async Task CollectionEqualIntSequenceInOrder()

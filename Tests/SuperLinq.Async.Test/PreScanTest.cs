@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class PreScanTest
+public sealed class PreScanTest
 {
 	[Fact]
 	public void PreScanIsLazy()

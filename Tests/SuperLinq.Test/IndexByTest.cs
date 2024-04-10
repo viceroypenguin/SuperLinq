@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class IndexByTest
+public sealed class IndexByTest
 {
 	[Fact]
 	public void IndexBySimpleTest()

@@ -144,7 +144,7 @@ public static partial class SuperEnumerable
 						{
 							_exception?.Throw();
 
-							if (_enumerator == null)
+							if (_enumerator is null)
 								break;
 
 							var moved = false;

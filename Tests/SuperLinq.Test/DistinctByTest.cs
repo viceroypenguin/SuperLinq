@@ -1,7 +1,7 @@
 ﻿namespace Test;
 
 [Obsolete("References `DistinctBy` which is obsolete in net6+")]
-public class DistinctByTest
+public sealed class DistinctByTest
 {
 	[Fact]
 	public void DistinctBy()

@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class FoldTest
+public sealed class FoldTest
 {
 	[Fact]
 	public void FoldWithTooFewItems()

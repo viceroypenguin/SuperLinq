@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
@@ -127,7 +127,7 @@ internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 			var index = hashCode % _groupings.Length;
 			var g = new Grouping(key, hashCode)
 			{
-				_hashNext = _groupings[index]
+				_hashNext = _groupings[index],
 			};
 			_groupings[index] = g;
 			if (_lastGrouping is null)

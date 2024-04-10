@@ -109,7 +109,7 @@ public static partial class AsyncSuperEnumerable
 					tasks.Add(firstMove.AsTask());
 				}
 
-				if (e == null)
+				if (e is null)
 				{
 					// who finishes first?
 					var t = await Task.WhenAny(tasks).ConfigureAwait(false);
@@ -158,7 +158,7 @@ public static partial class AsyncSuperEnumerable
 				{ }
 				// if we're in the normal path, then e != null; in this case, we need to report any exceptions that we
 				// encounter.
-				catch (Exception ex) when (e != null)
+				catch (Exception ex) when (e is not null)
 				{
 					edi = ExceptionDispatchInfo.Capture(ex);
 				}

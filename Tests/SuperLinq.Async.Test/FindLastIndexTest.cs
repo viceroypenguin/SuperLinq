@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class FindLastIndexTest
+public sealed class FindLastIndexTest
 {
 	[Fact]
 	public async Task FindLastIndexWithNegativeCount()

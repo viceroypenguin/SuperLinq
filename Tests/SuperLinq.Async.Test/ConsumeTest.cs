@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class ConsumeTest
+public sealed class ConsumeTest
 {
 	[Fact]
 	public async Task ConsumeReallyConsumes()

@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class FillBackwardTest
+public sealed class FillBackwardTest
 {
 	[Fact]
 	public void FillBackwardIsLazy()

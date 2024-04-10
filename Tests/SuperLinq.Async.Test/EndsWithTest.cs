@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class EndsWithTest
+public sealed class EndsWithTest
 {
 	[Theory]
 	[InlineData(new[] { 1, 2, 3 }, new[] { 2, 3 }, true)]

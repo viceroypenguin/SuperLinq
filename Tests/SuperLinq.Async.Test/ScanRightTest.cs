@@ -1,6 +1,8 @@
-﻿namespace Test.Async;
+using System.Globalization;
 
-public class ScanRightTest
+namespace Test.Async;
+
+public sealed class ScanRightTest
 {
 	// ScanRight(source, func)
 
@@ -28,8 +30,8 @@ public class ScanRightTest
 		await using var seq = Enumerable.Range(1, 5).AsTestingSequence();
 
 		var result = seq
-			.Select(x => x.ToString())
-			.ScanRight((a, b) => string.Format("({0}+{1})", a, b));
+			.Select(x => x.ToString(CultureInfo.InvariantCulture))
+			.ScanRight((a, b) => FormattableString.Invariant($"({a}+{b})"));
 
 		await result.AssertSequenceEqual(
 			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
@@ -70,7 +72,7 @@ public class ScanRightTest
 		await using var seq = Enumerable.Range(1, 4).AsTestingSequence();
 
 		var result = seq
-			.ScanRight("5", (a, b) => string.Format("({0}+{1})", a, b));
+			.ScanRight("5", (a, b) => FormattableString.Invariant($"({a}+{b})"));
 
 		await result.AssertSequenceEqual(
 			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");

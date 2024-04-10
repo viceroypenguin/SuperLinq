@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class FromTest
+public sealed class FromTest
 {
 	[Fact]
 	public void TestFromIsLazy()

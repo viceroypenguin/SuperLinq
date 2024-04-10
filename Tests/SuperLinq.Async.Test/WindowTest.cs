@@ -3,7 +3,7 @@
 /// <summary>
 /// Verify the behavior of the Window operator
 /// </summary>
-public class WindowTests
+public sealed class WindowTests
 {
 	/// <summary>
 	/// Verify that Window behaves in a lazy manner

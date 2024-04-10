@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class OnErrorResumeNextTest
+public sealed class OnErrorResumeNextTest
 {
 	[Fact]
 	public void OnErrorResumeNextIsLazy()

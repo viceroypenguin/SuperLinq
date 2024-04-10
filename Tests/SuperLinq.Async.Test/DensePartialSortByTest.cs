@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class DensePartialSortByTests
+public sealed class DensePartialSortByTests
 {
 	[Fact]
 	public void DensePartialSortByIsLazy()

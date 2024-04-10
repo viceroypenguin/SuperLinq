@@ -1,9 +1,9 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 namespace Test.Async;
 
-public class AggregateByTest
+public sealed class AggregateByTest
 {
 	[Theory]
 	[MemberData(nameof(AggregateBy_TestData))]
@@ -63,12 +63,12 @@ public class AggregateByTest
 			expected: Enumerable.Repeat(5, 1).ToDictionary(x => x, x => 100));
 
 		yield return WrapArgs(
-			source: new string[] { "Bob", "bob", "tim", "Bob", "Tim" },
+			source: ["Bob", "bob", "tim", "Bob", "Tim"],
 			keySelector: x => x,
 			seedSelector: x => string.Empty,
 			func: (x, y) => x + y,
-			null,
-			expected: new Dictionary<string, string>
+			comparer: null,
+			expected: new Dictionary<string, string>(StringComparer.Ordinal)
 			{
 				{ "Bob", "BobBob" },
 				{ "bob", "bob" },
@@ -77,15 +77,15 @@ public class AggregateByTest
 			});
 
 		yield return WrapArgs(
-			source: new string[] { "Bob", "bob", "tim", "Bob", "Tim" },
+			source: ["Bob", "bob", "tim", "Bob", "Tim"],
 			keySelector: x => x,
 			seedSelector: x => string.Empty,
 			func: (x, y) => x + y,
 			StringComparer.OrdinalIgnoreCase,
-			expected: new Dictionary<string, string>
+			expected: new Dictionary<string, string>(StringComparer.Ordinal)
 			{
 				{ "Bob", "BobbobBob" },
-				{ "tim", "timTim" }
+				{ "tim", "timTim" },
 			});
 
 		yield return WrapArgs(
@@ -98,7 +98,7 @@ public class AggregateByTest
 			{
 				{ 20, "I am 20 and my name is Tom" },
 				{ 30, "I am 30 and my name is Dick" },
-				{ 40, "I am 40 and my name is Harry" }
+				{ 40, "I am 40 and my name is Harry" },
 			});
 
 		yield return WrapArgs(
@@ -110,7 +110,7 @@ public class AggregateByTest
 			expected: new Dictionary<int, string>
 			{
 				{ 20, "I am 20 and my name is maybe Tom maybe Dick" },
-				{ 40, "I am 40 and my name is maybe Harry" }
+				{ 40, "I am 40 and my name is maybe Harry" },
 			});
 
 		yield return WrapArgs(
@@ -119,7 +119,8 @@ public class AggregateByTest
 			seedSelector: x => 0,
 			func: (x, y) => x + y.Age,
 			comparer: null,
-			expected: new string[] { "Bob", "bob", "Harry" }.ToDictionary(x => x, x => 20));
+			expected: new string[] { "Bob", "bob", "Harry" }
+				.ToDictionary(x => x, x => 20, StringComparer.Ordinal));
 
 		yield return WrapArgs(
 			source: new (string Name, int Age)[] { ("Bob", 20), ("bob", 30), ("Harry", 40) },
@@ -127,10 +128,10 @@ public class AggregateByTest
 			seedSelector: x => 0,
 			func: (x, y) => x + y.Age,
 			comparer: StringComparer.OrdinalIgnoreCase,
-			expected: new Dictionary<string, int>
+			expected: new Dictionary<string, int>(StringComparer.Ordinal)
 			{
 				{ "Bob", 50 },
-				{ "Harry", 40 }
+				{ "Harry", 40 },
 			});
 
 		static object?[] WrapArgs<TSource, TKey, TAccumulate>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, TAccumulate> seedSelector, Func<TAccumulate, TSource, TAccumulate> func, IEqualityComparer<TKey>? comparer, IEnumerable<KeyValuePair<TKey, TAccumulate>> expected)

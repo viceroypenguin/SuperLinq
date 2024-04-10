@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class DoTest
+public sealed class DoTest
 {
 	[Fact]
 	public void DoOverloadsAreLazy()

@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class PartialSortTests
+public sealed class PartialSortTests
 {
 	[Fact]
 	public async Task PartialSort()

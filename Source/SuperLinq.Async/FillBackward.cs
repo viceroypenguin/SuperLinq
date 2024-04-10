@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -21,7 +21,7 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<T> FillBackward<T>(this IAsyncEnumerable<T> source)
 	{
-		return source.FillBackward(e => new ValueTask<bool>(e == null));
+		return source.FillBackward(e => new ValueTask<bool>(e is null));
 	}
 
 	/// <summary>
@@ -223,13 +223,13 @@ public static partial class AsyncSuperEnumerable
 			}
 			else
 			{
-				if (blanks != null)
+				if (blanks is not null)
 				{
 					foreach (var blank in blanks)
 					{
-						yield return fillSelector != null
-								   ? await fillSelector(blank, item).ConfigureAwait(false)
-								   : item;
+						yield return fillSelector is not null
+							? await fillSelector(blank, item).ConfigureAwait(false)
+							: item;
 					}
 
 					blanks.Clear();

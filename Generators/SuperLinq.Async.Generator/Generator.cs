@@ -10,7 +10,7 @@ namespace SuperLinq.Async.Generator;
 /// Uses source generation tools to automate the building of some operators
 /// </summary>
 [Generator]
-public class Generator : IIncrementalGenerator
+public sealed class Generator : IIncrementalGenerator
 {
 	/// <inheritdoc />
 	public void Initialize(IncrementalGeneratorInitializationContext context)

@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class AtMostTest
+public sealed class AtMostTest
 {
 	[Fact]
 	public void AtMostWithNegativeCount()

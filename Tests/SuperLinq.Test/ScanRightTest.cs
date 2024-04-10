@@ -1,6 +1,8 @@
-﻿namespace Test;
+using System.Globalization;
 
-public class ScanRightTest
+namespace Test;
+
+public sealed class ScanRightTest
 {
 	// ScanRight(source, func)
 
@@ -26,11 +28,11 @@ public class ScanRightTest
 	public void ScanRight()
 	{
 		using var seq = Enumerable.Range(1, 5)
-			.Select(x => x.ToString())
+			.Select(x => x.ToString(CultureInfo.InvariantCulture))
 			.AsTestingSequence();
 
 		var result = seq
-			.ScanRight((a, b) => string.Format("({0}+{1})", a, b));
+			.ScanRight((a, b) => FormattableString.Invariant($"({a}+{b})"));
 
 		result.AssertSequenceEqual(
 			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
@@ -40,11 +42,11 @@ public class ScanRightTest
 	public void ScanRightWithList()
 	{
 		var list = Enumerable.Range(1, 5)
-			.Select(x => x.ToString())
+			.Select(x => x.ToString(CultureInfo.InvariantCulture))
 			.ToList();
 
 		var result = list
-			.ScanRight((a, b) => string.Format("({0}+{1})", a, b));
+			.ScanRight((a, b) => FormattableString.Invariant($"({a}+{b})"));
 
 		result.AssertSequenceEqual(
 			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
@@ -85,7 +87,7 @@ public class ScanRightTest
 		using var seq = Enumerable.Range(1, 4).AsTestingSequence();
 
 		var result = seq
-			.ScanRight("5", (a, b) => string.Format("({0}+{1})", a, b));
+			.ScanRight("5", (a, b) => FormattableString.Invariant($"({a}+{b})"));
 
 		result.AssertSequenceEqual(
 			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
@@ -97,7 +99,7 @@ public class ScanRightTest
 		var list = Enumerable.Range(1, 4).ToList();
 
 		var result = list
-			.ScanRight("5", (a, b) => string.Format("({0}+{1})", a, b));
+			.ScanRight("5", (a, b) => FormattableString.Invariant($"({a}+{b})"));
 
 		result.AssertSequenceEqual(
 			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");

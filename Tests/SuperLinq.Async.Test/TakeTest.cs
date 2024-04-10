@@ -3,7 +3,7 @@
 
 namespace Test.Async;
 
-public class TakeTest
+public sealed class TakeTest
 {
 	[Fact]
 	public async Task SameResultsRepeatCallsIntQuery()

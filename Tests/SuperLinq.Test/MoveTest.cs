@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class MoveTest
+public sealed class MoveTest
 {
 	[Fact]
 	public void MoveWithNegativeFromIndex()

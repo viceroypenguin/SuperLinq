@@ -3,7 +3,7 @@ namespace Test;
 /// <summary>
 /// Verify the behavior of the Exclude operator
 /// </summary>
-public class ExcludeTests
+public sealed class ExcludeTests
 {
 	[Fact]
 	public void TestExcludeIsLazy()

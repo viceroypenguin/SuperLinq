@@ -2,7 +2,7 @@
 
 namespace Test;
 
-public class ChooseTest
+public sealed class ChooseTest
 {
 	[Fact]
 	public void IsLazy()

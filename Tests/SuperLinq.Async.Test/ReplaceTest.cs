@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class ReplaceTest
+public sealed class ReplaceTest
 {
 	[Fact]
 	public void ReplaceIsLazy()

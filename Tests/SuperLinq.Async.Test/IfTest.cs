@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class IfTest
+public sealed class IfTest
 {
 	[Fact]
 	public void IfIsLazy()

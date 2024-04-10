@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class BatchTest
+public sealed class BatchTest
 {
 	[Fact]
 	public void BatchIsLazy()

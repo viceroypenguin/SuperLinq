@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class EquiZipTest
+public sealed class EquiZipTest
 {
 	[Fact]
 	public void EquiZipIsLazy()

@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class ScanTest
+public sealed class ScanTest
 {
 	[Fact]
 	public async Task ScanEmpty()

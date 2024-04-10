@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class PreScanTest
+public sealed class PreScanTest
 {
 	[Fact]
 	public void PreScanIsLazy()

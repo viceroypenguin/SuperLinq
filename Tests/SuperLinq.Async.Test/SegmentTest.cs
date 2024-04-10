@@ -1,9 +1,9 @@
-﻿namespace Test.Async;
+namespace Test.Async;
 
 /// <summary>
 /// Verify the behavior of the Segment operator
 /// </summary>
-public class SegmentTests
+public sealed class SegmentTests
 {
 	/// <summary>
 	/// Verify that the Segment operator behaves in a lazy manner
@@ -119,7 +119,7 @@ public class SegmentTests
 		Assert.True(result.All(s => s.Count == 5));
 	}
 
-	public static readonly IEnumerable<object[]> TestData =
+	public static IEnumerable<object[]> TestData { get; } =
 		from e in new[]
 		{
             // input sequence is empty

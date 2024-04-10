@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class RankTests
+public sealed class RankTests
 {
 	/// <summary>
 	/// Verify that Rank uses deferred execution

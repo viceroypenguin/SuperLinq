@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Test.Async;
 
-public class CopyToTest
+public sealed class CopyToTest
 {
 	[Fact]
 	public async Task NullArgumentTest()

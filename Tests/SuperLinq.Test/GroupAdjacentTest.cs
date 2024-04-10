@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class GroupAdjacentTest
+public sealed class GroupAdjacentTest
 {
 	[Fact]
 	public void GroupAdjacentIsLazy()

@@ -1,9 +1,11 @@
-﻿namespace Test.Async;
+using System.Globalization;
+
+namespace Test.Async;
 
 /// <summary>
 /// Verify the behavior of the OrderBy/ThenBy operators
 /// </summary>
-public class OrderByTests
+public sealed class OrderByTests
 {
 	/// <summary>
 	/// Verify that OrderBy preserves the selector
@@ -32,10 +34,13 @@ public class OrderByTests
 	public async Task TestOrderByComparerPreserved()
 	{
 		var sequence = AsyncEnumerable.Range(1, 100);
-		var sequenceAscending = sequence.Select(x => x.ToString());
+		var sequenceAscending = sequence.Select(x => x.ToString(CultureInfo.InvariantCulture));
 		var sequenceDescending = sequenceAscending.Reverse();
 
-		var comparer = Comparer<string>.Create((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
+		var comparer = Comparer<string>.Create(
+			(a, b) => int.Parse(a, CultureInfo.InvariantCulture)
+				.CompareTo(int.Parse(b, CultureInfo.InvariantCulture))
+		);
 
 		var resultAsc1 = sequenceAscending.OrderBy(SuperEnumerable.Identity, comparer, OrderByDirection.Descending);
 		var resultAsc2 = sequenceAscending.OrderByDescending(SuperEnumerable.Identity, comparer);
@@ -99,7 +104,10 @@ public class OrderByTests
 			new { A = "1", B = "4", },
 			new { A = "2", B = "1", });
 
-		var comparer = Comparer<string>.Create((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
+		var comparer = Comparer<string>.Create(
+			(a, b) => int.Parse(a, CultureInfo.InvariantCulture)
+				.CompareTo(int.Parse(b, CultureInfo.InvariantCulture))
+		);
 
 		var resultA1 = sequence
 			.OrderBy(x => x.A, comparer, OrderByDirection.Ascending)

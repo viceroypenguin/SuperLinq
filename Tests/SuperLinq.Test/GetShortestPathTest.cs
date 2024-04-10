@@ -42,7 +42,7 @@ public static class GetShortestPathTest
 			s.Dispose();
 	}
 
-	public class Dijkstra
+	public sealed class Dijkstra
 	{
 		public static IEnumerable<object?[]> GetStringIntCostData { get; } =
 			[
@@ -345,7 +345,7 @@ public static class GetShortestPathTest
 		}
 	}
 
-	public class AStar
+	public sealed class AStar
 	{
 		public static IEnumerable<object?[]> GetStringIntCostData { get; } =
 			[

@@ -1,4 +1,4 @@
-﻿using static Test.TestingSequence;
+using static Test.TestingSequence;
 
 namespace Test;
 
@@ -9,7 +9,7 @@ internal static class TestingCollection
 			new(source as IList<T> ?? source.ToList(), options, maxEnumerations);
 }
 
-internal class TestingCollection<T> : TestingSequence<T>, ICollection<T>
+internal sealed class TestingCollection<T> : TestingSequence<T>, ICollection<T>
 {
 	private readonly ICollection<T> _collection;
 
@@ -29,7 +29,7 @@ internal class TestingCollection<T> : TestingSequence<T>, ICollection<T>
 	public bool IsReadOnly => true;
 
 	public int CopyCount { get; private set; }
-	public virtual void CopyTo(T[] array, int arrayIndex)
+	public void CopyTo(T[] array, int arrayIndex)
 	{
 		_collection.CopyTo(array, arrayIndex);
 		CopyCount++;

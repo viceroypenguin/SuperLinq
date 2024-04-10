@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class CountBetweenTest
+public sealed class CountBetweenTest
 {
 	[Fact]
 	public Task CountBetweenWithNegativeMin()

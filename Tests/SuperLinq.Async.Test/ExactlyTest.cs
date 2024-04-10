@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class ExactlyTest
+public sealed class ExactlyTest
 {
 	[Fact]
 	public async Task ExactlyWithNegativeCount()

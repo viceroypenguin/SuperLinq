@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class DoWhileTest
+public sealed class DoWhileTest
 {
 	[Fact]
 	public void DoWhileIsLazy()

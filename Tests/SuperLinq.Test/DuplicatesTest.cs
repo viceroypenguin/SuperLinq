@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class DuplicatesTest
+public sealed class DuplicatesTest
 {
 	[Fact]
 	public void DuplicatesIsLazy()

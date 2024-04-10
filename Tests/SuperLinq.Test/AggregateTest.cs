@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Test;
 
-public class AggregateTest
+public sealed class AggregateTest
 {
 	public static IEnumerable<object[]> AccumulatorsTestSource() =>
 

@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class TakeUntilTest
+public sealed class TakeUntilTest
 {
 	[Fact]
 	public void TakeUntilEvaluatesSourceLazily()

@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class SequenceTest
+public sealed class SequenceTest
 {
 	[Theory]
 	[InlineData(65600, 65536, 65536)]

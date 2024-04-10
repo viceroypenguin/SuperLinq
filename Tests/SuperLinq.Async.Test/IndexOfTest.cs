@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class IndexOfTest
+public sealed class IndexOfTest
 {
 	[Fact]
 	public async Task IndexOfWithNegativeCount()

@@ -58,7 +58,7 @@ public static partial class AsyncSuperEnumerable
 
 				_buffers = null;
 
-				if (_enumerator != null)
+				if (_enumerator is not null)
 					await _enumerator.DisposeAsync();
 				_enumerator = null;
 				_exception = null;
@@ -149,7 +149,7 @@ public static partial class AsyncSuperEnumerable
 						{
 							_exception?.Throw();
 
-							if (_enumerator == null)
+							if (_enumerator is null)
 								break;
 
 							var moved = false;
@@ -216,7 +216,7 @@ public static partial class AsyncSuperEnumerable
 
 				_buffers = null;
 
-				if (_enumerator != null)
+				if (_enumerator is not null)
 					await _enumerator.DisposeAsync().ConfigureAwait(false);
 				_enumerator = null;
 				_source = null;

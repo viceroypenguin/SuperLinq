@@ -3,7 +3,7 @@
 /// <summary>
 /// Verify the behavior of the Lead operator.
 /// </summary>
-public class LeadTest
+public sealed class LeadTest
 {
 	/// <summary>
 	/// Verify that Lead() behaves in a lazy manner.

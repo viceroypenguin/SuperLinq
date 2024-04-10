@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Diagnostics;
 using static Test.Async.TestingSequence;
@@ -20,16 +20,14 @@ internal static class TestingSequence
 		this IEnumerable<T> source,
 		Options options = Options.None,
 		int maxEnumerations = 1) =>
-			source != null
-			? new TestingSequence<T>(source.ToAsyncEnumerable(), options, maxEnumerations)
+			source is not null ? new TestingSequence<T>(source.ToAsyncEnumerable(), options, maxEnumerations)
 			: throw new ArgumentNullException(nameof(source));
 
 	internal static TestingSequence<T> AsTestingSequence<T>(
 		this IAsyncEnumerable<T> source,
 		Options options = Options.None,
 		int maxEnumerations = 1) =>
-			source != null
-			? new TestingSequence<T>(source, options, maxEnumerations)
+			source is not null ? new TestingSequence<T>(source, options, maxEnumerations)
 			: throw new ArgumentNullException(nameof(source));
 
 	internal static void AssertTestingSequence([DoesNotReturnIf(false)] bool expectation, string message, [CallerArgumentExpression(nameof(expectation))] string? expr = "")
@@ -56,7 +54,7 @@ internal static class TestingSequence
 	}
 }
 
-public class TestingSequenceException(string message) : Exception(message);
+public sealed class TestingSequenceException(string message) : Exception(message);
 
 /// <summary>
 /// Sequence that asserts whether its iterator has been disposed
@@ -113,16 +111,16 @@ internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
 			}
 			else if (!_options.HasFlag(Options.AllowRepeatedDisposals))
 			{
-				AssertTestingSequence(false, TooManyDisposals);
+				AssertTestingSequence(expectation: false, TooManyDisposals);
 			}
 		};
 
 		var ended = false;
 		enumerator.MoveNextCalled += (_, moved) =>
 		{
-			AssertTestingSequence(disposed == false, MoveNextPostDisposal);
+			AssertTestingSequence(disposed is false, MoveNextPostDisposal);
 			if (!_options.HasFlag(Options.AllowRepeatedMoveNexts))
-				AssertTestingSequence(ended == false, MoveNextPostEnumeration);
+				AssertTestingSequence(ended is false, MoveNextPostEnumeration);
 
 			ended = !moved;
 			MoveNextCallCount++;
@@ -130,15 +128,15 @@ internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
 
 		enumerator.GetCurrentCalled += delegate
 		{
-			AssertTestingSequence(disposed == false, CurrentPostDisposal);
-			AssertTestingSequence(ended == false, CurrentPostEnumeration);
+			AssertTestingSequence(disposed is false, CurrentPostDisposal);
+			AssertTestingSequence(ended is false, CurrentPostEnumeration);
 		};
 
 		return enumerator;
 	}
 }
 
-public class TestingSequenceTest
+public sealed class TestingSequenceTest
 {
 	[Fact]
 	public async Task TestingSequencePublicPropertiesTest()

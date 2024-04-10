@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class IndexByTest
+public sealed class IndexByTest
 {
 	[Fact]
 	public async Task IndexBySimpleTest()

@@ -1,9 +1,9 @@
-﻿namespace Test;
+namespace Test;
 
 /// <summary>
 /// Verify the behavior of the Window operator
 /// </summary>
-public partial class WindowTests
+public sealed class WindowTests
 {
 	[Fact]
 	public void TestWindowIsLazy()

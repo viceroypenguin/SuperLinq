@@ -3,7 +3,7 @@
 /// <summary>
 /// Tests that verify the behavior of the RandomSubset() operator
 /// </summary>
-public class RandomSubsetTest
+public sealed class RandomSubsetTest
 {
 	/// <summary>
 	/// Verify that RandomSubset() behaves in a lazy manner.

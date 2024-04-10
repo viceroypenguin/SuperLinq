@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class MinItemsTest
+public sealed class MinItemsTest
 {
 	[Fact]
 	public void MinItemsIsLazy()

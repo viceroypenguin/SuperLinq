@@ -1,6 +1,8 @@
-﻿namespace Test;
+using System.Globalization;
 
-public class AggregateRightTest
+namespace Test;
+
+public sealed class AggregateRightTest
 {
 	[Fact]
 	public void AggregateRightWithEmptySequence()
@@ -21,8 +23,8 @@ public class AggregateRightTest
 	[Fact]
 	public void AggregateRight()
 	{
-		using var enumerable = Enumerable.Range(1, 5).Select(x => x.ToString()).AsTestingSequence();
-		var result = enumerable.AggregateRight((a, b) => string.Format("({0}+{1})", a, b));
+		using var enumerable = Enumerable.Range(1, 5).Select(x => x.ToString(CultureInfo.InvariantCulture)).AsTestingSequence();
+		var result = enumerable.AggregateRight((a, b) => FormattableString.Invariant($"({a}+{b})"));
 
 		Assert.Equal("(1+(2+(3+(4+5))))", result);
 	}
@@ -30,8 +32,8 @@ public class AggregateRightTest
 	[Fact]
 	public void AggregateRightWithList()
 	{
-		var list = Enumerable.Range(1, 5).Select(x => x.ToString()).ToList();
-		var result = list.AggregateRight((a, b) => string.Format("({0}+{1})", a, b));
+		var list = Enumerable.Range(1, 5).Select(x => x.ToString(CultureInfo.InvariantCulture)).ToList();
+		var result = list.AggregateRight((a, b) => FormattableString.Invariant($"({a}+{b})"));
 
 		Assert.Equal("(1+(2+(3+(4+5))))", result);
 	}
@@ -59,7 +61,7 @@ public class AggregateRightTest
 	public void AggregateRightSeed()
 	{
 		using var enumerable = Enumerable.Range(1, 4).AsTestingSequence();
-		var result = enumerable.AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b));
+		var result = enumerable.AggregateRight("5", (a, b) => FormattableString.Invariant($"({a}+{b})"));
 
 		Assert.Equal("(1+(2+(3+(4+5))))", result);
 	}
@@ -80,7 +82,7 @@ public class AggregateRightTest
 	public void AggregateRightResultor()
 	{
 		using var enumerable = Enumerable.Range(1, 4).AsTestingSequence();
-		var result = enumerable.AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b), a => a.Length);
+		var result = enumerable.AggregateRight("5", (a, b) => FormattableString.Invariant($"({a}+{b})"), a => a.Length);
 
 		Assert.Equal("(1+(2+(3+(4+5))))".Length, result);
 	}
@@ -89,7 +91,7 @@ public class AggregateRightTest
 	public void AggregateRightResultorWithList()
 	{
 		var list = Enumerable.Range(1, 4).ToList();
-		var result = list.AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b), a => a.Length);
+		var result = list.AggregateRight("5", (a, b) => FormattableString.Invariant($"({a}+{b})"), a => a.Length);
 
 		Assert.Equal("(1+(2+(3+(4+5))))".Length, result);
 	}

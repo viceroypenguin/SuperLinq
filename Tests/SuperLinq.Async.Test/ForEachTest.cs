@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class ForEachTest
+public sealed class ForEachTest
 {
 	[Fact]
 	public async Task ForEachWithSequence()

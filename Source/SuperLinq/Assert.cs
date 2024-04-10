@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace SuperLinq;
@@ -9,7 +9,7 @@ internal static class Assert
 {
 	public static void NotNull<T>([NotNull, AllowNull] T? obj, [CallerArgumentExpression(nameof(obj))] string? parameter = null)
 	{
-		if (obj == null)
+		if (obj is null)
 			ThrowHelper.ThrowInvalidOperationException($"`SuperLinq` bug: '{parameter}' should not be null.");
 	}
 

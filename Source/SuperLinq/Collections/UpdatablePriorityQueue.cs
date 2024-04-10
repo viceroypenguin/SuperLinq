@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // copied from https://github.com/dotnet/runtime/blob/main/src/libraries/System.Collections/src/System/Collections/Generic/PriorityQueue.cs
 // and further edited
@@ -21,7 +21,7 @@ namespace SuperLinq.Collections;
 /// </remarks>
 [DebuggerDisplay("Count = {Count}")]
 [DebuggerTypeProxy(typeof(PriorityQueueDebugView<,>))]
-public class UpdatablePriorityQueue<TElement, TPriority>
+public sealed class UpdatablePriorityQueue<TElement, TPriority>
 {
 	/// <summary>
 	/// Represents an implicit heap-ordered complete d-ary tree, stored as an array.
@@ -236,7 +236,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 
 		if (_elementIndex.TryGetValue(element, out var index))
 		{
-			if (_priorityComparer == null)
+			if (_priorityComparer is null)
 			{
 				var cmp = Comparer<TPriority>.Default.Compare(_nodes[index].Priority, priority);
 				if (cmp > 0)
@@ -265,7 +265,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 				Grow(currentSize + 1);
 			}
 
-			if (_priorityComparer == null)
+			if (_priorityComparer is null)
 			{
 				MoveUpDefaultComparer((element, priority), currentSize);
 			}
@@ -289,7 +289,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 
 		if (_elementIndex.TryGetValue(element, out var index))
 		{
-			if (_priorityComparer == null)
+			if (_priorityComparer is null)
 			{
 				var cmp = Comparer<TPriority>.Default.Compare(_nodes[index].Priority, priority);
 				if (cmp > 0)
@@ -314,7 +314,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 				Grow(currentSize + 1);
 			}
 
-			if (_priorityComparer == null)
+			if (_priorityComparer is null)
 			{
 				MoveUpDefaultComparer((element, priority), currentSize);
 			}
@@ -426,7 +426,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 			var (rootElement, rootPriority) = _nodes[0];
 			_ = _elementIndex.Remove(rootElement);
 
-			if (_priorityComparer == null)
+			if (_priorityComparer is null)
 			{
 				if (Comparer<TPriority>.Default.Compare(priority, rootPriority) > 0)
 				{
@@ -778,7 +778,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 		if (lastNodeIndex > 0)
 		{
 			var lastNode = _nodes[lastNodeIndex];
-			if (_priorityComparer == null)
+			if (_priorityComparer is null)
 			{
 				MoveDownDefaultComparer(lastNode, 0);
 			}
@@ -840,7 +840,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 
 		var lastParentWithChildren = GetParentIndex(Count - 1);
 
-		if (_priorityComparer == null)
+		if (_priorityComparer is null)
 		{
 			for (var index = lastParentWithChildren; index >= 0; --index)
 			{
@@ -1060,12 +1060,12 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 	[DebuggerTypeProxy(typeof(PriorityQueueDebugView<,>))]
 	internal sealed class UnorderedItemsCollection : IReadOnlyCollection<(TElement Element, TPriority Priority)>, ICollection
 	{
-		internal readonly UpdatablePriorityQueue<TElement, TPriority> Queue;
+		internal readonly UpdatablePriorityQueue<TElement, TPriority> _queue;
 
-		internal UnorderedItemsCollection(UpdatablePriorityQueue<TElement, TPriority> queue) => Queue = queue;
+		internal UnorderedItemsCollection(UpdatablePriorityQueue<TElement, TPriority> queue) => _queue = queue;
 
 		/// <inheritdoc />
-		public int Count => Queue.Count;
+		public int Count => _queue.Count;
 		object ICollection.SyncRoot => this;
 		bool ICollection.IsSynchronized => false;
 
@@ -1073,7 +1073,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 		{
 			ArgumentNullException.ThrowIfNull(array);
 
-			Array.Copy(Queue._nodes, 0, array, index, Queue.Count);
+			Array.Copy(_queue._nodes, 0, array, index, _queue.Count);
 		}
 
 		/// <summary>
@@ -1156,7 +1156,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 		/// Returns an enumerator that iterates through the <see cref="UnorderedItems"/>.
 		/// </summary>
 		/// <returns>An <see cref="Enumerator"/> for the <see cref="UnorderedItems"/>.</returns>
-		public Enumerator GetEnumerator() => new(Queue);
+		public Enumerator GetEnumerator() => new(_queue);
 
 		IEnumerator<(TElement Element, TPriority Priority)> IEnumerable<(TElement Element, TPriority Priority)>.GetEnumerator() => GetEnumerator();
 
@@ -1181,7 +1181,7 @@ internal sealed class PriorityQueueDebugView<TElement, TPriority>
 	{
 		ArgumentNullException.ThrowIfNull(collection);
 
-		_queue = collection.Queue;
+		_queue = collection._queue;
 	}
 
 	[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]

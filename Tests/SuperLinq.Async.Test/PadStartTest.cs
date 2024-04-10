@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class PadStartTest
+public sealed class PadStartTest
 {
 	// PadStart(source, width)
 
@@ -17,7 +17,7 @@ public class PadStartTest
 		_ = new AsyncBreakingSequence<int>().PadStart(0);
 	}
 
-	public class PadStartWithDefaultPadding
+	public sealed class PadStartWithDefaultPadding
 	{
 		[Theory]
 		[InlineData(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
@@ -61,7 +61,7 @@ public class PadStartTest
 		_ = new AsyncBreakingSequence<int>().PadStart(0, -1);
 	}
 
-	public class PadStartWithPadding
+	public sealed class PadStartWithPadding
 	{
 		[Theory]
 		[InlineData(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
@@ -105,7 +105,7 @@ public class PadStartTest
 		_ = new AsyncBreakingSequence<int>().PadStart(0, BreakingFunc.Of<int, int>());
 	}
 
-	public class PadStartWithSelector
+	public sealed class PadStartWithSelector
 	{
 		[Theory]
 		[InlineData(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]

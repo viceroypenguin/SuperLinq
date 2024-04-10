@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq;
 
@@ -26,7 +26,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<T?> FillBackward<T>(this IEnumerable<T?> source)
 	{
-		return source.FillBackward(static e => e == null);
+		return source.FillBackward(static e => e is null);
 	}
 
 	/// <summary>
@@ -116,11 +116,11 @@ public static partial class SuperEnumerable
 			}
 			else
 			{
-				if (blanks != null)
+				if (blanks is not null)
 				{
 					foreach (var blank in blanks)
 					{
-						yield return fillSelector != null
+						yield return fillSelector is not null
 							? fillSelector(blank, item)
 							: item;
 					}
@@ -171,7 +171,7 @@ public static partial class SuperEnumerable
 			{
 				if (predicate(array[i]))
 				{
-					array[i] = fillSelector != null
+					array[i] = fillSelector is not null
 						? fillSelector(array[i], last)
 						: last;
 				}

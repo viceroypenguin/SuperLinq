@@ -2,7 +2,7 @@
 
 namespace Test;
 
-public class EquiZipTest
+public sealed class EquiZipTest
 {
 	private static readonly string[] s_cardinals =
 	[

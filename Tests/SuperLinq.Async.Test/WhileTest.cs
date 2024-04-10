@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class WhileTest
+public sealed class WhileTest
 {
 	[Fact]
 	public void WhileIsLazy()

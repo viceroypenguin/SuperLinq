@@ -664,7 +664,7 @@ public static partial class AsyncSuperEnumerable
 
 			if (comparison < 0)
 			{
-				if (leftResultSelector != null)
+				if (leftResultSelector is not null)
 				{
 					foreach (var e in l)
 						yield return leftResultSelector(e);
@@ -674,7 +674,7 @@ public static partial class AsyncSuperEnumerable
 			}
 			else if (comparison > 0)
 			{
-				if (rightResultSelector != null)
+				if (rightResultSelector is not null)
 				{
 					foreach (var e in r)
 						yield return rightResultSelector(e);
@@ -695,7 +695,7 @@ public static partial class AsyncSuperEnumerable
 			}
 		}
 
-		if (gotLeft && leftResultSelector != null)
+		if (gotLeft && leftResultSelector is not null)
 		{
 			do
 			{
@@ -705,7 +705,7 @@ public static partial class AsyncSuperEnumerable
 			yield break;
 		}
 
-		if (gotRight && rightResultSelector != null)
+		if (gotRight && rightResultSelector is not null)
 		{
 			do
 			{

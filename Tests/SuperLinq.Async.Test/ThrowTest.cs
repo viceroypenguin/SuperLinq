@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class ThrowTest
+public sealed class ThrowTest
 {
 	[Fact]
 	public void ThrowIsLazy()

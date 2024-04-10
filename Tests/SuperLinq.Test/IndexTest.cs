@@ -1,7 +1,7 @@
 ﻿namespace Test;
 
 [Obsolete("References `Index` which is obsolete in net9+")]
-public class IndexTest
+public sealed class IndexTest
 {
 	[Fact]
 	public void IndexIsLazy()

@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class WindowLeftTest
+public sealed class WindowLeftTest
 {
 	[Fact]
 	public void WindowLeftIsLazy()
