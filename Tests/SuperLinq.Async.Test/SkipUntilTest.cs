@@ -1,4 +1,4 @@
-﻿namespace Test.Async;
+namespace Test.Async;
 
 public sealed class SkipUntilTest
 {
@@ -49,7 +49,7 @@ public sealed class SkipUntilTest
 			.AssertSequenceEqual(0, 1, 2);
 	}
 
-	public static readonly IEnumerable<object[]> TestData =
+	public static IEnumerable<object[]> TestData { get; } =
 		[
 			[Array.Empty<int>(), 0, Array.Empty<int>()], // empty sequence
 			[new[] { 0 }, 0, Array.Empty<int>()], // one-item sequence, predicate succeed
