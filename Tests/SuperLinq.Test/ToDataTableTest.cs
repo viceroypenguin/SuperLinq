@@ -9,8 +9,8 @@ public sealed class ToDataTableTest
 {
 	private sealed class TestObject(int key)
 	{
-		public int _keyField = key;
-		public Guid? _aNullableGuidField = Guid.NewGuid();
+		internal int _keyField = key;
+		internal Guid? _aNullableGuidField = Guid.NewGuid();
 
 		public string AString { get; } = "ABCDEFGHIKKLMNOPQRSTUVWXYSZ";
 		public decimal? ANullableDecimal { get; } = key / 3;

@@ -4,16 +4,16 @@ public sealed class ReturnTest
 {
 	private static class SomeSingleton
 	{
-		public static readonly object Item = new();
-		public static readonly IEnumerable<object> Sequence = SuperEnumerable.Return(Item);
+		public static object Item { get; } = new();
+		public static IEnumerable<object> Sequence { get; } = SuperEnumerable.Return(Item);
 		public static IList<object> List => (IList<object>)Sequence;
 		public static ICollection<object> Collection => (ICollection<object>)Sequence;
 	}
 
 	private static class NullSingleton
 	{
-		public static readonly IEnumerable<object?> Sequence = SuperEnumerable.Return<object?>(item: null);
-		public static IList<object?> List => (IList<object?>)Sequence;
+		private static readonly IEnumerable<object?> s_sequence = SuperEnumerable.Return<object?>(item: null);
+		public static IList<object?> List => (IList<object?>)s_sequence;
 	}
 
 	[Fact]

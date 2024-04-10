@@ -1060,12 +1060,12 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 	[DebuggerTypeProxy(typeof(PriorityQueueDebugView<,>))]
 	internal sealed class UnorderedItemsCollection : IReadOnlyCollection<(TElement Element, TPriority Priority)>, ICollection
 	{
-		internal readonly UpdatablePriorityQueue<TElement, TPriority> Queue;
+		internal readonly UpdatablePriorityQueue<TElement, TPriority> _queue;
 
-		internal UnorderedItemsCollection(UpdatablePriorityQueue<TElement, TPriority> queue) => Queue = queue;
+		internal UnorderedItemsCollection(UpdatablePriorityQueue<TElement, TPriority> queue) => _queue = queue;
 
 		/// <inheritdoc />
-		public int Count => Queue.Count;
+		public int Count => _queue.Count;
 		object ICollection.SyncRoot => this;
 		bool ICollection.IsSynchronized => false;
 
@@ -1073,7 +1073,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 		{
 			ArgumentNullException.ThrowIfNull(array);
 
-			Array.Copy(Queue._nodes, 0, array, index, Queue.Count);
+			Array.Copy(_queue._nodes, 0, array, index, _queue.Count);
 		}
 
 		/// <summary>
@@ -1156,7 +1156,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 		/// Returns an enumerator that iterates through the <see cref="UnorderedItems"/>.
 		/// </summary>
 		/// <returns>An <see cref="Enumerator"/> for the <see cref="UnorderedItems"/>.</returns>
-		public Enumerator GetEnumerator() => new(Queue);
+		public Enumerator GetEnumerator() => new(_queue);
 
 		IEnumerator<(TElement Element, TPriority Priority)> IEnumerable<(TElement Element, TPriority Priority)>.GetEnumerator() => GetEnumerator();
 
@@ -1181,7 +1181,7 @@ internal sealed class PriorityQueueDebugView<TElement, TPriority>
 	{
 		ArgumentNullException.ThrowIfNull(collection);
 
-		_queue = collection.Queue;
+		_queue = collection._queue;
 	}
 
 	[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]

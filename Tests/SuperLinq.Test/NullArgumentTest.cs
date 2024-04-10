@@ -186,7 +186,7 @@ public sealed class NullArgumentTest
 
 	private static class EmptyEnumerable
 	{
-		public static readonly IEnumerable Instance = new Enumerable();
+		public static IEnumerable Instance { get; } = new Enumerable();
 
 		private sealed class Enumerable : IEnumerable
 		{
