@@ -2,7 +2,7 @@
 
 namespace Test.Async;
 
-public class PublishTest
+public sealed class PublishTest
 {
 	[Fact]
 	public void PublishIsLazy()
@@ -275,7 +275,7 @@ public class PublishTest
 		await buffer.AssertSequenceEqual(1);
 	}
 
-	private class FailingEnumerable : IAsyncEnumerable<int>
+	private sealed class FailingEnumerable : IAsyncEnumerable<int>
 	{
 		private bool _started;
 

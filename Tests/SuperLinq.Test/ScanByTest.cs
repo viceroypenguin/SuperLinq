@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class ScanByTest
+public sealed class ScanByTest
 {
 	[Fact]
 	public void ScanByIsLazy()

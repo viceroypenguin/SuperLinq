@@ -2,7 +2,7 @@
 
 namespace Test;
 
-public class InsertTest
+public sealed class InsertTest
 {
 	[Fact]
 	public void InsertIsLazy()

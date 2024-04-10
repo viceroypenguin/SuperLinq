@@ -3,7 +3,7 @@
 /// <summary>
 /// Verify the behavior of the Lag operator
 /// </summary>
-public class LagTests
+public sealed class LagTests
 {
 	/// <summary>
 	/// Verify that lag behaves in a lazy manner.

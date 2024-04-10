@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class FindLastIndexTest
+public sealed class FindLastIndexTest
 {
 	[Fact]
 	public void FindLastIndexWithNegativeCount()

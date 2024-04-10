@@ -3,7 +3,7 @@
 /// <summary>
 /// Tests of the various overloads of <see cref="SuperEnumerable"/>.Random()
 /// </summary>
-public class RandomTest
+public sealed class RandomTest
 {
 	private const int RandomTrials = 10000;
 

@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class HasDuplicatesTest
+public sealed class HasDuplicatesTest
 {
 	[Fact]
 	public async Task DuplicatesDoesNotEnumerateUnnecessarily()

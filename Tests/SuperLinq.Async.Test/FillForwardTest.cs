@@ -1,8 +1,8 @@
-﻿using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace Test.Async;
 
-public class FillForwardTest
+public sealed class FillForwardTest
 {
 	[Fact]
 	public void FillForwardIsLazy()
@@ -39,13 +39,13 @@ public class FillForwardTest
 			from line in Table.Split('\n')
 			select line.Trim() into line
 			where !string.IsNullOrEmpty(line)
-			let x = Regex.Split(line, "\x20+")
+			let x = line.Split(' ', StringSplitOptions.RemoveEmptyEntries)
 			select new
 			{
 				Continent = x[0],
 				Country = x[1],
 				City = x[2],
-				Value = int.Parse(x[3]),
+				Value = int.Parse(x[3], CultureInfo.InvariantCulture),
 			}).AsTestingSequence();
 
 		await data

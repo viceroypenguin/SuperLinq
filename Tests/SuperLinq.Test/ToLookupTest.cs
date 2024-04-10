@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class ToLookupTest
+public sealed class ToLookupTest
 {
 	[Fact]
 	public void ToLookupWithKeyValuePairs()

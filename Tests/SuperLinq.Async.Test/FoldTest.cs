@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class FoldTest
+public sealed class FoldTest
 {
 	[Fact]
 	public async Task FoldWithTooFewItems()

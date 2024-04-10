@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class CountDownTest
+public sealed class CountDownTest
 {
 	[Fact]
 	public void IsLazy()

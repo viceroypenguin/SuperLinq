@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class SkipUntilTest
+public sealed class SkipUntilTest
 {
 	[Fact]
 	public async Task SkipUntilPredicateNeverFalse()

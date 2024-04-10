@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class BufferTest
+public sealed class BufferTest
 {
 	[Fact]
 	public void BufferIsLazy()

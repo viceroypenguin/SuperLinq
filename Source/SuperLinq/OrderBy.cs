@@ -34,7 +34,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IOrderedEnumerable<T> OrderBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector, OrderByDirection direction)
 	{
-		return OrderBy(source, keySelector, null, direction);
+		return OrderBy(source, keySelector, comparer: null, direction);
 	}
 
 	/// <summary>
@@ -111,7 +111,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IOrderedEnumerable<T> ThenBy<T, TKey>(this IOrderedEnumerable<T> source, Func<T, TKey> keySelector, OrderByDirection direction)
 	{
-		return ThenBy(source, keySelector, null, direction);
+		return ThenBy(source, keySelector, comparer: null, direction);
 	}
 
 	/// <summary>

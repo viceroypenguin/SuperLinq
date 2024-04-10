@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class UsingTest
+public sealed class UsingTest
 {
 	[Fact]
 	public void UsingIsLazy()
@@ -76,7 +76,7 @@ public class UsingTest
 		Assert.True(dis.IsDisposed);
 	}
 
-	private class TestDisposable : IDisposable
+	private sealed class TestDisposable : IDisposable
 	{
 		public bool IsDisposed { get; set; }
 		public void Dispose() => IsDisposed = true;

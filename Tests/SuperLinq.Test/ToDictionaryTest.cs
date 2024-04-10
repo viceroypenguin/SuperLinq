@@ -1,7 +1,7 @@
 ﻿namespace Test;
 
 [Obsolete("References `ToDictionary` which is obsolete in net8+")]
-public class ToDictionaryTest
+public sealed class ToDictionaryTest
 {
 	[Fact]
 	public void ToDictionaryWithKeyValuePairs()

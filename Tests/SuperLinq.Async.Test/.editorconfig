@@ -1,8 +1,7 @@
 [*.cs]
 
-dotnet_diagnostic.CA1305.severity = none				# CA1305: Specify IFormatProvider
 dotnet_diagnostic.CA1707.severity = none				# CA1707: Identifiers should not contain underscores
-dotnet_diagnostic.CA1852.severity = none				# CA1852: Type '<x>' can be sealed because it has no subtypes in its containing assembly and is not externally visible
+dotnet_diagnostic.CA1861.severity = none                # CA1861: Avoid constant arrays as arguments
 dotnet_diagnostic.CA2201.severity = none				# CA2201: Do not raise reserved exception types
 
 dotnet_diagnostic.IDE0022.severity = none				# IDE0022: Use expression body for methods
@@ -16,3 +15,5 @@ dotnet_diagnostic.CS1712.severity = none                # CS1712: Type parameter
 dotnet_diagnostic.xUnit1008.severity = error			# xUnit1008: Test data attribute should only be used on a Theory
 dotnet_diagnostic.xUnit1013.severity = error			# xUnit1013: Public method should be marked as test
 dotnet_diagnostic.xUnit1042.severity = none				# xUnit1042: The member referenced by the MemberData attribute returns untyped data rows
+
+dotnet_diagnostic.MA0046.severity = none

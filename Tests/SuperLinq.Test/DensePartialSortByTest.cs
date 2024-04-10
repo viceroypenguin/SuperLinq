@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class DensePartialSortByTests
+public sealed class DensePartialSortByTests
 {
 	[Fact]
 	public void DensePartialSortByIsLazy()

@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // copied from https://github.com/dotnet/runtime/blob/main/src/libraries/System.Collections/src/System/Collections/Generic/PriorityQueue.cs
 // and further edited
@@ -21,7 +21,7 @@ namespace SuperLinq.Collections;
 /// </remarks>
 [DebuggerDisplay("Count = {Count}")]
 [DebuggerTypeProxy(typeof(PriorityQueueDebugView<,>))]
-public class UpdatablePriorityQueue<TElement, TPriority>
+public sealed class UpdatablePriorityQueue<TElement, TPriority>
 {
 	/// <summary>
 	/// Represents an implicit heap-ordered complete d-ary tree, stored as an array.
@@ -236,7 +236,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 
 		if (_elementIndex.TryGetValue(element, out var index))
 		{
-			if (_priorityComparer == null)
+			if (_priorityComparer is null)
 			{
 				var cmp = Comparer<TPriority>.Default.Compare(_nodes[index].Priority, priority);
 				if (cmp > 0)
@@ -265,7 +265,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 				Grow(currentSize + 1);
 			}
 
-			if (_priorityComparer == null)
+			if (_priorityComparer is null)
 			{
 				MoveUpDefaultComparer((element, priority), currentSize);
 			}
@@ -289,7 +289,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 
 		if (_elementIndex.TryGetValue(element, out var index))
 		{
-			if (_priorityComparer == null)
+			if (_priorityComparer is null)
 			{
 				var cmp = Comparer<TPriority>.Default.Compare(_nodes[index].Priority, priority);
 				if (cmp > 0)
@@ -314,7 +314,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 				Grow(currentSize + 1);
 			}
 
-			if (_priorityComparer == null)
+			if (_priorityComparer is null)
 			{
 				MoveUpDefaultComparer((element, priority), currentSize);
 			}
@@ -426,7 +426,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 			var (rootElement, rootPriority) = _nodes[0];
 			_ = _elementIndex.Remove(rootElement);
 
-			if (_priorityComparer == null)
+			if (_priorityComparer is null)
 			{
 				if (Comparer<TPriority>.Default.Compare(priority, rootPriority) > 0)
 				{
@@ -778,7 +778,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 		if (lastNodeIndex > 0)
 		{
 			var lastNode = _nodes[lastNodeIndex];
-			if (_priorityComparer == null)
+			if (_priorityComparer is null)
 			{
 				MoveDownDefaultComparer(lastNode, 0);
 			}
@@ -840,7 +840,7 @@ public class UpdatablePriorityQueue<TElement, TPriority>
 
 		var lastParentWithChildren = GetParentIndex(Count - 1);
 
-		if (_priorityComparer == null)
+		if (_priorityComparer is null)
 		{
 			for (var index = lastParentWithChildren; index >= 0; --index)
 			{

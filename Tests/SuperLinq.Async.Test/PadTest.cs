@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class PadTest
+public sealed class PadTest
 {
 	[Fact]
 	public void PadNegativeWidth()
@@ -21,7 +21,7 @@ public class PadTest
 		_ = new AsyncBreakingSequence<object>().Pad(0, new object());
 	}
 
-	public class ValueTypeElements
+	public sealed class ValueTypeElements
 	{
 		[Fact]
 		public async Task PadWideSourceSequence()
@@ -63,7 +63,7 @@ public class PadTest
 		}
 	}
 
-	public class ReferenceTypeElements
+	public sealed class ReferenceTypeElements
 	{
 		[Fact]
 		public async Task PadWideSourceSequence()

@@ -325,7 +325,7 @@ public static partial class AsyncSuperEnumerable
 				}
 			}
 
-			if (leftResultSelector != null
+			if (leftResultSelector is not null
 				&& !flag)
 			{
 				yield return leftResultSelector(l);

@@ -1,7 +1,7 @@
 ﻿namespace Test;
 
 [Obsolete("References `CountBy` which is obsolete in net9+")]
-public class CountByTest
+public sealed class CountByTest
 {
 	[Fact]
 	public void CountBySimpleTest()

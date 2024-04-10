@@ -1,6 +1,6 @@
 namespace Test;
 
-public class ReturnTest
+public sealed class ReturnTest
 {
 	private static class SomeSingleton
 	{
@@ -12,7 +12,7 @@ public class ReturnTest
 
 	private static class NullSingleton
 	{
-		public static readonly IEnumerable<object?> Sequence = SuperEnumerable.Return<object?>(null);
+		public static readonly IEnumerable<object?> Sequence = SuperEnumerable.Return<object?>(item: null);
 		public static IList<object?> List => (IList<object?>)Sequence;
 	}
 

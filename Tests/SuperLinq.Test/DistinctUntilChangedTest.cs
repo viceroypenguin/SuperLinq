@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class DistinctUntilChangedTest
+public sealed class DistinctUntilChangedTest
 {
 	[Fact]
 	public void DistinctUntilChangedIsLazy()

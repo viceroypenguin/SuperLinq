@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class IndexTest
+public sealed class IndexTest
 {
 	[Fact]
 	public void IndexIsLazy()

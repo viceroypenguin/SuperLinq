@@ -3,7 +3,7 @@
 /// <summary>
 /// Tests that verify the behavior of the SortedMergeBy operator.
 /// </summary>
-public class SortedMergeByTests
+public sealed class SortedMergeByTests
 {
 	/// <summary>
 	/// Verify that SortedMergeBy behaves in a lazy manner.

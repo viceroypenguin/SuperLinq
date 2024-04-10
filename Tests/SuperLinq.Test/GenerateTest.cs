@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class GenerateTest
+public sealed class GenerateTest
 {
 	[Fact]
 	public void GenerateTerminatesWhenCheckReturnsFalse()

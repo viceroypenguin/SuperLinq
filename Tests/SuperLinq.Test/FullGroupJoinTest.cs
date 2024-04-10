@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class FullGroupJoinTest
+public sealed class FullGroupJoinTest
 {
 	public enum OverloadCase { CustomResult, TupleResult }
 

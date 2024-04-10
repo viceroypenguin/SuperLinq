@@ -3,7 +3,7 @@ using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
-public class ShareTest
+public sealed class ShareTest
 {
 	[Fact]
 	public void ShareIsLazy()
@@ -244,7 +244,7 @@ public class ShareTest
 		buffer.AssertSequenceEqual(1);
 	}
 
-	private class FailingEnumerable : IEnumerable<int>
+	private sealed class FailingEnumerable : IEnumerable<int>
 	{
 		private bool _started;
 		public IEnumerator<int> GetEnumerator()

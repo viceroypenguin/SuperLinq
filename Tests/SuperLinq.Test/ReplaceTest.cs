@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class ReplaceTest
+public sealed class ReplaceTest
 {
 	[Fact]
 	public void ReplaceIsLazy()

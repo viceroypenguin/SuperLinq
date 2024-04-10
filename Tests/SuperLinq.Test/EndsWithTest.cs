@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class EndsWithTest
+public sealed class EndsWithTest
 {
 	[Theory]
 	[InlineData(new[] { 1, 2, 3 }, new[] { 2, 3 }, true)]
@@ -68,7 +68,7 @@ public class EndsWithTest
 		var second = Seq(4, 5, 6);
 
 		Assert.False(first.EndsWith(second));
-		Assert.False(first.EndsWith(second, null));
+		Assert.False(first.EndsWith(second, comparer: null));
 		Assert.False(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return false; })));
 		Assert.True(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
 	}

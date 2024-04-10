@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class TagFirstLastTest
+public sealed class TagFirstLastTest
 {
 	[Fact]
 	public void TagFirstLastIsLazy()

@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class ReturnTest
+public sealed class ReturnTest
 {
 	[Fact]
 	public async Task TestResultingSequenceContainsSingle()

@@ -3,7 +3,7 @@
 /// <summary>
 /// Tests of the Subset() family of extension methods.
 /// </summary>
-public class SubsetTest
+public sealed class SubsetTest
 {
 	/// <summary>
 	/// Verify that Subsets() behaves in a lazy manner.
@@ -116,7 +116,7 @@ public class SubsetTest
 			[1], [2], [3], [4],
 			[1,2], [1,3], [1,4], [2,3], [2,4], [3,4],
 			[1,2,3], [1,2,4], [1,3,4], [2,3,4],
-			[1,2,3,4]
+			[1,2,3,4],
 		};
 
 		foreach (var (actual, expected) in result.Zip(expectedSubsets))

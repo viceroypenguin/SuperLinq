@@ -324,7 +324,7 @@ public static partial class SuperEnumerable
 				}
 			}
 
-			if (leftResultSelector != null
+			if (leftResultSelector is not null
 				&& !flag)
 			{
 				yield return leftResultSelector(l);

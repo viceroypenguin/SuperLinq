@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class TimeoutTest
+public sealed class TimeoutTest
 {
 	[Fact]
 	public void TimeoutIsLazy()
@@ -86,7 +86,7 @@ public class TimeoutTest
 		_ = Assert.IsAssignableFrom<OperationCanceledException>(timeoutException.InnerException);
 	}
 
-	private class SequenceWithoutThrowIfCancellationRequested : IAsyncEnumerable<int>
+	private sealed class SequenceWithoutThrowIfCancellationRequested : IAsyncEnumerable<int>
 	{
 		public IAsyncEnumerator<int> GetAsyncEnumerator(CancellationToken cancellationToken = new())
 		{
@@ -101,7 +101,7 @@ public class TimeoutTest
 		}
 	}
 
-	private class SequenceWithThrowIfCancellationRequested : IAsyncEnumerable<int>
+	private sealed class SequenceWithThrowIfCancellationRequested : IAsyncEnumerable<int>
 	{
 		public IAsyncEnumerator<int> GetAsyncEnumerator(CancellationToken cancellationToken = new())
 		{

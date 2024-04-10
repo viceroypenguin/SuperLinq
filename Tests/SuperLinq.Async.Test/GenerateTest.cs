@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class GenerateTest
+public sealed class GenerateTest
 {
 	[Fact]
 	public Task GenerateTerminatesWhenCheckReturnsFalse()

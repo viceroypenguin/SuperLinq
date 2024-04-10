@@ -1,9 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
-public class MemoizeTest
+public sealed class MemoizeTest
 {
 	[Fact]
 	public void MemoizeIsLazy()
@@ -306,7 +306,7 @@ public class MemoizeTest
 		Assert.Equal(1, buffer.Count);
 	}
 
-	private class FailingEnumerable : IEnumerable<int>
+	private sealed class FailingEnumerable : IEnumerable<int>
 	{
 		private bool _started;
 		public IEnumerator<int> GetEnumerator()
@@ -381,7 +381,7 @@ public class MemoizeTest
 		Assert.Equal(1, ts.CopyCount);
 	}
 
-	private class FailingCollection : BreakingCollection<int>
+	private sealed class FailingCollection : BreakingCollection<int>
 	{
 		public FailingCollection() : base(1) { }
 
@@ -449,7 +449,7 @@ public class MemoizeTest
 		Assert.Equal(42, memo.Count);
 	}
 
-	private class ProxyCollection(
+	private sealed class ProxyCollection(
 		Func<IEnumerator<int>> enumeratorFunc,
 		Func<int> countFunc
 	) : ICollection<int>
@@ -462,7 +462,7 @@ public class MemoizeTest
 		public bool Remove(int item) => throw new TestException();
 		public bool IsReadOnly => true;
 
-		public virtual void CopyTo(int[] array, int arrayIndex) => throw new TestException();
+		public void CopyTo(int[] array, int arrayIndex) => throw new TestException();
 
 		public IEnumerator<int> GetEnumerator() => enumeratorFunc();
 		IEnumerator IEnumerable.GetEnumerator() => enumeratorFunc();

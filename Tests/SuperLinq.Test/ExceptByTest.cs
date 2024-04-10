@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class ExceptByTest
+public sealed class ExceptByTest
 {
 	[Fact]
 	public void SimpleExceptBy()

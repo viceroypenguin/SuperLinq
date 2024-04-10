@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class ShuffleTest
+public sealed class ShuffleTest
 {
 	private static readonly Random s_seed = new(12345);
 

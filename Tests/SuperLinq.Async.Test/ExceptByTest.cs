@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class ExceptByTest
+public sealed class ExceptByTest
 {
 	[Fact]
 	public async Task SimpleExceptBy()

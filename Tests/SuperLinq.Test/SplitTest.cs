@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class SplitTest
+public sealed class SplitTest
 {
 	[Fact]
 	public void SplitIsLazy()
@@ -45,7 +45,7 @@ public class SplitTest
 	public void SplitWithSeparatorSelector()
 	{
 		using var sequence = TestingSequence.Of<int?>(1, 2, null, 3, null, 4, 5, 6);
-		var result = sequence.Split(n => n == null);
+		var result = sequence.Split(n => n is null);
 
 		using var reader = result.Read();
 		reader.Read().AssertSequenceEqual(1, 2);
@@ -58,7 +58,7 @@ public class SplitTest
 	public void SplitWithSeparatorSelectorUptoMaxCount()
 	{
 		using var sequence = TestingSequence.Of<int?>(1, 2, null, 3, null, 4, 5, 6);
-		var result = sequence.Split(n => n == null, 1);
+		var result = sequence.Split(n => n is null, 1);
 
 		using var reader = result.Read();
 		reader.Read().AssertSequenceEqual(1, 2);

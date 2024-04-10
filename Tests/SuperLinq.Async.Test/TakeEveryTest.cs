@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class TakeEveryTest
+public sealed class TakeEveryTest
 {
 	[Fact]
 	public void TakeEveryIsLazy()

@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class ExactlyTest
+public sealed class ExactlyTest
 {
 	[Fact]
 	public void ExactlyWithNegativeCount()

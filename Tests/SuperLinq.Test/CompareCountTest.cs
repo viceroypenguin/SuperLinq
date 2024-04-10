@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class CompareCountTest
+public sealed class CompareCountTest
 {
 	public static IEnumerable<object[]> CompareCountData { get; } =
 		from e in new[]

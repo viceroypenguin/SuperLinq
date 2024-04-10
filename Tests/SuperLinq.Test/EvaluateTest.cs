@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class EvaluateTest
+public sealed class EvaluateTest
 {
 	[Fact]
 	public void TestEvaluateIsLazy()

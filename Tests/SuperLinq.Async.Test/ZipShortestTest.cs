@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class ZipShortestTest
+public sealed class ZipShortestTest
 {
 	[Fact]
 	public void ZipShortestIsLazy()

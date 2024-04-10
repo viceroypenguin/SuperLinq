@@ -26,7 +26,7 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<T?> FillForward<T>(this IEnumerable<T?> source)
 	{
-		return source.FillForward(static e => e == null);
+		return source.FillForward(static e => e is null);
 	}
 
 	/// <summary>
@@ -162,7 +162,7 @@ public static partial class SuperEnumerable
 			{
 				if (predicate(array[i]))
 				{
-					array[i] = fillSelector != null
+					array[i] = fillSelector is not null
 						? fillSelector(array[i], last)
 						: last;
 				}

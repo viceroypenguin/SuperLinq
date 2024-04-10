@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -86,7 +86,7 @@ public static partial class SuperEnumerable
 		}
 	}
 
-	private class TagFirstLastIterator<TSource, TResult>(
+	private sealed class TagFirstLastIterator<TSource, TResult>(
 		IList<TSource> source,
 		Func<TSource, bool, bool, TResult> resultSelector
 	) : ListIterator<TResult>

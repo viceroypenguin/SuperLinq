@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
@@ -7,7 +7,7 @@ using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
-public class NullArgumentTest
+public sealed class NullArgumentTest
 {
 	[Theory, MemberData(nameof(GetNotNullInlineDatas))]
 	public void NotNull(Action inlineData) =>
@@ -39,8 +39,7 @@ public class NullArgumentTest
 			}
 			catch (TargetInvocationException tie)
 			{
-				Assert.False(tie.InnerException != null
-					&& tie.InnerException is ArgumentNullException ane
+				Assert.False(tie.InnerException is not null && tie.InnerException is ArgumentNullException ane
 					&& ane.ParamName != paramName);
 			}
 		});
@@ -52,7 +51,7 @@ public class NullArgumentTest
 
 	private static IEnumerable<object[]> GetInlineDatas(bool canBeNull, Func<MethodInfo, object[], string, Action> inlineDataFactory) =>
 		from m in typeof(SuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-		where !s_skipMethods.Contains(m.Name)
+		where !s_skipMethods.Contains(m.Name, StringComparer.Ordinal)
 		from t in CreateInlineDatas(m, canBeNull, inlineDataFactory)
 		select t;
 
@@ -101,7 +100,7 @@ public class NullArgumentTest
 
 			if (constraints.Length == 0)
 			{
-				return s_joinMethods.Contains(definition.Name)
+				return s_joinMethods.Contains(definition.Name, StringComparer.Ordinal)
 					? typeof(string)
 					: typeof(int);
 			}
@@ -117,7 +116,7 @@ public class NullArgumentTest
 				return typeof(StringComparer);
 			}
 
-			throw new NotImplementedException("NullArgumentTest.InstantiateType");
+			throw new UnreachableException("NullArgumentTest.InstantiateType");
 		}
 	}
 
@@ -180,7 +179,7 @@ public class NullArgumentTest
 		return Activator.CreateInstance(instantiation)!;
 	}
 
-	private class Disposable : IDisposable
+	private sealed class Disposable : IDisposable
 	{
 		public void Dispose() { }
 	}
@@ -204,7 +203,7 @@ public class NullArgumentTest
 
 	private static class GenericArgs
 	{
-		private class Enumerator<T> : IEnumerator<T>
+		private sealed class Enumerator<T> : IEnumerator<T>
 		{
 			public bool MoveNext() => false;
 			public T Current { get; private set; } = default!;
@@ -219,7 +218,7 @@ public class NullArgumentTest
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		}
 
-		public class OrderedEnumerable<T> : Enumerable<T>, IOrderedEnumerable<T>
+		public sealed class OrderedEnumerable<T> : Enumerable<T>, IOrderedEnumerable<T>
 		{
 			public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool descending)
 			{
@@ -228,33 +227,33 @@ public class NullArgumentTest
 			}
 		}
 
-		public class Dictionary<TKey, TValue> : IDictionary<TKey, TValue>
+		public sealed class Dictionary<TKey, TValue> : IDictionary<TKey, TValue>
 			where TKey : notnull
 		{
-			public TValue this[TKey key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-			public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value) => throw new NotImplementedException();
-			public ICollection<TKey> Keys => throw new NotImplementedException();
-			public ICollection<TValue> Values => throw new NotImplementedException();
-			public int Count => throw new NotImplementedException();
-			public bool IsReadOnly => throw new NotImplementedException();
-			public void Add(TKey key, TValue value) => throw new NotImplementedException();
-			public void Add(KeyValuePair<TKey, TValue> item) => throw new NotImplementedException();
-			public void Clear() => throw new NotImplementedException();
-			public bool Contains(KeyValuePair<TKey, TValue> item) => throw new NotImplementedException();
-			public bool ContainsKey(TKey key) => throw new NotImplementedException();
-			public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) => throw new NotImplementedException();
-			public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => throw new NotImplementedException();
-			IEnumerator IEnumerable.GetEnumerator() => throw new NotImplementedException();
-			public bool Remove(TKey key) => throw new NotImplementedException();
-			public bool Remove(KeyValuePair<TKey, TValue> item) => throw new NotImplementedException();
+			public TValue this[TKey key] { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+			public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value) => throw new NotSupportedException();
+			public ICollection<TKey> Keys => throw new NotSupportedException();
+			public ICollection<TValue> Values => throw new NotSupportedException();
+			public int Count => throw new NotSupportedException();
+			public bool IsReadOnly => throw new NotSupportedException();
+			public void Add(TKey key, TValue value) => throw new NotSupportedException();
+			public void Add(KeyValuePair<TKey, TValue> item) => throw new NotSupportedException();
+			public void Clear() => throw new NotSupportedException();
+			public bool Contains(KeyValuePair<TKey, TValue> item) => throw new NotSupportedException();
+			public bool ContainsKey(TKey key) => throw new NotSupportedException();
+			public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) => throw new NotSupportedException();
+			public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => throw new NotSupportedException();
+			IEnumerator IEnumerable.GetEnumerator() => throw new NotSupportedException();
+			public bool Remove(TKey key) => throw new NotSupportedException();
+			public bool Remove(KeyValuePair<TKey, TValue> item) => throw new NotSupportedException();
 		}
 
-		public class Comparer<T> : IComparer<T>
+		public sealed class Comparer<T> : IComparer<T>
 		{
 			public int Compare(T? x, T? y) => -1;
 		}
 
-		public class EqualityComparer<T> : IEqualityComparer<T>
+		public sealed class EqualityComparer<T> : IEqualityComparer<T>
 		{
 			public bool Equals(T? x, T? y) => false;
 			public int GetHashCode(T obj) => 0;

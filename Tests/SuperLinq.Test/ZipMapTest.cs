@@ -1,8 +1,9 @@
-﻿using System.Text.RegularExpressions;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Test;
 
-public class ZipMapTest
+public sealed class ZipMapTest
 {
 	public static IEnumerable<object[]> GetIntSequences() =>
 		Enumerable.Range(1, 10)
@@ -15,9 +16,9 @@ public class ZipMapTest
 	{
 		using (seq)
 		{
-			var result = seq.ZipMap(i => i.ToString());
+			var result = seq.ZipMap(i => i.ToString(CultureInfo.InvariantCulture));
 			result
-				.AssertSequenceEqual(Enumerable.Range(1, 10).Select(i => (i, i.ToString())));
+				.AssertSequenceEqual(Enumerable.Range(1, 10).Select(i => (i, i.ToString(CultureInfo.InvariantCulture))));
 		}
 	}
 

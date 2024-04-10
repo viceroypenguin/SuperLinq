@@ -2,7 +2,7 @@
 
 namespace Test;
 
-public class LeftOuterJoinTest
+public sealed class LeftOuterJoinTest
 {
 	private static IEnumerable<((string, string) Left, (string, string) Right)> ExecuteJoin(
 		IEnumerable<(string, string)> left,

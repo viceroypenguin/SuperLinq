@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class DeferTest
+public sealed class DeferTest
 {
 	[Fact]
 	public void DeferIsLazy()

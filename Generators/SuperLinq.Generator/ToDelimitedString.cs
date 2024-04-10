@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -10,16 +10,16 @@ internal static class ToDelimitedString
 {
 	public static SourceText Generate()
 	{
-		var types =
-			from method in typeof(StringBuilder).GetMethods(BindingFlags.Public | BindingFlags.Instance)
-			where string.Equals("Append", method.Name, StringComparison.Ordinal)
-			select method.GetParameters() into parameters
-			where parameters.Length == 1
-			select parameters[0].ParameterType into type
-			where !type.IsGenericType // e.g. ReadOnlySpan<>
-			   && (type.IsValueType || type == typeof(string))
-			orderby type.Name
-			select $"global::{type.FullName}";
+		var types = typeof(StringBuilder).GetMethods(BindingFlags.Public | BindingFlags.Instance)
+			.Where(m => m.Name is "Append")
+			.Select(m => m.GetParameters())
+			.Where(p => p.Length == 1)
+			.Select(p => p[0].ParameterType)
+			.Where(t =>
+				!t.IsGenericType // e.g. ReadOnlySpan<>
+			   && (t.IsValueType || t == typeof(string)))
+			.OrderBy(t => t.Name, StringComparer.Ordinal)
+			.Select(t => $"global::{t.FullName}");
 
 		var template = Template.Parse(ThisAssembly.Resources.ToDelimitedString.Text);
 		var output = template.Render(new { Types = types.ToList(), });

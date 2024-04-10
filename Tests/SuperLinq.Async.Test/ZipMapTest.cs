@@ -1,16 +1,17 @@
-﻿using System.Text.RegularExpressions;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Test.Async;
 
-public class ZipMapTest
+public sealed class ZipMapTest
 {
 	[Fact]
 	public async Task ZipMapIntTransformation()
 	{
 		var range = Enumerable.Range(1, 10);
 		await using var ts1 = range.AsTestingSequence();
-		await ts1.ZipMap(i => i.ToString()).AssertSequenceEqual(
-			range.Select(i => (i, i.ToString())));
+		await ts1.ZipMap(i => i.ToString(CultureInfo.InvariantCulture)).AssertSequenceEqual(
+			range.Select(i => (i, i.ToString(CultureInfo.InvariantCulture))));
 	}
 
 	[Fact]

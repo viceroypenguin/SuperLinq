@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class CountBetweenTest
+public sealed class CountBetweenTest
 {
 	[Fact]
 	public void CountBetweenWithNegativeMin()

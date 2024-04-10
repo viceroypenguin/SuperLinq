@@ -140,7 +140,7 @@ public static partial class SuperEnumerable
 			global::System.Collections.Generic.IEnumerable<TSecond> second
 	) => EquiZip(first, second, global::System.ValueTuple.Create);
 
-	private class EquiZipIterator<T1, T2, TResult> : ListIterator<TResult>
+	private sealed class EquiZipIterator<T1, T2, TResult> : ListIterator<TResult>
 	{
 		private readonly global::System.Collections.Generic.IList<T1> _list1;
 		private readonly global::System.Collections.Generic.IList<T2> _list2;
@@ -358,7 +358,7 @@ public static partial class SuperEnumerable
 			global::System.Collections.Generic.IEnumerable<TThird> third
 	) => EquiZip(first, second, third, global::System.ValueTuple.Create);
 
-	private class EquiZipIterator<T1, T2, T3, TResult> : ListIterator<TResult>
+	private sealed class EquiZipIterator<T1, T2, T3, TResult> : ListIterator<TResult>
 	{
 		private readonly global::System.Collections.Generic.IList<T1> _list1;
 		private readonly global::System.Collections.Generic.IList<T2> _list2;
@@ -611,7 +611,7 @@ public static partial class SuperEnumerable
 			global::System.Collections.Generic.IEnumerable<TFourth> fourth
 	) => EquiZip(first, second, third, fourth, global::System.ValueTuple.Create);
 
-	private class EquiZipIterator<T1, T2, T3, T4, TResult> : ListIterator<TResult>
+	private sealed class EquiZipIterator<T1, T2, T3, T4, TResult> : ListIterator<TResult>
 	{
 		private readonly global::System.Collections.Generic.IList<T1> _list1;
 		private readonly global::System.Collections.Generic.IList<T2> _list2;

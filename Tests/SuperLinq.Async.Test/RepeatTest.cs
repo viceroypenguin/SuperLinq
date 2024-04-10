@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class RepeatTest
+public sealed class RepeatTest
 {
 	[Theory]
 	[InlineData(1)]

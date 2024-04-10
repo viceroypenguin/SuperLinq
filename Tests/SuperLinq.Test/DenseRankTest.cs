@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class DenseRankTests
+public sealed class DenseRankTests
 {
 	/// <summary>
 	/// Verify that DenseRank uses deferred execution

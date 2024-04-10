@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class PartitionTest
+public sealed class PartitionTest
 {
 	[Fact]
 	public void Partition()

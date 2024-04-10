@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class FallbackIfEmptyTest
+public sealed class FallbackIfEmptyTest
 {
 	[Fact]
 	public async Task FallbackIfEmptyWithEmptySequence()

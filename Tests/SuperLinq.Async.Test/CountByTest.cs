@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class CountByTest
+public sealed class CountByTest
 {
 	[Fact]
 	public async Task CountBySimpleTest()

@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class IndexOfTest
+public sealed class IndexOfTest
 {
 	[Fact]
 	public void IndexOfWithNegativeCount()

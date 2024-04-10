@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class MaxItemsTest
+public sealed class MaxItemsTest
 {
 	[Fact]
 	public void MaxItemsIsLazy()

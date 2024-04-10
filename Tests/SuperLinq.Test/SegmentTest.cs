@@ -3,7 +3,7 @@
 /// <summary>
 /// Verify the behavior of the Segment operator
 /// </summary>
-public class SegmentTests
+public sealed class SegmentTests
 {
 	/// <summary>
 	/// Verify that the Segment operator behaves in a lazy manner

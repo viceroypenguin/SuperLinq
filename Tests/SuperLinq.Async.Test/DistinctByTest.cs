@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class DistinctByTest
+public sealed class DistinctByTest
 {
 	[Fact]
 	public async Task DistinctBy()

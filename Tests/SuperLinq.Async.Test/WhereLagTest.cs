@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class WhereLagTest
+public sealed class WhereLagTest
 {
 	[Fact]
 	public void WhereLagIsLazy()

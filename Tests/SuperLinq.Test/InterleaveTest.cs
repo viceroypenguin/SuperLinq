@@ -3,7 +3,7 @@
 /// <summary>
 /// Verify the behavior of the Interleave operator
 /// </summary>
-public class InterleaveTest
+public sealed class InterleaveTest
 {
 	/// <summary>
 	/// Verify that Interleave behaves in a lazy manner

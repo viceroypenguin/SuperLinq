@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class WhereTest
+public sealed class WhereTest
 {
 	[Fact]
 	public void WhereIsLazy()

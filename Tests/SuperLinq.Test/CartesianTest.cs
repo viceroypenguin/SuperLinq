@@ -3,7 +3,7 @@ namespace Test;
 /// <summary>
 /// Verify the behavior of the Cartesian operator
 /// </summary>
-public class CartesianTests
+public sealed class CartesianTests
 {
 	/// <summary>
 	/// Verify that the Cartesian product is evaluated in a lazy fashion on demand.

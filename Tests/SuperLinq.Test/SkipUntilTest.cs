@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class SkipUntilTest
+public sealed class SkipUntilTest
 {
 	[Fact]
 	public void SkipUntilPredicateNeverFalse()

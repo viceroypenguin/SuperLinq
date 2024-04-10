@@ -1,6 +1,8 @@
-﻿namespace Test.Async;
+using System.Globalization;
 
-public class AggregateRightTest
+namespace Test.Async;
+
+public sealed class AggregateRightTest
 {
 	// Overload 1 Test
 
@@ -23,8 +25,8 @@ public class AggregateRightTest
 	[Fact]
 	public async Task AggregateRight()
 	{
-		await using var enumerable = AsyncEnumerable.Range(1, 5).Select(x => x.ToString()).AsTestingSequence();
-		var result = await enumerable.AggregateRight((a, b) => string.Format("({0}+{1})", a, b));
+		await using var enumerable = AsyncEnumerable.Range(1, 5).Select(x => x.ToString(CultureInfo.InvariantCulture)).AsTestingSequence();
+		var result = await enumerable.AggregateRight((a, b) => FormattableString.Invariant($"({a}+{b})"));
 
 		Assert.Equal("(1+(2+(3+(4+5))))", result);
 	}
@@ -53,7 +55,7 @@ public class AggregateRightTest
 	{
 		await using var enumerable = AsyncEnumerable.Range(1, 4).AsTestingSequence();
 		var result = await enumerable
-			.AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b));
+			.AggregateRight("5", (a, b) => FormattableString.Invariant($"({a}+{b})"));
 
 		Assert.Equal("(1+(2+(3+(4+5))))", result);
 	}
@@ -75,7 +77,7 @@ public class AggregateRightTest
 	{
 		await using var enumerable = AsyncEnumerable.Range(1, 4).AsTestingSequence();
 		var result = await enumerable
-			.AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b), a => a.Length);
+			.AggregateRight("5", (a, b) => FormattableString.Invariant($"({a}+{b})"), a => a.Length);
 
 		Assert.Equal("(1+(2+(3+(4+5))))".Length, result);
 	}

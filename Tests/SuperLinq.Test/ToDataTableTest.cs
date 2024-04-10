@@ -1,18 +1,20 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Test;
 
-public class ToDataTableTest
+[SuppressMessage("Design", "MA0150:Do not call the default object.ToString explicitly")]
+public sealed class ToDataTableTest
 {
-	private class TestObject(int key)
+	private sealed class TestObject(int key)
 	{
 		public int _keyField = key;
 		public Guid? _aNullableGuidField = Guid.NewGuid();
 
 		public string AString { get; } = "ABCDEFGHIKKLMNOPQRSTUVWXYSZ";
 		public decimal? ANullableDecimal { get; } = key / 3;
-		public object Unreadable { set => throw new NotImplementedException(); }
+		public object Unreadable { set => throw new NotSupportedException(); }
 
 		public object this[int index]
 		{

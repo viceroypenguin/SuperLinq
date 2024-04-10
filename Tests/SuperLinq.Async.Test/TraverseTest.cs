@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class TraverseTest
+public sealed class TraverseTest
 {
 	[Fact]
 	public void TraverseDepthFirstIsStreaming()
@@ -32,7 +32,7 @@ public class TraverseTest
 		await res.AssertSequenceEqual(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 	}
 
-	private class Tree<T>(
+	private sealed class Tree<T>(
 		T value,
 		IEnumerable<Tree<T>> children
 	)

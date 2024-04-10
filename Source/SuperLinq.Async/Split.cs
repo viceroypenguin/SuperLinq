@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -80,7 +80,7 @@ public static partial class AsyncSuperEnumerable
 		TSource separator, int count,
 		Func<IReadOnlyList<TSource>, TResult> resultSelector)
 	{
-		return Split(source, separator, null, count, resultSelector);
+		return Split(source, separator, comparer: null, count, resultSelector);
 	}
 
 	/// <summary>

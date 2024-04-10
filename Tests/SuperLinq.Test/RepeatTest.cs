@@ -1,6 +1,6 @@
-﻿namespace Test;
+namespace Test;
 
-public class RepeatTest
+public sealed class RepeatTest
 {
 	[Theory]
 	[InlineData(1)]

@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class BindByIndexTest
+public sealed class BindByIndexTest
 {
 	[Fact]
 	public void BindByIndexIsLazy()

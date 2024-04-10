@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class AssertCountTest
+public sealed class AssertCountTest
 {
 	[Fact]
 	public void AssertCountIsLazy()

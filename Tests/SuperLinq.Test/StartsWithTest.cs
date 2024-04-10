@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class StartsWithTest
+public sealed class StartsWithTest
 {
 	[Theory]
 	[InlineData(new[] { 1, 2, 3 }, new[] { 1, 2 }, true)]
@@ -73,7 +73,7 @@ public class StartsWithTest
 		var first = Seq(1, 2, 3);
 		var second = Seq(4, 5, 6);
 
-		Assert.False(first.StartsWith(second, null));
+		Assert.False(first.StartsWith(second, comparer: null));
 		Assert.False(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return false; })));
 		Assert.True(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
 	}

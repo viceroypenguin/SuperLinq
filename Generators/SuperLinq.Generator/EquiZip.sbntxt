@@ -155,7 +155,7 @@ public static partial class SuperEnumerable
 			{{~ end ~}}
 	) => EquiZip({{~ for $j in 1..$i ~}}{{ $ordinals[$j] }}, {{ end }}global::System.ValueTuple.Create);
 
-	private class EquiZipIterator<{{ for $j in 1..$i }}T{{ $j }}, {{ end }}TResult> : ListIterator<TResult>
+	private sealed class EquiZipIterator<{{ for $j in 1..$i }}T{{ $j }}, {{ end }}TResult> : ListIterator<TResult>
 	{
 		{{~ for $j in 1..$i ~}}
 		private readonly global::System.Collections.Generic.IList<T{{ $j }}> _list{{ $j }};

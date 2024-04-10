@@ -1,5 +1,5 @@
 ﻿namespace Test;
-public class ZipLongestTest
+public sealed class ZipLongestTest
 {
 	[Fact]
 	public void ZipLongestIsLazy()

@@ -6,7 +6,7 @@ namespace Test;
 /// <summary>
 /// Tests that verify the behavior of the Permutations() operator.
 /// </summary>
-public class PermutationsTest
+public sealed class PermutationsTest
 {
 	/// <summary>
 	/// Verify that the permutation of the empty set is the empty set.

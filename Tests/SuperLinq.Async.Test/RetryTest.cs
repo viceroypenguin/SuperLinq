@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class RetryTest
+public sealed class RetryTest
 {
 	[Fact]
 	public void RetryIsLazy()

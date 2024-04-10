@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class TransposeTest
+public sealed class TransposeTest
 {
 	[Fact]
 	public void TransposeIsLazy()
@@ -96,7 +96,7 @@ public class TransposeTest
 			[4,    9,   25],
 			[8,   27,  125],
 			[16,  81,  625],
-			[32, 243, 3125]
+			[32, 243, 3125],
 		};
 
 		AssertMatrix(expectations, result);
@@ -123,7 +123,7 @@ public class TransposeTest
 			[4,    9,   25],
 			[8,        125],
 			[16,       625],
-			[32,      3125]
+			[32,      3125],
 		};
 
 		AssertMatrix(expectations, result);

@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class ScanTest
+public sealed class ScanTest
 {
 	[Fact]
 	public void ScanEmpty()

@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class CaseTest
+public sealed class CaseTest
 {
 	[Fact]
 	public void CaseIsLazy()

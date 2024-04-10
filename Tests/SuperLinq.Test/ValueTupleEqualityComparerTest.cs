@@ -2,10 +2,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Test;
 
-public class ValueTupleEqualityComparerTest
+public sealed class ValueTupleEqualityComparerTest
 {
-	private record TestObject(string Value);
-	private class TestComparer<T>(Func<T?, T?, bool> comparer) : IEqualityComparer<T>
+	private sealed record TestObject(string Value);
+	private sealed class TestComparer<T>(Func<T?, T?, bool> comparer) : IEqualityComparer<T>
 	{
 		public bool Equals(T? x, T? y) => comparer(x, y);
 		public int GetHashCode([DisallowNull] T obj) => obj.GetHashCode();
@@ -14,7 +14,7 @@ public class ValueTupleEqualityComparerTest
 	[Fact]
 	public void ValueTupleEqualityComparerWithOneTypeArgShouldCreateWhenNoComparerProvided()
 	{
-		var comparer = ValueTupleEqualityComparer.Create<int>(null);
+		var comparer = ValueTupleEqualityComparer.Create<int>(comparer1: null);
 		ValueTuple<int> left = new(1);
 		ValueTuple<int> right = new(1);
 		var result = comparer.Equals(left, right);
@@ -24,8 +24,8 @@ public class ValueTupleEqualityComparerTest
 	[Fact]
 	public void ValueTupleEqualityComparerWithOneTypeArgShouldGetHashCode()
 	{
-		var comparer = ValueTupleEqualityComparer.Create<int?>(null);
-		ValueTuple<int?> first = new(null);
+		var comparer = ValueTupleEqualityComparer.Create<int?>(comparer1: null);
+		ValueTuple<int?> first = new(item1: null);
 		var firstHashCode = comparer.GetHashCode(first);
 		Assert.Equal(0, firstHashCode);
 
@@ -48,7 +48,7 @@ public class ValueTupleEqualityComparerTest
 	[Fact]
 	public void ValueTupleEqualityComparerWithTwoTypeArgsShouldCreateWhenNoComparerProvided()
 	{
-		var comparer = ValueTupleEqualityComparer.Create<int, int>(null, null);
+		var comparer = ValueTupleEqualityComparer.Create<int, int>(comparer1: null, comparer2: null);
 		ValueTuple<int, int> left = new(1, 2);
 		ValueTuple<int, int> right = new(1, 2);
 		var result = comparer.Equals(left, right);
@@ -70,7 +70,7 @@ public class ValueTupleEqualityComparerTest
 	[Fact]
 	public void ValueTupleEqualityComparerWithTwoTypeArgsShouldGetHashCode()
 	{
-		var comparer = ValueTupleEqualityComparer.Create<int, int>(null, null);
+		var comparer = ValueTupleEqualityComparer.Create<int, int>(comparer1: null, comparer2: null);
 		ValueTuple<int, int> first = new(1, 2);
 		var firstHashCode = comparer.GetHashCode(first);
 		var expectedHashCode = HashCode.Combine(1.GetHashCode(), 2.GetHashCode());

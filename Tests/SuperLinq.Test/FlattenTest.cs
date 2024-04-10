@@ -1,8 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace Test;
 
-public class FlattenTest
+public sealed class FlattenTest
 {
 	// Flatten(this IEnumerable source)
 
@@ -81,7 +81,7 @@ public class FlattenTest
 				4,
 				new[]
 				{
-					true, false
+					true, false,
 				},
 				5,
 			},
@@ -102,7 +102,7 @@ public class FlattenTest
 				new[]
 				{
 					true,
-					false
+					false,
 				},
 				5,
 				6,
@@ -123,7 +123,7 @@ public class FlattenTest
 				true,
 				false,
 			},
-			6
+			6,
 		};
 
 		using var source = orig.AsTestingSequence();
@@ -146,7 +146,7 @@ public class FlattenTest
 				4,
 				5,
 			},
-			6
+			6,
 		}.AsTestingSequence();
 
 		source
@@ -332,18 +332,18 @@ public class FlattenTest
 			.AssertSequenceEqual(Enumerable.Range(1, 7).Cast<object>());
 	}
 
-	private class Series
+	private sealed class Series
 	{
 		public string Name { get; init; } = string.Empty;
 		public Attribute[] Attributes { get; init; } = [];
 	}
 
-	private class Attribute
+	private sealed class Attribute
 	{
 		public int[] Values { get; init; } = [];
 	}
 
-	private class Tree<T>(
+	private sealed class Tree<T>(
 		Tree<T>? left,
 		T value,
 		Tree<T>? right
@@ -353,6 +353,6 @@ public class FlattenTest
 		public readonly Tree<T>? Left = left;
 		public readonly Tree<T>? Right = right;
 
-		public Tree(T value) : this(null, value, null) { }
+		public Tree(T value) : this(left: null, value, right: null) { }
 	}
 }

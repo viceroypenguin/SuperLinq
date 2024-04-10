@@ -2,7 +2,7 @@
 
 namespace Test.Async;
 
-public class InnerJoinTest
+public sealed class InnerJoinTest
 {
 	private static IAsyncEnumerable<((string, string) Left, (string, string) Right)> ExecuteJoin(
 		IAsyncEnumerable<(string, string)> left,

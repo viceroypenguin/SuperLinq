@@ -1,144 +1,144 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="../../TargetFrameworks.props" />
+  <Import Project="../../TargetFrameworks.props" />
 
-	<PropertyGroup>
-		<AssemblyName>SuperLinq.Async</AssemblyName>
-		<RootNamespace>SuperLinq.Async</RootNamespace>
+  <PropertyGroup>
+	<AssemblyName>SuperLinq.Async</AssemblyName>
+	<RootNamespace>SuperLinq.Async</RootNamespace>
 
-		<IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
-	</PropertyGroup>
+	<IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
+  </PropertyGroup>
 
-	<PropertyGroup Label="Nuget">
-		<Title>SuperLinq.Async</Title>
+  <PropertyGroup Label="Nuget">
+	<Title>SuperLinq.Async</Title>
 
-		<Authors>SuperLinq Developers</Authors>
-		<PackageTags>linq;extensions;async</PackageTags>
+	<Authors>SuperLinq Developers</Authors>
+	<PackageTags>linq;extensions;async</PackageTags>
 
-		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<PackageReadmeFile>readme.md</PackageReadmeFile>
+	<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	<PackageReadmeFile>readme.md</PackageReadmeFile>
 
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<RepositoryUrl>https://github.com/viceroypenguin/SuperLinq</RepositoryUrl>
+	<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	<RepositoryUrl>https://github.com/viceroypenguin/SuperLinq</RepositoryUrl>
 
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-	</PropertyGroup>
+	<IncludeSymbols>true</IncludeSymbols>
+	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
 
-	<PropertyGroup>
-		<Description>
-			This project enhances Async LINQ to Objects with the following methods:
+  <PropertyGroup>
+	<Description>
+	  This project enhances Async LINQ to Objects with the following methods:
 
-			- AggregateRight
-			- AssertCount
-			- AtLeast
-			- AtMost
-			- Choose
-			- CollectionEqual
-			- CompareCount
-			- ConcurrentMerge
-			- Consume
-			- CountBetween
-			- CountBy
-			- CountDown
-			- DenseRank
-			- DenseRankBy
-			- DistinctBy
-			- ElementAt
-			- EndsWith
-			- Exactly
-			- ExceptBy
-			- FallbackIfEmpty
-			- FillBackward
-			- FillForward
-			- Fold
-			- From
-			- Generate
-			- GroupAdjacent
-			- Index
-			- IndexBy
-			- Insert
-			- Interleave
-			- OrderBy
-			- Pad
-			- PadStart
-			- PartialSort
-			- PartialSortBy
-			- Random
-			- Rank
-			- RankBy
-			- RunLengthEncode
-			- ScanBy
-			- ScanRight
-			- Segment
-			- Sequence
-			- SkipUntil
-			- SortedMerge
-			- Split
-			- StartsWith
-			- TagFirstLast
-			- Take
-			- TakeEvery
-			- TakeUntil
-			- ThenBy
-			- Where
-			- Window
-			- WindowLeft
-			- WindowRight
-			- ZipLongest
-			- ZipMap
-			- ZipShortest
-		</Description>
-		<Description>$([System.Text.RegularExpressions.Regex]::Replace($(Description), `\s+`, ` `).Trim().Replace(` - `, `, `).Replace(`:,`, `:`))</Description>
+	  - AggregateRight
+	  - AssertCount
+	  - AtLeast
+	  - AtMost
+	  - Choose
+	  - CollectionEqual
+	  - CompareCount
+	  - ConcurrentMerge
+	  - Consume
+	  - CountBetween
+	  - CountBy
+	  - CountDown
+	  - DenseRank
+	  - DenseRankBy
+	  - DistinctBy
+	  - ElementAt
+	  - EndsWith
+	  - Exactly
+	  - ExceptBy
+	  - FallbackIfEmpty
+	  - FillBackward
+	  - FillForward
+	  - Fold
+	  - From
+	  - Generate
+	  - GroupAdjacent
+	  - Index
+	  - IndexBy
+	  - Insert
+	  - Interleave
+	  - OrderBy
+	  - Pad
+	  - PadStart
+	  - PartialSort
+	  - PartialSortBy
+	  - Random
+	  - Rank
+	  - RankBy
+	  - RunLengthEncode
+	  - ScanBy
+	  - ScanRight
+	  - Segment
+	  - Sequence
+	  - SkipUntil
+	  - SortedMerge
+	  - Split
+	  - StartsWith
+	  - TagFirstLast
+	  - Take
+	  - TakeEvery
+	  - TakeUntil
+	  - ThenBy
+	  - Where
+	  - Window
+	  - WindowLeft
+	  - WindowRight
+	  - ZipLongest
+	  - ZipMap
+	  - ZipShortest
+	</Description>
+	<Description>$([System.Text.RegularExpressions.Regex]::Replace($(Description), `\s+`, ` `).Trim().Replace(` - `, `, `).Replace(`:,`, `:`))</Description>
 
-		<Copyright>
-			Portions © 2008 Jonathan Skeet.
-			Portions © 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph.
-			Portions © 2010 Johannes Rudolph, Leopold Bushkin.
-			Portions © 2015 Felipe Sateler, “sholland”.
-			Portions © 2016 Andreas Gullberg Larsen, Leandro F. Vieira (leandromoh).
-			Portions © 2017 Jonas Nyrup (jnyrup).
-			Portions © 2022 Turning Code, LLC
-			Portions © 2022 Amichai Mantinband
-			Portions © Microsoft. All rights reserved.
-		</Copyright>
-		<Copyright>$([System.Text.RegularExpressions.Regex]::Replace($(Copyright), `\s+`, ` `).Trim())</Copyright>
-	</PropertyGroup>
+	<Copyright>
+	  Portions © 2008 Jonathan Skeet.
+	  Portions © 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph.
+	  Portions © 2010 Johannes Rudolph, Leopold Bushkin.
+	  Portions © 2015 Felipe Sateler, “sholland”.
+	  Portions © 2016 Andreas Gullberg Larsen, Leandro F. Vieira (leandromoh).
+	  Portions © 2017 Jonas Nyrup (jnyrup).
+	  Portions © 2022 Turning Code, LLC
+	  Portions © 2022 Amichai Mantinband
+	  Portions © Microsoft. All rights reserved.
+	</Copyright>
+	<Copyright>$([System.Text.RegularExpressions.Regex]::Replace($(Copyright), `\s+`, ` `).Trim())</Copyright>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<None Include="readme.md" Pack="true" PackagePath="\" />
-		<AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Shipped.txt" />
-		<AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Unshipped.txt" />
-	</ItemGroup>
+  <ItemGroup>
+	<None Include="readme.md" Pack="true" PackagePath="\" />
+	<AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Shipped.txt" />
+	<AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Unshipped.txt" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<Using Include="SuperLinq.Exceptions" />
-		<Using Include="System.Runtime.CompilerServices" />
-	</ItemGroup>
+  <ItemGroup>
+	<Using Include="SuperLinq.Exceptions" />
+	<Using Include="System.Runtime.CompilerServices" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
-		<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
-		<PackageReference Include="MinVer" PrivateAssets="All" />
-		<PackageReference Include="System.Linq.Async" />
-		<ProjectReference Include="..\SuperLinq\SuperLinq.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+	<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
+	<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+	<PackageReference Include="MinVer" PrivateAssets="All" />
+	<PackageReference Include="System.Linq.Async" />
+	<ProjectReference Include="..\SuperLinq\SuperLinq.csproj" />
+  </ItemGroup>
 
-	<PropertyGroup Label="SourceGenerator">
-		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-		<CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
-	</PropertyGroup>
+  <PropertyGroup Label="SourceGenerator">
+	<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+	<CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
 
-	<ItemGroup Label="SourceGenerator">
-		<ProjectReference Include="..\..\Generators\SuperLinq.Async.Generator\SuperLinq.Async.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		<Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
-		<None Include="$(CompilerGeneratedFilesOutputPath)/SuperLinq.Async.Generator/**/*.cs" />
-	</ItemGroup>
+  <ItemGroup Label="SourceGenerator">
+	<ProjectReference Include="..\..\Generators\SuperLinq.Async.Generator\SuperLinq.Async.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	<Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
+	<None Include="$(CompilerGeneratedFilesOutputPath)/SuperLinq.Async.Generator/**/*.cs" />
+  </ItemGroup>
 
-	<PropertyGroup Label="MinVer">
-		<MinVerAutoIncrement>minor</MinVerAutoIncrement>
-		<MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
-		<MinVerTagPrefix>v</MinVerTagPrefix>
-	</PropertyGroup>
+  <PropertyGroup Label="MinVer">
+	<MinVerAutoIncrement>minor</MinVerAutoIncrement>
+	<MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
+	<MinVerTagPrefix>v</MinVerTagPrefix>
+  </PropertyGroup>
 
 </Project>

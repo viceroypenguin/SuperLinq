@@ -44,10 +44,10 @@ dotnet_naming_symbols.non_private_static_fields.required_modifiers = static
 
 dotnet_naming_style.non_private_static_field_style.capitalization = pascal_case
 
-# Static fields are camelCase and start with s_
-dotnet_naming_rule.static_fields_should_be_camel_case.severity = suggestion
-dotnet_naming_rule.static_fields_should_be_camel_case.symbols = static_fields
-dotnet_naming_rule.static_fields_should_be_camel_case.style = static_field_style
+# Static fields are s_camelCase
+dotnet_naming_rule.static_fields_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.static_fields_should_be_pascal_case.symbols = static_fields
+dotnet_naming_rule.static_fields_should_be_pascal_case.style = static_field_style
 
 dotnet_naming_symbols.static_fields.applicable_kinds = field
 dotnet_naming_symbols.static_fields.required_modifiers = static
@@ -129,7 +129,7 @@ dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
 
 # Assignments
 dotnet_style_prefer_conditional_expression_over_assignment = true:error
-dotnet_style_prefer_conditional_expression_over_return = true:warning
+dotnet_style_prefer_conditional_expression_over_return = true:none
 dotnet_style_prefer_compound_assignment = true:warning
 
 # Parenthesis
@@ -152,6 +152,7 @@ dotnet_style_allow_multiple_blank_lines_experimental = false:warning
 dotnet_style_allow_statement_immediately_after_block_experimental = false:warning
 csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = false:warning
 csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = false:warning
+end_of_line = crlf
 
 # Build scripts
 [*.{yml,yaml}]
@@ -279,13 +280,15 @@ csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimenta
 dotnet_analyzer_diagnostic.category-Style.severity = warning
 dotnet_analyzer_diagnostic.category-Globalization.severity = error
 
-dotnet_diagnostic.IDE0011.severity = silent				# IDE0011: Add braces
-dotnet_diagnostic.IDE0046.severity = silent				# IDE0046: Convert to conditional expression
-dotnet_diagnostic.IDE0043.severity = error	            # IDE0043: Format string contains invalid placeholder
+# IDE Diagnostics
+dotnet_diagnostic.IDE0005.severity = error              # IDE0005: Using directive is unnecessary
+dotnet_diagnostic.IDE0011.severity = silent             # IDE0011: Add braces
+dotnet_diagnostic.IDE0046.severity = silent             # IDE0046: Convert to conditional expression
+dotnet_diagnostic.IDE0043.severity = error              # IDE0043: Format string contains invalid placeholder
 dotnet_diagnostic.IDE0051.severity = warning            # IDE0051: Remove unused private member
 dotnet_diagnostic.IDE0052.severity = warning            # IDE0052: Remove unread private member
 dotnet_diagnostic.IDE0076.severity = warning            # IDE0076: Remove invalid global 'SuppressMessageAttribute'
-dotnet_diagnostic.IDE0305.severity = none				# IDE0305: Simplify collection initialization
+dotnet_diagnostic.IDE0305.severity = suggestion         # IDE0305: Simplify collection initialization
 
 # XML Documentation
 dotnet_diagnostic.CS0105.severity = error               # CS0105: Using directive is unnecessary.
@@ -305,45 +308,102 @@ dotnet_diagnostic.CA2007.severity = none                # CA2007: Consider calli
 dotnet_diagnostic.CA5394.severity = none                # CA5394: Random is an insecure random number generator. Use cryptographically secure random number generators when randomness is required for security.
 
 # Public API Documentation
-dotnet_diagnostic.RS0016.severity = error				# RS0016: Add public types and members to the declared API
-dotnet_diagnostic.RS0017.severity = error				# RS0017: Remove deleted types and members from the declared API
+dotnet_diagnostic.RS0016.severity = error               # RS0016: Add public types and members to the declared API
+dotnet_diagnostic.RS0017.severity = error               # RS0017: Remove deleted types and members from the declared API
 # false positive for SuperLinq.Async CancellationTokens
-dotnet_diagnostic.RS0026.severity = none				# RS0026: Do not add multiple public overloads with optional parameters
-
-# Bug in compiler
-dotnet_diagnostic.CA1861.severity = none				# CA1861: Avoid constant arrays as arguments
+dotnet_diagnostic.RS0026.severity = none                # RS0026: Do not add multiple public overloads with optional parameters
 
 # Primary Constructors
-dotnet_diagnostic.CS9107.severity = error				# CS9107: Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor
-dotnet_diagnostic.CS9113.severity = error				# CS9113: Your class never references the primary constructor
-dotnet_diagnostic.CS9124.severity = error				# CS9124: Parameter is captured into the state of the enclosing type and its value is also used to initialize a field, property, or event
-dotnet_diagnostic.CS9179.severity = error				# CS9179: Primary constructor parameter is shadowed by a member from base
+dotnet_diagnostic.CS9107.severity = error               # CS9107: Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor
+dotnet_diagnostic.CS9113.severity = error               # CS9113: Your class never references the primary constructor
+dotnet_diagnostic.CS9124.severity = error               # CS9124: Parameter is captured into the state of the enclosing type and its value is also used to initialize a field, property, or event
+dotnet_diagnostic.CS9179.severity = error               # CS9179: Primary constructor parameter is shadowed by a member from base
 
 # Regex (can't use generated regex on pre-net7)
 dotnet_diagnostic.SYSLIB1045.severity = none            # SYSLIB1045: Use GeneratedRegexAttribute to generate the regular expression implementation at compile time.
 
 # Miscellaneous analyzers
-dotnet_diagnostic.CA1051.severity = error				# CA1051: Do not declare visible instance fields
-dotnet_diagnostic.CA1307.severity = error				# CA1307: Specify StringComparison for clarity
-dotnet_diagnostic.CA1507.severity = warning				# CA1507: Use `nameof` in place of string
-dotnet_diagnostic.CA1510.severity = error				# CA1510: Use `ArgumentNullException` throw helper
-dotnet_diagnostic.CA1511.severity = error				# CA1511: Use `ArgumentException` throw helper
-dotnet_diagnostic.CA1512.severity = error				# CA1512: Use `ArgumentOutOfRangeException` throw helper
-dotnet_diagnostic.CA1513.severity = error				# CA1513: Use `ObjectDisposedException` throw helper
-dotnet_diagnostic.CA1822.severity = warning				# CA1822: Mark members as static
-dotnet_diagnostic.CA1825.severity = error				# CA1825: Avoid zero-length array allocations
-dotnet_diagnostic.CA1826.severity = warning				# CA1826: Use property instead of Linq Enumerable method
-dotnet_diagnostic.CA1827.severity = warning				# CA1827: Do not use Count()/LongCount() when Any() can be used
-dotnet_diagnostic.CA1828.severity = warning				# CA1828: Do not use CountAsync/LongCountAsync when AnyAsync can be used
-dotnet_diagnostic.CA1829.severity = warning				# CA1829: Use Length/Count property instead of Enumerable.Count method
-dotnet_diagnostic.CA1841.severity = error				# CA1841: Prefer Dictionary Contains methods
-dotnet_diagnostic.CA1845.severity = warning				# CA1845: Use span-based 'string.Concat'
-dotnet_diagnostic.CA1852.severity = warning				# CA1852: CA1852: Seal internal types
-dotnet_diagnostic.CA1853.severity = warning				# CA1853: Unnecessary call to 'Dictionary.ContainsKey(key)'
-dotnet_diagnostic.CA1854.severity = warning				# CA1854: Prefer the IDictionary.TryGetValue(TKey, out TValue) method
-dotnet_diagnostic.CA1862.severity = warning				# CA1862: Use the 'StringComparison' method overloads to perform case-insensitive string comparisons
-dotnet_diagnostic.CA1863.severity = warning				# CA1863: Use 'CompositeFormat'
-dotnet_diagnostic.CA1864.severity = warning				# CA1864: Prefer the 'IDictionary.TryAdd(TKey, TValue)' method
-dotnet_diagnostic.CA1868.severity = warning				# CA1868: Unnecessary call to 'Contains' for sets
-dotnet_diagnostic.CA2014.severity = error				# CA2014: Do not use stackalloc in loops
-dotnet_diagnostic.CA2016.severity = error				# CA2016: Forward the CancellationToken parameter to methods that take one
+dotnet_diagnostic.CA1051.severity = error               # CA1051: Do not declare visible instance fields
+dotnet_diagnostic.CA1307.severity = error               # CA1307: Specify StringComparison for clarity
+dotnet_diagnostic.CA1507.severity = warning             # CA1507: Use `nameof` in place of string
+dotnet_diagnostic.CA1510.severity = error               # CA1510: Use `ArgumentNullException` throw helper
+dotnet_diagnostic.CA1511.severity = error               # CA1511: Use `ArgumentException` throw helper
+dotnet_diagnostic.CA1512.severity = error               # CA1512: Use `ArgumentOutOfRangeException` throw helper
+dotnet_diagnostic.CA1513.severity = error               # CA1513: Use `ObjectDisposedException` throw helper
+dotnet_diagnostic.CA1716.severity = none                # CA1716: Identifiers should not match keywords
+dotnet_diagnostic.CA1822.severity = warning             # CA1822: Mark members as static
+dotnet_diagnostic.CA1825.severity = error               # CA1825: Avoid zero-length array allocations
+dotnet_diagnostic.CA1826.severity = warning             # CA1826: Use property instead of Linq Enumerable method
+dotnet_diagnostic.CA1827.severity = warning             # CA1827: Do not use Count()/LongCount() when Any() can be used
+dotnet_diagnostic.CA1828.severity = warning             # CA1828: Do not use CountAsync/LongCountAsync when AnyAsync can be used
+dotnet_diagnostic.CA1829.severity = warning             # CA1829: Use Length/Count property instead of Enumerable.Count method
+dotnet_diagnostic.CA1841.severity = error               # CA1841: Prefer Dictionary Contains methods
+dotnet_diagnostic.CA1845.severity = warning             # CA1845: Use span-based 'string.Concat'
+dotnet_diagnostic.CA1852.severity = warning             # CA1852: CA1852: Seal internal types
+dotnet_diagnostic.CA1853.severity = warning             # CA1853: Unnecessary call to 'Dictionary.ContainsKey(key)'
+dotnet_diagnostic.CA1854.severity = warning             # CA1854: Prefer the IDictionary.TryGetValue(TKey, out TValue) method
+dotnet_diagnostic.CA1862.severity = warning             # CA1862: Use the 'StringComparison' method overloads to perform case-insensitive string comparisons
+dotnet_diagnostic.CA1863.severity = warning             # CA1863: Use 'CompositeFormat'
+dotnet_diagnostic.CA1864.severity = warning             # CA1864: Prefer the 'IDictionary.TryAdd(TKey, TValue)' method
+dotnet_diagnostic.CA1868.severity = warning             # CA1868: Unnecessary call to 'Contains' for sets
+dotnet_diagnostic.CA2014.severity = error               # CA2014: Do not use stackalloc in loops
+dotnet_diagnostic.CA2016.severity = error               # CA2016: Forward the CancellationToken parameter to methods that take one
+
+dotnet_diagnostic.RS2008.severity = none                # RS2008: Enable analyzer release tracking
+
+MA0053.public_class_should_be_sealed = true
+MA0053.exceptions_should_be_sealed = true
+
+dotnet_diagnostic.MA0004.severity = none
+dotnet_diagnostic.MA0005.severity = none
+dotnet_diagnostic.MA0006.severity = suggestion
+dotnet_diagnostic.MA0008.severity = none
+dotnet_diagnostic.MA0009.severity = none
+dotnet_diagnostic.MA0010.severity = none
+dotnet_diagnostic.MA0016.severity = none
+dotnet_diagnostic.MA0018.severity = none
+dotnet_diagnostic.MA0024.severity = none
+dotnet_diagnostic.MA0026.severity = suggestion
+dotnet_diagnostic.MA0029.severity = none
+dotnet_diagnostic.MA0030.severity = none
+dotnet_diagnostic.MA0031.severity = warning
+dotnet_diagnostic.MA0032.severity = none
+dotnet_diagnostic.MA0033.severity = error
+dotnet_diagnostic.MA0037.severity = none
+dotnet_diagnostic.MA0038.severity = none
+dotnet_diagnostic.MA0040.severity = none
+dotnet_diagnostic.MA0041.severity = none
+dotnet_diagnostic.MA0047.severity = none
+dotnet_diagnostic.MA0048.severity = none
+dotnet_diagnostic.MA0049.severity = none
+dotnet_diagnostic.MA0051.severity = none
+dotnet_diagnostic.MA0053.severity = warning
+dotnet_diagnostic.MA0054.severity = error
+dotnet_diagnostic.MA0064.severity = error
+dotnet_diagnostic.MA0069.severity = error
+dotnet_diagnostic.MA0071.severity = none
+dotnet_diagnostic.MA0074.severity = none
+dotnet_diagnostic.MA0075.severity = none
+dotnet_diagnostic.MA0076.severity = none
+dotnet_diagnostic.MA0079.severity = none
+dotnet_diagnostic.MA0080.severity = none
+dotnet_diagnostic.MA0094.severity = none
+dotnet_diagnostic.MA0095.severity = none
+dotnet_diagnostic.MA0096.severity = none
+dotnet_diagnostic.MA0097.severity = none
+dotnet_diagnostic.MA0099.severity = error
+dotnet_diagnostic.MA0103.severity = error
+dotnet_diagnostic.MA0110.severity = none
+dotnet_diagnostic.MA0112.severity = none
+dotnet_diagnostic.MA0127.severity = none
+dotnet_diagnostic.MA0137.severity = none
+dotnet_diagnostic.MA0140.severity = error
+dotnet_diagnostic.MA0141.severity = warning
+dotnet_diagnostic.MA0142.severity = warning
+dotnet_diagnostic.MA0147.severity = error
+dotnet_diagnostic.MA0148.severity = none
+dotnet_diagnostic.MA0149.severity = none
+dotnet_diagnostic.MA0154.severity = warning
+dotnet_diagnostic.IDE0305.severity = suggestion
+dotnet_diagnostic.MA0003.severity = suggestion
+dotnet_diagnostic.MA0084.severity = none

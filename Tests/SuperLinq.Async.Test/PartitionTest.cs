@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class PartitionTest
+public sealed class PartitionTest
 {
 	[Fact]
 	public async Task Partition()

@@ -1,6 +1,6 @@
-﻿namespace Test;
+namespace Test;
 
-public partial class WindowLeftTest
+public sealed class WindowLeftTest
 {
 	[Fact]
 	public void WindowLeftIsLazy()

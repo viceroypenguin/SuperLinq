@@ -2,9 +2,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Test;
 
-public class ValueTupleComparerTest
+public sealed class ValueTupleComparerTest
 {
-	private class TestComparer : IComparer<string>
+	private sealed class TestComparer : IComparer<string>
 	{
 		public int Compare([AllowNull] string x, [AllowNull] string y)
 		{
@@ -17,7 +17,7 @@ public class ValueTupleComparerTest
 	[Fact]
 	public void ValueTupleComparerShouldCreateWithDefaultComparers()
 	{
-		var comparer = ValueTupleComparer.Create<int, int>(null, null);
+		var comparer = ValueTupleComparer.Create<int, int>(comparer1: null, comparer2: null);
 		ValueTuple<int, int> left = new(1, 2);
 		ValueTuple<int, int> right = new(3, 4);
 		var result = comparer.Compare(left, right);
@@ -27,7 +27,7 @@ public class ValueTupleComparerTest
 	[Fact]
 	public void ValueTupleComparerShouldCheckSecondItemIfFirstIsZero()
 	{
-		var comparer = ValueTupleComparer.Create<int, int>(null, null);
+		var comparer = ValueTupleComparer.Create<int, int>(comparer1: null, comparer2: null);
 		ValueTuple<int, int> left = new(1, 3);
 		ValueTuple<int, int> right = new(1, 2);
 		var result = comparer.Compare(left, right);

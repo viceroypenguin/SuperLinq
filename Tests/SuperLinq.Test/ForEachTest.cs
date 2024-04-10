@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class ForEachTest
+public sealed class ForEachTest
 {
 	[Fact]
 	public void ForEachWithSequence()

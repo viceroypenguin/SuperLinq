@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class CatchTest
+public sealed class CatchTest
 {
 	[Fact]
 	public void CatchIsLazy()

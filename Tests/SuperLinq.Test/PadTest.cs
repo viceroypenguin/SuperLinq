@@ -1,6 +1,6 @@
-﻿namespace Test;
+namespace Test;
 
-public class PadTest
+public sealed class PadTest
 {
 	[Fact]
 	public void PadNegativeWidth()

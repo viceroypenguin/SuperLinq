@@ -3,7 +3,7 @@
 /// <summary>
 /// Tests that verify the behavior of the SortedMerge operator.
 /// </summary>
-public class SortedMergeTests
+public sealed class SortedMergeTests
 {
 	/// <summary>
 	/// Verify that SortedMerge behaves in a lazy manner.

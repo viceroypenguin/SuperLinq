@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class FallbackIfEmptyTest
+public sealed class FallbackIfEmptyTest
 {
 	[Fact]
 	public void FallbackIfEmptyWithEmptySequence()

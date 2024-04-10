@@ -3,7 +3,7 @@
 
 namespace Test;
 
-public class ElementAtTest
+public sealed class ElementAtTest
 {
 	// simplified tests - already tested by fx, only need to prove that we don't step on fx toes
 

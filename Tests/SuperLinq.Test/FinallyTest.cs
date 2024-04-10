@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class FinallyTest
+public sealed class FinallyTest
 {
 	[Fact]
 	public void FinallyIsLazy()

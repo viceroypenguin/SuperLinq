@@ -58,6 +58,6 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(rand);
 
-		return RandomSubsetImpl(source, rand, null);
+		return RandomSubsetImpl(source, rand, subsetSize: null);
 	}
 }

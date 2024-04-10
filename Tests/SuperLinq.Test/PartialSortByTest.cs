@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class PartialSortByTests
+public sealed class PartialSortByTests
 {
 	[Fact]
 	public void PartialSortBy()

@@ -79,7 +79,7 @@ internal sealed class SequenceReader<T> : IAsyncDisposable
 	[MemberNotNull(nameof(_enumerator))]
 	private void EnsureNotDisposed()
 	{
-		if (_enumerator == null)
+		if (_enumerator is null)
 			Assert.Fail("Sequence was disposed before completing.");
 	}
 
@@ -89,7 +89,7 @@ internal sealed class SequenceReader<T> : IAsyncDisposable
 	public async ValueTask DisposeAsync()
 	{
 		var e = _enumerator;
-		if (e == null) return;
+		if (e is null) return;
 		_enumerator = null;
 		await e.DisposeAsync();
 	}

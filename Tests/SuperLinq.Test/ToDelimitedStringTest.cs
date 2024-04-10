@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class ToDelimitedStringTest
+public sealed class ToDelimitedStringTest
 {
 	[Fact]
 	public void ToDelimitedStringWithNonEmptySequenceAndDelimiter()

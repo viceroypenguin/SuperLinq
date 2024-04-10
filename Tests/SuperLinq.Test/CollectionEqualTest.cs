@@ -1,6 +1,6 @@
 ﻿namespace Test;
 
-public class CollectionEqualTest
+public sealed class CollectionEqualTest
 {
 	[Fact]
 	public void CollectionEqualIntSequenceInOrder()

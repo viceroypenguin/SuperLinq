@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace Test;
 
-public class TrySingleTest
+public sealed class TrySingleTest
 {
 	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
 		seq.Select(x => (int?)x)
@@ -64,11 +64,11 @@ public class TrySingleTest
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		public void Add(T item) => throw new NotImplementedException();
-		public void Clear() => throw new NotImplementedException();
-		public bool Contains(T item) => throw new NotImplementedException();
-		public void CopyTo(T[] array, int arrayIndex) => throw new NotImplementedException();
-		public bool Remove(T item) => throw new NotImplementedException();
+		public void Add(T item) => throw new NotSupportedException();
+		public void Clear() => throw new NotSupportedException();
+		public bool Contains(T item) => throw new NotSupportedException();
+		public void CopyTo(T[] array, int arrayIndex) => throw new NotSupportedException();
+		public bool Remove(T item) => throw new NotSupportedException();
 		public bool IsReadOnly => true;
 	}
 

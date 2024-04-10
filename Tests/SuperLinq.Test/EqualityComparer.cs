@@ -17,7 +17,7 @@ internal static class EqualityComparer
 		private readonly Func<T, int> _hasher = hasher ?? throw new ArgumentNullException(nameof(hasher));
 
 		public DelegatingComparer(Func<T, T, bool> comparer)
-			: this(comparer, x => x == null ? 0 : x.GetHashCode()) { }
+			: this(comparer, x => x is null ? 0 : x.GetHashCode()) { }
 
 		public bool Equals(T? x, T? y) => _comparer(x!, y!);
 		public int GetHashCode(T obj) => _hasher(obj);

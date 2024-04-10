@@ -1,6 +1,6 @@
 ﻿namespace Test.Async;
 
-public class DistinctUntilChangedTest
+public sealed class DistinctUntilChangedTest
 {
 	[Fact]
 	public void DistinctUntilChangedIsLazy()

@@ -646,7 +646,7 @@ public static partial class SuperEnumerable
 
 			if (!rLookup.Contains(lKey))
 			{
-				if (leftResultSelector != null)
+				if (leftResultSelector is not null)
 					yield return leftResultSelector(l);
 				continue;
 			}
@@ -656,7 +656,7 @@ public static partial class SuperEnumerable
 				yield return bothResultSelector(l, r);
 		}
 
-		if (rightResultSelector != null)
+		if (rightResultSelector is not null)
 		{
 			foreach (var g in rLookup)
 			{
