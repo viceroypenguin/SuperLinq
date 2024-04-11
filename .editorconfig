@@ -98,7 +98,7 @@ dotnet_style_predefined_type_for_member_access = true:suggestion
 # Initializers
 dotnet_style_object_initializer = true:suggestion
 dotnet_style_collection_initializer = true:suggestion
-dotnet_style_prefer_collection_expression = false:none
+dotnet_style_prefer_collection_expression = when_types_loosely_match:warning
 
 # Null checks
 dotnet_style_coalesce_expression = true:suggestion
@@ -270,7 +270,6 @@ dotnet_diagnostic.IDE0043.severity = error              # IDE0043: Format string
 dotnet_diagnostic.IDE0051.severity = warning            # IDE0051: Remove unused private member
 dotnet_diagnostic.IDE0052.severity = warning            # IDE0052: Remove unread private member
 dotnet_diagnostic.IDE0076.severity = warning            # IDE0076: Remove invalid global 'SuppressMessageAttribute'
-dotnet_diagnostic.IDE0305.severity = none               # IDE0305: Simplify collection initialization
 
 # XML Documentation
 dotnet_diagnostic.CS0105.severity = error               # CS0105: Using directive is unnecessary.

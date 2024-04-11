@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace SuperLinq;
 
 public static partial class SuperEnumerable
@@ -93,6 +95,7 @@ skipLoop:
 	{
 		public override int Count => source.Count;
 
+		[SuppressMessage("Style", "IDE0305:Simplify collection initialization")]
 		protected override IEnumerable<IList<T>> GetEnumerable()
 		{
 			T[] window;

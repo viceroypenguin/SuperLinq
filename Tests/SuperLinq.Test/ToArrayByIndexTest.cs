@@ -1,4 +1,6 @@
-﻿namespace Test;
+using System.Diagnostics.CodeAnalysis;
+
+namespace Test;
 
 public sealed class ToArrayByIndexTest
 {
@@ -17,6 +19,7 @@ public sealed class ToArrayByIndexTest
 	[InlineData(true, new[] { 0, 5, 9 })]
 	[InlineData(true, new[] { 2, 3, 5, 9 })]
 	[InlineData(true, new[] { 5, 2, 9, 3 })]
+	[SuppressMessage("Style", "IDE0305:Simplify collection initialization")]
 	public void ToArrayByIndex(bool withLength, int[] indices)
 	{
 		using var input = indices
