@@ -270,7 +270,6 @@ dotnet_diagnostic.IDE0043.severity = error              # IDE0043: Format string
 dotnet_diagnostic.IDE0051.severity = warning            # IDE0051: Remove unused private member
 dotnet_diagnostic.IDE0052.severity = warning            # IDE0052: Remove unread private member
 dotnet_diagnostic.IDE0076.severity = warning            # IDE0076: Remove invalid global 'SuppressMessageAttribute'
-dotnet_diagnostic.IDE0305.severity = suggestion         # IDE0305: Simplify collection initialization
 
 # XML Documentation
 dotnet_diagnostic.CS0105.severity = error               # CS0105: Using directive is unnecessary.

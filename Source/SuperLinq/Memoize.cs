@@ -281,6 +281,7 @@ public static partial class SuperEnumerable
 			return GetEnumeratorImpl(buffer);
 		}
 
+		[SuppressMessage("Style", "IDE0305:Simplify collection initialization")]
 		private T[] InitializeBuffer()
 		{
 			var source = _source;

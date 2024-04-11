@@ -247,8 +247,8 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 		{
 			var queue = CreateUpdatablePriorityQueue(initialCapacity: 0, count, out _);
 
-			(TElement, TPriority)[] firstEnumeration = queue.UnorderedItems.ToArray();
-			(TElement, TPriority)[] secondEnumeration = queue.UnorderedItems.ToArray();
+			var firstEnumeration = queue.UnorderedItems.ToArray();
+			var secondEnumeration = queue.UnorderedItems.ToArray();
 
 			Assert.Equal(firstEnumeration.Length, count);
 			Assert.True(firstEnumeration.SequenceEqual(secondEnumeration));
