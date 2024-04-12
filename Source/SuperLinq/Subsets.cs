@@ -146,8 +146,8 @@ public static partial class SuperEnumerable
 				subset[i] = set[indices[i] - 1];
 
 			yield return subset;
-
 		}
+
 		while (indices[0] != setSize - subsetSize + 1);
 	}
 }
