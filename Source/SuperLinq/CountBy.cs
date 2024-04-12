@@ -33,7 +33,7 @@ public static partial class SuperEnumerable
 #if NET9_0_OR_GREATER
 	[Obsolete("This method has been implemented by the framework.")]
 	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(
-		IEnumerable<TSource> source, 
+		IEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector
 	)
 #else
