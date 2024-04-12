@@ -1,4 +1,4 @@
-﻿#if !NET6_0_OR_GREATER
+#if !NET6_0_OR_GREATER
 global using ArgumentNullException = SuperLinq.Exceptions.ArgumentNullException;
 
 using System.ComponentModel;
@@ -17,9 +17,7 @@ internal static class ArgumentNullException
 	public static void ThrowIfNull([NotNull] object? argument, [CallerArgumentExpression(nameof(argument))] string? paramName = null)
 	{
 		if (argument is null)
-		{
 			Throw(paramName);
-		}
 	}
 
 	[DoesNotReturn]

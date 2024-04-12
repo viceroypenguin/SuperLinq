@@ -17,7 +17,7 @@ public static partial class AsyncSuperEnumerable
 	/// <para>
 	/// <paramref name="resourceFactory"/> and <paramref name="enumerableFactory"/> are evaluated lazily, once
 	/// enumeration has begun. The value returned by <paramref name="resourceFactory"/> will be disposed after the
-	/// enumeration has completed. 
+	/// enumeration has completed.
 	/// </para>
 	/// <para>
 	/// The values returned by <paramref name="enumerableFactory"/> and <paramref name="enumerableFactory"/> are not

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -50,6 +50,7 @@ public static partial class SuperEnumerable
 			{
 				if (++c > count)
 					break;
+
 				yield return item;
 			}
 
@@ -107,9 +108,7 @@ public static partial class SuperEnumerable
 		{
 			var cnt = (uint)Count;
 			for (var i = 0; i < cnt; i++)
-			{
 				yield return source[i];
-			}
 		}
 
 		public override void CopyTo(T[] array, int arrayIndex)

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -29,7 +29,7 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
 	public static IOrderedEnumerable<T> OrderBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector, OrderByDirection direction)
@@ -67,10 +67,15 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
-	public static IOrderedEnumerable<T> OrderBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector, IComparer<TKey>? comparer, OrderByDirection direction)
+	public static IOrderedEnumerable<T> OrderBy<T, TKey>(
+		this IEnumerable<T> source,
+		Func<T, TKey> keySelector,
+		IComparer<TKey>? comparer,
+		OrderByDirection direction
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);
@@ -106,10 +111,14 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
-	public static IOrderedEnumerable<T> ThenBy<T, TKey>(this IOrderedEnumerable<T> source, Func<T, TKey> keySelector, OrderByDirection direction)
+	public static IOrderedEnumerable<T> ThenBy<T, TKey>(
+		this IOrderedEnumerable<T> source,
+		Func<T, TKey> keySelector,
+		OrderByDirection direction
+	)
 	{
 		return ThenBy(source, keySelector, comparer: null, direction);
 	}
@@ -144,10 +153,15 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
-	public static IOrderedEnumerable<T> ThenBy<T, TKey>(this IOrderedEnumerable<T> source, Func<T, TKey> keySelector, IComparer<TKey>? comparer, OrderByDirection direction)
+	public static IOrderedEnumerable<T> ThenBy<T, TKey>(
+		this IOrderedEnumerable<T> source,
+		Func<T, TKey> keySelector,
+		IComparer<TKey>? comparer,
+		OrderByDirection direction
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);

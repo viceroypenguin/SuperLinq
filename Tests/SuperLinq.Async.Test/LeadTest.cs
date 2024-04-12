@@ -139,11 +139,11 @@ public sealed class LeadTests
 	{
 		await using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
 
-		var result = words.Lead(2, string.Empty, (a, b) => new { A = a, B = b });
+		var result = words.Lead(2, "", (a, b) => new { A = a, B = b });
 		await result.AssertSequenceEqual(
 			new { A = "foo", B = "baz" },
 			new { A = "bar", B = "qux" },
-			new { A = "baz", B = string.Empty },
-			new { A = "qux", B = string.Empty });
+			new { A = "baz", B = "" },
+			new { A = "qux", B = "" });
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -18,8 +18,9 @@ public static partial class AsyncSuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 
-		return source.Select(Some)
-					 .Lag(offset, default, (curr, lag) => (curr.Value, lag is (true, var some) ? some : default));
+		return source
+			.Select(Some)
+			.Lag(offset, default, (curr, lag) => (curr.Value, lag is (true, var some) ? some : default));
 	}
 
 	/// <summary>
@@ -36,13 +37,18 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="resultSelector">A projection function which accepts the current and lagged items (in that order) and returns a result</param>
 	/// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
 
-	public static IAsyncEnumerable<TResult> Lag<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
+	public static IAsyncEnumerable<TResult> Lag<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
+		int offset,
+		Func<TSource, TSource?, TResult> resultSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
 
-		return source.Select(Some)
-					 .Lag(offset, default, (curr, lag) => resultSelector(curr.Value, lag is (true, var some) ? some : default));
+		return source
+			.Select(Some)
+			.Lag(offset, default, (curr, lag) => resultSelector(curr.Value, lag is (true, var some) ? some : default));
 	}
 
 	/// <summary>
@@ -59,12 +65,22 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="resultSelector">A projection function which accepts the current and lagged items (in that order) and returns a result</param>
 	/// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
 
-	public static IAsyncEnumerable<TResult> Lag<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
+	public static IAsyncEnumerable<TResult> Lag<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
+		int offset,
+		TSource defaultLagValue,
+		Func<TSource, TSource, TResult> resultSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
 
-		return source.Lag(offset, defaultLagValue, (curr, lag) => new ValueTask<TResult>(resultSelector(curr, lag)));
+		return source
+			.Lag(
+				offset,
+				defaultLagValue,
+				(curr, lag) => new ValueTask<TResult>(resultSelector(curr, lag))
+			);
 	}
 
 	/// <summary>
@@ -81,7 +97,12 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="resultSelector">A projection function which accepts the current and lagged items (in that order) and returns a result</param>
 	/// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
 
-	public static IAsyncEnumerable<TResult> Lag<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, ValueTask<TResult>> resultSelector)
+	public static IAsyncEnumerable<TResult> Lag<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
+		int offset,
+		TSource defaultLagValue,
+		Func<TSource, TSource, ValueTask<TResult>> resultSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
@@ -89,7 +110,13 @@ public static partial class AsyncSuperEnumerable
 
 		return Core(source, offset, defaultLagValue, resultSelector);
 
-		static async IAsyncEnumerable<TResult> Core(IAsyncEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, ValueTask<TResult>> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TResult> Core(
+			IAsyncEnumerable<TSource> source,
+			int offset,
+			TSource defaultLagValue,
+			Func<TSource, TSource, ValueTask<TResult>> resultSelector,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			var lagQueue = new Queue<TSource>(offset + 1);
 			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
@@ -97,7 +124,8 @@ public static partial class AsyncSuperEnumerable
 				lagQueue.Enqueue(item);
 				yield return await resultSelector(
 						item,
-						lagQueue.Count > offset ? lagQueue.Dequeue() : defaultLagValue)
+						lagQueue.Count > offset ? lagQueue.Dequeue() : defaultLagValue
+					)
 					.ConfigureAwait(false);
 			}
 		}

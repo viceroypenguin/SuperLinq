@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -20,7 +20,7 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
@@ -50,7 +50,7 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rand)

@@ -11,7 +11,7 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="exception"/> is <see langword="null"/>.</exception>
 	/// <remarks>
 	/// <para>
-	/// The provided value (<paramref name="exception"/>) will be thrown when the first element is enumerated. 
+	/// The provided value (<paramref name="exception"/>) will be thrown when the first element is enumerated.
 	/// </para>
 	/// <para>
 	/// If the returned <see cref="IAsyncEnumerable{T}"/> is enumerated multiple times, the same value will be thrown each

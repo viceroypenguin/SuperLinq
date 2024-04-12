@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 namespace SuperLinq.Async;
@@ -15,18 +15,20 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>The element at the specified position in the <paramref name="source" /> sequence.</returns>
 	/// <remarks>
 	/// <para>
-	/// This method throws an exception if <paramref name="index" /> is out of range. 
-	/// To instead return a default value when the specified index is out of range, 
+	/// This method throws an exception if <paramref name="index" /> is out of range.
+	/// To instead return a default value when the specified index is out of range,
 	/// use the <see cref="ElementAtOrDefaultAsync{TSource}(IAsyncEnumerable{TSource}, Index, CancellationToken)" /> method.</para>
 	/// </remarks>
-	public static ValueTask<TSource> ElementAtAsync<TSource>(this IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken = default)
+	public static ValueTask<TSource> ElementAtAsync<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		Index index,
+		CancellationToken cancellationToken = default
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 
 		if (!index.IsFromEnd)
-		{
 			return AsyncEnumerable.ElementAtAsync(source, index.Value, cancellationToken);
-		}
 
 		return Core(source, index, cancellationToken);
 
@@ -34,9 +36,7 @@ public static partial class AsyncSuperEnumerable
 		{
 			var (success, element) = await TryGetElementFromEnd(source, index.Value, cancellationToken).ConfigureAwait(false);
 			if (!success)
-			{
 				ThrowHelper.ThrowArgumentOutOfRangeException(nameof(index));
-			}
 
 			return Debug.AssertNotNull(element);
 		}
@@ -52,14 +52,16 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// <para>The default value for reference and nullable types is <see langword="null" />.</para>
 	/// </remarks>
-	public static ValueTask<TSource?> ElementAtOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, Index index, CancellationToken cancellationToken = default)
+	public static ValueTask<TSource?> ElementAtOrDefaultAsync<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		Index index,
+		CancellationToken cancellationToken = default
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 
 		if (!index.IsFromEnd)
-		{
 			return AsyncEnumerable.ElementAtOrDefaultAsync(source, index.Value, cancellationToken);
-		}
 
 		return Core(source, index, cancellationToken);
 
@@ -70,7 +72,11 @@ public static partial class AsyncSuperEnumerable
 		}
 	}
 
-	private static async ValueTask<(bool success, TSource? element)> TryGetElementFromEnd<TSource>(IAsyncEnumerable<TSource> source, int indexFromEnd, CancellationToken cancellationToken)
+	private static async ValueTask<(bool success, TSource? element)> TryGetElementFromEnd<TSource>(
+		IAsyncEnumerable<TSource> source,
+		int indexFromEnd,
+		CancellationToken cancellationToken
+	)
 	{
 		if (indexFromEnd > 0)
 		{
@@ -82,17 +88,13 @@ public static partial class AsyncSuperEnumerable
 				while (await e.MoveNextAsync())
 				{
 					if (queue.Count == indexFromEnd)
-					{
 						_ = queue.Dequeue();
-					}
 
 					queue.Enqueue(e.Current);
 				}
 
 				if (queue.Count == indexFromEnd)
-				{
 					return (true, queue.Dequeue());
-				}
 			}
 		}
 

@@ -33,7 +33,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// <para>
 	///	    This method performs a stable sort; that is, if the keys of two elements are equal, the order of the
@@ -78,7 +78,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// <para>
 	///	    This method performs a stable sort; that is, if the keys of two elements are equal, the order of the
@@ -124,7 +124,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// <para>
 	///	    This method performs a stable sort; that is, if the keys of two elements are equal, the order of the
@@ -175,7 +175,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// <para>
 	///	    This method performs a stable sort; that is, if the keys of two elements are equal, the order of the
@@ -204,11 +204,11 @@ public static partial class SuperEnumerable
 	/// <param name="source">
 	///	    The source sequence.
 	/// </param>
-	/// <param name="keySelector">
-	///	    A function to extract a key from an element.
-	/// </param>
 	/// <param name="count">
 	///	    Number of (maximum) elements to return.
+	/// </param>
+	/// <param name="keySelector">
+	///	    A function to extract a key from an element.
 	/// </param>
 	/// <returns>
 	///	    A sequence containing at most top <paramref name="count"/> elements from source, in ascending order of their
@@ -225,7 +225,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// <para>
 	///	    This method performs a stable sort; that is, if the keys of two elements are equal, the order of the
@@ -254,11 +254,11 @@ public static partial class SuperEnumerable
 	/// <param name="source">
 	///	    The source sequence.
 	/// </param>
-	/// <param name="keySelector">
-	///	    A function to extract a key from an element.
-	/// </param>
 	/// <param name="count">
 	///	    Number of (maximum) elements to return.
+	/// </param>
+	/// <param name="keySelector">
+	///	    A function to extract a key from an element.
 	/// </param>
 	/// <param name="direction">
 	///	    The direction in which to sort the elements
@@ -278,7 +278,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// <para>
 	///	    This method performs a stable sort; that is, if the keys of two elements are equal, the order of the
@@ -308,11 +308,11 @@ public static partial class SuperEnumerable
 	/// <param name="source">
 	///	    The source sequence.
 	/// </param>
-	/// <param name="keySelector">
-	///	    A function to extract a key from an element.
-	/// </param>
 	/// <param name="count">
 	///	    Number of (maximum) elements to return.
+	/// </param>
+	/// <param name="keySelector">
+	///	    A function to extract a key from an element.
 	/// </param>
 	/// <param name="comparer">
 	///	    A <see cref="IComparer{T}"/> to compare elements.
@@ -332,7 +332,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// <para>
 	///	    This method performs a stable sort; that is, if the keys of two elements are equal, the order of the
@@ -363,11 +363,11 @@ public static partial class SuperEnumerable
 	/// <param name="source">
 	///	    The source sequence.
 	/// </param>
-	/// <param name="keySelector">
-	///	    A function to extract a key from an element.
-	/// </param>
 	/// <param name="count">
 	///	    Number of (maximum) elements to return.
+	/// </param>
+	/// <param name="keySelector">
+	///	    A function to extract a key from an element.
 	/// </param>
 	/// <param name="comparer">
 	///	    A <see cref="IComparer{T}"/> to compare elements.
@@ -390,7 +390,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// <para>
 	///	    This method performs a stable sort; that is, if the keys of two elements are equal, the order of the

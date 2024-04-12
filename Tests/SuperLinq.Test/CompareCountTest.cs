@@ -14,7 +14,7 @@ public sealed class CompareCountTest
 			Enumerable.Range(1, e.Count1),
 			Enumerable.Range(1, e.Count2),
 			(xs, ys) => new { First = xs, Second = ys })
-		select new object[] { s.First.Data, s.Second.Data, e.Comparison, };
+		select new object[] { s.First.Data, s.Second.Data, e.Comparison };
 
 	[Theory, MemberData(nameof(CompareCountData))]
 	public void CompareCount(IEnumerable<int> xs, IEnumerable<int> ys, int expected)

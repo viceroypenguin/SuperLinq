@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -39,7 +39,11 @@ public static partial class AsyncSuperEnumerable
 
 		return Core(source, predicate);
 
-		static async IAsyncEnumerable<TSource> Core(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TSource> Core(
+			IAsyncEnumerable<TSource> source,
+			Func<TSource, bool> predicate,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{

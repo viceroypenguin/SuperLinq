@@ -36,7 +36,7 @@ public sealed class ToArrayByIndexTest
 			expected = expected.Replace(i, i);
 
 		result.AssertSequenceEqual(
-			expected.Select(x => x is null ? null : new { Index = x.Value, }));
+			expected.Select(x => x is null ? null : new { Index = x.Value }));
 	}
 
 	[Fact]

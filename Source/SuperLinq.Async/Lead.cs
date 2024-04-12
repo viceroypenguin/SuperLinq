@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -18,8 +18,9 @@ public static partial class AsyncSuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 
-		return source.Select(Some)
-					 .Lead(offset, default, (curr, lead) => (curr.Value, lead is (true, var some) ? some : default));
+		return source
+			.Select(Some)
+			.Lead(offset, default, (curr, lead) => (curr.Value, lead is (true, var some) ? some : default));
 	}
 
 	/// <summary>
@@ -37,13 +38,17 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
 	/// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
 
-	public static IAsyncEnumerable<TResult> Lead<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
+	public static IAsyncEnumerable<TResult> Lead<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
+		int offset,
+		Func<TSource, TSource?, TResult> resultSelector)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
 
-		return source.Select(Some)
-					 .Lead(offset, default, (curr, lead) => resultSelector(curr.Value, lead is (true, var some) ? some : default));
+		return source
+			.Select(Some)
+			.Lead(offset, default, (curr, lead) => resultSelector(curr.Value, lead is (true, var some) ? some : default));
 	}
 
 	/// <summary>
@@ -60,7 +65,12 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
 	/// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
 
-	public static IAsyncEnumerable<TResult> Lead<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
+	public static IAsyncEnumerable<TResult> Lead<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
+		int offset,
+		TSource defaultLeadValue,
+		Func<TSource, TSource, TResult> resultSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
@@ -82,7 +92,12 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
 	/// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
 
-	public static IAsyncEnumerable<TResult> Lead<TSource, TResult>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, ValueTask<TResult>> resultSelector)
+	public static IAsyncEnumerable<TResult> Lead<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
+		int offset,
+		TSource defaultLeadValue,
+		Func<TSource, TSource, ValueTask<TResult>> resultSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
@@ -90,7 +105,13 @@ public static partial class AsyncSuperEnumerable
 
 		return Core(source, offset, defaultLeadValue, resultSelector);
 
-		static async IAsyncEnumerable<TResult> Core(IAsyncEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, ValueTask<TResult>> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TResult> Core(
+			IAsyncEnumerable<TSource> source,
+			int offset,
+			TSource defaultLeadValue,
+			Func<TSource, TSource, ValueTask<TResult>> resultSelector,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			var queue = new Queue<TSource>(offset + 1);
 

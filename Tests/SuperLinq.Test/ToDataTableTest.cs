@@ -148,7 +148,7 @@ public sealed class ToDataTableTest
 		public bool IsEmpty => X == 0 && Y == 0;
 		public int X { get; }
 		public int Y { get; }
-		public Point(int x, int y) : this() { X = x; Y = y; }
+		public Point(int x, int y) : this() => (X, Y) = (x, y);
 	}
 
 	[Fact]
@@ -159,10 +159,15 @@ public sealed class ToDataTableTest
 
 		Assert.Equal(3, points.Columns.Count);
 
-		DataColumn? x, y, empty;
-		Assert.NotNull(x = points.Columns["X"]);
-		Assert.NotNull(y = points.Columns["Y"]);
-		Assert.NotNull(empty = points.Columns["IsEmpty"]);
+		var (x, y, empty) = (
+			points.Columns["X"],
+			points.Columns["Y"],
+			points.Columns["IsEmpty"]
+		);
+
+		Assert.NotNull(points.Columns["X"]);
+		Assert.NotNull(points.Columns["Y"]);
+		Assert.NotNull(points.Columns["IsEmpty"]);
 
 		var row = points.Rows.Cast<DataRow>().Single();
 		Assert.Equal(12, row[x!]);

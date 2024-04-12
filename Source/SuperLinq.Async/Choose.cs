@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -31,7 +31,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TResult> Choose<T, TResult>(
 		this IAsyncEnumerable<T> source,
-		Func<T, (bool, TResult)> chooser)
+		Func<T, (bool, TResult)> chooser
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(chooser);
@@ -68,7 +69,8 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TResult> Choose<T, TResult>(
 		this IAsyncEnumerable<T> source,
-		Func<T, ValueTask<(bool, TResult)>> chooser)
+		Func<T, ValueTask<(bool, TResult)>> chooser
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(chooser);
@@ -105,14 +107,19 @@ public static partial class AsyncSuperEnumerable
 
 	public static IAsyncEnumerable<TResult> Choose<T, TResult>(
 		this IAsyncEnumerable<T> source,
-		Func<T, CancellationToken, ValueTask<(bool, TResult)>> chooser)
+		Func<T, CancellationToken, ValueTask<(bool, TResult)>> chooser
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(chooser);
 
 		return Core(source, chooser);
 
-		static async IAsyncEnumerable<TResult> Core(IAsyncEnumerable<T> source, Func<T, CancellationToken, ValueTask<(bool, TResult)>> chooser, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TResult> Core(
+			IAsyncEnumerable<T> source,
+			Func<T, CancellationToken, ValueTask<(bool, TResult)>> chooser,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{

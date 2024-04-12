@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -61,14 +61,21 @@ public static partial class AsyncSuperEnumerable
 	/// <c>{ Number = 456, IsFirst = False, IsLast = False }</c> and
 	/// <c>{ Number = 789, IsFirst = False, IsLast = True }</c> in turn.
 	/// </example>
-	public static IAsyncEnumerable<TResult> TagFirstLast<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
+	public static IAsyncEnumerable<TResult> TagFirstLast<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, bool, bool, TResult> resultSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
 
 		return Core(source, resultSelector);
 
-		static async IAsyncEnumerable<TResult> Core(IAsyncEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TResult> Core(
+			IAsyncEnumerable<TSource> source,
+			Func<TSource, bool, bool, TResult> resultSelector,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			await using var iter = source.GetConfiguredAsyncEnumerator(cancellationToken);
 

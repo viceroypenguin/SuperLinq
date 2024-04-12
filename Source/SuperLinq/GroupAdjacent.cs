@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace SuperLinq;
 
@@ -304,7 +304,7 @@ public static partial class SuperEnumerable
 			yield break;
 
 		var k = keySelector(iterator.Current);
-		var members = new List<TElement>() { elementSelector(iterator.Current), };
+		var members = new List<TElement>() { elementSelector(iterator.Current) };
 
 		while (iterator.MoveNext())
 		{

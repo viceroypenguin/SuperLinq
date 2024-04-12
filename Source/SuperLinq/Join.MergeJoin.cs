@@ -643,18 +643,18 @@ public static partial class SuperEnumerable
 		Func<TLeft, TResult>? leftResultSelector,
 		Func<TRight, TResult>? rightResultSelector,
 		Func<TLeft, TRight, TResult> bothResultSelector,
-		IComparer<TKey>? comparer = null)
+		IComparer<TKey>? comparer = null
+	)
 	{
-		ArgumentNullException.ThrowIfNull(left);
-		ArgumentNullException.ThrowIfNull(right);
-		ArgumentNullException.ThrowIfNull(leftKeySelector);
-		ArgumentNullException.ThrowIfNull(rightKeySelector);
-		ArgumentNullException.ThrowIfNull(bothResultSelector);
-
 		comparer ??= Comparer<TKey>.Default;
 
-		using var e1 = left.GroupAdjacent(leftKeySelector, new ComparerEqualityComparer<TKey>(comparer)).GetEnumerator();
-		using var e2 = right.GroupAdjacent(rightKeySelector, new ComparerEqualityComparer<TKey>(comparer)).GetEnumerator();
+		using var e1 = left
+			.GroupAdjacent(leftKeySelector, new ComparerEqualityComparer<TKey>(comparer))
+			.GetEnumerator();
+
+		using var e2 = right
+			.GroupAdjacent(rightKeySelector, new ComparerEqualityComparer<TKey>(comparer))
+			.GetEnumerator();
 
 		var gotLeft = e1.MoveNext();
 		var gotRight = e2.MoveNext();
@@ -704,7 +704,8 @@ public static partial class SuperEnumerable
 			{
 				foreach (var e in e1.Current)
 					yield return leftResultSelector(e);
-			} while (e1.MoveNext());
+			}
+			while (e1.MoveNext());
 			yield break;
 		}
 
@@ -714,8 +715,8 @@ public static partial class SuperEnumerable
 			{
 				foreach (var e in e2.Current)
 					yield return rightResultSelector(e);
-			} while (e2.MoveNext());
-			yield break;
+			}
+			while (e2.MoveNext());
 		}
 	}
 }

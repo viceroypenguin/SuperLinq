@@ -11,6 +11,7 @@ internal sealed class EnumeratorList<T>(
 		{
 			foreach (var source in sources)
 				list.Add(source.GetConfiguredAsyncEnumerator(cancellationToken));
+
 			return new(list);
 		}
 		catch

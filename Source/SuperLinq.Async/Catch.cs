@@ -74,7 +74,7 @@ public static partial class AsyncSuperEnumerable
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
 
-		return Catch(new[] { first, second, });
+		return Catch(new[] { first, second });
 	}
 
 	/// <summary>

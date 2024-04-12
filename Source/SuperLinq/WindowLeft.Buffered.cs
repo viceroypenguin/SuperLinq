@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -115,11 +115,11 @@ public static partial class SuperEnumerable
 	/// <param name="source">
 	///	    The sequence over which to create the sliding window.
 	/// </param>
-	/// <param name="size">
-	///	    Size of the sliding window.
-	/// </param>
 	/// <param name="array">
 	///	    An array to use as a buffer for each subsequence.
+	/// </param>
+	/// <param name="size">
+	///	    Size of the sliding window.
 	/// </param>
 	/// <param name="selector">
 	///	    A transform function to apply to each window.

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -17,7 +17,10 @@ public static partial class AsyncSuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="selector"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<(TSource item, TResult result)> ZipMap<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TResult> selector)
+	public static IAsyncEnumerable<(TSource item, TResult result)> ZipMap<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TResult> selector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(selector);
@@ -40,7 +43,10 @@ public static partial class AsyncSuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="selector"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<(TSource item, TResult result)> ZipMap<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<TResult>> selector)
+	public static IAsyncEnumerable<(TSource item, TResult result)> ZipMap<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, ValueTask<TResult>> selector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(selector);
@@ -63,7 +69,10 @@ public static partial class AsyncSuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="selector"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<(TSource item, TResult result)> ZipMap<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, CancellationToken, ValueTask<TResult>> selector)
+	public static IAsyncEnumerable<(TSource item, TResult result)> ZipMap<TSource, TResult>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, CancellationToken, ValueTask<TResult>> selector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(selector);

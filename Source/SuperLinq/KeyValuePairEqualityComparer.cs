@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 /// <summary>
 ///	    A utility class to easily compose a custom <see cref="IEqualityComparer{T}"/> for <see cref="KeyValuePair{TKey,
@@ -43,12 +43,12 @@ internal static class KeyValuePairEqualityComparer
 		private readonly IEqualityComparer<TKey> _keyComparer = keyComparer ?? EqualityComparer<TKey>.Default;
 		private readonly IEqualityComparer<TValue> _valueComparer = valueComparer ?? EqualityComparer<TValue>.Default;
 
-		public bool Equals(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y)
-			=> _keyComparer.Equals(x.Key, y.Key)
-			   && _valueComparer.Equals(x.Value, y.Value);
+		public bool Equals(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y) =>
+			_keyComparer.Equals(x.Key, y.Key)
+			&& _valueComparer.Equals(x.Value, y.Value);
 
-		public int GetHashCode(KeyValuePair<TKey, TValue> obj)
-			=> HashCode.Combine(
+		public int GetHashCode(KeyValuePair<TKey, TValue> obj) =>
+			HashCode.Combine(
 				_keyComparer.GetHashCode(obj.Key!),
 				_valueComparer.GetHashCode(obj.Value!));
 	}

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -22,7 +22,10 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="comparer">Comparer used to compare values.</param>
 	/// <returns>Sequence without adjacent non-distinct elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource>(this IAsyncEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
+	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		IEqualityComparer<TSource>? comparer
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		return DistinctUntilChanged(source, Identity, comparer);
@@ -39,7 +42,10 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>Sequence without adjacent non-distinct elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="keySelector"/> is <see
 	/// langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(keySelector);
 		return DistinctUntilChanged<TSource, TKey>(source, keySelector.ToAsync(), comparer: null);
@@ -56,7 +62,10 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>Sequence without adjacent non-distinct elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="keySelector"/> is <see
 	/// langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<TKey>> keySelector)
+	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, ValueTask<TKey>> keySelector
+	)
 	{
 		return DistinctUntilChanged<TSource, TKey>(source, keySelector, comparer: null);
 	}
@@ -72,7 +81,11 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>Sequence without adjacent non-distinct elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="keySelector"/> is <see
 	/// langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IEqualityComparer<TKey>? comparer
+	)
 	{
 		ArgumentNullException.ThrowIfNull(keySelector);
 		return DistinctUntilChanged(source, keySelector.ToAsync(), comparer);
@@ -89,7 +102,11 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>Sequence without adjacent non-distinct elements.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="keySelector"/> is <see
 	/// langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<TKey>> keySelector, IEqualityComparer<TKey>? comparer)
+	public static IAsyncEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, ValueTask<TKey>> keySelector,
+		IEqualityComparer<TKey>? comparer
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);
@@ -100,7 +117,8 @@ public static partial class AsyncSuperEnumerable
 			IAsyncEnumerable<TSource> source,
 			Func<TSource, ValueTask<TKey>> keySelector,
 			IEqualityComparer<TKey> comparer,
-			[EnumeratorCancellation] CancellationToken cancellationToken = default)
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
 			if (!await e.MoveNextAsync())

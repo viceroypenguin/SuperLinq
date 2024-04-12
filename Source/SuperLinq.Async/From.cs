@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -19,7 +19,10 @@ public static partial class AsyncSuperEnumerable
 		ArgumentNullException.ThrowIfNull(function);
 		return Core(function);
 
-		static async IAsyncEnumerable<T> Core(Func<Task<T>> function, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(
+			Func<Task<T>> function,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 			yield return await function().ConfigureAwait(false);
@@ -45,7 +48,11 @@ public static partial class AsyncSuperEnumerable
 		ArgumentNullException.ThrowIfNull(function2);
 		return Core(function1, function2);
 
-		static async IAsyncEnumerable<T> Core(Func<Task<T>> function1, Func<Task<T>> function2, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(
+			Func<Task<T>> function1,
+			Func<Task<T>> function2,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 			yield return await function1().ConfigureAwait(false);
@@ -75,7 +82,12 @@ public static partial class AsyncSuperEnumerable
 		ArgumentNullException.ThrowIfNull(function3);
 		return Core(function1, function2, function3);
 
-		static async IAsyncEnumerable<T> Core(Func<Task<T>> function1, Func<Task<T>> function2, Func<Task<T>> function3, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(
+			Func<Task<T>> function1,
+			Func<Task<T>> function2,
+			Func<Task<T>> function3,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 			yield return await function1().ConfigureAwait(false);
@@ -120,7 +132,9 @@ public static partial class AsyncSuperEnumerable
 		ArgumentNullException.ThrowIfNull(functions);
 		return Core(functions);
 
-		static async IAsyncEnumerable<T> Core(IEnumerable<Func<Task<T>>> functions, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(
+			IEnumerable<Func<Task<T>>> functions,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			foreach (var f in functions)
 			{
@@ -148,12 +162,13 @@ public static partial class AsyncSuperEnumerable
 		ArgumentNullException.ThrowIfNull(functions);
 		return Core(functions);
 
-		static async IAsyncEnumerable<T> Core(IAsyncEnumerable<Func<Task<T>>> functions, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(
+			IAsyncEnumerable<Func<Task<T>>> functions,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			await foreach (var f in functions.WithCancellation(cancellationToken).ConfigureAwait(false))
-			{
 				yield return await f().ConfigureAwait(false);
-			}
 		}
 	}
 }

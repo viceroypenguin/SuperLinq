@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -90,11 +90,9 @@ public static partial class SuperEnumerable
 		protected override IEnumerable<IList<T>> GetEnumerable()
 		{
 			if (source.Count == 0)
-			{
 				yield break;
-			}
 
-			var window = new T[1] { source[0], };
+			var window = new T[1] { source[0] };
 			var max = (uint)Math.Min(source.Count, size);
 			for (var i = 1; i < max; i++)
 			{
@@ -140,6 +138,7 @@ public static partial class SuperEnumerable
 				var max = (uint)index + 1;
 				for (int i = 0, j = index - size + 1; i < arr.Length && j < max; i++, j++)
 					arr[i] = source[j];
+
 				return arr;
 			}
 		}

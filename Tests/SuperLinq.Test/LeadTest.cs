@@ -121,7 +121,7 @@ public sealed class LeadTest
 	public static IEnumerable<object[]> GetStringSequences() =>
 		Seq("foo", "bar", "baz", "qux")
 			.GetListSequences()
-			.Select(x => new object[] { x, });
+			.Select(x => new object[] { x });
 
 	[Theory]
 	[MemberData(nameof(GetStringSequences))]
@@ -144,12 +144,12 @@ public sealed class LeadTest
 	{
 		using (seq)
 		{
-			var result = seq.Lead(2, string.Empty, (a, b) => new { A = a, B = b });
+			var result = seq.Lead(2, "", (a, b) => new { A = a, B = b });
 			result.AssertSequenceEqual(
 				new { A = "foo", B = "baz" },
 				new { A = "bar", B = "qux" },
-				new { A = "baz", B = string.Empty },
-				new { A = "qux", B = string.Empty });
+				new { A = "baz", B = "" },
+				new { A = "qux", B = "" });
 		}
 	}
 

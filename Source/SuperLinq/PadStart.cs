@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -157,6 +157,7 @@ public static partial class SuperEnumerable
 			var cnt = width - source.GetCollectionCount();
 			for (var i = 0; i < cnt; i++)
 				yield return paddingSelector(i);
+
 			foreach (var item in source)
 				yield return item;
 		}
@@ -188,6 +189,7 @@ public static partial class SuperEnumerable
 			var cnt = (uint)source.Count;
 			for (var i = 0; i < width - cnt; i++)
 				yield return paddingSelector(i);
+
 			for (var i = 0; i < cnt; i++)
 				yield return source[i];
 		}

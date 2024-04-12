@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace SuperLinq;
 
@@ -32,7 +32,11 @@ public partial class SuperEnumerable
 			set => throw ReadOnlyException();
 		}
 
-		public IEnumerator<T> GetEnumerator() { yield return item; }
+		public IEnumerator<T> GetEnumerator()
+		{
+			yield return item;
+		}
+
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		public int IndexOf(T item) => Contains(item) ? 0 : -1;

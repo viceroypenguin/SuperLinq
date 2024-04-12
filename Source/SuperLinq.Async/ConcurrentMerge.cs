@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -105,8 +105,10 @@ public static partial class AsyncSuperEnumerable
 				// since we're trying to round-robin, if current index
 				// is after the iterator, we need to backtrack to account
 				// for missing element in list
-				if (i > idx) i--;
-				else if (i >= list.Count) i = 0;
+				if (i > idx)
+					i--;
+				else if (i >= list.Count)
+					i = 0;
 
 				// try to dispose
 				var disposalTask = it.DisposeAsync();

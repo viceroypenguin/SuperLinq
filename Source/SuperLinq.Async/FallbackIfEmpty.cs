@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -64,14 +64,22 @@ public static partial class AsyncSuperEnumerable
 
 		return Core(source, fallback);
 
-		static async IAsyncEnumerable<T> Core(IAsyncEnumerable<T> source, IAsyncEnumerable<T> fallback, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(
+			IAsyncEnumerable<T> source,
+			IAsyncEnumerable<T> fallback,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			await using (var e = source.GetConfiguredAsyncEnumerator(cancellationToken))
 			{
 				if (await e.MoveNextAsync())
 				{
-					do { yield return e.Current; }
+					do
+					{
+						yield return e.Current;
+					}
 					while (await e.MoveNextAsync());
+
 					yield break;
 				}
 			}

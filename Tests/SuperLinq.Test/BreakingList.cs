@@ -21,6 +21,7 @@ internal sealed class BreakingList<T> : BreakingSequence<T>, IList<T>, IDisposab
 		{
 			if (index < 0 || index >= _list.Count)
 				Assert.Fail("LINQ Operators should prevent this from happening.");
+
 			return _list[index];
 		}
 

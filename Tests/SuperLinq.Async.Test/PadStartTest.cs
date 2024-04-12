@@ -85,7 +85,7 @@ public sealed class PadStartTest
 		{
 			await using var xs = source.AsTestingSequence();
 			await xs
-				.PadStart(width, string.Empty)
+				.PadStart(width, "")
 				.AssertSequenceEqual(expected);
 		}
 	}

@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Diagnostics.CodeAnalysis;
@@ -52,19 +52,13 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(source);
 
 		if (!index.IsFromEnd)
-		{
 			return Enumerable.ElementAt(source, index.Value);
-		}
 
 		if (source is ICollection<TSource> c)
-		{
 			return Enumerable.ElementAt(source, c.Count - index.Value);
-		}
 
 		if (!TryGetElementFromEnd(source, index.Value, out var element))
-		{
 			ThrowHelper.ThrowArgumentOutOfRangeException(nameof(index));
-		}
 
 		return element;
 	}
@@ -108,20 +102,20 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(source);
 
 		if (!index.IsFromEnd)
-		{
 			return Enumerable.ElementAt(source, index.Value);
-		}
 
 		if (source.TryGetCollectionCount() is int count)
-		{
 			return Enumerable.ElementAt(source, count - index.Value);
-		}
 
 		_ = TryGetElementFromEnd(source, index.Value, out var element);
 		return element;
 	}
 
-	private static bool TryGetElementFromEnd<TSource>(IEnumerable<TSource> source, int indexFromEnd, [MaybeNullWhen(false)] out TSource element)
+	private static bool TryGetElementFromEnd<TSource>(
+		IEnumerable<TSource> source,
+		int indexFromEnd,
+		[MaybeNullWhen(false)] out TSource element
+	)
 	{
 		if (indexFromEnd > 0)
 		{
@@ -133,9 +127,7 @@ public static partial class SuperEnumerable
 				while (e.MoveNext())
 				{
 					if (queue.Count == indexFromEnd)
-					{
 						_ = queue.Dequeue();
-					}
 
 					queue.Enqueue(e.Current);
 				}

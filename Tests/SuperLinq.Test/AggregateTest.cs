@@ -69,7 +69,7 @@ public sealed class AggregateTest
 						  .ToArray(),
 		}
 		into t
-		select new object[] { t.Method, t.Args, t.Expectation, };
+		select new object[] { t.Method, t.Args, t.Expectation };
 
 	[Theory, MemberData(nameof(AccumulatorsTestSource))]
 	public void Accumulators(MethodInfo method, object[] args, object expected)

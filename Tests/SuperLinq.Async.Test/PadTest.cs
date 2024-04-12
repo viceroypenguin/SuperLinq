@@ -93,8 +93,8 @@ public sealed class PadTest
 		public async Task PadNarrowSourceSequenceWithNonDefaultPadding()
 		{
 			await using var sequence = TestingSequence.Of("foo", "bar", "baz");
-			var result = sequence.Pad(5, string.Empty);
-			await result.AssertSequenceEqual("foo", "bar", "baz", string.Empty, string.Empty);
+			var result = sequence.Pad(5, "");
+			await result.AssertSequenceEqual("foo", "bar", "baz", "", "");
 		}
 	}
 }

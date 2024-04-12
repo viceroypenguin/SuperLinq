@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -88,7 +88,11 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="paddingSelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentOutOfRangeException"><paramref name="width"/> is less than 0.</exception>
-	public static IAsyncEnumerable<TSource> PadStart<TSource>(this IAsyncEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
+	public static IAsyncEnumerable<TSource> PadStart<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		int width,
+		Func<int, TSource> paddingSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(paddingSelector);
@@ -99,7 +103,8 @@ public static partial class AsyncSuperEnumerable
 		static async IAsyncEnumerable<TSource> PadStartImpl(
 			IAsyncEnumerable<TSource> source, int width,
 			Func<int, TSource> paddingSelector,
-			[EnumeratorCancellation] CancellationToken cancellationToken = default)
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			var array = new TSource[width];
 			var count = 0;

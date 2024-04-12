@@ -118,7 +118,7 @@ public sealed class LagTest
 	public static IEnumerable<object[]> GetStringSequences() =>
 		Seq("foo", "bar", "baz", "qux")
 			.GetListSequences()
-			.Select(x => new object[] { x, });
+			.Select(x => new object[] { x });
 
 	[Theory]
 	[MemberData(nameof(GetStringSequences))]
@@ -141,10 +141,10 @@ public sealed class LagTest
 	{
 		using (seq)
 		{
-			var result = seq.Lag(2, string.Empty, (a, b) => new { A = a, B = b });
+			var result = seq.Lag(2, "", (a, b) => new { A = a, B = b });
 			result.AssertSequenceEqual(
-				new { A = "foo", B = string.Empty, },
-				new { A = "bar", B = string.Empty, },
+				new { A = "foo", B = "" },
+				new { A = "bar", B = "" },
 				new { A = "baz", B = "foo" },
 				new { A = "qux", B = "bar" });
 		}

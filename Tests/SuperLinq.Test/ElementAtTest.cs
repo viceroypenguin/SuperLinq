@@ -21,7 +21,7 @@ public sealed class ElementAtTest
 	[Fact]
 	public void SameResultsRepeatCallsStringQuery()
 	{
-		var q = Enumerable.Repeat(from x in new[] { "!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", string.Empty }
+		var q = Enumerable.Repeat(from x in new[] { "!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "" }
 								  where !string.IsNullOrEmpty(x)
 								  select x, 3).ToArray();
 

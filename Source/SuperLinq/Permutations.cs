@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -26,7 +26,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="sequence"/> will be
-	///     consumed in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     consumed in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// <para>
 	///	    Each permutation is materialized into a new list. There are N! permutations of a sequence, where N is the
@@ -43,7 +43,10 @@ public static partial class SuperEnumerable
 
 		if (sequence.TryGetCollectionCount() is int and > 21)
 		{
-			ThrowHelper.ThrowArgumentException(nameof(sequence), "Input set is too large to permute properly.");
+			ThrowHelper.ThrowArgumentException(
+				nameof(sequence),
+				"Input set is too large to permute properly."
+			);
 		}
 
 		return Core(sequence);
@@ -78,6 +81,7 @@ public static partial class SuperEnumerable
 			var permutedSet = new T[permutation.Length];
 			for (var i = 0; i < permutation.Length; i++)
 				permutedSet[i] = valueSet[permutation[i]];
+
 			return permutedSet;
 		}
 

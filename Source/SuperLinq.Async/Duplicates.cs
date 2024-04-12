@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -24,7 +24,10 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	///	    This operator uses deferred execution and streams its results.
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> Duplicates<TSource>(this IAsyncEnumerable<TSource> source, IEqualityComparer<TSource>? comparer = null)
+	public static IAsyncEnumerable<TSource> Duplicates<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		IEqualityComparer<TSource>? comparer = null
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 
@@ -35,7 +38,8 @@ public static partial class AsyncSuperEnumerable
 		static async IAsyncEnumerable<TSource> Core(
 			IAsyncEnumerable<TSource> source,
 			IEqualityComparer<TSource> comparer,
-			[EnumeratorCancellation] CancellationToken token = default)
+			[EnumeratorCancellation] CancellationToken token = default
+		)
 		{
 			var counts = new Collections.NullKeyDictionary<TSource, int>(comparer);
 			await foreach (var element in source.WithCancellation(token).ConfigureAwait(false))

@@ -131,7 +131,7 @@ public sealed class LagTests
 	public async Task TestLagWithNonNullableReferences()
 	{
 		await using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
-		var empty = string.Empty;
+		var empty = "";
 		var result = words.Lag(2, empty, (a, b) => new { A = a, B = b });
 		await result.AssertSequenceEqual(
 			new { A = "foo", B = empty },

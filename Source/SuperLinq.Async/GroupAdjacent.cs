@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace SuperLinq.Async;
 
@@ -270,7 +270,7 @@ public static partial class AsyncSuperEnumerable
 			yield break;
 
 		var k = keySelector(iterator.Current);
-		var members = new List<TElement>() { elementSelector(iterator.Current), };
+		var members = new List<TElement>() { elementSelector(iterator.Current) };
 
 		while (await iterator.MoveNextAsync())
 		{
@@ -280,7 +280,6 @@ public static partial class AsyncSuperEnumerable
 			if (comparer.Equals(k, key))
 			{
 				members.Add(element);
-				continue;
 			}
 			else
 			{

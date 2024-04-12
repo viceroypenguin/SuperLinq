@@ -85,9 +85,7 @@ public sealed class MemoizeTest
 				yield return "enter last loop";
 				//consume 1-10 (all item were already cached)
 				foreach (var k in source)
-				{
 					yield return k;
-				}
 
 				yield return "exit last loop";
 			}
@@ -287,6 +285,7 @@ public sealed class MemoizeTest
 		using (var r1 = buffer.Read())
 		using (var r2 = buffer.Read())
 			Guard.IsTrue(r1.Read() == r2.Read());
+
 		Assert.Equal(1, buffer.Count);
 	}
 

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -27,14 +27,20 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
 #if NET9_0_OR_GREATER
 	[Obsolete("This method has been implemented by the framework.")]
-	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(
+		IEnumerable<TSource> source, 
+		Func<TSource, TKey> keySelector
+	)
 #else
-	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(
+		this IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector
+	)
 #endif
 	{
 		return CountBy(source, keySelector, comparer: null);
@@ -70,14 +76,22 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
 #if NET9_0_OR_GREATER
 	[Obsolete("This method has been implemented by the framework.")]
-	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(
+		IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IEqualityComparer<TKey>? comparer
+	)
 #else
-	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+	public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(
+		this IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IEqualityComparer<TKey>? comparer
+	)
 #endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
@@ -85,7 +99,11 @@ public static partial class SuperEnumerable
 
 		return Core(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 
-		static IEnumerable<KeyValuePair<TKey, int>> Core(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+		static IEnumerable<KeyValuePair<TKey, int>> Core(
+			IEnumerable<TSource> source,
+			Func<TSource, TKey> keySelector,
+			IEqualityComparer<TKey> comparer
+		)
 		{
 			// Avoid the temptation to inline the Loop method, which
 			// exists solely to separate the scope & lifetimes of the

@@ -27,7 +27,7 @@ public sealed class ZipMapTest
 		var seq = Seq("foo", "bar", "FOO", "Bar", "baz", "QUx", "bAz", "QuX");
 		return seq
 			.GetListSequences()
-			.Select(x => new object[] { x, seq, });
+			.Select(x => new object[] { x, seq });
 	}
 
 	[Theory]
@@ -45,7 +45,7 @@ public sealed class ZipMapTest
 	public static IEnumerable<object[]> GetStringSequences2() =>
 		Seq("foo", "hello", "world", "Bar", "QuX", "ay", "az")
 			.GetListSequences()
-			.Select(x => new object[] { x, });
+			.Select(x => new object[] { x });
 
 	[Theory]
 	[MemberData(nameof(GetStringSequences2))]

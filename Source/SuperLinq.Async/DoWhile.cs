@@ -65,7 +65,8 @@ public partial class AsyncSuperEnumerable
 			{
 				await foreach (var item in memo.WithCancellation(cancellationToken).ConfigureAwait(false))
 					yield return item;
-			} while (await condition().ConfigureAwait(false));
+			}
+			while (await condition().ConfigureAwait(false));
 		}
 	}
 }

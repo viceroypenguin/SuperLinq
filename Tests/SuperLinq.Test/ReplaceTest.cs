@@ -26,7 +26,7 @@ public sealed class ReplaceTest
 		Enumerable.Range(0, 10)
 			.SelectMany(
 				_ => Enumerable.Range(1, 10).GetAllSequences(),
-				(i, s) => new object[] { i, s, });
+				(i, s) => new object[] { i, s });
 
 	[Theory, MemberData(nameof(Indices))]
 	public void ReplaceIntIndex(int index, IDisposableEnumerable<int> seq)

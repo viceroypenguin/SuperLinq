@@ -103,10 +103,11 @@ public sealed class WindowTests
 	private static IEnumerable<object[]> GetWindowTestSequences(IEnumerable<int> source)
 	{
 		foreach (var seq in source.GetListSequences())
-			yield return new object[] { seq, WindowMethod.Traditional, };
-		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), WindowMethod.BufferSize, };
-		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), WindowMethod.BufferArray, };
-		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), WindowMethod.BufferSizeArray, };
+			yield return new object[] { seq, WindowMethod.Traditional };
+
+		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), WindowMethod.BufferSize };
+		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), WindowMethod.BufferArray };
+		yield return new object[] { source.AsTestingSequence(maxEnumerations: 2), WindowMethod.BufferSizeArray };
 	}
 
 	private static IEnumerable<IList<T>> GetWindows<T>(

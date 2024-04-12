@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -13,7 +13,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="count">Count of tail elements of <paramref name="source"/> to count down.</param>
 	/// <returns>
 	/// A sequence of tuples of the element and it's count from the end of the sequence.
-	/// </returns>	
+	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	/// <paramref name="source"/> is <see langword="null"/>.
 	/// </exception>
@@ -71,7 +71,8 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<TResult> CountDown<TSource, TResult>(
 		this IAsyncEnumerable<TSource> source,
-		int count, Func<TSource, int?, TResult> resultSelector)
+		int count, Func<TSource, int?, TResult> resultSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
@@ -79,7 +80,12 @@ public static partial class AsyncSuperEnumerable
 
 		return Core(source, count, resultSelector);
 
-		static async IAsyncEnumerable<TResult> Core(IAsyncEnumerable<TSource> source, int count, Func<TSource, int?, TResult> resultSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TResult> Core(
+			IAsyncEnumerable<TSource> source,
+			int count,
+			Func<TSource, int?, TResult> resultSelector,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			var queue = new Queue<TSource>(Math.Max(1, count + 1));
 

@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 public sealed class WhereLeadTest
 {
@@ -46,7 +46,7 @@ public sealed class WhereLeadTest
 	public void WhereLeadWithNullableReferences()
 	{
 		using var seq = Seq("foo", "bar", "baz", "qux").AsTestingSequence();
-		var result = seq.WhereLead(2, (a, b) => (b ?? a) == "baz");
+		var result = seq.WhereLead(2, (a, b) => (b ?? a) is "baz");
 		result.AssertSequenceEqual("foo", "baz");
 	}
 
@@ -54,7 +54,7 @@ public sealed class WhereLeadTest
 	public void WhereLeadWithNonNullableReferences()
 	{
 		using var seq = Seq("foo", "bar", "baz", "qux").AsTestingSequence();
-		var result = seq.WhereLead(2, string.Empty, (a, b) => b == "baz" || a == "baz");
+		var result = seq.WhereLead(2, "", (a, b) => b is "baz" || a is "baz");
 		result.AssertSequenceEqual("foo", "baz");
 	}
 }

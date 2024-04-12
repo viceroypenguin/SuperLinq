@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -22,9 +22,7 @@ public static partial class AsyncSuperEnumerable
 		if (start.IsFromEnd)
 		{
 			if (start.Value == 0 || (end.IsFromEnd && end.Value >= start.Value))
-			{
 				return AsyncEnumerable.Empty<TSource>();
-			}
 		}
 		else if (!end.IsFromEnd)
 		{
@@ -36,20 +34,21 @@ public static partial class AsyncSuperEnumerable
 		return TakeRangeFromEndIterator(source, start, end);
 	}
 
-	private static async IAsyncEnumerable<TSource> TakeRangeIterator<TSource>(IAsyncEnumerable<TSource> source, int startIndex, int endIndex, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+	private static async IAsyncEnumerable<TSource> TakeRangeIterator<TSource>(
+		IAsyncEnumerable<TSource> source,
+		int startIndex,
+		int endIndex,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default
+	)
 	{
 		await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
 
 		var index = 0;
 		while (index < startIndex && await e.MoveNextAsync())
-		{
 			++index;
-		}
 
 		if (index < startIndex)
-		{
 			yield break;
-		}
 
 		while (index < endIndex && await e.MoveNextAsync())
 		{
@@ -58,7 +57,12 @@ public static partial class AsyncSuperEnumerable
 		}
 	}
 
-	private static async IAsyncEnumerable<TSource> TakeRangeFromEndIterator<TSource>(IAsyncEnumerable<TSource> source, Index start, Index end, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+	private static async IAsyncEnumerable<TSource> TakeRangeFromEndIterator<TSource>(
+		IAsyncEnumerable<TSource> source,
+		Index start,
+		Index end,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default
+	)
 	{
 		Queue<TSource> queue;
 		var count = 0;
@@ -69,9 +73,7 @@ public static partial class AsyncSuperEnumerable
 			await using (var e = source.GetConfiguredAsyncEnumerator(cancellationToken))
 			{
 				if (!await e.MoveNextAsync())
-				{
 					yield break;
-				}
 
 				queue = new Queue<TSource>();
 				queue.Enqueue(e.Current);
@@ -84,7 +86,10 @@ public static partial class AsyncSuperEnumerable
 						_ = queue.Dequeue();
 
 					queue.Enqueue(e.Current);
-					checked { ++count; }
+					checked
+					{
+						++count;
+					}
 				}
 			}
 
@@ -92,9 +97,7 @@ public static partial class AsyncSuperEnumerable
 			var endIndex = Math.Min(count, end.GetOffset(count));
 
 			for (var rangeIndex = startIndex; rangeIndex < endIndex; rangeIndex++)
-			{
 				yield return queue.Dequeue();
-			}
 		}
 		else
 		{
@@ -104,9 +107,7 @@ public static partial class AsyncSuperEnumerable
 			var startCount = start.Value;
 			var endCount = end.Value;
 			while (count < startCount && await e.MoveNextAsync())
-			{
 				++count;
-			}
 
 			if (count == startCount)
 			{

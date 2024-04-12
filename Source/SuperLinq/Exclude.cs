@@ -74,10 +74,9 @@ public static partial class SuperEnumerable
 
 		var startFromEnd = range.Start.IsFromEnd;
 		var endFromEnd = range.End.IsFromEnd;
+
 		if ((startFromEnd, endFromEnd) == (false, false))
-		{
 			return Exclude(sequence, range.Start.Value, range.End.Value - range.Start.Value);
-		}
 
 		if (sequence.TryGetCollectionCount() is int count)
 		{
@@ -110,7 +109,7 @@ public static partial class SuperEnumerable
 			source.Count < startIndex + count ? startIndex :
 			source.Count - count;
 
-		/// <inheritdoc cref="IEnumerable{T}" /> 
+		/// <inheritdoc cref="IEnumerable{T}" />
 		protected override IEnumerable<T> GetEnumerable() =>
 			ExcludeCore(source, startIndex, count);
 	}
@@ -180,6 +179,7 @@ public static partial class SuperEnumerable
 		{
 			if (!queue.TryDequeue(out var _))
 				yield break;
+
 			length--;
 		}
 
@@ -207,6 +207,7 @@ public static partial class SuperEnumerable
 		{
 			if (!queue.TryDequeue(out var _))
 				yield break;
+
 			length--;
 		}
 

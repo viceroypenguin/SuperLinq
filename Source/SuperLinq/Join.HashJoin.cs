@@ -648,6 +648,7 @@ public static partial class SuperEnumerable
 			{
 				if (leftResultSelector is not null)
 					yield return leftResultSelector(l);
+
 				continue;
 			}
 

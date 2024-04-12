@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 public sealed class EvaluateTest
 {
@@ -29,7 +29,7 @@ public sealed class EvaluateTest
 		var evals = 0;
 		var factories = new Func<int>[]
 		{
-				() => { evals++; return -2; },
+			() => { evals++; return -2; },
 		};
 		var results = factories.Evaluate();
 

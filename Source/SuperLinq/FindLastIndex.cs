@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -31,7 +31,7 @@ public static partial class SuperEnumerable
 	/// <para>
 	///	    The <paramref name="predicate"/> is a delegate to a method that returns <see langword="true"/> if the object
 	///     passed to it matches the conditions defined in the delegate. The elements of the current <see
-	///     cref="IEnumerable{T}"/> are individually passed to the <paramref name="predicate"/> delegate. 
+	///     cref="IEnumerable{T}"/> are individually passed to the <paramref name="predicate"/> delegate.
 	/// </para>
 	/// <para>
 	///	    This operator executes immediately.
@@ -76,7 +76,7 @@ public static partial class SuperEnumerable
 	/// <para>
 	///	    The <paramref name="predicate"/> is a delegate to a method that returns <see langword="true"/> if the object
 	///     passed to it matches the conditions defined in the delegate. The elements of the current <see
-	///     cref="IEnumerable{T}"/> are individually passed to the <paramref name="predicate"/> delegate. 
+	///     cref="IEnumerable{T}"/> are individually passed to the <paramref name="predicate"/> delegate.
 	/// </para>
 	/// <para>
 	///	    This operator executes immediately.
@@ -129,7 +129,7 @@ public static partial class SuperEnumerable
 	/// <para>
 	///	    The <paramref name="predicate"/> is a delegate to a method that returns <see langword="true"/> if the object
 	///     passed to it matches the conditions defined in the delegate. The elements of the current <see
-	///     cref="IEnumerable{T}"/> are individually passed to the <paramref name="predicate"/> delegate. 
+	///     cref="IEnumerable{T}"/> are individually passed to the <paramref name="predicate"/> delegate.
 	/// </para>
 	/// <para>
 	///	    This operator executes immediately.
@@ -142,9 +142,7 @@ public static partial class SuperEnumerable
 		ArgumentOutOfRangeException.ThrowIfNegative(count);
 
 		if (source.TryGetCollectionCount() is int length)
-		{
 			index = index.GetOffset(length);
-		}
 
 		if (!index.IsFromEnd)
 		{
@@ -157,6 +155,7 @@ public static partial class SuperEnumerable
 
 				if (predicate(element))
 					lastIndex = i;
+
 				i++;
 			}
 

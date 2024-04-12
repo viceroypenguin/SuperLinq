@@ -102,7 +102,11 @@ public static partial class AsyncSuperEnumerable
 	/// they remain missing.
 	/// </remarks>
 
-	public static IAsyncEnumerable<T> FillBackward<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
+	public static IAsyncEnumerable<T> FillBackward<T>(
+		this IAsyncEnumerable<T> source,
+		Func<T, bool> predicate,
+		Func<T, T, T> fillSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
@@ -135,7 +139,11 @@ public static partial class AsyncSuperEnumerable
 	/// they remain missing.
 	/// </remarks>
 
-	public static IAsyncEnumerable<T> FillBackward<T>(this IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> predicate, Func<T, T, T> fillSelector)
+	public static IAsyncEnumerable<T> FillBackward<T>(
+		this IAsyncEnumerable<T> source,
+		Func<T, ValueTask<bool>> predicate,
+		Func<T, T, T> fillSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
@@ -168,7 +176,11 @@ public static partial class AsyncSuperEnumerable
 	/// they remain missing.
 	/// </remarks>
 
-	public static IAsyncEnumerable<T> FillBackward<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate, Func<T, T, ValueTask<T>> fillSelector)
+	public static IAsyncEnumerable<T> FillBackward<T>(
+		this IAsyncEnumerable<T> source,
+		Func<T, bool> predicate,
+		Func<T, T, ValueTask<T>> fillSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
@@ -201,7 +213,11 @@ public static partial class AsyncSuperEnumerable
 	/// they remain missing.
 	/// </remarks>
 
-	public static IAsyncEnumerable<T> FillBackward<T>(this IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> predicate, Func<T, T, ValueTask<T>> fillSelector)
+	public static IAsyncEnumerable<T> FillBackward<T>(
+		this IAsyncEnumerable<T> source,
+		Func<T, ValueTask<bool>> predicate,
+		Func<T, T, ValueTask<T>> fillSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
@@ -210,7 +226,12 @@ public static partial class AsyncSuperEnumerable
 		return FillBackwardImpl(source, predicate, fillSelector);
 	}
 
-	private static async IAsyncEnumerable<T> FillBackwardImpl<T>(IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> predicate, Func<T, T, ValueTask<T>>? fillSelector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+	private static async IAsyncEnumerable<T> FillBackwardImpl<T>(
+		IAsyncEnumerable<T> source,
+		Func<T, ValueTask<bool>> predicate,
+		Func<T, T, ValueTask<T>>? fillSelector,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default
+	)
 	{
 		List<T>? blanks = null;
 

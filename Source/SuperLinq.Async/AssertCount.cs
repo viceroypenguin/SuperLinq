@@ -36,6 +36,7 @@ public static partial class AsyncSuperEnumerable
 			{
 				if (++c > count)
 					break;
+
 				yield return item;
 			}
 

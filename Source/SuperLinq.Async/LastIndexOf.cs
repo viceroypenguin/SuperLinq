@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -31,7 +31,11 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static ValueTask<int> LastIndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, CancellationToken cancellationToken = default)
+	public static ValueTask<int> LastIndexOf<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		TSource item,
+		CancellationToken cancellationToken = default
+	)
 	{
 		return source.LastIndexOf(item, ^1, int.MaxValue, cancellationToken);
 	}
@@ -69,7 +73,12 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static ValueTask<int> LastIndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, Index index, CancellationToken cancellationToken = default)
+	public static ValueTask<int> LastIndexOf<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		TSource item,
+		Index index,
+		CancellationToken cancellationToken = default
+	)
 	{
 		return source.LastIndexOf(item, index, int.MaxValue, cancellationToken);
 	}
@@ -109,8 +118,20 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static ValueTask<int> LastIndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, Index index, int count, CancellationToken cancellationToken = default)
+	public static ValueTask<int> LastIndexOf<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		TSource item,
+		Index index,
+		int count,
+		CancellationToken cancellationToken = default
+	)
 	{
-		return FindLastIndex(source, i => EqualityComparer<TSource>.Default.Equals(i, item), index, count, cancellationToken);
+		return FindLastIndex(
+			source,
+			i => EqualityComparer<TSource>.Default.Equals(i, item),
+			index,
+			count,
+			cancellationToken
+		);
 	}
 }

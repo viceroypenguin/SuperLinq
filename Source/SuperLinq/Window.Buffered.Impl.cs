@@ -1,8 +1,14 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
-	private enum WindowType { Normal, Left, Right, }
+	private enum WindowType
+	{
+		Normal,
+		Left,
+		Right,
+	}
+
 	private static IEnumerable<TResult> WindowImpl<TSource, TResult>(
 		IEnumerable<TSource> source,
 		TSource[] array,
@@ -33,8 +39,6 @@ public static partial class SuperEnumerable
 			yield break;
 
 		for (var j = n == size ? 1 : 0; j < n; j++)
-		{
 			yield return projector(new ArraySegment<TSource>(array, j, n - j));
-		}
 	}
 }

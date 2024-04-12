@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 // Inspiration & credit: http://stackoverflow.com/a/13503860/6682
 public static partial class SuperEnumerable
@@ -224,6 +224,7 @@ public static partial class SuperEnumerable
 			{
 				if (alookup.Contains(b.Key))
 					continue;
+
 				// We can skip the lookup because we are iterating over keys not found in the first sequence
 				yield return resultSelector(b.Key, [], b);
 			}

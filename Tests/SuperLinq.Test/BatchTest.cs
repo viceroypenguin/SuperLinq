@@ -109,10 +109,11 @@ public sealed class BatchTest
 	private static IEnumerable<object[]> GetBatchTestSequences(IEnumerable<int> source)
 	{
 		foreach (var seq in source.GetListSequences())
-			yield return new object[] { seq, BatchMethod.Traditional, };
-		yield return new object[] { source.AsTestingSequence(), BatchMethod.BufferSize, };
-		yield return new object[] { source.AsTestingSequence(), BatchMethod.BufferArray, };
-		yield return new object[] { source.AsTestingSequence(), BatchMethod.BufferSizeArray, };
+			yield return new object[] { seq, BatchMethod.Traditional };
+
+		yield return new object[] { source.AsTestingSequence(), BatchMethod.BufferSize };
+		yield return new object[] { source.AsTestingSequence(), BatchMethod.BufferArray };
+		yield return new object[] { source.AsTestingSequence(), BatchMethod.BufferSizeArray };
 	}
 
 	private static IEnumerable<IList<T>> GetBatches<T>(
@@ -187,10 +188,10 @@ public sealed class BatchTest
 
 	public static IEnumerable<object[]> GetBreakingCollections(IEnumerable<int> source)
 	{
-		yield return new object[] { source.AsBreakingCollection(), BatchMethod.Traditional, };
-		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferSize, };
-		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferArray, };
-		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferSizeArray, };
+		yield return new object[] { source.AsBreakingCollection(), BatchMethod.Traditional };
+		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferSize };
+		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferArray };
+		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferSizeArray };
 	}
 
 	[Theory]
@@ -223,7 +224,7 @@ public sealed class BatchTest
 	[InlineData(BatchMethod.BufferSizeArray)]
 	public void BatchCollectionSizeNotEvaluatedEarly(BatchMethod bm)
 	{
-		var list = new List<int>() { 1, 2, 3, };
+		var list = new List<int>() { 1, 2, 3 };
 		var result = GetBatches(list, bm, 3);
 		list.Add(4);
 		result.AssertCount(2).Consume();

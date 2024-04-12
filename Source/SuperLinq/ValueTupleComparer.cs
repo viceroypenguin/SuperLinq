@@ -48,8 +48,9 @@ public static class ValueTupleComparer
 		public int Compare([AllowNull] (T1, T2) x, [AllowNull] (T1, T2) y)
 		{
 			var result = _comparer1.Compare(x.Item1, y.Item1);
-			return result != 0 ? result :
-				_comparer2.Compare(x.Item2, y.Item2);
+			return result != 0
+				? result
+				: _comparer2.Compare(x.Item2, y.Item2);
 		}
 	}
 }

@@ -339,7 +339,8 @@ public partial class SuperEnumerable
 
 			if (!queue.TryDequeue(out current, out from))
 				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
-		} while (true);
+		}
+		while (true);
 
 		return Generate(end, x => totalCost[x].parent!)
 			.TakeUntil(x => stateComparer.Equals(x, start))

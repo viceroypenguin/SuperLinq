@@ -3,7 +3,7 @@
 public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
-	/// Returns a sequence of tuples where the `key` is 
+	/// Returns a sequence of tuples where the `key` is
 	/// the zero-based index of the `value` in the source
 	/// sequence.
 	/// </summary>
@@ -18,9 +18,9 @@ public static partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Returns a sequence of tuples where the `key` is 
+	/// Returns a sequence of tuples where the `key` is
 	/// the zero-based index of the `value` in the source
-	/// sequence. An additional parameter specifies the 
+	/// sequence. An additional parameter specifies the
 	/// starting index.
 	/// </summary>
 	/// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>

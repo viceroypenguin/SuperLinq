@@ -343,7 +343,8 @@ public partial class SuperEnumerable
 
 			if (!queue.TryDequeue(out current, out costs))
 				ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
-		} while (true);
+		}
+		while (true);
 
 		return costs.traversed;
 	}

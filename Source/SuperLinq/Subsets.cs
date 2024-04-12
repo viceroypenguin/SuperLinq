@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -27,7 +27,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="sequence"/> will be
-	///     consumed in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     consumed in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
@@ -146,6 +146,7 @@ public static partial class SuperEnumerable
 				subset[i] = set[indices[i] - 1];
 
 			yield return subset;
+
 		}
 		while (indices[0] != setSize - subsetSize + 1);
 	}

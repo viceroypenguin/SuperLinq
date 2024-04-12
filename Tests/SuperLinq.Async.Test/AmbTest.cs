@@ -34,7 +34,7 @@ public sealed class AmbTest
 		var seq2 = sequenceNumber == 2 ? empty : async;
 		var seq3 = sequenceNumber == 3 ? empty : async;
 
-		var ts = new[] { seq1, seq2, seq3, };
+		var ts = new[] { seq1, seq2, seq3 };
 
 		var result = ts.Amb();
 
@@ -60,7 +60,7 @@ public sealed class AmbTest
 		var seq2 = sequenceNumber == 2 ? sync : async;
 		var seq3 = sequenceNumber == 3 ? sync : async;
 
-		var ts = new[] { seq1, seq2, seq3, };
+		var ts = new[] { seq1, seq2, seq3 };
 
 		var result = ts.Amb();
 
@@ -89,7 +89,7 @@ public sealed class AmbTest
 		await using var seq2 = (sequenceNumber == 2 ? shorter : longer).AsTestingSequence();
 		await using var seq3 = (sequenceNumber == 3 ? shorter : longer).AsTestingSequence();
 
-		var ts = new[] { seq1, seq2, seq3, };
+		var ts = new[] { seq1, seq2, seq3 };
 
 		var result = ts.Amb();
 

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Runtime.ExceptionServices;
 
 namespace SuperLinq;
@@ -110,6 +110,7 @@ public static partial class SuperEnumerable
 				{
 					if (_disposed)
 						ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
+
 					if (!_initialized
 						|| version != _version)
 					{

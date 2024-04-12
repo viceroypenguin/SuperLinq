@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq;
@@ -9,10 +9,13 @@ public partial class SuperEnumerable
 	private abstract class CollectionIterator<T> : ICollection<T>, IReadOnlyCollection<T>
 	{
 		public bool IsReadOnly => true;
+
 		public void Add(T item) =>
 			ThrowHelper.ThrowNotSupportedException();
+
 		public bool Remove(T item) =>
 			ThrowHelper.ThrowNotSupportedException<bool>();
+
 		public void Clear() =>
 			ThrowHelper.ThrowNotSupportedException();
 

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public partial class AsyncSuperEnumerable
 {
@@ -92,10 +92,12 @@ public partial class AsyncSuperEnumerable
 				yield return current;
 				// because a stack pops the elements out in LIFO order, we need to push them in reverse
 				// if we want to traverse the returned list in the same order as was returned to us
-				await foreach (var child in childrenSelector(current)
+				await foreach (var child in
+					childrenSelector(current)
 						.Reverse()
 						.WithCancellation(cancellationToken)
-						.ConfigureAwait(false))
+						.ConfigureAwait(false)
+				)
 				{
 					stack.Push(child);
 				}

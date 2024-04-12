@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -12,7 +12,10 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
 	/// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
 
-	public static IAsyncEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+	public static IAsyncEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector
+	)
 	{
 		return source.CountBy(keySelector, comparer: null);
 	}
@@ -30,14 +33,23 @@ public static partial class AsyncSuperEnumerable
 	/// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
 	/// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
 
-	public static IAsyncEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+	public static IAsyncEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IEqualityComparer<TKey>? comparer
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return Core(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 
-		static async IAsyncEnumerable<KeyValuePair<TKey, int>> Core(IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<KeyValuePair<TKey, int>> Core(
+			IAsyncEnumerable<TSource> source,
+			Func<TSource, TKey> keySelector,
+			IEqualityComparer<TKey> comparer,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			// Avoid the temptation to inline the Loop method, which
 			// exists solely to separate the scope & lifetimes of the
@@ -56,7 +68,12 @@ public static partial class AsyncSuperEnumerable
 				yield return new(keys[i], counts[i]);
 		}
 
-		static async ValueTask<(List<TKey>, List<int>)> Loop(IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> cmp, CancellationToken cancellationToken)
+		static async ValueTask<(List<TKey>, List<int>)> Loop(
+			IAsyncEnumerable<TSource> source,
+			Func<TSource, TKey> keySelector,
+			IEqualityComparer<TKey> cmp,
+			CancellationToken cancellationToken
+		)
 		{
 			var dic = new Collections.NullKeyDictionary<TKey, int>(cmp);
 

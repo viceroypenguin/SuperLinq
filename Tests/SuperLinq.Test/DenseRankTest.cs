@@ -25,7 +25,7 @@ public sealed class DenseRankTests
 	public static IEnumerable<object[]> GetSimpleSequences() =>
 		Enumerable.Repeat(1, 10)
 			.GetTestingSequence(maxEnumerations: 2)
-			.Select(x => new object[] { x, });
+			.Select(x => new object[] { x });
 
 	/// <summary>
 	/// Verify that calling DenseRank with null comparer results in a sequence
@@ -73,7 +73,7 @@ public sealed class DenseRankTests
 		Enumerable.Range(456, 100)
 			.Reverse()
 			.GetTestingSequence(maxEnumerations: 2)
-			.Select(x => new object[] { x, });
+			.Select(x => new object[] { x });
 
 	/// <summary>
 	/// Verify that calling DenseRank with null comparer on a source in reverse order
@@ -104,7 +104,7 @@ public sealed class DenseRankTests
 	public static IEnumerable<object[]> GetAscendingIntSequences() =>
 		Enumerable.Range(456, 100)
 			.GetTestingSequence(maxEnumerations: 2)
-			.Select(x => new object[] { x, });
+			.Select(x => new object[] { x });
 
 	/// <summary>
 	/// Verify that calling DenseRank with null comparer on a source in ascending order
@@ -160,7 +160,7 @@ public sealed class DenseRankTests
 			.Concat(Enumerable.Range(0, 10))
 			.Concat(Enumerable.Range(0, 10))
 			.GetTestingSequence(maxEnumerations: 2)
-			.Select(x => new object[] { x, });
+			.Select(x => new object[] { x });
 
 	/// <summary>
 	/// Verify that the rank of equivalent items in a sequence is the same.
@@ -205,7 +205,7 @@ public sealed class DenseRankTests
 				new Person(Name: "Jes", Age: 11, ExpectedRank: 1),
 		}
 			.GetTestingSequence(maxEnumerations: 2)
-			.Select(x => new object[] { x, });
+			.Select(x => new object[] { x });
 
 	public static IEnumerable<object[]> GetPersonSequences2() =>
 		new[]
@@ -220,7 +220,7 @@ public sealed class DenseRankTests
 				new Person(Name: "Jim", Age: 28, ExpectedRank: 3),
 		}
 			.GetTestingSequence(maxEnumerations: 2)
-			.Select(x => new object[] { x, });
+			.Select(x => new object[] { x });
 
 	/// <summary>
 	/// Verify that we can rank items by an arbitrary key produced from the item.
@@ -251,7 +251,7 @@ public sealed class DenseRankTests
 		Enumerable.Range(1, 10)
 			.Select(x => new DateTime(2010, x, 20 - x))
 			.GetTestingSequence(maxEnumerations: 2)
-			.Select(x => new object[] { x, });
+			.Select(x => new object[] { x });
 
 	/// <summary>
 	/// Verify that Rank can use a custom comparer

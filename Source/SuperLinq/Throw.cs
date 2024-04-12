@@ -19,7 +19,7 @@ public static partial class SuperEnumerable
 	/// </exception>
 	/// <remarks>
 	/// <para>
-	///	    The provided value (<paramref name="exception"/>) will be thrown when the first element is enumerated. 
+	///	    The provided value (<paramref name="exception"/>) will be thrown when the first element is enumerated.
 	/// </para>
 	/// <para>
 	///	    If the returned <see cref="IEnumerable{T}"/> is enumerated multiple times, the same value will be thrown

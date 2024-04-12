@@ -28,7 +28,7 @@ public sealed class TrySingleTest
 			.Select(x => new object[] { x });
 
 	[Theory]
-	[MemberData(nameof(GetSingletonSequences), new int[] { 10, })]
+	[MemberData(nameof(GetSingletonSequences), new int[] { 10 })]
 	public void TrySingleWithSingleton(IDisposableEnumerable<int?> seq)
 	{
 		using (seq)
@@ -73,7 +73,7 @@ public sealed class TrySingleTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 10, 20, })]
+	[MemberData(nameof(GetSequences), new int[] { 10, 20 })]
 	public void TrySingleWithMoreThanOne(IDisposableEnumerable<int?> seq)
 	{
 		using (seq)

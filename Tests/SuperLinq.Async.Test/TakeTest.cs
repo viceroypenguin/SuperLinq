@@ -23,7 +23,7 @@ public sealed class TakeTest
 	[Fact]
 	public async Task SameResultsRepeatCallsStringQuery()
 	{
-		var q = (from x in new[] { "!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", string.Empty }
+		var q = (from x in new[] { "!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "" }
 				 where !string.IsNullOrEmpty(x)
 				 select x).ToAsyncEnumerable();
 

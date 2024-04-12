@@ -170,7 +170,8 @@ public partial class SuperEnumerable
 				if (!totalCost.TryGetValue(s, out _))
 					queue.EnqueueMinimum(s, (current, p));
 			}
-		} while (queue.TryDequeue(out current, out from));
+		}
+		while (queue.TryDequeue(out current, out from));
 
 		return totalCost;
 	}

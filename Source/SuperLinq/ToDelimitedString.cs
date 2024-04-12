@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace SuperLinq;
 
@@ -40,7 +40,9 @@ public static partial class SuperEnumerable
 
 		foreach (var value in source)
 		{
-			if (i++ > 0) _ = sb.Append(delimiter);
+			if (i++ > 0)
+				_ = sb.Append(delimiter);
+
 			_ = append(sb, value);
 		}
 

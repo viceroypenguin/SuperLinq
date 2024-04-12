@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -50,6 +50,7 @@ public static partial class SuperEnumerable
 			{
 				if (!e.MoveNext())
 					yield break;
+
 				window[i] = e.Current;
 			}
 

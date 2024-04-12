@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -31,7 +31,11 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static ValueTask<int> IndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, CancellationToken cancellationToken = default)
+	public static ValueTask<int> IndexOf<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		TSource item,
+		CancellationToken cancellationToken = default
+	)
 	{
 		return source.IndexOf(item, 0, int.MaxValue, cancellationToken);
 	}
@@ -67,7 +71,12 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static ValueTask<int> IndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, Index index, CancellationToken cancellationToken = default)
+	public static ValueTask<int> IndexOf<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		TSource item,
+		Index index,
+		CancellationToken cancellationToken = default
+	)
 	{
 		return source.IndexOf(item, index, int.MaxValue, cancellationToken);
 	}
@@ -106,7 +115,13 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static ValueTask<int> IndexOf<TSource>(this IAsyncEnumerable<TSource> source, TSource item, Index index, int count, CancellationToken cancellationToken = default)
+	public static ValueTask<int> IndexOf<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		TSource item,
+		Index index,
+		int count,
+		CancellationToken cancellationToken = default
+	)
 	{
 		return FindIndex(source, i => EqualityComparer<TSource>.Default.Equals(i, item), index, count, cancellationToken);
 	}

@@ -93,7 +93,7 @@ public sealed class CopyToTest
 		span.ToArray().AssertSequenceEqual(1, 2, 0, 0);
 		Assert.Equal(1, cnt);
 
-		cnt = new[] { 3, 4, }.AsEnumerable().CopyTo(span[2..]);
+		cnt = new[] { 3, 4 }.AsEnumerable().CopyTo(span[2..]);
 		span.ToArray().AssertSequenceEqual(1, 2, 3, 4);
 		Assert.Equal(2, cnt);
 	}
@@ -116,7 +116,7 @@ public sealed class CopyToTest
 		array.AssertSequenceEqual(1, 2, 3, 0);
 		Assert.Equal(1, cnt);
 
-		cnt = new[] { 4, }.AsEnumerable().CopyTo(array, 3);
+		cnt = new[] { 4 }.AsEnumerable().CopyTo(array, 3);
 		array.AssertSequenceEqual(1, 2, 3, 4);
 		Assert.Equal(1, cnt);
 	}
@@ -126,7 +126,7 @@ public sealed class CopyToTest
 	{
 		var list = new List<int>();
 
-		var cnt = new[] { 1, }.AsEnumerable().CopyTo(list);
+		var cnt = new[] { 1 }.AsEnumerable().CopyTo(list);
 		list.AssertSequenceEqual(1);
 		Assert.Equal(1, cnt);
 

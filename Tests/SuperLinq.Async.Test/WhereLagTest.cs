@@ -56,7 +56,7 @@ public sealed class WhereLagTest
 	public async Task WhereLagWithNonNullableReferences()
 	{
 		await using var seq = Seq("foo", "bar", "baz", "qux").AsTestingSequence();
-		var result = seq.WhereLag(2, string.Empty, (a, b) => b == "foo" || a == "foo");
+		var result = seq.WhereLag(2, "", (a, b) => b == "foo" || a == "foo");
 		await result.AssertSequenceEqual("foo", "baz");
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -92,7 +92,12 @@ public static partial class SuperEnumerable
 
 		return Core(first, second, keySelector, keyComparer);
 
-		static IEnumerable<TSource> Core(IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? keyComparer)
+		static IEnumerable<TSource> Core(
+			IEnumerable<TSource> first,
+			IEnumerable<TSource> second,
+			Func<TSource, TKey> keySelector,
+			IEqualityComparer<TKey>? keyComparer
+		)
 		{
 			var keys = second.Select(keySelector).ToHashSet(keyComparer);
 			foreach (var element in first)
@@ -100,6 +105,7 @@ public static partial class SuperEnumerable
 				var key = keySelector(element);
 				if (keys.Contains(key))
 					continue;
+
 				yield return element;
 				_ = keys.Add(key);
 			}

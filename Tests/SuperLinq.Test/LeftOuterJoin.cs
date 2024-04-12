@@ -22,7 +22,7 @@ public sealed class LeftOuterJoinTest
 		};
 
 	public static IEnumerable<object[]> GetLeftOuterJoins() =>
-		new[] { Loop, Hash, Merge, }.Cartesian(new[] { false, true, }, (x, y) => new object[] { x, y, });
+		new[] { Loop, Hash, Merge }.Cartesian(new[] { false, true }, (x, y) => new object[] { x, y });
 
 	[Theory, MemberData(nameof(GetLeftOuterJoins))]
 	public void LeftOuterJoinIsLazy(JoinOperation op, bool passProjectors)

@@ -91,8 +91,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 	/// </exception>
 	public UpdatablePriorityQueue(int initialCapacity)
 		: this(initialCapacity, priorityComparer: null, elementComparer: null)
-	{
-	}
+	{ }
 
 	/// <summary>
 	///  Initializes a new instance of the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/> class
@@ -165,8 +164,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 	/// </remarks>
 	public UpdatablePriorityQueue(IEnumerable<(TElement Element, TPriority Priority)> items)
 		: this(items, priorityComparer: null, elementComparer: null)
-	{
-	}
+	{ }
 
 	/// <summary>
 	///  Initializes a new instance of the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/> class
@@ -189,7 +187,11 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 	///  Constructs the heap using a heapify operation,
 	///  which is generally faster than enqueuing individual elements sequentially.
 	/// </remarks>
-	public UpdatablePriorityQueue(IEnumerable<(TElement Element, TPriority Priority)> items, IComparer<TPriority>? priorityComparer, IEqualityComparer<TElement>? elementComparer)
+	public UpdatablePriorityQueue(
+		IEnumerable<(TElement Element, TPriority Priority)> items,
+		IComparer<TPriority>? priorityComparer,
+		IEqualityComparer<TElement>? elementComparer
+	)
 	{
 		ArgumentNullException.ThrowIfNull(items);
 
@@ -200,9 +202,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 
 		Count = _nodes.Length;
 		if (Count > 1)
-		{
 			Heapify();
-		}
 	}
 
 	/// <summary>
@@ -222,7 +222,8 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 	///  The enumeration does not order items by priority, since that would require N * log(N) time and N space.
 	///  Items are instead enumerated following the internal array heap layout.
 	/// </remarks>
-	public IReadOnlyCollection<(TElement Element, TPriority Priority)> UnorderedItems => _unorderedItems ??= new UnorderedItemsCollection(this);
+	public IReadOnlyCollection<(TElement Element, TPriority Priority)> UnorderedItems =>
+		_unorderedItems ??= new UnorderedItemsCollection(this);
 
 	/// <summary>
 	///  Adds or updates the specified element with associated priority to the <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>.
@@ -261,18 +262,12 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 
 			var currentSize = Count++;
 			if (_nodes.Length == currentSize)
-			{
 				Grow(currentSize + 1);
-			}
 
 			if (_priorityComparer is null)
-			{
 				MoveUpDefaultComparer((element, priority), currentSize);
-			}
 			else
-			{
 				MoveUpCustomComparer((element, priority), currentSize);
-			}
 		}
 	}
 
@@ -310,18 +305,12 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 
 			var currentSize = Count++;
 			if (_nodes.Length == currentSize)
-			{
 				Grow(currentSize + 1);
-			}
 
 			if (_priorityComparer is null)
-			{
 				MoveUpDefaultComparer((element, priority), currentSize);
-			}
 			else
-			{
 				MoveUpCustomComparer((element, priority), currentSize);
-			}
 		}
 	}
 
@@ -333,9 +322,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 	public TElement Peek()
 	{
 		if (Count == 0)
-		{
 			ThrowHelper.ThrowInvalidOperationException("Queue empty.");
-		}
 
 		return _nodes[0].Element;
 	}
@@ -348,9 +335,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 	public TElement Dequeue()
 	{
 		if (Count == 0)
-		{
 			ThrowHelper.ThrowInvalidOperationException("Queue empty.");
-		}
 
 		var element = _nodes[0].Element;
 		RemoveRootNode();
@@ -435,14 +420,11 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 					return rootElement;
 				}
 			}
-			else
+			else if (_priorityComparer.Compare(priority, rootPriority) > 0)
 			{
-				if (_priorityComparer.Compare(priority, rootPriority) > 0)
-				{
-					MoveDownCustomComparer((element, priority), 0);
-					_version++;
-					return rootElement;
-				}
+				MoveDownCustomComparer((element, priority), 0);
+				_version++;
+				return rootElement;
 			}
 		}
 
@@ -464,9 +446,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 		var count = 0;
 		var collection = items as ICollection<(TElement Element, TPriority Priority)>;
 		if (collection is not null && (count = collection.Count) > _nodes.Length - Count)
-		{
 			Grow(Count + count);
-		}
 
 		if (Count == 0)
 		{
@@ -498,16 +478,12 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 			_version++;
 
 			if (Count > 1)
-			{
 				Heapify();
-			}
 		}
 		else
 		{
 			foreach (var (element, priority) in items)
-			{
 				Enqueue(element, priority);
-			}
 		}
 	}
 
@@ -526,8 +502,8 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 		ArgumentNullException.ThrowIfNull(elements);
 
 		int count;
-		if (elements is ICollection<(TElement Element, TPriority Priority)> collection &&
-			(count = collection.Count) > _nodes.Length - Count)
+		if (elements is ICollection<(TElement Element, TPriority Priority)> collection
+			&& (count = collection.Count) > _nodes.Length - Count)
 		{
 			Grow(Count + count);
 		}
@@ -553,16 +529,12 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 			_version++;
 
 			if (i > 1)
-			{
 				Heapify();
-			}
 		}
 		else
 		{
 			foreach (var element in elements)
-			{
 				Enqueue(element, priority);
-			}
 		}
 	}
 
@@ -581,9 +553,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 		var count = 0;
 		var collection = items as ICollection<(TElement Element, TPriority Priority)>;
 		if (collection is not null && (count = collection.Count) > _nodes.Length - Count)
-		{
 			Grow(Count + count);
-		}
 
 		if (Count == 0)
 		{
@@ -615,16 +585,12 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 			_version++;
 
 			if (Count > 1)
-			{
 				Heapify();
-			}
 		}
 		else
 		{
 			foreach (var (element, priority) in items)
-			{
 				EnqueueMinimum(element, priority);
-			}
 		}
 	}
 
@@ -643,8 +609,8 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 		ArgumentNullException.ThrowIfNull(elements);
 
 		int count;
-		if (elements is ICollection<(TElement Element, TPriority Priority)> collection &&
-			(count = collection.Count) > _nodes.Length - Count)
+		if (elements is ICollection<(TElement Element, TPriority Priority)> collection
+			&& (count = collection.Count) > _nodes.Length - Count)
 		{
 			Grow(Count + count);
 		}
@@ -670,16 +636,12 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 			_version++;
 
 			if (i > 1)
-			{
 				Heapify();
-			}
 		}
 		else
 		{
 			foreach (var element in elements)
-			{
 				EnqueueMinimum(element, priority);
-			}
 		}
 	}
 
@@ -753,14 +715,16 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 
 		// Allow the queue to grow to maximum possible capacity (~2G elements) before encountering overflow.
 		// Note that this check works even when _nodes.Length overflowed thanks to the (uint) cast
-		if ((uint)newcapacity > int.MaxValue) newcapacity = int.MaxValue;
+		if ((uint)newcapacity > int.MaxValue)
+			newcapacity = int.MaxValue;
 
 		// Ensure minimum growth is respected.
 		newcapacity = Math.Max(newcapacity, _nodes.Length + MinimumGrow);
 
 		// If the computed capacity is still less than specified, set to the original argument.
 		// Capacities exceeding Array.MaxLength will be surfaced as OutOfMemoryException by Array.Resize.
-		if (newcapacity < minCapacity) newcapacity = minCapacity;
+		if (newcapacity < minCapacity)
+			newcapacity = minCapacity;
 
 		Array.Resize(ref _nodes, newcapacity);
 	}
@@ -779,19 +743,13 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 		{
 			var lastNode = _nodes[lastNodeIndex];
 			if (_priorityComparer is null)
-			{
 				MoveDownDefaultComparer(lastNode, 0);
-			}
 			else
-			{
 				MoveDownCustomComparer(lastNode, 0);
-			}
 		}
 
 		if (RuntimeHelpers.IsReferenceOrContainsReferences<(TElement, TPriority)>())
-		{
 			_nodes[lastNodeIndex] = default;
-		}
 	}
 
 	/// <summary>
@@ -843,16 +801,12 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 		if (_priorityComparer is null)
 		{
 			for (var index = lastParentWithChildren; index >= 0; --index)
-			{
 				MoveDownDefaultComparer(nodes[index], index);
-			}
 		}
 		else
 		{
 			for (var index = lastParentWithChildren; index >= 0; --index)
-			{
 				MoveDownCustomComparer(nodes[index], index);
-			}
 		}
 	}
 
@@ -962,9 +916,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 
 			// Heap property is satisfied; insert node in this location.
 			if (Comparer<TPriority>.Default.Compare(node.Priority, minChild.Priority) <= 0)
-			{
 				break;
-			}
 
 			// Move the minimal child up by one node and
 			// continue recursively from its location.
@@ -1014,9 +966,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 
 			// Heap property is satisfied; insert node in this location.
 			if (comparer.Compare(node.Priority, minChild.Priority) <= 0)
-			{
 				break;
-			}
 
 			// Move the minimal child up by one node and continue recursively from its location.
 			nodes[nodeIndex] = minChild;
@@ -1158,7 +1108,8 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 		/// <returns>An <see cref="Enumerator"/> for the <see cref="UnorderedItems"/>.</returns>
 		public Enumerator GetEnumerator() => new(_queue);
 
-		IEnumerator<(TElement Element, TPriority Priority)> IEnumerable<(TElement Element, TPriority Priority)>.GetEnumerator() => GetEnumerator();
+		IEnumerator<(TElement Element, TPriority Priority)> IEnumerable<(TElement Element, TPriority Priority)>.GetEnumerator() =>
+			GetEnumerator();
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
@@ -1191,9 +1142,7 @@ internal sealed class PriorityQueueDebugView<TElement, TPriority>
 		{
 			var list = new List<(TElement Element, TPriority Priority)>(_queue.UnorderedItems);
 			if (_sort)
-			{
 				list.Sort((i1, i2) => _queue.Comparer.Compare(i1.Priority, i2.Priority));
-			}
 
 			return [.. list];
 		}

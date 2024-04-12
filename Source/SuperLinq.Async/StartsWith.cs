@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -22,8 +22,11 @@ public static partial class AsyncSuperEnumerable
 	/// <see cref="EqualityComparer{T}.Default"/> on pairs of elements at
 	/// the same index.
 	/// </remarks>
-
-	public static ValueTask<bool> StartsWith<T>(this IAsyncEnumerable<T> first, IEnumerable<T> second, CancellationToken cancellationToken = default)
+	public static ValueTask<bool> StartsWith<T>(
+		this IAsyncEnumerable<T> first,
+		IEnumerable<T> second,
+		CancellationToken cancellationToken = default
+	)
 	{
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
@@ -51,8 +54,11 @@ public static partial class AsyncSuperEnumerable
 	/// <see cref="EqualityComparer{T}.Default"/> on pairs of elements at
 	/// the same index.
 	/// </remarks>
-
-	public static ValueTask<bool> StartsWith<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, CancellationToken cancellationToken = default)
+	public static ValueTask<bool> StartsWith<T>(
+		this IAsyncEnumerable<T> first,
+		IAsyncEnumerable<T> second,
+		CancellationToken cancellationToken = default
+	)
 	{
 		return StartsWith(first, second, comparer: null, cancellationToken);
 	}
@@ -77,8 +83,12 @@ public static partial class AsyncSuperEnumerable
 	/// it calls <see cref="IEqualityComparer{T}.Equals(T,T)" /> on pairs
 	/// of elements at the same index.
 	/// </remarks>
-
-	public static ValueTask<bool> StartsWith<T>(this IAsyncEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T>? comparer, CancellationToken cancellationToken = default)
+	public static ValueTask<bool> StartsWith<T>(
+		this IAsyncEnumerable<T> first,
+		IEnumerable<T> second,
+		IEqualityComparer<T>? comparer,
+		CancellationToken cancellationToken = default
+	)
 	{
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
@@ -106,8 +116,12 @@ public static partial class AsyncSuperEnumerable
 	/// it calls <see cref="IEqualityComparer{T}.Equals(T,T)" /> on pairs
 	/// of elements at the same index.
 	/// </remarks>
-
-	public static ValueTask<bool> StartsWith<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, IEqualityComparer<T>? comparer, CancellationToken cancellationToken = default)
+	public static ValueTask<bool> StartsWith<T>(
+		this IAsyncEnumerable<T> first,
+		IAsyncEnumerable<T> second,
+		IEqualityComparer<T>? comparer,
+		CancellationToken cancellationToken = default
+	)
 	{
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
@@ -116,14 +130,20 @@ public static partial class AsyncSuperEnumerable
 
 		return Core(first, second, comparer, cancellationToken);
 
-		static async ValueTask<bool> Core(IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, IEqualityComparer<T>? comparer, CancellationToken cancellationToken)
+		static async ValueTask<bool> Core(
+			IAsyncEnumerable<T> first,
+			IAsyncEnumerable<T> second,
+			IEqualityComparer<T>? comparer,
+			CancellationToken cancellationToken
+		)
 		{
 			var snd = await second.ToListAsync(cancellationToken).ConfigureAwait(false);
 			return await first.Take(snd.Count)
 				.SequenceEqualAsync(
 					snd.ToAsyncEnumerable(),
 					comparer,
-					cancellationToken)
+					cancellationToken
+				)
 				.ConfigureAwait(false);
 		}
 	}

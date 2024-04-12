@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -26,8 +26,11 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TSource> ExceptBy<TSource, TKey>(
 		this IAsyncEnumerable<TSource> first,
 		IAsyncEnumerable<TSource> second,
-		Func<TSource, TKey> keySelector)
-		=> ExceptBy(first, second, keySelector, keyComparer: default);
+		Func<TSource, TKey> keySelector
+	)
+	{
+		return ExceptBy(first, second, keySelector, keyComparer: default);
+	}
 
 	/// <summary>
 	/// Returns the set of elements in the first sequence which aren't
@@ -68,7 +71,8 @@ public static partial class AsyncSuperEnumerable
 		static async IAsyncEnumerable<TSource> Core(
 			IAsyncEnumerable<TSource> first, IAsyncEnumerable<TSource> second,
 			Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? keyComparer,
-			[EnumeratorCancellation] CancellationToken cancellationToken = default)
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			var keys = await second.Select(keySelector).ToHashSetAsync(keyComparer, cancellationToken).ConfigureAwait(false);
 			await foreach (var element in first.WithCancellation(cancellationToken).ConfigureAwait(false))
@@ -76,6 +80,7 @@ public static partial class AsyncSuperEnumerable
 				var key = keySelector(element);
 				if (keys.Contains(key))
 					continue;
+
 				yield return element;
 				_ = keys.Add(key);
 			}

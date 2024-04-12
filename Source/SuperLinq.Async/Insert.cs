@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -36,7 +36,12 @@ public static partial class AsyncSuperEnumerable
 
 		return Core(first, second, index);
 
-		static async IAsyncEnumerable<T> Core(IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, int index, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(
+			IAsyncEnumerable<T> first,
+			IAsyncEnumerable<T> second,
+			int index,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			var i = -1;
 
@@ -95,7 +100,12 @@ public static partial class AsyncSuperEnumerable
 			index.Value == 0 ? first.Concat(second) :
 			Core(first, second, index.Value);
 
-		static async IAsyncEnumerable<T> Core(IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, int index, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(
+			IAsyncEnumerable<T> first,
+			IAsyncEnumerable<T> second,
+			int index,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			await using var e = first.CountDown(index, ValueTuple.Create).GetConfiguredAsyncEnumerator(cancellationToken);
 

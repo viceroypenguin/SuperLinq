@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -17,7 +17,7 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// <para>
 	///	    The purpose of this method is to execute the operators for the provided <see cref="IEnumerable{T}"/>, in the
-	///	    event that the operators have side-effects. 
+	///	    event that the operators have side-effects.
 	/// </para>
 	/// <para>
 	///	    This method executes immediately.
@@ -27,7 +27,6 @@ public static partial class SuperEnumerable
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		foreach (var _ in source)
-		{
-		}
+		{ }
 	}
 }

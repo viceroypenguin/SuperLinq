@@ -53,6 +53,7 @@ public static partial class AsyncSuperEnumerable
 
 				if (_enumerator is not null)
 					await _enumerator.DisposeAsync();
+
 				_enumerator = null;
 				_exception = null;
 			}
@@ -118,6 +119,7 @@ public static partial class AsyncSuperEnumerable
 				{
 					if (_disposed)
 						ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
+
 					if (!_initialized
 						|| version != _version)
 					{
@@ -171,6 +173,7 @@ public static partial class AsyncSuperEnumerable
 				_disposed = true;
 				if (_enumerator is not null)
 					await _enumerator.DisposeAsync().ConfigureAwait(false);
+
 				_enumerator = null;
 				_source = null;
 			}

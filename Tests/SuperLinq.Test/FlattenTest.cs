@@ -334,7 +334,7 @@ public sealed class FlattenTest
 
 	private sealed class Series
 	{
-		public string Name { get; init; } = string.Empty;
+		public string Name { get; init; } = "";
 		public Attribute[] Attributes { get; init; } = [];
 	}
 

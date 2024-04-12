@@ -56,7 +56,7 @@ public sealed class WhereLeadTest
 	public async Task WhereLeadWithNonNullableReferences()
 	{
 		await using var seq = Seq("foo", "bar", "baz", "qux").AsTestingSequence();
-		var result = seq.WhereLead(2, string.Empty, (a, b) => b == "baz" || a == "baz");
+		var result = seq.WhereLead(2, "", (a, b) => b == "baz" || a == "baz");
 		await result.AssertSequenceEqual("foo", "baz");
 	}
 }

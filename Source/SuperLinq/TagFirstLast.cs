@@ -55,7 +55,10 @@ public static partial class SuperEnumerable
 	///	    This operator uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TResult> TagFirstLast<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
+	public static IEnumerable<TResult> TagFirstLast<TSource, TResult>(
+		this IEnumerable<TSource> source,
+		Func<TSource, bool, bool, TResult> resultSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
@@ -99,6 +102,7 @@ public static partial class SuperEnumerable
 			{
 				if (source.Count == 1)
 					yield return resultSelector(source[0], true, true);
+
 				yield break;
 			}
 

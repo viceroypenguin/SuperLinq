@@ -21,7 +21,7 @@ public sealed class DensePartialSortByTests
 			.DensePartialSortBy(3, e => e.Key);
 
 		await sorted.Select(e => e.Value).AssertSequenceEqual(
-			ns.Take(3).SelectMany(x => new[] { x, x, }));
+			ns.Take(3).SelectMany(x => new[] { x, x }));
 	}
 
 	[Theory]
@@ -45,7 +45,7 @@ public sealed class DensePartialSortByTests
 			ns = ns.Reverse();
 
 		await sorted.Select(e => e.Value).AssertSequenceEqual(
-			ns.Take(3).SelectMany(x => new[] { x, x, }));
+			ns.Take(3).SelectMany(x => new[] { x, x }));
 	}
 
 	[Fact]
