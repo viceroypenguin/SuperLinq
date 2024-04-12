@@ -147,7 +147,6 @@ public static partial class SuperEnumerable
 
 			yield return subset;
 		}
-
 		while (indices[0] != setSize - subsetSize + 1);
 	}
 }
