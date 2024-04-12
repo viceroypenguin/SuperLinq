@@ -270,6 +270,7 @@ public sealed class MemoizeTest
 		await using (var r1 = buffer.Read())
 		await using (var r2 = buffer.Read())
 			Guard.IsTrue(await r1.Read() == await r2.Read());
+
 		Assert.Equal(1, buffer.Count);
 	}
 

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -28,7 +28,10 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> SortedMerge<TSource>(this IAsyncEnumerable<TSource> source, params IAsyncEnumerable<TSource>[] otherSequences)
+	public static IAsyncEnumerable<TSource> SortedMerge<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		params IAsyncEnumerable<TSource>[] otherSequences
+	)
 	{
 		return SortedMerge(source, OrderByDirection.Ascending, comparer: null, otherSequences);
 	}
@@ -60,7 +63,11 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> SortedMerge<TSource>(this IAsyncEnumerable<TSource> source, IComparer<TSource>? comparer, params IAsyncEnumerable<TSource>[] otherSequences)
+	public static IAsyncEnumerable<TSource> SortedMerge<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		IComparer<TSource>? comparer,
+		params IAsyncEnumerable<TSource>[] otherSequences
+	)
 	{
 		return SortedMerge(source, OrderByDirection.Ascending, comparer, otherSequences);
 	}
@@ -92,7 +99,11 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> SortedMerge<TSource>(this IAsyncEnumerable<TSource> source, OrderByDirection direction, params IAsyncEnumerable<TSource>[] otherSequences)
+	public static IAsyncEnumerable<TSource> SortedMerge<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		OrderByDirection direction,
+		params IAsyncEnumerable<TSource>[] otherSequences
+	)
 	{
 		return SortedMerge(source, direction, comparer: null, otherSequences);
 	}
@@ -125,7 +136,12 @@ public static partial class AsyncSuperEnumerable
 	/// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> SortedMerge<TSource>(this IAsyncEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource>? comparer, params IAsyncEnumerable<TSource>[] otherSequences)
+	public static IAsyncEnumerable<TSource> SortedMerge<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		OrderByDirection direction,
+		IComparer<TSource>? comparer,
+		params IAsyncEnumerable<TSource>[] otherSequences
+	)
 	{
 		return SortedMergeBy(source, Identity, direction, comparer, otherSequences);
 	}
@@ -148,7 +164,11 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> SortedMergeBy<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, params IAsyncEnumerable<TSource>[] otherSequences)
+	public static IAsyncEnumerable<TSource> SortedMergeBy<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		params IAsyncEnumerable<TSource>[] otherSequences
+	)
 	{
 		return SortedMergeBy(source, keySelector, OrderByDirection.Ascending, comparer: null, otherSequences);
 	}
@@ -172,7 +192,12 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> SortedMergeBy<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer, params IAsyncEnumerable<TSource>[] otherSequences)
+	public static IAsyncEnumerable<TSource> SortedMergeBy<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IComparer<TKey>? comparer,
+		params IAsyncEnumerable<TSource>[] otherSequences
+	)
 	{
 		return SortedMergeBy(source, keySelector, OrderByDirection.Ascending, comparer, otherSequences);
 	}
@@ -196,7 +221,12 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> SortedMergeBy<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, OrderByDirection direction, params IAsyncEnumerable<TSource>[] otherSequences)
+	public static IAsyncEnumerable<TSource> SortedMergeBy<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		OrderByDirection direction,
+		params IAsyncEnumerable<TSource>[] otherSequences
+	)
 	{
 		return SortedMergeBy(source, keySelector, direction, comparer: null, otherSequences);
 	}
@@ -221,7 +251,13 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	/// <exception cref="ArgumentNullException"><paramref name="otherSequences"/> is <see langword="null"/>.</exception>
-	public static IAsyncEnumerable<TSource> SortedMergeBy<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, OrderByDirection direction, IComparer<TKey>? comparer, params IAsyncEnumerable<TSource>[] otherSequences)
+	public static IAsyncEnumerable<TSource> SortedMergeBy<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		OrderByDirection direction,
+		IComparer<TKey>? comparer,
+		params IAsyncEnumerable<TSource>[] otherSequences
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);
@@ -248,7 +284,12 @@ public static partial class AsyncSuperEnumerable
 		//
 		// The algorithm used here will perform N*(K1+K2+...Kn-1) comparisons, where <c>N => otherSequences.Count()+1.</c>
 
-		static async IAsyncEnumerable<TSource> Impl(IEnumerable<IAsyncEnumerable<TSource>> sequences, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TSource> Impl(
+			IEnumerable<IAsyncEnumerable<TSource>> sequences,
+			Func<TSource, TKey> keySelector,
+			IComparer<TKey> comparer,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			var list = await EnumeratorList<TSource>.Create(sequences, cancellationToken).ConfigureAwait(false);
 			await using var ignored_ = list.ConfigureAwait(false);

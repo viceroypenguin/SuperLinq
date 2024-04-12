@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq;
 
@@ -9,6 +9,7 @@ public partial class SuperEnumerable
 	{
 		public void Insert(int index, T item) =>
 			ThrowHelper.ThrowNotSupportedException();
+
 		public void RemoveAt(int index) =>
 			ThrowHelper.ThrowNotSupportedException();
 
@@ -19,6 +20,7 @@ public partial class SuperEnumerable
 		}
 
 		protected abstract T ElementAt(int index);
+
 		public virtual int IndexOf(T item) =>
 			GetEnumerable().IndexOf(item);
 	}

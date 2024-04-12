@@ -108,6 +108,6 @@ public sealed class ScanRightTest
 	[Fact]
 	public void ScanRightSeedIsLazy()
 	{
-		_ = new BreakingSequence<int>().ScanRight(string.Empty, BreakingFunc.Of<int, string, string>());
+		_ = new BreakingSequence<int>().ScanRight("", BreakingFunc.Of<int, string, string>());
 	}
 }

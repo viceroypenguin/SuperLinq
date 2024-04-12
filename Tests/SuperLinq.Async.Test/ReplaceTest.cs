@@ -23,7 +23,7 @@ public sealed class ReplaceTest
 	}
 
 	public static IEnumerable<object[]> Indices() =>
-		Enumerable.Range(0, 10).Select(i => new object[] { i, });
+		Enumerable.Range(0, 10).Select(i => new object[] { i });
 
 	[Theory, MemberData(nameof(Indices))]
 	public async Task ReplaceIntIndex(int index)

@@ -31,7 +31,7 @@ public sealed class AtMostTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void AtMostWithSingleElementHasAtMostZeroElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -39,7 +39,7 @@ public sealed class AtMostTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void AtMostWithSingleElementHasAtMostOneElement(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -47,7 +47,7 @@ public sealed class AtMostTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void AtMostWithSingleElementHasAtMostManyElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -55,7 +55,7 @@ public sealed class AtMostTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3 })]
 	public void AtMostWithManyElementsHasAtMostZeroElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -63,7 +63,7 @@ public sealed class AtMostTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3 })]
 	public void AtMostWithManyElementsHasAtMostOneElement(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -71,7 +71,7 @@ public sealed class AtMostTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3 })]
 	public void AtMostWithManyElementsHasAtMostManyElement(IDisposableEnumerable<int> seq)
 	{
 		using (seq)

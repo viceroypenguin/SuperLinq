@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -25,7 +25,11 @@ public static partial class AsyncSuperEnumerable
 	/// This operator evaluates in a deferred and streaming manner.
 	/// </para>
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> WhereLead<TSource>(this IAsyncEnumerable<TSource> source, int offset, Func<TSource, TSource?, bool> predicate)
+	public static IAsyncEnumerable<TSource> WhereLead<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		int offset,
+		Func<TSource, TSource?, bool> predicate
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
@@ -57,7 +61,11 @@ public static partial class AsyncSuperEnumerable
 	/// This operator evaluates in a deferred and streaming manner.
 	/// </para>
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> WhereLead<TSource>(this IAsyncEnumerable<TSource> source, int offset, Func<TSource, TSource?, ValueTask<bool>> predicate)
+	public static IAsyncEnumerable<TSource> WhereLead<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		int offset,
+		Func<TSource, TSource?, ValueTask<bool>> predicate
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
@@ -86,7 +94,12 @@ public static partial class AsyncSuperEnumerable
 	/// This operator evaluates in a deferred and streaming manner.
 	/// </para>
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> WhereLead<TSource>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, bool> predicate)
+	public static IAsyncEnumerable<TSource> WhereLead<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		int offset,
+		TSource defaultLeadValue,
+		Func<TSource, TSource, bool> predicate
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
@@ -115,7 +128,12 @@ public static partial class AsyncSuperEnumerable
 	/// This operator evaluates in a deferred and streaming manner.
 	/// </para>
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> WhereLead<TSource>(this IAsyncEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, ValueTask<bool>> predicate)
+	public static IAsyncEnumerable<TSource> WhereLead<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		int offset,
+		TSource defaultLeadValue,
+		Func<TSource, TSource, ValueTask<bool>> predicate
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);

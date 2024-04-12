@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -118,7 +118,11 @@ public static partial class SuperEnumerable
 	///	    This method uses deferred execution semantics and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+	public static IEnumerable<TSource> DistinctUntilChanged<TSource, TKey>(
+		this IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IEqualityComparer<TKey>? comparer
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);

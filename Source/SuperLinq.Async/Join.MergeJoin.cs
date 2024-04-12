@@ -701,7 +701,8 @@ public static partial class AsyncSuperEnumerable
 			{
 				foreach (var e in e1.Current)
 					yield return leftResultSelector(e);
-			} while (await e1.MoveNextAsync());
+			}
+			while (await e1.MoveNextAsync());
 			yield break;
 		}
 
@@ -711,8 +712,8 @@ public static partial class AsyncSuperEnumerable
 			{
 				foreach (var e in e2.Current)
 					yield return rightResultSelector(e);
-			} while (await e2.MoveNextAsync());
-			yield break;
+			}
+			while (await e2.MoveNextAsync());
 		}
 	}
 }

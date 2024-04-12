@@ -54,7 +54,7 @@ public sealed class WhereLagTest
 	public void WhereLagWithNonNullableReferences()
 	{
 		using var seq = Seq("foo", "bar", "baz", "qux").AsTestingSequence();
-		var result = seq.WhereLag(2, string.Empty, (a, b) => b == "foo" || a == "foo");
+		var result = seq.WhereLag(2, "", (a, b) => b == "foo" || a == "foo");
 		result.AssertSequenceEqual("foo", "baz");
 	}
 }

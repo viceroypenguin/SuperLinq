@@ -44,7 +44,7 @@ public sealed class OnErrorResumeNextTest
 		await using var ts4 = (cnt++ == sequenceNumber ? AsyncEnumerable.Range(1, 10) : AsyncSeqExceptionAt(5)).AsTestingSequence();
 		await using var ts5 = (cnt++ == sequenceNumber ? AsyncEnumerable.Range(1, 10) : AsyncSeqExceptionAt(5)).AsTestingSequence();
 
-		await using var seq = new[] { ts1, ts2, ts3, ts4, ts5, }.AsTestingSequence();
+		await using var seq = new[] { ts1, ts2, ts3, ts4, ts5 }.AsTestingSequence();
 
 		var result = seq.OnErrorResumeNext();
 

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -68,7 +68,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(fallback);
 
 		return source.TryGetCollectionCount() is not null
-			   && fallback.TryGetCollectionCount() is not null
+				&& fallback.TryGetCollectionCount() is not null
 			? new FallbackIfEmptyCollectionIterator<T>(source, fallback)
 			: Core(source, fallback);
 
@@ -81,7 +81,8 @@ public static partial class SuperEnumerable
 					do
 					{
 						yield return e.Current;
-					} while (e.MoveNext());
+					}
+					while (e.MoveNext());
 
 					yield break;
 				}

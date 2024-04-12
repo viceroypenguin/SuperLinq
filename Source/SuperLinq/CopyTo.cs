@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -258,6 +258,7 @@ public static partial class SuperEnumerable
 					list[i] = el;
 				else
 					list.Add(el);
+
 				i++;
 			}
 

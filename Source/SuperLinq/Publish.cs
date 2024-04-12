@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Runtime.ExceptionServices;
 
 namespace SuperLinq;
@@ -123,6 +123,7 @@ public static partial class SuperEnumerable
 				return (queue, _version);
 			}
 		}
+
 		private IEnumerator<T> GetEnumeratorImpl(Queue<T> buffer, int version)
 		{
 			try
@@ -134,6 +135,7 @@ public static partial class SuperEnumerable
 					{
 						if (_disposed)
 							ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
+
 						if (!_initialized
 							|| version != _version)
 						{

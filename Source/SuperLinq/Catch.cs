@@ -97,7 +97,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
 
-		return Catch(new[] { first, second, });
+		return Catch(new[] { first, second });
 	}
 
 	/// <summary>

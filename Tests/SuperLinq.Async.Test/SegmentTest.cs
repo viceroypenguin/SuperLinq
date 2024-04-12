@@ -65,8 +65,10 @@ public sealed class SegmentTests
 	{
 		await using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
 			Assert.NotEmpty(await sequence.Segment(x => true).FirstAsync());
+
 		await using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
 			Assert.NotEmpty(await sequence.Segment((x, index) => true).FirstAsync());
+
 		await using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
 			Assert.NotEmpty(await sequence.Segment((x, prevX, index) => true).FirstAsync());
 	}
@@ -79,8 +81,10 @@ public sealed class SegmentTests
 	{
 		await using (var sequence = TestingSequence.Of(0))
 			Assert.NotEmpty(await sequence.Segment(BreakingFunc.Of<int, bool>()).FirstAsync());
+
 		await using (var sequence = TestingSequence.Of(0))
 			Assert.NotEmpty(await sequence.Segment(BreakingFunc.Of<int, int, bool>()).FirstAsync());
+
 		await using (var sequence = TestingSequence.Of(0))
 			Assert.NotEmpty(await sequence.Segment(BreakingFunc.Of<int, int, int, bool>()).FirstAsync());
 	}
@@ -133,7 +137,7 @@ public sealed class SegmentTests
             // input sequence do not start with a segment start
             new { Source = AsyncSeq(1, 2, 3, 4, 5),    Expected = AsyncSeq(Seq(1, 2), Seq(3, 4, 5))    },
 		}
-		select new object[] { e.Source, e.Expected, };
+		select new object[] { e.Source, e.Expected };
 
 	[Theory]
 	[MemberData(nameof(TestData))]

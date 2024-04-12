@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -77,7 +77,11 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This method uses deferred execution and streams its results.
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> Do<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask> onNext, Func<ValueTask> onCompleted)
+	public static IAsyncEnumerable<TSource> Do<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, ValueTask> onNext,
+		Func<ValueTask> onCompleted
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(onNext);
@@ -89,7 +93,8 @@ public static partial class AsyncSuperEnumerable
 			IAsyncEnumerable<TSource> source,
 			Func<TSource, ValueTask> onNext,
 			Func<ValueTask> onCompleted,
-			[EnumeratorCancellation] CancellationToken cancellationToken = default)
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			await foreach (var el in source
 				.WithCancellation(cancellationToken)
@@ -116,7 +121,11 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This method uses deferred execution and streams its results.
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> Do<TSource>(this IAsyncEnumerable<TSource> source, Action<TSource> onNext, Action<Exception> onError)
+	public static IAsyncEnumerable<TSource> Do<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		Action<TSource> onNext,
+		Action<Exception> onError
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(onNext);
@@ -138,7 +147,11 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This method uses deferred execution and streams its results.
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> Do<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask> onNext, Func<Exception, ValueTask> onError)
+	public static IAsyncEnumerable<TSource> Do<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, ValueTask> onNext,
+		Func<Exception, ValueTask> onError
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(onNext);
@@ -162,7 +175,12 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This method uses deferred execution and streams its results.
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> Do<TSource>(this IAsyncEnumerable<TSource> source, Action<TSource> onNext, Action<Exception> onError, Action onCompleted)
+	public static IAsyncEnumerable<TSource> Do<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		Action<TSource> onNext,
+		Action<Exception> onError,
+		Action onCompleted
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(onNext);
@@ -187,7 +205,12 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This method uses deferred execution and streams its results.
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> Do<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask> onNext, Func<Exception, ValueTask> onError, Func<ValueTask> onCompleted)
+	public static IAsyncEnumerable<TSource> Do<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, ValueTask> onNext,
+		Func<Exception, ValueTask> onError,
+		Func<ValueTask> onCompleted
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(onNext);
@@ -201,7 +224,8 @@ public static partial class AsyncSuperEnumerable
 			Func<TSource, ValueTask> onNext,
 			Func<Exception, ValueTask> onError,
 			Func<ValueTask> onCompleted,
-			[EnumeratorCancellation] CancellationToken cancellationToken = default)
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			await using var iter = source.GetConfiguredAsyncEnumerator(cancellationToken);
 			while (true)

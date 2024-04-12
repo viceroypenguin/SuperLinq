@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -111,7 +111,12 @@ public static partial class AsyncSuperEnumerable
 	/// The <c>result</c> variable will contain <see langword="false"/>.
 	/// </example>
 
-	public static ValueTask<bool> CountBetween<T>(this IAsyncEnumerable<T> source, int min, int max, CancellationToken cancellationToken = default)
+	public static ValueTask<bool> CountBetween<T>(
+		this IAsyncEnumerable<T> source,
+		int min,
+		int max,
+		CancellationToken cancellationToken = default
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentOutOfRangeException.ThrowIfNegative(min);
@@ -120,7 +125,13 @@ public static partial class AsyncSuperEnumerable
 		return QuantityIterator(source, limit: max + 1, min: min, max: max, cancellationToken);
 	}
 
-	private static async ValueTask<bool> QuantityIterator<T>(IAsyncEnumerable<T> source, int limit, int min, int max, CancellationToken cancellationToken)
+	private static async ValueTask<bool> QuantityIterator<T>(
+		IAsyncEnumerable<T> source,
+		int limit,
+		int min,
+		int max,
+		CancellationToken cancellationToken
+	)
 	{
 		var count = 0;
 		await foreach (var i in source.WithCancellation(cancellationToken).ConfigureAwait(false))
@@ -154,14 +165,22 @@ public static partial class AsyncSuperEnumerable
 	/// The <c>result</c> variable will contain <c>1</c>.
 	/// </example>
 
-	public static ValueTask<int> CompareCount<TFirst, TSecond>(this IAsyncEnumerable<TFirst> first, IAsyncEnumerable<TSecond> second, CancellationToken cancellationToken = default)
+	public static ValueTask<int> CompareCount<TFirst, TSecond>(
+		this IAsyncEnumerable<TFirst> first,
+		IAsyncEnumerable<TSecond> second,
+		CancellationToken cancellationToken = default
+	)
 	{
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
 
 		return Core(first, second, cancellationToken);
 
-		static async ValueTask<int> Core(IAsyncEnumerable<TFirst> first, IAsyncEnumerable<TSecond> second, CancellationToken cancellationToken)
+		static async ValueTask<int> Core(
+			IAsyncEnumerable<TFirst> first,
+			IAsyncEnumerable<TSecond> second,
+			CancellationToken cancellationToken
+		)
 		{
 			bool firstHasNext;
 			bool secondHasNext;

@@ -16,7 +16,7 @@ public static partial class AsyncSuperEnumerable
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
 
-		return OnErrorResumeNext(new[] { first, second, });
+		return OnErrorResumeNext(new[] { first, second });
 	}
 
 	/// <summary>

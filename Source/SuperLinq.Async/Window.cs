@@ -35,6 +35,7 @@ public static partial class AsyncSuperEnumerable
 			{
 				if (!await e.MoveNextAsync())
 					yield break;
+
 				window[i] = e.Current;
 			}
 

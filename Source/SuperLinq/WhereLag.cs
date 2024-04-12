@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -72,7 +72,12 @@ public static partial class SuperEnumerable
 	///	    This operator evaluates in a deferred and streaming manner.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TSource> WhereLag<TSource>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, bool> predicate)
+	public static IEnumerable<TSource> WhereLag<TSource>(
+		this IEnumerable<TSource> source,
+		int offset,
+		TSource defaultLagValue,
+		Func<TSource, TSource, bool> predicate
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);

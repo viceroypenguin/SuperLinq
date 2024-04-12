@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -51,7 +51,10 @@ public static partial class AsyncSuperEnumerable
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
 	/// </exception>
 
-	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
+	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(
+		this IAsyncEnumerable<T> source,
+		Func<T, int, bool> newSegmentPredicate
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
@@ -70,7 +73,10 @@ public static partial class AsyncSuperEnumerable
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
 	/// </exception>
 
-	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, int, ValueTask<bool>> newSegmentPredicate)
+	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(
+		this IAsyncEnumerable<T> source,
+		Func<T, int, ValueTask<bool>> newSegmentPredicate
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
@@ -89,7 +95,10 @@ public static partial class AsyncSuperEnumerable
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
 	/// </exception>
 
-	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
+	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(
+		this IAsyncEnumerable<T> source,
+		Func<T, T, int, bool> newSegmentPredicate
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
@@ -108,14 +117,21 @@ public static partial class AsyncSuperEnumerable
 	/// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
 	/// </exception>
 
-	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(this IAsyncEnumerable<T> source, Func<T, T, int, ValueTask<bool>> newSegmentPredicate)
+	public static IAsyncEnumerable<IReadOnlyList<T>> Segment<T>(
+		this IAsyncEnumerable<T> source,
+		Func<T, T, int, ValueTask<bool>> newSegmentPredicate
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(newSegmentPredicate);
 
 		return Core(source, newSegmentPredicate);
 
-		static async IAsyncEnumerable<IReadOnlyList<T>> Core(IAsyncEnumerable<T> source, Func<T, T, int, ValueTask<bool>> newSegmentPredicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<IReadOnlyList<T>> Core(
+			IAsyncEnumerable<T> source,
+			Func<T, T, int, ValueTask<bool>> newSegmentPredicate,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
 
@@ -135,7 +151,7 @@ public static partial class AsyncSuperEnumerable
 
 				if (await newSegmentPredicate(current, previous, index).ConfigureAwait(false))
 				{
-					yield return segment;              // yield the completed segment
+					yield return segment; // yield the completed segment
 					segment = [current]; // start a new segment
 				}
 				else // not a new segment, append and continue

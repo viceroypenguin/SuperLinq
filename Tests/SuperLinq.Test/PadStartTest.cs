@@ -20,7 +20,7 @@ public sealed class PadStartTest
 	public static IEnumerable<object[]> GetIntSequences() =>
 		Seq(123, 456, 789)
 			.GetAllSequences()
-			.Select(x => new object[] { x, });
+			.Select(x => new object[] { x });
 
 	[Theory]
 	[MemberData(nameof(GetIntSequences))]
@@ -122,7 +122,7 @@ public sealed class PadStartTest
 	public static IEnumerable<object[]> GetCharSequences() =>
 		"hello".AsEnumerable()
 			.GetAllSequences()
-			.Select(x => new object[] { x, });
+			.Select(x => new object[] { x });
 
 	[Theory]
 	[MemberData(nameof(GetCharSequences))]

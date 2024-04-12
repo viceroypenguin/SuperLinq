@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -56,7 +56,10 @@ public static partial class AsyncSuperEnumerable
 
 		return Core(sources);
 
-		static async IAsyncEnumerable<T> Core(IEnumerable<IAsyncEnumerable<T>> sources, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(
+			IEnumerable<IAsyncEnumerable<T>> sources,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			var list = await EnumeratorList<T>.Create(sources, cancellationToken).ConfigureAwait(false);
 			await using var ignored_ = list.ConfigureAwait(false);
@@ -64,9 +67,7 @@ public static partial class AsyncSuperEnumerable
 			while (list.Any())
 			{
 				for (var i = 0; await list.MoveNext(i).ConfigureAwait(false); i++)
-				{
 					yield return list.Current(i);
-				}
 			}
 		}
 	}

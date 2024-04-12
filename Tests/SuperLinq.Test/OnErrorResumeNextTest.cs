@@ -43,7 +43,7 @@ public sealed class OnErrorResumeNextTest
 		using var ts4 = (cnt++ == sequenceNumber ? Enumerable.Range(1, 10) : SeqExceptionAt(5)).AsTestingSequence();
 		using var ts5 = (cnt++ == sequenceNumber ? Enumerable.Range(1, 10) : SeqExceptionAt(5)).AsTestingSequence();
 
-		using var seq = new[] { ts1, ts2, ts3, ts4, ts5, }.AsTestingSequence();
+		using var seq = new[] { ts1, ts2, ts3, ts4, ts5 }.AsTestingSequence();
 
 		var result = seq.OnErrorResumeNext();
 

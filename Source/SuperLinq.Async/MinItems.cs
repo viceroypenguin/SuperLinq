@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -11,7 +11,7 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// <para>
 	/// This operator is a shortcut for <see cref="DensePartialSort{T}(IAsyncEnumerable{T}, int, OrderByDirection)"/> with a
-	/// <c>direction</c> of <see cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>. 
+	/// <c>direction</c> of <see cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>.
 	/// </para>
 	/// <para>
 	/// This operator uses deferred execution and streams it results.
@@ -32,7 +32,7 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// <para>
 	/// This operator is a shortcut for <see cref="DensePartialSort{T}(IAsyncEnumerable{T}, int, IComparer{T}?, OrderByDirection)"/> with a
-	/// <c>count</c> of <c>1</c>. 
+	/// <c>count</c> of <c>1</c>.
 	/// </para>
 	/// <para>
 	/// This operator uses deferred execution and streams it results.
@@ -55,7 +55,7 @@ public static partial class AsyncSuperEnumerable
 	/// <para>
 	/// This operator is a shortcut for <see cref="DensePartialSortBy{TSource, TKey}(IAsyncEnumerable{TSource}, int,
 	/// Func{TSource, TKey}, OrderByDirection)"/> with a <c>direction</c> of <see cref="OrderByDirection.Ascending"/>
-	/// and a <c>count</c> of <c>1</c>. 
+	/// and a <c>count</c> of <c>1</c>.
 	/// </para>
 	/// <para>
 	/// This operator uses deferred execution and streams it results.
@@ -78,13 +78,16 @@ public static partial class AsyncSuperEnumerable
 	/// <para>
 	/// This operator is a shortcut for <see cref="DensePartialSortBy{TSource, TKey}(IAsyncEnumerable{TSource}, int,
 	/// Func{TSource, TKey}, OrderByDirection)"/> with a <c>direction</c> of <see cref="OrderByDirection.Ascending"/>
-	/// and a <c>count</c> of <c>1</c>. 
+	/// and a <c>count</c> of <c>1</c>.
 	/// </para>
 	/// <para>
 	/// This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> MinByWithTies<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+	public static IAsyncEnumerable<TSource> MinByWithTies<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector
+	)
 	{
 		return source.DensePartialSortBy(1, keySelector, OrderByDirection.Ascending);
 	}
@@ -102,13 +105,17 @@ public static partial class AsyncSuperEnumerable
 	/// <para>
 	/// This operator is a shortcut for <see cref="DensePartialSortBy{TSource, TKey}(IAsyncEnumerable{TSource}, int,
 	/// Func{TSource, TKey}, IComparer{TKey}?, OrderByDirection)"/> with a <c>direction</c> of <see
-	/// cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>. 
+	/// cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>.
 	/// </para>
 	/// <para>
 	/// This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> MinItemsBy<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer)
+	public static IAsyncEnumerable<TSource> MinItemsBy<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IComparer<TKey>? comparer
+	)
 	{
 		return source.DensePartialSortBy(1, keySelector, comparer, OrderByDirection.Ascending);
 	}
@@ -126,13 +133,17 @@ public static partial class AsyncSuperEnumerable
 	/// <para>
 	/// This operator is a shortcut for <see cref="DensePartialSortBy{TSource, TKey}(IAsyncEnumerable{TSource}, int,
 	/// Func{TSource, TKey}, IComparer{TKey}?, OrderByDirection)"/> with a <c>direction</c> of <see
-	/// cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>. 
+	/// cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>.
 	/// </para>
 	/// <para>
 	/// This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> MinByWithTies<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer)
+	public static IAsyncEnumerable<TSource> MinByWithTies<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IComparer<TKey>? comparer
+	)
 	{
 		return source.DensePartialSortBy(1, keySelector, comparer, OrderByDirection.Ascending);
 	}

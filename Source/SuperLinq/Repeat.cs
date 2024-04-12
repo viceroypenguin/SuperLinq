@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public partial class SuperEnumerable
 {
@@ -39,7 +39,7 @@ public partial class SuperEnumerable
 	/// <para>
 	///	    This operator uses deferred execution and streams its result. The <paramref name="source"/> sequence is
 	///     cached as the returned <see cref="IEnumerable{T}"/> is enumerated. When <paramref name="source"/> has
-	///     completed, the values from <paramref name="source"/> will be returned again indefinitely. 
+	///     completed, the values from <paramref name="source"/> will be returned again indefinitely.
 	/// </para>
 	/// <para>
 	///	    The cache is maintained separately for each <see cref="IEnumerator{T}"/> generated from the returned <see
@@ -88,7 +88,7 @@ public partial class SuperEnumerable
 	/// <para>
 	///	    This operator uses deferred execution and streams its result. The <paramref name="source"/> sequence is
 	///     cached as the returned <see cref="IEnumerable{T}"/> is enumerated. When <paramref name="source"/> has
-	///     completed, the values from <paramref name="source"/> will be returned again <paramref name="count"/> times. 
+	///     completed, the values from <paramref name="source"/> will be returned again <paramref name="count"/> times.
 	/// </para>
 	/// <para>
 	///	    The cache is maintained separately for each <see cref="IEnumerator{T}"/> generated from the returned <see

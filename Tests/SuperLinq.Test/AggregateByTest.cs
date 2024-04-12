@@ -67,7 +67,7 @@ public sealed class AggregateByTest
 		yield return WrapArgs(
 			source: ["Bob", "bob", "tim", "Bob", "Tim"],
 			keySelector: x => x,
-			seedSelector: x => string.Empty,
+			seedSelector: x => "",
 			func: (x, y) => x + y,
 			comparer: null,
 			expected: new Dictionary<string, string>(StringComparer.Ordinal)
@@ -81,7 +81,7 @@ public sealed class AggregateByTest
 		yield return WrapArgs(
 			source: ["Bob", "bob", "tim", "Bob", "Tim"],
 			keySelector: x => x,
-			seedSelector: x => string.Empty,
+			seedSelector: x => "",
 			func: (x, y) => x + y,
 			StringComparer.OrdinalIgnoreCase,
 			expected: new Dictionary<string, string>(StringComparer.Ordinal)

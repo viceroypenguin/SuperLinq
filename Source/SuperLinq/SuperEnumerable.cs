@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq;
 
@@ -51,6 +51,7 @@ public static partial class SuperEnumerable
 #if NET6_0_OR_GREATER
 		if (!source.TryGetNonEnumeratedCount(out var count))
 			ThrowHelper.ThrowInvalidOperationException("Expected valid non-enumerated count.");
+
 		return count;
 #else
 		return source switch

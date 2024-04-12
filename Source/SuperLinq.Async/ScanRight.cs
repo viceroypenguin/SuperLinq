@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -57,7 +57,10 @@ public static partial class AsyncSuperEnumerable
 	/// This operator uses deferred execution and streams its results.
 	/// Source sequence is consumed greedily when an iteration of the resulting sequence begins.
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> ScanRight<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, ValueTask<TSource>> func)
+	public static IAsyncEnumerable<TSource> ScanRight<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TSource, ValueTask<TSource>> func
+	)
 	{
 		ArgumentNullException.ThrowIfNull(func);
 
@@ -88,14 +91,21 @@ public static partial class AsyncSuperEnumerable
 	/// This operator uses deferred execution and streams its results.
 	/// Source sequence is consumed greedily when an iteration of the resulting sequence begins.
 	/// </remarks>
-	public static IAsyncEnumerable<TSource> ScanRight<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, TSource, CancellationToken, ValueTask<TSource>> func)
+	public static IAsyncEnumerable<TSource> ScanRight<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TSource, CancellationToken, ValueTask<TSource>> func
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(func);
 
 		return Core(source, func);
 
-		static async IAsyncEnumerable<TSource> Core(IAsyncEnumerable<TSource> source, Func<TSource, TSource, CancellationToken, ValueTask<TSource>> func, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TSource> Core(
+			IAsyncEnumerable<TSource> source,
+			Func<TSource, TSource, CancellationToken, ValueTask<TSource>> func,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			var list = await source.ToListAsync(cancellationToken).ConfigureAwait(false);
 
@@ -142,7 +152,11 @@ public static partial class AsyncSuperEnumerable
 	/// This operator uses deferred execution and streams its results.
 	/// Source sequence is consumed greedily when an iteration of the resulting sequence begins.
 	/// </remarks>
-	public static IAsyncEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
+	public static IAsyncEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(
+		this IAsyncEnumerable<TSource> source,
+		TAccumulate seed,
+		Func<TSource, TAccumulate, TAccumulate> func
+	)
 	{
 		ArgumentNullException.ThrowIfNull(func);
 
@@ -174,7 +188,11 @@ public static partial class AsyncSuperEnumerable
 	/// This operator uses deferred execution and streams its results.
 	/// Source sequence is consumed greedily when an iteration of the resulting sequence begins.
 	/// </remarks>
-	public static IAsyncEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, ValueTask<TAccumulate>> func)
+	public static IAsyncEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(
+		this IAsyncEnumerable<TSource> source,
+		TAccumulate seed,
+		Func<TSource, TAccumulate, ValueTask<TAccumulate>> func
+	)
 	{
 		ArgumentNullException.ThrowIfNull(func);
 
@@ -206,14 +224,22 @@ public static partial class AsyncSuperEnumerable
 	/// This operator uses deferred execution and streams its results.
 	/// Source sequence is consumed greedily when an iteration of the resulting sequence begins.
 	/// </remarks>
-	public static IAsyncEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func)
+	public static IAsyncEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(
+		this IAsyncEnumerable<TSource> source,
+		TAccumulate seed,
+		Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(func);
 
 		return Core(source, seed, func);
 
-		static async IAsyncEnumerable<TAccumulate> Core(IAsyncEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TAccumulate> Core(
+			IAsyncEnumerable<TSource> source,
+			TAccumulate seed,
+			Func<TSource, TAccumulate, CancellationToken, ValueTask<TAccumulate>> func,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			var list = await source.ToListAsync(cancellationToken).ConfigureAwait(false);
 

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -29,7 +29,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(
 		this IEnumerable<TSource> source,
-		TSource separator)
+		TSource separator
+	)
 	{
 		return Split(source, separator, count: int.MaxValue);
 	}
@@ -67,7 +68,9 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(
 		this IEnumerable<TSource> source,
-		TSource separator, int count)
+		TSource separator,
+		int count
+	)
 	{
 		return Split(source, separator, count, Identity);
 	}
@@ -106,7 +109,8 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> Split<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		TSource separator,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<IReadOnlyList<TSource>, TResult> resultSelector
+	)
 	{
 		return Split(source, separator, count: int.MaxValue, resultSelector);
 	}
@@ -152,7 +156,8 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> Split<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		TSource separator, int count,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<IReadOnlyList<TSource>, TResult> resultSelector
+	)
 	{
 		return Split(source, separator, comparer: null, count, resultSelector);
 	}
@@ -187,7 +192,9 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(
 		this IEnumerable<TSource> source,
-		TSource separator, IEqualityComparer<TSource>? comparer)
+		TSource separator,
+		IEqualityComparer<TSource>? comparer
+	)
 	{
 		return Split(source, separator, comparer, count: int.MaxValue);
 	}
@@ -229,7 +236,10 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(
 		this IEnumerable<TSource> source,
-		TSource separator, IEqualityComparer<TSource>? comparer, int count)
+		TSource separator,
+		IEqualityComparer<TSource>? comparer,
+		int count
+	)
 	{
 		return Split(source, separator, comparer, count, Identity);
 	}
@@ -272,7 +282,8 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> Split<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		TSource separator, IEqualityComparer<TSource> comparer,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<IReadOnlyList<TSource>, TResult> resultSelector
+	)
 	{
 		return Split(source, separator, comparer, count: int.MaxValue, resultSelector);
 	}
@@ -321,7 +332,8 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> Split<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		TSource separator, IEqualityComparer<TSource>? comparer, int count,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<IReadOnlyList<TSource>, TResult> resultSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
@@ -358,7 +370,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(
 		this IEnumerable<TSource> source,
-		Func<TSource, bool> separatorFunc)
+		Func<TSource, bool> separatorFunc
+	)
 	{
 		return Split(source, separatorFunc, count: int.MaxValue);
 	}
@@ -396,7 +409,9 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(
 		this IEnumerable<TSource> source,
-		Func<TSource, bool> separatorFunc, int count)
+		Func<TSource, bool> separatorFunc,
+		int count
+	)
 	{
 		return Split(source, separatorFunc, count, Identity);
 	}
@@ -437,7 +452,8 @@ public static partial class SuperEnumerable
 	public static IEnumerable<TResult> Split<TSource, TResult>(
 		this IEnumerable<TSource> source,
 		Func<TSource, bool> separatorFunc,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<IReadOnlyList<TSource>, TResult> resultSelector
+	)
 	{
 		return Split(source, separatorFunc, count: int.MaxValue, resultSelector);
 	}
@@ -483,8 +499,10 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<TResult> Split<TSource, TResult>(
 		this IEnumerable<TSource> source,
-		Func<TSource, bool> separatorFunc, int count,
-		Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		Func<TSource, bool> separatorFunc,
+		int count,
+		Func<IReadOnlyList<TSource>, TResult> resultSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(separatorFunc);
@@ -493,7 +511,12 @@ public static partial class SuperEnumerable
 
 		return Core(source, separatorFunc, count, resultSelector);
 
-		static IEnumerable<TResult> Core(IEnumerable<TSource> source, Func<TSource, bool> separatorFunc, int count, Func<IReadOnlyList<TSource>, TResult> resultSelector)
+		static IEnumerable<TResult> Core(
+			IEnumerable<TSource> source,
+			Func<TSource, bool> separatorFunc,
+			int count,
+			Func<IReadOnlyList<TSource>, TResult> resultSelector
+		)
 		{
 			var items = new List<TSource>();
 

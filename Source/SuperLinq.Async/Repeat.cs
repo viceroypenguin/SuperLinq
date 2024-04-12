@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public partial class AsyncSuperEnumerable
 {
@@ -35,9 +35,11 @@ public partial class AsyncSuperEnumerable
 			await using var buffer = source.Memoize();
 			while (true)
 			{
-				await foreach (var el in buffer
+				await foreach (var el in
+					buffer
 						.WithCancellation(cancellationToken)
-						.ConfigureAwait(false))
+						.ConfigureAwait(false)
+				)
 				{
 					yield return el;
 				}
@@ -71,9 +73,11 @@ public partial class AsyncSuperEnumerable
 			await using var buffer = source.Memoize();
 			while (count-- > 0)
 			{
-				await foreach (var el in buffer
+				await foreach (var el in
+					buffer
 						.WithCancellation(cancellationToken)
-						.ConfigureAwait(false))
+						.ConfigureAwait(false)
+				)
 				{
 					yield return el;
 				}

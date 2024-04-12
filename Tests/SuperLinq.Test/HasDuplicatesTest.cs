@@ -12,9 +12,9 @@ public sealed class HasDuplicatesTest
 	}
 
 	[Theory]
-	[InlineData(new int[] { 1, 2, 3, }, false)]
-	[InlineData(new int[] { 1, 2, 1, 3, 1, 2, 1, }, true)]
-	[InlineData(new int[] { 3, 3, 2, 2, 1, 1, }, true)]
+	[InlineData(new int[] { 1, 2, 3 }, false)]
+	[InlineData(new int[] { 1, 2, 1, 3, 1, 2, 1 }, true)]
+	[InlineData(new int[] { 3, 3, 2, 2, 1, 1 }, true)]
 	public void DuplicatesBehavior(IEnumerable<int> source, bool expected)
 	{
 		using var ts = source.AsTestingSequence();

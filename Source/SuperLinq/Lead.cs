@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -73,7 +73,11 @@ public static partial class SuperEnumerable
 	///	    This operator evaluates in a deferred and streaming manner.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
+	public static IEnumerable<TResult> Lead<TSource, TResult>(
+		this IEnumerable<TSource> source,
+		int offset,
+		Func<TSource, TSource?, TResult> resultSelector
+	)
 	{
 		return source.Lead(offset, default!, resultSelector);
 	}
@@ -118,7 +122,12 @@ public static partial class SuperEnumerable
 	///	    This operator evaluates in a deferred and streaming manner.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
+	public static IEnumerable<TResult> Lead<TSource, TResult>(
+		this IEnumerable<TSource> source,
+		int offset,
+		TSource defaultLeadValue,
+		Func<TSource, TSource, TResult> resultSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
@@ -129,7 +138,12 @@ public static partial class SuperEnumerable
 
 		return Core(source, offset, defaultLeadValue, resultSelector);
 
-		static IEnumerable<TResult> Core(IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
+		static IEnumerable<TResult> Core(
+			IEnumerable<TSource> source,
+			int offset,
+			TSource defaultLeadValue,
+			Func<TSource, TSource, TResult> resultSelector
+		)
 		{
 			var queue = new Queue<TSource>(offset + 1);
 
@@ -159,9 +173,12 @@ public static partial class SuperEnumerable
 			var cnt = (uint)source.Count;
 			var maxOffset = Math.Max(source.Count - offset, 0);
 			for (var i = 0; i < cnt; i++)
+			{
 				yield return resultSelector(
 					source[i],
-					i < maxOffset ? source[i + offset] : defaultLeadValue);
+					i < maxOffset ? source[i + offset] : defaultLeadValue
+				);
+			}
 		}
 
 		protected override TResult ElementAt(int index)

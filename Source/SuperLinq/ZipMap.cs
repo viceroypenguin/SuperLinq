@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -30,7 +30,10 @@ public static partial class SuperEnumerable
 	///		This operator uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<(TSource item, TResult result)> ZipMap<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+	public static IEnumerable<(TSource item, TResult result)> ZipMap<TSource, TResult>(
+		this IEnumerable<TSource> source,
+		Func<TSource, TResult> selector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(selector);

@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq;
 
@@ -110,13 +110,13 @@ public static partial class SuperEnumerable
 	/// <param name="source">
 	///	    Source sequence.
 	/// </param>
+	/// <param name="seed">
+	///	    The initial accumulator value.
+	///	</param>
 	/// <param name="func">
 	///	    A right-associative accumulator function to be invoked on each element. Its first argument is the current
 	///     value in the sequence; second argument is the previous accumulator value.
 	/// </param>
-	/// <param name="seed">
-	///	    The initial accumulator value.
-	///	</param>
 	/// <returns>
 	///	    The scanned sequence.
 	/// </returns>
@@ -129,7 +129,11 @@ public static partial class SuperEnumerable
 	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
+	public static IEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(
+		this IEnumerable<TSource> source,
+		TAccumulate seed,
+		Func<TSource, TAccumulate, TAccumulate> func
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(func);

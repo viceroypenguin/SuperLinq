@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq.Collections;
 
@@ -23,9 +23,9 @@ internal sealed class NullKeyDictionary<TKey, TValue> : Dictionary<ValueTuple<TK
 		set => this[ValueTuple.Create(key)] = value;
 	}
 
-	public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
-		=> this.TryGetValue(ValueTuple.Create(key), out value);
+	public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value) =>
+		TryGetValue(ValueTuple.Create(key), out value);
 
-	public bool Remove(TKey key)
-		=> this.Remove(ValueTuple.Create(key));
+	public bool Remove(TKey key) =>
+		Remove(ValueTuple.Create(key));
 }

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -185,7 +185,11 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="cancellationToken"></param>
 	/// <returns>An infinite sequence of random numbers of type T</returns>
 #pragma warning disable CS1998
-	private static async IAsyncEnumerable<T> RandomImpl<T>(Random rand, Func<Random, T> nextValue, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+	private static async IAsyncEnumerable<T> RandomImpl<T>(
+		Random rand,
+		Func<Random, T> nextValue,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default
+	)
 	{
 		while (true)
 		{

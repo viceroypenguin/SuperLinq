@@ -46,16 +46,16 @@ public sealed class ElementAtTest
 	[Fact]
 	public async Task FromStartIndexString()
 	{
-		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", string.Empty);
+		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "");
 
-		Assert.Equal(string.Empty, await q.ElementAtAsync(new Index(3)));
-		Assert.Equal(string.Empty, await q.ElementAtOrDefaultAsync(new Index(3)));
+		Assert.Equal("", await q.ElementAtAsync(new Index(3)));
+		Assert.Equal("", await q.ElementAtOrDefaultAsync(new Index(3)));
 	}
 
 	[Fact]
 	public async Task FromStartIndexOutOfRangeString()
 	{
-		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", string.Empty);
+		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "");
 
 		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await q.ElementAtAsync(new Index(10)));
@@ -65,16 +65,16 @@ public sealed class ElementAtTest
 	[Fact]
 	public async Task FromEndIndexString()
 	{
-		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", string.Empty);
+		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "");
 
-		Assert.Equal(string.Empty, await q.ElementAtAsync(^4));
-		Assert.Equal(string.Empty, await q.ElementAtOrDefaultAsync(^4));
+		Assert.Equal("", await q.ElementAtAsync(^4));
+		Assert.Equal("", await q.ElementAtOrDefaultAsync(^4));
 	}
 
 	[Fact]
 	public async Task FromEndIndexOutOfRangeString()
 	{
-		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", string.Empty);
+		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "");
 
 		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await q.ElementAtAsync(^10));

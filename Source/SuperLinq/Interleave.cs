@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq;
 
@@ -81,9 +81,7 @@ public static partial class SuperEnumerable
 		while (list.Any())
 		{
 			for (var i = 0; list.MoveNext(i); i++)
-			{
 				yield return list.Current(i);
-			}
 		}
 	}
 

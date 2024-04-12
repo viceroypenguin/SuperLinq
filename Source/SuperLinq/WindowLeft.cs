@@ -159,6 +159,7 @@ skipLoop:
 				var max = (uint)source.Count;
 				for (int i = 0, j = index; i < arr.Length && j < max; i++, j++)
 					arr[i] = source[j];
+
 				return arr;
 			}
 		}

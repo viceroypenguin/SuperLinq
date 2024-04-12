@@ -169,12 +169,12 @@ public sealed class TestingSequenceTest
 		{
 			using (enumerable.GetEnumerator())
 				yield return 1;
+
 			using (enumerable.GetEnumerator())
 				yield return 2;
+
 			using (enumerable.GetEnumerator())
 				yield return 3;
-
-			yield break;
 		}
 
 		static void Act()
@@ -236,9 +236,8 @@ public sealed class TestingSequenceTest
 			using var enumerator = enumerable.GetEnumerator();
 			while (enumerator.MoveNext())
 				yield return enumerator.Current;
-			_ = enumerator.MoveNext();
 
-			yield break;
+			_ = enumerator.MoveNext();
 		}
 
 		static void Act()
@@ -258,8 +257,6 @@ public sealed class TestingSequenceTest
 			var enumerator = enumerable.GetEnumerator();
 			enumerator.Dispose();
 			yield return enumerator.Current;
-
-			yield break;
 		}
 
 		static void Act()
@@ -279,9 +276,8 @@ public sealed class TestingSequenceTest
 			using var enumerator = enumerable.GetEnumerator();
 			while (enumerator.MoveNext())
 				yield return enumerator.Current;
-			yield return enumerator.Current;
 
-			yield break;
+			yield return enumerator.Current;
 		}
 
 		static void Act()

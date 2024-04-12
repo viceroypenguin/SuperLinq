@@ -14,7 +14,7 @@ public sealed class CatchTest
 	[Fact]
 	public async Task CatchThrowsDelayedExceptionOnNullSource()
 	{
-		var seq = AsyncSuperEnumerable.Catch(new IAsyncEnumerable<int>[] { null!, });
+		var seq = AsyncSuperEnumerable.Catch(new IAsyncEnumerable<int>[] { null! });
 		_ = await Assert.ThrowsAsync<ArgumentNullException>(async () =>
 			await seq.Consume());
 	}
@@ -88,7 +88,7 @@ public sealed class CatchTest
 		await using var ts4 = (cnt++ == sequenceNumber ? AsyncEnumerable.Range(1, 10) : AsyncSeqExceptionAt(5)).AsTestingSequence();
 		await using var ts5 = (cnt++ == sequenceNumber ? AsyncEnumerable.Range(1, 10) : AsyncSeqExceptionAt(5)).AsTestingSequence();
 
-		await using var seq = new[] { ts1, ts2, ts3, ts4, ts5, }.AsTestingSequence();
+		await using var seq = new[] { ts1, ts2, ts3, ts4, ts5 }.AsTestingSequence();
 
 		var result = seq.Catch();
 

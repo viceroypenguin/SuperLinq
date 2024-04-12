@@ -46,7 +46,8 @@ public partial class SuperEnumerable
 			{
 				foreach (var item in memo)
 					yield return item;
-			} while (condition());
+			}
+			while (condition());
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -52,7 +52,11 @@ public static partial class AsyncSuperEnumerable
 
 		return Core(initial, generator);
 
-		static async IAsyncEnumerable<TResult> Core(TResult current, Func<TResult, CancellationToken, ValueTask<TResult>> generator, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TResult> Core(
+			TResult current,
+			Func<TResult, CancellationToken, ValueTask<TResult>> generator,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			while (true)
 			{

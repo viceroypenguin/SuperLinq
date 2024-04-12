@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -73,7 +73,11 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	///	    This operator executes immediately.
 	/// </remarks>
-	public static TAccumulate AggregateRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
+	public static TAccumulate AggregateRight<TSource, TAccumulate>(
+		this IEnumerable<TSource> source,
+		TAccumulate seed,
+		Func<TSource, TAccumulate, TAccumulate> func
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(func);
@@ -124,7 +128,12 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	///	    This operator executes immediately.
 	/// </remarks>
-	public static TResult AggregateRight<TSource, TAccumulate, TResult>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func, Func<TAccumulate, TResult> resultSelector)
+	public static TResult AggregateRight<TSource, TAccumulate, TResult>(
+		this IEnumerable<TSource> source,
+		TAccumulate seed,
+		Func<TSource, TAccumulate, TAccumulate> func,
+		Func<TAccumulate, TResult> resultSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(func);

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -65,9 +65,9 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
 
-		if (first.TryGetCollectionCount() is int firstCount &&
-			second.TryGetCollectionCount() is int secondCount &&
-			secondCount > firstCount)
+		if (first.TryGetCollectionCount() is int firstCount
+			&& second.TryGetCollectionCount() is int secondCount
+			&& secondCount > firstCount)
 		{
 			return false;
 		}

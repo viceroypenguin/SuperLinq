@@ -124,7 +124,7 @@ public sealed class InterleaveTests
 		await using var sequenceE = TestingSequence.Of(4, 7, 10, 13, 15, 17);
 
 		var iterations = 0;
-		var sequences = new[] { sequenceA, sequenceB, sequenceC, sequenceD, sequenceE, }
+		var sequences = new[] { sequenceA, sequenceB, sequenceC, sequenceD, sequenceE }
 			.Do<IAsyncEnumerable<int>>(_ => iterations++);
 		var result = sequences.Interleave();
 

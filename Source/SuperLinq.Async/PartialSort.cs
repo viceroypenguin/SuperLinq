@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -22,7 +22,10 @@ public static partial class AsyncSuperEnumerable
 	/// This operator uses deferred execution and streams it results.
 	/// </para>
 	/// </remarks>
-	public static IAsyncEnumerable<T> PartialSort<T>(this IAsyncEnumerable<T> source, int count)
+	public static IAsyncEnumerable<T> PartialSort<T>(
+		this IAsyncEnumerable<T> source,
+		int count
+	)
 	{
 		return source.PartialSort(count, comparer: null);
 	}
@@ -49,7 +52,10 @@ public static partial class AsyncSuperEnumerable
 	/// </para>
 	/// </remarks>
 	public static IAsyncEnumerable<T> PartialSort<T>(
-		this IAsyncEnumerable<T> source, int count, OrderByDirection direction)
+		this IAsyncEnumerable<T> source,
+		int count,
+		OrderByDirection direction
+	)
 	{
 		return source.PartialSort(count, comparer: null, direction);
 	}
@@ -77,7 +83,9 @@ public static partial class AsyncSuperEnumerable
 	/// </remarks>
 	public static IAsyncEnumerable<T> PartialSort<T>(
 		this IAsyncEnumerable<T> source,
-		int count, IComparer<T>? comparer)
+		int count,
+		IComparer<T>? comparer
+	)
 	{
 		return PartialSort(source, count, comparer, OrderByDirection.Ascending);
 	}
@@ -105,8 +113,11 @@ public static partial class AsyncSuperEnumerable
 	/// </para>
 	/// </remarks>
 	public static IAsyncEnumerable<T> PartialSort<T>(
-		this IAsyncEnumerable<T> source, int count,
-		IComparer<T>? comparer, OrderByDirection direction)
+		this IAsyncEnumerable<T> source,
+		int count,
+		IComparer<T>? comparer,
+		OrderByDirection direction
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
@@ -117,7 +128,12 @@ public static partial class AsyncSuperEnumerable
 
 		return Core(source, count, comparer);
 
-		static async IAsyncEnumerable<T> Core(IAsyncEnumerable<T> source, int count, IComparer<T> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<T> Core(
+			IAsyncEnumerable<T> source,
+			int count,
+			IComparer<T> comparer,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			var top = new SortedSet<(T item, int index)>(
 				ValueTupleComparer.Create<T, int>(comparer, default));
@@ -153,8 +169,8 @@ public static partial class AsyncSuperEnumerable
 	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
 	/// <typeparam name="TKey">Type of keys.</typeparam>
 	/// <param name="source">The source sequence.</param>
-	/// <param name="keySelector">A function to extract a key from an element.</param>
 	/// <param name="count">Number of (maximum) elements to return.</param>
+	/// <param name="keySelector">A function to extract a key from an element.</param>
 	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in ascending order of
 	/// their keys.</returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
@@ -183,8 +199,8 @@ public static partial class AsyncSuperEnumerable
 	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
 	/// <typeparam name="TKey">Type of keys.</typeparam>
 	/// <param name="source">The source sequence.</param>
-	/// <param name="keySelector">A function to extract a key from an element.</param>
 	/// <param name="count">Number of (maximum) elements to return.</param>
+	/// <param name="keySelector">A function to extract a key from an element.</param>
 	/// <param name="direction">The direction in which to sort the elements</param>
 	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in the specified order
 	/// of their keys.</returns>
@@ -200,8 +216,11 @@ public static partial class AsyncSuperEnumerable
 	/// </para>
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> PartialSortBy<TSource, TKey>(
-		this IAsyncEnumerable<TSource> source, int count,
-		Func<TSource, TKey> keySelector, OrderByDirection direction)
+		this IAsyncEnumerable<TSource> source,
+		int count,
+		Func<TSource, TKey> keySelector,
+		OrderByDirection direction
+	)
 	{
 		return source.PartialSortBy(count, keySelector, comparer: null, direction);
 	}
@@ -214,8 +233,8 @@ public static partial class AsyncSuperEnumerable
 	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
 	/// <typeparam name="TKey">Type of keys.</typeparam>
 	/// <param name="source">The source sequence.</param>
-	/// <param name="keySelector">A function to extract a key from an element.</param>
 	/// <param name="count">Number of (maximum) elements to return.</param>
+	/// <param name="keySelector">A function to extract a key from an element.</param>
 	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
 	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in ascending order of
 	/// their keys.</returns>
@@ -231,9 +250,11 @@ public static partial class AsyncSuperEnumerable
 	/// </para>
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> PartialSortBy<TSource, TKey>(
-		this IAsyncEnumerable<TSource> source, int count,
+		this IAsyncEnumerable<TSource> source,
+		int count,
 		Func<TSource, TKey> keySelector,
-		IComparer<TKey>? comparer)
+		IComparer<TKey>? comparer
+	)
 	{
 		return PartialSortBy(source, count, keySelector, comparer, OrderByDirection.Ascending);
 	}
@@ -247,8 +268,8 @@ public static partial class AsyncSuperEnumerable
 	/// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
 	/// <typeparam name="TKey">Type of keys.</typeparam>
 	/// <param name="source">The source sequence.</param>
-	/// <param name="keySelector">A function to extract a key from an element.</param>
 	/// <param name="count">Number of (maximum) elements to return.</param>
+	/// <param name="keySelector">A function to extract a key from an element.</param>
 	/// <param name="comparer">A <see cref="IComparer{T}"/> to compare elements.</param>
 	/// <param name="direction">The direction in which to sort the elements</param>
 	/// <returns>A sequence containing at most top <paramref name="count"/> elements from source, in the specified order
@@ -268,7 +289,8 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<TSource> source, int count,
 		Func<TSource, TKey> keySelector,
 		IComparer<TKey>? comparer,
-		OrderByDirection direction)
+		OrderByDirection direction
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
@@ -280,10 +302,17 @@ public static partial class AsyncSuperEnumerable
 
 		return Core(source, count, keySelector, comparer);
 
-		static async IAsyncEnumerable<TSource> Core(IAsyncEnumerable<TSource> source, int count, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TSource> Core(
+			IAsyncEnumerable<TSource> source,
+			int count,
+			Func<TSource, TKey> keySelector,
+			IComparer<TKey> comparer,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			var top = new SortedSet<(TKey Key, int Index)>(
 				ValueTupleComparer.Create<TKey, int>(comparer, default));
+
 			var dic = new Dictionary<(TKey Key, int Index), TSource>(count);
 
 			var index = 0;

@@ -173,8 +173,7 @@ public static partial class SuperEnumerable
 		if (expressions.Length == 0)
 		{
 			return typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
-				.Where(m =>
-					m.MemberType == MemberTypes.Field
+				.Where(m => m.MemberType == MemberTypes.Field
 					|| (m is PropertyInfo { CanRead: true } p && p.GetIndexParameters().Length == 0)
 				);
 		}
@@ -187,14 +186,14 @@ public static partial class SuperEnumerable
 
 					// If it's a field access, boxing was used, we need the field
 					if (body.NodeType is ExpressionType.Convert or ExpressionType.ConvertChecked)
-					{
 						body = ((UnaryExpression)body).Operand;
-					}
 
 					// Check if the member expression is valid and is a "first level"
 					// member access e.g. not a.b.c
-					if (body is not MemberExpression me
-						|| me.Expression?.NodeType != ExpressionType.Parameter)
+					if (
+						body is not MemberExpression me
+						|| me.Expression?.NodeType != ExpressionType.Parameter
+					)
 					{
 						return ThrowHelper.ThrowArgumentException<MemberInfo>(nameof(lambda), $"Illegal expression: {lambda}");
 					}
@@ -259,10 +258,20 @@ public static partial class SuperEnumerable
 				var column = info.Column;
 
 				if (column is null)
-					ThrowHelper.ThrowArgumentException(nameof(table), $"Column named '{member.Name}' is missing.");
+				{
+					ThrowHelper.ThrowArgumentException(
+						nameof(table),
+						$"Column named '{member.Name}' is missing."
+					);
+				}
 
 				if (info.Type != column.DataType)
-					ThrowHelper.ThrowArgumentException(nameof(table), $"Column named '{member.Name}' has wrong data type. It should be {info.Type} when it is {column.DataType}.");
+				{
+					ThrowHelper.ThrowArgumentException(
+						nameof(table),
+						$"Column named '{member.Name}' has wrong data type. It should be {info.Type} when it is {column.DataType}."
+					);
+				}
 
 				members[column.Ordinal] = member;
 			}

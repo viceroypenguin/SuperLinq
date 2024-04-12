@@ -14,7 +14,7 @@ public sealed class CatchTest
 	[Fact]
 	public void CatchThrowsDelayedExceptionOnNullSource()
 	{
-		var seq = SuperEnumerable.Catch(new IEnumerable<int>[] { null!, });
+		var seq = SuperEnumerable.Catch(new IEnumerable<int>[] { null! });
 		_ = Assert.Throws<ArgumentNullException>(seq.Consume);
 	}
 
@@ -87,7 +87,7 @@ public sealed class CatchTest
 		using var ts4 = (cnt++ == sequenceNumber ? Enumerable.Range(1, 10) : SeqExceptionAt(5)).AsTestingSequence();
 		using var ts5 = (cnt++ == sequenceNumber ? Enumerable.Range(1, 10) : SeqExceptionAt(5)).AsTestingSequence();
 
-		using var seq = new[] { ts1, ts2, ts3, ts4, ts5, }.AsTestingSequence();
+		using var seq = new[] { ts1, ts2, ts3, ts4, ts5 }.AsTestingSequence();
 
 		var result = seq.Catch();
 

@@ -41,9 +41,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			const int MagicValue = 34;
 			var seed = count * MagicValue;
 			for (var i = 0; i < count; i++)
-			{
 				yield return CreateT(seed++);
-			}
 		}
 
 		protected UpdatablePriorityQueue<TElement, TPriority> CreateEmptyUpdatablePriorityQueue(int initialCapacity = 0)
@@ -126,9 +124,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			var queue = CreateEmptyUpdatablePriorityQueue();
 
 			foreach ((var element, var priority) in itemsToEnqueue)
-			{
 				queue.Enqueue(element, priority);
-			}
 
 			queue.UnorderedItems.AssertCollectionEqual(itemsToEnqueue);
 		}
@@ -144,9 +140,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			foreach (var (element, priority) in itemsToEnqueue)
 			{
 				if (queue.Comparer.Compare(priority, minItem.Priority) < 0)
-				{
 					minItem = (element, priority);
-				}
 
 				queue.Enqueue(element, priority);
 
@@ -212,9 +206,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			queue.EnqueueRange(itemsToEnqueue.Take(count));
 
 			foreach ((var element, var priority) in itemsToEnqueue.Skip(count))
-			{
 				_ = queue.EnqueueDequeue(element, priority);
-			}
 
 			var expectedItems = itemsToEnqueue.OrderByDescending(x => x.Priority, queue.Comparer).Take(count);
 			queue.UnorderedItems.AssertCollectionEqual(expectedItems, comparer: GetNodeComparer());
@@ -317,9 +309,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 		{
 			var pq = new UpdatablePriorityQueue<int, int>(initialCapacity);
 			for (var i = 0; i < count; i++)
-			{
 				pq.Enqueue(i, i);
-			}
 
 			return pq;
 		}

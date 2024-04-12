@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -22,7 +22,11 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static ValueTask<int> CopyTo<TSource>(this IAsyncEnumerable<TSource> source, IList<TSource> list, CancellationToken cancellationToken = default)
+	public static ValueTask<int> CopyTo<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		IList<TSource> list,
+		CancellationToken cancellationToken = default
+	)
 	{
 		return source.CopyTo(list, 0, cancellationToken);
 	}
@@ -49,7 +53,12 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static async ValueTask<int> CopyTo<TSource>(this IAsyncEnumerable<TSource> source, IList<TSource> list, int index, CancellationToken cancellationToken = default)
+	public static async ValueTask<int> CopyTo<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		IList<TSource> list,
+		int index,
+		CancellationToken cancellationToken = default
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(list);
@@ -72,6 +81,7 @@ public static partial class AsyncSuperEnumerable
 					list[i] = el;
 				else
 					list.Add(el);
+
 				i++;
 			}
 

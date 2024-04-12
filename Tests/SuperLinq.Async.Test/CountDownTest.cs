@@ -36,7 +36,7 @@ public sealed class CountDownTest
 			Count = count,
 			Countdown = countdown,
 		})
-		select new object[] { e.Source, e.Count, e.Source.Zip(e.Countdown, ValueTuple.Create), };
+		select new object[] { e.Source, e.Count, e.Source.Zip(e.Countdown, ValueTuple.Create) };
 
 	[Theory, MemberData(nameof(SequenceData))]
 	public async Task WithSequence(int[] xs, int count, IEnumerable<(int, int?)> expected)

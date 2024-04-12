@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -73,7 +73,11 @@ public static partial class SuperEnumerable
 	///	    This operator evaluates in a deferred and streaming manner.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
+	public static IEnumerable<TResult> Lag<TSource, TResult>(
+		this IEnumerable<TSource> source,
+		int offset,
+		Func<TSource, TSource?, TResult> resultSelector
+	)
 	{
 		return source.Lag(offset, default!, resultSelector);
 	}
@@ -116,7 +120,12 @@ public static partial class SuperEnumerable
 	///	    This operator evaluates in a deferred and streaming manner.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
+	public static IEnumerable<TResult> Lag<TSource, TResult>(
+		this IEnumerable<TSource> source,
+		int offset,
+		TSource defaultLagValue,
+		Func<TSource, TSource, TResult> resultSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(resultSelector);
@@ -127,7 +136,12 @@ public static partial class SuperEnumerable
 
 		return Core(source, offset, defaultLagValue, resultSelector);
 
-		static IEnumerable<TResult> Core(IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
+		static IEnumerable<TResult> Core(
+			IEnumerable<TSource> source,
+			int offset,
+			TSource defaultLagValue,
+			Func<TSource, TSource, TResult> resultSelector
+		)
 		{
 			var lagQueue = new Queue<TSource>(offset + 1);
 			foreach (var item in source)
@@ -153,9 +167,11 @@ public static partial class SuperEnumerable
 		{
 			var cnt = (uint)source.Count;
 			for (var i = 0; i < cnt; i++)
+			{
 				yield return resultSelector(
 					source[i],
 					i < offset ? defaultLagValue : source[i - offset]);
+			}
 		}
 
 		protected override TResult ElementAt(int index)

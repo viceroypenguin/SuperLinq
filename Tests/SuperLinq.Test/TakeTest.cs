@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 namespace Test;
@@ -39,7 +39,7 @@ public sealed class TakeTest
 	[Fact]
 	public void SameResultsRepeatCallsStringQuery()
 	{
-		var q = from x in new[] { "!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", string.Empty }
+		var q = from x in new[] { "!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "" }
 				where !string.IsNullOrEmpty(x)
 				select x;
 
@@ -54,7 +54,7 @@ public sealed class TakeTest
 	[Fact]
 	public void SameResultsRepeatCallsStringQueryIList()
 	{
-		var q = (from x in new[] { "!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", string.Empty }
+		var q = (from x in new[] { "!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "" }
 				 where !string.IsNullOrEmpty(x)
 				 select x).ToList();
 
@@ -959,8 +959,9 @@ public sealed class TakeTest
 	[InlineData(10, 100, 90)]
 	public void CountOfLazySkipTakeChain(int skip, int take, int expected)
 	{
-		var totalCount = 100;
-		var partition1 = Enumerable.Range(1, totalCount).Skip(skip).Take(take);
+		const int TotalCount = 100;
+
+		var partition1 = Enumerable.Range(1, TotalCount).Skip(skip).Take(take);
 		Assert.Equal(expected, partition1.Count());
 		Assert.Equal(expected, partition1.Select(SuperEnumerable.Identity).Count());
 		Assert.Equal(expected, partition1.Select(SuperEnumerable.Identity).ToArray().Length);
@@ -975,22 +976,22 @@ public sealed class TakeTest
 			end = int.MaxValue;
 		}
 
-		var partition2 = Enumerable.Range(1, totalCount).Take(skip..end);
+		var partition2 = Enumerable.Range(1, TotalCount).Take(skip..end);
 		Assert.Equal(expected, partition2.Count());
 		Assert.Equal(expected, partition2.Select(SuperEnumerable.Identity).Count());
 		Assert.Equal(expected, partition2.Select(SuperEnumerable.Identity).ToArray().Length);
 
-		var partition3 = Enumerable.Range(1, totalCount).Take(^Math.Max(totalCount - skip, 0)..end);
+		var partition3 = Enumerable.Range(1, TotalCount).Take(^Math.Max(TotalCount - skip, 0)..end);
 		Assert.Equal(expected, partition3.Count());
 		Assert.Equal(expected, partition3.Select(SuperEnumerable.Identity).Count());
 		Assert.Equal(expected, partition3.Select(SuperEnumerable.Identity).ToArray().Length);
 
-		var partition4 = Enumerable.Range(1, totalCount).Take(skip..^Math.Max(totalCount - end, 0));
+		var partition4 = Enumerable.Range(1, TotalCount).Take(skip..^Math.Max(TotalCount - end, 0));
 		Assert.Equal(expected, partition4.Count());
 		Assert.Equal(expected, partition4.Select(SuperEnumerable.Identity).Count());
 		Assert.Equal(expected, partition4.Select(SuperEnumerable.Identity).ToArray().Length);
 
-		var partition5 = Enumerable.Range(1, totalCount).Take(^Math.Max(totalCount - skip, 0)..^Math.Max(totalCount - end, 0));
+		var partition5 = Enumerable.Range(1, TotalCount).Take(^Math.Max(TotalCount - skip, 0)..^Math.Max(TotalCount - end, 0));
 		Assert.Equal(expected, partition5.Count());
 		Assert.Equal(expected, partition5.Select(SuperEnumerable.Identity).Count());
 		Assert.Equal(expected, partition5.Select(SuperEnumerable.Identity).ToArray().Length);
@@ -1062,9 +1063,7 @@ public sealed class TakeTest
 
 		Assert.Equal(indices.Length, expectedValues.Length);
 		for (var i = 0; i < indices.Length; i++)
-		{
 			Assert.Equal(expectedValues[i], partition1.ElementAtOrDefault(indices[i]));
-		}
 
 		int end;
 		try
@@ -1078,27 +1077,19 @@ public sealed class TakeTest
 
 		var partition2 = ForceNotCollection(source).Take(skip..end);
 		for (var i = 0; i < indices.Length; i++)
-		{
 			Assert.Equal(expectedValues[i], partition2.ElementAtOrDefault(indices[i]));
-		}
 
 		var partition3 = ForceNotCollection(source).Take(^Math.Max(source.Length - skip, 0)..end);
 		for (var i = 0; i < indices.Length; i++)
-		{
 			Assert.Equal(expectedValues[i], partition3.ElementAtOrDefault(indices[i]));
-		}
 
 		var partition4 = ForceNotCollection(source).Take(skip..^Math.Max(source.Length - end, 0));
 		for (var i = 0; i < indices.Length; i++)
-		{
 			Assert.Equal(expectedValues[i], partition4.ElementAtOrDefault(indices[i]));
-		}
 
 		var partition5 = ForceNotCollection(source).Take(^Math.Max(source.Length - skip, 0)..^Math.Max(source.Length - end, 0));
 		for (var i = 0; i < indices.Length; i++)
-		{
 			Assert.Equal(expectedValues[i], partition5.ElementAtOrDefault(indices[i]));
-		}
 	}
 
 	[Fact]

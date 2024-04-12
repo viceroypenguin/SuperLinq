@@ -33,9 +33,10 @@ public static class ValueTupleEqualityComparer
 	{
 		private readonly IEqualityComparer<T1> _comparer1 = comparer1 ?? EqualityComparer<T1>.Default;
 
-		public bool Equals(ValueTuple<T1> x,
-						   ValueTuple<T1> y)
-			=> _comparer1.Equals(x.Item1, y.Item1);
+		public bool Equals(
+			ValueTuple<T1> x,
+			ValueTuple<T1> y
+		) => _comparer1.Equals(x.Item1, y.Item1);
 
 		public int GetHashCode(ValueTuple<T1> obj) =>
 			obj.Item1 is null ? 0 : _comparer1.GetHashCode(obj.Item1);
@@ -68,7 +69,8 @@ public static class ValueTupleEqualityComparer
 			IEqualityComparer<T2>? comparer2) =>
 		new ItemEqualityComparer<T1, T2>(
 			comparer1,
-			comparer2);
+			comparer2
+		);
 
 	private sealed class ItemEqualityComparer<T1, T2>(
 		IEqualityComparer<T1>? comparer1,
@@ -78,9 +80,10 @@ public static class ValueTupleEqualityComparer
 		private readonly IEqualityComparer<T1> _comparer1 = comparer1 ?? EqualityComparer<T1>.Default;
 		private readonly IEqualityComparer<T2> _comparer2 = comparer2 ?? EqualityComparer<T2>.Default;
 
-		public bool Equals((T1, T2) x,
-						   (T1, T2) y)
-			=> _comparer1.Equals(x.Item1, y.Item1)
+		public bool Equals(
+			(T1, T2) x,
+			(T1, T2) y
+		) => _comparer1.Equals(x.Item1, y.Item1)
 			&& _comparer2.Equals(x.Item2, y.Item2);
 
 		public int GetHashCode((T1, T2) obj) =>

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -98,9 +98,7 @@ public static partial class SuperEnumerable
 		{
 			var cnt = (uint)Count;
 			for (var i = 0; i < cnt; i++)
-			{
 				yield return (startIndex + i, source[i]);
-			}
 		}
 
 		protected override (int index, T item) ElementAt(int index)

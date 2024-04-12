@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -34,7 +34,15 @@ public static partial class SuperEnumerable
 		this IEnumerable<TSource> source,
 		IEnumerable<int> indices)
 	{
-		return BindByIndex(source, indices, static (e, i) => e, static i => ThrowHelper.ThrowArgumentOutOfRangeException<TSource>(nameof(indices), "Index is greater than the length of the first sequence."));
+		return BindByIndex(
+			source,
+			indices,
+			static (e, i) => e,
+			static i => ThrowHelper.ThrowArgumentOutOfRangeException<TSource>(
+				nameof(indices),
+				"Index is greater than the length of the first sequence."
+			)
+		);
 	}
 
 	/// <summary>
@@ -86,10 +94,25 @@ public static partial class SuperEnumerable
 
 		return Core(source, indices, resultSelector, missingSelector);
 
-		static IEnumerable<TResult> Core(IEnumerable<TSource> source, IEnumerable<int> indices, Func<TSource, int, TResult> resultSelector, Func<int, TResult> missingSelector)
+		static IEnumerable<TResult> Core(
+			IEnumerable<TSource> source,
+			IEnumerable<int> indices,
+			Func<TSource, int, TResult> resultSelector,
+			Func<int, TResult> missingSelector
+		)
 		{
 			// keeps track of the order of indices to know what order items should be output in
-			var lookup = indices.Index().ToDictionary(x => { ArgumentOutOfRangeException.ThrowIfNegative(x.Item, nameof(indices)); return x.Item; }, x => x.Index);
+			var lookup = indices
+				.Index()
+				.ToDictionary(
+					x =>
+					{
+						ArgumentOutOfRangeException.ThrowIfNegative(x.Item, nameof(indices));
+						return x.Item;
+					},
+					x => x.Index
+				);
+
 			// keep track of items out of output order
 			var lookback = new Dictionary<int, TSource>();
 

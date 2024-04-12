@@ -28,7 +28,7 @@ public sealed class SubsetTest
 	public static IEnumerable<object?[]> GetSubsetSequences() =>
 		Enumerable.Range(1, 10)
 			.GetCollectionSequences()
-			.Select(x => new object?[] { x, });
+			.Select(x => new object?[] { x });
 
 	/// <summary>
 	/// Verify that requesting subsets larger than the original sequence length result in an exception.

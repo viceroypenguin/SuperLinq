@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -20,11 +20,11 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// <para>
 	///	    This operator is a shortcut for <see cref="DensePartialSort{T}(IEnumerable{T}, int, OrderByDirection)"/>
-	///     with a <c>direction</c> of <see cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>. 
+	///     with a <c>direction</c> of <see cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>.
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<T> MinItems<T>(this IEnumerable<T> source)
@@ -53,11 +53,11 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	/// <para>
 	///	    This operator is a shortcut for <see cref="DensePartialSort{T}(IEnumerable{T}, int, IComparer{T}?,
-	///     OrderByDirection)"/> with a <c>count</c> of <c>1</c>. 
+	///     OrderByDirection)"/> with a <c>count</c> of <c>1</c>.
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<T> MinItems<T>(this IEnumerable<T> source, IComparer<T>? comparer)
@@ -90,11 +90,11 @@ public static partial class SuperEnumerable
 	/// <para>
 	///	    This operator is a shortcut for <see cref="DensePartialSortBy{TSource, TKey}(IEnumerable{TSource}, int,
 	///     Func{TSource, TKey}, OrderByDirection)"/> with a <c>direction</c> of <see
-	///     cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>. 
+	///     cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>.
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TSource> MinItemsBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
@@ -127,11 +127,11 @@ public static partial class SuperEnumerable
 	/// <para>
 	///	    This operator is a shortcut for <see cref="DensePartialSortBy{TSource, TKey}(IEnumerable{TSource}, int,
 	///     Func{TSource, TKey}, OrderByDirection)"/> with a <c>direction</c> of <see
-	///     cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>. 
+	///     cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>.
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
 	public static IEnumerable<TSource> MinByWithTies<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
@@ -167,14 +167,18 @@ public static partial class SuperEnumerable
 	/// <para>
 	///	    This operator is a shortcut for <see cref="DensePartialSortBy{TSource, TKey}(IEnumerable{TSource}, int,
 	///     Func{TSource, TKey}, IComparer{TKey}?, OrderByDirection)"/> with a <c>direction</c> of <see
-	///     cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>. 
+	///     cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>.
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TSource> MinItemsBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer)
+	public static IEnumerable<TSource> MinItemsBy<TSource, TKey>(
+		this IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IComparer<TKey>? comparer
+	)
 	{
 		return source.DensePartialSortBy(1, keySelector, comparer, OrderByDirection.Ascending);
 	}
@@ -207,14 +211,18 @@ public static partial class SuperEnumerable
 	///	<para>
 	///	    This operator is a shortcut for <see cref="DensePartialSortBy{TSource, TKey}(IEnumerable{TSource}, int,
 	///     Func{TSource, TKey}, IComparer{TKey}?, OrderByDirection)"/> with a <c>direction</c> of <see
-	///     cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>. 
+	///     cref="OrderByDirection.Ascending"/> and a <c>count</c> of <c>1</c>.
 	/// </para>
 	/// <para>
 	///	    This method is implemented by using deferred execution. However, <paramref name="source"/> will be consumed
-	///     in it's entirety immediately when first element of the returned sequence is consumed. 
+	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TSource> MinByWithTies<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer)
+	public static IEnumerable<TSource> MinByWithTies<TSource, TKey>(
+		this IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IComparer<TKey>? comparer
+	)
 	{
 		return source.DensePartialSortBy(1, keySelector, comparer, OrderByDirection.Ascending);
 	}

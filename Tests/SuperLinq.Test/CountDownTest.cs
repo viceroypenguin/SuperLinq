@@ -28,9 +28,7 @@ public sealed class CountDownTest
 				: Enumerable.Range(0, 5).Select(x => (int?)x).Reverse();
 
 			foreach (var seq in xs.GetAllSequences())
-			{
-				yield return new object[] { seq, i, xs.EquiZip(countdown), };
-			}
+				yield return new object[] { seq, i, xs.EquiZip(countdown) };
 		}
 	}
 

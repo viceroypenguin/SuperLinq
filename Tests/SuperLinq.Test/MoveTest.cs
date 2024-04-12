@@ -73,7 +73,7 @@ public sealed class MoveTest
 
 	public static IEnumerable<object[]> MoveWithSequenceShorterThanToIndexSource() =>
 		Enumerable.Range(10, 10 + 5)
-				  .Select(toIndex => new object[] { 10, 5, 2, toIndex, });
+				  .Select(toIndex => new object[] { 10, 5, 2, toIndex });
 
 	[Fact]
 	public void MoveIsRepeatable()

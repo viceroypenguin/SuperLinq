@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -88,9 +88,13 @@ public static partial class SuperEnumerable
 		if (first.TryGetCollectionCount() is int && second.TryGetCollectionCount() is int)
 			return new InsertCollectionIterator<T>(first, second, index);
 
-		return !index.IsFromEnd ? InsertCore(first, second, index.Value) :
-			index.Value == 0 ? first.Concat(second) :
-			FromEndCore(first, second, index.Value);
+		if (!index.IsFromEnd)
+			return InsertCore(first, second, index.Value);
+
+		if (index.Value == 0)
+			return first.Concat(second);
+
+		return FromEndCore(first, second, index.Value);
 
 		static IEnumerable<T> FromEndCore(IEnumerable<T> first, IEnumerable<T> second, int index)
 		{
@@ -257,9 +261,13 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfNegative(idx);
 			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, _first.Count);
 
-			return index < idx ? _first[index] :
-				index < idx + _second.Count ? _second[index - idx] :
-				_first[index - _second.Count];
+			if (index < idx)
+				return _first[index];
+
+			if (index < idx + _second.Count)
+				return _second[index - idx];
+
+			return _first[index - _second.Count];
 		}
 	}
 }

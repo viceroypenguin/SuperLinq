@@ -46,6 +46,7 @@ dotnet_naming_rule.static_fields_should_be_camel_case.style = static_field_style
 
 dotnet_naming_symbols.static_fields.applicable_kinds = field
 dotnet_naming_symbols.static_fields.required_modifiers = static
+dotnet_naming_symbols.static_fields.applicable_accessibilities = internal, private, private_protected
 
 # Instance fields are camelCase and start with _
 dotnet_naming_rule.instance_fields_should_be_camel_case.severity = suggestion
@@ -53,6 +54,7 @@ dotnet_naming_rule.instance_fields_should_be_camel_case.symbols = instance_field
 dotnet_naming_rule.instance_fields_should_be_camel_case.style = instance_field_style
 
 dotnet_naming_symbols.instance_fields.applicable_kinds = field
+dotnet_naming_symbols.instance_fields.applicable_accessibilities = internal, private, private_protected
 
 # Locals and parameters are camelCase
 dotnet_naming_rule.locals_should_be_camel_case.severity = suggestion
@@ -335,6 +337,7 @@ dotnet_diagnostic.RS2008.severity = none                # RS2008: Enable analyze
 MA0053.public_class_should_be_sealed = true
 MA0053.exceptions_should_be_sealed = true
 
+dotnet_diagnostic.MA0003.severity = suggestion
 dotnet_diagnostic.MA0004.severity = none
 dotnet_diagnostic.MA0005.severity = none
 dotnet_diagnostic.MA0006.severity = suggestion
@@ -368,6 +371,7 @@ dotnet_diagnostic.MA0075.severity = none
 dotnet_diagnostic.MA0076.severity = none
 dotnet_diagnostic.MA0079.severity = none
 dotnet_diagnostic.MA0080.severity = none
+dotnet_diagnostic.MA0084.severity = none
 dotnet_diagnostic.MA0094.severity = none
 dotnet_diagnostic.MA0095.severity = none
 dotnet_diagnostic.MA0096.severity = none
@@ -385,6 +389,3 @@ dotnet_diagnostic.MA0147.severity = error
 dotnet_diagnostic.MA0148.severity = none
 dotnet_diagnostic.MA0149.severity = none
 dotnet_diagnostic.MA0154.severity = warning
-dotnet_diagnostic.IDE0305.severity = suggestion
-dotnet_diagnostic.MA0003.severity = suggestion
-dotnet_diagnostic.MA0084.severity = none

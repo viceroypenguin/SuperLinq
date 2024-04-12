@@ -145,6 +145,7 @@ public static partial class SuperEnumerable
 				{
 					if (_disposed)
 						ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
+
 					if (!_initialized
 						|| buffer != _buffer)
 					{
@@ -236,9 +237,10 @@ public static partial class SuperEnumerable
 			get
 			{
 				var h = _state;
-				if (h.State != State.Initialized)
-					return 0;
-				return h.Buffer!.Length;
+
+				return h.State != State.Initialized
+					? 0
+					: h.Buffer!.Length;
 			}
 		}
 
@@ -261,16 +263,21 @@ public static partial class SuperEnumerable
 						var res = Interlocked.CompareExchange(ref _state, new(State.Uninitialized), h);
 						if (res != h)
 							continue;
+
 						return;
 					}
 
 					case State.Disposed:
+					{
 						ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 						break;
+					}
 
 					default:
+					{
 						ThrowHelper.ThrowUnreachableException();
 						return;
+					}
 				}
 			}
 		}
@@ -294,9 +301,12 @@ public static partial class SuperEnumerable
 					case State.Uninitialized:
 					{
 						var tmp = new CmbHelper(State.Initializing);
+
 						// are we first?
 						var res = Interlocked.CompareExchange(ref _state, tmp, h);
-						if (res != h) continue;
+						if (res != h)
+							continue;
+
 						h = tmp;
 
 						// we should be only ones inside here
@@ -318,8 +328,10 @@ public static partial class SuperEnumerable
 
 						// we've got an array, set it
 						res = Interlocked.CompareExchange(ref _state, new(State.Initialized, Buffer: array), tmp);
+
 						// only way this could happen is dispose, so loop again to trigger dispose handling
-						if (res != tmp) continue;
+						if (res != tmp)
+							continue;
 
 						// we've got the array, hand it out.
 						return array;
@@ -329,20 +341,28 @@ public static partial class SuperEnumerable
 						continue;
 
 					case State.Initialized:
+					{
 						Assert.NotNull(h.Buffer);
 						return h.Buffer;
+					}
 
 					case State.Disposed:
+					{
 						ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
 						break;
+					}
 
 					case State.Error:
+					{
 						h.Exception!.Throw();
 						break;
+					}
 
 					default:
+					{
 						ThrowHelper.ThrowUnreachableException();
 						return default!;
+					}
 				}
 			}
 		}
@@ -380,12 +400,14 @@ public static partial class SuperEnumerable
 	) : IBuffer<T>
 	{
 		private ICollection<T>? _source = source;
+
 		private ICollection<T> Source
 		{
 			get
 			{
 				if (_source is null)
 					ThrowHelper.ThrowObjectDisposedException<IBuffer<T>>();
+
 				return _source;
 			}
 		}

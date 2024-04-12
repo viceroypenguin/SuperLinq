@@ -64,12 +64,12 @@ public sealed class OrderByTests
 	public async Task TestThenBySelectorPreserved()
 	{
 		var sequence = AsyncSeq(
-			new { A = 2, B = 0, },
-			new { A = 1, B = 5, },
-			new { A = 2, B = 2, },
-			new { A = 1, B = 3, },
-			new { A = 1, B = 4, },
-			new { A = 2, B = 1, });
+			new { A = 2, B = 0 },
+			new { A = 1, B = 5 },
+			new { A = 2, B = 2 },
+			new { A = 1, B = 3 },
+			new { A = 1, B = 4 },
+			new { A = 2, B = 1 });
 
 		var resultA1 = sequence
 			.OrderBy(x => x.A, OrderByDirection.Ascending)
@@ -97,12 +97,12 @@ public sealed class OrderByTests
 	public async Task TestThenByComparerPreserved()
 	{
 		var sequence = AsyncSeq(
-			new { A = "2", B = "0", },
-			new { A = "1", B = "5", },
-			new { A = "2", B = "2", },
-			new { A = "1", B = "3", },
-			new { A = "1", B = "4", },
-			new { A = "2", B = "1", });
+			new { A = "2", B = "0" },
+			new { A = "1", B = "5" },
+			new { A = "2", B = "2" },
+			new { A = "1", B = "3" },
+			new { A = "1", B = "4" },
+			new { A = "2", B = "1" });
 
 		var comparer = Comparer<string>.Create(
 			(a, b) => int.Parse(a, CultureInfo.InvariantCulture)

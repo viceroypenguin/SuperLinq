@@ -90,6 +90,7 @@ internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
 	{
 		if (_enumerationCount > 0)
 			AssertTestingSequence(_disposedCount == _enumerationCount, ExpectedDisposal);
+
 		return default;
 	}
 
@@ -187,8 +188,10 @@ public sealed class TestingSequenceTest
 		{
 			await using (enumerable.GetAsyncEnumerator())
 				yield return 1;
+
 			await using (enumerable.GetAsyncEnumerator())
 				yield return 2;
+
 			await using (enumerable.GetAsyncEnumerator())
 				yield return 3;
 
@@ -257,6 +260,7 @@ public sealed class TestingSequenceTest
 			await using var enumerator = enumerable.GetAsyncEnumerator();
 			while (await enumerator.MoveNextAsync())
 				yield return enumerator.Current;
+
 			_ = await enumerator.MoveNextAsync();
 
 			await Task.Yield();
@@ -302,6 +306,7 @@ public sealed class TestingSequenceTest
 			await using var enumerator = enumerable.GetAsyncEnumerator();
 			while (await enumerator.MoveNextAsync())
 				yield return enumerator.Current;
+
 			yield return enumerator.Current;
 
 			await Task.Yield();

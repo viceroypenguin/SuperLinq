@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -27,13 +27,17 @@ public static partial class AsyncSuperEnumerable
 	/// <para>
 	/// The <paramref name="predicate"/> is a delegate to a method that returns <see langword="true"/> if the object
 	/// passed to it matches the conditions defined in the delegate. The elements of the current <see
-	/// cref="IAsyncEnumerable{T}"/> are individually passed to the <paramref name="predicate"/> delegate. 
+	/// cref="IAsyncEnumerable{T}"/> are individually passed to the <paramref name="predicate"/> delegate.
 	/// </para>
 	/// <para>
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static ValueTask<int> FindLastIndex<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, CancellationToken cancellationToken = default)
+	public static ValueTask<int> FindLastIndex<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, bool> predicate,
+		CancellationToken cancellationToken = default
+	)
 	{
 		return source.FindLastIndex(predicate, ^1, int.MaxValue, cancellationToken);
 	}
@@ -66,13 +70,18 @@ public static partial class AsyncSuperEnumerable
 	/// <para>
 	/// The <paramref name="predicate"/> is a delegate to a method that returns <see langword="true"/> if the object
 	/// passed to it matches the conditions defined in the delegate. The elements of the current <see
-	/// cref="IAsyncEnumerable{T}"/> are individually passed to the <paramref name="predicate"/> delegate. 
+	/// cref="IAsyncEnumerable{T}"/> are individually passed to the <paramref name="predicate"/> delegate.
 	/// </para>
 	/// <para>
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static ValueTask<int> FindLastIndex<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, CancellationToken cancellationToken = default)
+	public static ValueTask<int> FindLastIndex<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, bool> predicate,
+		Index index,
+		CancellationToken cancellationToken = default
+	)
 	{
 		return source.FindLastIndex(predicate, index, int.MaxValue, cancellationToken);
 	}
@@ -109,13 +118,19 @@ public static partial class AsyncSuperEnumerable
 	/// <para>
 	/// The <paramref name="predicate"/> is a delegate to a method that returns <see langword="true"/> if the object
 	/// passed to it matches the conditions defined in the delegate. The elements of the current <see
-	/// cref="IAsyncEnumerable{T}"/> are individually passed to the <paramref name="predicate"/> delegate. 
+	/// cref="IAsyncEnumerable{T}"/> are individually passed to the <paramref name="predicate"/> delegate.
 	/// </para>
 	/// <para>
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-	public static ValueTask<int> FindLastIndex<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count, CancellationToken cancellationToken = default)
+	public static ValueTask<int> FindLastIndex<TSource>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, bool> predicate,
+		Index index,
+		int count,
+		CancellationToken cancellationToken = default
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
@@ -123,7 +138,13 @@ public static partial class AsyncSuperEnumerable
 
 		return Core(source, predicate, index, count, cancellationToken);
 
-		static async ValueTask<int> Core(IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count, CancellationToken cancellationToken)
+		static async ValueTask<int> Core(
+			IAsyncEnumerable<TSource> source,
+			Func<TSource, bool> predicate,
+			Index index,
+			int count,
+			CancellationToken cancellationToken
+		)
 		{
 			if (!index.IsFromEnd)
 			{
@@ -136,6 +157,7 @@ public static partial class AsyncSuperEnumerable
 
 					if (predicate(element))
 						lastIndex = i;
+
 					i++;
 				}
 

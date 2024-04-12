@@ -18,7 +18,7 @@ public partial class AsyncSuperEnumerable
 	/// <param name="start">The starting state</param>
 	/// <param name="getNeighbors">
 	/// A function that returns the neighbors for a given state
-	/// and the total cost to get to that state based on the 
+	/// and the total cost to get to that state based on the
 	/// traversal cost at the current state.
 	/// </param>
 	/// <param name="end">The target state</param>
@@ -50,13 +50,13 @@ public partial class AsyncSuperEnumerable
 	///  will have undefined behavior.
 	/// </para>
 	/// <para>
-	///  This method will operate on an infinite map, however, 
+	///  This method will operate on an infinite map, however,
 	///  performance will depend on how many states are required to
 	///  be evaluated before reaching the target point.
 	/// </para>
 	/// <para>
 	///	 This method uses <see cref="EqualityComparer{T}.Default"/>
-	///	 to compare <typeparamref name="TState"/>s and 
+	///	 to compare <typeparamref name="TState"/>s and
 	///	 <see cref="Comparer{T}.Default"/> to compare traversal
 	///	 <typeparamref name="TCost"/>s.
 	/// </para>
@@ -89,7 +89,7 @@ public partial class AsyncSuperEnumerable
 	/// <param name="start">The starting state</param>
 	/// <param name="getNeighbors">
 	/// A function that returns the neighbors for a given state
-	/// and the total cost to get to that state based on the 
+	/// and the total cost to get to that state based on the
 	/// traversal cost at the current state.
 	/// </param>
 	/// <param name="end">The target state</param>
@@ -123,7 +123,7 @@ public partial class AsyncSuperEnumerable
 	///  will have undefined behavior.
 	/// </para>
 	/// <para>
-	///  This method will operate on an infinite map, however, 
+	///  This method will operate on an infinite map, however,
 	///  performance will depend on how many states are required to
 	///  be evaluated before reaching the target point.
 	/// </para>
@@ -305,7 +305,8 @@ public partial class AsyncSuperEnumerable
 
 				if (!queue.TryDequeue(out current, out cost))
 					ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
-			} while (true);
+			}
+			while (true);
 
 			return cost;
 		}
@@ -325,7 +326,7 @@ public partial class AsyncSuperEnumerable
 	/// <param name="start">The starting state</param>
 	/// <param name="getNeighbors">
 	/// A function that returns the neighbors for a given state
-	/// and the total cost to get to that state based on the 
+	/// and the total cost to get to that state based on the
 	/// traversal cost at the current state.
 	/// </param>
 	/// <param name="end">The target state</param>
@@ -357,13 +358,13 @@ public partial class AsyncSuperEnumerable
 	///  will have undefined behavior.
 	/// </para>
 	/// <para>
-	///  This method will operate on an infinite map, however, 
+	///  This method will operate on an infinite map, however,
 	///  performance will depend on how many states are required to
 	///  be evaluated before reaching the target point.
 	/// </para>
 	/// <para>
 	///	 This method uses <see cref="EqualityComparer{T}.Default"/>
-	///	 to compare <typeparamref name="TState"/>s and 
+	///	 to compare <typeparamref name="TState"/>s and
 	///	 <see cref="Comparer{T}.Default"/> to compare traversal
 	///	 <typeparamref name="TCost"/>s.
 	/// </para>
@@ -399,7 +400,7 @@ public partial class AsyncSuperEnumerable
 	/// <param name="start">The starting state</param>
 	/// <param name="getNeighbors">
 	/// A function that returns the neighbors for a given state
-	/// and the total cost to get to that state based on the 
+	/// and the total cost to get to that state based on the
 	/// traversal cost at the current state.
 	/// </param>
 	/// <param name="end">The target state</param>
@@ -433,7 +434,7 @@ public partial class AsyncSuperEnumerable
 	///  will have undefined behavior.
 	/// </para>
 	/// <para>
-	///  This method will operate on an infinite map, however, 
+	///  This method will operate on an infinite map, however,
 	///  performance will depend on how many states are required to
 	///  be evaluated before reaching the target point.
 	/// </para>
@@ -630,7 +631,8 @@ public partial class AsyncSuperEnumerable
 
 				if (!queue.TryDequeue(out current, out from))
 					ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
-			} while (true);
+			}
+			while (true);
 
 			return SuperEnumerable.Generate(end, x => totalCost[x].parent!)
 				.TakeUntil(x => stateComparer.Equals(x, start))
@@ -645,7 +647,7 @@ public partial class AsyncSuperEnumerable
 	#region Full Map Cost
 
 	/// <summary>
-	/// Find the shortest path from state <paramref name="start"/> 
+	/// Find the shortest path from state <paramref name="start"/>
 	/// to every other <typeparamref name="TState"/> in the map,
 	/// using Dijkstra's algorithm.
 	/// </summary>
@@ -654,7 +656,7 @@ public partial class AsyncSuperEnumerable
 	/// <param name="start">The starting state</param>
 	/// <param name="getNeighbors">
 	/// A function that returns the neighbors for a given state
-	/// and the total cost to get to that state based on the 
+	/// and the total cost to get to that state based on the
 	/// traversal cost at the current state.
 	/// </param>
 	/// <param name="cancellationToken">The optional cancellation token to be used for cancelling the sequence at any time.</param>
@@ -670,7 +672,7 @@ public partial class AsyncSuperEnumerable
 	/// <para>
 	///  This method uses Dijkstra's algorithm to explore a map
 	///  and find the shortest path from <paramref name="start"/>
-	///  to every other <typeparamref name="TState"/> in the map. 
+	///  to every other <typeparamref name="TState"/> in the map.
 	///  An <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>
 	///  is used to manage the list of <typeparamref name="TState"/>s
 	///  to process, to reduce the computation cost of this operator.
@@ -698,7 +700,7 @@ public partial class AsyncSuperEnumerable
 	/// </para>
 	/// <para>
 	///	 This method uses <see cref="EqualityComparer{T}.Default"/>
-	///	 to compare <typeparamref name="TState"/>s and 
+	///	 to compare <typeparamref name="TState"/>s and
 	///	 <see cref="Comparer{T}.Default"/> to compare traversal
 	///	 <typeparamref name="TCost"/>s.
 	/// </para>
@@ -723,7 +725,7 @@ public partial class AsyncSuperEnumerable
 	}
 
 	/// <summary>
-	/// Find the shortest path from state <paramref name="start"/> 
+	/// Find the shortest path from state <paramref name="start"/>
 	/// to every other <typeparamref name="TState"/> in the map,
 	/// using Dijkstra's algorithm.
 	/// </summary>
@@ -732,7 +734,7 @@ public partial class AsyncSuperEnumerable
 	/// <param name="start">The starting state</param>
 	/// <param name="getNeighbors">
 	/// A function that returns the neighbors for a given state
-	/// and the total cost to get to that state based on the 
+	/// and the total cost to get to that state based on the
 	/// traversal cost at the current state.
 	/// </param>
 	/// <param name="stateComparer">A custom equality comparer for <typeparamref name="TState"/></param>
@@ -750,7 +752,7 @@ public partial class AsyncSuperEnumerable
 	/// <para>
 	///  This method uses Dijkstra's algorithm to explore a map
 	///  and find the shortest path from <paramref name="start"/>
-	///  to every other <typeparamref name="TState"/> in the map. 
+	///  to every other <typeparamref name="TState"/> in the map.
 	///  An <see cref="UpdatablePriorityQueue{TElement, TPriority}"/>
 	///  is used to manage the list of <typeparamref name="TState"/>s
 	///  to process, to reduce the computation cost of this operator.
@@ -828,7 +830,8 @@ public partial class AsyncSuperEnumerable
 					if (!totalCost.TryGetValue(s, out _))
 						queue.EnqueueMinimum(s, (current, p));
 				}
-			} while (queue.TryDequeue(out current, out from));
+			}
+			while (queue.TryDequeue(out current, out from));
 
 			return totalCost;
 		}
@@ -852,7 +855,7 @@ public partial class AsyncSuperEnumerable
 	/// <param name="start">The starting state</param>
 	/// <param name="getNeighbors">
 	/// A function that returns the neighbors for a given state;
-	/// the total cost to get to that state based on the 
+	/// the total cost to get to that state based on the
 	/// traversal cost at the current state; and the predicted
 	/// or best-guess total (already traversed plus remaining)
 	/// cost to get to <paramref name="end"/>.
@@ -888,13 +891,13 @@ public partial class AsyncSuperEnumerable
 	///  will have undefined behavior.
 	/// </para>
 	/// <para>
-	///  This method will operate on an infinite map, however, 
+	///  This method will operate on an infinite map, however,
 	///  performance will depend on how many states are required to
 	///  be evaluated before reaching the target point.
 	/// </para>
 	/// <para>
 	///	 This method uses <see cref="EqualityComparer{T}.Default"/>
-	///	 to compare <typeparamref name="TState"/>s and 
+	///	 to compare <typeparamref name="TState"/>s and
 	///	 <see cref="Comparer{T}.Default"/> to compare traversal
 	///	 <typeparamref name="TCost"/>s.
 	/// </para>
@@ -929,7 +932,7 @@ public partial class AsyncSuperEnumerable
 	/// <param name="start">The starting state</param>
 	/// <param name="getNeighbors">
 	/// A function that returns the neighbors for a given state;
-	/// the total cost to get to that state based on the 
+	/// the total cost to get to that state based on the
 	/// traversal cost at the current state; and the predicted
 	/// or best-guess total (already traversed plus remaining)
 	/// cost to get to <paramref name="end"/>.
@@ -967,7 +970,7 @@ public partial class AsyncSuperEnumerable
 	///  will have undefined behavior.
 	/// </para>
 	/// <para>
-	///  This method will operate on an infinite map, however, 
+	///  This method will operate on an infinite map, however,
 	///  performance will depend on how many states are required to
 	///  be evaluated before reaching the target point.
 	/// </para>
@@ -1164,7 +1167,8 @@ public partial class AsyncSuperEnumerable
 
 				if (!queue.TryDequeue(out current, out costs))
 					ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
-			} while (true);
+			}
+			while (true);
 
 			return costs.traversed;
 		}
@@ -1184,7 +1188,7 @@ public partial class AsyncSuperEnumerable
 	/// <param name="start">The starting state</param>
 	/// <param name="getNeighbors">
 	/// A function that returns the neighbors for a given state;
-	/// the total cost to get to that state based on the 
+	/// the total cost to get to that state based on the
 	/// traversal cost at the current state; and the predicted
 	/// or best-guess total (already traversed plus remaining)
 	/// cost to get to <paramref name="end"/>.
@@ -1220,13 +1224,13 @@ public partial class AsyncSuperEnumerable
 	///  will have undefined behavior.
 	/// </para>
 	/// <para>
-	///  This method will operate on an infinite map, however, 
+	///  This method will operate on an infinite map, however,
 	///  performance will depend on how many states are required to
 	///  be evaluated before reaching the target point.
 	/// </para>
 	/// <para>
 	///	 This method uses <see cref="EqualityComparer{T}.Default"/>
-	///	 to compare <typeparamref name="TState"/>s and 
+	///	 to compare <typeparamref name="TState"/>s and
 	///	 <see cref="Comparer{T}.Default"/> to compare traversal
 	///	 <typeparamref name="TCost"/>s.
 	/// </para>
@@ -1262,7 +1266,7 @@ public partial class AsyncSuperEnumerable
 	/// <param name="start">The starting state</param>
 	/// <param name="getNeighbors">
 	/// A function that returns the neighbors for a given state;
-	/// the total cost to get to that state based on the 
+	/// the total cost to get to that state based on the
 	/// traversal cost at the current state; and the predicted
 	/// or best-guess total (already traversed plus remaining)
 	/// cost to get to <paramref name="end"/>.
@@ -1300,7 +1304,7 @@ public partial class AsyncSuperEnumerable
 	///  will have undefined behavior.
 	/// </para>
 	/// <para>
-	///  This method will operate on an infinite map, however, 
+	///  This method will operate on an infinite map, however,
 	///  performance will depend on how many states are required to
 	///  be evaluated before reaching the target point.
 	/// </para>
@@ -1516,7 +1520,8 @@ public partial class AsyncSuperEnumerable
 
 				if (!queue.TryDequeue(out current, out from))
 					ThrowHelper.ThrowInvalidOperationException("Unable to find path to 'end'.");
-			} while (true);
+			}
+			while (true);
 
 			return SuperEnumerable.Generate(end, x => totalCost[x].parent!)
 				.TakeUntil(x => stateComparer.Equals(x, start))

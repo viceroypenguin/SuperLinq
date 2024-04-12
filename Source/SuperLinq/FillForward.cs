@@ -167,7 +167,9 @@ public static partial class SuperEnumerable
 						: last;
 				}
 				else
+				{
 					last = array[i];
+				}
 			}
 		}
 	}

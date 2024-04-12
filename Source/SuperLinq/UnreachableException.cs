@@ -21,8 +21,7 @@ public sealed class UnreachableException : Exception
 	/// </summary>
 	public UnreachableException()
 		: base("The program executed an instruction that was thought to be unreachable.")
-	{
-	}
+	{ }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="UnreachableException"/>
@@ -31,8 +30,7 @@ public sealed class UnreachableException : Exception
 	/// <param name="message">The error message that explains the reason for the exception.</param>
 	public UnreachableException(string? message)
 		: base(message)
-	{
-	}
+	{ }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="UnreachableException"/>
@@ -43,7 +41,6 @@ public sealed class UnreachableException : Exception
 	/// <param name="innerException">The exception that is the cause of the current exception.</param>
 	public UnreachableException(string? message, Exception? innerException)
 		: base(message, innerException)
-	{
-	}
+	{ }
 }
 #endif

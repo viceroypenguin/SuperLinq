@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -21,7 +21,8 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is <see langword="null"/>.</exception>
 	public static IAsyncEnumerable<TSource> DistinctBy<TSource, TKey>(
 		this IAsyncEnumerable<TSource> source,
-		Func<TSource, TKey> keySelector)
+		Func<TSource, TKey> keySelector
+	)
 	{
 		return DistinctBy(source, keySelector, comparer: default);
 	}
@@ -48,14 +49,20 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TSource> DistinctBy<TSource, TKey>(
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, TKey> keySelector,
-		IEqualityComparer<TKey>? comparer)
+		IEqualityComparer<TKey>? comparer
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);
 
 		return Core(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
 
-		static async IAsyncEnumerable<TSource> Core(IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+		static async IAsyncEnumerable<TSource> Core(
+			IAsyncEnumerable<TSource> source,
+			Func<TSource, TKey> keySelector,
+			IEqualityComparer<TKey> comparer,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			var knownKeys = new HashSet<TKey>(comparer);
 			await foreach (var element in source.WithCancellation(cancellationToken).ConfigureAwait(false))

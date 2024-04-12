@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -34,7 +34,11 @@ public static partial class SuperEnumerable
 	///	    This operator evaluates in a deferred and streaming manner.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TSource> WhereLead<TSource>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, bool> predicate)
+	public static IEnumerable<TSource> WhereLead<TSource>(
+		this IEnumerable<TSource> source,
+		int offset,
+		Func<TSource, TSource?, bool> predicate
+	)
 	{
 		return source.WhereLead(offset, default!, predicate);
 	}
@@ -70,7 +74,12 @@ public static partial class SuperEnumerable
 	///	    This operator evaluates in a deferred and streaming manner.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TSource> WhereLead<TSource>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, bool> predicate)
+	public static IEnumerable<TSource> WhereLead<TSource>(
+		this IEnumerable<TSource> source,
+		int offset,
+		TSource defaultLeadValue,
+		Func<TSource, TSource, bool> predicate
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
@@ -78,7 +87,12 @@ public static partial class SuperEnumerable
 
 		return Core(source, offset, defaultLeadValue, predicate);
 
-		static IEnumerable<TSource> Core(IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, bool> predicate)
+		static IEnumerable<TSource> Core(
+			IEnumerable<TSource> source,
+			int offset,
+			TSource defaultLeadValue,
+			Func<TSource, TSource, bool> predicate
+		)
 		{
 			var queue = new Queue<TSource>(offset + 1);
 

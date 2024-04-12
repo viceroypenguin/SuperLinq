@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public partial class SuperEnumerable
 {
@@ -145,7 +145,12 @@ public partial class SuperEnumerable
 	///	    This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<TSource> Do<TSource>(this IEnumerable<TSource> source, Action<TSource> onNext, Action<Exception> onError, Action onCompleted)
+	public static IEnumerable<TSource> Do<TSource>(
+		this IEnumerable<TSource> source,
+		Action<TSource> onNext,
+		Action<Exception> onError,
+		Action onCompleted
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(onNext);
@@ -155,7 +160,12 @@ public partial class SuperEnumerable
 		return DoCore(source, onNext, onError, onCompleted);
 	}
 
-	private static IEnumerable<TSource> DoCore<TSource>(IEnumerable<TSource> source, Action<TSource> onNext, Action<Exception> onError, Action onCompleted)
+	private static IEnumerable<TSource> DoCore<TSource>(
+		IEnumerable<TSource> source,
+		Action<TSource> onNext,
+		Action<Exception> onError,
+		Action onCompleted
+	)
 	{
 		using var iter = source.GetEnumerator();
 		while (true)

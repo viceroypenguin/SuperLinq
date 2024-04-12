@@ -25,7 +25,7 @@ public sealed class PermutationsTest
 	public static IEnumerable<object[]> GetTooLongSequences() =>
 		Enumerable.Range(1, 22)
 			.GetBreakingCollectionSequences()
-			.Select(x => new object[] { x, });
+			.Select(x => new object[] { x });
 
 	[Theory]
 	[MemberData(nameof(GetTooLongSequences))]
@@ -198,9 +198,7 @@ public sealed class PermutationsTest
 		for (var i = 0; i < permutedSets.Count; i++)
 		{
 			for (var j = i + 1; j < permutedSets.Count; j++)
-			{
 				Guard.IsFalse(permutedSets[i].SequenceEqual(permutedSets[j]));
-			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -16,9 +16,18 @@ public static partial class AsyncSuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException">An index in <paramref name="indices"/> is out of range for the input sequence <paramref name="source"/>.</exception>
 	public static IAsyncEnumerable<TSource> BindByIndex<TSource>(
 		this IAsyncEnumerable<TSource> source,
-		IAsyncEnumerable<int> indices)
+		IAsyncEnumerable<int> indices
+	)
 	{
-		return BindByIndex(source, indices, static (e, i) => e, static i => ThrowHelper.ThrowArgumentOutOfRangeException<TSource>(nameof(indices), "Index is greater than the length of the first sequence."));
+		return BindByIndex(
+			source,
+			indices,
+			static (e, i) => e,
+			static i => ThrowHelper.ThrowArgumentOutOfRangeException<TSource>(
+				nameof(indices),
+				"Index is greater than the length of the first sequence."
+			)
+		);
 	}
 
 	/// <summary>
@@ -47,7 +56,8 @@ public static partial class AsyncSuperEnumerable
 		this IAsyncEnumerable<TSource> source,
 		IAsyncEnumerable<int> indices,
 		Func<TSource, int, TResult> resultSelector,
-		Func<int, TResult> missingSelector)
+		Func<int, TResult> missingSelector
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(indices);
@@ -57,11 +67,27 @@ public static partial class AsyncSuperEnumerable
 		return Core(source, indices, resultSelector, missingSelector);
 
 		static async IAsyncEnumerable<TResult> Core(
-			IAsyncEnumerable<TSource> source, IAsyncEnumerable<int> indices, Func<TSource, int, TResult> resultSelector, Func<int, TResult> missingSelector,
-			[EnumeratorCancellation] CancellationToken cancellationToken = default)
+			IAsyncEnumerable<TSource> source,
+			IAsyncEnumerable<int> indices,
+			Func<TSource, int, TResult> resultSelector,
+			Func<int, TResult> missingSelector,
+			[EnumeratorCancellation] CancellationToken cancellationToken = default
+		)
 		{
 			// keeps track of the order of indices to know what order items should be output in
-			var lookup = await indices.Index().ToDictionaryAsync(x => { ArgumentOutOfRangeException.ThrowIfNegative(x.item, nameof(indices)); return x.item; }, x => x.index, cancellationToken).ConfigureAwait(false);
+			var lookup = await indices
+				.Index()
+				.ToDictionaryAsync(
+					x =>
+					{
+						ArgumentOutOfRangeException.ThrowIfNegative(x.item, nameof(indices));
+						return x.item;
+					},
+					x => x.index,
+					cancellationToken
+				)
+				.ConfigureAwait(false);
+
 			// keep track of items out of output order
 			var lookback = new Dictionary<int, TSource>();
 

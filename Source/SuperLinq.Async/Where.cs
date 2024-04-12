@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -9,7 +9,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="source">An <see cref="IAsyncEnumerable{T}"/> to filter.</param>
 	/// <param name="filter">An <see cref="IAsyncEnumerable{T}"/> of boolean values identifying which elements of <paramref name="source"/> to keep.</param>
 	/// <returns>
-	/// An <see cref="IAsyncEnumerable{T}"/> that contains elements from the input sequence 
+	/// An <see cref="IAsyncEnumerable{T}"/> that contains elements from the input sequence
 	/// where the matching value in <paramref name="filter"/> is <see langword="true"/>.
 	/// </returns>
 	/// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
@@ -21,7 +21,11 @@ public static partial class AsyncSuperEnumerable
 
 		return Core(source, filter);
 
-		static async IAsyncEnumerable<TSource> Core(IAsyncEnumerable<TSource> source, IAsyncEnumerable<bool> filter, [EnumeratorCancellation] CancellationToken cancellation = default)
+		static async IAsyncEnumerable<TSource> Core(
+			IAsyncEnumerable<TSource> source,
+			IAsyncEnumerable<bool> filter,
+			[EnumeratorCancellation] CancellationToken cancellation = default
+		)
 		{
 			await using var sIter = source.GetConfiguredAsyncEnumerator(cancellation);
 			await using var fIter = filter.GetConfiguredAsyncEnumerator(cancellation);

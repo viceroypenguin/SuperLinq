@@ -31,7 +31,7 @@ public sealed class ExactlyTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void ExactlyWithSingleElementHasExactlyZeroElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -39,7 +39,7 @@ public sealed class ExactlyTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void ExactlyWithSingleElementHasExactlyOneElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -47,7 +47,7 @@ public sealed class ExactlyTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void ExactlyWithSingleElementHasExactlyTwoElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -55,7 +55,7 @@ public sealed class ExactlyTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3 })]
 	public void ExactlyWithThreeElementsHasExactlyTwoElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -63,7 +63,7 @@ public sealed class ExactlyTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3 })]
 	public void ExactlyWithThreeElementsHasExactlyThreeElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -71,7 +71,7 @@ public sealed class ExactlyTest
 	}
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3, })]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3 })]
 	public void ExactlyWithThreeElementsHasExactlyFourElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)

@@ -64,8 +64,10 @@ public sealed class SegmentTests
 	{
 		using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
 			Assert.True(sequence.Segment(x => true).First().Any());
+
 		using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
 			Assert.True(sequence.Segment((x, index) => true).First().Any());
+
 		using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
 			Assert.True(sequence.Segment((x, prevX, index) => true).First().Any());
 	}
@@ -78,8 +80,10 @@ public sealed class SegmentTests
 	{
 		using (var sequence = TestingSequence.Of(0))
 			Assert.True(sequence.Segment(BreakingFunc.Of<int, bool>()).Any());
+
 		using (var sequence = TestingSequence.Of(0))
 			Assert.True(sequence.Segment(BreakingFunc.Of<int, int, bool>()).Any());
+
 		using (var sequence = TestingSequence.Of(0))
 			Assert.True(sequence.Segment(BreakingFunc.Of<int, int, int, bool>()).Any());
 	}
@@ -131,7 +135,7 @@ public sealed class SegmentTests
             // input sequence do not start with a segment start
             new { Source = Seq(1, 2, 3, 4, 5),    Expected = Seq(Seq(1, 2), Seq(3, 4, 5))    },
 		}
-		select new object[] { e.Source, e.Expected, };
+		select new object[] { e.Source, e.Expected };
 
 	[Theory]
 	[MemberData(nameof(TestData))]

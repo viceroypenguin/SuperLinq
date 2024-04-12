@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -17,9 +17,7 @@ public static partial class AsyncSuperEnumerable
 		static async ValueTask Core(IAsyncEnumerable<T> source, CancellationToken cancellationToken)
 		{
 			await foreach (var _ in source.WithCancellation(cancellationToken).ConfigureAwait(false))
-			{
 				cancellationToken.ThrowIfCancellationRequested();
-			}
 		}
 	}
 }

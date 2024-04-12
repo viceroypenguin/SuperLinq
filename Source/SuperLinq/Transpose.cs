@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -37,10 +37,9 @@ public static partial class SuperEnumerable
 			{
 				var column = new T[list.Count];
 				var count = 0;
+
 				for (; list.MoveNext(count); count++)
-				{
 					column[count] = list.Current(count);
-				}
 
 				if (count == 0)
 					yield break;

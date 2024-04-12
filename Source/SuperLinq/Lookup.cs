@@ -20,7 +20,12 @@ internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 	private Grouping[] _groupings;
 	private Grouping? _lastGrouping;
 
-	internal static Lookup<TKey, TElement> Create<TSource>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey>? comparer)
+	internal static Lookup<TKey, TElement> Create<TSource>(
+		IEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		Func<TSource, TElement> elementSelector,
+		IEqualityComparer<TKey>? comparer
+	)
 	{
 		Debug.Assert(source is not null);
 		Debug.Assert(keySelector is not null);
@@ -37,7 +42,11 @@ internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 		return lookup;
 	}
 
-	internal static Lookup<TKey, TElement> Create(IEnumerable<TElement> source, Func<TElement, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+	internal static Lookup<TKey, TElement> Create(
+		IEnumerable<TElement> source,
+		Func<TElement, TKey> keySelector,
+		IEqualityComparer<TKey>? comparer
+	)
 	{
 		Debug.Assert(source is not null);
 		Debug.Assert(keySelector is not null);
@@ -53,7 +62,11 @@ internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 		return lookup;
 	}
 
-	internal static Lookup<TKey, TElement> CreateForJoin(IEnumerable<TElement> source, Func<TElement, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+	internal static Lookup<TKey, TElement> CreateForJoin(
+		IEnumerable<TElement> source,
+		Func<TElement, TKey> keySelector,
+		IEqualityComparer<TKey>? comparer
+	)
 	{
 		var lookup = new Lookup<TKey, TElement>(comparer);
 
@@ -120,15 +133,14 @@ internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 		if (create)
 		{
 			if (Count == _groupings.Length)
-			{
 				Resize();
-			}
 
 			var index = hashCode % _groupings.Length;
 			var g = new Grouping(key, hashCode)
 			{
 				_hashNext = _groupings[index],
 			};
+
 			_groupings[index] = g;
 			if (_lastGrouping is null)
 			{

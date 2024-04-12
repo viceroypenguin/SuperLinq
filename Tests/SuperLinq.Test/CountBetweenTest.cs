@@ -29,7 +29,7 @@ public sealed class CountBetweenTest
 			.Select(x => new object[] { x });
 
 	[Theory]
-	[MemberData(nameof(GetSequences), new int[] { 1, })]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void CountBetweenWithMaxEqualsMin(IDisposableEnumerable<int> seq)
 	{
 		using (seq)

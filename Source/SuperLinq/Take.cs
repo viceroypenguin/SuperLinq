@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 namespace SuperLinq;
@@ -47,9 +47,7 @@ public static partial class SuperEnumerable
 		if (start.IsFromEnd)
 		{
 			if (start.Value == 0 || (end.IsFromEnd && end.Value >= start.Value))
-			{
 				return [];
-			}
 		}
 		else if (!end.IsFromEnd)
 		{
@@ -67,14 +65,10 @@ public static partial class SuperEnumerable
 
 		var index = 0;
 		while (index < startIndex && e.MoveNext())
-		{
 			++index;
-		}
 
 		if (index < startIndex)
-		{
 			yield break;
-		}
 
 		while (index < endIndex && e.MoveNext())
 		{
@@ -98,9 +92,7 @@ public static partial class SuperEnumerable
 			if (startIndex < endIndex)
 			{
 				foreach (var element in TakeRangeIterator(source, startIndex, endIndex))
-				{
 					yield return element;
-				}
 			}
 
 			yield break;
@@ -114,9 +106,7 @@ public static partial class SuperEnumerable
 			using (var e = source.GetEnumerator())
 			{
 				if (!e.MoveNext())
-				{
 					yield break;
-				}
 
 				queue = new Queue<TSource>();
 				queue.Enqueue(e.Current);
@@ -129,7 +119,10 @@ public static partial class SuperEnumerable
 						_ = queue.Dequeue();
 
 					queue.Enqueue(e.Current);
-					checked { ++count; }
+					checked
+					{
+						++count;
+					}
 				}
 			}
 
@@ -137,9 +130,7 @@ public static partial class SuperEnumerable
 			var endIndex = Math.Min(count, end.GetOffset(count));
 
 			for (var rangeIndex = startIndex; rangeIndex < endIndex; rangeIndex++)
-			{
 				yield return queue.Dequeue();
-			}
 		}
 		else
 		{
@@ -150,9 +141,7 @@ public static partial class SuperEnumerable
 			var endCount = end.Value;
 			count = 0;
 			while (count < startCount && e.MoveNext())
-			{
 				++count;
-			}
 
 			if (count == startCount)
 			{

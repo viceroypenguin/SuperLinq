@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -8,7 +8,7 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="source">The sequence to check.</param>
 	/// <typeparam name="T">The type of the elements in the source sequence</typeparam>
 	/// <returns>
-	/// <see langword="true"/> if any element of the sequence <paramref name="source" /> is duplicated, <see langword="false"/> otherwise 
+	/// <see langword="true"/> if any element of the sequence <paramref name="source" /> is duplicated, <see langword="false"/> otherwise
 	/// </returns>
 	public static ValueTask<bool> HasDuplicates<T>(this IAsyncEnumerable<T> source)
 	{
@@ -23,7 +23,7 @@ public static partial class AsyncSuperEnumerable
 	/// If null, the default equality comparer for <c>TSource</c> is used.</param>
 	/// <typeparam name="T">The type of the elements in the source sequence</typeparam>
 	/// <returns>
-	/// <see langword="true"/> if any element of the sequence <paramref name="source" /> is duplicated, <see langword="false"/> otherwise 
+	/// <see langword="true"/> if any element of the sequence <paramref name="source" /> is duplicated, <see langword="false"/> otherwise
 	/// </returns>
 	public static ValueTask<bool> HasDuplicates<T>(this IAsyncEnumerable<T> source, IEqualityComparer<T>? comparer)
 	{
@@ -38,7 +38,7 @@ public static partial class AsyncSuperEnumerable
 	/// <typeparam name="TSource">Type of the source sequence</typeparam>
 	/// <typeparam name="TKey">Type of the projected element</typeparam>
 	/// <returns>
-	/// <see langword="true"/> if any element of the sequence <paramref name="source" /> is duplicated, <see langword="false"/> otherwise 
+	/// <see langword="true"/> if any element of the sequence <paramref name="source" /> is duplicated, <see langword="false"/> otherwise
 	/// </returns>
 	public static ValueTask<bool> HasDuplicates<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 	{
@@ -55,9 +55,13 @@ public static partial class AsyncSuperEnumerable
 	/// <typeparam name="TSource">Type of the source sequence</typeparam>
 	/// <typeparam name="TKey">Type of the projected element</typeparam>
 	/// <returns>
-	/// <see langword="true"/> if any element of the sequence <paramref name="source" /> is duplicated, <see langword="false"/> otherwise 
+	/// <see langword="true"/> if any element of the sequence <paramref name="source" /> is duplicated, <see langword="false"/> otherwise
 	/// </returns>
-	public static ValueTask<bool> HasDuplicates<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+	public static ValueTask<bool> HasDuplicates<TSource, TKey>(
+		this IAsyncEnumerable<TSource> source,
+		Func<TSource, TKey> keySelector,
+		IEqualityComparer<TKey>? comparer
+	)
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(keySelector);
