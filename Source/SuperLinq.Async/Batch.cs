@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -42,6 +42,7 @@ public static partial class AsyncSuperEnumerable
 				if (n == size)
 				{
 					yield return array;
+					array = null;
 					n = 0;
 				}
 			}

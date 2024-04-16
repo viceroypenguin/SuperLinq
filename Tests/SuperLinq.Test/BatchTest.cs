@@ -46,6 +46,23 @@ public sealed class BatchTest
 
 	[Theory]
 	[MemberData(nameof(GetFourElementSequences))]
+	public void BatchDoesNotReturnSameArrayInstance(IDisposableEnumerable<int> seq)
+	{
+		using (seq)
+		{
+			using var e = seq.Batch(2).GetEnumerator();
+
+			_ = e.MoveNext();
+			var batch1 = e.Current;
+			_ = e.MoveNext();
+			var batch2 = e.Current;
+
+			Assert.NotEqual(batch1, batch2);
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetFourElementSequences))]
 	public void BatchModifiedBeforeMoveNextDoesNotAffectNextBatch(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
