@@ -1,4 +1,4 @@
-﻿namespace Test.Async;
+namespace Test.Async;
 
 public sealed class BatchTest
 {
@@ -15,6 +15,20 @@ public sealed class BatchTest
 		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
 			() => new AsyncBreakingSequence<int>()
 				.Batch(0));
+	}
+
+	[Fact]
+	public async Task BatchDoesNotReturnSameArrayInstance()
+	{
+		await using var seq = Enumerable.Range(1, 4).AsTestingSequence();
+		await using var e = seq.Batch(2).GetAsyncEnumerator();
+
+		_ = await e.MoveNextAsync();
+		var batch1 = e.Current;
+		_ = await e.MoveNextAsync();
+		var batch2 = e.Current;
+
+		Assert.NotEqual(batch1, batch2);
 	}
 
 	[Fact]
