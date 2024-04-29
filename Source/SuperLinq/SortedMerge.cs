@@ -365,38 +365,82 @@ public static partial class SuperEnumerable
 
 		static IEnumerable<TSource> Impl(IEnumerable<IEnumerable<TSource>> sequences, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
 		{
-			using var list = new EnumeratorList<TSource>(sequences);
+			var enumerators = sequences.Select(x => x.GetEnumerator()).ToList();
 
-			// prime all of the iterators by advancing them to their first element (if any)
-			for (var i = 0; list.MoveNext(i); i++)
-			{ }
-
-			// while all iterators have not yet been consumed...
-			while (list.Any())
+			try
 			{
-				var nextIndex = 0;
-				var nextValue = list.Current(0);
-				var nextKey = keySelector(nextValue);
+#if NET6_0_OR_GREATER
+				var queue = new PriorityQueue<IEnumerator<TSource>, TKey>(
+					enumerators.Where(e => e.MoveNext()).Select(x => (x, keySelector(x.Current))),
+					comparer);
 
-				// find the next least element to return
-				for (var i = 1; i < list.Count; i++)
+				while (queue.TryDequeue(out var e, out var _))
 				{
-					var anotherElement = list.Current(i);
-					var anotherKey = keySelector(anotherElement);
-					// determine which element follows based on ordering function
-					if (comparer.Compare(nextKey, anotherKey) > 0)
+					yield return e.Current;
+
+					if (e.MoveNext()) queue.Enqueue(e, keySelector(e.Current));
+				}
+#else
+				enumerators.Sort((x, y) => comparer.Compare(keySelector(x.Current), keySelector(y.Current)));
+
+				var arr = enumerators.ToArray();
+				var count = arr.Length;
+				var sourceComparer = new SourceComparer<TSource, TKey>(comparer, keySelector);
+
+				while (count > 1)
+				{
+					var e = arr[0];
+					yield return e.Current;
+
+					if (!e.MoveNext())
 					{
-						nextIndex = i;
-						nextValue = anotherElement;
-						nextKey = anotherKey;
+						e.Dispose();
+						count--;
+						Array.Copy(arr, 1, arr, 0, count);
+						continue;
 					}
+
+					var index = Array.BinarySearch(arr, 1, count - 1, e, sourceComparer);
+					if (index < 0) index = ~index;
+
+					index--;
+
+					if (index > 0)
+					{
+						Array.Copy(arr, 1, arr, 0, index);
+					}
+
+					arr[index] = e;
 				}
 
-				yield return nextValue; // next value in precedence order
+				if (count == 1)
+				{
+					var e = arr[0];
+					yield return e.Current;
 
-				// advance iterator that yielded element, excluding it when consumed
-				_ = list.MoveNextOnce(nextIndex);
+					while (e.MoveNext())
+						yield return e.Current;
+				}
+#endif
+			}
+			finally
+			{
+				foreach (var e in enumerators)
+				{
+					e.Dispose();
+				}
 			}
 		}
 	}
+
+#if !NET6_0_OR_GREATER
+	internal sealed record class SourceComparer<TItem, TKey>(
+		IComparer<TKey> KeyComparer,
+		Func<TItem, TKey> KeySelector
+	) : IComparer<IEnumerator<TItem>>
+	{
+		public int Compare(IEnumerator<TItem>? x, IEnumerator<TItem>? y)
+			=> KeyComparer.Compare(KeySelector(x!.Current), KeySelector(y!.Current));
+	}
+#endif
 }
