@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 internal sealed class EnumeratorList<T> : IDisposable
 {
@@ -29,21 +29,6 @@ internal sealed class EnumeratorList<T> : IDisposable
 	public bool MoveNext(int i)
 	{
 		while (i < _iter.Count)
-		{
-			var e = _iter[i];
-			if (e.MoveNext())
-				return true;
-
-			_iter.RemoveAt(i);
-			e.Dispose();
-		}
-
-		return false;
-	}
-
-	public bool MoveNextOnce(int i)
-	{
-		if (i < _iter.Count)
 		{
 			var e = _iter[i];
 			if (e.MoveNext())

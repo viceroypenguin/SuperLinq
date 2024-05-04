@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 internal sealed class EnumeratorList<T>(
 	List<ConfiguredCancelableAsyncEnumerable<T>.Enumerator> iter
@@ -32,21 +32,6 @@ internal sealed class EnumeratorList<T>(
 	public async ValueTask<bool> MoveNext(int i)
 	{
 		while (i < iter.Count)
-		{
-			var e = iter[i];
-			if (await e.MoveNextAsync())
-				return true;
-
-			iter.RemoveAt(i);
-			await e.DisposeAsync();
-		}
-
-		return false;
-	}
-
-	public async ValueTask<bool> MoveNextOnce(int i)
-	{
-		if (i < iter.Count)
 		{
 			var e = iter[i];
 			if (await e.MoveNextAsync())
