@@ -131,4 +131,18 @@ public sealed class SortedMergeTests
 
 		await result.AssertSequenceEqual(expectedResult);
 	}
+
+	/// <summary>
+	/// Verify that SortedMerge correctly merges sequences with overlapping contents.
+	/// </summary>
+	[Fact]
+	public async Task TestSortedMergeOverlappingSequences()
+	{
+		await using var sequenceA = TestingSequence.Of(1, 3, 5, 7, 9, 11);
+		await using var sequenceB = TestingSequence.Of(1, 4, 5, 10, 12);
+		await using var sequenceC = TestingSequence.Of(2, 4, 6, 8, 10, 12);
+
+		var result = sequenceA.SortedMerge(sequenceB, sequenceC);
+		await result.AssertSequenceEqual([1, 1, 2, 3, 4, 4, 5, 5, 6, 7, 8, 9, 10, 10, 11, 12, 12]);
+	}
 }
