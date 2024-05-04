@@ -370,6 +370,7 @@ public static partial class SuperEnumerable
 				foreach (var sequence in sequences)
 				{
 					var e = sequence.GetEnumerator();
+
 					if (e.MoveNext())
 						enumerators.Add(e);
 					else
@@ -390,11 +391,14 @@ public static partial class SuperEnumerable
 					// Fast drain of final enumerator
 					if (queue.Count == 0)
 					{
-						while (e.MoveNext()) yield return e.Current;
+						while (e.MoveNext())
+							yield return e.Current;
+
 						break;
 					}
 
-					if (e.MoveNext()) queue.Enqueue(e, keySelector(e.Current));
+					if (e.MoveNext())
+						queue.Enqueue(e, keySelector(e.Current));
 				}
 
 #else
@@ -417,10 +421,13 @@ public static partial class SuperEnumerable
 					}
 
 					var index = Array.BinarySearch(arr, 1, count - 1, e, sourceComparer);
-					if (index < 0) index = ~index;
+					if (index < 0)
+						index = ~index;
 
 					index--;
-					if (index > 0) Array.Copy(arr, 1, arr, 0, index);
+					if (index > 0)
+						Array.Copy(arr, 1, arr, 0, index);
+
 					arr[index] = e;
 				}
 
@@ -429,7 +436,8 @@ public static partial class SuperEnumerable
 					var e = arr[0];
 					yield return e.Current;
 
-					while (e.MoveNext()) yield return e.Current;
+					while (e.MoveNext())
+						yield return e.Current;
 				}
 #endif
 			}
@@ -446,8 +454,8 @@ public static partial class SuperEnumerable
 		Func<TItem, TKey> keySelector
 	) : IComparer<IEnumerator<TItem>>
 	{
-		public int Compare(IEnumerator<TItem>? x, IEnumerator<TItem>? y)
-			=> keyComparer.Compare(keySelector(x!.Current), keySelector(y!.Current));
+		public int Compare(IEnumerator<TItem>? x, IEnumerator<TItem>? y) =>
+			keyComparer.Compare(keySelector(x!.Current), keySelector(y!.Current));
 	}
 #endif
 }
