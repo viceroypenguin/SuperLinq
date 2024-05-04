@@ -296,7 +296,10 @@ public static partial class AsyncSuperEnumerable
 				foreach (var sequence in sequences)
 				{
 					var e = sequence.GetAsyncEnumerator(cancellationToken);
-					if (await e.MoveNextAsync()) enumerators.Add(e); else await e.DisposeAsync();
+					if (await e.MoveNextAsync())
+						enumerators.Add(e);
+					else
+						await e.DisposeAsync();
 				}
 #if NET6_0_OR_GREATER
 				var queue = new PriorityQueue<IAsyncEnumerator<TSource>, TKey>(

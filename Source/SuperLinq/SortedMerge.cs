@@ -370,7 +370,10 @@ public static partial class SuperEnumerable
 				foreach (var sequence in sequences)
 				{
 					var e = sequence.GetEnumerator();
-					if (e.MoveNext()) enumerators.Add(e); else e.Dispose();
+					if (e.MoveNext())
+						enumerators.Add(e);
+					else
+						e.Dispose();
 				}
 
 #if NET6_0_OR_GREATER
