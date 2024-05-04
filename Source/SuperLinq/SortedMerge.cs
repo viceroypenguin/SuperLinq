@@ -355,31 +355,59 @@ public static partial class SuperEnumerable
 		// Private implementation method that performs a merge of multiple, ordered sequences using
 		// a precedence function which encodes order-sensitive comparison logic based on the caller's arguments.
 		//
-		// The algorithm employed in this implementation is not necessarily the most optimal way to merge
-		// two sequences. A swap-compare version would probably be somewhat more efficient - but at the
-		// expense of considerably more complexity. One possible optimization would be to detect that only
-		// a single sequence remains (all other being consumed) and break out of the main while-loop and
-		// simply yield the items that are part of the final sequence.
+		// Where available, PriorityQueue is used to maintain the remaining enumerators ordered by the
+		// value of the Current property.
 		//
-		// The algorithm used here will perform N*(K1+K2+...Kn-1) comparisons, where <c>N => otherSequences.Count()+1.</c>
+		// Otherwise, a sorted array is used, with BinarySearch finding the re-insert location.
 
 		static IEnumerable<TSource> Impl(IEnumerable<IEnumerable<TSource>> sequences, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
 		{
-			var enumerators = sequences.Select(x => x.GetEnumerator()).ToList();
+			var enumerators = new List<IEnumerator<TSource>>();
 
 			try
 			{
+				// Ensure we dispose first N enumerators if N+1 throws 
+				foreach (var sequence in sequences)
+				{
+					var e = sequence.GetEnumerator();
+					if (e.MoveNext())
+					{
+						enumerators.Add(e);
+					}
+					else
+					{
+						e.Dispose();
+					}
+				}
+
 #if NET6_0_OR_GREATER
 				var queue = new PriorityQueue<IEnumerator<TSource>, TKey>(
-					enumerators.Where(e => e.MoveNext()).Select(x => (x, keySelector(x.Current))),
+					enumerators.Select(x => (x, keySelector(x.Current))),
 					comparer);
 
+#pragma warning disable CA2000 // e will be disposed via enumerators list
 				while (queue.TryDequeue(out var e, out var _))
+#pragma warning restore CA2000 // Dispose objects before losing scope
 				{
 					yield return e.Current;
 
-					if (e.MoveNext()) queue.Enqueue(e, keySelector(e.Current));
+					// Fast drain of final enumerator
+					if (queue.Count == 0)
+					{
+						while (e.MoveNext())
+						{
+							yield return e.Current;
+						}
+
+						break;
+					}
+
+					if (e.MoveNext())
+					{
+						queue.Enqueue(e, keySelector(e.Current));
+					}
 				}
+
 #else
 				enumerators.Sort((x, y) => comparer.Compare(keySelector(x.Current), keySelector(y.Current)));
 
@@ -394,14 +422,16 @@ public static partial class SuperEnumerable
 
 					if (!e.MoveNext())
 					{
-						e.Dispose();
 						count--;
 						Array.Copy(arr, 1, arr, 0, count);
 						continue;
 					}
 
 					var index = Array.BinarySearch(arr, 1, count - 1, e, sourceComparer);
-					if (index < 0) index = ~index;
+					if (index < 0) 
+					{
+						index = ~index;
+					}
 
 					index--;
 
@@ -419,7 +449,9 @@ public static partial class SuperEnumerable
 					yield return e.Current;
 
 					while (e.MoveNext())
+					{
 						yield return e.Current;
+					}
 				}
 #endif
 			}

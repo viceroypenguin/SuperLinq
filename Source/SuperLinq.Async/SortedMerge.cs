@@ -276,13 +276,10 @@ public static partial class AsyncSuperEnumerable
 		// Private implementation method that performs a merge of multiple, ordered sequences using
 		// a precedence function which encodes order-sensitive comparison logic based on the caller's arguments.
 		//
-		// The algorithm employed in this implementation is not necessarily the most optimal way to merge
-		// two sequences. A swap-compare version would probably be somewhat more efficient - but at the
-		// expense of considerably more complexity. One possible optimization would be to detect that only
-		// a single sequence remains (all other being consumed) and break out of the main while-loop and
-		// simply yield the items that are part of the final sequence.
+		// Where available, PriorityQueue is used to maintain the remaining enumerators ordered by the
+		// value of the Current property.
 		//
-		// The algorithm used here will perform N*(K1+K2+...Kn-1) comparisons, where <c>N => otherSequences.Count()+1.</c>
+		// Otherwise, a sorted array is used, with BinarySearch finding the re-insert location.
 
 		static async IAsyncEnumerable<TSource> Impl(
 			IEnumerable<IAsyncEnumerable<TSource>> sequences,
@@ -291,39 +288,116 @@ public static partial class AsyncSuperEnumerable
 			[EnumeratorCancellation] CancellationToken cancellationToken = default
 		)
 		{
-			var list = await EnumeratorList<TSource>.Create(sequences, cancellationToken).ConfigureAwait(false);
-			await using var ignored_ = list.ConfigureAwait(false);
+			var enumerators = new List<IAsyncEnumerator<TSource>>();
 
-			// prime all of the iterators by advancing them to their first element (if any)
-			for (var i = 0; await list.MoveNext(i).ConfigureAwait(false); i++)
-			{ }
-
-			// while all iterators have not yet been consumed...
-			while (list.Any())
+			try
 			{
-				var nextIndex = 0;
-				var nextValue = list.Current(0);
-				var nextKey = keySelector(nextValue);
-
-				// find the next least element to return
-				for (var i = 1; i < list.Count; i++)
+				// Ensure we dispose first N enumerators if N+1 throws 
+				foreach (var sequence in sequences)
 				{
-					var anotherElement = list.Current(i);
-					var anotherKey = keySelector(anotherElement);
-					// determine which element follows based on ordering function
-					if (comparer.Compare(nextKey, anotherKey) > 0)
+					var e = sequence.GetAsyncEnumerator(cancellationToken);
+					if (await e.MoveNextAsync())
 					{
-						nextIndex = i;
-						nextValue = anotherElement;
-						nextKey = anotherKey;
+						enumerators.Add(e);
+					}
+					else
+					{
+						await e.DisposeAsync();
+					}
+				}
+#if NET6_0_OR_GREATER
+				var queue = new PriorityQueue<IAsyncEnumerator<TSource>, TKey>(
+					enumerators.Select(x => (x, keySelector(x.Current))),
+					comparer);
+
+#pragma warning disable CA2000 // e will be disposed via enumerators list
+				while (queue.TryDequeue(out var e, out var _))
+#pragma warning restore CA2000 // Dispose objects before losing scope
+				{
+					yield return e.Current;
+
+					// Fast drain of final enumerator
+					if (queue.Count == 0)
+					{
+						while (await e.MoveNextAsync())
+						{
+							yield return e.Current;
+						}
+
+						break;
+					}
+
+					if (await e.MoveNextAsync())
+					{
+						queue.Enqueue(e, keySelector(e.Current));
 					}
 				}
 
-				yield return nextValue; // next value in precedence order
+#else
+				enumerators.Sort((x, y) => comparer.Compare(keySelector(x.Current), keySelector(y.Current)));
 
-				// advance iterator that yielded element, excluding it when consumed
-				_ = await list.MoveNextOnce(nextIndex).ConfigureAwait(false);
+				var arr = enumerators.ToArray();
+				var count = arr.Length;
+				var sourceComparer = new SourceComparer<TSource, TKey>(comparer, keySelector);
+
+				while (count > 1)
+				{
+					var e = arr[0];
+					yield return e.Current;
+
+					if (!await e.MoveNextAsync())
+					{
+						count--;
+						Array.Copy(arr, 1, arr, 0, count);
+						continue;
+					}
+
+					var index = Array.BinarySearch(arr, 1, count - 1, e, sourceComparer);
+					if (index < 0)
+					{
+						index = ~index;
+					}
+
+					index--;
+
+					if (index > 0)
+					{
+						Array.Copy(arr, 1, arr, 0, index);
+					}
+
+					arr[index] = e;
+				}
+
+				if (count == 1)
+				{
+					var e = arr[0];
+					yield return e.Current;
+
+					while (await e.MoveNextAsync())
+					{
+						yield return e.Current;
+					}
+				}
+#endif
+			}
+			finally
+			{
+				foreach (var e in enumerators)
+				{
+					await e.DisposeAsync();
+				}
 			}
 		}
 	}
+
+#if !NET6_0_OR_GREATER
+	internal sealed record class SourceComparer<TItem, TKey>(
+		IComparer<TKey> KeyComparer,
+		Func<TItem, TKey> KeySelector
+	) : IComparer<IAsyncEnumerator<TItem>>
+	{
+		public int Compare(IAsyncEnumerator<TItem>? x, IAsyncEnumerator<TItem>? y)
+			=> KeyComparer.Compare(KeySelector(x!.Current), KeySelector(y!.Current));
+	}
+#endif
 }
