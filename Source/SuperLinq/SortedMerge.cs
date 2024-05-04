@@ -441,7 +441,7 @@ public static partial class SuperEnumerable
 	}
 
 #if !NET6_0_OR_GREATER
-	internal sealed record class SourceComparer<TItem, TKey>(
+	internal sealed class SourceComparer<TItem, TKey>(
 		IComparer<TKey> keyComparer,
 		Func<TItem, TKey> keySelector
 	) : IComparer<IEnumerator<TItem>>
