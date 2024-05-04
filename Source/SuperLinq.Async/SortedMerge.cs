@@ -296,14 +296,7 @@ public static partial class AsyncSuperEnumerable
 				foreach (var sequence in sequences)
 				{
 					var e = sequence.GetAsyncEnumerator(cancellationToken);
-					if (await e.MoveNextAsync())
-					{
-						enumerators.Add(e);
-					}
-					else
-					{
-						await e.DisposeAsync();
-					}
+					if (await e.MoveNextAsync()) enumerators.Add(e); else await e.DisposeAsync();
 				}
 #if NET6_0_OR_GREATER
 				var queue = new PriorityQueue<IAsyncEnumerator<TSource>, TKey>(
@@ -319,18 +312,11 @@ public static partial class AsyncSuperEnumerable
 					// Fast drain of final enumerator
 					if (queue.Count == 0)
 					{
-						while (await e.MoveNextAsync())
-						{
-							yield return e.Current;
-						}
-
+						while (await e.MoveNextAsync()) yield return e.Current;
 						break;
 					}
 
-					if (await e.MoveNextAsync())
-					{
-						queue.Enqueue(e, keySelector(e.Current));
-					}
+					if (await e.MoveNextAsync()) queue.Enqueue(e, keySelector(e.Current));
 				}
 
 #else
@@ -353,18 +339,10 @@ public static partial class AsyncSuperEnumerable
 					}
 
 					var index = Array.BinarySearch(arr, 1, count - 1, e, sourceComparer);
-					if (index < 0)
-					{
-						index = ~index;
-					}
+					if (index < 0) index = ~index;
 
 					index--;
-
-					if (index > 0)
-					{
-						Array.Copy(arr, 1, arr, 0, index);
-					}
-
+					if (index > 0) Array.Copy(arr, 1, arr, 0, index);
 					arr[index] = e;
 				}
 
@@ -373,31 +351,25 @@ public static partial class AsyncSuperEnumerable
 					var e = arr[0];
 					yield return e.Current;
 
-					while (await e.MoveNextAsync())
-					{
-						yield return e.Current;
-					}
+					while (await e.MoveNextAsync()) yield return e.Current;
 				}
 #endif
 			}
 			finally
 			{
-				foreach (var e in enumerators)
-				{
-					await e.DisposeAsync();
-				}
+				foreach (var e in enumerators) await e.DisposeAsync();
 			}
 		}
 	}
 
 #if !NET6_0_OR_GREATER
 	internal sealed record class SourceComparer<TItem, TKey>(
-		IComparer<TKey> KeyComparer,
-		Func<TItem, TKey> KeySelector
+		IComparer<TKey> keyComparer,
+		Func<TItem, TKey> keySelector
 	) : IComparer<IAsyncEnumerator<TItem>>
 	{
 		public int Compare(IAsyncEnumerator<TItem>? x, IAsyncEnumerator<TItem>? y)
-			=> KeyComparer.Compare(KeySelector(x!.Current), KeySelector(y!.Current));
+			=> keyComparer.Compare(keySelector(x!.Current), keySelector(y!.Current));
 	}
 #endif
 }
