@@ -15,12 +15,6 @@
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-	<PackageReference Include="Meziantou.Analyzer" PrivateAssets="All" />
-	<PackageReference Include="Microsoft.CodeAnalysis.PerformanceSensitiveAnalyzers" PrivateAssets="All" />
-	<PackageReference Include="PolySharp" PrivateAssets="All" />
-  </ItemGroup>
-
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
 	<!-- Don't block development work; but block CI if dev work isn't complete. -->
 	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
