@@ -43,6 +43,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{08F3AAFB-0876-4BB3-8BA8-935F1AFA1702}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLinq.Benchmarks", "Benchmarks\SuperLinq.Benchmarks\SuperLinq.Benchmarks.csproj", "{383C2F63-E6D0-4EF6-A53F-017BBBE41701}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,10 @@ Global
 		{33BCC44C-84B3-4C0A-9643-1530B5B65C11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33BCC44C-84B3-4C0A-9643-1530B5B65C11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33BCC44C-84B3-4C0A-9643-1530B5B65C11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{383C2F63-E6D0-4EF6-A53F-017BBBE41701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{383C2F63-E6D0-4EF6-A53F-017BBBE41701}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{383C2F63-E6D0-4EF6-A53F-017BBBE41701}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{383C2F63-E6D0-4EF6-A53F-017BBBE41701}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +98,7 @@ Global
 		{B6503F7F-B3DE-47E5-922E-3A6108E75970} = {7805222E-6CD5-41FE-9945-0D9FD7DFA24C}
 		{33BCC44C-84B3-4C0A-9643-1530B5B65C11} = {210A4922-6BBE-47D6-901E-38127E15C4C4}
 		{30FDB542-4F2B-40E0-9FD9-2BCC8CA05009} = {835F8FFA-471F-4322-B721-A897F27872FA}
+		{383C2F63-E6D0-4EF6-A53F-017BBBE41701} = {08F3AAFB-0876-4BB3-8BA8-935F1AFA1702}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A8EBCB0-B3EB-4D85-AD02-D349122C1D8E}

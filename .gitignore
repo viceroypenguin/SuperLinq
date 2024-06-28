@@ -16,8 +16,10 @@ obj/
 # Rider cache/options directory
 .idea/
 
-# TestResults
+# Test Results
 [Tt]est[Rr]esults/
+# Benchmark Results
+BenchmarkDotNet.Artifacts/
 
 # NuGet Packages
 *.nupkg
