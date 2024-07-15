@@ -48,8 +48,12 @@ internal static class KeyValuePairEqualityComparer
 			&& _valueComparer.Equals(x.Value, y.Value);
 
 		public int GetHashCode(KeyValuePair<TKey, TValue> obj) =>
+#if NETCOREAPP
 			HashCode.Combine(
 				_keyComparer.GetHashCode(obj.Key!),
 				_valueComparer.GetHashCode(obj.Value!));
+#else
+			_keyComparer.GetHashCode(obj.Key) * 397 ^ _valueComparer.GetHashCode(obj.Value);
+#endif
 	}
 }

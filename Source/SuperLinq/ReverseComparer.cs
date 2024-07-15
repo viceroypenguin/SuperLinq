@@ -5,5 +5,5 @@ internal sealed class ReverseComparer<T>(
 ) : IComparer<T>
 {
 	public int Compare(T? x, T? y) =>
-		-underlying.Compare(x, y);
+		-underlying.Compare(x!, y!);
 }

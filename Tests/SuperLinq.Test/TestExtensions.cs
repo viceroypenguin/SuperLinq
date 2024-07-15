@@ -80,7 +80,7 @@ internal static partial class TestExtensions
 			"arrayIndex",
 			() => coll.CopyTo(array, length + 1));
 
-		Assert.True(array.All(x => EqualityComparer<T>.Default.Equals(x, default)));
+		Assert.True(array.All(x => EqualityComparer<T>.Default.Equals(x, default!)));
 	}
 
 	internal static void AssertListElementChecking<T>(this IEnumerable<T> result, int length)

@@ -77,7 +77,7 @@ public sealed class FillForwardTest
 			from line in Table.Split('\n')
 			select line.Trim() into line
 			where !string.IsNullOrEmpty(line)
-			let x = line.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+			let x = line.Split([' '], StringSplitOptions.RemoveEmptyEntries)
 			select new
 			{
 				Continent = x[0],

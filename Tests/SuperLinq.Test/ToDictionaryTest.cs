@@ -7,9 +7,9 @@ public sealed class ToDictionaryTest
 	public void ToDictionaryWithKeyValuePairs()
 	{
 		using var pairs = TestingSequence.Of(
-			KeyValuePair.Create("foo", 123),
-			KeyValuePair.Create("bar", 456),
-			KeyValuePair.Create("baz", 789));
+			CreatePair("foo", 123),
+			CreatePair("bar", 456),
+			CreatePair("baz", 789));
 
 		var dict = SuperEnumerable.ToDictionary(pairs);
 
@@ -37,9 +37,9 @@ public sealed class ToDictionaryTest
 	public void ToDictionaryWithKeyValuePairsWithComparer()
 	{
 		using var pairs = TestingSequence.Of(
-			KeyValuePair.Create("foo", 123),
-			KeyValuePair.Create("bar", 456),
-			KeyValuePair.Create("baz", 789));
+			CreatePair("foo", 123),
+			CreatePair("bar", 456),
+			CreatePair("baz", 789));
 
 		var dict = SuperEnumerable.ToDictionary(pairs, StringComparer.OrdinalIgnoreCase);
 
@@ -62,4 +62,6 @@ public sealed class ToDictionaryTest
 		Assert.Equal(456, dict["BAR"]);
 		Assert.Equal(789, dict["BAZ"]);
 	}
+
+	private static KeyValuePair<TKey, TValue> CreatePair<TKey, TValue>(TKey key, TValue value) => new(key, value);
 }

@@ -1,4 +1,6 @@
+#if NETCOREAPP
 using System.Diagnostics.CodeAnalysis;
+#endif
 
 namespace Test;
 
@@ -8,7 +10,11 @@ public sealed class ValueTupleEqualityComparerTest
 	private sealed class TestComparer<T>(Func<T?, T?, bool> comparer) : IEqualityComparer<T>
 	{
 		public bool Equals(T? x, T? y) => comparer(x, y);
+#if NETCOREAPP
 		public int GetHashCode([DisallowNull] T obj) => obj.GetHashCode();
+#else
+		public int GetHashCode(T obj) => obj!.GetHashCode();
+#endif
 	}
 
 	[Fact]
@@ -73,7 +79,11 @@ public sealed class ValueTupleEqualityComparerTest
 		var comparer = ValueTupleEqualityComparer.Create<int, int>(comparer1: null, comparer2: null);
 		ValueTuple<int, int> first = new(1, 2);
 		var firstHashCode = comparer.GetHashCode(first);
+#if NETCOREAPP
 		var expectedHashCode = HashCode.Combine(1.GetHashCode(), 2.GetHashCode());
+#else
+		var expectedHashCode = 1.GetHashCode() * 397 ^ 2.GetHashCode();
+#endif
 		Assert.Equal(expectedHashCode, firstHashCode);
 	}
 }

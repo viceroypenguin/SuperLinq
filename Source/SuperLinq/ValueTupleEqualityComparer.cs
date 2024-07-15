@@ -87,8 +87,12 @@ public static class ValueTupleEqualityComparer
 			&& _comparer2.Equals(x.Item2, y.Item2);
 
 		public int GetHashCode((T1, T2) obj) =>
+#if NETCOREAPP
 			HashCode.Combine(
 				_comparer1.GetHashCode(obj.Item1!),
 				_comparer2.GetHashCode(obj.Item2!));
+#else
+			_comparer1.GetHashCode(obj.Item1) * 397 ^ _comparer2.GetHashCode(obj.Item2);
+#endif
 	}
 }

@@ -6,6 +6,7 @@
     <AssemblyTitle>SuperLinq.Async.Test</AssemblyTitle>
     <AssemblyName>SuperLinq.Async.Test</AssemblyName>
     <RootNamespace>Test.Async</RootNamespace>
+    <TargetFrameworks>$(TargetFrameworks);net48</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
     <AnalysisLevel>latest-recommended</AnalysisLevel>

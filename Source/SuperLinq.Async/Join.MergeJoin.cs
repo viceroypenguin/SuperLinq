@@ -722,6 +722,10 @@ file sealed class ComparerEqualityComparer<TKey>(
 	IComparer<TKey> comparer
 ) : IEqualityComparer<TKey>
 {
-	public bool Equals([AllowNull] TKey x, [AllowNull] TKey y) => comparer.Compare(x, y) == 0;
+	public bool Equals([AllowNull] TKey x, [AllowNull] TKey y) => comparer.Compare(x!, y!) == 0;
+#if NETCOREAPP
 	public int GetHashCode([DisallowNull] TKey obj) => ThrowHelper.ThrowNotSupportedException<int>();
+#else
+	public int GetHashCode(TKey obj) => ThrowHelper.ThrowNotSupportedException<int>();
+#endif
 }

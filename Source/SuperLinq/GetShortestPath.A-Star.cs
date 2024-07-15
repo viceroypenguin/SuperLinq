@@ -333,7 +333,7 @@ public partial class SuperEnumerable
 		do
 		{
 			if (!totalCost.TryGetValue(current, out var oldCost)
-				|| costComparer.Compare(from.traversed, oldCost.traversed) < 0)
+				|| costComparer.Compare(from.traversed!, oldCost.traversed!) < 0)
 			{
 				totalCost[current] = (from.parent, from.traversed);
 				if (predicate(current))

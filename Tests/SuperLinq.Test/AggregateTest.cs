@@ -22,7 +22,11 @@ public sealed class AggregateTest
 		from m in typeof(SuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static)
 		where m.Name == nameof(SuperEnumerable.Aggregate)
 		   && m.IsGenericMethodDefinition
+#if NETCOREAPP
 		where !m.ReturnType.Name.Contains(nameof(ValueTuple), StringComparison.Ordinal)
+#else
+		where !m.ReturnType.Name.Contains(nameof(ValueTuple))
+#endif
 		select new
 		{
 			Source = source,

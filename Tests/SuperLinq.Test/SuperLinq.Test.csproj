@@ -6,6 +6,7 @@
     <AssemblyTitle>SuperLinq.Test</AssemblyTitle>
     <AssemblyName>SuperLinq.Test</AssemblyName>
     <RootNamespace>Test</RootNamespace>
+    <TargetFrameworks>$(TargetFrameworks);net48</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
     <AnalysisLevel>latest-recommended</AnalysisLevel>

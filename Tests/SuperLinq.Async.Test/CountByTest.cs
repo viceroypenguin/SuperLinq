@@ -9,12 +9,12 @@ public sealed class CountByTest
 
 		await xs.CountBy(SuperEnumerable.Identity)
 			.AssertSequenceEqual(
-				KeyValuePair.Create(1, 4),
-				KeyValuePair.Create(2, 3),
-				KeyValuePair.Create(3, 2),
-				KeyValuePair.Create(4, 1),
-				KeyValuePair.Create(5, 1),
-				KeyValuePair.Create(6, 1));
+				CreatePair(1, 4),
+				CreatePair(2, 3),
+				CreatePair(3, 2),
+				CreatePair(4, 1),
+				CreatePair(5, 1),
+				CreatePair(6, 1));
 	}
 
 	[Fact]
@@ -24,11 +24,11 @@ public sealed class CountByTest
 
 		await xs.CountBy(SuperEnumerable.Identity)
 			.AssertSequenceEqual(
-				KeyValuePair.Create('j', 1),
-				KeyValuePair.Create('a', 1),
-				KeyValuePair.Create('f', 2),
-				KeyValuePair.Create('e', 1),
-				KeyValuePair.Create('r', 1));
+				CreatePair('j', 1),
+				CreatePair('a', 1),
+				CreatePair('f', 2),
+				CreatePair('e', 1),
+				CreatePair('r', 1));
 	}
 
 	[Fact]
@@ -40,8 +40,8 @@ public sealed class CountByTest
 		await xs
 			.CountBy(c => c % 2)
 			.AssertSequenceEqual(
-				KeyValuePair.Create(1, 50),
-				KeyValuePair.Create(0, 50));
+				CreatePair(1, 50),
+				CreatePair(0, 50));
 	}
 
 	[Fact]
@@ -52,9 +52,9 @@ public sealed class CountByTest
 		await xs
 			.CountBy(SuperEnumerable.Identity, StringComparer.OrdinalIgnoreCase)
 			.AssertSequenceEqual(
-				KeyValuePair.Create("a", 3),
-				KeyValuePair.Create("B", 2),
-				KeyValuePair.Create("c", 1));
+				CreatePair("a", 3),
+				CreatePair("B", 2),
+				CreatePair("c", 1));
 	}
 
 	[Fact]
@@ -83,9 +83,11 @@ public sealed class CountByTest
 
 		await ss.CountBy(SuperEnumerable.Identity)
 			.AssertSequenceEqual(
-				KeyValuePair.Create((string?)"foo", 2),
-				KeyValuePair.Create((string?)null, 4),
-				KeyValuePair.Create((string?)"bar", 2),
-				KeyValuePair.Create((string?)"baz", 2));
+				CreatePair((string?)"foo", 2),
+				CreatePair((string?)null, 4),
+				CreatePair((string?)"bar", 2),
+				CreatePair((string?)"baz", 2));
 	}
+
+	private static KeyValuePair<TKey, TValue> CreatePair<TKey, TValue>(TKey key, TValue value) => new(key, value);
 }

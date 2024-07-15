@@ -6,7 +6,10 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+
+#if !NETSTANDARD
 using System.Runtime.CompilerServices;
+#endif
 
 namespace SuperLinq.Collections;
 
@@ -650,12 +653,16 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 	/// </summary>
 	public void Clear()
 	{
+#if !NETSTANDARD
 		if (RuntimeHelpers.IsReferenceOrContainsReferences<(TElement, TPriority)>())
 		{
+#endif
 			// Clear the elements so that the gc can reclaim the references
 			Array.Clear(_nodes, 0, Count);
 			_elementIndex.Clear();
+#if !NETSTANDARD
 		}
+#endif
 
 		Count = 0;
 		_version++;
@@ -748,7 +755,9 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 				MoveDownCustomComparer(lastNode, 0);
 		}
 
+#if !NETSTANDARD
 		if (RuntimeHelpers.IsReferenceOrContainsReferences<(TElement, TPriority)>())
+#endif
 			_nodes[lastNodeIndex] = default;
 	}
 
