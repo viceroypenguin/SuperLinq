@@ -7,7 +7,7 @@
 	<PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
 	<PackageVersion Include="coverlet.collector" Version="6.0.2" />
 	<PackageVersion Include="coverlet.msbuild" Version="6.0.2" />
-	<PackageVersion Include="DocFx.App" Version="2.76.0" />
+	<PackageVersion Include="DocFx.App" Version="2.77.0" />
 	<PackageVersion Include="GitHubActionsTestLogger" Version="2.4.1" />
 	<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" />
 	<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" />
@@ -18,11 +18,11 @@
 	<PackageVersion Include="Scriban" Version="5.10.0" />
 	<PackageVersion Include="System.Linq.Async" Version="6.0.1" />
 	<PackageVersion Include="ThisAssembly.Resources" Version="1.4.3" />
-	<PackageVersion Include="xunit" Version="2.8.1" />
+	<PackageVersion Include="xunit" Version="2.9.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp3.1' ">
-	<PackageVersion Include="xunit.runner.visualstudio" Version="2.8.0" PrivateAssets="All" />
+	<PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">

@@ -74,6 +74,11 @@ internal class TestingSequence<T> : IDisposableEnumerable<T>
 			AssertTestingSequence(_disposedCount == _enumerationCount, ExpectedDisposal);
 	}
 
+	[SuppressMessage(
+		"Style",
+		"IDE0100",
+		Justification = "Expanded code is used for better error reporting on test failures"
+	)]
 	public IEnumerator<T> GetEnumerator()
 	{
 		AssertTestingSequence(_enumerationCount == _disposedCount, SimultaneousEnumerations);

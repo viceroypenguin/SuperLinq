@@ -1,9 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFrameworks>net8.0</TargetFrameworks>
-    <NoWarn>$(NoWarn);CA1852;NU1701</NoWarn>
+    <NoWarn>$(NoWarn);CA1852;NU1701;NU1902;NU1903</NoWarn>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
