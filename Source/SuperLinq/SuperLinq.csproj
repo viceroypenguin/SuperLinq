@@ -5,6 +5,7 @@
   <PropertyGroup>
     <AssemblyName>SuperLinq</AssemblyName>
     <RootNamespace>SuperLinq</RootNamespace>
+    <TargetFrameworks>netstandard2.0;$(TargetFrameworks)</TargetFrameworks>
 
     <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
     <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
@@ -158,14 +159,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.HashCode" />
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
     <PackageReference Include="MinVer" PrivateAssets="All" />
+    <PackageReference Include="System.Memory" />
   </ItemGroup>
 
+  <!-- Remove when adding Microsoft.Bcl.Memory -->
   <ItemGroup Condition="$(TargetFramework) == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.Bcl.HashCode" />
-    <PackageReference Include="System.Memory" />
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>SuperLinq.Test</_Parameter1>
     </AssemblyAttribute>
