@@ -385,3 +385,4 @@ dotnet_diagnostic.MA0147.severity = error
 dotnet_diagnostic.MA0148.severity = none
 dotnet_diagnostic.MA0149.severity = none
 dotnet_diagnostic.MA0154.severity = warning
+dotnet_diagnostic.MA0158.severity = none

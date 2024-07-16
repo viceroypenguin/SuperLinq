@@ -94,6 +94,11 @@ internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
 		return default;
 	}
 
+	[SuppressMessage(
+		"Style",
+		"IDE0100",
+		Justification = "Expanded code is used for better error reporting on test failures"
+	)]
 	public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
 	{
 		AssertTestingSequence(_enumerationCount == _disposedCount, SimultaneousEnumerations);
