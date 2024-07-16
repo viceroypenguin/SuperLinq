@@ -1,4 +1,4 @@
-﻿namespace Test.Async;
+namespace Test.Async;
 
 public sealed class TimeoutTest
 {
@@ -95,9 +95,10 @@ public sealed class TimeoutTest
 			return AsyncEnumerable.Range(1, 5)
 				.SelectAwait(async x =>
 				{
-					await Task.Delay(TimeSpan.FromMilliseconds(1), CancellationToken.None);
+					await Task.Delay(TimeSpan.FromMilliseconds(10), CancellationToken.None);
 					return x;
-				}).GetAsyncEnumerator(CancellationToken.None);
+				})
+				.GetAsyncEnumerator(CancellationToken.None);
 		}
 	}
 
@@ -110,9 +111,10 @@ public sealed class TimeoutTest
 			return AsyncEnumerable.Range(1, 5)
 				.SelectAwait(async x =>
 				{
-					await Task.Delay(TimeSpan.FromMilliseconds(1), cancellationToken);
+					await Task.Delay(TimeSpan.FromMilliseconds(10), cancellationToken);
 					return x;
-				}).GetAsyncEnumerator(cancellationToken);
+				})
+				.GetAsyncEnumerator(cancellationToken);
 		}
 	}
 }
