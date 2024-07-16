@@ -6,9 +6,9 @@
 		<AssemblyTitle>SuperLinq.Test</AssemblyTitle>
 		<AssemblyName>SuperLinq.Test</AssemblyName>
 		<RootNamespace>Test</RootNamespace>
-		<TargetFrameworks>$(TargetFrameworks);net48</TargetFrameworks>
-		
-		<IsPackable>false</IsPackable>
+    <TargetFrameworks>$(TargetFrameworks.Replace("netstandard2.0","net48"))</TargetFrameworks>
+
+    <IsPackable>false</IsPackable>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 		<PolySharpUsePublicAccessibilityForGeneratedTypes>true</PolySharpUsePublicAccessibilityForGeneratedTypes>
 	</PropertyGroup>
