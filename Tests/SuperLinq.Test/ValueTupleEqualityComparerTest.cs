@@ -79,11 +79,7 @@ public sealed class ValueTupleEqualityComparerTest
 		var comparer = ValueTupleEqualityComparer.Create<int, int>(comparer1: null, comparer2: null);
 		ValueTuple<int, int> first = new(1, 2);
 		var firstHashCode = comparer.GetHashCode(first);
-#if NETCOREAPP
 		var expectedHashCode = HashCode.Combine(1.GetHashCode(), 2.GetHashCode());
-#else
-		var expectedHashCode = 1.GetHashCode() * 397 ^ 2.GetHashCode();
-#endif
 		Assert.Equal(expectedHashCode, firstHashCode);
 	}
 }
