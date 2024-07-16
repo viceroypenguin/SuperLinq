@@ -1,45 +1,45 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="../../TargetFrameworks.props" />
+  <Import Project="../../TargetFrameworks.props" />
 
-	<PropertyGroup>
-		<AssemblyTitle>SuperLinq.Async.Test</AssemblyTitle>
-		<AssemblyName>SuperLinq.Async.Test</AssemblyName>
-		<RootNamespace>Test.Async</RootNamespace>
+  <PropertyGroup>
+    <AssemblyTitle>SuperLinq.Async.Test</AssemblyTitle>
+    <AssemblyName>SuperLinq.Async.Test</AssemblyName>
+    <RootNamespace>Test.Async</RootNamespace>
 
-		<IsPackable>false</IsPackable>
-		<AnalysisLevel>latest-recommended</AnalysisLevel>
-	</PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\Source\SuperLinq\SuperLinq.csproj" />
-		<ProjectReference Include="..\..\Source\SuperLinq.Async\SuperLinq.Async.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Source\SuperLinq\SuperLinq.csproj" />
+    <ProjectReference Include="..\..\Source\SuperLinq.Async\SuperLinq.Async.csproj" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<Compile Include="..\SuperLinq.Test\BreakingAction.cs" Link="BreakingAction.cs" />
-		<Compile Include="..\SuperLinq.Test\BreakingFunc.cs" Link="BreakingFunc.cs" />
-		<Compile Include="..\SuperLinq.Test\EqualityComparer.cs" Link="EqualityComparer.cs" />
-		<Compile Include="..\SuperLinq.Test\FuncModule.cs" Link="FuncModule.cs" />
-		<Compile Include="..\SuperLinq.Test\TestException.cs" Link="TestException.cs" />
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SuperLinq.Test\BreakingAction.cs" Link="BreakingAction.cs" />
+    <Compile Include="..\SuperLinq.Test\BreakingFunc.cs" Link="BreakingFunc.cs" />
+    <Compile Include="..\SuperLinq.Test\EqualityComparer.cs" Link="EqualityComparer.cs" />
+    <Compile Include="..\SuperLinq.Test\FuncModule.cs" Link="FuncModule.cs" />
+    <Compile Include="..\SuperLinq.Test\TestException.cs" Link="TestException.cs" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<Using Include="SuperLinq" />
-		<Using Include="SuperLinq.Async" />
-		<Using Include="Xunit" />
-		<Using Include="Test.FuncModule" Static="true" />
-		<Using Include="Test.Async.TestExtensions" Static="true" />
-	</ItemGroup>
+  <ItemGroup>
+    <Using Include="SuperLinq" />
+    <Using Include="SuperLinq.Async" />
+    <Using Include="Xunit" />
+    <Using Include="Test.FuncModule" Static="true" />
+    <Using Include="Test.Async.TestExtensions" Static="true" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Diagnostics" />
-		<PackageReference Include="coverlet.collector" PrivateAssets="All" />
-		<PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
-		<PackageReference Include="GitHubActionsTestLogger" PrivateAssets="All" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" />
-		<PackageReference Include="xunit" />
-		<PackageReference Include="xunit.runner.visualstudio" PrivateAssets="All" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Diagnostics" />
+    <PackageReference Include="coverlet.collector" PrivateAssets="All" />
+    <PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
+    <PackageReference Include="GitHubActionsTestLogger" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="All" />
+  </ItemGroup>
 
 </Project>
