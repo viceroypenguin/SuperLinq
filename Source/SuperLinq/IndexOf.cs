@@ -79,7 +79,11 @@ public static partial class SuperEnumerable
 	///	    This operator executes immediately.
 	/// </para>
 	/// </remarks>
+#if NETCOREAPP
 	public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource item, Index index)
+#else
+	internal static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource item, Index index)
+#endif
 	{
 		return source.IndexOf(item, index, int.MaxValue);
 	}
@@ -129,7 +133,11 @@ public static partial class SuperEnumerable
 	///	    This operator executes immediately.
 	/// </para>
 	/// </remarks>
+#if NETCOREAPP
 	public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource item, Index index, int count)
+#else
+	internal static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource item, Index index, int count)
+#endif
 	{
 		return FindIndex(source, i => EqualityComparer<TSource>.Default.Equals(i, item), index, count);
 	}

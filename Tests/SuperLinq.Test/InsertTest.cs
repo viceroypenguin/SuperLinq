@@ -77,6 +77,7 @@ public sealed class InsertTest
 				_ => GetSequences(),
 				(i, x) => new object[] { x[0], x[1], i });
 
+#if NETCOREAPP
 	[Theory]
 	[MemberData(nameof(GetInsertData))]
 	public void Insert(
@@ -97,6 +98,7 @@ public sealed class InsertTest
 				testCollectionEnumerable: true);
 		}
 	}
+#endif
 
 	[Fact]
 	public void InsertCollectionBehavior()

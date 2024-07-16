@@ -10,6 +10,7 @@
 
     <IsPackable>false</IsPackable>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <PolySharpUsePublicAccessibilityForGeneratedTypes>true</PolySharpUsePublicAccessibilityForGeneratedTypes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +30,7 @@
     <Using Include="SuperLinq" />
     <Using Include="SuperLinq.Async" />
     <Using Include="Xunit" />
+    <Using Include="Xunit.Assert" Alias="Assert" />
     <Using Include="Test.FuncModule" Static="true" />
     <Using Include="Test.Async.TestExtensions" Static="true" />
   </ItemGroup>

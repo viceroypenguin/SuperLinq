@@ -199,6 +199,7 @@ public sealed class ExcludeTests
 			[^15..^3, false, true, new int[] { 7, 8, 9 }],
 		];
 
+#if NETCOREAPP
 	[Theory]
 	[MemberData(nameof(GetExcludeRangeCases))]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1026:Theory methods should use all of their parameters")]
@@ -218,7 +219,9 @@ public sealed class ExcludeTests
 
 		result.AssertSequenceEqual(expected);
 	}
+#endif
 
+#if NETCOREAPP
 	[Theory]
 	[MemberData(nameof(GetExcludeRangeCases))]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1026:Theory methods should use all of their parameters")]
@@ -238,4 +241,5 @@ public sealed class ExcludeTests
 
 		result.AssertSequenceEqual(expected);
 	}
+#endif
 }

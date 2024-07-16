@@ -2,19 +2,28 @@
 
   <Import Project="../../TargetFrameworks.props" />
 
-  <PropertyGroup>
-    <AssemblyTitle>SuperLinq.Test</AssemblyTitle>
-    <AssemblyName>SuperLinq.Test</AssemblyName>
-    <RootNamespace>Test</RootNamespace>
-    <TargetFrameworks>$(TargetFrameworks);net48</TargetFrameworks>
-
-    <IsPackable>false</IsPackable>
-    <AnalysisLevel>latest-recommended</AnalysisLevel>
-  </PropertyGroup>
+	<PropertyGroup>
+		<AssemblyTitle>SuperLinq.Test</AssemblyTitle>
+		<AssemblyName>SuperLinq.Test</AssemblyName>
+		<RootNamespace>Test</RootNamespace>
+		<TargetFrameworks>$(TargetFrameworks);net48</TargetFrameworks>
+		
+		<IsPackable>false</IsPackable>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
+		<PolySharpUsePublicAccessibilityForGeneratedTypes>true</PolySharpUsePublicAccessibilityForGeneratedTypes>
+	</PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Source\SuperLinq\SuperLinq.csproj" />
   </ItemGroup>
+
+	<ItemGroup>
+		<Using Include="SuperLinq" />
+		<Using Include="Test.FuncModule" Static="true" />
+		<Using Include="Test.TestExtensions" Static="true" />
+		<Using Include="Xunit" />
+		<Using Include="Xunit.Assert" Alias="Assert" />
+	</ItemGroup>
 
   <ItemGroup>
     <Using Include="SuperLinq" />

@@ -12,7 +12,11 @@ public static partial class AsyncSuperEnumerable
 	/// <para>This method is implemented by using deferred execution. The immediate return value is an object that stores all the information that is required to perform the action. The query represented by this method is not executed until the object is enumerated either by calling its `GetEnumerator` method directly or by using `foreach` in Visual C# or `For Each` in Visual Basic.</para>
 	/// <para><see cref="AsyncSuperEnumerable.Take" /> enumerates <paramref name="source" /> and yields elements whose indices belong to the specified <paramref name="range"/>.</para>
 	/// </remarks>
+#if NETCOREAPP
 	public static IAsyncEnumerable<TSource> Take<TSource>(this IAsyncEnumerable<TSource> source, Range range)
+#else
+	internal static IAsyncEnumerable<TSource> Take<TSource>(this IAsyncEnumerable<TSource> source, Range range)
+#endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
 

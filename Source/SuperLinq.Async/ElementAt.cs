@@ -19,7 +19,11 @@ public static partial class AsyncSuperEnumerable
 	/// To instead return a default value when the specified index is out of range,
 	/// use the <see cref="ElementAtOrDefaultAsync{TSource}(IAsyncEnumerable{TSource}, Index, CancellationToken)" /> method.</para>
 	/// </remarks>
+#if NETCOREAPP
 	public static ValueTask<TSource> ElementAtAsync<TSource>(
+#else
+	internal static ValueTask<TSource> ElementAtAsync<TSource>(
+#endif
 		this IAsyncEnumerable<TSource> source,
 		Index index,
 		CancellationToken cancellationToken = default
@@ -52,7 +56,11 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// <para>The default value for reference and nullable types is <see langword="null" />.</para>
 	/// </remarks>
+#if NETCOREAPP
 	public static ValueTask<TSource?> ElementAtOrDefaultAsync<TSource>(
+#else
+	internal static ValueTask<TSource?> ElementAtOrDefaultAsync<TSource>(
+#endif
 		this IAsyncEnumerable<TSource> source,
 		Index index,
 		CancellationToken cancellationToken = default

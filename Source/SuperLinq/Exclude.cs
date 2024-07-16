@@ -68,7 +68,11 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	///	    This method uses deferred execution and streams its results.
 	/// </remarks>
+#if NETCOREAPP
 	public static IEnumerable<T> Exclude<T>(this IEnumerable<T> sequence, Range range)
+#else
+	internal static IEnumerable<T> Exclude<T>(this IEnumerable<T> sequence, Range range)
+#endif
 	{
 		ArgumentNullException.ThrowIfNull(sequence);
 

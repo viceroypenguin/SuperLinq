@@ -75,10 +75,11 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	///	    This operator evaluates in a deferred and streaming manner.
 	/// </remarks>
-	public static IEnumerable<TSource> Replace<TSource>(
-		this IEnumerable<TSource> source,
-		Index index,
-		TSource value)
+#if NETCOREAPP
+	public static IEnumerable<TSource> Replace<TSource>(this IEnumerable<TSource> source, Index index, TSource value)
+#else
+	internal static IEnumerable<TSource> Replace<TSource>(this IEnumerable<TSource> source, Index index, TSource value)
+#endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
 

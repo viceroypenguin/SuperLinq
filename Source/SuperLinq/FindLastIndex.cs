@@ -82,7 +82,11 @@ public static partial class SuperEnumerable
 	///	    This operator executes immediately.
 	/// </para>
 	/// </remarks>
+#if NETCOREAPP
 	public static int FindLastIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Index index)
+#else
+	internal static int FindLastIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Index index)
+#endif
 	{
 		return source.FindLastIndex(predicate, index, int.MaxValue);
 	}
@@ -135,7 +139,11 @@ public static partial class SuperEnumerable
 	///	    This operator executes immediately.
 	/// </para>
 	/// </remarks>
+#if NETCOREAPP
 	public static int FindLastIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count)
+#else
+	internal static int FindLastIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count)
+#endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);

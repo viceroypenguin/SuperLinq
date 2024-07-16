@@ -76,7 +76,11 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
+#if NETCOREAPP
 	public static ValueTask<int> FindLastIndex<TSource>(
+#else
+	internal static ValueTask<int> FindLastIndex<TSource>(
+#endif
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, bool> predicate,
 		Index index,
@@ -124,7 +128,11 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
+#if NETCOREAPP
 	public static ValueTask<int> FindLastIndex<TSource>(
+#else
+	internal static ValueTask<int> FindLastIndex<TSource>(
+#endif
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, bool> predicate,
 		Index index,
