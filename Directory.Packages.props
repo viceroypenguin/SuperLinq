@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-	<PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="All" />
+	<PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
