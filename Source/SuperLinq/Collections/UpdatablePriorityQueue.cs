@@ -655,14 +655,12 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 	{
 #if !NETSTANDARD
 		if (RuntimeHelpers.IsReferenceOrContainsReferences<(TElement, TPriority)>())
-		{
 #endif
+		{
 			// Clear the elements so that the gc can reclaim the references
 			Array.Clear(_nodes, 0, Count);
 			_elementIndex.Clear();
-#if !NETSTANDARD
 		}
-#endif
 
 		Count = 0;
 		_version++;
@@ -758,7 +756,9 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 #if !NETSTANDARD
 		if (RuntimeHelpers.IsReferenceOrContainsReferences<(TElement, TPriority)>())
 #endif
+		{
 			_nodes[lastNodeIndex] = default;
+		}
 	}
 
 	/// <summary>
