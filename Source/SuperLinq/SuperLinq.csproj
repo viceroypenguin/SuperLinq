@@ -3,185 +3,185 @@
   <Import Project="../../TargetFrameworks.props" />
 
   <PropertyGroup>
-	<AssemblyName>SuperLinq</AssemblyName>
-	<RootNamespace>SuperLinq</RootNamespace>
+    <AssemblyName>SuperLinq</AssemblyName>
+    <RootNamespace>SuperLinq</RootNamespace>
 
-	<PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
-	<IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
+    <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
+    <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
   </PropertyGroup>
 
   <PropertyGroup Label="Nuget">
-	<Title>SuperLinq</Title>
+    <Title>SuperLinq</Title>
 
-	<Authors>SuperLinq Developers</Authors>
-	<PackageTags>linq;extensions;linqpad-samples</PackageTags>
+    <Authors>SuperLinq Developers</Authors>
+    <PackageTags>linq;extensions;linqpad-samples</PackageTags>
 
-	<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-	<PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
 
-	<PublishRepositoryUrl>true</PublishRepositoryUrl>
-	<RepositoryUrl>https://github.com/viceroypenguin/SuperLinq</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryUrl>https://github.com/viceroypenguin/SuperLinq</RepositoryUrl>
 
-	<IncludeSymbols>true</IncludeSymbols>
-	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <PropertyGroup>
-	<Description>
-	  This project enhances LINQ to Objects with the following methods:
+    <Description>
+      This project enhances LINQ to Objects with the following methods:
 
-	  - AggregateRight
-	  - AssertCount
-	  - AtLeast
-	  - AtMost
-	  - Cartesian
-	  - Choose
-	  - CountBetween
-	  - CollectionEqual
-	  - CompareCount
-	  - CountBy
-	  - CountDown
-	  - Consume
-	  - DenseRank
-	  - DenseRankBy
-	  - DistinctBy
-	  - ElementAt (pre-.NET 6.0)
-	  - EndsWith
-	  - EquiZip
-	  - Evaluate
-	  - Exactly
-	  - ExceptBy
-	  - Exclude
-	  - FallbackIfEmpty
-	  - FillBackward
-	  - FillForward
-	  - Flatten
-	  - Fold
-	  - From
-	  - FullGroupJoin
-	  - FullJoin
-	  - Generate
-	  - GetShortestPath
-	  - GetShortestPathCost
-	  - GetShortestPaths
-	  - GroupAdjacent
-	  - Index
-	  - IndexBy
-	  - Insert
-	  - Interleave
-	  - Lag
-	  - Lead
-	  - LeftJoin
-	  - Move
-	  - OrderBy
-	  - OrderedMerge
-	  - Pad
-	  - PadStart
-	  - PartialSort
-	  - PartialSortBy
-	  - Partition
-	  - Permutations
-	  - Pipe
-	  - PreScan
-	  - Random
-	  - RandomDouble
-	  - RandomSubset
-	  - Rank
-	  - RankBy
-	  - Return
-	  - RightJoin
-	  - RunLengthEncode
-	  - ScanBy
-	  - ScanRight
-	  - Segment
-	  - Sequence
-	  - Shuffle
-	  - SkipUntil
-	  - Slice
-	  - SortedMerge
-	  - Split
-	  - StartsWith
-	  - Subsets
-	  - TagFirstLast
-	  - Take (pre-.NET 6.0)
-	  - TakeEvery
-	  - TakeUntil
-	  - ThenBy
-	  - ToArrayByIndex
-	  - ToDataTable
-	  - ToDelimitedString
-	  - ToDictionary
-	  - ToLookup
-	  - Trace
-	  - Transpose
-	  - TraverseBreadthFirst
-	  - TraverseDepthFirst
-	  - TrySingle
-	  - Where
-	  - Window
-	  - WindowLeft
-	  - WindowRight
-	  - ZipLongest
-	  - ZipMap
-	  - ZipShortest
-	</Description>
-	<Description>$([System.Text.RegularExpressions.Regex]::Replace($(Description), `\s+`, ` `).Trim().Replace(` - `, `, `).Replace(`:,`, `:`))</Description>
+      - AggregateRight
+      - AssertCount
+      - AtLeast
+      - AtMost
+      - Cartesian
+      - Choose
+      - CountBetween
+      - CollectionEqual
+      - CompareCount
+      - CountBy
+      - CountDown
+      - Consume
+      - DenseRank
+      - DenseRankBy
+      - DistinctBy
+      - ElementAt (pre-.NET 6.0)
+      - EndsWith
+      - EquiZip
+      - Evaluate
+      - Exactly
+      - ExceptBy
+      - Exclude
+      - FallbackIfEmpty
+      - FillBackward
+      - FillForward
+      - Flatten
+      - Fold
+      - From
+      - FullGroupJoin
+      - FullJoin
+      - Generate
+      - GetShortestPath
+      - GetShortestPathCost
+      - GetShortestPaths
+      - GroupAdjacent
+      - Index
+      - IndexBy
+      - Insert
+      - Interleave
+      - Lag
+      - Lead
+      - LeftJoin
+      - Move
+      - OrderBy
+      - OrderedMerge
+      - Pad
+      - PadStart
+      - PartialSort
+      - PartialSortBy
+      - Partition
+      - Permutations
+      - Pipe
+      - PreScan
+      - Random
+      - RandomDouble
+      - RandomSubset
+      - Rank
+      - RankBy
+      - Return
+      - RightJoin
+      - RunLengthEncode
+      - ScanBy
+      - ScanRight
+      - Segment
+      - Sequence
+      - Shuffle
+      - SkipUntil
+      - Slice
+      - SortedMerge
+      - Split
+      - StartsWith
+      - Subsets
+      - TagFirstLast
+      - Take (pre-.NET 6.0)
+      - TakeEvery
+      - TakeUntil
+      - ThenBy
+      - ToArrayByIndex
+      - ToDataTable
+      - ToDelimitedString
+      - ToDictionary
+      - ToLookup
+      - Trace
+      - Transpose
+      - TraverseBreadthFirst
+      - TraverseDepthFirst
+      - TrySingle
+      - Where
+      - Window
+      - WindowLeft
+      - WindowRight
+      - ZipLongest
+      - ZipMap
+      - ZipShortest
+    </Description>
+    <Description>$([System.Text.RegularExpressions.Regex]::Replace($(Description), `\s+`, ` `).Trim().Replace(` - `, `, `).Replace(`:,`, `:`))</Description>
 
-	<Copyright>
-	  Portions © 2008 Jonathan Skeet.
-	  Portions © 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph.
-	  Portions © 2010 Johannes Rudolph, Leopold Bushkin.
-	  Portions © 2015 Felipe Sateler, “sholland”.
-	  Portions © 2016 Andreas Gullberg Larsen, Leandro F. Vieira (leandromoh).
-	  Portions © 2017 Jonas Nyrup (jnyrup).
-	  Portions © 2022 Turning Code, LLC
-	  Portions © 2022 Amichai Mantinband
-	  Portions © Microsoft. All rights reserved.
-	</Copyright>
-	<Copyright>$([System.Text.RegularExpressions.Regex]::Replace($(Copyright), `\s+`, ` `).Trim())</Copyright>
+    <Copyright>
+      Portions © 2008 Jonathan Skeet.
+      Portions © 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph.
+      Portions © 2010 Johannes Rudolph, Leopold Bushkin.
+      Portions © 2015 Felipe Sateler, “sholland”.
+      Portions © 2016 Andreas Gullberg Larsen, Leandro F. Vieira (leandromoh).
+      Portions © 2017 Jonas Nyrup (jnyrup).
+      Portions © 2022 Turning Code, LLC
+      Portions © 2022 Amichai Mantinband
+      Portions © Microsoft. All rights reserved.
+    </Copyright>
+    <Copyright>$([System.Text.RegularExpressions.Regex]::Replace($(Copyright), `\s+`, ` `).Trim())</Copyright>
   </PropertyGroup>
 
   <ItemGroup Label="Nuget Package">
-	<None Include="readme.md" Pack="true" PackagePath="\" />
-	<None Include="..\..\Docs\SuperLinq.Docs\apidoc\SuperLinq\**"
-		  Visible="false"
-		  Pack="true" PackagePath="\linqpad-samples\%(RecursiveDir)%(Filename)%(Extension)" />
+    <None Include="readme.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\Docs\SuperLinq.Docs\apidoc\SuperLinq\**"
+          Visible="false"
+          Pack="true" PackagePath="\linqpad-samples\%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
-	<AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Shipped.txt" />
-	<AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Unshipped.txt" />
+    <AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Unshipped.txt" />
   </ItemGroup>
 
   <ItemGroup>
-	<Using Include="SuperLinq.Exceptions" />
+    <Using Include="SuperLinq.Exceptions" />
   </ItemGroup>
 
   <ItemGroup>
-	<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
-	<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
-	<PackageReference Include="MinVer" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+    <PackageReference Include="MinVer" PrivateAssets="All" />
   </ItemGroup>
 
   <PropertyGroup Label="SourceGenerator">
-	<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-	<CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
 
   <ItemGroup Label="SourceGenerator">
-	<ProjectReference Include="..\..\Generators\SuperLinq.Generator\SuperLinq.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-	<Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
-	<None Include="$(CompilerGeneratedFilesOutputPath)/SuperLinq.Generator/**/*.cs" />
+    <ProjectReference Include="..\..\Generators\SuperLinq.Generator\SuperLinq.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
+    <None Include="$(CompilerGeneratedFilesOutputPath)/SuperLinq.Generator/**/*.cs" />
   </ItemGroup>
 
   <PropertyGroup Label="MinVer">
-	<MinVerAutoIncrement>minor</MinVerAutoIncrement>
-	<MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
-	<MinVerTagPrefix>v</MinVerTagPrefix>
+    <MinVerAutoIncrement>minor</MinVerAutoIncrement>
+    <MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
   </PropertyGroup>
 
   <ItemGroup>
-	<InternalsVisibleTo Include="SuperLinq.Async" />
+    <InternalsVisibleTo Include="SuperLinq.Async" />
   </ItemGroup>
 
 </Project>

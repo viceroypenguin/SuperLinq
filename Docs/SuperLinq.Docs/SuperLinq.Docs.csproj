@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net8.0</TargetFrameworks>
-		<NoWarn>$(NoWarn);CA1852;NU1701</NoWarn>
-		<IsPackable>false</IsPackable>
-	</PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <NoWarn>$(NoWarn);CA1852;NU1701</NoWarn>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="DocFx.App" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DocFx.App" />
+  </ItemGroup>
 
 </Project>
