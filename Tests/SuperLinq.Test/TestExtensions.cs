@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Diagnostics;
+using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
@@ -17,7 +17,7 @@ internal static partial class TestExtensions
 		SuperEnumerable.From(
 			Enumerable.Range(1, index - 1)
 				.Select(i => Func(() => i))
-				.Append(BreakingFunc.Of<int>())
+				.Concat([BreakingFunc.Of<int>()])
 				.ToArray());
 	#endregion
 

@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 public sealed class PartialSortTests
 {
@@ -7,7 +7,7 @@ public sealed class PartialSortTests
 	{
 		using var sequence = Enumerable.Range(1, 10)
 			.Reverse()
-			.Append(0)
+			.Concat([0])
 			.AsTestingSequence();
 
 		sequence
@@ -20,7 +20,7 @@ public sealed class PartialSortTests
 	{
 		using var sequence = Enumerable.Range(1, 10)
 			.Reverse()
-			.Append(0)
+			.Concat([0])
 			.AsTestingSequence(maxEnumerations: 2);
 
 		sequence

@@ -1,4 +1,4 @@
-﻿namespace Test.Async;
+namespace Test.Async;
 
 public sealed class ReplaceTest
 {
@@ -33,7 +33,7 @@ public sealed class ReplaceTest
 		var result = seq.Replace(index, 30);
 		await result.AssertSequenceEqual(
 			Enumerable.Range(1, index)
-				.Append(30)
+				.Concat([30])
 				.Concat(Enumerable.Range(index + 2, 9 - index)));
 	}
 
@@ -45,7 +45,7 @@ public sealed class ReplaceTest
 		var result = seq.Replace(new Index(index), 30);
 		await result.AssertSequenceEqual(
 			Enumerable.Range(1, index)
-				.Append(30)
+				.Concat([30])
 				.Concat(Enumerable.Range(index + 2, 9 - index)));
 	}
 
@@ -57,7 +57,7 @@ public sealed class ReplaceTest
 		var result = seq.Replace(^index, 30);
 		await result.AssertSequenceEqual(
 			Enumerable.Range(1, 9 - index)
-				.Append(30)
+				.Concat([30])
 				.Concat(Enumerable.Range(11 - index, index)));
 	}
 

@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 public sealed class ZipLongestTest
 {
 	[Fact]
@@ -54,9 +54,12 @@ public sealed class ZipLongestTest
 			result.AssertSequenceEqual(
 				Enumerable.Range(1, 2)
 					.Select(x => (x, x))
-					.Append((
-						shortSeq == 0 ? 0 : 3,
-						shortSeq == 1 ? 0 : 3)));
+					.Concat([
+						(
+							shortSeq == 0 ? 0 : 3,
+							shortSeq == 1 ? 0 : 3
+						),
+					]));
 		}
 	}
 
@@ -163,10 +166,13 @@ public sealed class ZipLongestTest
 			result.AssertSequenceEqual(
 				Enumerable.Range(1, 2)
 					.Select(x => (x, x, x))
-					.Append((
-						shortSeq == 0 ? 0 : 3,
-						shortSeq == 1 ? 0 : 3,
-						shortSeq == 2 ? 0 : 3)));
+					.Concat([
+						(
+							shortSeq == 0 ? 0 : 3,
+							shortSeq == 1 ? 0 : 3,
+							shortSeq == 2 ? 0 : 3
+						),
+					]));
 		}
 	}
 
@@ -291,11 +297,14 @@ public sealed class ZipLongestTest
 			result.AssertSequenceEqual(
 				Enumerable.Range(1, 2)
 					.Select(x => (x, x, x, x))
-					.Append((
-						shortSeq == 0 ? 0 : 3,
-						shortSeq == 1 ? 0 : 3,
-						shortSeq == 2 ? 0 : 3,
-						shortSeq == 3 ? 0 : 3)));
+					.Concat([
+						(
+							shortSeq == 0 ? 0 : 3,
+							shortSeq == 1 ? 0 : 3,
+							shortSeq == 2 ? 0 : 3,
+							shortSeq == 3 ? 0 : 3
+						),
+					]));
 		}
 	}
 

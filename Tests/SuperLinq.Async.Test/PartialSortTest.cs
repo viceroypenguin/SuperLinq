@@ -1,4 +1,4 @@
-﻿namespace Test.Async;
+namespace Test.Async;
 
 public sealed class PartialSortTests
 {
@@ -7,7 +7,7 @@ public sealed class PartialSortTests
 	{
 		await using var sequence = Enumerable.Range(1, 10)
 			.Reverse()
-			.Append(0)
+			.Concat([0])
 			.AsTestingSequence();
 
 		await sequence
@@ -20,7 +20,7 @@ public sealed class PartialSortTests
 	{
 		await using var sequence = Enumerable.Range(1, 10)
 			.Reverse()
-			.Append(0)
+			.Concat([0])
 			.AsTestingSequence(maxEnumerations: 2);
 
 		await sequence

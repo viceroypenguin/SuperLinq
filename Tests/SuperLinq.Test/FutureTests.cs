@@ -2,7 +2,7 @@
 
 namespace Test;
 
-public class FutureTests
+public sealed class FutureTests
 {
 	[Fact]
 	public void SortedSetTryGetValue()

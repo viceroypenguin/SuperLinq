@@ -1,4 +1,4 @@
-﻿namespace Test.Async;
+namespace Test.Async;
 
 public sealed class GroupAdjacentTest
 {
@@ -172,7 +172,10 @@ public sealed class GroupAdjacentTest
 	public async Task GroupAdjacentSourceSequenceWithSomeNullKeys()
 	{
 		using var source = AsyncEnumerable.Range(1, 5)
-			.SelectMany(x => Enumerable.Repeat((int?)x, x).Append(null).ToAsyncEnumerable())
+			.SelectMany(x => Enumerable.Repeat((int?)x, x)
+				.Concat([null])
+				.ToAsyncEnumerable()
+			)
 			.AsTestingSequence();
 
 		var groupings = source.GroupAdjacent(SuperEnumerable.Identity);

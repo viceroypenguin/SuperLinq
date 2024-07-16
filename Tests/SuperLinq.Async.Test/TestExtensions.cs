@@ -1,4 +1,4 @@
-﻿namespace Test.Async;
+namespace Test.Async;
 
 internal static partial class TestExtensions
 {
@@ -11,7 +11,7 @@ internal static partial class TestExtensions
 		AsyncSuperEnumerable.From(
 			Enumerable.Range(1, index - 1)
 				.Select(i => Func(() => Task.FromResult(i)))
-				.Append(AsyncBreakingFunc.Of<int>())
+				.Concat([AsyncBreakingFunc.Of<int>()])
 				.ToArray());
 
 	internal static async Task AssertEmpty<T>(this IAsyncEnumerable<T> actual) =>
