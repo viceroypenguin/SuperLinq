@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 public sealed class PadStartTest
 {
@@ -54,7 +54,9 @@ public sealed class PadStartTest
 		result.AssertListElementChecking(10_000);
 
 		Assert.Equal(1_200, result.ElementAt(1_200));
+#if !NO_INDEX
 		Assert.Equal(8_800, result.ElementAt(^1_200));
+#endif
 	}
 
 	[Theory]
@@ -116,7 +118,9 @@ public sealed class PadStartTest
 
 		Assert.Equal(200, result.ElementAt(1_200));
 		Assert.Equal(1_200, result.ElementAt(31_200));
+#if !NO_INDEX
 		Assert.Equal(8_800, result.ElementAt(^1_200));
+#endif
 	}
 
 	public static IEnumerable<object[]> GetCharSequences() =>

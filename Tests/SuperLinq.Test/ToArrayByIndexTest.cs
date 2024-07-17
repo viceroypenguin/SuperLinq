@@ -31,9 +31,9 @@ public sealed class ToArrayByIndexTest
 			: input.ToArrayByIndex(e => e.Index).ToList();
 
 		var maxLength = withLength ? 10 : indices.DefaultIfEmpty(-1).Max() + 1;
-		var expected = Enumerable.Repeat(default(int?), maxLength);
+		var expected = new int?[maxLength];
 		foreach (var i in indices)
-			expected = expected.Replace(i, i);
+			expected[i] = i;
 
 		result.AssertSequenceEqual(
 			expected.Select(x => x is null ? null : new { Index = x.Value }));

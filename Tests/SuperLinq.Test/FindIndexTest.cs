@@ -1,4 +1,6 @@
-﻿namespace Test;
+#if !NO_INDEX
+
+namespace Test;
 
 public sealed class FindIndexTest
 {
@@ -144,3 +146,5 @@ public sealed class FindIndexTest
 		Assert.Equal(-1, source.FindIndex(i => i == "carlos", 0, 5));
 	}
 }
+
+#endif

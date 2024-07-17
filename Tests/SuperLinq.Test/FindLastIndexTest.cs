@@ -1,4 +1,6 @@
-﻿namespace Test;
+#if !NO_INDEX
+
+namespace Test;
 
 public sealed class FindLastIndexTest
 {
@@ -111,3 +113,5 @@ public sealed class FindLastIndexTest
 			sequence.FindLastIndex(i => i == 100, ^1, 3));
 	}
 }
+
+#endif

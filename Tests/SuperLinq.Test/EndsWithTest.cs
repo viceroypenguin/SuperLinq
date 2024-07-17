@@ -1,4 +1,6 @@
-﻿namespace Test;
+#if !NO_INDEX
+
+namespace Test;
 
 public sealed class EndsWithTest
 {
@@ -82,3 +84,5 @@ public sealed class EndsWithTest
 		Assert.False(first.EndsWith(second));
 	}
 }
+
+#endif

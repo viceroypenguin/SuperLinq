@@ -1,3 +1,5 @@
+#if !NO_INDEX
+
 namespace Test;
 
 public sealed class ReplaceTest
@@ -135,3 +137,5 @@ public sealed class ReplaceTest
 					.Concat(Enumerable.Range(21, 9_979)));
 	}
 }
+
+#endif

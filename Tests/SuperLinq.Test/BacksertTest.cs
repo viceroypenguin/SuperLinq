@@ -1,4 +1,6 @@
-﻿namespace Test;
+#if !NO_INDEX
+
+namespace Test;
 
 [Obsolete("References `Backsert` which is obsolete in favor of `Insert`")]
 public sealed class BacksertTest
@@ -41,3 +43,5 @@ public sealed class BacksertTest
 		Assert.Equal(expected, test1.Backsert(test2, index).ToArray());
 	}
 }
+
+#endif

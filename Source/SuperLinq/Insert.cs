@@ -1,3 +1,5 @@
+#if !NO_INDEX
+
 namespace SuperLinq;
 
 public static partial class SuperEnumerable
@@ -77,11 +79,7 @@ public static partial class SuperEnumerable
 	///	    This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
-#if NETCOREAPP
 	public static IEnumerable<T> Insert<T>(this IEnumerable<T> first, IEnumerable<T> second, Index index)
-#else
-	internal static IEnumerable<T> Insert<T>(this IEnumerable<T> first, IEnumerable<T> second, Index index)
-#endif
 	{
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
@@ -275,3 +273,5 @@ public static partial class SuperEnumerable
 		}
 	}
 }
+
+#endif

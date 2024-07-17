@@ -71,7 +71,9 @@ public sealed class ZipMapTest
 		result.AssertListElementChecking(10_000);
 
 		Assert.Equal((20, 30), result.ElementAt(20));
+#if !NO_INDEX
 		Assert.Equal((9_980, 9_990), result.ElementAt(^20));
+#endif
 	}
 
 	[Fact]

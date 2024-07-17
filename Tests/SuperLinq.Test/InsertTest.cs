@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+#if !NO_INDEX
+
+using System.Diagnostics.CodeAnalysis;
 
 namespace Test;
 
@@ -77,7 +79,6 @@ public sealed class InsertTest
 				_ => GetSequences(),
 				(i, x) => new object[] { x[0], x[1], i });
 
-#if NETCOREAPP
 	[Theory]
 	[MemberData(nameof(GetInsertData))]
 	public void Insert(
@@ -98,7 +99,6 @@ public sealed class InsertTest
 				testCollectionEnumerable: true);
 		}
 	}
-#endif
 
 	[Fact]
 	public void InsertCollectionBehavior()
@@ -155,3 +155,5 @@ public sealed class InsertTest
 		Assert.Equal(8_800, result.ElementAt(^1_200));
 	}
 }
+
+#endif

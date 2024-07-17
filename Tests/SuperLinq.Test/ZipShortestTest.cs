@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 public sealed class ZipShortestTest
 {
 	[Fact]
@@ -97,13 +97,17 @@ public sealed class ZipShortestTest
 
 		Assert.Equal((10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal((4_950, 4_950), result.ElementAt(^50));
+#endif
 
 		result = seq2.ZipShortest(seq1);
 		result.AssertCollectionErrorChecking(5_000);
 		result.AssertListElementChecking(5_000);
 
+#if !NO_INDEX
 		Assert.Equal((4_950, 4_950), result.ElementAt(^50));
+#endif
 	}
 
 	[Fact]
@@ -204,13 +208,17 @@ public sealed class ZipShortestTest
 
 		Assert.Equal((10, 10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50, 50), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal((4_950, 4_950, 4_950), result.ElementAt(^50));
+#endif
 
 		result = seq2.ZipShortest(seq1, seq3);
 		result.AssertCollectionErrorChecking(5_000);
 		result.AssertListElementChecking(5_000);
 
+#if !NO_INDEX
 		Assert.Equal((4_950, 4_950, 4_950), result.ElementAt(^50));
+#endif
 	}
 
 	[Fact]
@@ -329,12 +337,16 @@ public sealed class ZipShortestTest
 
 		Assert.Equal((10, 10, 10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50, 50, 50), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal((4_950, 4_950, 4_950, 4_950), result.ElementAt(^50));
+#endif
 
 		result = seq2.ZipShortest(seq1, seq3, seq4);
 		result.AssertCollectionErrorChecking(5_000);
 		result.AssertListElementChecking(5_000);
 
+#if !NO_INDEX
 		Assert.Equal((4_950, 4_950, 4_950, 4_950), result.ElementAt(^50));
+#endif
 	}
 }

@@ -7,7 +7,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-#if !NETSTANDARD
+#if NETCOREAPP
 using System.Runtime.CompilerServices;
 #endif
 
@@ -653,7 +653,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 	/// </summary>
 	public void Clear()
 	{
-#if !NETSTANDARD
+#if NETCOREAPP
 		if (RuntimeHelpers.IsReferenceOrContainsReferences<(TElement, TPriority)>())
 #endif
 		{
@@ -753,7 +753,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 				MoveDownCustomComparer(lastNode, 0);
 		}
 
-#if !NETSTANDARD
+#if NETCOREAPP
 		if (RuntimeHelpers.IsReferenceOrContainsReferences<(TElement, TPriority)>())
 #endif
 		{

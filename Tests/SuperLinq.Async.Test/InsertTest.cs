@@ -1,4 +1,6 @@
-﻿namespace Test.Async;
+#if !NO_INDEX
+
+namespace Test.Async;
 
 public sealed class InsertTest
 {
@@ -104,3 +106,5 @@ public sealed class InsertTest
 		await test1.Insert(test2, ^index).AssertSequenceEqual(expected);
 	}
 }
+
+#endif

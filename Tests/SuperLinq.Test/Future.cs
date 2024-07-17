@@ -1,3 +1,5 @@
+#if !NETCOREAPP
+
 namespace Test;
 
 internal static class Future
@@ -6,3 +8,5 @@ internal static class Future
 		IEnumerable<TSecond> second)
 		=> first.Zip(second, (first, second) => (first, second));
 }
+
+#endif

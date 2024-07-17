@@ -7,31 +7,22 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq;
 
+[ExcludeFromCodeCoverage]
 internal static class Future
 {
-	public static bool TryDequeue<T>(this Queue<T> queue, out T result)
-	{
-		if (queue.Count == 0)
-		{
-			result = default!;
-			return false;
-		}
-
-		result = queue.Dequeue();
-		return !EqualityComparer<T>.Default.Equals(result, default!);
-	}
-
 	public static bool TryGetValue<T>(this SortedSet<T> set, T equalValue, [MaybeNullWhen(false)] out T actualValue)
 	{
-		var index = set.FindIndex(x => set.Comparer.Compare(equalValue, x) == 0);
-		if (index == -1)
+		foreach (var x in set)
 		{
-			actualValue = default;
-			return false;
+			if (set.Comparer.Compare(x, equalValue) == 0)
+			{
+				actualValue = x;
+				return true;
+			}
 		}
 
-		actualValue = set.ElementAt(index);
-		return true;
+		actualValue = default;
+		return false;
 	}
 
 	public static HashSet<TSource> ToHashSet<TSource>(

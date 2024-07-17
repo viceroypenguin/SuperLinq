@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+#if !NO_INDEX
+
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -75,11 +77,7 @@ public static partial class SuperEnumerable
 	/// <remarks>
 	///	    This operator evaluates in a deferred and streaming manner.
 	/// </remarks>
-#if NETCOREAPP
 	public static IEnumerable<TSource> Replace<TSource>(this IEnumerable<TSource> source, Index index, TSource value)
-#else
-	internal static IEnumerable<TSource> Replace<TSource>(this IEnumerable<TSource> source, Index index, TSource value)
-#endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
 
@@ -175,3 +173,5 @@ public static partial class SuperEnumerable
 		}
 	}
 }
+
+#endif

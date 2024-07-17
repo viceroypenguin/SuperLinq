@@ -54,7 +54,9 @@ public sealed class PadTest
 		result.AssertListElementChecking(10_000);
 
 		Assert.Equal(1_200, result.ElementAt(1_200));
+#if !NO_INDEX
 		Assert.Equal(8_800, result.ElementAt(^1_200));
+#endif
 	}
 
 	[Theory]
@@ -116,7 +118,9 @@ public sealed class PadTest
 
 		Assert.Equal(1_200, result.ElementAt(1_200));
 		Assert.Equal(200, result.ElementAt(11_200));
+#if !NO_INDEX
 		Assert.Equal(800, result.ElementAt(^1_200));
+#endif
 	}
 
 	public static IEnumerable<object[]> GetCharSequences() =>

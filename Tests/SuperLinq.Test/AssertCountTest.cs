@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 public sealed class AssertCountTest
 {
@@ -78,7 +78,9 @@ public sealed class AssertCountTest
 
 		Assert.Equal(200, result.ElementAt(200));
 		Assert.Equal(1_200, result.ElementAt(1_200));
+#if !NO_INDEX
 		Assert.Equal(8_800, result.ElementAt(^1_200));
+#endif
 	}
 
 	[Fact]

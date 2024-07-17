@@ -1,5 +1,7 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
+#if !NO_INDEX
 
 namespace Test.Async;
 
@@ -81,3 +83,5 @@ public sealed class ElementAtTest
 		Assert.Equal(default, await q.ElementAtOrDefaultAsync(^10));
 	}
 }
+
+#endif

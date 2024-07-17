@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+#if !NO_INDEX
+
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -80,11 +82,7 @@ public static partial class SuperEnumerable
 	///	    This operator executes immediately.
 	/// </para>
 	/// </remarks>
-#if NETCOREAPP
 	public static int LastIndexOf<TSource>(this IEnumerable<TSource> source, TSource item, Index index)
-#else
-	internal static int LastIndexOf<TSource>(this IEnumerable<TSource> source, TSource item, Index index)
-#endif
 	{
 		return source.LastIndexOf(item, index, int.MaxValue);
 	}
@@ -135,12 +133,10 @@ public static partial class SuperEnumerable
 	///	    This operator executes immediately.
 	/// </para>
 	/// </remarks>
-#if NETCOREAPP
 	public static int LastIndexOf<TSource>(this IEnumerable<TSource> source, TSource item, Index index, int count)
-#else
-	internal static int LastIndexOf<TSource>(this IEnumerable<TSource> source, TSource item, Index index, int count)
-#endif
 	{
 		return FindLastIndex(source, i => EqualityComparer<TSource>.Default.Equals(i, item), index, count);
 	}
 }
+
+#endif

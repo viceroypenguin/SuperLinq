@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -30,6 +30,10 @@ public static partial class SuperEnumerable
 	/// </remarks>
 	public static IEnumerable<T> Slice<T>(this IEnumerable<T> source, int startIndex, int count)
 	{
+#if !NO_INDEX
 		return source.Take(startIndex..(startIndex + count));
+#else
+		return source.Skip(startIndex).Take(count);
+#endif
 	}
 }

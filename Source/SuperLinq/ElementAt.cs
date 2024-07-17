@@ -1,6 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if !NO_INDEX
+
 using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq;
@@ -45,10 +47,8 @@ public static partial class SuperEnumerable
 #if NET6_0_OR_GREATER
 	[Obsolete("This method has been implemented by the framework.")]
 	public static TSource ElementAt<TSource>(IEnumerable<TSource> source, Index index)
-#elif NETCOREAPP
-	public static TSource ElementAt<TSource>(this IEnumerable<TSource> source, Index index)
 #else
-	internal static TSource ElementAt<TSource>(this IEnumerable<TSource> source, Index index)
+	public static TSource ElementAt<TSource>(this IEnumerable<TSource> source, Index index)
 #endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
@@ -97,10 +97,8 @@ public static partial class SuperEnumerable
 #if NET6_0_OR_GREATER
 	[Obsolete("This method has been implemented by the framework.")]
 	public static TSource? ElementAtOrDefault<TSource>(IEnumerable<TSource> source, Index index)
-#elif NETCOREAPP
-	public static TSource? ElementAtOrDefault<TSource>(this IEnumerable<TSource> source, Index index)
 #else
-	internal static TSource? ElementAtOrDefault<TSource>(this IEnumerable<TSource> source, Index index)
+	public static TSource? ElementAtOrDefault<TSource>(this IEnumerable<TSource> source, Index index)
 #endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
@@ -148,3 +146,5 @@ public static partial class SuperEnumerable
 		return false;
 	}
 }
+
+#endif

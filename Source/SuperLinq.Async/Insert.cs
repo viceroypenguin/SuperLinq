@@ -1,3 +1,5 @@
+#if !NO_INDEX
+
 namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
@@ -91,11 +93,7 @@ public static partial class AsyncSuperEnumerable
 	/// yielding the next element after having iterated
 	/// <paramref name="first"/> entirely.
 	/// </exception>
-#if NETCOREAPP
 	public static IAsyncEnumerable<T> Insert<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, Index index)
-#else
-	internal static IAsyncEnumerable<T> Insert<T>(this IAsyncEnumerable<T> first, IAsyncEnumerable<T> second, Index index)
-#endif
 	{
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
@@ -140,3 +138,5 @@ public static partial class AsyncSuperEnumerable
 		}
 	}
 }
+
+#endif

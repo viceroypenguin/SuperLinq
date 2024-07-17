@@ -1,4 +1,6 @@
-﻿namespace Test;
+#if !NO_INDEX
+
+namespace Test;
 
 public sealed class IndexOfTest
 {
@@ -135,3 +137,5 @@ public sealed class IndexOfTest
 		Assert.Equal(-1, source.IndexOf("carlos", 0, 5));
 	}
 }
+
+#endif

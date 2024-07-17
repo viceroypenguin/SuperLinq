@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 /// <summary>
 /// Verify the behavior of the Lead operator.
@@ -163,7 +163,9 @@ public sealed class LeadTest
 		result.AssertListElementChecking(10_000);
 
 		Assert.Equal((50, 70), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal((9_950, 9_970), result.ElementAt(^50));
 		Assert.Equal((9_990, 0), result.ElementAt(^10));
+#endif
 	}
 }

@@ -1,3 +1,5 @@
+#if !NO_INDEX
+
 namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
@@ -71,11 +73,7 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-#if NETCOREAPP
 	public static ValueTask<int> IndexOf<TSource>(
-#else
-	internal static ValueTask<int> IndexOf<TSource>(
-#endif
 		this IAsyncEnumerable<TSource> source,
 		TSource item,
 		Index index,
@@ -119,11 +117,7 @@ public static partial class AsyncSuperEnumerable
 	/// This operator executes immediately.
 	/// </para>
 	/// </remarks>
-#if NETCOREAPP
 	public static ValueTask<int> IndexOf<TSource>(
-#else
-	internal static ValueTask<int> IndexOf<TSource>(
-#endif
 		this IAsyncEnumerable<TSource> source,
 		TSource item,
 		Index index,
@@ -134,3 +128,5 @@ public static partial class AsyncSuperEnumerable
 		return FindIndex(source, i => EqualityComparer<TSource>.Default.Equals(i, item), index, count, cancellationToken);
 	}
 }
+
+#endif

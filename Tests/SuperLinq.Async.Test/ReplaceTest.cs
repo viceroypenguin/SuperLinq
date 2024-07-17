@@ -1,3 +1,5 @@
+#if !NO_INDEX
+
 namespace Test.Async;
 
 public sealed class ReplaceTest
@@ -88,3 +90,5 @@ public sealed class ReplaceTest
 		await result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 }
+
+#endif

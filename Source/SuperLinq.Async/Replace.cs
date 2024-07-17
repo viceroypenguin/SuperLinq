@@ -1,4 +1,6 @@
-﻿namespace SuperLinq.Async;
+#if !NO_INDEX
+
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -51,11 +53,7 @@ public static partial class AsyncSuperEnumerable
 	/// <remarks>
 	/// This operator evaluates in a deferred and streaming manner.
 	/// </remarks>
-#if NETCOREAPP
 	public static IAsyncEnumerable<TSource> Replace<TSource>(
-#else
-	internal static IAsyncEnumerable<TSource> Replace<TSource>(
-#endif
 		this IAsyncEnumerable<TSource> source,
 		Index index,
 		TSource value)
@@ -102,3 +100,5 @@ public static partial class AsyncSuperEnumerable
 		}
 	}
 }
+
+#endif

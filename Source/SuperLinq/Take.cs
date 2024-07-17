@@ -1,6 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if !NO_INDEX
+
 namespace SuperLinq;
 
 public static partial class SuperEnumerable
@@ -35,10 +37,8 @@ public static partial class SuperEnumerable
 	/// </remarks>
 #if NET6_0_OR_GREATER
 	public static IEnumerable<TSource> Take<TSource>(IEnumerable<TSource> source, Range range)
-#elif NETCOREAPP
-	public static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, Range range)
 #else
-	internal static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, Range range)
+	public static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, Range range)
 #endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
@@ -160,3 +160,5 @@ public static partial class SuperEnumerable
 		}
 	}
 }
+
+#endif

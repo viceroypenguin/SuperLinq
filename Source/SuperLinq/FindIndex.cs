@@ -1,3 +1,5 @@
+#if !NO_INDEX
+
 namespace SuperLinq;
 
 public static partial class SuperEnumerable
@@ -80,11 +82,7 @@ public static partial class SuperEnumerable
 	///	    This operator executes immediately.
 	/// </para>
 	/// </remarks>
-#if NETCOREAPP
 	public static int FindIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Index index)
-#else
-	internal static int FindIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Index index)
-#endif
 	{
 		return source.FindIndex(predicate, index, int.MaxValue);
 	}
@@ -134,11 +132,7 @@ public static partial class SuperEnumerable
 	///	    This operator executes immediately.
 	/// </para>
 	/// </remarks>
-#if NETCOREAPP
 	public static int FindIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count)
-#else
-	internal static int FindIndex<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Index index, int count)
-#endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(predicate);
@@ -206,3 +200,5 @@ public static partial class SuperEnumerable
 		}
 	}
 }
+
+#endif
