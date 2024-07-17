@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 public sealed class MoveTest
 {
@@ -38,8 +38,8 @@ public sealed class MoveTest
 
 		var result = test.Move(fromIndex, count, toIndex);
 
-		var slice = source.Take(fromIndex..(fromIndex + count));
-		var exclude = source.Exclude(fromIndex, count);
+		var slice = source.Skip(fromIndex).Take(count);
+		var exclude = source.Take(fromIndex).Concat(source.Skip(fromIndex + count));
 		var expectations = exclude.Take(toIndex).Concat(slice).Concat(exclude.Skip(toIndex));
 		result.AssertSequenceEqual(expectations);
 	}
@@ -67,7 +67,9 @@ public sealed class MoveTest
 
 		var result = test.Move(fromIndex, count, toIndex);
 
-		var expectations = source.Exclude(fromIndex, count).Concat(source.Take(fromIndex..(fromIndex + count)));
+		var expectations = source.Take(fromIndex)
+			.Concat(source.Skip(fromIndex + count))
+			.Concat(source.Skip(fromIndex).Take(count));
 		Assert.Equal(expectations, result);
 	}
 

@@ -1,3 +1,5 @@
+#if !NO_INDEX
+
 namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
@@ -126,3 +128,5 @@ public static partial class AsyncSuperEnumerable
 		return FindIndex(source, i => EqualityComparer<TSource>.Default.Equals(i, item), index, count, cancellationToken);
 	}
 }
+
+#endif

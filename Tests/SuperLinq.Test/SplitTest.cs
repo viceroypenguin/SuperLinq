@@ -1,4 +1,6 @@
-﻿namespace Test;
+using System.Diagnostics.CodeAnalysis;
+
+namespace Test;
 
 public sealed class SplitTest
 {
@@ -26,6 +28,7 @@ public sealed class SplitTest
 	}
 
 	[Fact]
+	[SuppressMessage("Style", "IDE0305:Simplify collection initialization")]
 	public void SplitWithSeparatorAndResultTransformation()
 	{
 		using var sequence = "the quick brown fox".AsTestingSequence();
@@ -34,6 +37,7 @@ public sealed class SplitTest
 	}
 
 	[Fact]
+	[SuppressMessage("Style", "IDE0305:Simplify collection initialization")]
 	public void SplitUptoMaxCount()
 	{
 		using var sequence = "the quick brown fox".AsTestingSequence();

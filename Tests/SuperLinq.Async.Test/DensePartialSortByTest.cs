@@ -13,7 +13,7 @@ public sealed class DensePartialSortByTests
 	{
 		var ns = SuperEnumerable.RandomDouble().Take(10).ToArray();
 
-		await using var xs = ns.Select((n, i) => KeyValuePair.Create(i, n))
+		await using var xs = ns.Select((n, i) => CreatePair(i, n))
 			.Repeat(2)
 			.Reverse()
 			.AsTestingSequence();
@@ -34,7 +34,7 @@ public sealed class DensePartialSortByTests
 			.ToArray()
 			.AsEnumerable();
 
-		await using var xs = ns.Select((n, i) => KeyValuePair.Create(i, n))
+		await using var xs = ns.Select((n, i) => CreatePair(i, n))
 			.Repeat(2)
 			.Reverse()
 			.AsTestingSequence();
@@ -56,7 +56,7 @@ public sealed class DensePartialSortByTests
 			.Select((n, i) => ((char)((i % 2 == 0 ? 'A' : 'a') + n)).ToString())
 			.ToArray();
 
-		var ns = alphabet.Zip(SuperEnumerable.RandomDouble(), KeyValuePair.Create).ToArray();
+		var ns = alphabet.Zip(SuperEnumerable.RandomDouble(), CreatePair).ToArray();
 		await using var xs = ns.AsTestingSequence();
 
 		var sorted = xs.DensePartialSortBy(3, e => e.Key, StringComparer.Ordinal);
@@ -103,4 +103,6 @@ public sealed class DensePartialSortByTests
 				stableSort.Take(i * 2));
 		}
 	}
+
+	private static KeyValuePair<TKey, TValue> CreatePair<TKey, TValue>(TKey key, TValue value) => new(key, value);
 }

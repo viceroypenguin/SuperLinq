@@ -1,3 +1,5 @@
+#if !NO_INDEX
+
 namespace Test;
 
 /// <summary>
@@ -239,3 +241,5 @@ public sealed class ExcludeTests
 		result.AssertSequenceEqual(expected);
 	}
 }
+
+#endif

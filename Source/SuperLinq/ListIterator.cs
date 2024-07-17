@@ -21,7 +21,22 @@ public partial class SuperEnumerable
 
 		protected abstract T ElementAt(int index);
 
+#if !NO_INDEX
 		public virtual int IndexOf(T item) =>
 			GetEnumerable().IndexOf(item);
+#else
+		public virtual int IndexOf(T item)
+		{
+			var index = 0;
+			foreach (var i in this)
+			{
+				if (EqualityComparer<T>.Default.Equals(item, i))
+					return index;
+				index++;
+			}
+
+			return -1;
+		}
+#endif
 	}
 }

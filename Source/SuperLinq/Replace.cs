@@ -1,4 +1,6 @@
-﻿namespace SuperLinq;
+#if !NO_INDEX
+
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -174,3 +176,5 @@ public static partial class SuperEnumerable
 		}
 	}
 }
+
+#endif

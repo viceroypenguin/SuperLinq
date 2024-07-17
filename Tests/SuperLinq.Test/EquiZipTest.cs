@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Test;
 
@@ -135,7 +135,9 @@ public sealed class EquiZipTest
 		Assert.Equal(10_000, result.Count());
 		Assert.Equal((10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal((9_950, 9_950), result.ElementAt(^50));
+#endif
 	}
 
 	[Fact]
@@ -261,7 +263,9 @@ public sealed class EquiZipTest
 		Assert.Equal(10_000, result.Count());
 		Assert.Equal((10, 10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50, 50), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal((9_950, 9_950, 9_950), result.ElementAt(^50));
+#endif
 	}
 
 	[Fact]
@@ -405,7 +409,9 @@ public sealed class EquiZipTest
 		Assert.Equal(10_000, result.Count());
 		Assert.Equal((10, 10, 10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50, 50, 50), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal((9_950, 9_950, 9_950, 9_950), result.ElementAt(^50));
+#endif
 	}
 
 	[Fact]

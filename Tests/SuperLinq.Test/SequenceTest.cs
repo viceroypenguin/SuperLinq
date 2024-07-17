@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 public sealed class SequenceTest
 {
@@ -45,8 +45,8 @@ public sealed class SequenceTest
 	{
 		var result = SuperEnumerable.Sequence(start, stop);
 
-		Assert.Equal(start, result.ElementAt(0));
-		Assert.Equal(stop, result.ElementAt(^1));
+		Assert.Equal(start, result.First());
+		Assert.Equal(stop, result.Last());
 		Assert.Equal(stop - start + 1, result.Count());
 
 		result.AssertSequenceEqual(Enumerable.Range(start, stop - start + 1));
@@ -62,8 +62,8 @@ public sealed class SequenceTest
 	{
 		var result = SuperEnumerable.Sequence(start, stop);
 
-		Assert.Equal(start, result.ElementAt(0));
-		Assert.Equal(stop, result.ElementAt(^1));
+		Assert.Equal(start, result.First());
+		Assert.Equal(stop, result.Last());
 		Assert.Equal(start - stop + 1, result.Count());
 
 		result.AssertSequenceEqual(Enumerable.Range(stop, start - stop + 1).Reverse());
@@ -174,6 +174,8 @@ public sealed class SequenceTest
 
 		Assert.Equal(10, result.ElementAt(10));
 		Assert.Equal(20, result.ElementAt(20));
+#if !NO_INDEX
 		Assert.Equal(9_950, result.ElementAt(^50));
+#endif
 	}
 }

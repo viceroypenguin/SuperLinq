@@ -152,7 +152,7 @@ public partial class SuperEnumerable
 		var queue = new UpdatablePriorityQueue<TState, (TState? parent, TCost? cost)>(
 			16,
 			priorityComparer: Comparer<(TState? parent, TCost? cost)>.Create(
-				(x, y) => costComparer.Compare(x.cost, y.cost)),
+				(x, y) => costComparer.Compare(x.cost!, y.cost!)),
 			stateComparer);
 
 		var current = start;

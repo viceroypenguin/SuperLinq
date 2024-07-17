@@ -1,3 +1,5 @@
+#if !NO_INDEX
+
 namespace SuperLinq;
 
 public static partial class SuperEnumerable
@@ -75,7 +77,9 @@ public static partial class SuperEnumerable
 		comparer ??= EqualityComparer<T>.Default;
 
 		var snd = second.ToList();
-		return first.TakeLast(snd.Count)
+		return first.Take(^snd.Count..)
 			.SequenceEqual(snd, comparer);
 	}
 }
+
+#endif

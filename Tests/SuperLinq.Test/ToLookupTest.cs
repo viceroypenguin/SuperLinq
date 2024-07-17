@@ -7,12 +7,12 @@ public sealed class ToLookupTest
 	{
 		var pairs = new[]
 		{
-				KeyValuePair.Create("foo", 1),
-				KeyValuePair.Create("bar", 3),
-				KeyValuePair.Create("baz", 4),
-				KeyValuePair.Create("foo", 2),
-				KeyValuePair.Create("baz", 5),
-				KeyValuePair.Create("baz", 6),
+				CreatePair("foo", 1),
+				CreatePair("bar", 3),
+				CreatePair("baz", 4),
+				CreatePair("foo", 2),
+				CreatePair("baz", 5),
+				CreatePair("baz", 6),
 			};
 
 		var dict = pairs.ToLookup();
@@ -49,12 +49,12 @@ public sealed class ToLookupTest
 	{
 		var pairs = new[]
 		{
-				KeyValuePair.Create("foo", 1),
-				KeyValuePair.Create("bar", 3),
-				KeyValuePair.Create("baz", 4),
-				KeyValuePair.Create("foo", 2),
-				KeyValuePair.Create("baz", 5),
-				KeyValuePair.Create("baz", 6),
+				CreatePair("foo", 1),
+				CreatePair("bar", 3),
+				CreatePair("baz", 4),
+				CreatePair("foo", 2),
+				CreatePair("baz", 5),
+				CreatePair("baz", 6),
 			};
 
 		var dict = pairs.ToLookup(StringComparer.OrdinalIgnoreCase);
@@ -85,4 +85,6 @@ public sealed class ToLookupTest
 		Assert.Equal([3], dict["BAR"]);
 		Assert.Equal([4, 5, 6], dict["BAZ"]);
 	}
+
+	private static KeyValuePair<TKey, TValue> CreatePair<TKey, TValue>(TKey key, TValue value) => new(key, value);
 }

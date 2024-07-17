@@ -1,4 +1,6 @@
-﻿namespace Test.Async;
+#if !NO_INDEX
+
+namespace Test.Async;
 
 public sealed class LastIndexOfTest
 {
@@ -97,3 +99,5 @@ public sealed class LastIndexOfTest
 			await sequence.LastIndexOf(100, ^1, 3));
 	}
 }
+
+#endif

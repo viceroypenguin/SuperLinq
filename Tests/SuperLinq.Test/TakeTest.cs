@@ -1,11 +1,12 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if !NO_INDEX
+
 namespace Test;
 
 public sealed class TakeTest
 {
-#if !NET60_OR_GREATER
 	[Fact]
 	public void SameResultsRepeatCallsIntQuery()
 	{
@@ -1439,11 +1440,11 @@ public sealed class TakeTest
 		Assert.Empty(ForceNotCollection(source).Take(3..^8));
 		Assert.Empty(ForceNotCollection(source).Take(^6..^7));
 	}
-
 	private static IEnumerable<T> ForceNotCollection<T>(IEnumerable<T> source)
 	{
 		foreach (var i in source)
 			yield return i;
 	}
-#endif
 }
+
+#endif

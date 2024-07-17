@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Diagnostics;
+#if NETCOREAPP
 using System.Diagnostics.CodeAnalysis;
+#endif
 using System.Linq.Expressions;
 using System.Reflection;
 using CommunityToolkit.Diagnostics;
+using Debug = System.Diagnostics.Debug;
 
 namespace Test;
 
@@ -231,7 +234,11 @@ public sealed class NullArgumentTest
 			where TKey : notnull
 		{
 			public TValue this[TKey key] { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+#if NETCOREAPP
 			public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value) => throw new NotSupportedException();
+#else
+			public bool TryGetValue(TKey key, out TValue value) => throw new NotSupportedException();
+#endif
 			public ICollection<TKey> Keys => throw new NotSupportedException();
 			public ICollection<TValue> Values => throw new NotSupportedException();
 			public int Count => throw new NotSupportedException();

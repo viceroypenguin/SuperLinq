@@ -1,5 +1,7 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
+#if !NO_INDEX
 
 namespace Test.Async;
 
@@ -290,3 +292,5 @@ public sealed class TakeTest
 		Assert.Empty(await Source().Take(^6..^7).ToListAsync());
 	}
 }
+
+#endif

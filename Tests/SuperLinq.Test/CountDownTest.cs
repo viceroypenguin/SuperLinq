@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 public sealed class CountDownTest
 {
@@ -72,6 +72,8 @@ public sealed class CountDownTest
 
 		Assert.Equal((10, default(int?)), result.ElementAt(10));
 		Assert.Equal((50, default(int?)), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal((9_995, 4), result.ElementAt(^5));
+#endif
 	}
 }

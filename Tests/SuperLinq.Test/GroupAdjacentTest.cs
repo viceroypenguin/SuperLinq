@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 public sealed class GroupAdjacentTest
 {
@@ -172,7 +172,7 @@ public sealed class GroupAdjacentTest
 	public void GroupAdjacentSourceSequenceWithSomeNullKeys()
 	{
 		using var source = Enumerable.Range(1, 5)
-			.SelectMany(x => Enumerable.Repeat((int?)x, x).Append(null))
+			.SelectMany(x => Enumerable.Repeat((int?)x, x).Concat([null]))
 			.AsTestingSequence();
 
 		var groupings = source.GroupAdjacent(SuperEnumerable.Identity);

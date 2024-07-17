@@ -1,5 +1,7 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
+#if !NO_INDEX
 
 namespace Test;
 
@@ -29,3 +31,5 @@ public sealed class ElementAtTest
 		Assert.Equal(q[2].ElementAt(^2), q[2].ElementAtOrDefault(^2));
 	}
 }
+
+#endif

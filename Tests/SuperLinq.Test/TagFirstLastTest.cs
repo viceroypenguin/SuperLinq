@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 public sealed class TagFirstLastTest
 {
@@ -40,6 +40,8 @@ public sealed class TagFirstLastTest
 
 		Assert.Equal((0, true, false), result.ElementAt(0));
 		Assert.Equal((30, false, false), result.ElementAt(30));
+#if !NO_INDEX
 		Assert.Equal((9_999, false, true), result.ElementAt(^1));
+#endif
 	}
 }

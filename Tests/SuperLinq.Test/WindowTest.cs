@@ -186,6 +186,8 @@ public sealed class WindowTests
 		result.AssertListElementChecking(length);
 
 		Assert.Equal(Enumerable.Range(50, 20), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal(Enumerable.Range(9_980, 20), result.ElementAt(^1));
+#endif
 	}
 }

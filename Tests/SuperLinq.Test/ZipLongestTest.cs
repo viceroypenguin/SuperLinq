@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 public sealed class ZipLongestTest
 {
 	[Fact]
@@ -54,9 +54,12 @@ public sealed class ZipLongestTest
 			result.AssertSequenceEqual(
 				Enumerable.Range(1, 2)
 					.Select(x => (x, x))
-					.Append((
-						shortSeq == 0 ? 0 : 3,
-						shortSeq == 1 ? 0 : 3)));
+					.Concat([
+						(
+							shortSeq == 0 ? 0 : 3,
+							shortSeq == 1 ? 0 : 3
+						),
+					]));
 		}
 	}
 
@@ -72,13 +75,17 @@ public sealed class ZipLongestTest
 
 		Assert.Equal((10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal((9_950, 0), result.ElementAt(^50));
+#endif
 
 		result = seq2.ZipLongest(seq1);
 		result.AssertCollectionErrorChecking(10_000);
 		result.AssertListElementChecking(10_000);
 
+#if !NO_INDEX
 		Assert.Equal((0, 9_950), result.ElementAt(^50));
+#endif
 	}
 
 	[Fact]
@@ -163,10 +170,13 @@ public sealed class ZipLongestTest
 			result.AssertSequenceEqual(
 				Enumerable.Range(1, 2)
 					.Select(x => (x, x, x))
-					.Append((
-						shortSeq == 0 ? 0 : 3,
-						shortSeq == 1 ? 0 : 3,
-						shortSeq == 2 ? 0 : 3)));
+					.Concat([
+						(
+							shortSeq == 0 ? 0 : 3,
+							shortSeq == 1 ? 0 : 3,
+							shortSeq == 2 ? 0 : 3
+						),
+					]));
 		}
 	}
 
@@ -183,13 +193,16 @@ public sealed class ZipLongestTest
 
 		Assert.Equal((10, 10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50, 50), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal((9_950, 0, 0), result.ElementAt(^50));
-
+#endif
 		result = seq2.ZipLongest(seq1, seq3);
 		result.AssertCollectionErrorChecking(10_000);
 		result.AssertListElementChecking(10_000);
 
+#if !NO_INDEX
 		Assert.Equal((0, 9_950, 0), result.ElementAt(^50));
+#endif
 	}
 
 	[Fact]
@@ -291,11 +304,14 @@ public sealed class ZipLongestTest
 			result.AssertSequenceEqual(
 				Enumerable.Range(1, 2)
 					.Select(x => (x, x, x, x))
-					.Append((
-						shortSeq == 0 ? 0 : 3,
-						shortSeq == 1 ? 0 : 3,
-						shortSeq == 2 ? 0 : 3,
-						shortSeq == 3 ? 0 : 3)));
+					.Concat([
+						(
+							shortSeq == 0 ? 0 : 3,
+							shortSeq == 1 ? 0 : 3,
+							shortSeq == 2 ? 0 : 3,
+							shortSeq == 3 ? 0 : 3
+						),
+					]));
 		}
 	}
 
@@ -313,12 +329,16 @@ public sealed class ZipLongestTest
 
 		Assert.Equal((10, 10, 10, 10), result.ElementAt(10));
 		Assert.Equal((50, 50, 50, 50), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal((9_950, 0, 0, 0), result.ElementAt(^50));
+#endif
 
 		result = seq2.ZipLongest(seq1, seq3, seq4);
 		result.AssertCollectionErrorChecking(10_000);
 		result.AssertListElementChecking(10_000);
 
+#if !NO_INDEX
 		Assert.Equal((0, 9_950, 0, 0), result.ElementAt(^50));
+#endif
 	}
 }

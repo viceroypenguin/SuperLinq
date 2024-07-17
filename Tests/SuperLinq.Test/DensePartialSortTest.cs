@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 public sealed class DensePartialSortTests
 {
@@ -14,7 +14,7 @@ public sealed class DensePartialSortTests
 		using var xs = Enumerable.Range(1, 10)
 			.Repeat(2)
 			.Reverse()
-			.Append(0)
+			.Concat([0])
 			.AsTestingSequence();
 
 		xs
@@ -30,7 +30,7 @@ public sealed class DensePartialSortTests
 		using var xs = Enumerable.Range(1, 10)
 			.Repeat(2)
 			.Reverse()
-			.Append(0)
+			.Concat([0])
 			.AsTestingSequence();
 
 		var sorted = xs.DensePartialSort(3, direction);

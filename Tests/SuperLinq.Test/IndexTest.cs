@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 [Obsolete("References `Index` which is obsolete in net9+")]
 public sealed class IndexTest
@@ -67,6 +67,8 @@ public sealed class IndexTest
 
 		Assert.Equal((10_200, 200), result.ElementAt(200));
 		Assert.Equal((11_200, 1_200), result.ElementAt(1_200));
+#if !NO_INDEX
 		Assert.Equal((18_800, 8_800), result.ElementAt(^1_200));
+#endif
 	}
 }

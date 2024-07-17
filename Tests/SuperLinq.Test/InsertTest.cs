@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+#if !NO_INDEX
+
+using System.Diagnostics.CodeAnalysis;
 
 namespace Test;
 
@@ -153,3 +155,5 @@ public sealed class InsertTest
 		Assert.Equal(8_800, result.ElementAt(^1_200));
 	}
 }
+
+#endif

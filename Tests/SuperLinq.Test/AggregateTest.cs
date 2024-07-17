@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -22,14 +22,18 @@ public sealed class AggregateTest
 		from m in typeof(SuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static)
 		where m.Name == nameof(SuperEnumerable.Aggregate)
 		   && m.IsGenericMethodDefinition
+#if NETCOREAPP
 		where !m.ReturnType.Name.Contains(nameof(ValueTuple), StringComparison.Ordinal)
+#else
+		where !m.ReturnType.Name.Contains(nameof(ValueTuple))
+#endif
 		select new
 		{
 			Source = source,
 			Expectation = sum,
 			Instantiation = m.MakeGenericMethod(
 				Enumerable.Repeat(typeof(int), m.GetGenericArguments().Length - 1)
-					.Append(typeof(int[])) // TResult
+					.Concat([typeof(int[])]) // TResult
 					.ToArray()),
 		}
 		into m
@@ -62,7 +66,7 @@ public sealed class AggregateTest
 						  .Concat(from pairs in Enumerable.Repeat(new object[] { /* seed */ 0, accumulator }, m.AccumulatorCount)
 								  from pair in pairs
 								  select pair)
-						  .Append(resultSelector)
+						  .Concat([resultSelector])
 						  .ToArray(),
 			Expectation =
 				Enumerable.Repeat(m.Expectation, m.AccumulatorCount)

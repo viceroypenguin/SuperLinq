@@ -1,4 +1,6 @@
-﻿namespace Test;
+#if !NO_INDEX
+
+namespace Test;
 
 public sealed class LastIndexOfTest
 {
@@ -108,3 +110,5 @@ public sealed class LastIndexOfTest
 			sequence.LastIndexOf(100, ^1, 3));
 	}
 }
+
+#endif

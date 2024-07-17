@@ -1,3 +1,5 @@
+#if !NO_INDEX
+
 namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
@@ -124,3 +126,5 @@ public static partial class AsyncSuperEnumerable
 		}
 	}
 }
+
+#endif

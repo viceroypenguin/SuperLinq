@@ -812,7 +812,7 @@ public partial class AsyncSuperEnumerable
 			var queue = new UpdatablePriorityQueue<TState, (TState? parent, TCost? cost)>(
 				16,
 				priorityComparer: Comparer<(TState? parent, TCost? cost)>.Create(
-					(x, y) => costComparer.Compare(x.cost, y.cost)),
+					(x, y) => costComparer.Compare(x.cost!, y.cost!)),
 				stateComparer);
 
 			var current = start;
@@ -1154,7 +1154,7 @@ public partial class AsyncSuperEnumerable
 				cancellationToken.ThrowIfCancellationRequested();
 
 				if (!totalCost.TryGetValue(current, out var oldCost)
-					|| costComparer.Compare(costs.traversed, oldCost) < 0)
+					|| costComparer.Compare(costs.traversed!, oldCost!) < 0)
 				{
 					totalCost[current] = costs.traversed;
 					if (await predicate(current).ConfigureAwait(false))
@@ -1503,7 +1503,7 @@ public partial class AsyncSuperEnumerable
 				cancellationToken.ThrowIfCancellationRequested();
 
 				if (!totalCost.TryGetValue(current, out var oldCost)
-					|| costComparer.Compare(from.traversed, oldCost.traversed) < 0)
+					|| costComparer.Compare(from.traversed!, oldCost.traversed!) < 0)
 				{
 					totalCost[current] = (from.parent, from.traversed);
 					if (await predicate(current).ConfigureAwait(false))

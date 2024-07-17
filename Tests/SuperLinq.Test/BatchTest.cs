@@ -279,7 +279,9 @@ public sealed class BatchTest
 		result.AssertListElementChecking(length);
 
 		Assert.Equal(Enumerable.Range(1_000, 20), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal(Enumerable.Range(9_980, 20), result.ElementAt(^1));
+#endif
 	}
 
 	[Fact]
@@ -293,7 +295,9 @@ public sealed class BatchTest
 		result.AssertListElementChecking(length);
 
 		Assert.Equal(Enumerable.Range(1_000, 20), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal(Enumerable.Range(9_980, 20), result.ElementAt(^2));
 		Assert.Equal(Enumerable.Range(10_000, 2), result.ElementAt(^1));
+#endif
 	}
 }

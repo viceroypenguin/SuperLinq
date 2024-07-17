@@ -1,4 +1,6 @@
-﻿namespace Test.Async;
+#if !NO_INDEX
+
+namespace Test.Async;
 
 public sealed class IndexOfTest
 {
@@ -125,3 +127,5 @@ public sealed class IndexOfTest
 		Assert.Equal(-1, await source.IndexOf("carlos", 0, 5));
 	}
 }
+
+#endif

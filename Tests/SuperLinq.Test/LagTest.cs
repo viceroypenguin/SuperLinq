@@ -1,4 +1,4 @@
-﻿namespace Test;
+namespace Test;
 
 /// <summary>
 /// Verify the behavior of the Lag operator
@@ -161,6 +161,8 @@ public sealed class LagTest
 
 		Assert.Equal((10, 0), result.ElementAt(10));
 		Assert.Equal((50, 30), result.ElementAt(50));
+#if !NO_INDEX
 		Assert.Equal((9_950, 9_930), result.ElementAt(^50));
+#endif
 	}
 }

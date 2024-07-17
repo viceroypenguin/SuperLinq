@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 /// <summary>
 /// Represents a cached sequence that can be re-enumerated multiple times.
@@ -20,6 +20,7 @@ public interface IAsyncBuffer<out T> : IAsyncEnumerable<T>, IAsyncDisposable
 	/// </summary>
 	int Count { get; }
 
+#if NETCOREAPP
 	/// <summary>
 	///		Configures how awaits on the tasks returned from an async disposable are performed.
 	/// </summary>
@@ -31,4 +32,5 @@ public interface IAsyncBuffer<out T> : IAsyncEnumerable<T>, IAsyncDisposable
 	/// </returns>
 	public ConfiguredAsyncDisposable ConfigureAwait(bool continueOnCapturedContext) =>
 		((IAsyncDisposable)this).ConfigureAwait(continueOnCapturedContext);
+#endif
 }

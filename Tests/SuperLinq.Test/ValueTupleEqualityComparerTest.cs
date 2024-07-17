@@ -1,4 +1,6 @@
+#if NETCOREAPP
 using System.Diagnostics.CodeAnalysis;
+#endif
 
 namespace Test;
 
@@ -8,7 +10,11 @@ public sealed class ValueTupleEqualityComparerTest
 	private sealed class TestComparer<T>(Func<T?, T?, bool> comparer) : IEqualityComparer<T>
 	{
 		public bool Equals(T? x, T? y) => comparer(x, y);
+#if NETCOREAPP
 		public int GetHashCode([DisallowNull] T obj) => obj.GetHashCode();
+#else
+		public int GetHashCode(T obj) => obj!.GetHashCode();
+#endif
 	}
 
 	[Fact]

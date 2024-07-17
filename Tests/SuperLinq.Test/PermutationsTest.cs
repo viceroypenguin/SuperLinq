@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using CommunityToolkit.Diagnostics;
 
 namespace Test;
@@ -37,7 +37,17 @@ public sealed class PermutationsTest
 				"sequence",
 				() => seq.Permutations().Consume());
 
+#if NETCOREAPP
 			Assert.Equal("Input set is too large to permute properly. (Parameter 'sequence')", ex.Message);
+#else
+			Assert.Equal(
+				"""
+				Input set is too large to permute properly.
+				Parameter name: sequence
+				""",
+				ex.Message
+			);
+#endif
 		}
 	}
 

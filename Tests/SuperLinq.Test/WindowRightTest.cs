@@ -189,6 +189,8 @@ public sealed class WindowRightTest
 		result.AssertListElementChecking(10_000);
 
 		Assert.Equal(Enumerable.Range(0, 10), result.ElementAt(10));
+#if !NO_INDEX
 		Assert.Equal(Enumerable.Range(9_980, 20), result.ElementAt(^1));
+#endif
 	}
 }
