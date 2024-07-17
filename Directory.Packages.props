@@ -4,6 +4,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageVersion Include="BenchmarkDotNet" Version="0.13.12" />
 	<PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
 	<PackageVersion Include="coverlet.collector" Version="6.0.2" />
 	<PackageVersion Include="coverlet.msbuild" Version="6.0.2" />
