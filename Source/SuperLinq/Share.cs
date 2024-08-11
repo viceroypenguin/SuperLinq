@@ -37,7 +37,7 @@ public static partial class SuperEnumerable
 		IEnumerable<T> source
 	) : IBuffer<T>
 	{
-		private readonly object _lock = new();
+		private readonly Lock _lock = new();
 
 		private IEnumerable<T>? _source = source;
 

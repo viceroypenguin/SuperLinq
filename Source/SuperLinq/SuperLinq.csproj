@@ -10,6 +10,7 @@
     <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
 
     <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
+	<LangVersion>Preview</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Label="Nuget">
@@ -145,9 +146,7 @@
 
   <ItemGroup Label="Nuget Package">
     <None Include="readme.md" Pack="true" PackagePath="\" />
-    <None Include="..\..\Docs\SuperLinq.Docs\apidoc\SuperLinq\**"
-          Visible="false"
-          Pack="true" PackagePath="\linqpad-samples\%(RecursiveDir)%(Filename)%(Extension)" />
+    <None Include="..\..\Docs\SuperLinq.Docs\apidoc\SuperLinq\**" Visible="false" Pack="true" PackagePath="\linqpad-samples\%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -160,6 +159,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Backport.System.Threading.Lock" />
     <PackageReference Include="Microsoft.Bcl.HashCode" />
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
