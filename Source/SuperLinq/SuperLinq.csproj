@@ -159,7 +159,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Backport.System.Threading.Lock" />
     <PackageReference Include="Microsoft.Bcl.HashCode" />
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
