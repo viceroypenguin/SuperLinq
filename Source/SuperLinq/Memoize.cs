@@ -163,7 +163,7 @@ public static partial class SuperEnumerable
 						if (_enumerator is null)
 							break;
 
-						var moved = false;
+						bool moved;
 						try
 						{
 							moved = _enumerator.MoveNext();
