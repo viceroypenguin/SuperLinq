@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<OutputType>Exe</OutputType>
+	<TargetFrameworks>net8.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Source/SuperLinq.Async/SuperLinq.Async.csproj" />
+    <ProjectReference Include="../../Source/SuperLinq/SuperLinq.csproj" />
+  </ItemGroup>
+
+</Project>
