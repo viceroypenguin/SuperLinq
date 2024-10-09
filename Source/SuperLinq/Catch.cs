@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -97,7 +97,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
 
-		return Catch(new[] { first, second });
+		return Catch([first, second]);
 	}
 
 	/// <summary>

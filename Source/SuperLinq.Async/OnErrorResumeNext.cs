@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -16,7 +16,7 @@ public static partial class AsyncSuperEnumerable
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
 
-		return OnErrorResumeNext(new[] { first, second });
+		return OnErrorResumeNext([first, second]);
 	}
 
 	/// <summary>

@@ -1,4 +1,4 @@
-﻿using static Test.Async.JoinOperation;
+using static Test.Async.JoinOperation;
 
 namespace Test.Async;
 
@@ -22,7 +22,7 @@ public sealed class InnerJoinTest
 		};
 
 	public static IEnumerable<object[]> GetInnerJoins() =>
-		new[] { Loop, Hash, Merge }.Cartesian(new[] { false, true }, (x, y) => new object[] { x, y });
+		new[] { Loop, Hash, Merge }.Cartesian([false, true], (x, y) => new object[] { x, y });
 
 	[Theory, MemberData(nameof(GetInnerJoins))]
 	public void InnerJoinIsLazy(JoinOperation op, bool passProjectors)
