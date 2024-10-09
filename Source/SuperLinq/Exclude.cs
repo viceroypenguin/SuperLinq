@@ -42,7 +42,7 @@ public static partial class SuperEnumerable
 			(0, _) => sequence,
 			(_, IList<T> list) => new ExcludeListIterator<T>(list, startIndex, count),
 			(_, ICollection<T> collection) => new ExcludeCollectionIterator<T>(collection, startIndex, count),
-			_ => ExcludeCore(sequence, startIndex, count)
+			_ => ExcludeCore(sequence, startIndex, count),
 		};
 	}
 
