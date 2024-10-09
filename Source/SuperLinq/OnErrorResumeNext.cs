@@ -34,7 +34,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(first);
 		ArgumentNullException.ThrowIfNull(second);
 
-		return OnErrorResumeNext(new[] { first, second });
+		return OnErrorResumeNext([first, second]);
 	}
 
 	/// <summary>

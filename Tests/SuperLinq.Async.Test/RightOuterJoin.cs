@@ -1,4 +1,4 @@
-﻿using static Test.Async.JoinOperation;
+using static Test.Async.JoinOperation;
 
 namespace Test.Async;
 
@@ -20,7 +20,7 @@ public sealed class RightOuterJoinTest
 		};
 
 	public static IEnumerable<object[]> GetRightOuterJoins() =>
-		new[] { Hash, Merge }.Cartesian(new[] { false, true }, (x, y) => new object[] { x, y });
+		new[] { Hash, Merge }.Cartesian([false, true], (x, y) => new object[] { x, y });
 
 	[Theory, MemberData(nameof(GetRightOuterJoins))]
 	public void RightOuterJoinIsLazy(JoinOperation op, bool passProjectors)

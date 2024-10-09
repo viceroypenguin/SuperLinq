@@ -1,4 +1,4 @@
-﻿using static Test.JoinOperation;
+using static Test.JoinOperation;
 
 namespace Test;
 
@@ -22,7 +22,7 @@ public sealed class FullOuterJoinTest
 		};
 
 	public static IEnumerable<object[]> GetFullOuterJoins() =>
-		new[] { Hash, Merge }.Cartesian(new[] { false, true }, (x, y) => new object[] { x, y });
+		new[] { Hash, Merge }.Cartesian([false, true], (x, y) => new object[] { x, y });
 
 	[Theory, MemberData(nameof(GetFullOuterJoins))]
 	public void FullOuterJoinIsLazy(JoinOperation op, bool passProjectors)
