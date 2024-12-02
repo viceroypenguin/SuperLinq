@@ -7,7 +7,7 @@
 	<PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.3.0" />
 	<PackageVersion Include="coverlet.collector" Version="6.0.2" />
 	<PackageVersion Include="coverlet.msbuild" Version="6.0.2" />
-	<PackageVersion Include="DocFx.App" Version="2.77.0" />
+	<PackageVersion Include="DocFx.App" Version="2.78.2" />
 	<PackageVersion Include="GitHubActionsTestLogger" Version="2.4.1" />
 	<PackageVersion Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
 	<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
