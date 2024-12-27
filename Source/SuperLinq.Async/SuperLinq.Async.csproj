@@ -118,9 +118,9 @@
   </ItemGroup>
 
   <ItemGroup>
+	<PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />
 	<PackageReference Include="Microsoft.Bcl.HashCode" />
 	<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
-	<PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
 	<PackageReference Include="MinVer" PrivateAssets="All" />
 	<PackageReference Include="System.Linq.Async" />
 	<PackageReference Include="System.Memory" />

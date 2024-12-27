@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using CommunityToolkit.Diagnostics;
 using static Test.Async.TestingSequence;
 
 namespace Test.Async;
@@ -148,22 +147,22 @@ public sealed class TestingSequenceTest
 	public async Task TestingSequencePublicPropertiesTest()
 	{
 		await using var sequence = Of(1, 2, 3, 4);
-		Guard.IsFalse(sequence.IsDisposed);
-		Guard.IsEqualTo(sequence.MoveNextCallCount, 0);
+		Assert.False(sequence.IsDisposed);
+		Assert.Equal(0, sequence.MoveNextCallCount);
 
 		var iter = sequence.GetAsyncEnumerator();
-		Guard.IsFalse(sequence.IsDisposed);
-		Guard.IsEqualTo(sequence.MoveNextCallCount, 0);
+		Assert.False(sequence.IsDisposed);
+		Assert.Equal(0, sequence.MoveNextCallCount);
 
 		for (var i = 1; i <= 4; i++)
 		{
 			_ = await iter.MoveNextAsync();
-			Guard.IsFalse(sequence.IsDisposed);
-			Guard.IsEqualTo(sequence.MoveNextCallCount, i);
+			Assert.False(sequence.IsDisposed);
+			Assert.Equal(i, sequence.MoveNextCallCount);
 		}
 
 		await iter.DisposeAsync();
-		Guard.IsTrue(sequence.IsDisposed);
+		Assert.True(sequence.IsDisposed);
 	}
 
 	[Fact]

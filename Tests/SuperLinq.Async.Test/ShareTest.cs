@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using CommunityToolkit.Diagnostics;
 
 namespace Test.Async;
 
@@ -218,7 +217,7 @@ public sealed class ShareTest
 			Assert.Equal(1, await r1.Read());
 			_ = await Assert.ThrowsAsync<TestException>(async () => await r2.Read());
 
-			Guard.IsTrue(xs.IsDisposed);
+			Assert.True(xs.IsDisposed);
 			_ = await Assert.ThrowsAsync<TestException>(async () => await r1.Read());
 		}
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
@@ -247,7 +246,7 @@ public sealed class PublishTest
 
 			_ = Assert.Throws<TestException>(() => r1.Read());
 			_ = Assert.Throws<TestException>(() => r2.Read());
-			Guard.IsTrue(xs.IsDisposed);
+			Assert.True(xs.IsDisposed);
 		}
 
 		using (var r3 = buffer.Read())

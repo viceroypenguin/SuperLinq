@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using CommunityToolkit.Diagnostics;
 
 namespace Test.Async;
 
@@ -230,10 +229,10 @@ public sealed class MemoizeTest
 		await using (var r1 = memoized.Read())
 		await using (var r2 = memoized.Read())
 		{
-			Guard.IsTrue(await r1.Read() == await r2.Read());
+			Assert.True(await r1.Read() == await r2.Read());
 			_ = await Assert.ThrowsAsync<TestException>(async () => await r1.Read());
 
-			Guard.IsTrue(xs.IsDisposed);
+			Assert.True(xs.IsDisposed);
 
 			_ = await Assert.ThrowsAsync<TestException>(async () => await r2.Read());
 		}
@@ -259,7 +258,7 @@ public sealed class MemoizeTest
 		await using (var r2 = buffer.Read())
 		{
 			_ = await Assert.ThrowsAsync<TestException>(async () => await r1.Read());
-			Guard.IsTrue(xs.IsDisposed);
+			Assert.True(xs.IsDisposed);
 			_ = await Assert.ThrowsAsync<TestException>(async () => await r2.Read());
 		}
 
@@ -269,7 +268,7 @@ public sealed class MemoizeTest
 		Assert.Equal(0, buffer.Count);
 		await using (var r1 = buffer.Read())
 		await using (var r2 = buffer.Read())
-			Guard.IsTrue(await r1.Read() == await r2.Read());
+			Assert.True(await r1.Read() == await r2.Read());
 
 		Assert.Equal(1, buffer.Count);
 	}

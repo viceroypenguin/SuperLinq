@@ -5,7 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 #endif
 using System.Linq.Expressions;
 using System.Reflection;
-using CommunityToolkit.Diagnostics;
 using Debug = System.Diagnostics.Debug;
 
 namespace Test.Async;
@@ -241,7 +240,7 @@ public sealed class NullArgumentTest
 		{
 			public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool descending)
 			{
-				Guard.IsNotNull(keySelector);
+				Assert.NotNull(keySelector);
 				return this;
 			}
 		}
@@ -262,19 +261,19 @@ public sealed class NullArgumentTest
 		{
 			public IOrderedAsyncEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool descending)
 			{
-				Guard.IsNotNull(keySelector);
+				Assert.NotNull(keySelector);
 				return this;
 			}
 
 			public IOrderedAsyncEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, ValueTask<TKey>> keySelector, IComparer<TKey>? comparer, bool descending)
 			{
-				Guard.IsNotNull(keySelector);
+				Assert.NotNull(keySelector);
 				return this;
 			}
 
 			public IOrderedAsyncEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, CancellationToken, ValueTask<TKey>> keySelector, IComparer<TKey>? comparer, bool descending)
 			{
-				Guard.IsNotNull(keySelector);
+				Assert.NotNull(keySelector);
 				return this;
 			}
 		}

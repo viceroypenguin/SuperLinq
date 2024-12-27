@@ -1,9 +1,9 @@
-﻿namespace SuperLinq.Generator;
+namespace SuperLinq.Generator;
 
 /// <summary>
 /// int->string translations of different types.
 /// </summary>
-public record ArgumentNames(string[] Arity, string[] Ordinals, string[] Cardinals)
+public record ArgumentNames(IReadOnlyList<string> Arity, IReadOnlyList<string> Ordinals, IReadOnlyList<string> Cardinals)
 {
 	/// <summary>
 	/// int->string translations of different types.

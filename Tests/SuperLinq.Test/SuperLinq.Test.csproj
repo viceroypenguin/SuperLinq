@@ -29,7 +29,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="CommunityToolkit.Diagnostics" />
 	<PackageReference Include="coverlet.collector" PrivateAssets="All" />
 	<PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
 	<PackageReference Include="GitHubActionsTestLogger" PrivateAssets="All" />
