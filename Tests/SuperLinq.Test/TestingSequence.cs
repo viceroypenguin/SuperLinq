@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using CommunityToolkit.Diagnostics;
 using static Test.TestingSequence;
 
 namespace Test;
@@ -130,22 +129,22 @@ public sealed class TestingSequenceTest
 	public void TestingSequencePublicPropertiesTest()
 	{
 		using var sequence = Of(1, 2, 3, 4);
-		Guard.IsFalse(sequence.IsDisposed);
-		Guard.IsEqualTo(sequence.MoveNextCallCount, 0);
+		Assert.False(sequence.IsDisposed);
+		Assert.Equal(0, sequence.MoveNextCallCount);
 
 		var iter = sequence.GetEnumerator();
-		Guard.IsFalse(sequence.IsDisposed);
-		Guard.IsEqualTo(sequence.MoveNextCallCount, 0);
+		Assert.False(sequence.IsDisposed);
+		Assert.Equal(0, sequence.MoveNextCallCount);
 
 		for (var i = 1; i <= 4; i++)
 		{
 			_ = iter.MoveNext();
-			Guard.IsFalse(sequence.IsDisposed);
-			Guard.IsEqualTo(sequence.MoveNextCallCount, i);
+			Assert.False(sequence.IsDisposed);
+			Assert.Equal(i, sequence.MoveNextCallCount);
 		}
 
 		iter.Dispose();
-		Guard.IsTrue(sequence.IsDisposed);
+		Assert.True(sequence.IsDisposed);
 	}
 
 	[Fact]

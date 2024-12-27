@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CommunityToolkit.Diagnostics;
 
 namespace Test.Async;
 
@@ -7,7 +6,7 @@ internal static class SequenceReader
 {
 	public static SequenceReader<T> Read<T>(this IAsyncEnumerable<T> source)
 	{
-		Guard.IsNotNull(source);
+		Assert.NotNull(source);
 		return new SequenceReader<T>(source);
 	}
 }
@@ -40,13 +39,13 @@ internal sealed class SequenceReader<T> : IAsyncDisposable
 
 	public SequenceReader(IAsyncEnumerator<T> enumerator)
 	{
-		Guard.IsNotNull(enumerator);
+		Assert.NotNull(enumerator);
 		_enumerator = enumerator;
 	}
 
 	private static IAsyncEnumerator<T> GetEnumerator(IAsyncEnumerable<T> source)
 	{
-		Guard.IsNotNull(source);
+		Assert.NotNull(source);
 		return source.GetAsyncEnumerator();
 	}
 

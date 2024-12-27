@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using CommunityToolkit.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Test;
 
@@ -7,7 +6,7 @@ internal static class SequenceReader
 {
 	public static SequenceReader<T> Read<T>(this IEnumerable<T> source)
 	{
-		Guard.IsNotNull(source);
+		Assert.NotNull(source);
 		return new SequenceReader<T>(source);
 	}
 }
@@ -39,13 +38,13 @@ internal sealed class SequenceReader<T> : IDisposable
 
 	public SequenceReader(IEnumerator<T> enumerator)
 	{
-		Guard.IsNotNull(enumerator);
+		Assert.NotNull(enumerator);
 		_enumerator = enumerator;
 	}
 
 	private static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
 	{
-		Guard.IsNotNull(source);
+		Assert.NotNull(source);
 		return source.GetEnumerator();
 	}
 

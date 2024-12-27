@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -215,9 +215,8 @@ public static partial class SuperEnumerable
 	{
 		private static int s_seed = Environment.TickCount;
 
-		[ThreadStatic] private static Random? s_threadRandom;
-
-		private static Random ThreadRandom => s_threadRandom ??= new Random(Interlocked.Increment(ref s_seed));
+		[field: ThreadStatic, System.Diagnostics.CodeAnalysis.MaybeNull]
+		private static Random ThreadRandom => field ??= new Random(Interlocked.Increment(ref s_seed));
 
 		public override int Next() => ThreadRandom.Next();
 		public override int Next(int minValue, int maxValue) => ThreadRandom.Next(minValue, maxValue);

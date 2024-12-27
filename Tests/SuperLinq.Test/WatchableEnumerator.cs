@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using CommunityToolkit.Diagnostics;
+using System.Collections;
 
 namespace Test;
 
@@ -18,7 +17,7 @@ internal sealed class WatchableEnumerator<T> : IEnumerator<T>
 
 	public WatchableEnumerator(IEnumerator<T> source)
 	{
-		Guard.IsNotNull(source);
+		Assert.NotNull(source);
 		_source = source;
 	}
 

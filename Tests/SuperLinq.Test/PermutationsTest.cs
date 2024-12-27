@@ -1,5 +1,4 @@
 using System.Collections;
-using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
@@ -208,7 +207,7 @@ public sealed class PermutationsTest
 		for (var i = 0; i < permutedSets.Count; i++)
 		{
 			for (var j = i + 1; j < permutedSets.Count; j++)
-				Guard.IsFalse(permutedSets[i].SequenceEqual(permutedSets[j]));
+				Assert.False(permutedSets[i].SequenceEqual(permutedSets[j]));
 		}
 	}
 }

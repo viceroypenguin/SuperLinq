@@ -1,5 +1,3 @@
-using CommunityToolkit.Diagnostics;
-
 namespace Test;
 
 public enum SourceKind
@@ -63,7 +61,7 @@ internal static partial class TestExtensions
 	internal static void AssertCollectionErrorChecking<T>(this IEnumerable<T> result, int length)
 	{
 		var coll = result as ICollection<T>;
-		Guard.IsNotNull(coll);
+		Assert.NotNull(coll);
 
 		Assert.Equal(length, result.Count());
 		Assert.Equal(length, coll.Count);
@@ -86,7 +84,7 @@ internal static partial class TestExtensions
 	internal static void AssertListElementChecking<T>(this IEnumerable<T> result, int length)
 	{
 		var list = result as IList<T>;
-		Guard.IsNotNull(list);
+		Assert.NotNull(list);
 
 		if (length > 0)
 		{

@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Diagnostics;
-
-namespace Test.Async;
+﻿namespace Test.Async;
 
 public sealed class PublishTest
 {
@@ -246,7 +244,7 @@ public sealed class PublishTest
 
 			_ = await Assert.ThrowsAsync<TestException>(async () => await r1.Read());
 			_ = await Assert.ThrowsAsync<TestException>(async () => await r2.Read());
-			Guard.IsTrue(xs.IsDisposed);
+			Assert.True(xs.IsDisposed);
 		}
 
 		await using (var r3 = buffer.Read())

@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Diagnostics;
-
-namespace Test.Async;
+﻿namespace Test.Async;
 
 internal sealed class WatchableEnumerator<T> : IAsyncEnumerator<T>
 {
@@ -12,7 +10,7 @@ internal sealed class WatchableEnumerator<T> : IAsyncEnumerator<T>
 
 	public WatchableEnumerator(IAsyncEnumerator<T> source)
 	{
-		Guard.IsNotNull(source);
+		Assert.NotNull(source);
 		_source = source;
 	}
 

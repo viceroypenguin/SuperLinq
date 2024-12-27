@@ -1,5 +1,4 @@
 using System.Collections;
-using CommunityToolkit.Diagnostics;
 
 namespace Test;
 
@@ -245,11 +244,10 @@ public sealed class MemoizeTest
 		using (var r1 = memoized.Read())
 		using (var r2 = memoized.Read())
 		{
-			Guard.IsTrue(r1.Read() == r2.Read());
+			Assert.True(r1.Read() == r2.Read());
 			_ = Assert.Throws<TestException>(() => r1.Read());
 
-			Guard.IsTrue(xs.IsDisposed);
-
+			Assert.True(xs.IsDisposed);
 			_ = Assert.Throws<TestException>(() => r2.Read());
 		}
 
@@ -274,7 +272,7 @@ public sealed class MemoizeTest
 		using (var r2 = buffer.Read())
 		{
 			_ = Assert.Throws<TestException>(() => r1.Read());
-			Guard.IsTrue(xs.IsDisposed);
+			Assert.True(xs.IsDisposed);
 			_ = Assert.Throws<TestException>(() => r2.Read());
 		}
 
@@ -284,7 +282,7 @@ public sealed class MemoizeTest
 		Assert.Equal(0, buffer.Count);
 		using (var r1 = buffer.Read())
 		using (var r2 = buffer.Read())
-			Guard.IsTrue(r1.Read() == r2.Read());
+			Assert.True(r1.Read() == r2.Read());
 
 		Assert.Equal(1, buffer.Count);
 	}
