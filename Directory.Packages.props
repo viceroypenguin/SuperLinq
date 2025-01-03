@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageVersion Include="coverlet.collector" Version="6.0.2" />
-	<PackageVersion Include="coverlet.msbuild" Version="6.0.2" />
+	<PackageVersion Include="coverlet.collector" Version="6.0.3" />
+	<PackageVersion Include="coverlet.msbuild" Version="6.0.3" />
 	<PackageVersion Include="DocFx.App" Version="2.78.2" />
 	<PackageVersion Include="DotNet.ReproducibleBuilds" Version="1.2.25" />
 	<PackageVersion Include="GitHubActionsTestLogger" Version="2.4.1" />
@@ -23,17 +23,10 @@
 	<PackageVersion Include="System.Linq.Async" Version="6.0.1" />
 	<PackageVersion Include="System.Memory" Version="4.5.5" />
 	<PackageVersion Include="ThisAssembly.Resources" Version="1.4.3" />
-	<PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="TUnit.Engine" Version="0.6.15" />
+    <PackageVersion Include="xunit.v3.assert" Version="1.0.0" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp3.1' ">
-	<PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-	<PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="All" />
-  </ItemGroup>
-
+  
   <ItemGroup>
 	<GlobalPackageReference Include="Meziantou.Analyzer" Version="2.0.184" />
 	<GlobalPackageReference Include="PolySharp" Version="1.15.0" />

@@ -20,11 +20,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{99F4CCA1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq", "Source\SuperLinq\SuperLinq.csproj", "{921016AA-80B6-44ED-8A92-E96601C92C4E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Test", "Tests\SuperLinq.Test\SuperLinq.Test.csproj", "{674D18D8-CCE1-4102-AF6E-E6F993813422}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Test", "Tests\SuperLinq.Tests\SuperLinq.Tests.csproj", "{674D18D8-CCE1-4102-AF6E-E6F993813422}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Async", "Source\SuperLinq.Async\SuperLinq.Async.csproj", "{84058331-3025-438D-8A68-B55EE859C70D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Async.Test", "Tests\SuperLinq.Async.Test\SuperLinq.Async.Test.csproj", "{1A4F94C6-2143-486B-B787-271506C327FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLinq.Async.Test", "Tests\SuperLinq.Async.Tests\SuperLinq.Async.Tests.csproj", "{1A4F94C6-2143-486B-B787-271506C327FC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generators", "Generators", "{7805222E-6CD5-41FE-9945-0D9FD7DFA24C}"
 EndProject

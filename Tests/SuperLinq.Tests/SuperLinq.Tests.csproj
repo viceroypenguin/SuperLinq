@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFrameworks>net47;net8.0;net9.0</TargetFrameworks>
+
+	<IsPackable>false</IsPackable>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+
+	<PolySharpExcludeGeneratedTypes>System.Runtime.CompilerServices.ModuleInitializerAttribute</PolySharpExcludeGeneratedTypes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Source\SuperLinq\SuperLinq.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="SuperLinq" />
+    <Using Include="SuperLinq.Tests.FuncModule" Static="true" />
+    <Using Include="SuperLinq.Tests.TestExtensions" Static="true" />
+    <Using Include="Xunit.Assert" Alias="Assert" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net47'">
+    <DefineConstants>$(DefineConstants);NO_INDEX</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" PrivateAssets="All" />
+    <PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
+    <PackageReference Include="GitHubActionsTestLogger" PrivateAssets="All" />
+    <PackageReference Include="TUnit.Engine" />
+    <PackageReference Include="xunit.v3.assert" />
+  </ItemGroup>
+
+</Project>
