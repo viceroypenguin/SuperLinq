@@ -4,6 +4,7 @@
 
 	<Nullable>enable</Nullable>
 	<WarningsAsErrors>$(WarningsAsErrors);nullable;</WarningsAsErrors>
+    <Features>strict</Features>
 
 	<ImplicitUsings>enable</ImplicitUsings>
 

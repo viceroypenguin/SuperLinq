@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net47;net8.0;net9.0</TargetFrameworks>
+
+    <IsPackable>false</IsPackable>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+
+	<PolySharpExcludeGeneratedTypes>System.Runtime.CompilerServices.ModuleInitializerAttribute</PolySharpExcludeGeneratedTypes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Source\SuperLinq\SuperLinq.csproj" />
+    <ProjectReference Include="..\..\Source\SuperLinq.Async\SuperLinq.Async.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SuperLinq.Tests\BreakingAction.cs" Link="BreakingAction.cs" />
+    <Compile Include="..\SuperLinq.Tests\BreakingFunc.cs" Link="BreakingFunc.cs" />
+    <Compile Include="..\SuperLinq.Tests\EqualityComparer.cs" Link="EqualityComparer.cs" />
+    <Compile Include="..\SuperLinq.Tests\FuncModule.cs" Link="FuncModule.cs" />
+    <Compile Include="..\SuperLinq.Tests\TestException.cs" Link="TestException.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="SuperLinq" />
+    <Using Include="SuperLinq.Async" />
+    <Using Include="SuperLinq.Tests" />
+    <Using Include="Xunit.Assert" Alias="Assert" />
+    <Using Include="SuperLinq.Tests.FuncModule" Static="true" />
+    <Using Include="SuperLinq.Async.Tests.TestExtensions" Static="true" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net47'">
+    <DefineConstants>$(DefineConstants);NO_INDEX</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" PrivateAssets="All" />
+    <PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
+    <PackageReference Include="GitHubActionsTestLogger" PrivateAssets="All" />
+    <PackageReference Include="TUnit.Engine" />
+    <PackageReference Include="xunit.v3.assert" />
+  </ItemGroup>
+
+</Project>

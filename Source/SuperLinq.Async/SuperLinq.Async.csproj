@@ -5,7 +5,6 @@
   <PropertyGroup>
 	<AssemblyName>SuperLinq.Async</AssemblyName>
 	<RootNamespace>SuperLinq.Async</RootNamespace>
-	<TargetFrameworks>netstandard2.0;$(TargetFrameworks)</TargetFrameworks>
 
 	<IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
   </PropertyGroup>
@@ -21,9 +20,6 @@
 
 	<PublishRepositoryUrl>true</PublishRepositoryUrl>
 	<RepositoryUrl>https://github.com/viceroypenguin/SuperLinq</RepositoryUrl>
-
-	<IncludeSymbols>true</IncludeSymbols>
-	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <PropertyGroup>
