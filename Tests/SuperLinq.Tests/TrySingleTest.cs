@@ -13,6 +13,51 @@ public sealed class TrySingleTest
 	{
 		using (seq)
 		{
+			var value = seq.TrySingle();
+
+			Assert.Null(value);
+		}
+	}
+
+	[Test]
+	[MethodDataSource(nameof(GetAllSequences), Arguments = [1])]
+	public void TrySingleWithSingleton(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
+			var value = seq.TrySingle();
+
+			Assert.Equal(1, value);
+		}
+	}
+
+	[Test]
+	public void TrySingleWithSingletonCollection()
+	{
+		var source = new BreakingSingleElementCollection<int>(10);
+		var value = source.TrySingle();
+
+		Assert.Equal(10, value);
+	}
+
+	[Test]
+	[MethodDataSource(nameof(GetAllSequences), Arguments = [2])]
+	public void TrySingleWithMoreThanOne(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
+			var value = seq.TrySingle();
+
+			Assert.Null(value);
+		}
+	}
+
+	[Test]
+	[MethodDataSource(nameof(GetAllSequences), Arguments = [0])]
+	public void TrySingleCardinalityWithEmptySource(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
 			var (cardinality, value) = seq.TrySingle("zero", "one", "many");
 
 			Assert.Equal("zero", cardinality);
@@ -22,7 +67,7 @@ public sealed class TrySingleTest
 
 	[Test]
 	[MethodDataSource(nameof(GetAllSequences), Arguments = [1])]
-	public void TrySingleWithSingleton(IDisposableEnumerable<int?> seq)
+	public void TrySingleCardinalityWithSingleton(IDisposableEnumerable<int?> seq)
 	{
 		using (seq)
 		{
@@ -34,7 +79,7 @@ public sealed class TrySingleTest
 	}
 
 	[Test]
-	public void TrySingleWithSingletonCollection()
+	public void TrySingleCardinalityWithSingletonCollection()
 	{
 		var source = new BreakingSingleElementCollection<int>(10);
 		var (cardinality, value) = source.TrySingle("zero", "one", "many");
@@ -43,31 +88,9 @@ public sealed class TrySingleTest
 		Assert.Equal(10, value);
 	}
 
-	private sealed class BreakingSingleElementCollection<T>(
-		T element
-	) : ICollection<T>
-	{
-		public int Count { get; } = 1;
-
-		public IEnumerator<T> GetEnumerator()
-		{
-			yield return element;
-			throw new InvalidOperationException($"{nameof(SuperEnumerable.TrySingle)} should not have attempted to consume a second element.");
-		}
-
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-		public void Add(T item) => throw new NotSupportedException();
-		public void Clear() => throw new NotSupportedException();
-		public bool Contains(T item) => throw new NotSupportedException();
-		public void CopyTo(T[] array, int arrayIndex) => throw new NotSupportedException();
-		public bool Remove(T item) => throw new NotSupportedException();
-		public bool IsReadOnly => true;
-	}
-
 	[Test]
 	[MethodDataSource(nameof(GetAllSequences), Arguments = [2])]
-	public void TrySingleWithMoreThanOne(IDisposableEnumerable<int?> seq)
+	public void TrySingleCardinalityWithMoreThanOne(IDisposableEnumerable<int?> seq)
 	{
 		using (seq)
 		{
@@ -77,4 +100,26 @@ public sealed class TrySingleTest
 			Assert.Null(value);
 		}
 	}
+}
+
+file sealed class BreakingSingleElementCollection<T>(
+	T element
+) : ICollection<T>
+{
+	public int Count { get; } = 1;
+
+	public IEnumerator<T> GetEnumerator()
+	{
+		yield return element;
+		throw new InvalidOperationException($"{nameof(SuperEnumerable.TrySingle)} should not have attempted to consume a second element.");
+	}
+
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+	public void Add(T item) => throw new NotSupportedException();
+	public void Clear() => throw new NotSupportedException();
+	public bool Contains(T item) => throw new NotSupportedException();
+	public void CopyTo(T[] array, int arrayIndex) => throw new NotSupportedException();
+	public bool Remove(T item) => throw new NotSupportedException();
+	public bool IsReadOnly => true;
 }
