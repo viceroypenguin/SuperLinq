@@ -9,6 +9,9 @@
     <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
 
     <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
+
+	<EnablePackageValidation>true</EnablePackageValidation>
+	<PackageValidationBaselineVersion>6.0.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <PropertyGroup Label="Nuget">
@@ -141,27 +144,17 @@
 
   <ItemGroup Label="Nuget Package">
     <None Include="readme.md" Pack="true" PackagePath="\" />
-    <None Include="..\..\Docs\SuperLinq.Docs\apidoc\SuperLinq\**"
-          Visible="false"
-          Pack="true" PackagePath="\linqpad-samples\%(RecursiveDir)%(Filename)%(Extension)" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Shipped.txt" />
-    <AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Unshipped.txt" />
+    <None Include="..\..\Docs\SuperLinq.Docs\apidoc\SuperLinq\**" Visible="false" Pack="true" PackagePath="\linqpad-samples\%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="SuperLinq.Exceptions" />
-	<Using Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))"
-		   Alias="Lock"
-		   Include="System.Object" />
+	<Using Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))" Alias="Lock" Include="System.Object" />
   </ItemGroup>
 
   <ItemGroup>
 	<PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Bcl.HashCode" />
-    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
 	<PackageReference Include="MinVer" PrivateAssets="All" />
 	<PackageReference Include="System.Memory" />
   </ItemGroup>

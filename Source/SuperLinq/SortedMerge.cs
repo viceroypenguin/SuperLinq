@@ -447,15 +447,15 @@ public static partial class SuperEnumerable
 			}
 		}
 	}
+}
 
 #if !NET6_0_OR_GREATER
-	internal sealed class SourceComparer<TItem, TKey>(
-		IComparer<TKey> keyComparer,
-		Func<TItem, TKey> keySelector
-	) : IComparer<IEnumerator<TItem>>
-	{
-		public int Compare(IEnumerator<TItem>? x, IEnumerator<TItem>? y) =>
-			keyComparer.Compare(keySelector(x!.Current), keySelector(y!.Current));
-	}
-#endif
+file sealed class SourceComparer<TItem, TKey>(
+	IComparer<TKey> keyComparer,
+	Func<TItem, TKey> keySelector
+) : IComparer<IEnumerator<TItem>>
+{
+	public int Compare(IEnumerator<TItem>? x, IEnumerator<TItem>? y) =>
+		keyComparer.Compare(keySelector(x!.Current), keySelector(y!.Current));
 }
+#endif

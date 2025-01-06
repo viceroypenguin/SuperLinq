@@ -7,6 +7,9 @@
 	<RootNamespace>SuperLinq.Async</RootNamespace>
 
 	<IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
+
+	<EnablePackageValidation>true</EnablePackageValidation>
+	<PackageValidationBaselineVersion>6.0.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <PropertyGroup Label="Nuget">
@@ -104,8 +107,6 @@
 
   <ItemGroup>
 	<None Include="readme.md" Pack="true" PackagePath="\" />
-	<AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Shipped.txt" />
-	<AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Unshipped.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -116,7 +117,6 @@
   <ItemGroup>
 	<PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />
 	<PackageReference Include="Microsoft.Bcl.HashCode" />
-	<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
 	<PackageReference Include="MinVer" PrivateAssets="All" />
 	<PackageReference Include="System.Linq.Async" />
 	<PackageReference Include="System.Memory" />
