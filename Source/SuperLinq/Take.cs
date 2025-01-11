@@ -36,6 +36,7 @@ public static partial class SuperEnumerable
 	/// </para>
 	/// </remarks>
 #if NET6_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
 	public static IEnumerable<TSource> Take<TSource>(IEnumerable<TSource> source, Range range)
 #else
 	public static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, Range range)

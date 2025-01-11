@@ -5,11 +5,9 @@
 
 #if !NET7_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
-#endif
 
 namespace System.Diagnostics;
 
-#if !NET7_0_OR_GREATER
 /// <summary>
 /// Exception thrown when the program executes an instruction that was thought to be unreachable.
 /// </summary>
@@ -43,4 +41,8 @@ public sealed class UnreachableException : Exception
 		: base(message, innerException)
 	{ }
 }
+#else
+using System.Runtime.CompilerServices;
+
+[assembly: TypeForwardedTo(typeof(System.Diagnostics.UnreachableException))]
 #endif

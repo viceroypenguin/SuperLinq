@@ -372,15 +372,15 @@ public static partial class AsyncSuperEnumerable
 			}
 		}
 	}
+}
 
 #if !NET6_0_OR_GREATER
-	internal sealed class SourceComparer<TItem, TKey>(
-		IComparer<TKey> keyComparer,
-		Func<TItem, TKey> keySelector
-	) : IComparer<IAsyncEnumerator<TItem>>
-	{
-		public int Compare(IAsyncEnumerator<TItem>? x, IAsyncEnumerator<TItem>? y) =>
-			keyComparer.Compare(keySelector(x!.Current), keySelector(y!.Current));
-	}
-#endif
+file sealed class SourceComparer<TItem, TKey>(
+	IComparer<TKey> keyComparer,
+	Func<TItem, TKey> keySelector
+) : IComparer<IAsyncEnumerator<TItem>>
+{
+	public int Compare(IAsyncEnumerator<TItem>? x, IAsyncEnumerator<TItem>? y) =>
+		keyComparer.Compare(keySelector(x!.Current), keySelector(y!.Current));
 }
+#endif
