@@ -30,8 +30,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
-          3.1.x
-          6.0.x
           8.0.x
           9.0.x
 
@@ -41,7 +39,7 @@ jobs:
       run: dotnet build -c Release --no-restore
 
     - name: Build documentation
-      run: dotnet run -f net8.0 -c Release --no-build
+      run: dotnet run -f net9.0 -c Release --no-build
       working-directory: Docs/SuperLinq.Docs
 
     - name: Setup Pages

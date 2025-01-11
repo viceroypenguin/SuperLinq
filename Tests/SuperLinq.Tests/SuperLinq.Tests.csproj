@@ -2,12 +2,16 @@
 
   <PropertyGroup>
 	<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
-	<TargetFrameworks Condition="$([System.OperatingSystem]::IsWindows())">net47;$(TargetFrameworks)</TargetFrameworks>
 
 	<IsPackable>false</IsPackable>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
 
 	<PolySharpExcludeGeneratedTypes>System.Runtime.CompilerServices.ModuleInitializerAttribute</PolySharpExcludeGeneratedTypes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$([System.OperatingSystem]::IsWindows())">
+	<TargetFrameworks>net47;$(TargetFrameworks)</TargetFrameworks>
+	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
