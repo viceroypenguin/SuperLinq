@@ -22,7 +22,7 @@
 	<PackageVersion Include="System.Linq.Async" Version="6.0.1" />
 	<PackageVersion Include="System.Memory" Version="4.5.5" />
 	<PackageVersion Include="ThisAssembly.Resources" Version="1.4.3" />
-    <PackageVersion Include="TUnit.Engine" Version="0.6.86" />
+    <PackageVersion Include="TUnit.Engine" Version="0.6.89" />
     <PackageVersion Include="xunit.v3.assert" Version="1.0.0" />
   </ItemGroup>
   
