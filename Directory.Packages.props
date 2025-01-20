@@ -6,7 +6,7 @@
 
   <ItemGroup>
 	<PackageVersion Include="coverlet.collector" Version="6.0.3" />
-	<PackageVersion Include="coverlet.msbuild" Version="6.0.3" />
+	<PackageVersion Include="coverlet.msbuild" Version="6.0.4" />
 	<PackageVersion Include="DocFx.App" Version="2.78.2" />
 	<PackageVersion Include="DotNet.ReproducibleBuilds" Version="1.2.25" />
 	<PackageVersion Include="GitHubActionsTestLogger" Version="2.4.1" />
