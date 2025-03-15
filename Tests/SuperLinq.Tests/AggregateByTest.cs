@@ -7,7 +7,7 @@ namespace SuperLinq.Tests;
 public sealed class AggregateByTest
 {
 	[Test]
-	public static void AggregateBy()
+	public void AggregateBy()
 	{
 		static void DoTest<TSource, TKey, TAccumulate>(
 			IEnumerable<TSource> source,
