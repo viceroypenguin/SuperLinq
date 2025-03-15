@@ -30,7 +30,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(func);
 
-		var list = source is IList<TSource> l ? l : source.ToList();
+		var list = source is IList<TSource> l ? l : [.. source];
 
 		if (list.Count == 0)
 			ThrowHelper.ThrowInvalidOperationException("Sequence contains no elements");
@@ -82,7 +82,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(func);
 
-		var list = source is IList<TSource> l ? l : source.ToList();
+		var list = source is IList<TSource> l ? l : [.. source];
 
 		for (var i = list.Count - 1; i >= 0; i--)
 			seed = func(list[i], seed);

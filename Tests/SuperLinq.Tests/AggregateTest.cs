@@ -20,8 +20,7 @@ public sealed class AggregateTest
 		from source in new[] { Enumerable.Range(1, 10).Shuffle() }
 		let sum = source.Sum()
 		from m in typeof(SuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static)
-		where m.Name == nameof(SuperEnumerable.Aggregate)
-		   && m.IsGenericMethodDefinition
+		where m is { Name: nameof(SuperEnumerable.Aggregate), IsGenericMethodDefinition: true }
 #if NETCOREAPP
 		where !m.ReturnType.Name.Contains(nameof(ValueTuple), StringComparison.Ordinal)
 #else
@@ -32,12 +31,14 @@ public sealed class AggregateTest
 			Source = source,
 			Expectation = sum,
 			Instantiation = m.MakeGenericMethod(
-				Enumerable.Repeat(typeof(int), m.GetGenericArguments().Length - 1)
-					.Concat([typeof(int[])]) // TResult
-					.ToArray()),
+				[
+					.. Enumerable.Repeat(typeof(int), m.GetGenericArguments().Length - 1),
+					typeof(int[]),
+				]
+			),
 		}
 		into m
-		let rst = m.Instantiation.GetParameters().Last().ParameterType
+		let rst = m.Instantiation.GetParameters()[^1].ParameterType
 		select new
 		{
 			m.Instantiation,

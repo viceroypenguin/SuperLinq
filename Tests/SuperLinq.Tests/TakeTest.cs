@@ -919,32 +919,32 @@ public sealed class TakeTest
 		var taken1 = skipped.Take(int.MaxValue); // May try to calculate max index as 42 + int.MaxValue, leading to integer overflow.
 		Assert.Equal(Enumerable.Range(43, 100 - 42), taken1);
 		Assert.Equal(100 - 42, taken1.Count());
-		Assert.Equal(Enumerable.Range(43, 100 - 42), taken1.ToArray());
-		Assert.Equal(Enumerable.Range(43, 100 - 42), taken1.ToList());
+		Assert.Equal(Enumerable.Range(43, 100 - 42), [.. taken1]);
+		Assert.Equal(Enumerable.Range(43, 100 - 42), [.. taken1]);
 
 		var taken2 = Enumerable.Range(1, 100).Take(42..int.MaxValue);
 		Assert.Equal(Enumerable.Range(43, 100 - 42), taken2);
 		Assert.Equal(100 - 42, taken2.Count());
-		Assert.Equal(Enumerable.Range(43, 100 - 42), taken2.ToArray());
-		Assert.Equal(Enumerable.Range(43, 100 - 42), taken2.ToList());
+		Assert.Equal(Enumerable.Range(43, 100 - 42), [.. taken2]);
+		Assert.Equal(Enumerable.Range(43, 100 - 42), [.. taken2]);
 
 		var taken3 = Enumerable.Range(1, 100).Take(^(100 - 42)..int.MaxValue);
 		Assert.Equal(Enumerable.Range(43, 100 - 42), taken3);
 		Assert.Equal(100 - 42, taken3.Count());
-		Assert.Equal(Enumerable.Range(43, 100 - 42), taken3.ToArray());
-		Assert.Equal(Enumerable.Range(43, 100 - 42), taken3.ToList());
+		Assert.Equal(Enumerable.Range(43, 100 - 42), [.. taken3]);
+		Assert.Equal(Enumerable.Range(43, 100 - 42), [.. taken3]);
 
 		var taken4 = Enumerable.Range(1, 100).Take(42..^0);
 		Assert.Equal(Enumerable.Range(43, 100 - 42), taken4);
 		Assert.Equal(100 - 42, taken4.Count());
-		Assert.Equal(Enumerable.Range(43, 100 - 42), taken4.ToArray());
-		Assert.Equal(Enumerable.Range(43, 100 - 42), taken4.ToList());
+		Assert.Equal(Enumerable.Range(43, 100 - 42), [.. taken4]);
+		Assert.Equal(Enumerable.Range(43, 100 - 42), [.. taken4]);
 
 		var taken5 = Enumerable.Range(1, 100).Take(^(100 - 42)..^0);
 		Assert.Equal(Enumerable.Range(43, 100 - 42), taken5);
 		Assert.Equal(100 - 42, taken5.Count());
-		Assert.Equal(Enumerable.Range(43, 100 - 42), taken5.ToArray());
-		Assert.Equal(Enumerable.Range(43, 100 - 42), taken5.ToList());
+		Assert.Equal(Enumerable.Range(43, 100 - 42), [.. taken5]);
+		Assert.Equal(Enumerable.Range(43, 100 - 42), [.. taken5]);
 	}
 
 	[Test]

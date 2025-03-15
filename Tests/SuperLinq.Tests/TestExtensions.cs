@@ -33,7 +33,7 @@ public static partial class TestExtensions
 
 	#region Sequence Content Validation
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected, bool testCollectionEnumerable = false) =>
-		actual.AssertSequenceEqual(expected as IList<T> ?? expected.ToList(), testCollectionEnumerable);
+		actual.AssertSequenceEqual(expected as IList<T> ?? [.. expected], testCollectionEnumerable);
 
 	internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
 		actual.AssertSequenceEqual((IList<T>)expected);

@@ -245,7 +245,7 @@ public static partial class SuperEnumerable
 		if (columns.Count == 0)
 		{
 			columns.AddRange(
-				schemas.Select(m => new DataColumn(m.Member.Name, m.Type)).ToArray()
+				[.. schemas.Select(m => new DataColumn(m.Member.Name, m.Type))]
 			);
 		}
 		else
