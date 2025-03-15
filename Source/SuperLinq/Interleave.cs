@@ -29,6 +29,7 @@ public static partial class SuperEnumerable
 	///	    This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
+	[SuppressMessage("Style", "IDE0306:Simplify collection initialization", Justification = "InterleaveIterator is necessary here")]
 	public static IEnumerable<T> Interleave<T>(this IEnumerable<T> source, params IEnumerable<T>[] otherSources)
 	{
 		ArgumentNullException.ThrowIfNull(source);
@@ -64,12 +65,13 @@ public static partial class SuperEnumerable
 	///	    This method uses deferred execution and streams its results.
 	/// </para>
 	/// </remarks>
+	[SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "InterleaveIterator is necessary here")]
 	public static IEnumerable<T> Interleave<T>(this IEnumerable<IEnumerable<T>> sources)
 	{
 		ArgumentNullException.ThrowIfNull(sources);
 
 		if (sources is IEnumerable<ICollection<T>> sourcesColl)
-			return new InterleaveIterator<T>(sourcesColl.ToList());
+			return new InterleaveIterator<T>([.. sourcesColl]);
 
 		return InterleaveCore(sources);
 	}

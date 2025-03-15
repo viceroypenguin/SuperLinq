@@ -49,7 +49,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 		protected UpdatablePriorityQueue<TElement, TPriority> CreateUpdatablePriorityQueue(
 			int initialCapacity, int countOfItemsToGenerate, out List<(TElement element, TPriority priority)> generatedItems)
 		{
-			generatedItems = CreateItems(countOfItemsToGenerate).ToList();
+			generatedItems = [.. CreateItems(countOfItemsToGenerate)];
 			var queue = new UpdatablePriorityQueue<TElement, TPriority>(initialCapacity, GetPriorityComparer(), GetElementComparer());
 			queue.EnqueueRange(generatedItems);
 			return queue;
@@ -200,7 +200,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 		[MethodDataSource(nameof(ValidCollectionSizes))]
 		public void UpdatablePriorityQueue_EnqueueDequeue(int count)
 		{
-			(TElement Element, TPriority Priority)[] itemsToEnqueue = CreateItems(2 * count).ToArray();
+			(TElement Element, TPriority Priority)[] itemsToEnqueue = [.. CreateItems(2 * count)];
 			var queue = CreateEmptyUpdatablePriorityQueue();
 			queue.EnqueueRange(itemsToEnqueue.Take(count));
 
@@ -587,7 +587,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 		[MethodDataSource(nameof(ValidPositiveCollectionSizes))]
 		public void UpdatablePriorityQueue_Generic_EnsureCapacityAndTrimExcess(int count)
 		{
-			IReadOnlyCollection<(int, int)> itemsToEnqueue = Enumerable.Range(1, count).Select(i => (i, i)).ToArray();
+			IReadOnlyCollection<(int, int)> itemsToEnqueue = [.. Enumerable.Range(1, count).Select(i => (i, i))];
 			var queue = new UpdatablePriorityQueue<int, int>();
 			var expectedCount = 0;
 			var random = new Random(Seed: 34);

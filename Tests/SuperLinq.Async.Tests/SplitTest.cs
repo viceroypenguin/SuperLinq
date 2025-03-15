@@ -28,11 +28,10 @@ public sealed class SplitTest
 	}
 
 	[Test]
-	[SuppressMessage("Style", "IDE0305:Simplify collection initialization")]
 	public async Task SplitWithSeparatorAndResultTransformation()
 	{
 		await using var sequence = "the quick brown fox".AsTestingSequence();
-		var result = sequence.Split(' ', chars => new string(chars.ToArray()));
+		var result = sequence.Split(' ', chars => new string([.. chars]));
 		await result.AssertSequenceEqual("the", "quick", "brown", "fox");
 	}
 

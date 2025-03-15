@@ -6,7 +6,7 @@ internal static class TestingCollection
 {
 	internal static TestingCollection<T> AsTestingCollection<T>(
 		this IEnumerable<T> source, Options options = Options.None, int maxEnumerations = 1) =>
-			new(source as IList<T> ?? source.ToList(), options, maxEnumerations);
+			new(source as IList<T> ?? [.. source], options, maxEnumerations);
 }
 
 internal sealed class TestingCollection<T> : TestingSequence<T>, ICollection<T>

@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace SuperLinq.Tests;
 
 /// <summary>
@@ -97,6 +99,7 @@ public sealed class CartesianTests
 	/// Verify that each combination is produced in the Cartesian product
 	/// </summary>
 	[Test]
+	[SuppressMessage("Style", "IDE0305:Simplify collection initialization", Justification = "Target typing failure")]
 	public void TestCartesianProductCombinations()
 	{
 		var sequenceA = Enumerable.Range(0, 5);

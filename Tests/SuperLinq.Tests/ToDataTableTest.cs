@@ -23,10 +23,12 @@ public sealed class ToDataTableTest
 		}
 	}
 
-	private readonly TestObject[] _testObjects = Enumerable
-		.Range(0, 3)
-		.Select(i => new TestObject(i))
-		.ToArray();
+	private readonly TestObject[] _testObjects =
+	[
+		.. Enumerable
+			.Range(0, 3)
+			.Select(i => new TestObject(i)),
+	];
 
 	[Test]
 	public void ToDataTableTableWithWrongColumnNames()
@@ -139,8 +141,8 @@ public sealed class ToDataTableTest
 
 		var rows = dt.Rows.Cast<DataRow>().ToArray();
 		Assert.Equal(vars.Length, rows.Length);
-		Assert.Equal(vars.Select(e => e.Key).ToArray(), rows.Select(r => r["Name"]).ToArray());
-		Assert.Equal(vars.Select(e => e.Value).ToArray(), rows.Select(r => r["Value"]).ToArray());
+		rows.Select(r => r["Name"]).AssertSequenceEqual(vars.Select(e => e.Key));
+		rows.Select(r => r["Value"]).AssertSequenceEqual(vars.Select(e => e.Value));
 	}
 
 	private readonly struct Point

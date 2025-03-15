@@ -65,6 +65,6 @@ public sealed class SkipUntilTest
 	public void TestSkipUntil(int[] source, int min, int[] expected)
 	{
 		using var xs = source.AsTestingSequence();
-		Assert.Equal(expected, xs.SkipUntil(v => v >= min).ToArray());
+		xs.SkipUntil(v => v >= min).AssertSequenceEqual(expected);
 	}
 }

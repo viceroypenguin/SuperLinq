@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class FullGroupJoinTest
 {
@@ -107,8 +107,8 @@ public sealed class FullGroupJoinTest
 		// Order of joined elements is preserved
 		foreach (var (key, first, second) in result)
 		{
-			first.AssertSequenceEqual(listA.Where(t => t.Item1 == key).ToArray());
-			second.AssertSequenceEqual(listB.Where(t => t.Item1 == key).ToArray());
+			first.AssertSequenceEqual(listA.Where(t => t.Item1 == key));
+			second.AssertSequenceEqual(listB.Where(t => t.Item1 == key));
 		}
 	}
 

@@ -211,6 +211,6 @@ public sealed class RandomSubsetTest
 
 	private static double StandardDeviationInternal(IEnumerable<double> values, double average)
 	{
-		return Math.Sqrt(values.Select(value => Math.Pow(value - average, 2.0)).Average());
+		return Math.Sqrt(values.Average(value => Math.Pow(value - average, 2.0)));
 	}
 }

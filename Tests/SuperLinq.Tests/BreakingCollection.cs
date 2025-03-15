@@ -1,7 +1,11 @@
-﻿namespace SuperLinq.Tests;
+using System.Diagnostics.CodeAnalysis;
+
+namespace SuperLinq.Tests;
 
 internal static class BreakingCollection
 {
+	[SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "collection expression calls `Add()` illegally")]
+	[SuppressMessage("Style", "IDE0306:Simplify collection initialization", Justification = "collection expression calls `Add()` illegally")]
 	public static BreakingCollection<T> AsBreakingCollection<T>(this IEnumerable<T> source) => new(source);
 }
 
@@ -10,7 +14,7 @@ internal class BreakingCollection<T> : BreakingSequence<T>, ICollection<T>, IDis
 	protected readonly IList<T> List;
 
 	public BreakingCollection(params T[] values) : this((IList<T>)values) { }
-	public BreakingCollection(IEnumerable<T> source) => List = source.ToList();
+	public BreakingCollection(IEnumerable<T> source) => List = [.. source];
 	public BreakingCollection(IList<T> list) => List = list;
 
 	public int Count => List.Count;

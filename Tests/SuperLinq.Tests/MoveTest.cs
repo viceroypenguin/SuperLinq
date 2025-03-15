@@ -85,7 +85,9 @@ public sealed class MoveTest
 		using var source = Enumerable.Range(0, 10).AsTestingSequence(maxEnumerations: 2);
 
 		var result = source.Move(0, 5, 10);
-		Assert.Equal(result, result.ToArray());
+		var array1 = result.ToArray();
+		var array2 = result.ToArray();
+		Assert.Equal(array1, array2);
 	}
 
 	[Test]

@@ -30,7 +30,7 @@ public interface IAsyncBuffer<out T> : IAsyncEnumerable<T>, IAsyncDisposable
 	/// <returns>
 	///		The configured async disposable.
 	/// </returns>
-	public ConfiguredAsyncDisposable ConfigureAwait(bool continueOnCapturedContext) =>
+	ConfiguredAsyncDisposable ConfigureAwait(bool continueOnCapturedContext) =>
 		((IAsyncDisposable)this).ConfigureAwait(continueOnCapturedContext);
 #endif
 }

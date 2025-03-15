@@ -205,12 +205,13 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(leftKeySelector);
 		ArgumentNullException.ThrowIfNull(rightKeySelector);
 
-		return LoopJoin<TLeft, TRight, TKey, (TLeft, TRight?)>(
+		return LoopJoin(
 			left, right,
 			leftKeySelector, rightKeySelector,
 			static left => (left, default),
 			ValueTuple.Create,
-			comparer);
+			comparer
+		);
 	}
 
 	/// <summary>
@@ -308,7 +309,7 @@ public static partial class SuperEnumerable
 	{
 		comparer ??= EqualityComparer<TKey>.Default;
 
-		var rList = right as IList<TRight> ?? right.ToList();
+		var rList = right as IList<TRight> ?? [.. right];
 		foreach (var l in left)
 		{
 			var lKey = leftKeySelector(l);

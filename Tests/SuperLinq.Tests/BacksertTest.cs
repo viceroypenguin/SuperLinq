@@ -40,7 +40,7 @@ public sealed class BacksertTest
 		using var test1 = seq1.AsTestingSequence();
 		using var test2 = seq2.AsTestingSequence();
 
-		Assert.Equal(expected, test1.Backsert(test2, index).ToArray());
+		test1.Backsert(test2, index).AssertSequenceEqual(expected);
 	}
 }
 

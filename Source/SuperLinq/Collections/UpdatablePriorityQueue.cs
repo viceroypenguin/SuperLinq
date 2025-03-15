@@ -198,7 +198,7 @@ public sealed class UpdatablePriorityQueue<TElement, TPriority>
 	{
 		ArgumentNullException.ThrowIfNull(items);
 
-		_nodes = items.ToArray();
+		_nodes = [.. items];
 		_priorityComparer = InitializeComparer(priorityComparer);
 		_elementComparer = elementComparer ?? EqualityComparer<TElement>.Default;
 		_elementIndex = new(_elementComparer);
