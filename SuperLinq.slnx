@@ -1,0 +1,32 @@
+<Solution>
+  <Folder Name="/.root/">
+    <File Path=".editorconfig" />
+    <File Path=".github/dependabot.yml" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="license.txt" />
+    <File Path="README.md" />
+    <File Path="TargetFrameworks.props" />
+  </Folder>
+  <Folder Name="/.root/workflows/">
+    <File Path=".github/workflows/build.yml" />
+    <File Path=".github/workflows/docs.yml" />
+    <File Path=".github/workflows/release.yml" />
+  </Folder>
+  <Folder Name="/Docs/">
+    <Project Path="Docs/SuperLinq.Docs/SuperLinq.Docs.csproj" />
+  </Folder>
+  <Folder Name="/Generators/">
+    <Project Path="Generators/SuperLinq.Async.Generator/SuperLinq.Async.Generator.csproj" />
+    <Project Path="Generators/SuperLinq.Generator/SuperLinq.Generator.csproj" />
+  </Folder>
+  <Folder Name="/Source/">
+    <Project Path="Source/SuperLinq.Async/SuperLinq.Async.csproj" />
+    <Project Path="Source/SuperLinq/SuperLinq.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/SuperLinq.Async.Tests/SuperLinq.Async.Tests.csproj" />
+    <Project Path="Tests/SuperLinq.Tests/SuperLinq.Tests.csproj" />
+  </Folder>
+</Solution>
