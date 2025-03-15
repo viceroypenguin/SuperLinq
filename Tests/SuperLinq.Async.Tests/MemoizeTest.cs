@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace SuperLinq.Async.Tests;
 
@@ -85,7 +85,7 @@ public sealed class MemoizeTest
 	}
 
 	[Test]
-	public static async Task MemoizeThrowsWhenCacheDisposedDuringIteration()
+	public async Task MemoizeThrowsWhenCacheDisposedDuringIteration()
 	{
 		await using var seq = AsyncEnumerable.Range(1, 10).AsTestingSequence();
 
@@ -100,7 +100,7 @@ public sealed class MemoizeTest
 	}
 
 	[Test]
-	public static async Task MemoizeThrowsWhenResetDuringIteration()
+	public async Task MemoizeThrowsWhenResetDuringIteration()
 	{
 		await using var seq = AsyncEnumerable.Range(1, 10).AsTestingSequence();
 
@@ -131,7 +131,7 @@ public sealed class MemoizeTest
 	}
 
 	[Test]
-	public static async Task MemoizeThrowsWhenResettingAfterDispose()
+	public async Task MemoizeThrowsWhenResettingAfterDispose()
 	{
 		await using var seq = AsyncEnumerable.Range(1, 10).AsTestingSequence();
 
@@ -197,7 +197,7 @@ public sealed class MemoizeTest
 	}
 
 	[Test]
-	public static async Task MemoizeRestartsAfterReset()
+	public async Task MemoizeRestartsAfterReset()
 	{
 		var starts = 0;
 

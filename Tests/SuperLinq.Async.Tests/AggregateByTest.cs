@@ -6,7 +6,7 @@ namespace SuperLinq.Async.Tests;
 public sealed class AggregateByTest
 {
 	[Test]
-	public static async Task AggregateBy()
+	public async Task AggregateBy()
 	{
 		static async Task DoTest<TSource, TKey, TAccumulate>(
 			IEnumerable<TSource> source,

@@ -92,7 +92,7 @@ public sealed class MemoizeTest
 
 	[Test]
 	[MethodDataSource(nameof(GetSequences))]
-	public static void MemoizeThrowsWhenCacheDisposedDuringIteration(IDisposableEnumerable<int> seq)
+	public void MemoizeThrowsWhenCacheDisposedDuringIteration(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 		{
@@ -110,7 +110,7 @@ public sealed class MemoizeTest
 
 	[Test]
 	[MethodDataSource(nameof(GetSequences))]
-	public static void MemoizeThrowsWhenResetDuringIteration(IDisposableEnumerable<int> seq)
+	public void MemoizeThrowsWhenResetDuringIteration(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 		{
@@ -129,7 +129,7 @@ public sealed class MemoizeTest
 
 	[Test]
 	[MethodDataSource(nameof(GetSequences))]
-	public static void MemoizeThrowsWhenGettingIteratorAfterDispose(IDisposableEnumerable<int> seq)
+	public void MemoizeThrowsWhenGettingIteratorAfterDispose(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 		{
@@ -145,7 +145,7 @@ public sealed class MemoizeTest
 
 	[Test]
 	[MethodDataSource(nameof(GetSequences))]
-	public static void MemoizeThrowsWhenResettingAfterDispose(IDisposableEnumerable<int> seq)
+	public void MemoizeThrowsWhenResettingAfterDispose(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 		{
@@ -211,7 +211,7 @@ public sealed class MemoizeTest
 	}
 
 	[Test]
-	public static void MemoizeIteratorRestartsAfterReset()
+	public void MemoizeIteratorRestartsAfterReset()
 	{
 		var starts = 0;
 
@@ -346,7 +346,7 @@ public sealed class MemoizeTest
 	}
 
 	[Test]
-	public static void MemoizeCollectionRestartsAfterReset()
+	public void MemoizeCollectionRestartsAfterReset()
 	{
 		using var ts = new BreakingCollection<int>(Enumerable.Range(0, 10));
 
