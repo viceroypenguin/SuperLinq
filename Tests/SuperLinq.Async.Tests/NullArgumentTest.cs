@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Diagnostics;
-#if NETCOREAPP
 using System.Diagnostics.CodeAnalysis;
-#endif
+
 using System.Linq.Expressions;
 using System.Reflection;
 using Debug = System.Diagnostics.Debug;
@@ -257,8 +256,22 @@ public sealed class NullArgumentTest
 			public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default) => new AsyncEnumerator<T>();
 		}
 
+		[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "net10+ has different signature than net9-")]
+		[SuppressMessage("Performance", "CA1859:Use concrete types when possible for improved performance", Justification = "net10+ has different signature than net9-")]
 		public sealed class OrderedAsyncEnumerable<T> : AsyncEnumerable<T>, IOrderedAsyncEnumerable<T>
 		{
+			public IOrderedAsyncEnumerable<T> CreateOrderedAsyncEnumerable<TKey>(Func<T, CancellationToken, ValueTask<TKey>> keySelector, IComparer<TKey>? comparer, bool descending)
+			{
+				Assert.NotNull(keySelector);
+				return this;
+			}
+
+			public IOrderedAsyncEnumerable<T> CreateOrderedAsyncEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool descending)
+			{
+				Assert.NotNull(keySelector);
+				return this;
+			}
+
 			public IOrderedAsyncEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool descending)
 			{
 				Assert.NotNull(keySelector);

@@ -26,9 +26,10 @@ public sealed class InsertTest
 
 		var result = test1.Insert(test2, count + 1);
 
-		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
-			await result.ForEachAsync((e, index) =>
-				Assert.Equal(index, e)));
+		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(
+			async () =>
+				await result.ForEach((e, index) => Assert.Equal(index, e))
+		);
 	}
 
 	[Test]

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -77,9 +77,10 @@ public static partial class AsyncSuperEnumerable
 			IAsyncEnumerable<T> source,
 			Func<T, bool> predicate,
 			Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector,
-			CancellationToken cancellationToken)
+			CancellationToken cancellationToken
+		)
 		{
-			var lookup = await source.ToLookupAsync(predicate, cancellationToken).ConfigureAwait(false);
+			var lookup = await source.ToLookupAsync(predicate, cancellationToken: cancellationToken).ConfigureAwait(false);
 			return resultSelector(lookup[true], lookup[false]);
 		}
 	}

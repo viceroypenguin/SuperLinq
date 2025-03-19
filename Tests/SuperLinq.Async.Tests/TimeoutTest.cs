@@ -12,11 +12,7 @@ public sealed class TimeoutTest
 	public async Task TimeoutNoException()
 	{
 		await using var ts = AsyncEnumerable.Range(1, 5)
-			.SelectAwaitWithCancellation(async (x, ct) =>
-			{
-				await Task.Delay(TimeSpan.FromMilliseconds(1), ct);
-				return x;
-			})
+			.SelectIdentityWithDelayAndToken(1)
 			.AsTestingSequence();
 
 		var result = ts.Timeout(TimeSpan.FromSeconds(1));
@@ -28,11 +24,7 @@ public sealed class TimeoutTest
 	public async Task TimeoutException()
 	{
 		await using var ts = AsyncEnumerable.Range(1, 5)
-			.SelectAwaitWithCancellation(async (x, ct) =>
-			{
-				await Task.Delay(TimeSpan.FromSeconds(1), ct);
-				return x;
-			})
+			.SelectIdentityWithDelayAndToken(1_000)
 			.AsTestingSequence();
 
 		var result = ts.Timeout(TimeSpan.FromMilliseconds(0));
@@ -45,11 +37,7 @@ public sealed class TimeoutTest
 	public async Task TimeoutExceptionWithoutCancellation()
 	{
 		await using var ts = AsyncEnumerable.Range(1, 5)
-			.SelectAwait(async x =>
-			{
-				await Task.Delay(TimeSpan.FromMilliseconds(30));
-				return x;
-			})
+			.SelectIdentityWithDelay(30)
 			.AsTestingSequence();
 
 		var result = ts.Timeout(TimeSpan.FromMilliseconds(0));
@@ -81,7 +69,8 @@ public sealed class TimeoutTest
 		var result = ts.Timeout(TimeSpan.FromMilliseconds(0));
 
 		var timeoutException = await Assert.ThrowsAsync<TimeoutException>(
-			async () => await result.Consume());
+			async () => await result.Consume()
+		);
 
 		_ = Assert.IsAssignableFrom<OperationCanceledException>(timeoutException.InnerException);
 	}
@@ -93,11 +82,7 @@ public sealed class TimeoutTest
 			// cancellationToken.ThrowIfCancellationRequested() is purposefully not done here
 
 			return AsyncEnumerable.Range(1, 5)
-				.SelectAwait(async x =>
-				{
-					await Task.Delay(TimeSpan.FromMilliseconds(10), CancellationToken.None);
-					return x;
-				})
+				.SelectIdentityWithDelay(10)
 				.GetAsyncEnumerator(CancellationToken.None);
 		}
 	}
@@ -109,12 +94,51 @@ public sealed class TimeoutTest
 			cancellationToken.ThrowIfCancellationRequested();
 
 			return AsyncEnumerable.Range(1, 5)
-				.SelectAwait(async x =>
-				{
-					await Task.Delay(TimeSpan.FromMilliseconds(10), cancellationToken);
-					return x;
-				})
+				.SelectIdentityWithDelayAndToken(10)
 				.GetAsyncEnumerator(cancellationToken);
 		}
 	}
+}
+
+file static class AsyncEnumerableExtension
+{
+	public static IAsyncEnumerable<int> SelectIdentityWithDelay(
+		this IAsyncEnumerable<int> source,
+		int millisecondsDelay
+	) =>
+#if NET10_0_OR_GREATER
+		source
+			.Select(async (int i, CancellationToken ct) =>
+			{
+				await Task.Delay(millisecondsDelay, CancellationToken.None);
+				return i;
+			});
+#else
+		source
+			.SelectAwait(async i =>
+			{
+				await Task.Delay(millisecondsDelay);
+				return i;
+			});
+#endif
+
+	public static IAsyncEnumerable<int> SelectIdentityWithDelayAndToken(
+		this IAsyncEnumerable<int> source,
+		int millisecondsDelay
+	) =>
+#if NET10_0_OR_GREATER
+		source
+			.Select(async (i, ct) =>
+			{
+				await Task.Delay(millisecondsDelay, ct);
+				return i;
+			});
+#else
+		source
+			.SelectAwaitWithCancellation(async (i, ct) =>
+			{
+				await Task.Delay(millisecondsDelay, ct);
+				return i;
+			});
+#endif
 }

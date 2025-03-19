@@ -142,7 +142,7 @@ public static partial class AsyncSuperEnumerable
 
 						// found one, iterate it
 						var e = list[i];
-						var task = e.MoveNextAsync(cancellationToken);
+						var task = e.MoveNextAsync();
 
 						// returned immediately?
 						if (task.IsCompleted)

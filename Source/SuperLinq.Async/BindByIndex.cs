@@ -78,13 +78,13 @@ public static partial class AsyncSuperEnumerable
 			var lookup = await indices
 				.Index()
 				.ToDictionaryAsync(
-					x =>
+					keySelector: x =>
 					{
 						ArgumentOutOfRangeException.ThrowIfNegative(x.item, nameof(indices));
 						return x.item;
 					},
-					x => x.index,
-					cancellationToken
+					elementSelector: x => x.index,
+					cancellationToken: cancellationToken
 				)
 				.ConfigureAwait(false);
 
