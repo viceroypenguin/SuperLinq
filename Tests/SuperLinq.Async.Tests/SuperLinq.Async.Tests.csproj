@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+	<TargetFrameworks Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '10.0'))">$(TargetFrameworks);net10.0</TargetFrameworks>
 
-    <IsPackable>false</IsPackable>
+	<IsPackable>false</IsPackable>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
 
 	<PolySharpExcludeGeneratedTypes>System.Runtime.CompilerServices.ModuleInitializerAttribute</PolySharpExcludeGeneratedTypes>
