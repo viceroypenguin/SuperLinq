@@ -1,5 +1,6 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
+[Obsolete("References `DistinctBy` which is obsolete in net6+")]
 public sealed class ShuffleTest
 {
 	private static readonly Random s_seed = new(12345);
@@ -7,7 +8,7 @@ public sealed class ShuffleTest
 	[Test]
 	public void ShuffleIsLazy()
 	{
-		_ = new BreakingSequence<int>().Shuffle();
+		_ = SuperEnumerable.Shuffle(new BreakingSequence<int>());
 	}
 
 	[Test]
@@ -15,7 +16,7 @@ public sealed class ShuffleTest
 	{
 		using var source = Enumerable.Range(1, 100).AsTestingSequence();
 
-		var result = source.Shuffle();
+		var result = SuperEnumerable.Shuffle(source);
 		result.AssertCollectionEqual(Enumerable.Range(1, 100));
 	}
 
@@ -24,7 +25,7 @@ public sealed class ShuffleTest
 	{
 		using var source = Enumerable.Empty<int>().AsTestingSequence();
 
-		var result = source.Shuffle();
+		var result = SuperEnumerable.Shuffle(source);
 		result.AssertSequenceEqual();
 	}
 
@@ -34,7 +35,7 @@ public sealed class ShuffleTest
 		var sequence = Enumerable.Range(1, 100).ToArray();
 
 		// force complete enumeration of random subsets
-		sequence.Shuffle().Consume();
+		SuperEnumerable.Shuffle(sequence).Consume();
 
 		// verify the original sequence is untouched
 		sequence.AssertSequenceEqual(Enumerable.Range(1, 100));
@@ -43,7 +44,7 @@ public sealed class ShuffleTest
 	[Test]
 	public void ShuffleSeedIsLazy()
 	{
-		_ = new BreakingSequence<int>().Shuffle(s_seed);
+		_ = SuperEnumerable.Shuffle(new BreakingSequence<int>(), s_seed);
 	}
 
 	[Test]
@@ -51,7 +52,7 @@ public sealed class ShuffleTest
 	{
 		using var source = Enumerable.Range(1, 100).AsTestingSequence();
 
-		var result = source.Shuffle(s_seed).ToList();
+		var result = SuperEnumerable.Shuffle(source, s_seed).ToList();
 		result.AssertCollectionEqual(Enumerable.Range(1, 100));
 	}
 
@@ -60,7 +61,7 @@ public sealed class ShuffleTest
 	{
 		using var source = Enumerable.Empty<int>().AsTestingSequence();
 
-		var result = source.Shuffle(s_seed);
+		var result = SuperEnumerable.Shuffle(source, s_seed);
 		result.AssertSequenceEqual();
 	}
 
@@ -70,7 +71,7 @@ public sealed class ShuffleTest
 		var sequence = Enumerable.Range(1, 100).ToArray();
 
 		// force complete enumeration of random subsets
-		sequence.Shuffle(s_seed).Consume();
+		SuperEnumerable.Shuffle(sequence, s_seed).Consume();
 
 		// verify the original sequence is untouched
 		sequence.AssertSequenceEqual(Enumerable.Range(1, 100));

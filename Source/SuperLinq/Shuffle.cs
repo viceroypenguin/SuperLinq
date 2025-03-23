@@ -23,7 +23,12 @@ public static partial class SuperEnumerable
 	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
+#if NET10_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
+	public static IEnumerable<T> Shuffle<T>(IEnumerable<T> source)
+#else
 	public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
+#endif
 	{
 		return Shuffle(source, new Random());
 	}
@@ -53,7 +58,12 @@ public static partial class SuperEnumerable
 	///     in it's entirety immediately when first element of the returned sequence is consumed.
 	/// </para>
 	/// </remarks>
+#if NET10_0_OR_GREATER
+	[Obsolete("This method has been implemented by the framework.")]
 	public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rand)
+#else
+	public static IEnumerable<T> Shuffle<T>(IEnumerable<T> source, Random rand)
+#endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
 		ArgumentNullException.ThrowIfNull(rand);
