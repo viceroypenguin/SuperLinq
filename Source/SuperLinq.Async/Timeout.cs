@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -50,7 +50,7 @@ public static partial class AsyncSuperEnumerable
 		{
 			using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 			var e = source.GetAsyncEnumerator(cts.Token);
-			await using (e.WithCancellation(cancellationToken).ConfigureAwait(false))
+			await using (e.ConfigureAwait(false))
 			{
 				while (true)
 				{

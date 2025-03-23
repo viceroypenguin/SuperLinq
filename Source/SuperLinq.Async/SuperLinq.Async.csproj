@@ -116,11 +116,17 @@
 
   <ItemGroup>
 	<PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />
-	<PackageReference Include="Microsoft.Bcl.HashCode" />
 	<PackageReference Include="MinVer" PrivateAssets="All" />
-	<PackageReference Include="System.Linq.Async" />
-	<PackageReference Include="System.Memory" />
 	<ProjectReference Include="..\SuperLinq\SuperLinq.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" !$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0')) ">
+	<PackageReference Include="System.Linq.Async" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+	<PackageReference Include="Microsoft.Bcl.HashCode" />
+	<PackageReference Include="System.Memory" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">

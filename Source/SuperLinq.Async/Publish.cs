@@ -157,7 +157,7 @@ public static partial class AsyncSuperEnumerable
 							var moved = false;
 							try
 							{
-								moved = await _enumerator.MoveNextAsync(cancellationToken).ConfigureAwait(false);
+								moved = await _enumerator.MoveNextAsync().ConfigureAwait(false);
 							}
 							catch (Exception ex)
 							{

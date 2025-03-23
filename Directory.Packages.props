@@ -16,18 +16,18 @@
 	<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
 	<PackageVersion Include="Microsoft.CodeAnalysis.VisualBasic" Version="4.13.0" />
 	<PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.13.0" />
-	<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+	<PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="1.6.3" />
 	<PackageVersion Include="MinVer" Version="6.0.0" />
 	<PackageVersion Include="Scriban" Version="6.0.0" />
 	<PackageVersion Include="System.Linq.Async" Version="6.0.1" />
-	<PackageVersion Include="System.Memory" Version="4.6.0" />
+	<PackageVersion Include="System.Memory" Version="4.6.2" />
 	<PackageVersion Include="ThisAssembly.Resources" Version="1.4.3" />
-    <PackageVersion Include="TUnit.Engine" Version="0.18.26" />
+    <PackageVersion Include="TUnit.Engine" Version="0.18.60" />
     <PackageVersion Include="xunit.v3.assert" Version="2.0.0" />
   </ItemGroup>
   
   <ItemGroup>
-	<GlobalPackageReference Include="Meziantou.Analyzer" Version="2.0.188" />
+	<GlobalPackageReference Include="Meziantou.Analyzer" Version="2.0.189" />
 	<GlobalPackageReference Include="PolySharp" Version="1.15.0" />
   </ItemGroup>
 </Project>
