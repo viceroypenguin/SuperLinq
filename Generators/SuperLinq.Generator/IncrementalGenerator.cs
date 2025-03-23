@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -15,24 +16,36 @@ public sealed class IncrementalGenerator : IIncrementalGenerator
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"Aggregate.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Aggregate.Text)));
+			"Aggregate.g.cs", GenerateArgumentNamesTemplate(GetTemplate("Aggregate"))));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"Cartesian.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Cartesian.Text)));
+			"Cartesian.g.cs", GenerateArgumentNamesTemplate(GetTemplate("Cartesian"))));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"EquiZip.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.EquiZip.Text)));
+			"EquiZip.g.cs", GenerateArgumentNamesTemplate(GetTemplate("EquiZip"))));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"Fold.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.Fold.Text)));
+			"Fold.g.cs", GenerateArgumentNamesTemplate(GetTemplate("Fold"))));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
 			"ToDelimitedString.g.cs", ToDelimitedString.Generate()));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"ZipLongest.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.ZipLongest.Text)));
+			"ZipLongest.g.cs", GenerateArgumentNamesTemplate(GetTemplate("ZipLongest"))));
 		context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-			"ZipShortest.g.cs", GenerateArgumentNamesTemplate(ThisAssembly.Resources.ZipShortest.Text)));
+			"ZipShortest.g.cs", GenerateArgumentNamesTemplate(GetTemplate("ZipShortest"))));
 	}
 
-	private static SourceText GenerateArgumentNamesTemplate(string template)
+	private static SourceText GenerateArgumentNamesTemplate(Template template)
 	{
-		var output = Template.Parse(template).Render(ArgumentNames.Instance);
+		var output = template.Render(ArgumentNames.Instance);
 		return SourceText.From(output, Encoding.UTF8);
+	}
+
+	internal static Template GetTemplate(string name)
+	{
+		using var stream = Assembly
+			.GetExecutingAssembly()
+			.GetManifestResourceStream(
+				$"SuperLinq.Generator.{name}.sbntxt"
+			)!;
+
+		using var reader = new StreamReader(stream);
+		return Template.Parse(reader.ReadToEnd());
 	}
 }
