@@ -2,7 +2,6 @@ using System.Reflection;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using Scriban;
 
 namespace SuperLinq.Generator;
 
@@ -22,7 +21,7 @@ internal static class ToDelimitedString
 			.OrderBy(t => t.Name, StringComparer.Ordinal)
 			.Select(t => $"global::{t.FullName}");
 
-		var template = Template.Parse(ThisAssembly.Resources.ToDelimitedString.Text);
+		var template = IncrementalGenerator.GetTemplate("ToDelimitedString");
 		var output = template.Render(new { Types = types.ToList() });
 
 		// Apply formatting since indenting isn't that nice in Scriban when rendering nested 
