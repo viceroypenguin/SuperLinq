@@ -27,7 +27,7 @@ internal static class ToDelimitedString
 		// Apply formatting since indenting isn't that nice in Scriban when rendering nested 
 		// structures via functions.
 		output = Microsoft.CodeAnalysis.CSharp.SyntaxFactory.ParseCompilationUnit(output)
-			.NormalizeWhitespace()
+			.NormalizeWhitespace(eol: Environment.NewLine)
 			.GetText()
 			.ToString();
 
