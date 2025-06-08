@@ -60,9 +60,9 @@ public static partial class SuperEnumerable
 	/// </remarks>
 #if NET10_0_OR_GREATER
 	[Obsolete("This method has been implemented by the framework.")]
-	public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rand)
-#else
 	public static IEnumerable<T> Shuffle<T>(IEnumerable<T> source, Random rand)
+#else
+	public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rand)
 #endif
 	{
 		ArgumentNullException.ThrowIfNull(source);
