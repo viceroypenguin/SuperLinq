@@ -78,11 +78,8 @@ public static partial class AsyncSuperEnumerable
 			await foreach (var element in first.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
 				var key = keySelector(element);
-				if (keys.Contains(key))
-					continue;
-
-				yield return element;
-				_ = keys.Add(key);
+				if (keys.Add(key))
+					yield return element;
 			}
 		}
 	}
