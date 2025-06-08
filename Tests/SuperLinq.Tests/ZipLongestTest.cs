@@ -1,4 +1,5 @@
 namespace SuperLinq.Tests;
+
 public sealed class ZipLongestTest
 {
 	[Test]
