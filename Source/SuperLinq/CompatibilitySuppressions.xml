@@ -57,6 +57,18 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:SuperLinq.SuperEnumerable.Shuffle``1(System.Collections.Generic.IEnumerable{``0},System.Random)</Target>
+    <Left>lib/net9.0/SuperLinq.dll</Left>
+    <Right>lib/net10.0/SuperLinq.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:SuperLinq.SuperEnumerable.Shuffle``1(System.Collections.Generic.IEnumerable{``0})</Target>
+    <Left>lib/net9.0/SuperLinq.dll</Left>
+    <Right>lib/net10.0/SuperLinq.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:SuperLinq.SuperEnumerable.DistinctBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IEqualityComparer{``1})</Target>
     <Left>lib/netcoreapp3.1/SuperLinq.dll</Left>
     <Right>lib/net6.0/SuperLinq.dll</Right>
