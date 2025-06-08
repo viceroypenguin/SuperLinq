@@ -10,23 +10,23 @@
 	<PackageVersion Include="DocFx.App" Version="2.78.3" />
 	<PackageVersion Include="DotNet.ReproducibleBuilds" Version="1.2.25" />
 	<PackageVersion Include="GitHubActionsTestLogger" Version="2.4.1" />
-	<PackageVersion Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
-	<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
-	<PackageVersion Include="Microsoft.CodeAnalysis" Version="4.13.0" />
-	<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
-	<PackageVersion Include="Microsoft.CodeAnalysis.VisualBasic" Version="4.13.0" />
-	<PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.13.0" />
+	<PackageVersion Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
+	<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0" />
+	<PackageVersion Include="Microsoft.CodeAnalysis" Version="4.14.0" />
+	<PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+	<PackageVersion Include="Microsoft.CodeAnalysis.VisualBasic" Version="4.14.0" />
+	<PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.14.0" />
 	<PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="1.6.3" />
 	<PackageVersion Include="MinVer" Version="6.0.0" />
-	<PackageVersion Include="Scriban" Version="6.0.0" />
+	<PackageVersion Include="Scriban" Version="6.2.1" />
 	<PackageVersion Include="System.Linq.Async" Version="6.0.1" />
-	<PackageVersion Include="System.Memory" Version="4.6.2" />
-    <PackageVersion Include="TUnit.Engine" Version="0.18.60" />
-    <PackageVersion Include="xunit.v3.assert" Version="2.0.0" />
+	<PackageVersion Include="System.Memory" Version="4.6.3" />
+    <PackageVersion Include="TUnit.Engine" Version="0.22.31" />
+    <PackageVersion Include="xunit.v3.assert" Version="2.0.3" />
   </ItemGroup>
   
   <ItemGroup>
-	<GlobalPackageReference Include="Meziantou.Analyzer" Version="2.0.189" />
+	<GlobalPackageReference Include="Meziantou.Analyzer" Version="2.0.201" />
 	<GlobalPackageReference Include="PolySharp" Version="1.15.0" />
   </ItemGroup>
 </Project>

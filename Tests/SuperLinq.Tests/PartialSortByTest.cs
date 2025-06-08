@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class PartialSortByTests
 {
@@ -32,7 +32,7 @@ public sealed class PartialSortByTests
 		sequence
 			.PartialSortBy(5, e => e.Index, OrderByDirection.Descending)
 			.Select(e => e.Item)
-			.AssertSequenceEqual(ns.Reverse().Take(5));
+			.AssertSequenceEqual(ns.AsEnumerable().Reverse().Take(5));
 	}
 
 	[Test]
