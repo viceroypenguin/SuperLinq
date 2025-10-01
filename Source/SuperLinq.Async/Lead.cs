@@ -3,16 +3,16 @@ namespace SuperLinq.Async;
 public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
-	/// Produces a projection of a sequence by evaluating pairs of elements separated by a negative offset.
+	/// Produces a projection of a sequence by evaluating pairs of elements separated by a positive offset.
 	/// </summary>
 	/// <remarks>
 	/// This operator evaluates in a deferred and streaming manner.<br/>
-	/// For elements prior to the lag offset, <see langword="default"/>(<typeparamref name="TSource"/>?) is used as the lagged value.<br/>
+	/// For elements prior to the lead offset, <see langword="default"/>(<typeparamref name="TSource"/>?) is used as the lead value.<br/>
 	/// </remarks>
 	/// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
-	/// <param name="source">The sequence over which to evaluate lag</param>
-	/// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
-	/// <returns>A sequence of tuples with the current and lagged elements</returns>
+	/// <param name="source">The sequence over which to evaluate lead</param>
+	/// <param name="offset">The offset (expressed as a positive number) by which to lead each value of the sequence</param>
+	/// <returns>A sequence of tuples with the current and lead elements</returns>
 
 	public static IAsyncEnumerable<(TSource current, TSource? lead)> Lead<TSource>(this IAsyncEnumerable<TSource> source, int offset)
 	{
