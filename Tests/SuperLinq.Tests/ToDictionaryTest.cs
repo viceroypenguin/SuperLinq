@@ -1,9 +1,9 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 [Obsolete("References `ToDictionary` which is obsolete in net8+")]
 public sealed class ToDictionaryTest
 {
-	[Test]
+	[Fact]
 	public void ToDictionaryWithKeyValuePairs()
 	{
 		using var pairs = TestingSequence.Of(
@@ -18,7 +18,7 @@ public sealed class ToDictionaryTest
 		Assert.Equal(789, dict["baz"]);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDictionaryWithCouples()
 	{
 		using var pairs = TestingSequence.Of(
@@ -33,7 +33,7 @@ public sealed class ToDictionaryTest
 		Assert.Equal(789, dict["baz"]);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDictionaryWithKeyValuePairsWithComparer()
 	{
 		using var pairs = TestingSequence.Of(
@@ -48,7 +48,7 @@ public sealed class ToDictionaryTest
 		Assert.Equal(789, dict["BAZ"]);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDictionaryWithCouplesWithComparer()
 	{
 		using var pairs = TestingSequence.Of(

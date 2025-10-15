@@ -1,17 +1,17 @@
-﻿using System.Globalization;
+using System.Globalization;
 
 namespace SuperLinq.Async.Tests;
 
 public sealed class ChooseTest
 {
-	[Test]
+	[Fact]
 	public void IsLazy()
 	{
 		_ = new AsyncBreakingSequence<object>()
 			.Choose(BreakingFunc.Of<object, (bool, object)>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task WithEmptySource()
 	{
 		await using var xs = TestingSequence.Of<int>();
@@ -19,14 +19,14 @@ public sealed class ChooseTest
 			.ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task None()
 	{
 		await using var xs = Enumerable.Range(1, 10).AsTestingSequence();
 		Assert.Empty(await xs.Choose(_ => (false, 0)).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task ThoseParsable()
 	{
 		await using var xs =
@@ -41,7 +41,7 @@ public sealed class ChooseTest
 			.AssertSequenceEqual(2, 3, 4, 6, 7, 9);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ThoseThatAreIntegers()
 	{
 		await using var xs = TestingSequence.Of<int?>(4, 1, 2, null, 4, null, 6, null, null, 9);
@@ -50,7 +50,7 @@ public sealed class ChooseTest
 			.AssertSequenceEqual(4, 1, 2, 4, 6, 9);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ThoseEven()
 	{
 		await using var xs = AsyncEnumerable.Range(1, 10)

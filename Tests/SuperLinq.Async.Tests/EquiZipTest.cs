@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class EquiZipTest
 {
-	[Test]
+	[Fact]
 	public void EquiZipIsLazy()
 	{
 		var bs = new AsyncBreakingSequence<int>();
@@ -11,7 +11,7 @@ public sealed class EquiZipTest
 		_ = bs.EquiZip(bs, bs, bs, BreakingFunc.Of<int, int, int, int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task MoveNextIsNotCalledUnnecessarily3()
 	{
 		await using var s1 = TestingSequence.Of(1, 2);
@@ -28,7 +28,7 @@ public sealed class EquiZipTest
 			await s1.EquiZip(s2, s3).Consume());
 	}
 
-	[Test]
+	[Fact]
 	public async Task MoveNextIsNotCalledUnnecessarily4()
 	{
 		await using var s1 = TestingSequence.Of(1, 2);
@@ -46,7 +46,7 @@ public sealed class EquiZipTest
 			await s1.EquiZip(s2, s3, s4).Consume());
 	}
 
-	[Test]
+	[Fact]
 	public async Task TwoParamsWorksCorrectly()
 	{
 		await using var seq1 = Enumerable.Range(1, 3).AsTestingSequence();
@@ -57,9 +57,9 @@ public sealed class EquiZipTest
 				Enumerable.Range(1, 3).Select(x => (x, x)));
 	}
 
-	[Test]
-	[Arguments(1, "First")]
-	[Arguments(2, "Second")]
+	[Theory]
+	[InlineData(1, "First")]
+	[InlineData(2, "Second")]
 	public async Task TwoParamsThrowsOnCorrectSequence(int shortSequence, string cardinal)
 	{
 		await using var seq1 = Enumerable.Range(1, shortSequence == 1 ? 2 : 3).AsTestingSequence();
@@ -70,7 +70,7 @@ public sealed class EquiZipTest
 		Assert.Equal($"{cardinal} sequence too short.", ex.Message);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ThreeParamsWorksCorrectly()
 	{
 		await using var seq1 = Enumerable.Range(1, 3).AsTestingSequence();
@@ -82,10 +82,10 @@ public sealed class EquiZipTest
 				Enumerable.Range(1, 3).Select(x => (x, x, x)));
 	}
 
-	[Test]
-	[Arguments(1, "First")]
-	[Arguments(2, "Second")]
-	[Arguments(3, "Third")]
+	[Theory]
+	[InlineData(1, "First")]
+	[InlineData(2, "Second")]
+	[InlineData(3, "Third")]
 	public async Task ThreeParamsThrowsOnCorrectSequence(int shortSequence, string cardinal)
 	{
 		await using var seq1 = Enumerable.Range(1, shortSequence == 1 ? 2 : 3).AsTestingSequence();
@@ -97,7 +97,7 @@ public sealed class EquiZipTest
 		Assert.Equal($"{cardinal} sequence too short.", ex.Message);
 	}
 
-	[Test]
+	[Fact]
 	public async Task FourParamsWorksCorrectly()
 	{
 		await using var seq1 = Enumerable.Range(1, 3).AsTestingSequence();
@@ -110,11 +110,11 @@ public sealed class EquiZipTest
 				Enumerable.Range(1, 3).Select(x => (x, x, x, x)));
 	}
 
-	[Test]
-	[Arguments(1, "First")]
-	[Arguments(2, "Second")]
-	[Arguments(3, "Third")]
-	[Arguments(4, "Fourth")]
+	[Theory]
+	[InlineData(1, "First")]
+	[InlineData(2, "Second")]
+	[InlineData(3, "Third")]
+	[InlineData(4, "Fourth")]
 	public async Task FourParamsThrowsOnCorrectSequence(int shortSequence, string cardinal)
 	{
 		await using var seq1 = Enumerable.Range(1, shortSequence == 1 ? 2 : 3).AsTestingSequence();
@@ -127,7 +127,7 @@ public sealed class EquiZipTest
 		Assert.Equal($"{cardinal} sequence too short.", ex.Message);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ZipDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		await using var s1 = TestingSequence.Of(1, 2);

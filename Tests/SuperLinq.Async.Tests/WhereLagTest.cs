@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class WhereLagTest
 {
-	[Test]
+	[Fact]
 	public void WhereLagIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().WhereLag(5, BreakingFunc.Of<int, int, bool>());
@@ -11,14 +11,14 @@ public sealed class WhereLagTest
 		_ = new AsyncBreakingSequence<int>().WhereLag(5, -1, BreakingFunc.Of<int, int, ValueTask<bool>>());
 	}
 
-	[Test]
+	[Fact]
 	public void WhereLagZeroOffset()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new AsyncBreakingSequence<int>().WhereLag(0, BreakingFunc.Of<int, int, bool>()));
 	}
 
-	[Test]
+	[Fact]
 	public async Task WhereLagExplicitDefaultValue()
 	{
 		await using var seq = Enumerable.Range(1, 100).AsTestingSequence();
@@ -27,7 +27,7 @@ public sealed class WhereLagTest
 			2, 7, 17, 27, 37, 47, 57, 67, 77, 87, 97);
 	}
 
-	[Test]
+	[Fact]
 	public async Task WhereLagImplicitDefaultValue()
 	{
 		await using var seq = Enumerable.Range(1, 100).AsTestingSequence();
@@ -36,7 +36,7 @@ public sealed class WhereLagTest
 			1, 7, 17, 27, 37, 47, 57, 67, 77, 87, 97);
 	}
 
-	[Test]
+	[Fact]
 	public async Task WhereLagOffsetGreaterThanSequenceLength()
 	{
 		await using var seq = Enumerable.Range(1, 100).AsTestingSequence();
@@ -44,7 +44,7 @@ public sealed class WhereLagTest
 		await result.AssertSequenceEqual(Enumerable.Range(1, 100));
 	}
 
-	[Test]
+	[Fact]
 	public async Task WhereLagWithNullableReferences()
 	{
 		await using var seq = Seq("foo", "bar", "baz", "qux").AsTestingSequence();
@@ -52,7 +52,7 @@ public sealed class WhereLagTest
 		await result.AssertSequenceEqual("foo", "baz");
 	}
 
-	[Test]
+	[Fact]
 	public async Task WhereLagWithNonNullableReferences()
 	{
 		await using var seq = Seq("foo", "bar", "baz", "qux").AsTestingSequence();

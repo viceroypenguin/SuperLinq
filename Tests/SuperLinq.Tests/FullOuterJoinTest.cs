@@ -10,8 +10,7 @@ public sealed class FullOuterJoinTest
 		IEnumerable<(string, string)> left,
 		IEnumerable<(string, string)> right,
 		JoinOperation op,
-		bool passProjectors
-	) =>
+		bool passProjectors) =>
 		(op, passProjectors) switch
 		{
 			(Hash, false) => left.FullOuterHashJoin(right, l => l.Item1, r => r.Item1, StringComparer.OrdinalIgnoreCase),
@@ -22,11 +21,10 @@ public sealed class FullOuterJoinTest
 			_ => throw new NotSupportedException(),
 		};
 
-	public static IEnumerable<(JoinOperation op, bool passProjectors)> GetFullOuterJoins() =>
-		new[] { Hash, Merge }.Cartesian([false, true]);
+	public static IEnumerable<object[]> GetFullOuterJoins() =>
+		new[] { Hash, Merge }.Cartesian([false, true], (x, y) => new object[] { x, y });
 
-	[Test]
-	[MethodDataSource(nameof(GetFullOuterJoins))]
+	[Theory, MemberData(nameof(GetFullOuterJoins))]
 	public void FullOuterJoinIsLazy(JoinOperation op, bool passProjectors)
 	{
 		var xs = new BreakingSequence<(string, string)>();
@@ -35,8 +33,7 @@ public sealed class FullOuterJoinTest
 		_ = ExecuteJoin(xs, ys, op, passProjectors);
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetFullOuterJoins))]
+	[Theory, MemberData(nameof(GetFullOuterJoins))]
 	public void FullOuterJoinResults(JoinOperation op, bool passProjectors)
 	{
 		var foo = ("one", "foo");
@@ -62,8 +59,7 @@ public sealed class FullOuterJoinTest
 			(default, quux));
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetFullOuterJoins))]
+	[Theory, MemberData(nameof(GetFullOuterJoins))]
 	public void FullOuterJoinEmptyLeft(JoinOperation op, bool passProjectors)
 	{
 		var foo = ("one", "foo");
@@ -80,8 +76,7 @@ public sealed class FullOuterJoinTest
 			(default, baz));
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetFullOuterJoins))]
+	[Theory, MemberData(nameof(GetFullOuterJoins))]
 	public void FullOuterJoinEmptyRight(JoinOperation op, bool passProjectors)
 	{
 		var foo = ("one", "foo");

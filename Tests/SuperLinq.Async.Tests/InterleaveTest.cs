@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 /// <summary>
 /// Verify the behavior of the Interleave operator
@@ -8,7 +8,7 @@ public sealed class InterleaveTests
 	/// <summary>
 	/// Verify that Interleave behaves in a lazy manner
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestInterleaveIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Interleave(new AsyncBreakingSequence<int>());
@@ -18,7 +18,7 @@ public sealed class InterleaveTests
 	/// Verify that interleaving disposes those enumerators that it managed
 	/// to open successfully
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestInterleaveDisposesOnErrorAtGetEnumerator()
 	{
 		await using var sequenceA = TestingSequence.Of<int>();
@@ -32,7 +32,7 @@ public sealed class InterleaveTests
 	/// Verify that interleaving disposes those enumerators that it managed
 	/// to open successfully
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestInterleaveDisposesOnErrorAtMoveNext()
 	{
 		await using var sequenceA = TestingSequence.Of<int>();
@@ -45,7 +45,7 @@ public sealed class InterleaveTests
 	/// <summary>
 	/// Verify that interleaving do not call enumerators MoveNext method eagerly
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestInterleaveDoNoCallMoveNextEagerly()
 	{
 		await using var sequenceA = AsyncEnumerable.Range(1, 1).AsTestingSequence();
@@ -57,7 +57,7 @@ public sealed class InterleaveTests
 	/// <summary>
 	/// Verify that two balanced sequences will interleave all of their elements
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestInterleaveTwoBalancedSequences()
 	{
 		await using var sequenceA = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -70,7 +70,7 @@ public sealed class InterleaveTests
 	/// <summary>
 	/// Verify that interleaving two empty sequences results in an empty sequence
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestInterleaveTwoEmptySequences()
 	{
 		await using var sequenceA = TestingSequence.Of<int>();
@@ -84,7 +84,7 @@ public sealed class InterleaveTests
 	/// Verify that interleaving two unequal sequences with the Skip strategy results in
 	/// the shorter sequence being omitted from the interleave operation when consumed
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestInterleaveTwoImbalanceStrategySkip()
 	{
 		await using var sequenceA = TestingSequence.Of(0, 0, 0, 0, 0, 0);
@@ -97,7 +97,7 @@ public sealed class InterleaveTests
 	/// <summary>
 	/// Verify that interleaving multiple empty sequences results in an empty sequence
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestInterleaveManyEmptySequences()
 	{
 		await using var sequenceA = TestingSequence.Of<int>();
@@ -114,7 +114,7 @@ public sealed class InterleaveTests
 	/// Verify that interleaving multiple unequal sequences with the Skip strategy
 	/// results in sequences being omitted form the interleave operation when consumed
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestInterleaveManyImbalanceStrategySkip()
 	{
 		await using var sequenceA = TestingSequence.Of(1, 5, 8, 11, 14, 16);

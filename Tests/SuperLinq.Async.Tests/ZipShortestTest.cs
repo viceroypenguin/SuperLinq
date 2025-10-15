@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class ZipShortestTest
 {
-	[Test]
+	[Fact]
 	public void ZipShortestIsLazy()
 	{
 		var bs = new AsyncBreakingSequence<int>();
@@ -11,7 +11,7 @@ public sealed class ZipShortestTest
 		_ = bs.ZipShortest(bs, bs, bs, BreakingFunc.Of<int, int, int, int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task TwoParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		await using var s1 = TestingSequence.Of(1, 2);
@@ -20,8 +20,8 @@ public sealed class ZipShortestTest
 			await s1.ZipShortest(new AsyncBreakingSequence<int>()).Consume());
 	}
 
-	[Test]
-	[Arguments(1), Arguments(2)]
+	[Theory]
+	[InlineData(1), InlineData(2)]
 	public async Task TwoParamsWorksProperly(int offset)
 	{
 		var o1 = ((offset + 0) % 2) + 2;
@@ -35,7 +35,7 @@ public sealed class ZipShortestTest
 				.Select(x => (x, x)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task ThreeParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		await using var s1 = TestingSequence.Of(1, 2);
@@ -45,8 +45,8 @@ public sealed class ZipShortestTest
 			await s1.ZipShortest(s2, new AsyncBreakingSequence<int>()).Consume());
 	}
 
-	[Test]
-	[Arguments(1), Arguments(2), Arguments(3)]
+	[Theory]
+	[InlineData(1), InlineData(2), InlineData(3)]
 	public async Task ThreeParamsWorksProperly(int offset)
 	{
 		var o1 = ((offset + 0) % 3) + 2;
@@ -62,7 +62,7 @@ public sealed class ZipShortestTest
 				.Select(x => (x, x, x)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FourParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		await using var s1 = TestingSequence.Of(1, 2);
@@ -73,8 +73,8 @@ public sealed class ZipShortestTest
 			await s1.ZipShortest(s2, s3, new AsyncBreakingSequence<int>()).Consume());
 	}
 
-	[Test]
-	[Arguments(1), Arguments(2), Arguments(3), Arguments(4)]
+	[Theory]
+	[InlineData(1), InlineData(2), InlineData(3), InlineData(4)]
 	public async Task FourParamsWorksProperly(int offset)
 	{
 		var o1 = ((offset + 0) % 4) + 2;
@@ -92,7 +92,7 @@ public sealed class ZipShortestTest
 				.Select(x => (x, x, x, x)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task ZipShortestNotIterateUnnecessaryElements()
 	{
 		using (var s1 = TestingSequence.Of(1, 2))

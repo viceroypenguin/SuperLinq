@@ -5,7 +5,7 @@ public sealed class RankTests
 	/// <summary>
 	/// Verify that Rank uses deferred execution
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRankIsLazy()
 	{
 		_ = new BreakingSequence<int>().Rank();
@@ -15,23 +15,24 @@ public sealed class RankTests
 	/// <summary>
 	/// Verify that RankBy uses deferred execution
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRankByIsLazy()
 	{
 		_ = new BreakingSequence<int>().RankBy(BreakingFunc.Of<int, int>());
 		_ = new BreakingSequence<int>().RankBy(BreakingFunc.Of<int, int>(), OrderByDirection.Ascending);
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetSimpleSequences() =>
+	public static IEnumerable<object[]> GetSimpleSequences() =>
 		Enumerable.Repeat(1, 10)
-			.GetTestingSequence(maxEnumerations: 2);
+			.GetTestingSequence(maxEnumerations: 2)
+			.Select(x => new object[] { x });
 
 	/// <summary>
 	/// Verify that calling Rank with null comparer results in a sequence
 	/// ordered using the default comparer for the given element.
 	/// </summary>
-	[Test]
-	[MethodDataSource(nameof(GetSimpleSequences))]
+	[Theory]
+	[MemberData(nameof(GetSimpleSequences))]
 	public void TestRankNullComparer(IDisposableEnumerable<int> seq)
 	{
 		var expected = Enumerable.Repeat((1, 1), 10);
@@ -51,8 +52,8 @@ public sealed class RankTests
 	/// Verify that calling RankBy with null comparer results in a sequence
 	/// ordered using the default comparer for the given element.
 	/// </summary>
-	[Test]
-	[MethodDataSource(nameof(GetSimpleSequences))]
+	[Theory]
+	[MemberData(nameof(GetSimpleSequences))]
 	public void TestRankByNullComparer(IDisposableEnumerable<int> seq)
 	{
 		var expected = Enumerable.Repeat((1, 1), 10);
@@ -68,18 +69,19 @@ public sealed class RankTests
 		}
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetDescendingIntSequences() =>
+	public static IEnumerable<object[]> GetDescendingIntSequences() =>
 		Enumerable.Range(456, 100)
 			.Reverse()
-			.GetTestingSequence(maxEnumerations: 2);
+			.GetTestingSequence(maxEnumerations: 2)
+			.Select(x => new object[] { x });
 
 	/// <summary>
 	/// Verify that calling Rank with null comparer on a source in reverse order
 	/// results in a sequence in ascending order, using the default comparer for
 	/// the given element.
 	/// </summary>
-	[Test]
-	[MethodDataSource(nameof(GetDescendingIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetDescendingIntSequences))]
 	public void TestRankDescendingSequence(IDisposableEnumerable<int> seq)
 	{
 		var expected =
@@ -99,17 +101,18 @@ public sealed class RankTests
 		}
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetAscendingIntSequences() =>
+	public static IEnumerable<object[]> GetAscendingIntSequences() =>
 		Enumerable.Range(456, 100)
-			.GetTestingSequence(maxEnumerations: 2);
+			.GetTestingSequence(maxEnumerations: 2)
+			.Select(x => new object[] { x });
 
 	/// <summary>
 	/// Verify that calling Rank with null comparer on a source in ascending order
 	/// results in a sequence in ascending order, using the default comparer for
 	/// the given element.
 	/// </summary>
-	[Test]
-	[MethodDataSource(nameof(GetAscendingIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetAscendingIntSequences))]
 	public void TestRankAscendingSequence(IDisposableEnumerable<int> seq)
 	{
 		var expected =
@@ -134,8 +137,8 @@ public sealed class RankTests
 	/// results in a sequence in descending order, using OrderByDirection.Descending
 	/// with the default comparer for the given element.
 	/// </summary>
-	[Test]
-	[MethodDataSource(nameof(GetAscendingIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetAscendingIntSequences))]
 	public void TestRankOrderByDescending(IDisposableEnumerable<int> seq)
 	{
 		var expected =
@@ -152,17 +155,18 @@ public sealed class RankTests
 		}
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetGroupedSequences() =>
+	public static IEnumerable<object[]> GetGroupedSequences() =>
 		Enumerable.Range(0, 10)
 			.Concat(Enumerable.Range(0, 10))
 			.Concat(Enumerable.Range(0, 10))
-			.GetTestingSequence(maxEnumerations: 2);
+			.GetTestingSequence(maxEnumerations: 2)
+			.Select(x => new object[] { x });
 
 	/// <summary>
 	/// Verify that the rank of equivalent items in a sequence is the same.
 	/// </summary>
-	[Test]
-	[MethodDataSource(nameof(GetGroupedSequences))]
+	[Theory]
+	[MemberData(nameof(GetGroupedSequences))]
 	public void TestRankGroupedItems(IDisposableEnumerable<int> seq)
 	{
 		var expected =
@@ -188,7 +192,7 @@ public sealed class RankTests
 	}
 
 	public sealed record Person(string Name, int Age, int ExpectedRank);
-	public static IEnumerable<IDisposableEnumerable<Person>> GetPersonSequences1() =>
+	public static IEnumerable<object[]> GetPersonSequences1() =>
 		new[]
 		{
 				new Person(Name: "Bob", Age: 24, ExpectedRank: 4),
@@ -200,9 +204,10 @@ public sealed class RankTests
 				new Person(Name: "Jim", Age: 74, ExpectedRank: 8),
 				new Person(Name: "Jes", Age: 11, ExpectedRank: 1),
 		}
-			.GetTestingSequence(maxEnumerations: 2);
+			.GetTestingSequence(maxEnumerations: 2)
+			.Select(x => new object[] { x });
 
-	public static IEnumerable<IDisposableEnumerable<Person>> GetPersonSequences2() =>
+	public static IEnumerable<object[]> GetPersonSequences2() =>
 		new[]
 		{
 				new Person(Name: "Tim", Age: 23, ExpectedRank: 4),
@@ -214,14 +219,15 @@ public sealed class RankTests
 				new Person(Name: "Mel", Age: 28, ExpectedRank: 6),
 				new Person(Name: "Jim", Age: 28, ExpectedRank: 6),
 		}
-			.GetTestingSequence(maxEnumerations: 2);
+			.GetTestingSequence(maxEnumerations: 2)
+			.Select(x => new object[] { x });
 
 	/// <summary>
 	/// Verify that we can rank items by an arbitrary key produced from the item.
 	/// </summary>
-	[Test]
-	[MethodDataSource(nameof(GetPersonSequences1))]
-	[MethodDataSource(nameof(GetPersonSequences2))]
+	[Theory]
+	[MemberData(nameof(GetPersonSequences1))]
+	[MemberData(nameof(GetPersonSequences2))]
 	public void TestRankByKeySelector(IDisposableEnumerable<Person> seq)
 	{
 		var expectedLength = 8;
@@ -241,16 +247,17 @@ public sealed class RankTests
 			=> result.All(x => x.rank == x.item.ExpectedRank);
 	}
 
-	public static IEnumerable<IDisposableEnumerable<DateTime>> GetDateTimeSequences() =>
+	public static IEnumerable<object[]> GetDateTimeSequences() =>
 		Enumerable.Range(1, 10)
 			.Select(x => new DateTime(2010, x, 20 - x))
-			.GetTestingSequence(maxEnumerations: 2);
+			.GetTestingSequence(maxEnumerations: 2)
+			.Select(x => new object[] { x });
 
 	/// <summary>
 	/// Verify that Rank can use a custom comparer
 	/// </summary>
-	[Test]
-	[MethodDataSource(nameof(GetDateTimeSequences))]
+	[Theory]
+	[MemberData(nameof(GetDateTimeSequences))]
 	public void TestRankCustomComparer1(IDisposableEnumerable<DateTime> seq)
 	{
 		var expected =
@@ -279,8 +286,8 @@ public sealed class RankTests
 	/// <summary>
 	/// Verify that RankBy can use a custom comparer with a key selector
 	/// </summary>
-	[Test]
-	[MethodDataSource(nameof(GetDateTimeSequences))]
+	[Theory]
+	[MemberData(nameof(GetDateTimeSequences))]
 	public void TestRankCustomComparer2(IDisposableEnumerable<DateTime> seq)
 	{
 		var expected =

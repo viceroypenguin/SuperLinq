@@ -20,12 +20,12 @@ public static class GetShortestPathTest
 				(from: "start", to: "END", cost: 10),
 				(from: "start", to: "END", cost: 1000),
 			};
-
 		var map = costs
 			.Concat(costs.Select(x => (from: x.to, to: x.from, x.cost)))
-			.Where(x => x is (not "end", not "start", _))
+			.Where(x =>
+				x.to != "start"
+				&& x.from != "end")
 			.ToLookup(x => x.from, x => (x.to, x.cost), stateComparer);
-
 		return map;
 	}
 
@@ -44,27 +44,21 @@ public static class GetShortestPathTest
 
 	public sealed class Dijkstra
 	{
-		public static IEnumerable<(
-			IEqualityComparer<string>? stateComparer,
-			IComparer<int>? costComparer,
-			int expectedCost,
-			int expectedCount
-		)> GetStringIntCostData() =>
+		public static IEnumerable<object?[]> GetStringIntCostData { get; } =
 			[
-				(null, null, 15, 7),
-				(StringComparer.InvariantCultureIgnoreCase, null, 10, 4),
-				(null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 150, 6),
-				(StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, 1),
+				[null, null, 15, 7,],
+				[StringComparer.InvariantCultureIgnoreCase, null, 10, 4,],
+				[null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 150, 6,],
+				[StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, 1,],
 			];
 
-		[Test]
-		[MethodDataSource(nameof(GetStringIntCostData))]
+		[Theory]
+		[MemberData(nameof(GetStringIntCostData))]
 		public void GetStringIntCostByState(
 			IEqualityComparer<string>? stateComparer,
 			IComparer<int>? costComparer,
 			int expectedCost,
-			int expectedCount
-		)
+			int expectedCount)
 		{
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
@@ -88,14 +82,13 @@ public static class GetShortestPathTest
 			sequences.VerifySequences();
 		}
 
-		[Test]
-		[MethodDataSource(nameof(GetStringIntCostData))]
+		[Theory]
+		[MemberData(nameof(GetStringIntCostData))]
 		public void GetStringIntCostByFunction(
 			IEqualityComparer<string>? stateComparer,
 			IComparer<int>? costComparer,
 			int expectedCost,
-			int expectedCount
-		)
+			int expectedCount)
 		{
 			stateComparer ??= EqualityComparer<string>.Default;
 
@@ -121,27 +114,21 @@ public static class GetShortestPathTest
 			sequences.VerifySequences();
 		}
 
-		public static IEnumerable<(
-			IEqualityComparer<string>? stateComparer,
-			IComparer<int>? costComparer,
-			IEnumerable<(string state, int cost)> expectedPath,
-			int expectedCount
-		)> GetStringIntPathData() =>
+		public static IEnumerable<object?[]> GetStringIntPathData { get; } =
 			[
-				(null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), 7),
-				(StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("END", 10)), 4),
-				(null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), 6),
-				(StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("END", 1000)), 1),
+				[null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), 7,],
+				[StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("END", 10)), 4,],
+				[null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), 6,],
+				[StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("END", 1000)), 1,],
 			];
 
-		[Test]
-		[MethodDataSource(nameof(GetStringIntPathData))]
+		[Theory]
+		[MemberData(nameof(GetStringIntPathData))]
 		public void GetStringIntPathByState(
 			IEqualityComparer<string>? stateComparer,
 			IComparer<int>? costComparer,
 			IEnumerable<(string state, int cost)> expectedPath,
-			int expectedCount
-		)
+			int expectedCount)
 		{
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
@@ -165,14 +152,13 @@ public static class GetShortestPathTest
 			sequences.VerifySequences();
 		}
 
-		[Test]
-		[MethodDataSource(nameof(GetStringIntPathData))]
+		[Theory]
+		[MemberData(nameof(GetStringIntPathData))]
 		public void GetStringIntPathByFunction(
 			IEqualityComparer<string>? stateComparer,
 			IComparer<int>? costComparer,
 			IEnumerable<(string state, int cost)> expectedPath,
-			int expectedCount
-		)
+			int expectedCount)
 		{
 			stateComparer ??= EqualityComparer<string>.Default;
 
@@ -198,16 +184,12 @@ public static class GetShortestPathTest
 			sequences.VerifySequences();
 		}
 
-		public static IEnumerable<(
-			IEqualityComparer<string>? stateComparer,
-			IComparer<int>? costComparer,
-			IEnumerable<(string state, (string? prevState, int cost))> expectedMap
-		)> GetStringIntPathsData() =>
+		public static IEnumerable<object?[]> GetStringIntPathsData { get; } =
 			[
-				(
+				[
 					null,
 					null,
-					[
+					Seq<(string, (string?, int))>(
 						("start", (null, 0)),
 						("a", ("start", 1)),
 						("b", ("a", 3)),
@@ -218,25 +200,23 @@ public static class GetShortestPathTest
 						("B", ("A", 30)),
 						("C", ("B", 60)),
 						("D", ("C", 100)),
-						("END", ("start", 10)),
-					]
-				),
-				(
+						("END", ("start", 10))),
+				],
+				[
 					StringComparer.InvariantCultureIgnoreCase,
 					null,
-					[
+					Seq<(string, (string?, int))>(
 						("start", (null, 0)),
 						("a", ("start", 1)),
 						("b", ("a", 3)),
 						("c", ("b", 6)),
 						("d", ("c", 10)),
-						("end", ("start", 10)),
-					]
-				),
-				(
+						("end", ("start", 10))),
+				],
+				[
 					null,
 					Comparer<int>.Create((x, y) => -x.CompareTo(y)),
-					[
+					Seq<(string, (string?, int))>(
 						("start", (null, 0)),
 						("a", ("start", 1)),
 						("b", ("a", 3)),
@@ -247,30 +227,27 @@ public static class GetShortestPathTest
 						("C", ("B", 60)),
 						("D", ("C", 100)),
 						("end", ("D", 150)),
-						("END", ("start", 1000)),
-					]
-				),
-				(
+						("END", ("start", 1000))),
+				],
+				[
 					StringComparer.InvariantCultureIgnoreCase,
 					Comparer<int>.Create((x, y) => -x.CompareTo(y)),
-					[
+					Seq<(string, (string?, int))>(
 						("start", (null, 0)),
 						("a", ("start", 10)),
 						("b", ("a", 30)),
 						("c", ("b", 60)),
 						("d", ("c", 100)),
-						("end", ("start", 1000)),
-					]
-				),
+						("end", ("start", 1000))),
+				],
 			];
 
-		[Test]
-		[MethodDataSource(nameof(GetStringIntPathsData))]
+		[Theory]
+		[MemberData(nameof(GetStringIntPathsData))]
 		public void GetStringIntPaths(
 			IEqualityComparer<string>? stateComparer,
 			IComparer<int>? costComparer,
-			IEnumerable<(string state, (string? prevState, int cost))> expectedMap
-		)
+			IEnumerable<(string state, (string? prevState, int cost))> expectedMap)
 		{
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
@@ -301,7 +278,7 @@ public static class GetShortestPathTest
 			sequences.VerifySequences();
 		}
 
-		[Test]
+		[Fact]
 		public void GetRegularMapCost()
 		{
 			var count = 0;
@@ -327,7 +304,7 @@ public static class GetShortestPathTest
 			sequences.VerifySequences();
 		}
 
-		[Test]
+		[Fact]
 		public void GetRegularMapPath()
 		{
 			var count = 0;
@@ -358,7 +335,7 @@ public static class GetShortestPathTest
 			sequences.VerifySequences();
 		}
 
-		[Test]
+		[Fact]
 		public void InvalidMapThrowsException()
 		{
 			_ = Assert.Throws<InvalidOperationException>(() =>
@@ -370,30 +347,24 @@ public static class GetShortestPathTest
 
 	public sealed class AStar
 	{
-		public static IEnumerable<(
-			IEqualityComparer<string>? stateComparer,
-			IComparer<int>? costComparer,
-			int expectedCost,
-			int expectedCount
-		)> GetStringIntCostData() =>
+		public static IEnumerable<object?[]> GetStringIntCostData { get; } =
 			[
-				(null, null, 15, 7),
-				(StringComparer.InvariantCultureIgnoreCase, null, 10, 4),
-				(null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 150, 6),
-				(StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, 1),
+				[null, null, 15, 7,],
+				[StringComparer.InvariantCultureIgnoreCase, null, 10, 4,],
+				[null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 150, 6,],
+				[StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), 1000, 1,],
 			];
 
 		// No heuristic means this operates the same as Dijkstra; this is
 		// to prove the base algorithm still works.
 		// Primary improvement of A* is the heuristic to reduce nodes visited.
-		[Test]
-		[MethodDataSource(nameof(GetStringIntCostData))]
+		[Theory]
+		[MemberData(nameof(GetStringIntCostData))]
 		public void GetStringIntCost(
 			IEqualityComparer<string>? stateComparer,
 			IComparer<int>? costComparer,
 			int expectedCost,
-			int expectedCount
-		)
+			int expectedCount)
 		{
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
@@ -417,30 +388,24 @@ public static class GetShortestPathTest
 			sequences.VerifySequences();
 		}
 
-		public static IEnumerable<(
-			IEqualityComparer<string>? stateComparer,
-			IComparer<int>? costComparer,
-			IEnumerable<(string state, int cost)> expectedPath,
-			int expectedCount
-		)> GetStringIntPathData() =>
+		public static IEnumerable<object?[]> GetStringIntPathData { get; } =
 			[
-				(null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), 7),
-				(StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("END", 10)), 4),
-				(null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), 6),
-				(StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("END", 1000)), 1),
+				[null, null, Seq(("start", 0), ("a", 1), ("b", 3), ("c", 6), ("d", 10), ("end", 15)), 7,],
+				[StringComparer.InvariantCultureIgnoreCase, null, Seq(("start", 0), ("END", 10)), 4,],
+				[null, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("A", 10), ("B", 30), ("C", 60), ("D", 100), ("end", 150)), 6,],
+				[StringComparer.InvariantCultureIgnoreCase, Comparer<int>.Create((x, y) => -x.CompareTo(y)), Seq(("start", 0), ("END", 1000)), 1,],
 			];
 
 		// No heuristic means this operates the same as Dijkstra; this is
 		// to prove the base algorithm still works.
 		// Primary improvement of A* is the heuristic to reduce nodes visited.
-		[Test]
-		[MethodDataSource(nameof(GetStringIntPathData))]
+		[Theory]
+		[MemberData(nameof(GetStringIntPathData))]
 		public void GetStringIntPathByState(
 			IEqualityComparer<string>? stateComparer,
 			IComparer<int>? costComparer,
 			IEnumerable<(string state, int cost)> expectedPath,
-			int expectedCount
-		)
+			int expectedCount)
 		{
 			var map = BuildStringIntMap(stateComparer);
 			var count = 0;
@@ -464,14 +429,13 @@ public static class GetShortestPathTest
 			sequences.VerifySequences();
 		}
 
-		[Test]
-		[MethodDataSource(nameof(GetStringIntPathData))]
+		[Theory]
+		[MemberData(nameof(GetStringIntPathData))]
 		public void GetStringIntPathByFunction(
 			IEqualityComparer<string>? stateComparer,
 			IComparer<int>? costComparer,
 			IEnumerable<(string state, int cost)> expectedPath,
-			int expectedCount
-		)
+			int expectedCount)
 		{
 			stateComparer ??= EqualityComparer<string>.Default;
 
@@ -497,7 +461,7 @@ public static class GetShortestPathTest
 			sequences.VerifySequences();
 		}
 
-		[Test]
+		[Fact]
 		public void GetRegularMapCost()
 		{
 			var start = (x: 0, y: 0);
@@ -533,7 +497,7 @@ public static class GetShortestPathTest
 			sequences.VerifySequences();
 		}
 
-		[Test]
+		[Fact]
 		public void GetRegularMapPath()
 		{
 			var start = (x: 0, y: 0);
@@ -575,7 +539,7 @@ public static class GetShortestPathTest
 			sequences.VerifySequences();
 		}
 
-		[Test]
+		[Fact]
 		public void InvalidMapThrowsException()
 		{
 			_ = Assert.Throws<InvalidOperationException>(() =>

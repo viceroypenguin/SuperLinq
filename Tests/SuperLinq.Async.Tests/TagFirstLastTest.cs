@@ -1,15 +1,15 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class TagFirstLastTest
 {
-	[Test]
+	[Fact]
 	public void TagFirstLastIsLazy()
 	{
 		_ = new AsyncBreakingSequence<object>().TagFirstLast();
 		_ = new AsyncBreakingSequence<object>().TagFirstLast(BreakingFunc.Of<object, bool, bool, object>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task TagFirstLastEmptySequence()
 	{
 		await using var sequence = TestingSequence.Of<int>();
@@ -18,7 +18,7 @@ public sealed class TagFirstLastTest
 		await result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public async Task TagFirstLastWithSourceSequenceOfOne()
 	{
 		await using var sequence = TestingSequence.Of(123);
@@ -27,7 +27,7 @@ public sealed class TagFirstLastTest
 		await result.AssertSequenceEqual(new { Item = 123, IsFirst = true, IsLast = true });
 	}
 
-	[Test]
+	[Fact]
 	public async Task TagFirstLastWithSourceSequenceOfTwo()
 	{
 		await using var sequence = TestingSequence.Of(123, 456);
@@ -38,7 +38,7 @@ public sealed class TagFirstLastTest
 			new { Item = 456, IsFirst = false, IsLast = true });
 	}
 
-	[Test]
+	[Fact]
 	public async Task TagFirstLastWithSourceSequenceOfThree()
 	{
 		await using var sequence = TestingSequence.Of(123, 456, 789);

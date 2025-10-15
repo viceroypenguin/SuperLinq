@@ -5,7 +5,7 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class ZipMapTest
 {
-	[Test]
+	[Fact]
 	public async Task ZipMapIntTransformation()
 	{
 		var range = Enumerable.Range(1, 10);
@@ -14,7 +14,7 @@ public sealed class ZipMapTest
 			range.Select(i => (i, i.ToString(CultureInfo.InvariantCulture))));
 	}
 
-	[Test]
+	[Fact]
 	public async Task ZipMapStringTransformation()
 	{
 		var words = Seq("foo", "bar", "FOO", "Bar", "baz", "QUx", "bAz", "QuX");
@@ -24,7 +24,7 @@ public sealed class ZipMapTest
 			words.Select(s => (s, s.Length)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task ZipMapRegexChoose()
 	{
 		var words = Seq("foo", "hello", "world", "Bar", "QuX", "ay", "az");
@@ -35,7 +35,7 @@ public sealed class ZipMapTest
 			.AssertSequenceEqual("foo", "Bar", "QuX");
 	}
 
-	[Test]
+	[Fact]
 	public void ZipMapIsLazy()
 	{
 		var bs = new AsyncBreakingSequence<int>();

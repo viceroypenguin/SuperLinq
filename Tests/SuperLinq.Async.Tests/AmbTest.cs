@@ -2,20 +2,20 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class AmbTest
 {
-	[Test]
+	[Fact]
 	public void AmbIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Amb(new AsyncBreakingSequence<int>());
 		_ = AsyncSuperEnumerable.Amb(new AsyncBreakingSequence<int>(), new AsyncBreakingSequence<int>());
 	}
 
-	[Test]
-	[Arguments(1, false)]
-	[Arguments(2, false)]
-	[Arguments(3, false)]
-	[Arguments(1, true)]
-	[Arguments(2, true)]
-	[Arguments(3, true)]
+	[Theory]
+	[InlineData(1, false)]
+	[InlineData(2, false)]
+	[InlineData(3, false)]
+	[InlineData(1, true)]
+	[InlineData(2, true)]
+	[InlineData(3, true)]
 	public async Task AmbEmptyReturnsFirst(int sequenceNumber, bool asyncEmpty)
 	{
 		var empty = AsyncEnumerable.Empty<int>();
@@ -36,10 +36,10 @@ public sealed class AmbTest
 		await result.AssertSequenceEqual();
 	}
 
-	[Test]
-	[Arguments(1)]
-	[Arguments(2)]
-	[Arguments(3)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(2)]
+	[InlineData(3)]
 	public async Task AmbSyncReturnsFirst(int sequenceNumber)
 	{
 		var sync = AsyncEnumerable.Range(1, 5);
@@ -57,10 +57,10 @@ public sealed class AmbTest
 		await result.AssertSequenceEqual(Enumerable.Range(1, 5));
 	}
 
-	[Test]
-	[Arguments(1)]
-	[Arguments(2)]
-	[Arguments(3)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(2)]
+	[InlineData(3)]
 	public async Task AmbAsyncShortestComesFirst(int sequenceNumber)
 	{
 		var shorter = AsyncEnumerable.Range(1, 5).SelectIdentityWithDelay(10);

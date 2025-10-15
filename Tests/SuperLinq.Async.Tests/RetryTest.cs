@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class RetryTest
 {
-	[Test]
+	[Fact]
 	public void RetryIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Retry();
 	}
 
-	[Test]
+	[Fact]
 	public async Task RetryNoExceptions()
 	{
 		await using var ts = Enumerable.Range(1, 10).AsTestingSequence();
@@ -17,7 +17,7 @@ public sealed class RetryTest
 		await result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	[Test]
+	[Fact]
 	public async Task RetryWithExceptions()
 	{
 		await using var ts1 = AsyncSeqExceptionAt(2).AsTestingSequence();
@@ -42,13 +42,13 @@ public sealed class RetryTest
 				.Concat(Enumerable.Range(1, 10)));
 	}
 
-	[Test]
+	[Fact]
 	public void RetryCountIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Retry(3);
 	}
 
-	[Test]
+	[Fact]
 	public async Task RetryCountNoExceptions()
 	{
 		await using var ts = Enumerable.Range(1, 10).AsTestingSequence();
@@ -57,7 +57,7 @@ public sealed class RetryTest
 		await result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	[Test]
+	[Fact]
 	public async Task RetryCountWithExceptionsComplete()
 	{
 		await using var ts1 = AsyncSeqExceptionAt(2).AsTestingSequence();
@@ -82,7 +82,7 @@ public sealed class RetryTest
 				.Concat(Enumerable.Range(1, 10)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task RetryCountWithExceptionsThrow()
 	{
 		await using var ts1 = AsyncSeqExceptionAt(2).AsTestingSequence();

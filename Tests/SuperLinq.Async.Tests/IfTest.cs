@@ -1,15 +1,15 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class IfTest
 {
-	[Test]
+	[Fact]
 	public void IfIsLazy()
 	{
 		_ = AsyncSuperEnumerable.If(BreakingFunc.Of<bool>(), new AsyncBreakingSequence<int>());
 		_ = AsyncSuperEnumerable.If(BreakingFunc.Of<ValueTask<bool>>(), new AsyncBreakingSequence<int>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task IfBehavior()
 	{
 		var starts = 0;
@@ -26,7 +26,7 @@ public sealed class IfTest
 		await seq.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void IfElseIsLazy()
 	{
 		_ = AsyncSuperEnumerable.If(
@@ -39,7 +39,7 @@ public sealed class IfTest
 			new AsyncBreakingSequence<int>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task IfElseBehavior()
 	{
 		var starts = 0;

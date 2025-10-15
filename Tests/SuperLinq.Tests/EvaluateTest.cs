@@ -2,13 +2,13 @@ namespace SuperLinq.Tests;
 
 public sealed class EvaluateTest
 {
-	[Test]
+	[Fact]
 	public void TestEvaluateIsLazy()
 	{
 		_ = new BreakingSequence<Func<int>>().Evaluate();
 	}
 
-	[Test]
+	[Fact]
 	public void TestEvaluateInvokesMethods()
 	{
 		var factories = new Func<int>[]
@@ -23,7 +23,7 @@ public sealed class EvaluateTest
 		results.AssertSequenceEqual(-2, 4, int.MaxValue, int.MinValue);
 	}
 
-	[Test]
+	[Fact]
 	public void TestEvaluateInvokesMethodsMultipleTimes()
 	{
 		var evals = 0;

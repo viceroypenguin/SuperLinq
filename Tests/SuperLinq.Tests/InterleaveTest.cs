@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 /// <summary>
 /// Verify the behavior of the Interleave operator
@@ -8,7 +8,7 @@ public sealed class InterleaveTest
 	/// <summary>
 	/// Verify that Interleave behaves in a lazy manner
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestInterleaveIsLazy()
 	{
 		_ = new BreakingSequence<int>().Interleave(new BreakingSequence<int>());
@@ -18,7 +18,7 @@ public sealed class InterleaveTest
 	/// Verify that interleaving disposes those enumerators that it managed
 	/// to open successfully
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestInterleaveDisposesOnErrorAtGetEnumerator()
 	{
 		using var sequenceA = TestingSequence.Of<int>();
@@ -32,7 +32,7 @@ public sealed class InterleaveTest
 	/// Verify that interleaving disposes those enumerators that it managed
 	/// to open successfully
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestInterleaveDisposesOnErrorAtMoveNext()
 	{
 		using var sequenceA = TestingSequence.Of<int>();
@@ -45,7 +45,7 @@ public sealed class InterleaveTest
 	/// <summary>
 	/// Verify that interleaving do not call enumerators MoveNext method eagerly
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestInterleaveDoNoCallMoveNextEagerly()
 	{
 		using var sequenceA = Enumerable.Range(1, 1).AsTestingSequence();
@@ -57,7 +57,7 @@ public sealed class InterleaveTest
 	/// <summary>
 	/// Verify that two balanced sequences will interleave all of their elements
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestInterleaveTwoBalancedSequences()
 	{
 		using var sequenceA = Enumerable.Range(1, 10).AsTestingSequence();
@@ -70,7 +70,7 @@ public sealed class InterleaveTest
 	/// <summary>
 	/// Verify that interleaving two empty sequences results in an empty sequence
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestInterleaveTwoEmptySequences()
 	{
 		using var sequenceA = TestingSequence.Of<int>();
@@ -84,7 +84,7 @@ public sealed class InterleaveTest
 	/// Verify that interleaving two unequal sequences with the Skip strategy results in
 	/// the shorter sequence being omitted from the interleave operation when consumed
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestInterleaveTwoImbalanceStrategySkip()
 	{
 		using var sequenceA = TestingSequence.Of(0, 0, 0, 0, 0, 0);
@@ -97,7 +97,7 @@ public sealed class InterleaveTest
 	/// <summary>
 	/// Verify that interleaving multiple empty sequences results in an empty sequence
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestInterleaveManyEmptySequences()
 	{
 		using var sequenceA = TestingSequence.Of<int>();
@@ -114,7 +114,7 @@ public sealed class InterleaveTest
 	/// Verify that interleaving multiple unequal sequences with the Skip strategy
 	/// results in sequences being omitted form the interleave operation when consumed
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestInterleaveManyImbalanceStrategySkip()
 	{
 		using var sequenceA = TestingSequence.Of(1, 5, 8, 11, 14, 16);
@@ -129,7 +129,7 @@ public sealed class InterleaveTest
 		result.AssertSequenceEqual(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
 	}
 
-	[Test]
+	[Fact]
 	public void TestInterleaveCollectionCount()
 	{
 		using var sequenceA = Enumerable.Range(1, 10_000).AsBreakingCollection();

@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class MaxItemsTest
 {
-	[Test]
+	[Fact]
 	public void MaxItemsIsLazy()
 	{
 		_ = new BreakingSequence<int>().MaxItems();
 	}
 
-	[Test]
+	[Fact]
 	public void MaxItemsEmptyList()
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -16,7 +16,7 @@ public sealed class MaxItemsTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void MaxItemsBehavior()
 	{
 		using var seq = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 4, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);
@@ -24,13 +24,13 @@ public sealed class MaxItemsTest
 		result.AssertSequenceEqual(5, 5);
 	}
 
-	[Test]
+	[Fact]
 	public void MaxItemsComparerIsLazy()
 	{
 		_ = new BreakingSequence<int>().MaxItems(comparer: null);
 	}
 
-	[Test]
+	[Fact]
 	public void MaxItemsComparerEmptyList()
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -38,7 +38,7 @@ public sealed class MaxItemsTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void MaxItemsComparerBehavior()
 	{
 		using var seq = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 4, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);
@@ -46,14 +46,14 @@ public sealed class MaxItemsTest
 		result.AssertSequenceEqual(2, 2, 5, 5, 2, 2);
 	}
 
-	[Test]
+	[Fact]
 	public void MaxItemsByIsLazy()
 	{
 		_ = new BreakingSequence<int>().MaxItemsBy(BreakingFunc.Of<int, int>());
 		_ = new BreakingSequence<int>().MaxByWithTies(BreakingFunc.Of<int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void MaxItemsByEmptyList()
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -61,7 +61,7 @@ public sealed class MaxItemsTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void MaxItemsByBehavior()
 	{
 		using var seq = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 4, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);
@@ -69,13 +69,13 @@ public sealed class MaxItemsTest
 		result.AssertSequenceEqual(0, 0, 0, 0);
 	}
 
-	[Test]
+	[Fact]
 	public void MaxItemsByComparerIsLazy()
 	{
 		_ = new BreakingSequence<int>().MaxByWithTies(BreakingFunc.Of<int, int>(), comparer: null);
 	}
 
-	[Test]
+	[Fact]
 	public void MaxItemsByComparerEmptyList()
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -83,7 +83,7 @@ public sealed class MaxItemsTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void MaxItemsByComparerBehavior()
 	{
 		using var seq = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 4, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);

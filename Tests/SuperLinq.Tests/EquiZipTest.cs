@@ -17,7 +17,7 @@ public sealed class EquiZipTest
 		"Eighth",
 	];
 
-	[Test]
+	[Fact]
 	public void EquiZipIsLazy()
 	{
 		var bs = new BreakingSequence<int>();
@@ -26,7 +26,7 @@ public sealed class EquiZipTest
 		_ = bs.EquiZip(bs, bs, bs, BreakingFunc.Of<int, int, int, int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void MoveNextIsNotCalledUnnecessarily3()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -38,7 +38,7 @@ public sealed class EquiZipTest
 			s1.EquiZip(s2, s3).Consume());
 	}
 
-	[Test]
+	[Fact]
 	public void MoveNextIsNotCalledUnnecessarily4()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -57,7 +57,7 @@ public sealed class EquiZipTest
 	}
 
 	#region Two
-	[Test]
+	[Fact]
 	public void TwoParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -71,15 +71,15 @@ public sealed class EquiZipTest
 		"CA2000:Dispose objects before losing scope",
 		Justification = "Will be properly disposed in method"
 	)]
-	public static IEnumerable<(IEnumerable<int> seq1, IEnumerable<int> seq2)> GetTwoParamEqualSequences() =>
+	public static IEnumerable<object[]> GetTwoParamEqualSequences() =>
 		[
-			(Enumerable.Range(1, 3).AsTestingSequence(), Enumerable.Range(1, 3).AsTestingSequence()),
-			(Enumerable.Range(1, 3).ToList(), Enumerable.Range(1, 3).AsTestingSequence()),
-			(Enumerable.Range(1, 3).AsBreakingList(), Enumerable.Range(1, 3).AsBreakingList()),
+			[Enumerable.Range(1, 3).AsTestingSequence(), Enumerable.Range(1, 3).AsTestingSequence(),],
+			[Enumerable.Range(1, 3).ToList(), Enumerable.Range(1, 3).AsTestingSequence(),],
+			[Enumerable.Range(1, 3).AsBreakingList(), Enumerable.Range(1, 3).AsBreakingList(),],
 		];
 
-	[Test]
-	[MethodDataSource(nameof(GetTwoParamEqualSequences))]
+	[Theory]
+	[MemberData(nameof(GetTwoParamEqualSequences))]
 	public void TwoParamsWorksProperly(IEnumerable<int> seq1, IEnumerable<int> seq2)
 	{
 		using (seq1 as IDisposableEnumerable<int>)
@@ -92,29 +92,27 @@ public sealed class EquiZipTest
 		}
 	}
 
-	public static IEnumerable<(IEnumerable<int> seq1, IEnumerable<int> seq2, string cardinal)> GetTwoParamInequalSequences()
+	public static IEnumerable<object[]> GetTwoParamInequalSequences()
 	{
-		var parameters = new List<(IEnumerable<int> seq1, IEnumerable<int> seq2, string cardinal)>();
+		var parameters = new List<object[]>();
 
 		for (var i = 0; i < 2; i++)
 		{
 			var first = Enumerable.Range(1, 3 - (i == 0 ? 1 : 0));
 			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
-
+#pragma warning disable CA2000 // Dispose objects before losing scope
 			parameters.Add(
-				(first.AsBreakingList(), second.AsBreakingList(), s_cardinals[i + 1])
-			);
-
+				[first.AsBreakingList(), second.AsBreakingList(), s_cardinals[i + 1],]);
 			parameters.Add(
-				(first.AsTestingSequence(), second.AsTestingSequence(), s_cardinals[i + 1])
-			);
+				[first.AsTestingSequence(), second.AsTestingSequence(), s_cardinals[i + 1],]);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
 		return parameters;
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetTwoParamInequalSequences))]
+	[Theory]
+	[MemberData(nameof(GetTwoParamInequalSequences))]
 	public void TwoParamsThrowsProperly(IEnumerable<int> seq1, IEnumerable<int> seq2, string cardinal)
 	{
 		using (seq1 as IDisposableEnumerable<int>)
@@ -127,7 +125,7 @@ public sealed class EquiZipTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void TwoParamsEqualListBehavior()
 	{
 		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -142,7 +140,7 @@ public sealed class EquiZipTest
 #endif
 	}
 
-	[Test]
+	[Fact]
 	public void TwoParamsInequalListBehavior()
 	{
 		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -155,7 +153,7 @@ public sealed class EquiZipTest
 	#endregion
 
 	#region Three
-	[Test]
+	[Fact]
 	public void ThreeParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -170,32 +168,32 @@ public sealed class EquiZipTest
 		"CA2000:Dispose objects before losing scope",
 		Justification = "Will be properly disposed in method"
 	)]
-	public static IEnumerable<(IEnumerable<int> seq1, IEnumerable<int> seq2, IEnumerable<int> seq3)> GetThreeParamEqualSequences() =>
+	public static IEnumerable<object[]> GetThreeParamEqualSequences() =>
 		[
-			(
+			[
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-				Enumerable.Range(1, 3).AsTestingSequence()
-			),
-			(
+				Enumerable.Range(1, 3).AsTestingSequence(),
+			],
+			[
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-				Enumerable.Range(1, 3).AsTestingSequence()
-			),
-			(
+				Enumerable.Range(1, 3).AsTestingSequence(),
+			],
+			[
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).AsTestingSequence()
-			),
-			(
+				Enumerable.Range(1, 3).AsTestingSequence(),
+			],
+			[
 				Enumerable.Range(1, 3).AsBreakingList(),
 				Enumerable.Range(1, 3).AsBreakingList(),
-				Enumerable.Range(1, 3).AsBreakingList()
-			),
+				Enumerable.Range(1, 3).AsBreakingList(),
+			],
 		];
 
-	[Test]
-	[MethodDataSource(nameof(GetThreeParamEqualSequences))]
+	[Theory]
+	[MemberData(nameof(GetThreeParamEqualSequences))]
 	public void ThreeParamsWorksProperly(IEnumerable<int> seq1, IEnumerable<int> seq2, IEnumerable<int> seq3)
 	{
 		using (seq1 as IDisposableEnumerable<int>)
@@ -209,40 +207,38 @@ public sealed class EquiZipTest
 		}
 	}
 
-	public static IEnumerable<(IEnumerable<int> seq1, IEnumerable<int> seq2, IEnumerable<int> seq3, string cardinal)> GetThreeParamInequalSequences()
+	public static IEnumerable<object[]> GetThreeParamInequalSequences()
 	{
-		var parameters = new List<(IEnumerable<int> seq1, IEnumerable<int> seq2, IEnumerable<int> seq3, string cardinal)>();
+		var parameters = new List<object[]>();
 
 		for (var i = 0; i < 3; i++)
 		{
 			var first = Enumerable.Range(1, 3 - (i == 0 ? 1 : 0));
 			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
 			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 0));
-
+#pragma warning disable CA2000 // Dispose objects before losing scope
 			parameters.Add(
-				(
+				[
 					first.AsBreakingList(),
 					second.AsBreakingList(),
 					third.AsBreakingList(),
-					s_cardinals[i + 1]
-				)
-			);
-
+					s_cardinals[i + 1],
+				]);
 			parameters.Add(
-				(
+				[
 					first.AsTestingSequence(),
 					second.AsTestingSequence(),
 					third.AsTestingSequence(),
-					s_cardinals[i + 1]
-				)
-			);
+					s_cardinals[i + 1],
+				]);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
 		return parameters;
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetThreeParamInequalSequences))]
+	[Theory]
+	[MemberData(nameof(GetThreeParamInequalSequences))]
 	public void ThreeParamsThrowsProperly(IEnumerable<int> seq1, IEnumerable<int> seq2, IEnumerable<int> seq3, string cardinal)
 	{
 		using (seq1 as IDisposableEnumerable<int>)
@@ -256,7 +252,7 @@ public sealed class EquiZipTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void ThreeParamsListBehavior()
 	{
 		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -272,7 +268,7 @@ public sealed class EquiZipTest
 #endif
 	}
 
-	[Test]
+	[Fact]
 	public void ThreeParamsInequalListBehavior()
 	{
 		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -286,7 +282,7 @@ public sealed class EquiZipTest
 	#endregion
 
 	#region Four
-	[Test]
+	[Fact]
 	public void FourParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -302,47 +298,42 @@ public sealed class EquiZipTest
 		"CA2000:Dispose objects before losing scope",
 		Justification = "Will be properly disposed in method"
 	)]
-	public static IEnumerable<(
-		IEnumerable<int> seq1,
-		IEnumerable<int> seq2,
-		IEnumerable<int> seq3,
-		IEnumerable<int> seq4
-	)> GetFourParamEqualSequences() =>
+	public static IEnumerable<object[]> GetFourParamEqualSequences() =>
 		[
-			(
+			[
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-				Enumerable.Range(1, 3).AsTestingSequence()
-			),
-			(
+				Enumerable.Range(1, 3).AsTestingSequence(),
+			],
+			[
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-				Enumerable.Range(1, 3).AsTestingSequence()
-			),
-			(
+				Enumerable.Range(1, 3).AsTestingSequence(),
+			],
+			[
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-				Enumerable.Range(1, 3).AsTestingSequence()
-			),
-			(
+				Enumerable.Range(1, 3).AsTestingSequence(),
+			],
+			[
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
-				Enumerable.Range(1, 3).AsTestingSequence()
-			),
-			(
+				Enumerable.Range(1, 3).AsTestingSequence(),
+			],
+			[
 				Enumerable.Range(1, 3).AsBreakingList(),
 				Enumerable.Range(1, 3).AsBreakingList(),
 				Enumerable.Range(1, 3).AsBreakingList(),
-				Enumerable.Range(1, 3).AsBreakingList()
-			),
+				Enumerable.Range(1, 3).AsBreakingList(),
+			],
 		];
 
-	[Test]
-	[MethodDataSource(nameof(GetFourParamEqualSequences))]
+	[Theory]
+	[MemberData(nameof(GetFourParamEqualSequences))]
 	public void FourParamsWorksProperly(IEnumerable<int> seq1, IEnumerable<int> seq2, IEnumerable<int> seq3, IEnumerable<int> seq4)
 	{
 		using (seq1 as IDisposableEnumerable<int>)
@@ -357,21 +348,9 @@ public sealed class EquiZipTest
 		}
 	}
 
-	public static IEnumerable<(
-		IEnumerable<int> seq1,
-		IEnumerable<int> seq2,
-		IEnumerable<int> seq3,
-		IEnumerable<int> seq4,
-		string cardinal
-	)> GetFourParamInequalSequences()
+	public static IEnumerable<object[]> GetFourParamInequalSequences()
 	{
-		var parameters = new List<(
-			IEnumerable<int> seq1,
-			IEnumerable<int> seq2,
-			IEnumerable<int> seq3,
-			IEnumerable<int> seq4,
-			string cardinal
-		)>();
+		var parameters = new List<object[]>();
 
 		for (var i = 0; i < 4; i++)
 		{
@@ -379,33 +358,31 @@ public sealed class EquiZipTest
 			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
 			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 0));
 			var fourth = Enumerable.Range(1, 3 - (i == 3 ? 1 : 0));
-
+#pragma warning disable CA2000 // Dispose objects before losing scope
 			parameters.Add(
-				(
+				[
 					first.AsBreakingList(),
 					second.AsBreakingList(),
 					third.AsBreakingList(),
 					fourth.AsBreakingList(),
-					s_cardinals[i + 1]
-				)
-			);
-
+					s_cardinals[i + 1],
+				]);
 			parameters.Add(
-				(
+				[
 					first.AsTestingSequence(),
 					second.AsTestingSequence(),
 					third.AsTestingSequence(),
 					fourth.AsTestingSequence(),
-					s_cardinals[i + 1]
-				)
-			);
+					s_cardinals[i + 1],
+				]);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
 		return parameters;
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetFourParamInequalSequences))]
+	[Theory]
+	[MemberData(nameof(GetFourParamInequalSequences))]
 	public void FourParamsThrowsProperly(IEnumerable<int> seq1, IEnumerable<int> seq2, IEnumerable<int> seq3, IEnumerable<int> seq4, string cardinal)
 	{
 		using (seq1 as IDisposableEnumerable<int>)
@@ -420,7 +397,7 @@ public sealed class EquiZipTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void FourParamsListBehavior()
 	{
 		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -437,7 +414,7 @@ public sealed class EquiZipTest
 #endif
 	}
 
-	[Test]
+	[Fact]
 	public void FourParamsInequalListBehavior()
 	{
 		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();

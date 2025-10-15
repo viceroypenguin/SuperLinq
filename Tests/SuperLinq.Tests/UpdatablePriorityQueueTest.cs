@@ -12,22 +12,23 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 {
 	public abstract class TestBase
 	{
-		public static IEnumerable<int> ValidCollectionSizes() =>
-			[
-				0,
-				1,
-				75,
-			];
+		public static IEnumerable<object[]> ValidCollectionSizes()
+		{
+			yield return new object[] { 0 };
+			yield return new object[] { 1 };
+			yield return new object[] { 75 };
+		}
 
-		public static IEnumerable<int> ValidPositiveCollectionSizes() =>
-			[
-				1,
-				75,
-			];
+		public static IEnumerable<object[]> ValidPositiveCollectionSizes()
+		{
+			yield return new object[] { 1 };
+			yield return new object[] { 75 };
+		}
 	}
 
 	public abstract class UpdatablePriorityQueue_Generic_Tests<TElement, TPriority> : TestBase
 	{
+
 		#region Helpers
 		protected abstract (TElement, TPriority) CreateT(int seed);
 
@@ -58,7 +59,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 
 		#region Constructors
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_DefaultConstructor_ComparerEqualsDefaultComparer()
 		{
 			var queue = new UpdatablePriorityQueue<TElement, TPriority>();
@@ -68,15 +69,15 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Equal(queue.Comparer, Comparer<TPriority>.Default);
 		}
 
-		[Test]
-		[MethodDataSource(nameof(ValidCollectionSizes))]
+		[Theory]
+		[MemberData(nameof(ValidCollectionSizes))]
 		public void UpdatablePriorityQueue_EmptyCollection_UnorderedItemsIsEmpty(int initialCapacity)
 		{
 			var queue = new UpdatablePriorityQueue<TElement, TPriority>(initialCapacity);
 			Assert.Empty(queue.UnorderedItems);
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_ComparerConstructor_ComparerShouldEqualParameter()
 		{
 			var comparer = GetPriorityComparer();
@@ -84,7 +85,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Equal(comparer, queue.Comparer);
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_PriorityComparerConstructorNull_ComparerShouldEqualDefaultComparer()
 		{
 			var queue = new UpdatablePriorityQueue<TElement, TPriority>(priorityComparer: null);
@@ -92,8 +93,8 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Same(Comparer<TPriority>.Default, queue.Comparer);
 		}
 
-		[Test]
-		[MethodDataSource(nameof(ValidCollectionSizes))]
+		[Theory]
+		[MemberData(nameof(ValidCollectionSizes))]
 		public void UpdatablePriorityQueue_CapacityConstructor_ComparerShouldEqualDefaultComparer(int initialCapacity)
 		{
 			var queue = new UpdatablePriorityQueue<TElement, TPriority>(initialCapacity);
@@ -101,8 +102,8 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Same(Comparer<TPriority>.Default, queue.Comparer);
 		}
 
-		[Test]
-		[MethodDataSource(nameof(ValidCollectionSizes))]
+		[Theory]
+		[MemberData(nameof(ValidCollectionSizes))]
 		public void UpdatablePriorityQueue_EnumerableConstructor_ShouldContainAllElements(int count)
 		{
 			var itemsToEnqueue = CreateItems(count).ToArray();
@@ -115,8 +116,8 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 
 		#region Enqueue, Dequeue, Peek, EnqueueDequeue
 
-		[Test]
-		[MethodDataSource(nameof(ValidCollectionSizes))]
+		[Theory]
+		[MemberData(nameof(ValidCollectionSizes))]
 		public void UpdatablePriorityQueue_Enqueue_IEnumerable(int count)
 		{
 			var itemsToEnqueue = CreateItems(count).ToArray();
@@ -128,8 +129,8 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			queue.UnorderedItems.AssertCollectionEqual(itemsToEnqueue);
 		}
 
-		[Test]
-		[MethodDataSource(nameof(ValidPositiveCollectionSizes))]
+		[Theory]
+		[MemberData(nameof(ValidPositiveCollectionSizes))]
 		public void UpdatablePriorityQueue_Peek_ShouldReturnMinimalElement(int count)
 		{
 			var itemsToEnqueue = CreateItems(count).ToArray();
@@ -153,10 +154,10 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			}
 		}
 
-		[Test]
-		[Arguments(0, 5)]
-		[Arguments(1, 1)]
-		[Arguments(3, 100)]
+		[Theory]
+		[InlineData(0, 5)]
+		[InlineData(1, 1)]
+		[InlineData(3, 100)]
 		public void UpdatablePriorityQueue_PeekAndDequeue(int initialCapacity, int count)
 		{
 			var queue = CreateUpdatablePriorityQueue(initialCapacity, count, out var generatedItems);
@@ -184,8 +185,8 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.False(queue.TryDequeue(out _, out _));
 		}
 
-		[Test]
-		[MethodDataSource(nameof(ValidCollectionSizes))]
+		[Theory]
+		[MemberData(nameof(ValidCollectionSizes))]
 		public void UpdatablePriorityQueue_EnqueueRange_IEnumerable(int count)
 		{
 			var itemsToEnqueue = CreateItems(count).ToArray();
@@ -196,8 +197,8 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			queue.UnorderedItems.AssertCollectionEqual(itemsToEnqueue, comparer: GetNodeComparer());
 		}
 
-		[Test]
-		[MethodDataSource(nameof(ValidCollectionSizes))]
+		[Theory]
+		[MemberData(nameof(ValidCollectionSizes))]
 		public void UpdatablePriorityQueue_EnqueueDequeue(int count)
 		{
 			(TElement Element, TPriority Priority)[] itemsToEnqueue = [.. CreateItems(2 * count)];
@@ -215,8 +216,8 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 
 		#region Clear
 
-		[Test]
-		[MethodDataSource(nameof(ValidCollectionSizes))]
+		[Theory]
+		[MemberData(nameof(ValidCollectionSizes))]
 		public void UpdatablePriorityQueue_Clear(int count)
 		{
 			var queue = CreateUpdatablePriorityQueue(initialCapacity: 0, count, out _);
@@ -232,8 +233,8 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 
 		#region Enumeration
 
-		[Test]
-		[MethodDataSource(nameof(ValidPositiveCollectionSizes))]
+		[Theory]
+		[MemberData(nameof(ValidPositiveCollectionSizes))]
 		public void UpdatablePriorityQueue_Enumeration_OrderingIsConsistent(int count)
 		{
 			var queue = CreateUpdatablePriorityQueue(initialCapacity: 0, count, out _);
@@ -248,7 +249,6 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 		#endregion
 	}
 
-	[InheritsTests]
 	public class UpdatablePriorityQueue_Generic_Tests_string_string : UpdatablePriorityQueue_Generic_Tests<string, string>
 	{
 		protected override (string, string) CreateT(int seed)
@@ -266,7 +266,6 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 		}
 	}
 
-	[InheritsTests]
 	public class UpdatablePriorityQueue_Generic_Tests_int_int : UpdatablePriorityQueue_Generic_Tests<int, int>
 	{
 		protected override (int, int) CreateT(int seed)
@@ -276,19 +275,16 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 		}
 	}
 
-	[InheritsTests]
 	public sealed class PriorityQueue_Generic_Tests_string_string_CustomPriorityComparer : UpdatablePriorityQueue_Generic_Tests_string_string
 	{
 		protected override IComparer<string> GetPriorityComparer() => StringComparer.InvariantCultureIgnoreCase;
 	}
 
-	[InheritsTests]
 	public sealed class PriorityQueue_Generic_Tests_string_string_CustomElementComparer : UpdatablePriorityQueue_Generic_Tests_string_string
 	{
 		protected override IEqualityComparer<string>? GetElementComparer() => StringComparer.InvariantCultureIgnoreCase;
 	}
 
-	[InheritsTests]
 	public sealed class PriorityQueue_Generic_Tests_int_int_CustomComparer : UpdatablePriorityQueue_Generic_Tests_int_int
 	{
 		protected override IComparer<int> GetPriorityComparer() => Comparer<int>.Create((x, y) => -x.CompareTo(y));
@@ -318,7 +314,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			return pq;
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueDequeue_Empty()
 		{
 			var queue = new UpdatablePriorityQueue<string, int>(StringComparer.Ordinal);
@@ -327,7 +323,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Equal(0, queue.Count);
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueDequeue_SmallerThanMin()
 		{
 			var queue = CreateSmallUpdatablePriorityQueue(out var enqueuedItems);
@@ -338,7 +334,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.True(enqueuedItems.SetEquals(queue.UnorderedItems));
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueDequeue_LargerThanMin()
 		{
 			var queue = CreateSmallUpdatablePriorityQueue(out var _);
@@ -351,7 +347,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Equal("four", queue.Dequeue());
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueDequeue_EqualToMin()
 		{
 			var queue = CreateSmallUpdatablePriorityQueue(out var enqueuedItems);
@@ -362,7 +358,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.True(enqueuedItems.SetEquals(queue.UnorderedItems));
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_Generic_Constructor_IEnumerable_Null()
 		{
 			var itemsToEnqueue = new (string?, int)[] { (null, 0), ("one", 1) };
@@ -371,7 +367,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Equal("one", queue.Dequeue());
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_Generic_Enqueue_Null()
 		{
 			var queue = new UpdatablePriorityQueue<string?, int>(StringComparer.Ordinal);
@@ -385,7 +381,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Equal("two", queue.Dequeue());
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueRange_Null()
 		{
 			var queue = new UpdatablePriorityQueue<string?, int>(StringComparer.Ordinal);
@@ -398,7 +394,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Equal("not null", queue.Dequeue());
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_Generic_Enqueue_ChangesPriority()
 		{
 			var queue = new UpdatablePriorityQueue<string, int>(StringComparer.Ordinal);
@@ -425,7 +421,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Equal("alpha", queue.Dequeue());
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueRange_ChangesPriority()
 		{
 			var queue = new UpdatablePriorityQueue<string, int>(StringComparer.Ordinal);
@@ -455,7 +451,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Equal("alpha", queue.Dequeue());
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueMinimum_UsesLowestPriority()
 		{
 			var queue = new UpdatablePriorityQueue<string, int>(StringComparer.Ordinal);
@@ -479,7 +475,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Equal("delta", queue.Dequeue());
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_Generic_EnqueueRangeMinimum_UsesLowestPriority()
 		{
 			var queue = new UpdatablePriorityQueue<string, int>(StringComparer.Ordinal);
@@ -506,28 +502,28 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Equal("delta", queue.Dequeue());
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_Constructor_int_Negative_ThrowsArgumentOutOfRangeException()
 		{
 			_ = Assert.Throws<ArgumentOutOfRangeException>("initialCapacity", () => new UpdatablePriorityQueue<int, int>(-1));
 			_ = Assert.Throws<ArgumentOutOfRangeException>("initialCapacity", () => new UpdatablePriorityQueue<int, int>(int.MinValue));
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_Constructor_Enumerable_null_ThrowsArgumentNullException()
 		{
 			_ = Assert.Throws<ArgumentNullException>("items", () => new UpdatablePriorityQueue<int, int>(items: null!));
 			_ = Assert.Throws<ArgumentNullException>("items", () => new UpdatablePriorityQueue<int, int>(items: null!, priorityComparer: Comparer<int>.Default, elementComparer: EqualityComparer<int>.Default));
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_EnqueueRange_null_ThrowsArgumentNullException()
 		{
 			var queue = new UpdatablePriorityQueue<int, int>();
 			_ = Assert.Throws<ArgumentNullException>("items", () => queue.EnqueueRange(null!));
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_EmptyCollection_Dequeue_ShouldThrowException()
 		{
 			var queue = new UpdatablePriorityQueue<int, int>();
@@ -537,7 +533,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			_ = Assert.Throws<InvalidOperationException>(() => queue.Dequeue());
 		}
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_EmptyCollection_Peek_ShouldReturnFalse()
 		{
 			var queue = new UpdatablePriorityQueue<int, int>();
@@ -548,7 +544,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 
 		#region EnsureCapacity, TrimExcess
 
-		[Test]
+		[Fact]
 		public void UpdatablePriorityQueue_EnsureCapacity_Negative_ShouldThrowException()
 		{
 			var queue = new UpdatablePriorityQueue<int, int>();
@@ -556,11 +552,11 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			_ = Assert.Throws<ArgumentOutOfRangeException>("capacity", () => queue.EnsureCapacity(int.MinValue));
 		}
 
-		[Test]
-		[Arguments(0, 0)]
-		[Arguments(0, 5)]
-		[Arguments(1, 1)]
-		[Arguments(3, 100)]
+		[Theory]
+		[InlineData(0, 0)]
+		[InlineData(0, 5)]
+		[InlineData(1, 1)]
+		[InlineData(3, 100)]
 		public void UpdatablePriorityQueue_TrimExcess_ShouldNotChangeCount(int initialCapacity, int count)
 		{
 			var queue = CreateUpdatablePriorityQueue(initialCapacity, count);
@@ -570,8 +566,8 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Equal(count, queue.Count);
 		}
 
-		[Test]
-		[MethodDataSource(nameof(ValidPositiveCollectionSizes))]
+		[Theory]
+		[MemberData(nameof(ValidPositiveCollectionSizes))]
 		public void UpdatablePriorityQueue_TrimExcess_Repeatedly_ShouldNotChangeCount(int count)
 		{
 			var queue = CreateUpdatablePriorityQueue(initialCapacity: count, count);
@@ -583,8 +579,8 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			Assert.Equal(count, queue.Count);
 		}
 
-		[Test]
-		[MethodDataSource(nameof(ValidPositiveCollectionSizes))]
+		[Theory]
+		[MemberData(nameof(ValidPositiveCollectionSizes))]
 		public void UpdatablePriorityQueue_Generic_EnsureCapacityAndTrimExcess(int count)
 		{
 			IReadOnlyCollection<(int, int)> itemsToEnqueue = [.. Enumerable.Range(1, count).Select(i => (i, i))];
@@ -636,8 +632,8 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 
 		#region Enumeration
 
-		[Test]
-		[MethodDataSource(nameof(GetNonModifyingOperations))]
+		[Theory]
+		[MemberData(nameof(GetNonModifyingOperations))]
 		public void UpdatablePriorityQueue_Enumeration_ValidOnNonModifyingOperation(Action<UpdatablePriorityQueue<int, int>> nonModifyingOperation, int count)
 		{
 			var queue = CreateUpdatablePriorityQueue(initialCapacity: count, count: count);
@@ -646,8 +642,8 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			_ = enumerator.MoveNext();
 		}
 
-		[Test]
-		[MethodDataSource(nameof(GetModifyingOperations))]
+		[Theory]
+		[MemberData(nameof(GetModifyingOperations))]
 		public void UpdatablePriorityQueue_Enumeration_InvalidationOnModifyingOperation(Action<UpdatablePriorityQueue<int, int>> modifyingOperation, int count)
 		{
 			var queue = CreateUpdatablePriorityQueue(initialCapacity: count, count: count);
@@ -656,33 +652,37 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 			_ = Assert.Throws<InvalidOperationException>(() => enumerator.MoveNext());
 		}
 
-		public static IEnumerable<(Action<UpdatablePriorityQueue<int, int>> arg, int queueCount)> GetModifyingOperations() =>
-			[
-				(queue => queue.Enqueue(42, 0), 0),
-				(queue => queue.Dequeue(), 5),
-				(queue => queue.TryDequeue(out _, out _), 5),
-				(queue => queue.EnqueueDequeue(5, priority: int.MaxValue), 5),
-				(queue => queue.EnqueueDequeue(5, priority: int.MaxValue), 5),
-				(queue => queue.EnqueueRange([(1, 2)]), 0),
-				(queue => queue.EnqueueRange([(1, 2)]), 10),
-				(queue => queue.EnqueueRange([1, 2], 42), 0),
-				(queue => queue.EnqueueRange([1, 2], 42), 10),
-				(queue => queue.EnsureCapacity(2 * queue.Count), 4),
-				(queue => queue.Clear(), 5),
-				(queue => queue.Clear(), 0),
-			];
+		public static IEnumerable<object[]> GetModifyingOperations()
+		{
+			yield return WrapArg(queue => queue.Enqueue(42, 0), 0);
+			yield return WrapArg(queue => queue.Dequeue(), 5);
+			yield return WrapArg(queue => queue.TryDequeue(out _, out _), 5);
+			yield return WrapArg(queue => queue.EnqueueDequeue(5, priority: int.MaxValue), 5);
+			yield return WrapArg(queue => queue.EnqueueDequeue(5, priority: int.MaxValue), 5);
+			yield return WrapArg(queue => queue.EnqueueRange([(1, 2)]), 0);
+			yield return WrapArg(queue => queue.EnqueueRange([(1, 2)]), 10);
+			yield return WrapArg(queue => queue.EnqueueRange([1, 2], 42), 0);
+			yield return WrapArg(queue => queue.EnqueueRange([1, 2], 42), 10);
+			yield return WrapArg(queue => queue.EnsureCapacity(2 * queue.Count), 4);
+			yield return WrapArg(queue => queue.Clear(), 5);
+			yield return WrapArg(queue => queue.Clear(), 0);
 
-		public static IEnumerable<(Action<UpdatablePriorityQueue<int, int>> arg, int queueCount)> GetNonModifyingOperations() =>
-			[
-				(queue => queue.Peek(), 1),
-				(queue => queue.TryPeek(out _, out _), 1),
-				(queue => queue.TryDequeue(out _, out _), 0),
-				(queue => queue.EnqueueDequeue(5, priority: int.MinValue), 1),
-				(queue => queue.EnqueueDequeue(5, priority: int.MaxValue), 0),
-				(queue => queue.EnqueueRange([]), 5),
-				(queue => queue.EnqueueRange([], 42), 5),
-				(queue => queue.EnsureCapacity(5), 5),
-			];
+			static object[] WrapArg(Action<UpdatablePriorityQueue<int, int>> arg, int queueCount) => [arg, queueCount];
+		}
+
+		public static IEnumerable<object[]> GetNonModifyingOperations()
+		{
+			yield return WrapArg(queue => queue.Peek(), 1);
+			yield return WrapArg(queue => queue.TryPeek(out _, out _), 1);
+			yield return WrapArg(queue => queue.TryDequeue(out _, out _), 0);
+			yield return WrapArg(queue => queue.EnqueueDequeue(5, priority: int.MinValue), 1);
+			yield return WrapArg(queue => queue.EnqueueDequeue(5, priority: int.MaxValue), 0);
+			yield return WrapArg(queue => queue.EnqueueRange([]), 5);
+			yield return WrapArg(queue => queue.EnqueueRange([], 42), 5);
+			yield return WrapArg(queue => queue.EnsureCapacity(5), 5);
+
+			static object[] WrapArg(Action<UpdatablePriorityQueue<int, int>> arg, int queueCount) => [arg, queueCount];
+		}
 
 		#endregion
 	}

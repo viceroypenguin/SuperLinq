@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 /// <summary>
 /// Used to identify enumerables that can and should be disposed, such as <see cref="TestingSequence{T}"/>.

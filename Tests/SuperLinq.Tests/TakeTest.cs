@@ -7,7 +7,7 @@ namespace SuperLinq.Tests;
 
 public sealed class TakeTest
 {
-	[Test]
+	[Fact]
 	public void SameResultsRepeatCallsIntQuery()
 	{
 		var q = from x in new[] { 9999, 0, 888, -1, 66, -777, 1, 2, -12345 }
@@ -22,7 +22,7 @@ public sealed class TakeTest
 		Assert.Equal(q.Take(^9..^0), q.Take(^9..^0));
 	}
 
-	[Test]
+	[Fact]
 	public void SameResultsRepeatCallsIntQueryIList()
 	{
 		var q = (from x in new[] { 9999, 0, 888, -1, 66, -777, 1, 2, -12345 }
@@ -37,7 +37,7 @@ public sealed class TakeTest
 		Assert.Equal(q.Take(^9..^0), q.Take(^9..^0));
 	}
 
-	[Test]
+	[Fact]
 	public void SameResultsRepeatCallsStringQuery()
 	{
 		var q = from x in new[] { "!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "" }
@@ -52,7 +52,7 @@ public sealed class TakeTest
 		Assert.Equal(q.Take(^7..^0), q.Take(^7..^0));
 	}
 
-	[Test]
+	[Fact]
 	public void SameResultsRepeatCallsStringQueryIList()
 	{
 		var q = (from x in new[] { "!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "" }
@@ -67,7 +67,7 @@ public sealed class TakeTest
 		Assert.Equal(q.Take(^7..^0), q.Take(^7..^0));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceEmptyCountPositive()
 	{
 		var source = Array.Empty<int>();
@@ -79,7 +79,7 @@ public sealed class TakeTest
 		Assert.Empty(source.Take(^5..^0));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceEmptyCountPositiveNotIList()
 	{
 		var source = Enumerable.Range(0, 0);
@@ -91,7 +91,7 @@ public sealed class TakeTest
 		Assert.Empty(source.Take(^5..^0));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceNonEmptyCountNegative()
 	{
 		var source = new[] { 2, 5, 9, 1 };
@@ -100,7 +100,7 @@ public sealed class TakeTest
 		Assert.Empty(source.Take(^9..0));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceNonEmptyCountNegativeNotIList()
 	{
 		var source = Seq(2, 5, 9, 1);
@@ -109,7 +109,7 @@ public sealed class TakeTest
 		Assert.Empty(source.Take(^9..0));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceNonEmptyCountZero()
 	{
 		var source = new[] { 2, 5, 9, 1 };
@@ -121,7 +121,7 @@ public sealed class TakeTest
 		Assert.Empty(source.Take(^4..^4));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceNonEmptyCountZeroNotIList()
 	{
 		var source = Seq(2, 5, 9, 1);
@@ -133,7 +133,7 @@ public sealed class TakeTest
 		Assert.Empty(source.Take(^4..^4));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceNonEmptyCountOne()
 	{
 		var source = new[] { 2, 5, 9, 1 };
@@ -147,7 +147,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, source.Take(^4..^3));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceNonEmptyCountOneNotIList()
 	{
 		var source = Seq(2, 5, 9, 1);
@@ -161,7 +161,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, source.Take(^4..^3));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceNonEmptyTakeAllExactly()
 	{
 		var source = new[] { 2, 5, 9, 1 };
@@ -174,7 +174,7 @@ public sealed class TakeTest
 		Assert.Equal(source, source.Take(^source.Length..^0));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceNonEmptyTakeAllExactlyNotIList()
 	{
 		var source = Seq(2, 5, 9, 1);
@@ -187,7 +187,7 @@ public sealed class TakeTest
 		Assert.Equal(source, source.Take(^source.Count()..^0));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceNonEmptyTakeAllButOne()
 	{
 		var source = new[] { 2, 5, 9, 1 };
@@ -201,7 +201,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, source.Take(^4..^1));
 	}
 
-	[Test]
+	[Fact]
 	public void RunOnce()
 	{
 		var source = new[] { 2, 5, 9, 1 };
@@ -215,7 +215,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, source.Take(^4..^1));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceNonEmptyTakeAllButOneNotIList()
 	{
 		var source = Seq(2, 5, 9, 1);
@@ -229,7 +229,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, source.Take(^4..^1));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceNonEmptyTakeExcessive()
 	{
 		var source = new int?[] { 2, 5, null, 9, 1 };
@@ -240,7 +240,7 @@ public sealed class TakeTest
 		Assert.Equal(source, source.Take(^(source.Length + 1)..(source.Length + 1)));
 	}
 
-	[Test]
+	[Fact]
 	public void SourceNonEmptyTakeExcessiveNotIList()
 	{
 		var source = Seq<int?>(2, 5, null, 9, 1);
@@ -251,7 +251,7 @@ public sealed class TakeTest
 		Assert.Equal(source, source.Take(^(source.Count() + 1)..(source.Count() + 1)));
 	}
 
-	[Test]
+	[Fact]
 	public void ThrowsOnNullSource()
 	{
 		int[] source = null!;
@@ -263,7 +263,7 @@ public sealed class TakeTest
 		_ = Assert.Throws<ArgumentNullException>("source", () => source.Take(^5..^0));
 	}
 
-	[Test]
+	[Fact]
 	public void ForcedToEnumeratorDoesNotEnumerate()
 	{
 		var iterator1 = Enumerable.Range(0, 3).Take(2);
@@ -289,7 +289,7 @@ public sealed class TakeTest
 	}
 
 #pragma warning disable xUnit2013 // Do not use equality check to check for collection size.
-	[Test]
+	[Fact]
 	public void Count()
 	{
 		Assert.Equal(2, Enumerable.Range(0, 3).Take(2).Count());
@@ -314,7 +314,7 @@ public sealed class TakeTest
 	}
 #pragma warning restore xUnit2013 // Do not use equality check to check for collection size.
 
-	[Test]
+	[Fact]
 	public void ForcedToEnumeratorDoesntEnumerateIList()
 	{
 		var iterator1 = Enumerable.Range(0, 3).ToList().Take(2);
@@ -339,7 +339,7 @@ public sealed class TakeTest
 		Assert.False(en5 is not null && en5.MoveNext());
 	}
 
-	[Test]
+	[Fact]
 	public void FollowWithTake()
 	{
 		var source = new[] { 5, 6, 7, 8 };
@@ -352,7 +352,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, source.Take(^4..^0).Take(^4..^1).Take(^3..^1).Take(^2..^0));
 	}
 
-	[Test]
+	[Fact]
 	public void FollowWithTakeNotIList()
 	{
 		var source = Enumerable.Range(5, 4);
@@ -365,7 +365,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, source.Take(^4..^0).Take(^4..^1).Take(^3..^1));
 	}
 
-	[Test]
+	[Fact]
 	public void FollowWithSkip()
 	{
 		var source = new[] { 1, 2, 3, 4, 5, 6 };
@@ -378,7 +378,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, source.Take(^6..^1).Skip(2).Skip(-4));
 	}
 
-	[Test]
+	[Fact]
 	public void FollowWithSkipNotIList()
 	{
 		var source = Enumerable.Range(1, 6);
@@ -391,7 +391,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, source.Take(^6..^1).Skip(2).Skip(-4));
 	}
 
-	[Test]
+	[Fact]
 	public void ElementAt()
 	{
 		var source = new[] { 1, 2, 3, 4, 5, 6 };
@@ -426,7 +426,7 @@ public sealed class TakeTest
 		_ = Assert.Throws<ArgumentOutOfRangeException>("index", () => taken4.ElementAt(3));
 	}
 
-	[Test]
+	[Fact]
 	public void ElementAtNotIList()
 	{
 		var source = Seq(1, 2, 3, 4, 5, 6);
@@ -461,7 +461,7 @@ public sealed class TakeTest
 		_ = Assert.Throws<ArgumentOutOfRangeException>("index", () => taken4.ElementAt(3));
 	}
 
-	[Test]
+	[Fact]
 	public void ElementAtOrDefault()
 	{
 		var source = new[] { 1, 2, 3, 4, 5, 6 };
@@ -496,7 +496,7 @@ public sealed class TakeTest
 		Assert.Equal(0, taken4.ElementAtOrDefault(3));
 	}
 
-	[Test]
+	[Fact]
 	public void ElementAtOrDefaultNotIList()
 	{
 		var source = Seq(1, 2, 3, 4, 5, 6);
@@ -531,7 +531,7 @@ public sealed class TakeTest
 		Assert.Equal(0, taken4.ElementAtOrDefault(3));
 	}
 
-	[Test]
+	[Fact]
 	public void First()
 	{
 		var source = new[] { 1, 2, 3, 4, 5 };
@@ -566,7 +566,7 @@ public sealed class TakeTest
 		_ = Assert.Throws<InvalidOperationException>(() => source.Skip(5).Take(^10..^0).First());
 	}
 
-	[Test]
+	[Fact]
 	public void FirstNotIList()
 	{
 		var source = Seq(1, 2, 3, 4, 5);
@@ -601,7 +601,7 @@ public sealed class TakeTest
 		_ = Assert.Throws<InvalidOperationException>(() => source.Skip(5).Take(^10..^0).First());
 	}
 
-	[Test]
+	[Fact]
 	public void FirstOrDefault()
 	{
 		var source = new[] { 1, 2, 3, 4, 5 };
@@ -636,7 +636,7 @@ public sealed class TakeTest
 		Assert.Equal(0, source.Skip(5).Take(^10..^0).FirstOrDefault());
 	}
 
-	[Test]
+	[Fact]
 	public void FirstOrDefaultNotIList()
 	{
 		var source = Seq(1, 2, 3, 4, 5);
@@ -671,7 +671,7 @@ public sealed class TakeTest
 		Assert.Equal(0, source.Skip(5).Take(^10..^0).FirstOrDefault());
 	}
 
-	[Test]
+	[Fact]
 	public void Last()
 	{
 		var source = new[] { 1, 2, 3, 4, 5 };
@@ -706,7 +706,7 @@ public sealed class TakeTest
 		_ = Assert.Throws<InvalidOperationException>(() => Array.Empty<int>().Take(^40..^0).Last());
 	}
 
-	[Test]
+	[Fact]
 	public void LastNotIList()
 	{
 		var source = Seq(1, 2, 3, 4, 5);
@@ -741,7 +741,7 @@ public sealed class TakeTest
 		_ = Assert.Throws<InvalidOperationException>(() => Enumerable.Empty<int>().Take(^40..^0).Last());
 	}
 
-	[Test]
+	[Fact]
 	public void LastOrDefault()
 	{
 		var source = new[] { 1, 2, 3, 4, 5 };
@@ -776,7 +776,7 @@ public sealed class TakeTest
 		Assert.Equal(0, Array.Empty<int>().Take(^40..^0).LastOrDefault());
 	}
 
-	[Test]
+	[Fact]
 	public void LastOrDefaultNotIList()
 	{
 		var source = Seq(1, 2, 3, 4, 5);
@@ -811,7 +811,7 @@ public sealed class TakeTest
 		Assert.Equal(0, Enumerable.Empty<int>().Take(^40..^0).LastOrDefault());
 	}
 
-	[Test]
+	[Fact]
 	public void TakeCanOnlyBeOneList()
 	{
 		var source = new[] { 2, 4, 6, 8, 10 };
@@ -841,7 +841,7 @@ public sealed class TakeTest
 		Assert.Equal([2], source.Take(^5..^2).Take(^4..^2));
 	}
 
-	[Test]
+	[Fact]
 	public void TakeCanOnlyBeOneNotList()
 	{
 		var source = Seq(2, 4, 6, 8, 10);
@@ -871,7 +871,7 @@ public sealed class TakeTest
 		Assert.Equal([2], source.Take(^5..^2).Take(^4..^2));
 	}
 
-	[Test]
+	[Fact]
 	public void RepeatEnumerating()
 	{
 		var source = new[] { 1, 2, 3, 4, 5 };
@@ -891,7 +891,7 @@ public sealed class TakeTest
 		Assert.Equal(taken5, taken5);
 	}
 
-	[Test]
+	[Fact]
 	public void RepeatEnumeratingNotList()
 	{
 		var source = Seq(1, 2, 3, 4, 5);
@@ -911,7 +911,7 @@ public sealed class TakeTest
 		Assert.Equal(taken5, taken5);
 	}
 
-	[Test]
+	[Fact]
 	public void LazyOverflowRegression()
 	{
 		var range = Enumerable.Range(1, 100);
@@ -947,17 +947,17 @@ public sealed class TakeTest
 		Assert.Equal(Enumerable.Range(43, 100 - 42), [.. taken5]);
 	}
 
-	[Test]
-	[Arguments(0, 0, 0)]
-	[Arguments(1, 1, 1)]
-	[Arguments(0, int.MaxValue, 100)]
-	[Arguments(int.MaxValue, 0, 0)]
-	[Arguments(0xffff, 1, 0)]
-	[Arguments(1, 0xffff, 99)]
-	[Arguments(int.MaxValue, int.MaxValue, 0)]
-	[Arguments(1, int.MaxValue, 99)] // Regression test: The max index is precisely int.MaxValue.
-	[Arguments(0, 100, 100)]
-	[Arguments(10, 100, 90)]
+	[Theory]
+	[InlineData(0, 0, 0)]
+	[InlineData(1, 1, 1)]
+	[InlineData(0, int.MaxValue, 100)]
+	[InlineData(int.MaxValue, 0, 0)]
+	[InlineData(0xffff, 1, 0)]
+	[InlineData(1, 0xffff, 99)]
+	[InlineData(int.MaxValue, int.MaxValue, 0)]
+	[InlineData(1, int.MaxValue, 99)] // Regression test: The max index is precisely int.MaxValue.
+	[InlineData(0, 100, 100)]
+	[InlineData(10, 100, 90)]
 	public void CountOfLazySkipTakeChain(int skip, int take, int expected)
 	{
 		const int TotalCount = 100;
@@ -998,13 +998,13 @@ public sealed class TakeTest
 		Assert.Equal(expected, partition5.Select(SuperEnumerable.Identity).ToArray().Length);
 	}
 
-	[Test]
-	[Arguments(new[] { 1, 2, 3, 4 }, 1, 3, 2, 4)]
-	[Arguments(new[] { 1 }, 0, 1, 1, 1)]
-	[Arguments(new[] { 1, 2, 3, 5, 8, 13 }, 1, int.MaxValue, 2, 13)] // Regression test: The max index is precisely int.MaxValue.
-	[Arguments(new[] { 1, 2, 3, 5, 8, 13 }, 0, 2, 1, 2)]
-	[Arguments(new[] { 1, 2, 3, 5, 8, 13 }, 500, 2, 0, 0)]
-	[Arguments(new int[] { }, 10, 8, 0, 0)]
+	[Theory]
+	[InlineData(new[] { 1, 2, 3, 4 }, 1, 3, 2, 4)]
+	[InlineData(new[] { 1 }, 0, 1, 1, 1)]
+	[InlineData(new[] { 1, 2, 3, 5, 8, 13 }, 1, int.MaxValue, 2, 13)] // Regression test: The max index is precisely int.MaxValue.
+	[InlineData(new[] { 1, 2, 3, 5, 8, 13 }, 0, 2, 1, 2)]
+	[InlineData(new[] { 1, 2, 3, 5, 8, 13 }, 500, 2, 0, 0)]
+	[InlineData(new int[] { }, 10, 8, 0, 0)]
 	public void FirstAndLastOfLazySkipTakeChain(int[] source, int skip, int take, int first, int last)
 	{
 		var partition1 = ForceNotCollection(source).Skip(skip).Take(take);
@@ -1053,11 +1053,11 @@ public sealed class TakeTest
 		Assert.Equal(last, partition5.ElementAtOrDefault(partition5.Count() - 1));
 	}
 
-	[Test]
-	[Arguments(new[] { 1, 2, 3, 4, 5 }, 1, 3, new[] { -1, 0, 1, 2 }, new[] { 0, 2, 3, 4 })]
-	[Arguments(new[] { 0xfefe, 7000, 123 }, 0, 3, new[] { -1, 0, 1, 2 }, new[] { 0, 0xfefe, 7000, 123 })]
-	[Arguments(new[] { 0xfefe }, 100, 100, new[] { -1, 0, 1, 2 }, new[] { 0, 0, 0, 0 })]
-	[Arguments(new[] { 0xfefe, 123, 456, 7890, 5555, 55 }, 1, 10, new[] { -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }, new[] { 0, 123, 456, 7890, 5555, 55, 0, 0, 0, 0, 0, 0, 0 })]
+	[Theory]
+	[InlineData(new[] { 1, 2, 3, 4, 5 }, 1, 3, new[] { -1, 0, 1, 2 }, new[] { 0, 2, 3, 4 })]
+	[InlineData(new[] { 0xfefe, 7000, 123 }, 0, 3, new[] { -1, 0, 1, 2 }, new[] { 0, 0xfefe, 7000, 123 })]
+	[InlineData(new[] { 0xfefe }, 100, 100, new[] { -1, 0, 1, 2 }, new[] { 0, 0, 0, 0 })]
+	[InlineData(new[] { 0xfefe, 123, 456, 7890, 5555, 55 }, 1, 10, new[] { -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }, new[] { 0, 123, 456, 7890, 5555, 55, 0, 0, 0, 0, 0, 0, 0 })]
 	public void ElementAtOfLazySkipTakeChain(int[] source, int skip, int take, int[] indices, int[] expectedValues)
 	{
 		var partition1 = ForceNotCollection(source).Skip(skip).Take(take);
@@ -1093,7 +1093,7 @@ public sealed class TakeTest
 			Assert.Equal(expectedValues[i], partition5.ElementAtOrDefault(indices[i]));
 	}
 
-	[Test]
+	[Fact]
 	public void OutOfBoundNoException()
 	{
 		static int[] Source() => [1, 2, 3, 4, 5];
@@ -1130,7 +1130,7 @@ public sealed class TakeTest
 		Assert.Empty(Source().Take(^int.MaxValue..^int.MaxValue));
 	}
 
-	[Test]
+	[Fact]
 	public void OutOfBoundNoExceptionNotList()
 	{
 		var source = new[] { 1, 2, 3, 4, 5 };
@@ -1167,7 +1167,7 @@ public sealed class TakeTest
 		Assert.Empty(ForceNotCollection(source).Take(^int.MaxValue..^int.MaxValue));
 	}
 
-	[Test]
+	[Fact]
 	public void MutableSource()
 	{
 		var source1 = new List<int>() { 0, 1, 2, 3, 4 };
@@ -1195,7 +1195,7 @@ public sealed class TakeTest
 		Assert.Equal([1, 2, -1], query4);
 	}
 
-	[Test]
+	[Fact]
 	public void MutableSourceNotList()
 	{
 		var source1 = new List<int>() { 0, 1, 2, 3, 4 };
@@ -1223,7 +1223,7 @@ public sealed class TakeTest
 		Assert.Equal([1, 2, -1], query4);
 	}
 
-	[Test]
+	[Fact]
 	public void NonEmptySourceConsistencyWithCountable()
 	{
 		static int[] Source() => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -1269,7 +1269,7 @@ public sealed class TakeTest
 		Assert.Equal(Source()[^6..^6], Source().Take(^6..^6));
 	}
 
-	[Test]
+	[Fact]
 	public void NonEmptySourceConsistencyWithCountableNotList()
 	{
 		int[] source = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -1315,7 +1315,7 @@ public sealed class TakeTest
 		Assert.Equal(source[^6..^6], ForceNotCollection(source).Take(^6..^6));
 	}
 
-	[Test]
+	[Fact]
 	public void NonEmptySourceDoNotThrowException()
 	{
 		static int[] Source() => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -1326,7 +1326,7 @@ public sealed class TakeTest
 		Assert.Empty(Source().Take(^6..^7));
 	}
 
-	[Test]
+	[Fact]
 	public void NonEmptySourceDoNotThrowExceptionNotList()
 	{
 		int[] source = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -1337,7 +1337,7 @@ public sealed class TakeTest
 		Assert.Empty(ForceNotCollection(source).Take(^6..^7));
 	}
 
-	[Test]
+	[Fact]
 	public void EmptySourceDoNotThrowException()
 	{
 		static int[] Source() => [];
@@ -1389,7 +1389,7 @@ public sealed class TakeTest
 		Assert.Empty(Source().Take(^6..^7));
 	}
 
-	[Test]
+	[Fact]
 	public void EmptySourceDoNotThrowExceptionNotList()
 	{
 		var source = Array.Empty<int>();

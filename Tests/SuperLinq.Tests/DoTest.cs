@@ -2,7 +2,7 @@ namespace SuperLinq.Tests;
 
 public sealed class DoTest
 {
-	[Test]
+	[Fact]
 	public void DoOverloadsAreLazy()
 	{
 		_ = new BreakingSequence<int>().Do(BreakingAction.Of<int>());
@@ -10,12 +10,13 @@ public sealed class DoTest
 		_ = new BreakingSequence<int>().Do(BreakingAction.Of<int>(), BreakingAction.Of<Exception>(), BreakingAction.Of());
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetSequences() =>
+	public static IEnumerable<object[]> GetSequences() =>
 		Enumerable.Range(1, 10)
-			.GetTestingSequence();
+			.GetTestingSequence()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void DoBehavior(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -28,8 +29,8 @@ public sealed class DoTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void DoCompletedBehavior(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -42,8 +43,8 @@ public sealed class DoTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void DoBehaviorNoError(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -56,8 +57,8 @@ public sealed class DoTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void DoCompletedBehaviorNoError(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -70,7 +71,7 @@ public sealed class DoTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void DoBehaviorError()
 	{
 		using var seq = SeqExceptionAt(11)
@@ -87,7 +88,7 @@ public sealed class DoTest
 		Assert.Equal(155, count);
 	}
 
-	[Test]
+	[Fact]
 	public void DoCompletedBehaviorError()
 	{
 		using var seq = SeqExceptionAt(11)

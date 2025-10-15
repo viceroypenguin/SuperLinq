@@ -1,11 +1,11 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class RepeatTest
 {
-	[Test]
-	[Arguments(1)]
-	[Arguments(10)]
-	[Arguments(50)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(10)]
+	[InlineData(50)]
 	public async Task RepeatItemForeverBehavior(int repeats)
 	{
 		var result = AsyncSuperEnumerable.Repeat(42);
@@ -16,20 +16,20 @@ public sealed class RepeatTest
 			.AllAsync(x => x == 42));
 	}
 
-	[Test]
+	[Fact]
 	public void RepeatIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Repeat(4);
 	}
 
-	[Test]
+	[Fact]
 	public void RepeatValidatesArguments()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>("count", () =>
 			new AsyncBreakingSequence<int>().Repeat(0));
 	}
 
-	[Test]
+	[Fact]
 	public async Task RepeatBehavior()
 	{
 		await using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
@@ -43,16 +43,16 @@ public sealed class RepeatTest
 		await result.AssertSequenceEqual(expected);
 	}
 
-	[Test]
+	[Fact]
 	public void RepeatForeverIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Repeat();
 	}
 
-	[Test]
-	[Arguments(1)]
-	[Arguments(10)]
-	[Arguments(50)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(10)]
+	[InlineData(50)]
 	public async Task RepeatForeverBehavior(int repeats)
 	{
 		await using var sequence = Enumerable.Range(1, 10).AsTestingSequence();

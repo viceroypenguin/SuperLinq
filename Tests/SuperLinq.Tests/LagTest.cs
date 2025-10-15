@@ -8,7 +8,7 @@ public sealed class LagTest
 	/// <summary>
 	/// Verify that lag behaves in a lazy manner.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLagIsLazy()
 	{
 		_ = new BreakingSequence<int>().Lag(5, BreakingFunc.Of<int, int, int>());
@@ -18,7 +18,7 @@ public sealed class LagTest
 	/// <summary>
 	/// Verify that lagging by a negative offset results in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLagNegativeOffsetException()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -28,19 +28,20 @@ public sealed class LagTest
 	/// <summary>
 	/// Verify that attempting to lag by a zero offset will result in an exception
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLagZeroOffset()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Lag(0, (val, lagVal) => val + lagVal));
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetIntSequences() =>
+	public static IEnumerable<object[]> GetIntSequences() =>
 		Enumerable.Range(1, 100)
-			.GetListSequences();
+			.GetListSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestLagExplicitDefaultValue(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -51,8 +52,8 @@ public sealed class LagTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestLagTuple(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -63,8 +64,8 @@ public sealed class LagTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestLagImplicitDefaultValue(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -76,8 +77,8 @@ public sealed class LagTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestLagOffsetGreaterThanSequenceLength(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -88,8 +89,8 @@ public sealed class LagTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestLagPassesCorrectLagValueOffsetBy1(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -101,8 +102,8 @@ public sealed class LagTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestLagPassesCorrectLagValuesOffsetBy2(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -114,12 +115,13 @@ public sealed class LagTest
 		}
 	}
 
-	public static IEnumerable<IDisposableEnumerable<string>> GetStringSequences() =>
+	public static IEnumerable<object[]> GetStringSequences() =>
 		Seq("foo", "bar", "baz", "qux")
-			.GetListSequences();
+			.GetListSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetStringSequences))]
+	[Theory]
+	[MemberData(nameof(GetStringSequences))]
 	public void TestLagWithNullableReferences(IDisposableEnumerable<string> seq)
 	{
 		using (seq)
@@ -133,8 +135,8 @@ public sealed class LagTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetStringSequences))]
+	[Theory]
+	[MemberData(nameof(GetStringSequences))]
 	public void TestLagWithNonNullableReferences(IDisposableEnumerable<string> seq)
 	{
 		using (seq)
@@ -148,7 +150,7 @@ public sealed class LagTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void LagListBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();

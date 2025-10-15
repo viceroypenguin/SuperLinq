@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class WhileTest
 {
-	[Test]
+	[Fact]
 	public void WhileIsLazy()
 	{
 		_ = AsyncSuperEnumerable.While(
@@ -13,7 +13,7 @@ public sealed class WhileTest
 				new AsyncBreakingSequence<int>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task WhileBehavior()
 	{
 		await using var ts = Enumerable.Range(1, 10).AsTestingSequence();

@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class DoWhileTest
 {
-	[Test]
+	[Fact]
 	public void DoWhileIsLazy()
 	{
 		_ = new BreakingSequence<int>().DoWhile(BreakingFunc.Of<bool>());
 	}
 
-	[Test]
+	[Fact]
 	public void DoWhileBehavior()
 	{
 		using var ts = Enumerable.Range(1, 10).AsTestingSequence();

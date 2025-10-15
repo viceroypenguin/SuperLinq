@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class DistinctUntilChangedTest
 {
-	[Test]
+	[Fact]
 	public void DistinctUntilChangedIsLazy()
 	{
 		_ = new BreakingSequence<int>().DistinctUntilChanged();
 	}
 
-	[Test]
+	[Fact]
 	public void DistinctUntilChangedEmptySequence()
 	{
 		using var source = TestingSequence.Of<int>();
@@ -16,7 +16,7 @@ public sealed class DistinctUntilChangedTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void DistinctUntilChanged()
 	{
 		using var source = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 0, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);
@@ -24,7 +24,7 @@ public sealed class DistinctUntilChangedTest
 		result.AssertSequenceEqual(2, 0, 5, 1, 0, 3, 0, 2, 3, 1, 4, 0, 2, 4, 3, 0);
 	}
 
-	[Test]
+	[Fact]
 	public void DistinctUntilChangedComparer()
 	{
 		using var source = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 0, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);
@@ -33,13 +33,13 @@ public sealed class DistinctUntilChangedTest
 		result.AssertSequenceEqual(2, 0, 5, 1, 0, 2, 3, 1, 0, 2, 4, 3);
 	}
 
-	[Test]
+	[Fact]
 	public void DistinctUntilChangedSelectorIsLazy()
 	{
 		_ = new BreakingSequence<int>().DistinctUntilChanged(BreakingFunc.Of<int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void DistinctUntilChangedSelectorEmptySequence()
 	{
 		using var source = TestingSequence.Of<int>();
@@ -47,7 +47,7 @@ public sealed class DistinctUntilChangedTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void DistinctUntilChangedSelector()
 	{
 		using var source = TestingSequence.Of(
@@ -72,7 +72,7 @@ public sealed class DistinctUntilChangedTest
 			"ten");
 	}
 
-	[Test]
+	[Fact]
 	public void DistinctUntilChangedSelectorComparer()
 	{
 		using var source = TestingSequence.Of(

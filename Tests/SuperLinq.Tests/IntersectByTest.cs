@@ -2,7 +2,7 @@ namespace SuperLinq.Tests;
 
 public sealed class IntersectByTest
 {
-	[Test]
+	[Fact]
 	public void SimpleIntersectBy()
 	{
 		using var first = TestingSequence.Of("aaa", "bb", "c", "dddd");
@@ -11,14 +11,14 @@ public sealed class IntersectByTest
 		result.AssertSequenceEqual("aaa", "bb");
 	}
 
-	[Test]
+	[Fact]
 	public void IntersectByIsLazy()
 	{
 		var bs = new BreakingSequence<string>();
 		_ = bs.IntersectBy(bs, BreakingFunc.Of<string, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void IntersectByDoesNotRepeatSourceElementsWithDuplicateKeys()
 	{
 		using var first = TestingSequence.Of("aaa", "bb", "c", "a", "b", "c", "dddd");
@@ -27,7 +27,7 @@ public sealed class IntersectByTest
 		result.AssertSequenceEqual("aaa", "c", "dddd");
 	}
 
-	[Test]
+	[Fact]
 	public void IntersectByWithComparer()
 	{
 		using var first = TestingSequence.Of("first", "second", "third", "fourth");
@@ -36,7 +36,7 @@ public sealed class IntersectByTest
 		result.AssertSequenceEqual("first", "third");
 	}
 
-	[Test]
+	[Fact]
 	public void IntersectByNullComparer()
 	{
 		using var first = TestingSequence.Of("aaa", "bb", "c", "dddd");
@@ -45,7 +45,7 @@ public sealed class IntersectByTest
 		result.AssertSequenceEqual("aaa", "dddd");
 	}
 
-	[Test]
+	[Fact]
 	public void IntersectByIsLazyWithComparer()
 	{
 		var bs = new BreakingSequence<int>();

@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class ToDelimitedStringTest
 {
-	[Test]
+	[Fact]
 	public void ToDelimitedStringWithNonEmptySequenceAndDelimiter()
 	{
 		using var seq = TestingSequence.Of(1, 2, 3);
@@ -10,7 +10,7 @@ public sealed class ToDelimitedStringTest
 		Assert.Equal("1-2-3", result);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDelimitedStringWithNonEmptySequenceContainingNulls()
 	{
 		using var seq = TestingSequence.Of<object?>(1, null, "foo", true);
@@ -18,7 +18,7 @@ public sealed class ToDelimitedStringTest
 		Assert.Equal("1,,foo,True", result);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDelimitedStringWithNonEmptySequenceContainingNullsAtStart()
 	{
 		using var seq = TestingSequence.Of<object?>(null, null, "foo");

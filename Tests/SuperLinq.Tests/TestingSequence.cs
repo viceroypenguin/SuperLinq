@@ -125,7 +125,7 @@ internal class TestingSequence<T> : IDisposableEnumerable<T>
 
 public sealed class TestingSequenceTest
 {
-	[Test]
+	[Fact]
 	public void TestingSequencePublicPropertiesTest()
 	{
 		using var sequence = Of(1, 2, 3, 4);
@@ -147,7 +147,7 @@ public sealed class TestingSequenceTest
 		Assert.True(sequence.IsDisposed);
 	}
 
-	[Test]
+	[Fact]
 	public void TestingSequenceShouldValidateDisposal()
 	{
 		static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
@@ -166,7 +166,7 @@ public sealed class TestingSequenceTest
 		AssertSequenceBehavior(Act, ExpectedDisposal);
 	}
 
-	[Test]
+	[Fact]
 	public void TestingSequenceShouldValidateNumberOfUsages()
 	{
 		static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
@@ -190,7 +190,7 @@ public sealed class TestingSequenceTest
 		AssertSequenceBehavior(Act, TooManyEnumerations);
 	}
 
-	[Test]
+	[Fact]
 	public void TestingSequenceShouldValidateDisposeOnDisposedSequence()
 	{
 		static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
@@ -211,7 +211,7 @@ public sealed class TestingSequenceTest
 		AssertSequenceBehavior(Act, TooManyDisposals);
 	}
 
-	[Test]
+	[Fact]
 	public void TestingSequenceShouldValidateMoveNextOnDisposedSequence()
 	{
 		static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
@@ -232,7 +232,7 @@ public sealed class TestingSequenceTest
 		AssertSequenceBehavior(Act, MoveNextPostDisposal);
 	}
 
-	[Test]
+	[Fact]
 	public void TestingSequenceShouldValidateMoveNextOnCompletedSequence()
 	{
 		static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
@@ -253,7 +253,7 @@ public sealed class TestingSequenceTest
 		AssertSequenceBehavior(Act, MoveNextPostEnumeration);
 	}
 
-	[Test]
+	[Fact]
 	public void TestingSequenceShouldValidateCurrentOnDisposedSequence()
 	{
 		static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
@@ -272,7 +272,7 @@ public sealed class TestingSequenceTest
 		AssertSequenceBehavior(Act, CurrentPostDisposal);
 	}
 
-	[Test]
+	[Fact]
 	public void TestingSequenceShouldValidateCurrentOnEndedSequence()
 	{
 		static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
@@ -293,7 +293,7 @@ public sealed class TestingSequenceTest
 		AssertSequenceBehavior(Act, CurrentPostEnumeration);
 	}
 
-	[Test]
+	[Fact]
 	public void TestingSequenceShouldValidateSimultaneousEnumeration()
 	{
 		static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)

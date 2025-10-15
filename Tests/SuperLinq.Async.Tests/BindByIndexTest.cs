@@ -1,15 +1,15 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class BindByIndexTest
 {
-	[Test]
+	[Fact]
 	public void BindByIndexIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().BindByIndex(new AsyncBreakingSequence<int>());
 		_ = new AsyncBreakingSequence<int>().BindByIndex(new AsyncBreakingSequence<int>(), BreakingFunc.Of<int, int, int>(), BreakingFunc.Of<int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task BindByIndexDisposesEnumerators()
 	{
 		await using var seq1 = TestingSequence.Of<int>();
@@ -17,7 +17,7 @@ public sealed class BindByIndexTest
 		await seq1.BindByIndex(seq2).AssertEmpty();
 	}
 
-	[Test]
+	[Fact]
 	public async Task BindByIndexInOrder()
 	{
 		var indexes = AsyncSeq(1, 3, 5, 7, 9);
@@ -27,7 +27,7 @@ public sealed class BindByIndexTest
 		await seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
-	[Test]
+	[Fact]
 	public async Task BindByIndexOutOfOrder()
 	{
 		var indexes = AsyncSeq(9, 7, 5, 3, 1);
@@ -37,7 +37,7 @@ public sealed class BindByIndexTest
 		await seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
-	[Test]
+	[Fact]
 	public async Task BindByIndexComplex()
 	{
 		var indexes = AsyncSeq(0, 1, 8, 9, 3, 4, 2);
@@ -47,10 +47,10 @@ public sealed class BindByIndexTest
 		await seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
-	[Test]
-	[Arguments(-1)]
-	[Arguments(10)]
-	[Arguments(100)]
+	[Theory]
+	[InlineData(-1)]
+	[InlineData(10)]
+	[InlineData(100)]
 	public async Task BindByIndexThrowExceptionInvalidIndex(int index)
 	{
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -60,7 +60,7 @@ public sealed class BindByIndexTest
 			async () => await seq1.BindByIndex(seq2).Consume());
 	}
 
-	[Test]
+	[Fact]
 	public async Task BindByIndexTransformInOrder()
 	{
 		var indexes = AsyncSeq(1, 3, 5, 7, 9);
@@ -71,7 +71,7 @@ public sealed class BindByIndexTest
 			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task BindByIndexTransformOutOfOrder()
 	{
 		var indexes = AsyncSeq(9, 7, 5, 3, 1);
@@ -82,7 +82,7 @@ public sealed class BindByIndexTest
 			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task BindByIndexTransformComplex()
 	{
 		var indexes = AsyncSeq(0, 1, 8, 9, 3, 4, 2);
@@ -93,7 +93,7 @@ public sealed class BindByIndexTest
 			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task BindByIndexTransformInvalidIndex()
 	{
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -103,7 +103,7 @@ public sealed class BindByIndexTest
 			.AssertSequenceEqual(2, null, 4, null);
 	}
 
-	[Test]
+	[Fact]
 	public async Task BindByIndexTransformThrowExceptionNegativeIndex()
 	{
 		await using var seq1 = AsyncEnumerable.Range(1, 10).AsTestingSequence();

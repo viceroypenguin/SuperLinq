@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class ForEachTest
 {
-	[Test]
+	[Fact]
 	public void ForEachWithSequence()
 	{
 		using var seq = TestingSequence.Of(1, 2, 3);
@@ -13,7 +13,7 @@ public sealed class ForEachTest
 		results.AssertSequenceEqual(1, 2, 3);
 	}
 
-	[Test]
+	[Fact]
 	public void ForEachIndexedWithSequence()
 	{
 		using var seq = TestingSequence.Of(9, 8, 7);

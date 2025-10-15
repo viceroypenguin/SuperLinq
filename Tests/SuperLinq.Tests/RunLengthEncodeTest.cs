@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 /// <summary>
 /// Verify the behavior of the RunLengthEncode() operator
@@ -8,7 +8,7 @@ public sealed class RunLengthEncodeTests
 	/// <summary>
 	/// Verify that the RunLengthEncode() methods behave in a lazy manner.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRunLengthEncodeIsLazy()
 	{
 		_ = new BreakingSequence<int>().RunLengthEncode();
@@ -18,7 +18,7 @@ public sealed class RunLengthEncodeTests
 	/// <summary>
 	/// Verify that run-length encoding an empty sequence results in an empty sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRunLengthEncodeEmptySequence()
 	{
 		using var sequence = TestingSequence.Of<int>();
@@ -30,7 +30,7 @@ public sealed class RunLengthEncodeTests
 	/// <summary>
 	/// Verify that run-length encoding correctly accepts and uses custom equality comparers.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRunLengthEncodeCustomComparer()
 	{
 		using var sequence = TestingSequence.Of("a", "A", "a", "b", "b", "B", "B");
@@ -48,7 +48,7 @@ public sealed class RunLengthEncodeTests
 	/// <summary>
 	/// Verify that run-length encoding a known sequence produced a correct result.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRunLengthEncodeResults()
 	{
 		using var sequence = TestingSequence.Of(1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6);
@@ -61,7 +61,7 @@ public sealed class RunLengthEncodeTests
 	/// <summary>
 	/// Verify that run-length encoding a sequence with no runs produces a correct result.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRunLengthEncodeNoRuns()
 	{
 		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
@@ -75,7 +75,7 @@ public sealed class RunLengthEncodeTests
 	/// Verify that run-length encoding a sequence consisting of a single repeated value
 	/// produces a correct result.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRunLengthEncodeOneRun()
 	{
 		using var sequence = Enumerable.Repeat('q', 10).AsTestingSequence();

@@ -2,7 +2,7 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class GroupAdjacentTest
 {
-	[Test]
+	[Fact]
 	public void GroupAdjacentIsLazy()
 	{
 		var bs = new AsyncBreakingSequence<object>();
@@ -18,7 +18,7 @@ public sealed class GroupAdjacentTest
 		_ = bs.GroupAdjacent(bf, bfg, EqualityComparer<int>.Default);
 	}
 
-	[Test]
+	[Fact]
 	public async Task GroupAdjacentSourceSequence()
 	{
 		const string One = "one";
@@ -47,7 +47,7 @@ public sealed class GroupAdjacentTest
 		await reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public async Task GroupAdjacentSourceSequenceComparer()
 	{
 		await using var source = TestingSequence.Of("foo", "FOO", "Foo", "bar", "BAR", "Bar");
@@ -60,7 +60,7 @@ public sealed class GroupAdjacentTest
 		await reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public async Task GroupAdjacentSourceSequenceElementSelector()
 	{
 		await using var source = TestingSequence.Of(
@@ -87,7 +87,7 @@ public sealed class GroupAdjacentTest
 		await reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public async Task GroupAdjacentSourceSequenceElementSelectorComparer()
 	{
 		await using var source = TestingSequence.Of(
@@ -114,7 +114,7 @@ public sealed class GroupAdjacentTest
 		await reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public async Task GroupAdjacentSourceSequenceResultSelector()
 	{
 		await using var source = TestingSequence.Of(
@@ -141,7 +141,7 @@ public sealed class GroupAdjacentTest
 		await reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public async Task GroupAdjacentSourceSequenceResultSelectorComparer()
 	{
 		await using var source = TestingSequence.Of(
@@ -168,7 +168,7 @@ public sealed class GroupAdjacentTest
 		await reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public async Task GroupAdjacentSourceSequenceWithSomeNullKeys()
 	{
 		using var source = AsyncEnumerable.Range(1, 5)

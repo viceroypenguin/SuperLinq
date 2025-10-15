@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class ThrowTest
 {
-	[Test]
+	[Fact]
 	public void ThrowIsLazy()
 	{
 		_ = SuperEnumerable.Throw<int>(new TestException());
 	}
 
-	[Test]
+	[Fact]
 	public void ThrowBehavior()
 	{
 		var seq = SuperEnumerable.Throw<int>(new TestException());

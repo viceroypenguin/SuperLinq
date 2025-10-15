@@ -2,7 +2,7 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class IntersectByTest
 {
-	[Test]
+	[Fact]
 	public async Task SimpleIntersectBy()
 	{
 		using var first = TestingSequence.Of("aaa", "bb", "c", "dddd");
@@ -11,14 +11,14 @@ public sealed class IntersectByTest
 		await result.AssertSequenceEqual("aaa", "bb");
 	}
 
-	[Test]
+	[Fact]
 	public void IntersectByIsLazy()
 	{
 		var bs = new AsyncBreakingSequence<string>();
 		_ = bs.IntersectBy(bs, BreakingFunc.Of<string, int>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task IntersectByDoesNotRepeatSourceElementsWithDuplicateKeys()
 	{
 		using var first = TestingSequence.Of("aaa", "bb", "c", "a", "b", "c", "dddd");
@@ -27,7 +27,7 @@ public sealed class IntersectByTest
 		await result.AssertSequenceEqual("aaa", "c", "dddd");
 	}
 
-	[Test]
+	[Fact]
 	public async Task IntersectByWithComparer()
 	{
 		using var first = TestingSequence.Of("first", "second", "third", "fourth");
@@ -36,7 +36,7 @@ public sealed class IntersectByTest
 		await result.AssertSequenceEqual("first", "third");
 	}
 
-	[Test]
+	[Fact]
 	public async Task IntersectByNullComparer()
 	{
 		using var first = TestingSequence.Of("aaa", "bb", "c", "dddd");
@@ -45,7 +45,7 @@ public sealed class IntersectByTest
 		await result.AssertSequenceEqual("aaa", "dddd");
 	}
 
-	[Test]
+	[Fact]
 	public void IntersectByIsLazyWithComparer()
 	{
 		var bs = new AsyncBreakingSequence<int>();

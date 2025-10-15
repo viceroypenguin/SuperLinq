@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class MinItemsTest
 {
-	[Test]
+	[Fact]
 	public void MinItemsIsLazy()
 	{
 		_ = new BreakingSequence<int>().MinItems();
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsEmptyList()
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -16,7 +16,7 @@ public sealed class MinItemsTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsBehavior()
 	{
 		using var seq = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 4, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);
@@ -24,13 +24,13 @@ public sealed class MinItemsTest
 		result.AssertSequenceEqual(0, 0, 0, 0);
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsComparerIsLazy()
 	{
 		_ = new BreakingSequence<int>().MinItems(comparer: null);
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsComparerEmptyList()
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -38,7 +38,7 @@ public sealed class MinItemsTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsComparerBehavior()
 	{
 		using var seq = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 4, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);
@@ -46,14 +46,14 @@ public sealed class MinItemsTest
 		result.AssertSequenceEqual(0, 0, 3, 3, 0, 3, 3, 0);
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsByIsLazy()
 	{
 		_ = new BreakingSequence<int>().MinItemsBy(BreakingFunc.Of<int, int>());
 		_ = new BreakingSequence<int>().MinByWithTies(BreakingFunc.Of<int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsByEmptyList()
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -61,7 +61,7 @@ public sealed class MinItemsTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsByBehavior()
 	{
 		using var seq = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 4, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);
@@ -69,14 +69,14 @@ public sealed class MinItemsTest
 		result.AssertSequenceEqual(5, 5);
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsByComparerIsLazy()
 	{
 		_ = new BreakingSequence<int>().MinItemsBy(BreakingFunc.Of<int, int>(), comparer: null);
 		_ = new BreakingSequence<int>().MinByWithTies(BreakingFunc.Of<int, int>(), comparer: null);
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsByComparerEmptyList()
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -84,7 +84,7 @@ public sealed class MinItemsTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsByComparerBehavior()
 	{
 		using var seq = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 4, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);

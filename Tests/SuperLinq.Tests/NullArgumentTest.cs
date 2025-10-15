@@ -11,18 +11,16 @@ namespace SuperLinq.Tests;
 
 public sealed class NullArgumentTest
 {
-	[Test]
-	[MethodDataSource(nameof(GetNotNullArguments))]
-	public void NotNull(Action arguments) =>
-		arguments();
+	[Theory, MemberData(nameof(GetNotNullInlineDatas))]
+	public void NotNull(Action inlineData) =>
+		inlineData();
 
-	[Test]
-	[MethodDataSource(nameof(GetCanBeNullArguments))]
-	public void CanBeNull(Action arguments) =>
-		arguments();
+	[Theory, MemberData(nameof(GetCanBeNullInlineDatas))]
+	public void CanBeNull(Action inlineData) =>
+		inlineData();
 
-	public static IEnumerable<Action> GetNotNullArguments() =>
-		GetArguments(canBeNull: false, argumentsFactory: (method, args, paramName) => () =>
+	public static IEnumerable<object[]> GetNotNullInlineDatas() =>
+		GetInlineDatas(canBeNull: false, inlineDataFactory: (method, args, paramName) => () =>
 		{
 			var tie = Assert.Throws<TargetInvocationException>(() =>
 				method.Invoke(null, args));
@@ -34,8 +32,8 @@ public sealed class NullArgumentTest
 			Assert.Equal(paramName, ane.ParamName);
 		});
 
-	public static IEnumerable<Action> GetCanBeNullArguments() =>
-		GetArguments(canBeNull: true, argumentsFactory: (method, args, paramName) => () =>
+	public static IEnumerable<object[]> GetCanBeNullInlineDatas() =>
+		GetInlineDatas(canBeNull: true, inlineDataFactory: (method, args, paramName) => () =>
 		{
 			try
 			{
@@ -43,9 +41,8 @@ public sealed class NullArgumentTest
 			}
 			catch (TargetInvocationException tie)
 			{
-				Assert.False(
-					tie.InnerException is ArgumentNullException ane
-					&& !string.Equals(ane.ParamName, paramName, StringComparison.Ordinal));
+				Assert.False(tie.InnerException is not null && tie.InnerException is ArgumentNullException ane
+					&& ane.ParamName != paramName);
 			}
 		});
 
@@ -54,13 +51,13 @@ public sealed class NullArgumentTest
 		nameof(SuperEnumerable.CopyTo),
 	];
 
-	private static IEnumerable<Action> GetArguments(bool canBeNull, Func<MethodInfo, object[], string, Action> argumentsFactory) =>
+	private static IEnumerable<object[]> GetInlineDatas(bool canBeNull, Func<MethodInfo, object[], string, Action> inlineDataFactory) =>
 		from m in typeof(SuperEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
 		where !s_skipMethods.Contains(m.Name, StringComparer.Ordinal)
-		from t in CreateArguments(m, canBeNull, argumentsFactory)
+		from t in CreateInlineDatas(m, canBeNull, inlineDataFactory)
 		select t;
 
-	private static IEnumerable<Action> CreateArguments(MethodInfo methodDefinition, bool canBeNull, Func<MethodInfo, object[], string, Action> argumentsFactory)
+	private static IEnumerable<object[]> CreateInlineDatas(MethodInfo methodDefinition, bool canBeNull, Func<MethodInfo, object[], string, Action> inlineDataFactory)
 	{
 		var method = InstantiateMethod(methodDefinition);
 		var parameters = method.GetParameters().ToList();
@@ -68,7 +65,9 @@ public sealed class NullArgumentTest
 		return from param in parameters
 			   where IsReferenceType(param) && ParameterCanBeNull(param) == canBeNull
 			   let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
-			   select argumentsFactory(method, arguments, param.Name!);
+			   let InlineData = inlineDataFactory(method, arguments, param.Name!)
+			   let testName = GetTestName(methodDefinition, param)
+			   select new object[] { InlineData };
 	}
 
 	private static string GetTestName(MethodInfo definition, ParameterInfo parameter) =>

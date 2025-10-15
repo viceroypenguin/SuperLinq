@@ -6,13 +6,13 @@ namespace SuperLinq.Tests;
 
 public sealed class InsertTest
 {
-	[Test]
+	[Fact]
 	public void InsertIsLazy()
 	{
 		_ = new BreakingSequence<int>().Insert(new BreakingSequence<int>(), 0);
 	}
 
-	[Test]
+	[Fact]
 	public void InsertWithNegativeIndex()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -24,28 +24,24 @@ public sealed class InsertTest
 		"CA2000:Dispose objects before losing scope",
 		Justification = "Will be properly disposed in method"
 	)]
-	public static IEnumerable<(
-		IDisposableEnumerable<int> seq1,
-		IDisposableEnumerable<int> seq2
-	)> GetSequences()
+	public static IEnumerable<object[]> GetSequences()
 	{
 		var baseSeq = Enumerable.Range(0, 10);
 		var insSeq = Seq(97, 98, 99);
 
 		return
 		[
-			(baseSeq.AsTestingSequence(), insSeq.AsTestingSequence()),
-			(baseSeq.AsTestingCollection(), insSeq.AsTestingCollection()),
-			(baseSeq.AsBreakingList(), insSeq.AsBreakingList()),
+			[baseSeq.AsTestingSequence(), insSeq.AsTestingSequence(),],
+			[baseSeq.AsTestingCollection(), insSeq.AsTestingCollection(),],
+			[baseSeq.AsBreakingList(), insSeq.AsBreakingList(),],
 		];
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void InsertWithIndexGreaterThanSourceLength(
 		IDisposableEnumerable<int> seq1,
-		IDisposableEnumerable<int> seq2
-	)
+		IDisposableEnumerable<int> seq2)
 	{
 		using (seq1)
 		using (seq2)
@@ -59,8 +55,8 @@ public sealed class InsertTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void InsertWithEndIndexGreaterThanSourceLength(
 		IDisposableEnumerable<int> seq1,
 		IDisposableEnumerable<int> seq2)
@@ -77,24 +73,18 @@ public sealed class InsertTest
 		}
 	}
 
-	public static IEnumerable<(
-		IDisposableEnumerable<int> seq1,
-		IDisposableEnumerable<int> seq2,
-		Index index
-	)> GetInsertData() =>
+	public static IEnumerable<object[]> GetInsertData() =>
 		Seq(0, 5, 10, ^0, ^5, ^10)
 			.SelectMany(
 				_ => GetSequences(),
-				(i, x) => (x.seq1, x.seq2, i)
-			);
+				(i, x) => new object[] { x[0], x[1], i });
 
-	[Test]
-	[MethodDataSource(nameof(GetInsertData))]
+	[Theory]
+	[MemberData(nameof(GetInsertData))]
 	public void Insert(
 		IDisposableEnumerable<int> seq1,
 		IDisposableEnumerable<int> seq2,
-		Index index
-	)
+		Index index)
 	{
 		using (seq1)
 		using (seq2)
@@ -106,12 +96,11 @@ public sealed class InsertTest
 				Enumerable.Range(0, idx)
 					.Concat(Seq(97, 98, 99))
 					.Concat(Enumerable.Range(idx, 10 - idx)),
-				testCollectionEnumerable: true
-			);
+				testCollectionEnumerable: true);
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void InsertCollectionBehavior()
 	{
 		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingCollection();
@@ -121,7 +110,7 @@ public sealed class InsertTest
 		result.AssertCollectionErrorChecking(20_000);
 	}
 
-	[Test]
+	[Fact]
 	public void InsertListFromStartBehavior()
 	{
 		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -136,7 +125,7 @@ public sealed class InsertTest
 		Assert.Equal(8_800, result.ElementAt(^1_200));
 	}
 
-	[Test]
+	[Fact]
 	public void InsertListFromEndBehavior()
 	{
 		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -151,7 +140,7 @@ public sealed class InsertTest
 		Assert.Equal(8_800, result.ElementAt(^1_200));
 	}
 
-	[Test]
+	[Fact]
 	public void InsertListAtEndBehavior()
 	{
 		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();

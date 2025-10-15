@@ -4,10 +4,10 @@ namespace SuperLinq.Tests;
 
 public sealed class EndsWithTest
 {
-	[Test]
-	[Arguments(new[] { 1, 2, 3 }, new[] { 2, 3 }, true)]
-	[Arguments(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, true)]
-	[Arguments(new[] { 1, 2, 3 }, new[] { 0, 1, 2, 3 }, false)]
+	[Theory]
+	[InlineData(new[] { 1, 2, 3 }, new[] { 2, 3 }, true)]
+	[InlineData(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, true)]
+	[InlineData(new[] { 1, 2, 3 }, new[] { 0, 1, 2, 3 }, false)]
 	public void EndsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second, bool expected)
 	{
 		using var f = first.AsTestingSequence();
@@ -15,10 +15,10 @@ public sealed class EndsWithTest
 		Assert.Equal(expected, f.EndsWith(s));
 	}
 
-	[Test]
-	[Arguments(new[] { '1', '2', '3' }, new[] { '2', '3' }, true)]
-	[Arguments(new[] { '1', '2', '3' }, new[] { '1', '2', '3' }, true)]
-	[Arguments(new[] { '1', '2', '3' }, new[] { '0', '1', '2', '3' }, false)]
+	[Theory]
+	[InlineData(new[] { '1', '2', '3' }, new[] { '2', '3' }, true)]
+	[InlineData(new[] { '1', '2', '3' }, new[] { '1', '2', '3' }, true)]
+	[InlineData(new[] { '1', '2', '3' }, new[] { '0', '1', '2', '3' }, false)]
 	public void EndsWithWithChars(IEnumerable<char> first, IEnumerable<char> second, bool expected)
 	{
 		using var f = first.AsTestingSequence();
@@ -26,10 +26,10 @@ public sealed class EndsWithTest
 		Assert.Equal(expected, f.EndsWith(s));
 	}
 
-	[Test]
-	[Arguments("123", "23", true)]
-	[Arguments("123", "123", true)]
-	[Arguments("123", "0123", false)]
+	[Theory]
+	[InlineData("123", "23", true)]
+	[InlineData("123", "123", true)]
+	[InlineData("123", "0123", false)]
 	public void EndsWithWithStrings(string first, string second, bool expected)
 	{
 		using var f = first.AsTestingSequence();
@@ -37,7 +37,7 @@ public sealed class EndsWithTest
 		Assert.Equal(expected, f.EndsWith(s));
 	}
 
-	[Test]
+	[Fact]
 	public void EndsWithReturnsTrueIfBothEmpty()
 	{
 		using var f = Array.Empty<int>().AsTestingSequence();
@@ -45,7 +45,7 @@ public sealed class EndsWithTest
 		Assert.True(f.EndsWith(s));
 	}
 
-	[Test]
+	[Fact]
 	public void EndsWithReturnsFalseIfOnlyFirstIsEmpty()
 	{
 		using var f = TestingSequence.Of<int>();
@@ -53,9 +53,9 @@ public sealed class EndsWithTest
 		Assert.False(f.EndsWith(s));
 	}
 
-	[Test]
-	[Arguments("", "", true)]
-	[Arguments("1", "", true)]
+	[Theory]
+	[InlineData("", "", true)]
+	[InlineData("1", "", true)]
 	public void EndsWithReturnsTrueIfSecondIsEmpty(string first, string second, bool expected)
 	{
 		using var f = first.AsTestingSequence();
@@ -63,7 +63,7 @@ public sealed class EndsWithTest
 		Assert.Equal(expected, f.EndsWith(s));
 	}
 
-	[Test]
+	[Fact]
 	public void EndsWithUsesSpecifiedEqualityComparerOrDefault()
 	{
 		var first = Seq(1, 2, 3);
@@ -75,7 +75,7 @@ public sealed class EndsWithTest
 		Assert.True(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
 	}
 
-	[Test]
+	[Fact]
 	public void EndsWithUsesCollectionsCountToAvoidUnnecessaryIteration()
 	{
 		using var first = new BreakingCollection<int>(1, 2);

@@ -1,17 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
 	<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 	<TargetFrameworks Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '10.0'))">net9.0;net10.0</TargetFrameworks>
+    <OutputType>Exe</OutputType>
 
-	<IsPackable>false</IsPackable>
+    <IsPackable>false</IsPackable>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
 
 	<PolySharpExcludeGeneratedTypes>System.Runtime.CompilerServices.ModuleInitializerAttribute</PolySharpExcludeGeneratedTypes>
   </PropertyGroup>
 
   <PropertyGroup Condition="$([System.OperatingSystem]::IsWindows())">
-	<TargetFrameworks>net47;$(TargetFrameworks)</TargetFrameworks>
+	<TargetFrameworks>net472;$(TargetFrameworks)</TargetFrameworks>
 	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
@@ -32,12 +33,12 @@
     <Using Include="SuperLinq" />
     <Using Include="SuperLinq.Async" />
     <Using Include="SuperLinq.Tests" />
-    <Using Include="Xunit.Assert" Alias="Assert" />
+    <Using Include="Xunit" />
     <Using Include="SuperLinq.Tests.FuncModule" Static="true" />
     <Using Include="SuperLinq.Async.Tests.TestExtensions" Static="true" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net47'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net472'">
     <DefineConstants>$(DefineConstants);NO_INDEX</DefineConstants>
   </PropertyGroup>
 
@@ -45,8 +46,7 @@
     <PackageReference Include="coverlet.collector" PrivateAssets="All" />
     <PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
     <PackageReference Include="GitHubActionsTestLogger" PrivateAssets="All" />
-    <PackageReference Include="TUnit.Engine" />
-    <PackageReference Include="xunit.v3.assert" />
+    <PackageReference Include="xunit.v3" />
   </ItemGroup>
 
 </Project>

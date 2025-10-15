@@ -1,28 +1,28 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class TakeEveryTest
 {
-	[Test]
+	[Fact]
 	public void TakeEveryIsLazy()
 	{
 		_ = new AsyncBreakingSequence<object>().TakeEvery(1);
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryNegativeSkip()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new AsyncBreakingSequence<int>().TakeEvery(-1));
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryOutOfRangeZeroStep()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new AsyncBreakingSequence<int>().TakeEvery(0));
 	}
 
-	[Test]
+	[Fact]
 	public async Task TakeEveryEmptySequence()
 	{
 		await using var sequence = TestingSequence.Of<object>();
@@ -31,7 +31,7 @@ public sealed class TakeEveryTest
 		await result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public async Task TakeEveryNonEmptySequence()
 	{
 		await using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
@@ -40,7 +40,7 @@ public sealed class TakeEveryTest
 		await result.AssertSequenceEqual(1, 2, 3, 4, 5);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TakeEveryOtherOnNonEmptySequence()
 	{
 		await using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
@@ -49,7 +49,7 @@ public sealed class TakeEveryTest
 		await result.AssertSequenceEqual(1, 3, 5);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TakeEveryThirdOnNonEmptySequence()
 	{
 		await using var sequence = Enumerable.Range(1, 5).AsTestingSequence();

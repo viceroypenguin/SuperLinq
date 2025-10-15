@@ -1,12 +1,12 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class CompareCountTest
 {
-	[Test]
-	[Arguments(0, 0, 0)]
-	[Arguments(0, 1, -1)]
-	[Arguments(1, 0, 1)]
-	[Arguments(1, 1, 0)]
+	[Theory]
+	[InlineData(0, 0, 0)]
+	[InlineData(0, 1, -1)]
+	[InlineData(1, 0, 1)]
+	[InlineData(1, 1, 0)]
 	public async Task CompareCount(int xCount, int yCount, int expected)
 	{
 		await using var xs = AsyncEnumerable.Range(0, xCount).AsTestingSequence();
@@ -14,7 +14,7 @@ public sealed class CompareCountTest
 		Assert.Equal(expected, await xs.CompareCount(ys));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CompareCountDisposesSequenceEnumerators()
 	{
 		await using var seq1 = TestingSequence.Of<int>();
@@ -23,7 +23,7 @@ public sealed class CompareCountTest
 		Assert.Equal(0, await seq1.CompareCount(seq2));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CompareCountDoesNotIterateUnnecessaryElements()
 	{
 		await using var seq1 = AsyncSeqExceptionAt(5).AsTestingSequence();

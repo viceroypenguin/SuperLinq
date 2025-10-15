@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class PartitionTest
 {
-	[Test]
+	[Fact]
 	public async Task Partition()
 	{
 		await using var sequence = Enumerable.Range(0, 10).AsTestingSequence();
@@ -13,7 +13,7 @@ public sealed class PartitionTest
 		odds.AssertSequenceEqual(1, 3, 5, 7, 9);
 	}
 
-	[Test]
+	[Fact]
 	public async Task PartitionWithEmptySequence()
 	{
 		await using var sequence = Enumerable.Empty<int>().AsTestingSequence();
@@ -24,7 +24,7 @@ public sealed class PartitionTest
 		odds.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public async Task PartitionWithResultSelector()
 	{
 		await using var sequence = Enumerable.Range(0, 10).AsTestingSequence();

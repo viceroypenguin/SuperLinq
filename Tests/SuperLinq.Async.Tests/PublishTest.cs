@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class PublishTest
 {
-	[Test]
+	[Fact]
 	public void PublishIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Publish();
 	}
 
-	[Test]
+	[Fact]
 	public async Task PublishWithSingleConsumer()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -17,7 +17,7 @@ public sealed class PublishTest
 		await result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	[Test]
+	[Fact]
 	public async Task PublishWithMultipleConsumers()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -67,7 +67,7 @@ public sealed class PublishTest
 		Assert.Equal(0, result.Count);
 	}
 
-	[Test]
+	[Fact]
 	public async Task PublishWithInnerConsumer()
 	{
 		await using var seq = Enumerable.Range(1, 6).AsTestingSequence();
@@ -94,7 +94,7 @@ public sealed class PublishTest
 		Assert.Equal(0, result.Count);
 	}
 
-	[Test]
+	[Fact]
 	public async Task PublishWithSequentialPartialConsumers()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -127,7 +127,7 @@ public sealed class PublishTest
 		Assert.Equal(0, result.Count);
 	}
 
-	[Test]
+	[Fact]
 	public async Task PublishDisposesAfterSourceIsIteratedEntirely()
 	{
 		await using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -138,7 +138,7 @@ public sealed class PublishTest
 		Assert.True(seq.IsDisposed);
 	}
 
-	[Test]
+	[Fact]
 	public async Task PublishDisposesWithPartialEnumeration()
 	{
 		await using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -151,7 +151,7 @@ public sealed class PublishTest
 		Assert.True(seq.IsDisposed);
 	}
 
-	[Test]
+	[Fact]
 	public async Task PublishRestartsAfterReset()
 	{
 		var starts = 0;
@@ -174,7 +174,7 @@ public sealed class PublishTest
 		Assert.Equal(2, starts);
 	}
 
-	[Test]
+	[Fact]
 	public async Task PublishThrowsWhenCacheDisposedDuringIteration()
 	{
 		await using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -189,7 +189,7 @@ public sealed class PublishTest
 			async () => await reader.Read());
 	}
 
-	[Test]
+	[Fact]
 	public async Task PublishThrowsWhenResetDuringIteration()
 	{
 		await using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -205,7 +205,7 @@ public sealed class PublishTest
 		Assert.Equal("Buffer reset during iteration.", ex.Message);
 	}
 
-	[Test]
+	[Fact]
 	public async Task PublishThrowsWhenGettingIteratorAfterDispose()
 	{
 		await using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -217,7 +217,7 @@ public sealed class PublishTest
 			async () => await buffer.Consume());
 	}
 
-	[Test]
+	[Fact]
 	public async Task PublishThrowsWhenResettingAfterDispose()
 	{
 		await using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -229,7 +229,7 @@ public sealed class PublishTest
 			async () => await buffer.Reset());
 	}
 
-	[Test]
+	[Fact]
 	public async Task PublishRethrowsErrorDuringIterationToAllIteratorsUntilReset()
 	{
 		await using var xs = AsyncSeqExceptionAt(2).AsTestingSequence(maxEnumerations: 2);
@@ -256,7 +256,7 @@ public sealed class PublishTest
 		Assert.Equal(1, await r4.Read());
 	}
 
-	[Test]
+	[Fact]
 	public async Task PublishRethrowsErrorDuringFirstIterationStartToAllIterationsUntilReset()
 	{
 		await using var seq = new FailingEnumerable().AsTestingSequence(maxEnumerations: 2);

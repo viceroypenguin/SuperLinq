@@ -1,20 +1,20 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class TraverseTest
 {
-	[Test]
+	[Fact]
 	public void TraverseDepthFirstIsStreaming()
 	{
 		_ = SuperEnumerable.TraverseDepthFirst(new object(), o => new BreakingSequence<object>());
 	}
 
-	[Test]
+	[Fact]
 	public void TraverseBreadthFirstIsStreaming()
 	{
 		_ = SuperEnumerable.TraverseBreadthFirst(new object(), o => new BreakingSequence<object>());
 	}
 
-	[Test]
+	[Fact]
 	public void TraverseDepthFirstPreservesChildrenOrder()
 	{
 		using var root = Enumerable.Range(1, 10).AsTestingSequence();
@@ -23,7 +23,7 @@ public sealed class TraverseTest
 		res.AssertSequenceEqual(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 	}
 
-	[Test]
+	[Fact]
 	public void TraverseBreadthFirstPreservesChildrenOrder()
 	{
 		using var root = Enumerable.Range(1, 10).AsTestingSequence();
@@ -47,7 +47,7 @@ public sealed class TraverseTest
 			new(value, children);
 	}
 
-	[Test]
+	[Fact]
 	public void TraverseBreadthFirstTraversesBreadthFirst()
 	{
 		var tree = Tree.New(1,
@@ -60,7 +60,7 @@ public sealed class TraverseTest
 		res.AssertSequenceEqual(1, 2, 5, 3, 6);
 	}
 
-	[Test]
+	[Fact]
 	public void TraverseDepthFirstTraversesDepthFirst()
 	{
 		var tree = Tree.New(1,

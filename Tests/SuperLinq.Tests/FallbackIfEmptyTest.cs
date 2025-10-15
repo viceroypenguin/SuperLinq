@@ -1,36 +1,36 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class FallbackIfEmptyTest
 {
-	[Test]
+	[Fact]
 	public void FallbackIfEmptyWithEmptySequence()
 	{
 		using var source = Seq<int>().AsTestingSequence();
 		source.FallbackIfEmpty(12).AssertSequenceEqual(12);
 	}
 
-	[Test]
+	[Fact]
 	public void FallbackIfEmptyWithCollectionSequence()
 	{
 		using var source = Seq<int>().AsTestingCollection();
 		source.FallbackIfEmpty(12).AssertSequenceEqual(12);
 	}
 
-	[Test]
+	[Fact]
 	public void FallbackIfEmptyWithNotEmptySequence()
 	{
 		using var source = Seq(1).AsTestingSequence();
 		source.FallbackIfEmpty(new BreakingSequence<int>()).AssertSequenceEqual(1);
 	}
 
-	[Test]
+	[Fact]
 	public void FallbackIfEmptyWithNotEmptyCollectionSequence()
 	{
 		using var source = Seq(1).AsTestingCollection();
 		source.FallbackIfEmpty(new BreakingSequence<int>()).AssertSequenceEqual(1);
 	}
 
-	[Test]
+	[Fact]
 	public void AssertFallbackIfEmptyCollectionBehaviorOnEmptyCollection()
 	{
 		using var source = Seq<int>().AsBreakingCollection();
@@ -40,7 +40,7 @@ public sealed class FallbackIfEmptyTest
 		result.AssertCollectionErrorChecking(10_000);
 	}
 
-	[Test]
+	[Fact]
 	public void AssertFallbackIfEmptyCollectionBehaviorOnNonEmptyCollection()
 	{
 		using var source = Enumerable.Range(0, 10_000).AsBreakingCollection();
@@ -50,7 +50,7 @@ public sealed class FallbackIfEmptyTest
 		result.AssertCollectionErrorChecking(10_000);
 	}
 
-	[Test]
+	[Fact]
 	public void FallbackIfEmptyUsesCollectionCountAtIterationTime()
 	{
 		var stack = new Stack<int>();

@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class TakeUntilTest
 {
-	[Test]
+	[Fact]
 	public void TakeUntilEvaluatesSourceLazily()
 	{
 		_ = new AsyncBreakingSequence<string>().TakeUntil(x => x.Length == 0);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TakeUntilPredicateNeverFalse()
 	{
 		await using var sequence = Enumerable.Range(0, 5).AsTestingSequence();
@@ -17,7 +17,7 @@ public sealed class TakeUntilTest
 			.AssertSequenceEqual(0);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TakeUntilPredicateNeverTrue()
 	{
 		await using var sequence = Enumerable.Range(0, 5).AsTestingSequence();
@@ -26,7 +26,7 @@ public sealed class TakeUntilTest
 			.AssertSequenceEqual(Enumerable.Range(0, 5));
 	}
 
-	[Test]
+	[Fact]
 	public async Task TakeUntilPredicateBecomesTrueHalfWay()
 	{
 		await using var sequence = Enumerable.Range(0, 5).AsTestingSequence();
@@ -35,7 +35,7 @@ public sealed class TakeUntilTest
 			.AssertSequenceEqual(0, 1, 2);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TakeUntilEvaluatesPredicateLazily()
 	{
 		// Predicate would explode at x == 0, but we never need to evaluate it due to the Take call.

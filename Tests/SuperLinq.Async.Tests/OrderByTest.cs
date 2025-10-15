@@ -10,7 +10,7 @@ public sealed class OrderByTests
 	/// <summary>
 	/// Verify that OrderBy preserves the selector
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestOrderBySelectorPreserved()
 	{
 		var sequenceAscending = AsyncEnumerable.Range(1, 100);
@@ -30,7 +30,7 @@ public sealed class OrderByTests
 	/// <summary>
 	/// Verify that OrderBy preserves the comparer
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestOrderByComparerPreserved()
 	{
 		var sequence = AsyncEnumerable.Range(1, 100);
@@ -60,7 +60,7 @@ public sealed class OrderByTests
 	/// <summary>
 	/// Verify that ThenBy preserves the selector
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestThenBySelectorPreserved()
 	{
 		var sequence = AsyncSeq(
@@ -93,7 +93,7 @@ public sealed class OrderByTests
 	/// <summary>
 	/// Verify that ThenBy preserves the comparer
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestThenByComparerPreserved()
 	{
 		var sequence = AsyncSeq(

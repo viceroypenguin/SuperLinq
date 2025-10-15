@@ -1,15 +1,15 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class CaseTest
 {
-	[Test]
+	[Fact]
 	public void CaseIsLazy()
 	{
 		_ = AsyncSuperEnumerable.Case(BreakingFunc.Of<int>(), new Dictionary<int, IAsyncEnumerable<int>>());
 		_ = AsyncSuperEnumerable.Case(BreakingFunc.Of<ValueTask<int>>(), new Dictionary<int, IAsyncEnumerable<int>>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task CaseBehavior()
 	{
 		var starts = 0;
@@ -35,14 +35,14 @@ public sealed class CaseTest
 		await seq.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void CaseSourceIsLazy()
 	{
 		_ = AsyncSuperEnumerable.Case(BreakingFunc.Of<int>(), new Dictionary<int, IAsyncEnumerable<int>>(), new AsyncBreakingSequence<int>());
 		_ = AsyncSuperEnumerable.Case(BreakingFunc.Of<ValueTask<int>>(), new Dictionary<int, IAsyncEnumerable<int>>(), new AsyncBreakingSequence<int>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task CaseSourceBehavior()
 	{
 		var starts = 0;

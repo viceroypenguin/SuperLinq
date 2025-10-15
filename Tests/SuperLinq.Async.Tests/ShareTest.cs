@@ -1,16 +1,16 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace SuperLinq.Async.Tests;
 
 public sealed class ShareTest
 {
-	[Test]
+	[Fact]
 	public void ShareIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Share();
 	}
 
-	[Test]
+	[Fact]
 	public async Task ShareWithSingleConsumer()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -20,7 +20,7 @@ public sealed class ShareTest
 		Assert.Equal(0, result.Count);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ShareWithMultipleConsumers()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -45,7 +45,7 @@ public sealed class ShareTest
 		await r2.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public async Task ShareWithInnerConsumer()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -72,7 +72,7 @@ public sealed class ShareTest
 		await r1.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public async Task ShareWithSequentialPartialConsumers()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -102,7 +102,7 @@ public sealed class ShareTest
 		await r3.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public async Task ShareDisposesAfterSourceIsIteratedEntirely()
 	{
 		await using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -113,7 +113,7 @@ public sealed class ShareTest
 		Assert.True(seq.IsDisposed);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ShareDisposesWithPartialEnumeration()
 	{
 		await using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -126,7 +126,7 @@ public sealed class ShareTest
 		Assert.True(seq.IsDisposed);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ShareRestartsAfterReset()
 	{
 		var starts = 0;
@@ -149,7 +149,7 @@ public sealed class ShareTest
 		Assert.Equal(2, starts);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ShareThrowsWhenCacheDisposedDuringIteration()
 	{
 		await using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -164,7 +164,7 @@ public sealed class ShareTest
 			async () => await reader.Read());
 	}
 
-	[Test]
+	[Fact]
 	public async Task ShareThrowsWhenResetDuringIteration()
 	{
 		await using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -180,7 +180,7 @@ public sealed class ShareTest
 		Assert.Equal("Buffer reset during iteration.", ex.Message);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ShareThrowsWhenGettingIteratorAfterDispose()
 	{
 		await using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -192,7 +192,7 @@ public sealed class ShareTest
 			async () => await buffer.Consume());
 	}
 
-	[Test]
+	[Fact]
 	public async Task ShareThrowsWhenResettingAfterDispose()
 	{
 		await using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -204,7 +204,7 @@ public sealed class ShareTest
 			async () => await buffer.Reset());
 	}
 
-	[Test]
+	[Fact]
 	public async Task ShareRethrowsErrorDuringIterationToAllIteratorsUntilReset()
 	{
 		await using var xs = AsyncSeqExceptionAt(2).AsTestingSequence(maxEnumerations: 2);
@@ -229,7 +229,7 @@ public sealed class ShareTest
 			Assert.Equal(1, await r1.Read());
 	}
 
-	[Test]
+	[Fact]
 	public async Task ShareRethrowsErrorDuringFirstIterationStartToAllIterationsUntilReset()
 	{
 		await using var seq = new FailingEnumerable().AsTestingSequence(maxEnumerations: 2);

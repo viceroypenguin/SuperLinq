@@ -14,7 +14,7 @@ public sealed class ValueTupleComparerTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void ValueTupleComparerShouldCreateWithDefaultComparers()
 	{
 		var comparer = ValueTupleComparer.Create<int, int>(comparer1: null, comparer2: null);
@@ -24,7 +24,7 @@ public sealed class ValueTupleComparerTest
 		Assert.Equal(-1, result);
 	}
 
-	[Test]
+	[Fact]
 	public void ValueTupleComparerShouldCheckSecondItemIfFirstIsZero()
 	{
 		var comparer = ValueTupleComparer.Create<int, int>(comparer1: null, comparer2: null);
@@ -34,7 +34,7 @@ public sealed class ValueTupleComparerTest
 		Assert.Equal(1, result);
 	}
 
-	[Test]
+	[Fact]
 	public void ValueTupleComparerShouldAcceptCustomComparers()
 	{
 		TestComparer innerLeftComparer = new();

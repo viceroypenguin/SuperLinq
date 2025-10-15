@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace SuperLinq.Tests;
 
 /// <summary>
@@ -10,7 +8,7 @@ public sealed class SubsetTest
 	/// <summary>
 	/// Verify that Subsets() behaves in a lazy manner.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSubsetsIsLazy()
 	{
 		_ = new BreakingSequence<int>().Subsets();
@@ -20,30 +18,30 @@ public sealed class SubsetTest
 	/// <summary>
 	/// Verify that negative subset sizes result in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestNegativeSubsetSize()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Subsets(-5));
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetSubsetSequences() =>
+	public static IEnumerable<object?[]> GetSubsetSequences() =>
 		Enumerable.Range(1, 10)
-			.GetCollectionSequences();
+			.GetCollectionSequences()
+			.Select(x => new object?[] { x });
 
 	/// <summary>
 	/// Verify that requesting subsets larger than the original sequence length result in an exception.
 	/// </summary>
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(TestExtensions.GetCollectionSequences), Arguments = [new int[] { 1, 2, 3 }])]
-	[SuppressMessage("Usage", "TUnit0001:Invalid Data for Tests")]
+	[Theory]
+	[MemberData(nameof(GetSubsetSequences))]
 	public void TestSubsetLargerThanSequence(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 		{
 			_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 				seq
-					.Subsets(5)
+					.Subsets(15)
 					.Consume());
 		}
 	}
@@ -51,7 +49,7 @@ public sealed class SubsetTest
 	/// <summary>
 	/// Verify that the only subset of an empty sequence is the empty sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestEmptySequenceSubsets()
 	{
 		using var sequence = TestingSequence.Of<int>();
@@ -60,7 +58,7 @@ public sealed class SubsetTest
 		result.Single().AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void TestSizeZeroSubsets()
 	{
 		using var sequence = TestingSequence.Of(1, 2, 3);
@@ -72,8 +70,8 @@ public sealed class SubsetTest
 	/// <summary>
 	/// Verify that subsets are returned in increasing size, starting with the empty set.
 	/// </summary>
-	[Test]
-	[MethodDataSource(nameof(GetSubsetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSubsetSequences))]
 	public void TestSubsetsInIncreasingOrder(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -92,8 +90,8 @@ public sealed class SubsetTest
 	/// <summary>
 	/// Verify that the number of subsets returned is correct, but don't verify the subset contents.
 	/// </summary>
-	[Test]
-	[MethodDataSource(nameof(GetSubsetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSubsetSequences))]
 	public void TestAllSubsetsExpectedCount(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -106,7 +104,7 @@ public sealed class SubsetTest
 	/// <summary>
 	/// Verify that the complete subset results for a known set are correct.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestAllSubsetsExpectedResults()
 	{
 		using var sequence = Enumerable.Range(1, 4).AsTestingSequence();
@@ -125,18 +123,22 @@ public sealed class SubsetTest
 			expected.AssertSequenceEqual(actual);
 	}
 
-	public static IEnumerable<(IDisposableEnumerable<int> seq, int subsetSize)> SubsetSizes() =>
+	public static IEnumerable<object[]> SubsetSizes() =>
 		Enumerable.Range(1, 20)
 			.SelectMany(size =>
 				Enumerable.Range(1, 20)
 					.GetCollectionSequences()
-					.Select(seq => (seq, size)));
+					.Select(seq => new object[]
+					{
+						seq,
+						size,
+					}));
 
 	/// <summary>
 	/// Verify that the number of subsets for a given subset-size is correct.
 	/// </summary>
-	[Test]
-	[MethodDataSource(nameof(SubsetSizes))]
+	[Theory]
+	[MemberData(nameof(SubsetSizes))]
 	public void TestKSubsetExpectedCount(IDisposableEnumerable<int> seq, int subsetSize)
 	{
 		using (seq)
@@ -152,7 +154,7 @@ public sealed class SubsetTest
 	/// <summary>
 	/// Verify that k-subsets of a given set are in the correct order and contain the correct elements.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestKSubsetExpectedResult()
 	{
 		using var sequence = Enumerable.Range(1, 6).AsTestingSequence();

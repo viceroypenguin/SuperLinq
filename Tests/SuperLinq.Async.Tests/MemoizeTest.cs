@@ -4,13 +4,13 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class MemoizeTest
 {
-	[Test]
+	[Fact]
 	public void MemoizeIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Memoize();
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeSimpleUse()
 	{
 		await using var seq = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -22,7 +22,7 @@ public sealed class MemoizeTest
 		Assert.Equal(10, buffer.Count);
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeReturningExpectedElementsWhenUsedAtInnerForEach()
 	{
 		await using var seq = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -84,7 +84,7 @@ public sealed class MemoizeTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeThrowsWhenCacheDisposedDuringIteration()
 	{
 		await using var seq = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -99,7 +99,7 @@ public sealed class MemoizeTest
 			async () => await reader.Read());
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeThrowsWhenResetDuringIteration()
 	{
 		await using var seq = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -116,7 +116,7 @@ public sealed class MemoizeTest
 		Assert.Equal("Buffer reset during iteration.", ex.Message);
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeThrowsWhenGettingAfterDispose()
 	{
 		await using var seq = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -130,7 +130,7 @@ public sealed class MemoizeTest
 			async () => await buffer.Consume());
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeThrowsWhenResettingAfterDispose()
 	{
 		await using var seq = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -144,7 +144,7 @@ public sealed class MemoizeTest
 			async () => await buffer.Reset());
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeWithPartialIterationBeforeCompleteIteration()
 	{
 		await using var seq = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -159,7 +159,7 @@ public sealed class MemoizeTest
 		Assert.Equal(10, buffer.Count);
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeWithDisposeOnEarlyExitTrue()
 	{
 		await using var seq = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -174,7 +174,7 @@ public sealed class MemoizeTest
 		Assert.True(seq.IsDisposed);
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeDisposesAfterSourceIsIteratedEntirely()
 	{
 		await using var seq = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -185,7 +185,7 @@ public sealed class MemoizeTest
 		Assert.True(seq.IsDisposed);
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeEnumeratesOnlyOnce()
 	{
 		await using var seq = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -196,7 +196,7 @@ public sealed class MemoizeTest
 		await buffer.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeRestartsAfterReset()
 	{
 		var starts = 0;
@@ -219,7 +219,7 @@ public sealed class MemoizeTest
 		Assert.Equal(2, starts);
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeRethrowsErrorDuringIterationToAllsUntilReset()
 	{
 		await using var xs = AsyncSeqExceptionAt(2).AsTestingSequence(maxEnumerations: 2);
@@ -243,7 +243,7 @@ public sealed class MemoizeTest
 			Assert.Equal(1, await r1.Read());
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeRethrowsErrorDuringIterationStartToAllsUntilReset()
 	{
 		var i = 0;
@@ -273,7 +273,7 @@ public sealed class MemoizeTest
 		Assert.Equal(1, buffer.Count);
 	}
 
-	[Test]
+	[Fact]
 	public async Task MemoizeRethrowsErrorDuringFirstIterationStartToAllIterationsUntilReset()
 	{
 		using var seq = new FailingEnumerable().AsTestingSequence(maxEnumerations: 2);

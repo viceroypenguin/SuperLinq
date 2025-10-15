@@ -1,20 +1,20 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class TraverseTest
 {
-	[Test]
+	[Fact]
 	public void TraverseDepthFirstIsStreaming()
 	{
 		_ = AsyncSuperEnumerable.TraverseDepthFirst(new object(), o => new AsyncBreakingSequence<object>());
 	}
 
-	[Test]
+	[Fact]
 	public void TraverseBreadthFirstIsStreaming()
 	{
 		_ = AsyncSuperEnumerable.TraverseBreadthFirst(new object(), o => new AsyncBreakingSequence<object>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task TraverseDepthFirstPreservesChildrenOrder()
 	{
 		await using var root = Enumerable.Range(1, 10).AsTestingSequence();
@@ -23,7 +23,7 @@ public sealed class TraverseTest
 		await res.AssertSequenceEqual(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TraverseBreadthFirstPreservesChildrenOrder()
 	{
 		await using var root = Enumerable.Range(1, 10).AsTestingSequence();
@@ -46,7 +46,7 @@ public sealed class TraverseTest
 		public static Tree<T> New<T>(T value, params Tree<T>[] children) => new(value, children);
 	}
 
-	[Test]
+	[Fact]
 	public Task TraverseBreadthFirstTraversesBreadthFirst()
 	{
 		var tree = Tree.New(1,
@@ -60,7 +60,7 @@ public sealed class TraverseTest
 		return res.AssertSequenceEqual(1, 2, 5, 3, 6);
 	}
 
-	[Test]
+	[Fact]
 	public Task TraverseDepthFirstTraversesDepthFirst()
 	{
 		var tree = Tree.New(1,

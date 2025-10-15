@@ -2,78 +2,83 @@ namespace SuperLinq.Tests;
 
 public sealed class ExactlyTest
 {
-	[Test]
+	[Fact]
 	public void ExactlyWithNegativeCount()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Exactly(-1));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetEmptySequences))]
+	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
+		seq
+			.GetBreakingCollectionSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { })]
 	public void ExactlyWithEmptySequenceHasExactlyZeroElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.True(seq.Exactly(0));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetEmptySequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { })]
 	public void ExactlyWithEmptySequenceHasExactlyOneElement(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.False(seq.Exactly(1));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetSingleElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void ExactlyWithSingleElementHasExactlyZeroElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.False(seq.Exactly(0));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetSingleElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void ExactlyWithSingleElementHasExactlyOneElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.True(seq.Exactly(1));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetSingleElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void ExactlyWithSingleElementHasExactlyTwoElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.False(seq.Exactly(2));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetThreeElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3 })]
 	public void ExactlyWithThreeElementsHasExactlyTwoElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.False(seq.Exactly(2));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetThreeElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3 })]
 	public void ExactlyWithThreeElementsHasExactlyThreeElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.True(seq.Exactly(3));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetThreeElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3 })]
 	public void ExactlyWithThreeElementsHasExactlyFourElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.False(seq.Exactly(4));
 	}
 
-	[Test]
+	[Fact]
 	public void ExactlyDoesNotIterateUnnecessaryElements()
 	{
 		using var source = SeqExceptionAt(4).AsTestingSequence();

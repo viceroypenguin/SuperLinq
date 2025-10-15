@@ -7,7 +7,7 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class ElementAtTest
 {
-	[Test]
+	[Fact]
 	public async Task FromStartIndexInt()
 	{
 		var q = AsyncSeq(9999, 0, 888, -1, 66, -777, 1, 2, -12345);
@@ -16,7 +16,7 @@ public sealed class ElementAtTest
 		Assert.Equal(-1, await q.ElementAtOrDefaultAsync(new Index(3)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FromStartIndexOutOfRangeInt()
 	{
 		var q = AsyncSeq(9999, 0, 888, -1, 66, -777, 1, 2, -12345);
@@ -26,7 +26,7 @@ public sealed class ElementAtTest
 		Assert.Equal(default, await q.ElementAtOrDefaultAsync(new Index(10)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FromEndIndexInt()
 	{
 		var q = AsyncSeq(9999, 0, 888, -1, 66, -777, 1, 2, -12345);
@@ -35,7 +35,7 @@ public sealed class ElementAtTest
 		Assert.Equal(888, await q.ElementAtOrDefaultAsync(^7));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FromEndIndexOutOfRangeInt()
 	{
 		var q = AsyncSeq(9999, 0, 888, -1, 66, -777, 1, 2, -12345);
@@ -45,7 +45,7 @@ public sealed class ElementAtTest
 		Assert.Equal(default, await q.ElementAtOrDefaultAsync(^10));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FromStartIndexString()
 	{
 		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "");
@@ -54,7 +54,7 @@ public sealed class ElementAtTest
 		Assert.Equal("", await q.ElementAtOrDefaultAsync(new Index(3)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FromStartIndexOutOfRangeString()
 	{
 		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "");
@@ -64,7 +64,7 @@ public sealed class ElementAtTest
 		Assert.Equal(default, await q.ElementAtOrDefaultAsync(new Index(10)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FromEndIndexString()
 	{
 		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "");
@@ -73,7 +73,7 @@ public sealed class ElementAtTest
 		Assert.Equal("", await q.ElementAtOrDefaultAsync(^4));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FromEndIndexOutOfRangeString()
 	{
 		var q = AsyncSeq("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "");

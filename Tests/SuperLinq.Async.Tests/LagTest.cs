@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 /// <summary>
 /// Verify the behavior of the Lag operator
@@ -8,7 +8,7 @@ public sealed class LagTests
 	/// <summary>
 	/// Verify that lag behaves in a lazy manner.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLagIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Lag(5, BreakingFunc.Of<int, int, int>());
@@ -18,7 +18,7 @@ public sealed class LagTests
 	/// <summary>
 	/// Verify that lagging by a negative offset results in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLagNegativeOffsetException()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -28,7 +28,7 @@ public sealed class LagTests
 	/// <summary>
 	/// Verify that attempting to lag by a zero offset will result in an exception
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLagZeroOffset()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -38,7 +38,7 @@ public sealed class LagTests
 	/// <summary>
 	/// Verify that lag can accept an propagate a default value passed to it.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestLagExplicitDefaultValue()
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -48,7 +48,7 @@ public sealed class LagTests
 		result.Take(10).AssertSequenceEqual(Enumerable.Repeat(-1, 10));
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestLagTuple()
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -62,7 +62,7 @@ public sealed class LagTests
 	/// <summary>
 	/// Verify that lag will use default(T) if a specific default value is not supplied for the lag value.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestLagImplicitDefaultValue()
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -76,7 +76,7 @@ public sealed class LagTests
 	/// Verify that if the lag offset is greater than the sequence length lag
 	/// still yields all of the elements of the source sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestLagOffsetGreaterThanSequenceLength()
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -90,7 +90,7 @@ public sealed class LagTests
 	/// Verify that lag actually yields the correct pair of values from the sequence
 	/// when offsetting by a single item.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestLagPassesCorrectLagValueOffsetBy1()
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -104,7 +104,7 @@ public sealed class LagTests
 	/// Verify that lag yields the correct pair of values from the sequence when
 	/// offsetting by more than a single item.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestLagPassesCorrectLagValuesOffsetBy2()
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -115,7 +115,7 @@ public sealed class LagTests
 		Assert.True(result.Take(2).All(x => (x.A - x.B) == x.A));
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestLagWithNullableReferences()
 	{
 		await using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
@@ -127,7 +127,7 @@ public sealed class LagTests
 			new { A = "qux", B = (string?)"bar" });
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestLagWithNonNullableReferences()
 	{
 		await using var words = TestingSequence.Of("foo", "bar", "baz", "qux");

@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class WhileTest
 {
-	[Test]
+	[Fact]
 	public void WhileIsLazy()
 	{
 		_ = SuperEnumerable.While(
@@ -10,7 +10,7 @@ public sealed class WhileTest
 			new BreakingSequence<int>());
 	}
 
-	[Test]
+	[Fact]
 	public void WhileBehavior()
 	{
 		var starts = 0;

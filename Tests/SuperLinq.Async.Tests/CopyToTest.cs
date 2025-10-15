@@ -1,11 +1,11 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq.Async.Tests;
 
 public sealed class CopyToTest
 {
-	[Test]
+	[Fact]
 	public async Task NullArgumentTest()
 	{
 		_ = await Assert.ThrowsAsync<ArgumentNullException>(
@@ -22,7 +22,7 @@ public sealed class CopyToTest
 			async () => await AsyncSeq<int>().CopyTo(default(int[])!, 1));
 	}
 
-	[Test]
+	[Fact]
 	public Task ThrowsOnNegativeIndex()
 	{
 		return Assert.ThrowsAsync<ArgumentOutOfRangeException>(
@@ -30,7 +30,7 @@ public sealed class CopyToTest
 			async () => await AsyncSeq<int>().CopyTo([], -1));
 	}
 
-	[Test]
+	[Fact]
 	[SuppressMessage(
 		"Style",
 		"IDE0301:Simplify collection initialization",
@@ -42,7 +42,7 @@ public sealed class CopyToTest
 			async () => await AsyncSeq(1).CopyTo(Array.Empty<int>()));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CopiesDataToArray()
 	{
 		var array = new int[4];
@@ -62,7 +62,7 @@ public sealed class CopyToTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public async Task CopiesDataToList()
 	{
 		var list = new List<int>();
@@ -89,7 +89,7 @@ public sealed class CopyToTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public async Task CopiesDataToIList()
 	{
 		var list = new Collection<int>();

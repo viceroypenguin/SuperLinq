@@ -3,7 +3,7 @@ namespace SuperLinq.Tests;
 [Obsolete("References `Index` which is obsolete in net9+")]
 public sealed class IndexTest
 {
-	[Test]
+	[Fact]
 	public void IndexIsLazy()
 	{
 		_ = SuperEnumerable.Index(new BreakingSequence<object>());
@@ -14,12 +14,13 @@ public sealed class IndexTest
 	private const string Two = "two";
 	private const string Three = "three";
 
-	public static IEnumerable<IDisposableEnumerable<string>> GetSequences() =>
+	public static IEnumerable<object[]> GetSequences() =>
 		Seq(One, Two, Three)
-			.GetAllSequences();
+			.GetAllSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void IndexSequence(IDisposableEnumerable<string> seq)
 	{
 		using (seq)
@@ -32,8 +33,8 @@ public sealed class IndexTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void IndexSequenceStartIndex(IDisposableEnumerable<string> seq)
 	{
 		using (seq)
@@ -46,7 +47,7 @@ public sealed class IndexTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void IndexCollectionBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingCollection();
@@ -55,7 +56,7 @@ public sealed class IndexTest
 		result.AssertCollectionErrorChecking(10_000);
 	}
 
-	[Test]
+	[Fact]
 	public void IndexListBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();

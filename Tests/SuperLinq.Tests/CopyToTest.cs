@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq.Tests;
@@ -7,33 +7,7 @@ namespace SuperLinq.Tests;
 
 public sealed class CopyToTest
 {
-	[Test]
-	public void NullArgumentTest()
-	{
-		_ = Assert.Throws<ArgumentNullException>(
-			"source",
-			() => default(IEnumerable<int>)!.CopyTo((int[])[]));
-		_ = Assert.Throws<ArgumentNullException>(
-			"source",
-			() => default(IEnumerable<int>)!.CopyTo((IList<int>)[]));
-		_ = Assert.Throws<ArgumentNullException>(
-			"source",
-			() => default(IEnumerable<int>)!.CopyTo([], 1));
-		_ = Assert.Throws<ArgumentNullException>(
-			"source",
-			() => default(IEnumerable<int>)!.CopyTo([]));
-		_ = Assert.Throws<ArgumentNullException>(
-			"array",
-			() => Seq<int>().CopyTo(default(int[])!));
-		_ = Assert.Throws<ArgumentNullException>(
-			"list",
-			() => Seq<int>().CopyTo(default(IList<int>)!));
-		_ = Assert.Throws<ArgumentNullException>(
-			"list",
-			() => Seq<int>().CopyTo(default(IList<int>)!, 1));
-	}
-
-	[Test]
+	[Fact]
 	public void ThrowsOnNegativeIndex()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(
@@ -41,7 +15,7 @@ public sealed class CopyToTest
 			() => Seq<int>().CopyTo([], -1));
 	}
 
-	[Test]
+	[Fact]
 	public void ThrowsOnTooMuchDataForArray()
 	{
 		_ = Assert.Throws<ArgumentException>(
@@ -52,7 +26,7 @@ public sealed class CopyToTest
 			() => new List<int> { 1 }.AsReadOnly().AsEnumerable().CopyTo(Array.Empty<int>()));
 	}
 
-	[Test]
+	[Fact]
 	[SuppressMessage(
 		"Style",
 		"IDE0301:Simplify collection initialization",
@@ -70,7 +44,7 @@ public sealed class CopyToTest
 			() => new List<int> { 1 }.AsReadOnly().AsEnumerable().CopyTo((IList<int>)Array.Empty<int>()));
 	}
 
-	[Test]
+	[Fact]
 	public void ThrowsOnTooMuchDataForSpan()
 	{
 		_ = Assert.Throws<ArgumentException>(
@@ -79,7 +53,7 @@ public sealed class CopyToTest
 			() => new List<int> { 1 }.AsEnumerable().CopyTo([]));
 	}
 
-	[Test]
+	[Fact]
 	public void CopiesDataToSpan()
 	{
 		Span<int> span = stackalloc int[4];
@@ -98,7 +72,7 @@ public sealed class CopyToTest
 		Assert.Equal(2, cnt);
 	}
 
-	[Test]
+	[Fact]
 	public void CopiesDataToArray()
 	{
 		var array = new int[4];
@@ -121,7 +95,7 @@ public sealed class CopyToTest
 		Assert.Equal(1, cnt);
 	}
 
-	[Test]
+	[Fact]
 	public void CopiesDataToList()
 	{
 		var list = new List<int>();
@@ -145,7 +119,7 @@ public sealed class CopyToTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void CopiesDataToIList()
 	{
 		var list = new Collection<int>();

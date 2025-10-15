@@ -4,7 +4,7 @@ public sealed class FullGroupJoinTest
 {
 	public enum OverloadCase { CustomResult, TupleResult }
 
-	[Test]
+	[Fact]
 	public void FullGroupIsLazy()
 	{
 		var bs = new BreakingSequence<int>();
@@ -14,9 +14,9 @@ public sealed class FullGroupJoinTest
 		_ = bs.FullGroupJoin(bs, bf, bf, bfg);
 	}
 
-	[Test]
-	[Arguments(OverloadCase.CustomResult)]
-	[Arguments(OverloadCase.TupleResult)]
+	[Theory]
+	[InlineData(OverloadCase.CustomResult)]
+	[InlineData(OverloadCase.TupleResult)]
 	public void FullGroupJoinsResults(OverloadCase overloadCase)
 	{
 		using var listA = TestingSequence.Of(1, 2);
@@ -36,9 +36,9 @@ public sealed class FullGroupJoinTest
 		result[2].Second.AssertSequenceEqual(2);
 	}
 
-	[Test]
-	[Arguments(OverloadCase.CustomResult)]
-	[Arguments(OverloadCase.TupleResult)]
+	[Theory]
+	[InlineData(OverloadCase.CustomResult)]
+	[InlineData(OverloadCase.TupleResult)]
 	public void FullGroupJoinsEmptyLeft(OverloadCase overloadCase)
 	{
 		using var listA = Array.Empty<int>().AsTestingSequence();
@@ -55,9 +55,9 @@ public sealed class FullGroupJoinTest
 		Assert.Equal(3, result[3].Second.Single());
 	}
 
-	[Test]
-	[Arguments(OverloadCase.CustomResult)]
-	[Arguments(OverloadCase.TupleResult)]
+	[Theory]
+	[InlineData(OverloadCase.CustomResult)]
+	[InlineData(OverloadCase.TupleResult)]
 	public void FullGroupJoinsEmptyRight(OverloadCase overloadCase)
 	{
 		using var listA = TestingSequence.Of(2, 3);
@@ -74,9 +74,9 @@ public sealed class FullGroupJoinTest
 		Assert.Empty(result[3].Second);
 	}
 
-	[Test]
-	[Arguments(OverloadCase.CustomResult)]
-	[Arguments(OverloadCase.TupleResult)]
+	[Theory]
+	[InlineData(OverloadCase.CustomResult)]
+	[InlineData(OverloadCase.TupleResult)]
 	public void FullGroupPreservesOrder(OverloadCase overloadCase)
 	{
 		var listA = new[]

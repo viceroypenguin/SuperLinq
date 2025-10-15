@@ -6,7 +6,7 @@ public sealed class ScanRightTest
 {
 	// ScanRight(source, func)
 
-	[Test]
+	[Fact]
 	public void ScanRightWithEmptySequence()
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -15,7 +15,7 @@ public sealed class ScanRightTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightFuncIsNotInvokedOnSingleElementSequence()
 	{
 		using var seq = TestingSequence.Of(1);
@@ -24,7 +24,7 @@ public sealed class ScanRightTest
 		result.AssertSequenceEqual(1);
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRight()
 	{
 		using var seq = Enumerable.Range(1, 5)
@@ -38,7 +38,7 @@ public sealed class ScanRightTest
 			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightWithList()
 	{
 		var list = Enumerable.Range(1, 5)
@@ -52,7 +52,7 @@ public sealed class ScanRightTest
 			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightIsLazy()
 	{
 		_ = new BreakingSequence<int>().ScanRight(BreakingFunc.Of<int, int, int>());
@@ -60,10 +60,10 @@ public sealed class ScanRightTest
 
 	// ScanRight(source, seed, func)
 
-	[Test]
-	[Arguments(5)]
-	[Arguments("c")]
-	[Arguments(true)]
+	[Theory]
+	[InlineData(5)]
+	[InlineData("c")]
+	[InlineData(true)]
 	public void ScanRightSeedWithEmptySequence(object defaultValue)
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -72,7 +72,7 @@ public sealed class ScanRightTest
 		result.AssertSequenceEqual(defaultValue);
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightSeedFuncIsNotInvokedOnEmptySequence()
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -81,7 +81,7 @@ public sealed class ScanRightTest
 		result.AssertSequenceEqual(1);
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightSeed()
 	{
 		using var seq = Enumerable.Range(1, 4).AsTestingSequence();
@@ -93,7 +93,7 @@ public sealed class ScanRightTest
 			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightSeedWithList()
 	{
 		var list = Enumerable.Range(1, 4).ToList();
@@ -105,7 +105,7 @@ public sealed class ScanRightTest
 			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightSeedIsLazy()
 	{
 		_ = new BreakingSequence<int>().ScanRight("", BreakingFunc.Of<int, string, string>());

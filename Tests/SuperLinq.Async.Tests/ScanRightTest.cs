@@ -6,7 +6,7 @@ public sealed class ScanRightTest
 {
 	// ScanRight(source, func)
 
-	[Test]
+	[Fact]
 	public async Task ScanRightWithEmptySequence()
 	{
 		await using var seq = TestingSequence.Of<int>();
@@ -15,7 +15,7 @@ public sealed class ScanRightTest
 		await result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public async Task ScanRightFuncIsNotInvokedOnSingleElementSequence()
 	{
 		await using var seq = TestingSequence.Of(1);
@@ -24,7 +24,7 @@ public sealed class ScanRightTest
 		await result.AssertSequenceEqual(1);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ScanRight()
 	{
 		await using var seq = Enumerable.Range(1, 5).AsTestingSequence();
@@ -37,7 +37,7 @@ public sealed class ScanRightTest
 			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().ScanRight(BreakingFunc.Of<int, int, int>());
@@ -45,10 +45,10 @@ public sealed class ScanRightTest
 
 	// ScanRight(source, seed, func)
 
-	[Test]
-	[Arguments(5)]
-	[Arguments("c")]
-	[Arguments(true)]
+	[Theory]
+	[InlineData(5)]
+	[InlineData("c")]
+	[InlineData(true)]
 	public async Task ScanRightSeedWithEmptySequence(object defaultValue)
 	{
 		await using var seq = TestingSequence.Of<int>();
@@ -57,7 +57,7 @@ public sealed class ScanRightTest
 		await result.AssertSequenceEqual(defaultValue);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ScanRightSeedFuncIsNotInvokedOnEmptySequence()
 	{
 		await using var seq = TestingSequence.Of<int>();
@@ -66,7 +66,7 @@ public sealed class ScanRightTest
 		await result.AssertSequenceEqual(1);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ScanRightSeed()
 	{
 		await using var seq = Enumerable.Range(1, 4).AsTestingSequence();
@@ -78,7 +78,7 @@ public sealed class ScanRightTest
 			"(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5");
 	}
 
-	[Test]
+	[Fact]
 	public void ScanRightSeedIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().ScanRight("", BreakingFunc.Of<int, string, string>());

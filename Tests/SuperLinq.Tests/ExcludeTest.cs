@@ -7,27 +7,27 @@ namespace SuperLinq.Tests;
 /// </summary>
 public sealed class ExcludeTests
 {
-	[Test]
+	[Fact]
 	public void TestExcludeIsLazy()
 	{
 		_ = new BreakingSequence<int>().Exclude(0, 10);
 	}
 
-	[Test]
+	[Fact]
 	public void TestExcludeNegativeStartIndexException()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Exclude(-10, 10));
 	}
 
-	[Test]
+	[Fact]
 	public void TestExcludeNegativeCountException()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Exclude(0, -5));
 	}
 
-	[Test]
+	[Fact]
 	public void TestExcludeWithCountEqualsZero()
 	{
 		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
@@ -36,12 +36,13 @@ public sealed class ExcludeTests
 		result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetIntSequences() =>
+	public static IEnumerable<object[]> GetIntSequences() =>
 		Enumerable.Range(1, 100)
-			.GetAllSequences();
+			.GetAllSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestExcludeSequenceHead(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -51,8 +52,8 @@ public sealed class ExcludeTests
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestExcludeSequenceTail(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -62,8 +63,8 @@ public sealed class ExcludeTests
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestExcludeSequenceMiddle(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -75,8 +76,8 @@ public sealed class ExcludeTests
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestExcludeEntireSequence(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -86,8 +87,8 @@ public sealed class ExcludeTests
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestExcludeCountGreaterThanSequenceLength(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -97,8 +98,8 @@ public sealed class ExcludeTests
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestExcludeStartIndexGreaterThanSequenceLength(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -109,7 +110,7 @@ public sealed class ExcludeTests
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void ExcludeListBehaviorMid()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -125,7 +126,7 @@ public sealed class ExcludeTests
 		Assert.Equal(9_950, result.ElementAt(8_950));
 	}
 
-	[Test]
+	[Fact]
 	public void ExcludeListBehaviorEnd()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -138,7 +139,7 @@ public sealed class ExcludeTests
 		Assert.Equal(9_450, result.ElementAt(^50));
 	}
 
-	[Test]
+	[Fact]
 	public void ExcludeListBehaviorAfter()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -151,7 +152,7 @@ public sealed class ExcludeTests
 		Assert.Equal(9_950, result.ElementAt(^50));
 	}
 
-	[Test]
+	[Fact]
 	public void ExcludeListBehaviorEntire()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -164,7 +165,7 @@ public sealed class ExcludeTests
 			() => result.ElementAt(0));
 	}
 
-	[Test]
+	[Fact]
 	public void ExcludeCollectionBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingCollection();
@@ -173,35 +174,36 @@ public sealed class ExcludeTests
 		result.AssertCollectionErrorChecking(9_000);
 	}
 
-	public static IEnumerable<(Range range, bool shouldThrow, bool __, int[] expected)> GetExcludeRangeCases() =>
+	public static IEnumerable<object[]> GetExcludeRangeCases() =>
 		[
-			(3..7, false, false, [0, 1, 2, 7, 8, 9]),
-			(3..3, false, false, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-			(3..2, true, true, []),
-			(3..15, false, false, [0, 1, 2]),
+			[3..7, false, false, new int[] { 0, 1, 2, 7, 8, 9 }],
+			[3..3, false, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[3..2, true, true, Array.Empty<int>()],
+			[3..15, false, false, new int[] { 0, 1, 2 }],
 
-			(3..^3, false, false, [0, 1, 2, 7, 8, 9]),
-			(6..^3, false, false, [0, 1, 2, 3, 4, 5, 7, 8, 9]),
-			(7..^3, false, false, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-			(8..^3, false, true, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-			(15..^3, false, true, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-			(3..^15, false, true, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+			[3..^3, false, false, new int[] { 0, 1, 2, 7, 8, 9 }],
+			[6..^3, false, false, new int[] { 0, 1, 2, 3, 4, 5, 7, 8, 9 }],
+			[7..^3, false, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[8..^3, false, true, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[15..^3, false, true, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[3..^15, false, true, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
 
-			(^7..2, false, true, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-			(^7..3, false, false, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-			(^7..4, false, false, [0, 1, 2, 4, 5, 6, 7, 8, 9]),
-			(^7..7, false, false, [0, 1, 2, 7, 8, 9]),
-			(^7..15, false, true, [0, 1, 2]),
-			(^15..7, false, true, [7, 8, 9]),
+			[^7..2, false, true, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[^7..3, false, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[^7..4, false, false, new int[] { 0, 1, 2, 4, 5, 6, 7, 8, 9 }],
+			[^7..7, false, false, new int[] { 0, 1, 2, 7, 8, 9 }],
+			[^7..15, false, true, new int[] { 0, 1, 2 }],
+			[^15..7, false, true, new int[] { 7, 8, 9 }],
 
-			(^2..^3, true, true, []),
-			(^3..^3, false, false, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-			(^7..^3, false, false, [0, 1, 2, 7, 8, 9]),
-			(^15..^3, false, true, [7, 8, 9]),
+			[^2..^3, true, true, Array.Empty<int>()],
+			[^3..^3, false, false, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }],
+			[^7..^3, false, false, new int[] { 0, 1, 2, 7, 8, 9 }],
+			[^15..^3, false, true, new int[] { 7, 8, 9 }],
 		];
 
-	[Test]
-	[MethodDataSource(nameof(GetExcludeRangeCases))]
+	[Theory]
+	[MemberData(nameof(GetExcludeRangeCases))]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1026:Theory methods should use all of their parameters")]
 	public void ExcludeRangeBehavior(Range range, bool shouldThrow, bool __, int[] expected)
 	{
 		using var ts = Enumerable.Range(0, 10)
@@ -219,8 +221,9 @@ public sealed class ExcludeTests
 		result.AssertSequenceEqual(expected);
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetExcludeRangeCases))]
+	[Theory]
+	[MemberData(nameof(GetExcludeRangeCases))]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1026:Theory methods should use all of their parameters")]
 	public void ExcludeRangeCollectionBehavior(Range range, bool __, bool shouldThrow, int[] expected)
 	{
 		using var ts = Enumerable.Range(0, 10)

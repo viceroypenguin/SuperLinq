@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class ExceptByTest
 {
-	[Test]
+	[Fact]
 	public async Task SimpleExceptBy()
 	{
 		await using var first = TestingSequence.Of("aaa", "bb", "c", "dddd");
@@ -11,14 +11,14 @@ public sealed class ExceptByTest
 		await result.AssertSequenceEqual("aaa", "dddd");
 	}
 
-	[Test]
+	[Fact]
 	public void ExceptByIsLazy()
 	{
 		var bs = new AsyncBreakingSequence<string>();
 		_ = bs.ExceptBy(bs, BreakingFunc.Of<string, int>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task ExceptByDoesNotRepeatSourceElementsWithDuplicateKeys()
 	{
 		await using var first = TestingSequence.Of("aaa", "bb", "c", "a", "b", "c", "dddd");
@@ -27,7 +27,7 @@ public sealed class ExceptByTest
 		await result.AssertSequenceEqual("aaa", "c", "dddd");
 	}
 
-	[Test]
+	[Fact]
 	public async Task ExceptByWithComparer()
 	{
 		await using var first = TestingSequence.Of("first", "second", "third", "fourth");
@@ -36,7 +36,7 @@ public sealed class ExceptByTest
 		await result.AssertSequenceEqual("second", "fourth");
 	}
 
-	[Test]
+	[Fact]
 	public async Task ExceptByNullComparer()
 	{
 		await using var first = TestingSequence.Of("aaa", "bb", "c", "dddd");
@@ -45,7 +45,7 @@ public sealed class ExceptByTest
 		await result.AssertSequenceEqual("aaa", "dddd");
 	}
 
-	[Test]
+	[Fact]
 	public void ExceptByIsLazyWithComparer()
 	{
 		var bs = new AsyncBreakingSequence<string>();

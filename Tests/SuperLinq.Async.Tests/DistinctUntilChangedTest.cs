@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class DistinctUntilChangedTest
 {
-	[Test]
+	[Fact]
 	public void DistinctUntilChangedIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().DistinctUntilChanged();
 	}
 
-	[Test]
+	[Fact]
 	public async Task DistinctUntilChangedEmptySequence()
 	{
 		await using var source = TestingSequence.Of<int>();
@@ -16,7 +16,7 @@ public sealed class DistinctUntilChangedTest
 		await result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public async Task DistinctUntilChanged()
 	{
 		await using var source = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 0, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);
@@ -24,7 +24,7 @@ public sealed class DistinctUntilChangedTest
 		await result.AssertSequenceEqual(2, 0, 5, 1, 0, 3, 0, 2, 3, 1, 4, 0, 2, 4, 3, 0);
 	}
 
-	[Test]
+	[Fact]
 	public async Task DistinctUntilChangedComparer()
 	{
 		await using var source = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 0, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);
@@ -33,14 +33,14 @@ public sealed class DistinctUntilChangedTest
 		await result.AssertSequenceEqual(2, 0, 5, 1, 0, 2, 3, 1, 0, 2, 4, 3);
 	}
 
-	[Test]
+	[Fact]
 	public void DistinctUntilChangedSelectorIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().DistinctUntilChanged(BreakingFunc.Of<int, int>());
 		_ = new AsyncBreakingSequence<int>().DistinctUntilChanged(BreakingFunc.Of<int, ValueTask<int>>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task DistinctUntilChangedSelectorEmptySequence()
 	{
 		await using var source = TestingSequence.Of<int>();
@@ -48,7 +48,7 @@ public sealed class DistinctUntilChangedTest
 		await result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public async Task DistinctUntilChangedSelector()
 	{
 		await using var source = TestingSequence.Of(
@@ -73,7 +73,7 @@ public sealed class DistinctUntilChangedTest
 			"ten");
 	}
 
-	[Test]
+	[Fact]
 	public async Task DistinctUntilChangedSelectorComparer()
 	{
 		await using var source = TestingSequence.Of(

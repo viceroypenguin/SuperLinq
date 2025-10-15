@@ -2,57 +2,58 @@ namespace SuperLinq.Tests;
 
 public sealed class CountBetweenTest
 {
-	[Test]
+	[Fact]
 	public void CountBetweenWithNegativeMin()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().CountBetween(-1, 0));
 	}
 
-	[Test]
+	[Fact]
 	public void CountBetweenWithNegativeMax()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 		   new BreakingSequence<int>().CountBetween(0, -1));
 	}
 
-	[Test]
+	[Fact]
 	public void CountBetweenWithMaxLesserThanMin()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().CountBetween(1, 0));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetSingleElementSequences))]
+	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
+		seq
+			.GetBreakingCollectionSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void CountBetweenWithMaxEqualsMin(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.True(seq.CountBetween(1, 1));
 	}
 
-	public static IEnumerable<(IDisposableEnumerable<int> seq, bool expected)> GetTestData() =>
-		Seq(
-			(1, false),
-			(2, true),
-			(3, true),
-			(4, true),
-			(5, false)
-		)
-			.SelectMany(x => Enumerable.Range(1, x.Item1)
-				.GetBreakingCollectionSequences()
-				.Select(y => (y, x.Item2))
-			);
+	public static IEnumerable<object[]> GetTestData(int count, int min, int max, bool expecting) =>
+		Enumerable.Range(1, count)
+			.GetBreakingCollectionSequences()
+			.Select(x => new object[] { x, min, max, expecting });
 
-	[Test]
-	[MethodDataSource(nameof(GetTestData))]
-	public void CountBetweenRangeTests(IDisposableEnumerable<int> seq, bool expected)
+	[Theory]
+	[MemberData(nameof(GetTestData), 1, 2, 4, false)]
+	[MemberData(nameof(GetTestData), 2, 2, 4, true)]
+	[MemberData(nameof(GetTestData), 3, 2, 4, true)]
+	[MemberData(nameof(GetTestData), 4, 2, 4, true)]
+	[MemberData(nameof(GetTestData), 5, 2, 4, false)]
+	public void CountBetweenRangeTests(IDisposableEnumerable<int> seq, int min, int max, bool expecting)
 	{
 		using (seq)
-			Assert.Equal(expected, seq.CountBetween(2, 4));
+			Assert.Equal(expecting, seq.CountBetween(min, max));
 	}
 
-	[Test]
+	[Fact]
 	public void CountBetweenDoesNotIterateUnnecessaryElements()
 	{
 		using var source = SeqExceptionAt(5).AsTestingSequence();

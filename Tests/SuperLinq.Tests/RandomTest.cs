@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 /// <summary>
 /// Tests of the various overloads of <see cref="SuperEnumerable"/>.Random()
@@ -10,7 +10,7 @@ public sealed class RandomTest
 	/// <summary>
 	/// Verify that passing a negative maximum value yields an exception
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestNegativeMaxValueException()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -21,7 +21,7 @@ public sealed class RandomTest
 	/// Verify that passing lower bound that is greater than the upper bound results
 	/// in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestMinValueGreaterThanMaxValueException()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -31,7 +31,7 @@ public sealed class RandomTest
 	/// <summary>
 	/// Verify that we can produce a valid sequence or random doubles between 0.0 and 1.0
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomDouble()
 	{
 		var resultA = SuperEnumerable.RandomDouble().Take(RandomTrials);
@@ -47,7 +47,7 @@ public sealed class RandomTest
 	/// <summary>
 	/// Verify that the max constraint is preserved by the sequence generator.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomMaxConstraint()
 	{
 		var resultA = SuperEnumerable.Random(100).Take(RandomTrials);
@@ -62,7 +62,7 @@ public sealed class RandomTest
 	/// <summary>
 	/// Verify that the min/max constraints are preserved by the sequence generator.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomMinMaxConstraint()
 	{
 		var resultA = SuperEnumerable.Random(0, 100).Take(RandomTrials);
@@ -78,7 +78,7 @@ public sealed class RandomTest
 	/// Evaluate that using a random sequence (with a given generator)
 	/// is equivalent to a for loop accessing the same random generator.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomEquivalence()
 	{
 		// must use a specific seed to ensure sequences will be identical

@@ -10,7 +10,7 @@ public sealed class CartesianTests
 	/// <summary>
 	/// Verify that the Cartesian product is evaluated in a lazy fashion on demand.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCartesianIsLazy()
 	{
 		_ = new BreakingSequence<string>()
@@ -23,7 +23,7 @@ public sealed class CartesianTests
 	/// <summary>
 	/// Verify that the Cartesian product of two empty sequences is an empty sequence
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCartesianOfEmptySequences()
 	{
 		using var sequenceA = Enumerable.Empty<int>().AsTestingSequence();
@@ -37,7 +37,7 @@ public sealed class CartesianTests
 	/// <summary>
 	/// Verify that the Cartesian product of an empty and non-empty sequence is an empty sequence
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCartesianOfEmptyAndNonEmpty()
 	{
 		var sequenceA = Enumerable.Empty<int>();
@@ -61,7 +61,7 @@ public sealed class CartesianTests
 	/// <summary>
 	/// Verify that the number of elements in a Cartesian product is the product of the number of elements of each sequence
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCartesianProductCount()
 	{
 		using var sequenceA = Enumerable.Range(1, 100).AsTestingSequence();
@@ -76,7 +76,7 @@ public sealed class CartesianTests
 	/// Verify that the number of elements in a Cartesian product is the product of the number of elements of each sequence,
 	/// even when there are more than two sequences
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCartesianProductCountMultidimensional()
 	{
 		const int CountA = 10;
@@ -98,7 +98,7 @@ public sealed class CartesianTests
 	/// <summary>
 	/// Verify that each combination is produced in the Cartesian product
 	/// </summary>
-	[Test]
+	[Fact]
 	[SuppressMessage("Style", "IDE0305:Simplify collection initialization", Justification = "Target typing failure")]
 	public void TestCartesianProductCombinations()
 	{
@@ -131,7 +131,7 @@ public sealed class CartesianTests
 		Assert.True(expectedSet.SelectMany(SuperEnumerable.Identity).All(SuperEnumerable.Identity));
 	}
 
-	[Test]
+	[Fact]
 	public void TestAllCartesianMethods()
 	{
 		using var ts1 = Enumerable.Range(0, 1).AsTestingSequence(maxEnumerations: 7);

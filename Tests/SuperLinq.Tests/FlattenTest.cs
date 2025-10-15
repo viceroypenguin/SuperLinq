@@ -6,7 +6,7 @@ public sealed class FlattenTest
 {
 	// Flatten(this IEnumerable source)
 
-	[Test]
+	[Fact]
 	public void Flatten()
 	{
 		using var l1 = TestingSequence.Of<object>(4, "foo");
@@ -32,7 +32,7 @@ public sealed class FlattenTest
 				10);
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenCast()
 	{
 		using var source = new object[]
@@ -61,13 +61,13 @@ public sealed class FlattenTest
 			.AssertSequenceEqual(Enumerable.Range(1, 20));
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenIsLazy()
 	{
 		_ = new BreakingSequence<int>().Flatten();
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenPredicate()
 	{
 		using var source = new object[]
@@ -109,7 +109,7 @@ public sealed class FlattenTest
 				7);
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenPredicateAlwaysFalse()
 	{
 		var orig = new object[]
@@ -132,7 +132,7 @@ public sealed class FlattenTest
 			.AssertSequenceEqual(orig);
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenPredicateAlwaysTrue()
 	{
 		using var source = new object[]
@@ -163,13 +163,13 @@ public sealed class FlattenTest
 				6);
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenPredicateIsLazy()
 	{
 		_ = new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, bool>());
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenFullIteratedDisposesInnerSequences()
 	{
 		using var inner1 = TestingSequence.Of(4, 5);
@@ -181,7 +181,7 @@ public sealed class FlattenTest
 			.AssertSequenceEqual(4, 5, 6, true, false, 7);
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenInterruptedIterationDisposesInnerSequences()
 	{
 		using var inner1 = TestingSequence.Of(4, 5);
@@ -193,7 +193,7 @@ public sealed class FlattenTest
 			source.Flatten().Consume());
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenEvaluatesInnerSequencesLazily()
 	{
 		using var source = new object[]
@@ -225,13 +225,13 @@ public sealed class FlattenTest
 
 	// Flatten(this IEnumerable source, Func<object, IEnumerable> selector)
 
-	[Test]
+	[Fact]
 	public void FlattenSelectorIsLazy()
 	{
 		_ = new BreakingSequence<int>().Flatten(BreakingFunc.Of<object?, IEnumerable>());
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenSelector()
 	{
 		using var source = new[]
@@ -268,7 +268,7 @@ public sealed class FlattenTest
 			.AssertSequenceEqual("series1", 1, 2, 3, 4, "series2", 5, 6);
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenSelectorFilteringOnlyIntegers()
 	{
 		using var source = new object[]
@@ -300,7 +300,7 @@ public sealed class FlattenTest
 			.AssertSequenceEqual(Enumerable.Range(1, 4).Cast<object>());
 	}
 
-	[Test]
+	[Fact]
 	public void FlattenSelectorWithTree()
 	{
 		var source = new Tree<int>

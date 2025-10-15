@@ -1,11 +1,11 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class RankTests
 {
 	/// <summary>
 	/// Verify that Rank uses deferred execution
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRankIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Rank();
@@ -15,7 +15,7 @@ public sealed class RankTests
 	/// <summary>
 	/// Verify that RankBy uses deferred execution
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRankByIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().RankBy(BreakingFunc.Of<int, int>());
@@ -26,7 +26,7 @@ public sealed class RankTests
 	/// Verify that calling Rank with null comparer results in a sequence
 	/// ordered using the default comparer for the given element.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestRankNullComparer()
 	{
 		await using var sequence =
@@ -44,7 +44,7 @@ public sealed class RankTests
 	/// Verify that calling RankBy with null comparer results in a sequence
 	/// ordered using the default comparer for the given element.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestRankByNullComparer()
 	{
 		await using var sequence =
@@ -63,7 +63,7 @@ public sealed class RankTests
 	/// results in a sequence in ascending order, using the default comparer for
 	/// the given element.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestRankDescendingSequence()
 	{
 		await using var sequence =
@@ -92,7 +92,7 @@ public sealed class RankTests
 	/// results in a sequence in ascending order, using the default comparer for
 	/// the given element.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestRankByAscendingSeries()
 	{
 		await using var sequence =
@@ -120,7 +120,7 @@ public sealed class RankTests
 	/// results in a sequence in descending order, using OrderByDirection.Descending
 	/// with the default comparer for the given element.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestRankOrderByDescending()
 	{
 		await using var sequence =
@@ -142,7 +142,7 @@ public sealed class RankTests
 	/// <summary>
 	/// Verify that the rank of equivalent items in a sequence is the same.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestRankGroupedItems()
 	{
 		await using var sequence =
@@ -175,7 +175,7 @@ public sealed class RankTests
 	/// <summary>
 	/// Verify that the highest rank (that of the largest item) is 1 (not 0).
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestRankOfHighestItemIsOne()
 	{
 		await using var sequence =
@@ -197,7 +197,7 @@ public sealed class RankTests
 	/// <summary>
 	/// Verify that we can rank items by an arbitrary key produced from the item.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestRankByKeySelector()
 	{
 		var sequences = new List<Person[]>
@@ -248,7 +248,7 @@ public sealed class RankTests
 	/// <summary>
 	/// Verify that Rank can use a custom comparer
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestRankCustomComparer()
 	{
 		var ordinals = Enumerable.Range(1, 10);

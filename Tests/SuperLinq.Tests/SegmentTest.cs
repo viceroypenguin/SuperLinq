@@ -8,7 +8,7 @@ public sealed class SegmentTests
 	/// <summary>
 	/// Verify that the Segment operator behaves in a lazy manner
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSegmentIsLazy()
 	{
 		_ = new BreakingSequence<int>().Segment(BreakingFunc.Of<int, bool>());
@@ -19,7 +19,7 @@ public sealed class SegmentTests
 	/// <summary>
 	/// Verify that segmenting a sequence into a single sequence results in the original sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestIdentitySegment()
 	{
 		using var sequence = Enumerable.Range(1, 5)
@@ -31,7 +31,7 @@ public sealed class SegmentTests
 	/// <summary>
 	/// Verify that segmenting an empty sequence results in an empty sequence of segments.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestEmptySequence()
 	{
 		using var sequence = Array.Empty<int>().AsTestingSequence();
@@ -41,7 +41,7 @@ public sealed class SegmentTests
 	/// <summary>
 	/// Verify that the segments returned can be enumerated more than once.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSegmentIsIdempotent()
 	{
 		using var sequence = Enumerable.Repeat(-1, 10)
@@ -59,7 +59,7 @@ public sealed class SegmentTests
 	/// Verify that the first segment is never empty. By definition, segmentation
 	/// begins with the second element in the source sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestFirstSegmentNeverEmpty()
 	{
 		using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
@@ -75,7 +75,7 @@ public sealed class SegmentTests
 	/// <summary>
 	/// Verify invariant that segmentation begins with second element of source sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSegmentationStartsWithSecondItem()
 	{
 		using (var sequence = TestingSequence.Of(0))
@@ -91,7 +91,7 @@ public sealed class SegmentTests
 	/// <summary>
 	/// Verify we can segment a source sequence by it's zero-based index
 	/// </summary>
-	[Test]
+	[Fact]
 	public void VerifyCanSegmentByIndex()
 	{
 
@@ -106,7 +106,7 @@ public sealed class SegmentTests
 	/// <summary>
 	/// Verify that we can segment a source sequence by the change in adjacent items
 	/// </summary>
-	[Test]
+	[Fact]
 	public void VerifyCanSegmentByPrevious()
 	{
 		var sequence = Enumerable.Range(1, 3)
@@ -121,17 +121,24 @@ public sealed class SegmentTests
 		Assert.True(result.All(s => s.Count == 5));
 	}
 
-	public static IEnumerable<(IEnumerable<int> source, IEnumerable<IEnumerable<int>> expectedSegments)> TestData() =>
-		[
-			([],                 [[]]                  ),
-			([0, 3, 6],          [[0], [3], [6]]       ),
-			([1, 2, 4, 5],       [[1, 2, 4, 5]]        ),
-			([0, 1, 2, 3, 4, 5], [[0, 1, 2], [3, 4, 5]]),
-			([1, 2, 3, 4, 5],    [[1, 2], [3, 4, 5]]   ),
-		];
+	public static IEnumerable<object[]> TestData { get; } =
+		from e in new[]
+		{
+            // input sequence is empty
+            new { Source = Seq<int>(),            Expected = Seq<IEnumerable<int>>()         },
+            // input sequence contains only new segment start
+            new { Source = Seq(0, 3, 6),          Expected = Seq(Seq(0), Seq(3), Seq(6))     },
+            // input sequence do not contains new segment start
+            new { Source = Seq(1, 2, 4, 5),       Expected = Seq(Seq(1, 2, 4, 5))            },
+            // input sequence start with a segment start
+            new { Source = Seq(0, 1, 2, 3, 4, 5), Expected = Seq(Seq(0, 1, 2), Seq(3, 4, 5)) },
+            // input sequence do not start with a segment start
+            new { Source = Seq(1, 2, 3, 4, 5),    Expected = Seq(Seq(1, 2), Seq(3, 4, 5))    },
+		}
+		select new object[] { e.Source, e.Expected };
 
-	[Test]
-	[MethodDataSource(nameof(TestData))]
+	[Theory]
+	[MemberData(nameof(TestData))]
 	public void TestSegment(IEnumerable<int> source, IEnumerable<IEnumerable<int>> expectedSegments)
 	{
 		using var sequence = source.AsTestingSequence();

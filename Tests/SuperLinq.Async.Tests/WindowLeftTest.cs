@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class WindowLeftTest
 {
-	[Test]
+	[Fact]
 	public void WindowLeftIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().WindowLeft(1);
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowModifiedBeforeMoveNextDoesNotAffectNextWindow()
 	{
 		var sequence = AsyncEnumerable.Range(0, 3);
@@ -23,7 +23,7 @@ public sealed class WindowLeftTest
 		Assert.Equal(1, window2[0]);
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
 	{
 		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
@@ -38,7 +38,7 @@ public sealed class WindowLeftTest
 		Assert.Equal(1, window2[0]);
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowModifiedDoesNotAffectPreviousWindow()
 	{
 		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
@@ -53,14 +53,14 @@ public sealed class WindowLeftTest
 		Assert.Equal(1, window1[1]);
 	}
 
-	[Test]
+	[Fact]
 	public void WindowLeftWithNegativeWindowSize()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			AsyncEnumerable.Repeat(1, 10).WindowLeft(-5));
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowLeftWithEmptySequence()
 	{
 		await using var xs = AsyncEnumerable.Empty<int>().AsTestingSequence();
@@ -70,7 +70,7 @@ public sealed class WindowLeftTest
 		await result.AssertEmpty();
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowLeftWithSingleElement()
 	{
 		var sequence = Enumerable.Range(1, 100).ToArray();
@@ -87,7 +87,7 @@ public sealed class WindowLeftTest
 			Assert.Equal(item.Single(), sequence[index]);
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowLeftWithWindowSizeLargerThanSequence()
 	{
 		await using var sequence = AsyncEnumerable.Range(1, 5).AsTestingSequence();
@@ -102,7 +102,7 @@ public sealed class WindowLeftTest
 		await reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowLeftWithWindowSizeSmallerThanSequence()
 	{
 		await using var sequence = AsyncEnumerable.Range(1, 5).AsTestingSequence();

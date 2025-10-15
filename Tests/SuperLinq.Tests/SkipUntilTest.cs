@@ -2,7 +2,7 @@ namespace SuperLinq.Tests;
 
 public sealed class SkipUntilTest
 {
-	[Test]
+	[Fact]
 	public void SkipUntilPredicateNeverFalse()
 	{
 		using var sequence = Enumerable.Range(0, 5)
@@ -12,7 +12,7 @@ public sealed class SkipUntilTest
 			.AssertSequenceEqual(1, 2, 3, 4);
 	}
 
-	[Test]
+	[Fact]
 	public void SkipUntilPredicateNeverTrue()
 	{
 		using var sequence = Enumerable.Range(0, 5)
@@ -20,7 +20,7 @@ public sealed class SkipUntilTest
 		Assert.Empty(sequence.SkipUntil(x => x == 100));
 	}
 
-	[Test]
+	[Fact]
 	public void SkipUntilPredicateBecomesTrueHalfWay()
 	{
 		using var sequence = Enumerable.Range(0, 5)
@@ -30,13 +30,13 @@ public sealed class SkipUntilTest
 			.AssertSequenceEqual(3, 4);
 	}
 
-	[Test]
+	[Fact]
 	public void SkipUntilEvaluatesSourceLazily()
 	{
 		_ = new BreakingSequence<string>().SkipUntil(x => x.Length == 0);
 	}
 
-	[Test]
+	[Fact]
 	public void SkipUntilEvaluatesPredicateLazily()
 	{
 		using var sequence = Enumerable.Range(-2, 5)
@@ -48,20 +48,19 @@ public sealed class SkipUntilTest
 			.AssertSequenceEqual(0, 1, 2);
 	}
 
-	public static IEnumerable<(int[] source, int min, int[] expected)> TestData() =>
+	public static IEnumerable<object[]> TestData { get; } =
 		[
-			([], 0, []),
-			([0], 0, []),
-			([0], 1, []),
-			([1, 2, 3], 0, [2, 3]),
-			([1, 2, 3], 1, [2, 3]),
-			([1, 2, 3], 2, [3]),
-			([1, 2, 3], 3, []),
-			([1, 2, 3], 4, []),
+			[Array.Empty<int>(), 0, Array.Empty<int>()], // empty sequence
+			[new[] { 0 }, 0, Array.Empty<int>()], // one-item sequence, predicate succeed
+			[new[] { 0 }, 1, Array.Empty<int>()], // one-item sequence, predicate don't succeed
+			[new[] { 1, 2, 3 }, 0, new[] { 2, 3 }], // predicate succeed on first item
+			[new[] { 1, 2, 3 }, 1, new[] { 2, 3 }],
+			[new[] { 1, 2, 3 }, 2, new[] { 3 }],
+			[new[] { 1, 2, 3 }, 3, Array.Empty<int>()], // predicate succeed on last item
+			[new[] { 1, 2, 3 }, 4, Array.Empty<int>()], // predicate never succeed
 		];
 
-	[Test]
-	[MethodDataSource(nameof(TestData))]
+	[Theory, MemberData(nameof(TestData))]
 	public void TestSkipUntil(int[] source, int min, int[] expected)
 	{
 		using var xs = source.AsTestingSequence();

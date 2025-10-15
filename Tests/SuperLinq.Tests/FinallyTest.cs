@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class FinallyTest
 {
-	[Test]
+	[Fact]
 	public void FinallyIsLazy()
 	{
 		_ = new BreakingSequence<int>().Finally(BreakingAction.Of());
 	}
 
-	[Test]
+	[Fact]
 	public void FinallyExecutesOnCompletion()
 	{
 		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -21,7 +21,7 @@ public sealed class FinallyTest
 		Assert.True(ran);
 	}
 
-	[Test]
+	[Fact]
 	public void FinallyExecutesOnException()
 	{
 		using var seq = SeqExceptionAt(4).AsTestingSequence();
@@ -39,7 +39,7 @@ public sealed class FinallyTest
 		Assert.True(ran);
 	}
 
-	[Test]
+	[Fact]
 	public void FinallyExecutesOnTake()
 	{
 		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -54,7 +54,7 @@ public sealed class FinallyTest
 		Assert.True(ran);
 	}
 
-	[Test]
+	[Fact]
 	public void FinallyExecutesOnEarlyDisposal()
 	{
 		using var seq = Enumerable.Range(1, 10).AsTestingSequence();

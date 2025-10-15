@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class OnErrorResumeNextTest
 {
-	[Test]
+	[Fact]
 	public void OnErrorResumeNextIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().OnErrorResumeNext(new AsyncBreakingSequence<int>());
@@ -11,7 +11,7 @@ public sealed class OnErrorResumeNextTest
 		_ = new AsyncBreakingSequence<IAsyncEnumerable<int>>().OnErrorResumeNext();
 	}
 
-	[Test]
+	[Fact]
 	public async Task OnErrorResumeNextMultipleSequencesNoExceptions()
 	{
 		await using var ts1 = Enumerable.Range(1, 10).AsTestingSequence();
@@ -29,12 +29,12 @@ public sealed class OnErrorResumeNextTest
 				.Concat(Enumerable.Range(1, 10)));
 	}
 
-	[Test]
-	[Arguments(1)]
-	[Arguments(2)]
-	[Arguments(3)]
-	[Arguments(4)]
-	[Arguments(5)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(2)]
+	[InlineData(3)]
+	[InlineData(4)]
+	[InlineData(5)]
 	public async Task OnErrorResumeNextMultipleSequencesWithNoExceptionOnSequence(int sequenceNumber)
 	{
 		var cnt = 1;

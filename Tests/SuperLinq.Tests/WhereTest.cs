@@ -1,23 +1,23 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class WhereTest
 {
-	[Test]
+	[Fact]
 	public void WhereIsLazy()
 	{
 		_ = new BreakingSequence<int>().Where(new BreakingSequence<bool>());
 	}
 
-	[Test]
-	[Arguments(2, 3)]
-	[Arguments(3, 2)]
+	[Theory]
+	[InlineData(2, 3)]
+	[InlineData(3, 2)]
 	public void WhereRequiresEqualLengths(int sLength, int fLength)
 	{
 		_ = Assert.Throws<ArgumentException>(() =>
 			Enumerable.Repeat(1, sLength).Where(Enumerable.Repeat(false, fLength)).Consume());
 	}
 
-	[Test]
+	[Fact]
 	public void WhereFiltersIntSequence()
 	{
 		var seq = Enumerable.Range(1, 10);
@@ -29,7 +29,7 @@ public sealed class WhereTest
 			seq.Where(x => x % 2 == 0));
 	}
 
-	[Test]
+	[Fact]
 	public void WhereFiltersStringSequence()
 	{
 		var words = Seq("foo", "hello", "world", "Bar", "QuX", "ay", "az");

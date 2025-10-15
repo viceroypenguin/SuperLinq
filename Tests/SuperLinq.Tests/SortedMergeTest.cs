@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 /// <summary>
 /// Tests that verify the behavior of the SortedMerge operator.
@@ -8,7 +8,7 @@ public sealed class SortedMergeTests
 	/// <summary>
 	/// Verify that SortedMerge behaves in a lazy manner.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSortedMergeIsLazy()
 	{
 		var sequenceA = new BreakingSequence<int>();
@@ -21,7 +21,7 @@ public sealed class SortedMergeTests
 	/// Verify that SortedMerge disposes those enumerators that it managed
 	/// to open successfully
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSortedMergeDisposesOnError()
 	{
 		using var sequenceA = TestingSequence.Of<int>();
@@ -34,7 +34,7 @@ public sealed class SortedMergeTests
 	/// <summary>
 	/// Verify that SortedMerge sorts correctly with a <see langword="null"/> comparer.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSortedMergeComparerNull()
 	{
 		using var sequenceA = Enumerable.Range(1, 3).AsTestingSequence();
@@ -47,7 +47,7 @@ public sealed class SortedMergeTests
 	/// <summary>
 	/// Verify that if <c>otherSequences</c> is empty, SortedMerge yields the contents of <c>sequence</c>
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSortedMergeOtherSequencesEmpty()
 	{
 		using var sequenceA = Enumerable.Range(1, 10).AsTestingSequence();
@@ -59,7 +59,7 @@ public sealed class SortedMergeTests
 	/// <summary>
 	/// Verify that if all sequences passed to SortedMerge are empty, the result is an empty sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSortedMergeAllSequencesEmpty()
 	{
 		using var sequenceA = TestingSequence.Of<int>();
@@ -73,7 +73,7 @@ public sealed class SortedMergeTests
 	/// <summary>
 	/// Verify that if the primary sequence is empty, SortedMerge correctly merges <c>otherSequences</c>
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSortedMergeFirstSequenceEmpty()
 	{
 		using var sequenceA = TestingSequence.Of<int>();
@@ -87,7 +87,7 @@ public sealed class SortedMergeTests
 	/// <summary>
 	/// Verify that SortedMerge correctly merges sequences of equal length.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSortedMergeEqualLengthSequences()
 	{
 		using var sequenceA = Enumerable.Range(0, 10).Select(x => (x * 3) + 0).AsTestingSequence();
@@ -101,7 +101,7 @@ public sealed class SortedMergeTests
 	/// <summary>
 	/// Verify that sorted merge correctly merges sequences of unequal length.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSortedMergeUnequalLengthSequences()
 	{
 		using var sequenceA = Enumerable.Range(0, 30).Select(x => (x * 3) + 0).AsTestingSequence(maxEnumerations: 2);
@@ -116,7 +116,7 @@ public sealed class SortedMergeTests
 	/// <summary>
 	/// Verify that sorted merge correctly uses a custom comparer supplied to it.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSortedMergeCustomComparer()
 	{
 		using var sequenceA = new[] { "a", "D", "G", "h", "i", "J", "O", "t", "z" }.AsTestingSequence(maxEnumerations: 2);
@@ -135,7 +135,7 @@ public sealed class SortedMergeTests
 	/// <summary>
 	/// Verify that SortedMerge correctly merges sequences with overlapping contents.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSortedMergeOverlappingSequences()
 	{
 		using var sequenceA = TestingSequence.Of(1, 3, 5, 7, 9, 11);

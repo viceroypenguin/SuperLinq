@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class DensePartialSortByTests
 {
-	[Test]
+	[Fact]
 	public void DensePartialSortByIsLazy()
 	{
 		_ = new BreakingSequence<object>().DensePartialSortBy(1, BreakingFunc.Of<object, object>());
 	}
 
-	[Test]
+	[Fact]
 	public void DensePartialSortBy()
 	{
 		var ns = SuperEnumerable.RandomDouble().Take(10).ToArray();
@@ -24,9 +24,9 @@ public sealed class DensePartialSortByTests
 			ns.Take(3).SelectMany(x => new[] { x, x }));
 	}
 
-	[Test]
-	[Arguments(OrderByDirection.Ascending)]
-	[Arguments(OrderByDirection.Descending)]
+	[Theory]
+	[InlineData(OrderByDirection.Ascending)]
+	[InlineData(OrderByDirection.Descending)]
 	public void DensePartialSortWithOrder(OrderByDirection direction)
 	{
 		var ns = SuperEnumerable.RandomDouble()
@@ -47,7 +47,7 @@ public sealed class DensePartialSortByTests
 			ns.Take(3).SelectMany(x => new[] { x, x }));
 	}
 
-	[Test]
+	[Fact]
 	public void DensePartialSortWithComparer()
 	{
 		var alphabet = Enumerable.Range(0, 26)
@@ -65,7 +65,7 @@ public sealed class DensePartialSortByTests
 			.AssertSequenceEqual('A', 'A', 'C', 'C', 'E', 'E');
 	}
 
-	[Test]
+	[Fact]
 	public void DensePartialSortByIsStable()
 	{
 		using var list = new[]

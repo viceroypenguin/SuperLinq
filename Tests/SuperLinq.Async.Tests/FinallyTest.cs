@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class FinallyTest
 {
-	[Test]
+	[Fact]
 	public void FinallyIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Finally(BreakingAction.Of());
 	}
 
-	[Test]
+	[Fact]
 	public async Task FinallyExecutesOnCompletion()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -21,7 +21,7 @@ public sealed class FinallyTest
 		Assert.True(ran);
 	}
 
-	[Test]
+	[Fact]
 	public async Task FinallyExecutesOnException()
 	{
 		await using var seq = AsyncSeqExceptionAt(4).AsTestingSequence();
@@ -39,7 +39,7 @@ public sealed class FinallyTest
 		Assert.True(ran);
 	}
 
-	[Test]
+	[Fact]
 	public async Task FinallyExecutesOnTake()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -54,7 +54,7 @@ public sealed class FinallyTest
 		Assert.True(ran);
 	}
 
-	[Test]
+	[Fact]
 	public async Task FinallyExecutesOnEarlyDisposal()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();

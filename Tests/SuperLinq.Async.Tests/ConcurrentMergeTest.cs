@@ -2,20 +2,20 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class ConcurrentMergeTest
 {
-	[Test]
+	[Fact]
 	public void ConcurrentMergeIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().ConcurrentMerge(new AsyncBreakingSequence<int>());
 	}
 
-	[Test]
+	[Fact]
 	public void ConcurrentMergeNegativeMaxConcurrency()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>("maxConcurrency", () =>
 			new[] { new AsyncBreakingSequence<int>() }.ConcurrentMerge(-1));
 	}
 
-	[Test]
+	[Fact]
 	public async Task ConcurrentMergeDisposesOnErrorAtGetEnumerator()
 	{
 		await using var sequenceA = TestingSequence.Of<int>();
@@ -26,7 +26,7 @@ public sealed class ConcurrentMergeTest
 			await sequenceA.ConcurrentMerge(sequenceB).Consume());
 	}
 
-	[Test]
+	[Fact]
 	public async Task ConcurrentMergeDisposesOnErrorAtMoveNext()
 	{
 		await using var sequenceA = TestingSequence.Of<int>();
@@ -38,7 +38,7 @@ public sealed class ConcurrentMergeTest
 			await sequenceA.ConcurrentMerge(sequenceB).Consume());
 	}
 
-	[Test]
+	[Fact]
 	public async Task ConcurrentMergeTwoBalancedSequences()
 	{
 		await using var sequenceA = AsyncEnumerable.Range(1, 10).AsTestingSequence();
@@ -50,7 +50,7 @@ public sealed class ConcurrentMergeTest
 			Enumerable.Range(1, 10).SelectMany(x => Enumerable.Repeat(x, 2)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task ConcurrentMergeTwoEmptySequences()
 	{
 		await using var sequenceA = AsyncEnumerable.Empty<int>().AsTestingSequence();
@@ -60,7 +60,7 @@ public sealed class ConcurrentMergeTest
 		await result.AssertSequenceEqual(Enumerable.Empty<int>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task ConcurrentMergeTwoImbalanceStrategySkip()
 	{
 		await using var sequenceA = TestingSequence.Of(0, 0, 0, 0, 0, 0);
@@ -71,7 +71,7 @@ public sealed class ConcurrentMergeTest
 		await result.AssertCollectionEqual(0, 1, 0, 1, 0, 1, 0, 1, 0, 0);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ConcurrentMergeManyEmptySequences()
 	{
 		await using var sequenceA = AsyncEnumerable.Empty<int>().AsTestingSequence();
@@ -86,8 +86,7 @@ public sealed class ConcurrentMergeTest
 
 	// excess time consumption - avoid unless explicit
 	// shorter times introduce variability in ordering
-	[Test]
-	[Explicit]
+	[Fact(Skip = "Explicit")]
 	public async Task ConcurrentMergeReturnsInOrderOfDelay()
 	{
 		await using var seqA = AsyncSuperEnumerable
@@ -97,7 +96,6 @@ public sealed class ConcurrentMergeTest
 				async () => { await Task.Delay(300); return 3; },  //  600
 				async () => { await Task.Delay(400); return 4; })  // 1000
 			.AsTestingSequence();
-
 		await using var seqB = AsyncSuperEnumerable
 			.From(
 				async () => { await Task.Delay(400); return 1; },  //  400
@@ -105,7 +103,6 @@ public sealed class ConcurrentMergeTest
 				async () => { await Task.Delay(200); return 3; },  //  900
 				async () => { await Task.Delay(100); return 4; })  // 1000
 			.AsTestingSequence();
-
 		var result = seqA.ConcurrentMerge(seqB);
 
 		await result.AssertSequenceEqual(1, 2, 1, 3, 2, 3, 4, 4);
@@ -113,8 +110,7 @@ public sealed class ConcurrentMergeTest
 
 	// excess time consumption - avoid unless explicit
 	// shorter times introduce variability in ordering
-	[Test]
-	[Explicit]
+	[Fact(Skip = "Explicit")]
 	public async Task ConcurrentMergeReturnsInOrderOfDelayUnbounded()
 	{
 		await using var seqA = AsyncSuperEnumerable
@@ -145,13 +141,12 @@ public sealed class ConcurrentMergeTest
 				async () => { await Task.Delay(100); return 43; },  // 1000
 				async () => { await Task.Delay(500); return 44; })  // 1500
 			.AsTestingSequence();
-
 		var result = new[] { seqA, seqB, seqC, seqD }.ConcurrentMerge();
 
 		await result.AssertSequenceEqual(31, 11, 41, 32, 12, 33, 21, 42, 43, 13, 22, 44, 34, 23, 24, 14);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ConcurrentMergeReturnsWithDelayReturnsAllElementsUnbounded()
 	{
 		await using var seqA = AsyncSuperEnumerable
@@ -187,7 +182,7 @@ public sealed class ConcurrentMergeTest
 		await result.AssertCollectionEqual(11, 12, 13, 14, 21, 22, 23, 24, 31, 32, 33, 34, 41, 42, 43, 44);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ConcurrentMergeReturnsWithDelayReturnsAllElementsBounded()
 	{
 		await using var seqA = AsyncSuperEnumerable
@@ -223,7 +218,7 @@ public sealed class ConcurrentMergeTest
 		await result.AssertCollectionEqual(11, 12, 13, 14, 21, 22, 23, 24, 31, 32, 33, 34, 41, 42, 43, 44);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ConcurrentMergeSingleConcurrencyOperatesLikeInterleave()
 	{
 		await using var seqA = AsyncSuperEnumerable

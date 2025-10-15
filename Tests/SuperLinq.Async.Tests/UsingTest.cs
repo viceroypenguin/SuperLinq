@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class UsingTest
 {
-	[Test]
+	[Fact]
 	public void UsingIsLazy()
 	{
 		_ = AsyncSuperEnumerable.Using(
@@ -10,7 +10,7 @@ public sealed class UsingTest
 			BreakingFunc.Of<IAsyncDisposable, IAsyncEnumerable<int>>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task UsingDisposesCorrectly()
 	{
 		var starts = 0;
@@ -36,7 +36,7 @@ public sealed class UsingTest
 		Assert.Equal(1, starts);
 	}
 
-	[Test]
+	[Fact]
 	public async Task UsingDisposesOnIterationError()
 	{
 		var starts = 0;
@@ -63,7 +63,7 @@ public sealed class UsingTest
 		Assert.Equal(1, starts);
 	}
 
-	[Test]
+	[Fact]
 	public async Task UsingDisposesOnFunctionError()
 	{
 		TestDisposable? dis = null;

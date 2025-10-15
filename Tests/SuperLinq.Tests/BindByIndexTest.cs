@@ -1,15 +1,15 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class BindByIndexTest
 {
-	[Test]
+	[Fact]
 	public void BindByIndexIsLazy()
 	{
 		_ = new BreakingSequence<int>().BindByIndex(new BreakingSequence<int>());
 		_ = new BreakingSequence<int>().BindByIndex(new BreakingSequence<int>(), BreakingFunc.Of<int, int, int>(), BreakingFunc.Of<int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void BindByIndexDisposesEnumerators()
 	{
 		using var seq1 = TestingSequence.Of<int>();
@@ -17,7 +17,7 @@ public sealed class BindByIndexTest
 		Assert.Empty(seq1.BindByIndex(seq2));
 	}
 
-	[Test]
+	[Fact]
 	public void BindByIndexInOrder()
 	{
 		var indexes = Seq(1, 3, 5, 7, 9);
@@ -27,7 +27,7 @@ public sealed class BindByIndexTest
 		seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
-	[Test]
+	[Fact]
 	public void BindByIndexOutOfOrder()
 	{
 		var indexes = Seq(9, 7, 5, 3, 1);
@@ -37,7 +37,7 @@ public sealed class BindByIndexTest
 		seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
-	[Test]
+	[Fact]
 	public void BindByIndexComplex()
 	{
 		var indexes = Seq(0, 1, 8, 9, 3, 4, 2);
@@ -47,10 +47,10 @@ public sealed class BindByIndexTest
 		seq1.BindByIndex(seq2).AssertSequenceEqual(indexes.Select(x => x + 1));
 	}
 
-	[Test]
-	[Arguments(-1)]
-	[Arguments(10)]
-	[Arguments(100)]
+	[Theory]
+	[InlineData(-1)]
+	[InlineData(10)]
+	[InlineData(100)]
 	public void BindByIndexThrowExceptionInvalidIndex(int index)
 	{
 		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
@@ -60,7 +60,7 @@ public sealed class BindByIndexTest
 			seq1.BindByIndex(seq2).Consume());
 	}
 
-	[Test]
+	[Fact]
 	public void BindByIndexTransformInOrder()
 	{
 		var indexes = Seq(1, 3, 5, 7, 9);
@@ -71,7 +71,7 @@ public sealed class BindByIndexTest
 			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
-	[Test]
+	[Fact]
 	public void BindByIndexTransformOutOfOrder()
 	{
 		var indexes = Seq(9, 7, 5, 3, 1);
@@ -82,7 +82,7 @@ public sealed class BindByIndexTest
 			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
-	[Test]
+	[Fact]
 	public void BindByIndexTransformComplex()
 	{
 		var indexes = Seq(0, 1, 8, 9, 3, 4, 2);
@@ -93,7 +93,7 @@ public sealed class BindByIndexTest
 			.AssertSequenceEqual(indexes.Select(x => (int?)(x + 1)));
 	}
 
-	[Test]
+	[Fact]
 	public void BindByIndexTransformInvalidIndex()
 	{
 		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();
@@ -103,7 +103,7 @@ public sealed class BindByIndexTest
 			.AssertSequenceEqual(2, null, 4, null);
 	}
 
-	[Test]
+	[Fact]
 	public void BindByIndexTransformThrowExceptionNegativeIndex()
 	{
 		using var seq1 = Enumerable.Range(1, 10).AsTestingSequence();

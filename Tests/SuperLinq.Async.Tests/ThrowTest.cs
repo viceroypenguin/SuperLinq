@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class ThrowTest
 {
-	[Test]
+	[Fact]
 	public void ThrowIsLazy()
 	{
 		_ = AsyncSuperEnumerable.Throw<int>(new TestException());
 	}
 
-	[Test]
+	[Fact]
 	public async Task ThrowBehavior()
 	{
 		var src = new TestException();

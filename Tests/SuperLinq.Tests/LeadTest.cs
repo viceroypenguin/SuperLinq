@@ -8,7 +8,7 @@ public sealed class LeadTest
 	/// <summary>
 	/// Verify that Lead() behaves in a lazy manner.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadIsLazy()
 	{
 		_ = new BreakingSequence<int>().Lead(5, BreakingFunc.Of<int, int, int>());
@@ -18,7 +18,7 @@ public sealed class LeadTest
 	/// <summary>
 	/// Verify that attempting to lead by a negative offset will result in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadNegativeOffset()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -28,19 +28,20 @@ public sealed class LeadTest
 	/// <summary>
 	/// Verify that attempting to lead by a zero offset will result in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadZeroOffset()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().Lead(0, (val, leadVal) => val + leadVal));
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetIntSequences() =>
+	public static IEnumerable<object[]> GetIntSequences() =>
 		Enumerable.Range(1, 100)
-			.GetListSequences();
+			.GetListSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestLeadExplicitDefaultValue(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -52,8 +53,8 @@ public sealed class LeadTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestLeadTuple(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -65,8 +66,8 @@ public sealed class LeadTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestLeadImplicitDefaultValue(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -78,8 +79,8 @@ public sealed class LeadTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestLeadOffsetGreaterThanSequenceLength(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -91,8 +92,8 @@ public sealed class LeadTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestLeadPassesCorrectValueOffsetBy1(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -104,8 +105,8 @@ public sealed class LeadTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void TestLeadPassesCorrectValueOffsetBy2(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -117,12 +118,13 @@ public sealed class LeadTest
 		}
 	}
 
-	public static IEnumerable<IDisposableEnumerable<string>> GetStringSequences() =>
+	public static IEnumerable<object[]> GetStringSequences() =>
 		Seq("foo", "bar", "baz", "qux")
-			.GetListSequences();
+			.GetListSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetStringSequences))]
+	[Theory]
+	[MemberData(nameof(GetStringSequences))]
 	public void TestLagWithNullableReferences(IDisposableEnumerable<string> seq)
 	{
 		using (seq)
@@ -136,8 +138,8 @@ public sealed class LeadTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetStringSequences))]
+	[Theory]
+	[MemberData(nameof(GetStringSequences))]
 	public void TestLagWithNonNullableReferences(IDisposableEnumerable<string> seq)
 	{
 		using (seq)
@@ -151,7 +153,7 @@ public sealed class LeadTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void LeadListBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
