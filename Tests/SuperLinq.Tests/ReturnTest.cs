@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace SuperLinq.Tests;
 
 public sealed class ReturnTest
@@ -18,31 +16,31 @@ public sealed class ReturnTest
 		public static IList<object?> List => (IList<object?>)s_sequence;
 	}
 
-	[Test]
+	[Fact]
 	public void TestResultingSequenceContainsSingle()
 	{
 		_ = Assert.Single(SomeSingleton.Sequence);
 	}
 
-	[Test]
+	[Fact]
 	public void TestResultingSequenceContainsTheItemProvided()
 	{
 		Assert.Contains(SomeSingleton.Item, SomeSingleton.Sequence);
 	}
 
-	[Test]
+	[Fact]
 	public void TestResultingListHasCountOne()
 	{
 		_ = Assert.Single(SomeSingleton.List);
 	}
 
-	[Test]
+	[Fact]
 	public void TestContainsReturnsTrueWhenTheResultingSequenceContainsTheItemProvided()
 	{
 		Assert.Contains(SomeSingleton.Item, SomeSingleton.Sequence);
 	}
 
-	[Test]
+	[Fact]
 	public void TestCopyToSetsTheValueAtTheIndexToTheItemContained()
 	{
 		var first = new object();
@@ -62,55 +60,58 @@ public sealed class ReturnTest
 		Assert.Equal(third, array[2]);
 	}
 
-	[Test]
+	[Fact]
 	public void TestResultingCollectionIsReadOnly()
 	{
 		Assert.True(SomeSingleton.Collection.IsReadOnly);
 	}
 
-	[Test]
+	[Fact]
 	public void TestResultingCollectionHasCountOne()
 	{
 		_ = Assert.Single(SomeSingleton.Collection);
 	}
 
-	[Test]
+	[Fact]
 	public void TestIndexZeroContainsTheItemProvided()
 	{
 		Assert.Equal(SomeSingleton.Item, SomeSingleton.List[0]);
 	}
 
-	[Test]
+	[Fact]
 	public void TestIndexOfTheItemProvidedIsZero()
 	{
 		Assert.Equal(0, SomeSingleton.List.IndexOf(SomeSingleton.Item));
 	}
 
-	[Test]
+	[Fact]
 	public void TestIndexOfAnItemNotContainedIsNegativeOne()
 	{
 		Assert.Equal(-1, SomeSingleton.List.IndexOf(new object()));
 	}
 
-	[SuppressMessage("Style", "IDE0200:Remove unnecessary lambda expression", Justification = "Consistency")]
-	public static IEnumerable<Action> UnsupportedActions() =>
-		[
-			() => SomeSingleton.List.Add(new object()),
-			() => SomeSingleton.Collection.Clear(),
-			() => SomeSingleton.Collection.Remove(SomeSingleton.Item),
-			() => SomeSingleton.List.RemoveAt(0),
-			() => SomeSingleton.List.Insert(0, new object()),
-			() => SomeSingleton.List[0] = new object(),
-		];
+#pragma warning disable IDE0200 // Remove unnecessary lambda expression
+#pragma warning disable IDE0300 // Collection initialization can be simplified
+	public static IEnumerable<object[]> UnsupportedActions() =>
+		new Action[][]
+		{
+			[() => SomeSingleton.List.Add(new object()),],
+			[() => SomeSingleton.Collection.Clear(),],
+			[() => SomeSingleton.Collection.Remove(SomeSingleton.Item),],
+			[() => SomeSingleton.List.RemoveAt(0),],
+			[() => SomeSingleton.List.Insert(0, new object()),],
+			[() => SomeSingleton.List[0] = new object(),],
+		};
+#pragma warning restore IDE0300 // Collection initialization can be simplified
+#pragma warning restore IDE0200 // Remove unnecessary lambda expression
 
-	[Test]
-	[MethodDataSource(nameof(UnsupportedActions))]
+	[Theory, MemberData(nameof(UnsupportedActions))]
 	public void TestUnsupportedMethodShouldThrow(Action unsupportedAction)
 	{
 		_ = Assert.Throws<NotSupportedException>(unsupportedAction);
 	}
 
-	[Test]
+	[Fact]
 	public void TestIndexingPastZeroShouldThrow()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() => SomeSingleton.List[1]);

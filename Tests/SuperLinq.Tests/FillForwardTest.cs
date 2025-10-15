@@ -4,7 +4,7 @@ namespace SuperLinq.Tests;
 
 public sealed class FillForwardTest
 {
-	[Test]
+	[Fact]
 	public void FillForwardIsLazy()
 	{
 		_ = new BreakingSequence<object>().FillForward();
@@ -12,12 +12,13 @@ public sealed class FillForwardTest
 		_ = new BreakingSequence<object>().FillForward(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, object, object>());
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int?>> GetIntNullSequences() =>
+	public static IEnumerable<object[]> GetIntNullSequences() =>
 		Seq<int?>(null, null, 1, 2, null, null, null, 3, 4, null, null)
-			.GetBreakingCollectionSequences();
+			.GetBreakingCollectionSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetIntNullSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntNullSequences))]
 	public void FillForwardBlank(IDisposableEnumerable<int?> seq)
 	{
 		using (seq)
@@ -28,8 +29,8 @@ public sealed class FillForwardTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntNullSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntNullSequences))]
 	public void FillForward(IDisposableEnumerable<int?> seq)
 	{
 		using (seq)
@@ -40,12 +41,13 @@ public sealed class FillForwardTest
 		}
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetIntSequences() =>
+	public static IEnumerable<object[]> GetIntSequences() =>
 		Enumerable.Range(1, 13)
-			.GetBreakingCollectionSequences();
+			.GetBreakingCollectionSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void FillForwardWithFillSelector(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -56,7 +58,7 @@ public sealed class FillForwardTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void FillForwardExample()
 	{
 		const string Table = @"
@@ -99,7 +101,7 @@ public sealed class FillForwardTest
 				new { Continent = "Africa", Country = "Kenya", City = "Nairobi", Value = 901 });
 	}
 
-	[Test]
+	[Fact]
 	public void FillForwardCollectionCount()
 	{
 		using var sequence = Enumerable.Range(1, 10_000)

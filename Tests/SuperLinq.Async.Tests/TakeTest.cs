@@ -7,7 +7,7 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class TakeTest
 {
-	[Test]
+	[Fact]
 	public async Task SameResultsRepeatCallsIntQuery()
 	{
 		var q = (from x in new[] { 9999, 0, 888, -1, 66, -777, 1, 2, -12345 }
@@ -22,7 +22,7 @@ public sealed class TakeTest
 		Assert.Equal(await q.Take(^9..^0).ToListAsync(), await q.Take(^9..^0).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task SameResultsRepeatCallsStringQuery()
 	{
 		var q = (from x in new[] { "!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "" }
@@ -37,7 +37,7 @@ public sealed class TakeTest
 		Assert.Equal(await q.Take(^7..^0).ToListAsync(), await q.Take(^7..^0).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task SourceEmptyCountPositive()
 	{
 		var source = AsyncEnumerable.Empty<int>();
@@ -48,7 +48,7 @@ public sealed class TakeTest
 		Assert.Empty(await source.Take(^5..^0).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task SourceNonEmptyCountNegative()
 	{
 		var source = AsyncSeq(2, 5, 9, 1);
@@ -56,7 +56,7 @@ public sealed class TakeTest
 		Assert.Empty(await source.Take(^9..0).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task SourceNonEmptyCountZero()
 	{
 		var source = AsyncSeq(2, 5, 9, 1);
@@ -67,7 +67,7 @@ public sealed class TakeTest
 		Assert.Empty(await source.Take(^4..^4).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task SourceNonEmptyCountOne()
 	{
 		var source = AsyncSeq(2, 5, 9, 1);
@@ -80,7 +80,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, await source.Take(^4..^3).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task SourceNonEmptyTakeAllExactly()
 	{
 		var source = new[] { 2, 5, 9, 1 };
@@ -92,7 +92,7 @@ public sealed class TakeTest
 		Assert.Equal(source, await source.ToAsyncEnumerable().Take(^source.Length..^0).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task SourceNonEmptyTakeAllButOne()
 	{
 		var source = AsyncSeq(2, 5, 9, 1);
@@ -105,7 +105,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, await source.Take(^4..^1).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task RunOnce()
 	{
 		var source = AsyncSeq(2, 5, 9, 1);
@@ -118,7 +118,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, await source.Take(^4..^1).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task SourceNonEmptyTakeExcessive()
 	{
 		var source = new int?[] { 2, 5, null, 9, 1 };
@@ -128,7 +128,7 @@ public sealed class TakeTest
 		Assert.Equal(source, await source.ToAsyncEnumerable().Take(^(source.Length + 1)..(source.Length + 1)).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public void ThrowsOnNullSource()
 	{
 		IAsyncEnumerable<int> source = null!;
@@ -139,7 +139,7 @@ public sealed class TakeTest
 		_ = Assert.Throws<ArgumentNullException>("source", () => source.Take(^5..^0));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FollowWithTake()
 	{
 		var source = AsyncSeq(5, 6, 7, 8);
@@ -152,7 +152,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, await source.Take(^4..^0).Take(^4..^1).Take(^3..^1).Take(^2..^0).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task FollowWithSkip()
 	{
 		var source = AsyncSeq(1, 2, 3, 4, 5, 6);
@@ -165,7 +165,7 @@ public sealed class TakeTest
 		Assert.Equal(expected, await source.Take(^6..^1).Skip(2).Skip(-4).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task LazyOverflowRegression()
 	{
 		var range = AsyncEnumerable.Range(1, 100);
@@ -192,7 +192,7 @@ public sealed class TakeTest
 		Assert.Equal(Enumerable.Range(43, 100 - 42), await taken5.ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task OutOfBoundNoException()
 	{
 		static IAsyncEnumerable<int> Source() => AsyncSeq(1, 2, 3, 4, 5);
@@ -229,7 +229,7 @@ public sealed class TakeTest
 		Assert.Empty(await Source().Take(^int.MaxValue..^int.MaxValue).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task NonEmptySourceDoNotThrowException()
 	{
 		static IAsyncEnumerable<int> Source() => AsyncSeq(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
@@ -240,7 +240,7 @@ public sealed class TakeTest
 		Assert.Empty(await Source().Take(^6..^7).ToListAsync());
 	}
 
-	[Test]
+	[Fact]
 	public async Task EmptySourceDoNotThrowException()
 	{
 		static IAsyncEnumerable<int> Source() => AsyncSeq<int>();

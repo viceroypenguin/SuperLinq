@@ -1,28 +1,28 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class BufferTest
 {
-	[Test]
+	[Fact]
 	public void BufferIsLazy()
 	{
 		_ = new BreakingSequence<int>().Buffer(2, 1);
 	}
 
-	[Test]
+	[Fact]
 	public void BufferValidatesCount()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>("count",
 			() => new BreakingSequence<int>().Buffer(0, 2));
 	}
 
-	[Test]
+	[Fact]
 	public void BufferValidatesSkip()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>("skip",
 			() => new BreakingSequence<int>().Buffer(2, 0));
 	}
 
-	[Test]
+	[Fact]
 	public void BufferEmptySequence()
 	{
 		using var seq = Enumerable.Empty<int>().AsTestingSequence();
@@ -31,10 +31,10 @@ public sealed class BufferTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
-	[Arguments(3)]
-	[Arguments(5)]
-	[Arguments(7)]
+	[Theory]
+	[InlineData(3)]
+	[InlineData(5)]
+	[InlineData(7)]
 	public void BufferNonOverlappingBuffers(int count)
 	{
 		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -44,7 +44,7 @@ public sealed class BufferTest
 			actual.AssertSequenceEqual(expected);
 	}
 
-	[Test]
+	[Fact]
 	public void BufferOverlappingBuffers()
 	{
 		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -58,7 +58,7 @@ public sealed class BufferTest
 		reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void BufferSkippingBuffers()
 	{
 		using var seq = Enumerable.Range(1, 10).AsTestingSequence();

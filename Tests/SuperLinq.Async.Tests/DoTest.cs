@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class DoTest
 {
-	[Test]
+	[Fact]
 	public void DoOverloadsAreLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Do(BreakingAction.Of<int>());
@@ -10,7 +10,7 @@ public sealed class DoTest
 		_ = new AsyncBreakingSequence<int>().Do(BreakingAction.Of<int>(), BreakingAction.Of<Exception>(), BreakingAction.Of());
 	}
 
-	[Test]
+	[Fact]
 	public async Task DoBehavior()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -22,7 +22,7 @@ public sealed class DoTest
 		Assert.Equal(55, count);
 	}
 
-	[Test]
+	[Fact]
 	public async Task DoCompletedBehavior()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -34,7 +34,7 @@ public sealed class DoTest
 		Assert.Equal(65, count);
 	}
 
-	[Test]
+	[Fact]
 	public async Task DoBehaviorNoError()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -46,7 +46,7 @@ public sealed class DoTest
 		Assert.Equal(55, count);
 	}
 
-	[Test]
+	[Fact]
 	public async Task DoCompletedBehaviorNoError()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -58,7 +58,7 @@ public sealed class DoTest
 		Assert.Equal(65, count);
 	}
 
-	[Test]
+	[Fact]
 	public async Task DoBehaviorError()
 	{
 		await using var seq = Enumerable.Range(1, 10)
@@ -76,7 +76,7 @@ public sealed class DoTest
 		Assert.Equal(155, count);
 	}
 
-	[Test]
+	[Fact]
 	public async Task DoCompletedBehaviorError()
 	{
 		await using var seq = Enumerable.Range(1, 10)

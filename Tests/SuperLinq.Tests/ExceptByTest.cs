@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class ExceptByTest
 {
-	[Test]
+	[Fact]
 	public void SimpleExceptBy()
 	{
 		using var first = TestingSequence.Of("aaa", "bb", "c", "dddd");
@@ -11,14 +11,14 @@ public sealed class ExceptByTest
 		result.AssertSequenceEqual("aaa", "dddd");
 	}
 
-	[Test]
+	[Fact]
 	public void ExceptByIsLazy()
 	{
 		var bs = new BreakingSequence<string>();
 		_ = bs.ExceptBy(bs, BreakingFunc.Of<string, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void ExceptByDoesNotRepeatSourceElementsWithDuplicateKeys()
 	{
 		using var first = TestingSequence.Of("aaa", "bb", "c", "a", "b", "c", "dddd");
@@ -27,7 +27,7 @@ public sealed class ExceptByTest
 		result.AssertSequenceEqual("aaa", "c", "dddd");
 	}
 
-	[Test]
+	[Fact]
 	public void ExceptByWithComparer()
 	{
 		using var first = TestingSequence.Of("first", "second", "third", "fourth");
@@ -36,7 +36,7 @@ public sealed class ExceptByTest
 		result.AssertSequenceEqual("second", "fourth");
 	}
 
-	[Test]
+	[Fact]
 	public void ExceptByNullComparer()
 	{
 		using var first = TestingSequence.Of("aaa", "bb", "c", "dddd");
@@ -45,7 +45,7 @@ public sealed class ExceptByTest
 		result.AssertSequenceEqual("aaa", "dddd");
 	}
 
-	[Test]
+	[Fact]
 	public void ExceptByIsLazyWithComparer()
 	{
 		var bs = new BreakingSequence<int>();

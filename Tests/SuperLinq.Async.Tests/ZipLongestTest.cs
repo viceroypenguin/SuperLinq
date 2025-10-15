@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class ZipLongestTest
 {
-	[Test]
+	[Fact]
 	public void ZipLongestIsLazy()
 	{
 		var bs = new AsyncBreakingSequence<int>();
@@ -11,7 +11,7 @@ public sealed class ZipLongestTest
 		_ = bs.ZipLongest(bs, bs, bs, BreakingFunc.Of<int, int, int, int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task TwoParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -20,8 +20,8 @@ public sealed class ZipLongestTest
 			await s1.ZipLongest(new AsyncBreakingSequence<int>()).Consume());
 	}
 
-	[Test]
-	[Arguments(1), Arguments(2)]
+	[Theory]
+	[InlineData(1), InlineData(2)]
 	public async Task TwoParamsWorksProperly(int offset)
 	{
 		var o1 = ((offset + 0) % 2) + 2;
@@ -37,7 +37,7 @@ public sealed class ZipLongestTest
 					x > o2 ? 0 : x)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task ThreeParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -47,8 +47,8 @@ public sealed class ZipLongestTest
 			await s1.ZipLongest(s2, new AsyncBreakingSequence<int>()).Consume());
 	}
 
-	[Test]
-	[Arguments(1), Arguments(2), Arguments(3)]
+	[Theory]
+	[InlineData(1), InlineData(2), InlineData(3)]
 	public async Task ThreeParamsWorksProperly(int offset)
 	{
 		var o1 = ((offset + 0) % 3) + 2;
@@ -67,7 +67,7 @@ public sealed class ZipLongestTest
 					x > o3 ? 0 : x)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FourParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -78,8 +78,8 @@ public sealed class ZipLongestTest
 			await s1.ZipLongest(s2, s3, new AsyncBreakingSequence<int>()).Consume());
 	}
 
-	[Test]
-	[Arguments(1), Arguments(2), Arguments(3), Arguments(4)]
+	[Theory]
+	[InlineData(1), InlineData(2), InlineData(3), InlineData(4)]
 	public async Task FourParamsWorksProperly(int offset)
 	{
 		var o1 = ((offset + 0) % 4) + 2;

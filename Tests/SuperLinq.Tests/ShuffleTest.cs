@@ -5,13 +5,13 @@ public sealed class ShuffleTest
 {
 	private static readonly Random s_seed = new(12345);
 
-	[Test]
+	[Fact]
 	public void ShuffleIsLazy()
 	{
 		_ = SuperEnumerable.Shuffle(new BreakingSequence<int>());
 	}
 
-	[Test]
+	[Fact]
 	public void Shuffle()
 	{
 		using var source = Enumerable.Range(1, 100).AsTestingSequence();
@@ -20,7 +20,7 @@ public sealed class ShuffleTest
 		result.AssertCollectionEqual(Enumerable.Range(1, 100));
 	}
 
-	[Test]
+	[Fact]
 	public void ShuffleWithEmptySequence()
 	{
 		using var source = Enumerable.Empty<int>().AsTestingSequence();
@@ -29,7 +29,7 @@ public sealed class ShuffleTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void ShuffleIsIdempotent()
 	{
 		var sequence = Enumerable.Range(1, 100).ToArray();
@@ -41,13 +41,13 @@ public sealed class ShuffleTest
 		sequence.AssertSequenceEqual(Enumerable.Range(1, 100));
 	}
 
-	[Test]
+	[Fact]
 	public void ShuffleSeedIsLazy()
 	{
 		_ = SuperEnumerable.Shuffle(new BreakingSequence<int>(), s_seed);
 	}
 
-	[Test]
+	[Fact]
 	public void ShuffleSeed()
 	{
 		using var source = Enumerable.Range(1, 100).AsTestingSequence();
@@ -56,7 +56,7 @@ public sealed class ShuffleTest
 		result.AssertCollectionEqual(Enumerable.Range(1, 100));
 	}
 
-	[Test]
+	[Fact]
 	public void ShuffleSeedWithEmptySequence()
 	{
 		using var source = Enumerable.Empty<int>().AsTestingSequence();
@@ -65,7 +65,7 @@ public sealed class ShuffleTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void ShuffleSeedIsIdempotent()
 	{
 		var sequence = Enumerable.Range(1, 100).ToArray();

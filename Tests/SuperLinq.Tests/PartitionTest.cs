@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class PartitionTest
 {
-	[Test]
+	[Fact]
 	public void Partition()
 	{
 		using var sequence = Enumerable.Range(0, 10).AsTestingSequence();
@@ -13,7 +13,7 @@ public sealed class PartitionTest
 		odds.AssertSequenceEqual(1, 3, 5, 7, 9);
 	}
 
-	[Test]
+	[Fact]
 	public void PartitionWithEmptySequence()
 	{
 		using var sequence = Enumerable.Empty<int>().AsTestingSequence();
@@ -24,7 +24,7 @@ public sealed class PartitionTest
 		odds.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void PartitionWithResultSelector()
 	{
 		using var sequence = Enumerable.Range(0, 10).AsTestingSequence();

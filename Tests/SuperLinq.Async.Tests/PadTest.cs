@@ -1,21 +1,21 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class PadTest
 {
-	[Test]
+	[Fact]
 	public void PadNegativeWidth()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			AsyncSeq<object>().Pad(-1));
 	}
 
-	[Test]
+	[Fact]
 	public void PadIsLazy()
 	{
 		_ = new AsyncBreakingSequence<object>().Pad(0);
 	}
 
-	[Test]
+	[Fact]
 	public void PadWithFillerIsLazy()
 	{
 		_ = new AsyncBreakingSequence<object>().Pad(0, new object());
@@ -23,7 +23,7 @@ public sealed class PadTest
 
 	public sealed class ValueTypeElements
 	{
-		[Test]
+		[Fact]
 		public async Task PadWideSourceSequence()
 		{
 			await using var sequence = TestingSequence.Of(123, 456, 789);
@@ -31,7 +31,7 @@ public sealed class PadTest
 			await result.AssertSequenceEqual(123, 456, 789);
 		}
 
-		[Test]
+		[Fact]
 		public async Task PadEqualSourceSequence()
 		{
 			await using var sequence = TestingSequence.Of(123, 456, 789);
@@ -39,7 +39,7 @@ public sealed class PadTest
 			await result.AssertSequenceEqual(123, 456, 789);
 		}
 
-		[Test]
+		[Fact]
 		public async Task PadNarrowSourceSequenceWithDefaultPadding()
 		{
 			await using var sequence = TestingSequence.Of(123, 456, 789);
@@ -47,7 +47,7 @@ public sealed class PadTest
 			await result.AssertSequenceEqual(123, 456, 789, 0, 0);
 		}
 
-		[Test]
+		[Fact]
 		public async Task PadNarrowSourceSequenceWithNonDefaultPadding()
 		{
 			await using var sequence = TestingSequence.Of(123, 456, 789);
@@ -55,7 +55,7 @@ public sealed class PadTest
 			await result.AssertSequenceEqual(123, 456, 789, -1, -1);
 		}
 
-		[Test]
+		[Fact]
 		public async Task PadNarrowSourceSequenceWithDynamicPadding()
 		{
 			var result = "hello".ToCharArray().ToAsyncEnumerable().Pad(15, i => i % 2 == 0 ? '+' : '-');
@@ -65,7 +65,7 @@ public sealed class PadTest
 
 	public sealed class ReferenceTypeElements
 	{
-		[Test]
+		[Fact]
 		public async Task PadWideSourceSequence()
 		{
 			await using var sequence = TestingSequence.Of("foo", "bar", "baz");
@@ -73,7 +73,7 @@ public sealed class PadTest
 			await result.AssertSequenceEqual("foo", "bar", "baz");
 		}
 
-		[Test]
+		[Fact]
 		public async Task PadEqualSourceSequence()
 		{
 			await using var sequence = TestingSequence.Of("foo", "bar", "baz");
@@ -81,7 +81,7 @@ public sealed class PadTest
 			await result.AssertSequenceEqual("foo", "bar", "baz");
 		}
 
-		[Test]
+		[Fact]
 		public async Task PadNarrowSourceSequenceWithDefaultPadding()
 		{
 			await using var sequence = TestingSequence.Of("foo", "bar", "baz");
@@ -89,7 +89,7 @@ public sealed class PadTest
 			await result.AssertSequenceEqual("foo", "bar", "baz", null, null);
 		}
 
-		[Test]
+		[Fact]
 		public async Task PadNarrowSourceSequenceWithNonDefaultPadding()
 		{
 			await using var sequence = TestingSequence.Of("foo", "bar", "baz");

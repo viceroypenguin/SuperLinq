@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class RetryTest
 {
-	[Test]
+	[Fact]
 	public void RetryIsLazy()
 	{
 		_ = new BreakingSequence<int>().Retry();
 	}
 
-	[Test]
+	[Fact]
 	public void RetryNoExceptions()
 	{
 		using var ts = Enumerable.Range(1, 10).AsTestingSequence();
@@ -17,7 +17,7 @@ public sealed class RetryTest
 		result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	[Test]
+	[Fact]
 	public void RetryWithExceptions()
 	{
 		using var ts1 = SeqExceptionAt(2).AsTestingSequence();
@@ -42,13 +42,13 @@ public sealed class RetryTest
 				.Concat(Enumerable.Range(1, 10)));
 	}
 
-	[Test]
+	[Fact]
 	public void RetryCountIsLazy()
 	{
 		_ = new BreakingSequence<int>().Retry(3);
 	}
 
-	[Test]
+	[Fact]
 	public void RetryCountNoExceptions()
 	{
 		using var ts = Enumerable.Range(1, 10).AsTestingSequence();
@@ -57,7 +57,7 @@ public sealed class RetryTest
 		result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	[Test]
+	[Fact]
 	public void RetryCountWithExceptionsComplete()
 	{
 		using var ts1 = SeqExceptionAt(2).AsTestingSequence();
@@ -82,7 +82,7 @@ public sealed class RetryTest
 				.Concat(Enumerable.Range(1, 10)));
 	}
 
-	[Test]
+	[Fact]
 	public void RetryCountWithExceptionsThrow()
 	{
 		using var ts1 = SeqExceptionAt(2).AsTestingSequence();

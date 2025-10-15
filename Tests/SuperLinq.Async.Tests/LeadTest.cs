@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 /// <summary>
 /// Verify the behavior of the Lead operator.
@@ -8,7 +8,7 @@ public sealed class LeadTests
 	/// <summary>
 	/// Verify that Lead() behaves in a lazy manner.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Lead(5, BreakingFunc.Of<int, int, int>());
@@ -18,7 +18,7 @@ public sealed class LeadTests
 	/// <summary>
 	/// Verify that attempting to lead by a negative offset will result in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadNegativeOffset()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -28,7 +28,7 @@ public sealed class LeadTests
 	/// <summary>
 	/// Verify that attempting to lead by a zero offset will result in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestLeadZeroOffset()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -38,7 +38,7 @@ public sealed class LeadTests
 	/// <summary>
 	/// Verify that lead can accept and propagate a default value passed to it.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestLeadExplicitDefaultValue()
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -48,7 +48,7 @@ public sealed class LeadTests
 		result.Skip(100 - 10).AssertSequenceEqual(Enumerable.Repeat(-1, 10));
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestLeadTuple()
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -62,7 +62,7 @@ public sealed class LeadTests
 	/// <summary>
 	/// Verify that Lead() will use default(T) if a specific default value is not supplied for the lead value.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestLeadImplicitDefaultValue()
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -76,7 +76,7 @@ public sealed class LeadTests
 	/// Verify that if the lead offset is greater than the length of the sequence
 	/// Lead() still yield all of the elements of the source sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestLeadOffsetGreaterThanSequenceLength()
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -92,7 +92,7 @@ public sealed class LeadTests
 	/// Verify that Lead() actually yields the correct pair of values from the sequence
 	/// when the lead offset is 1.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestLeadPassesCorrectValueOffsetBy1()
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -108,7 +108,7 @@ public sealed class LeadTests
 	/// Verify that Lead() yields the correct pair of values from the sequence
 	/// when the lead offset is greater than 1.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestLeadPassesCorrectValueOffsetBy2()
 	{
 		await using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -121,7 +121,7 @@ public sealed class LeadTests
 		Assert.True(result.Skip(100 - 2).All(x => x.B == 101 && (x.A is 99 or 100)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestLagWithNullableReferences()
 	{
 		await using var words = TestingSequence.Of("foo", "bar", "baz", "qux");
@@ -134,7 +134,7 @@ public sealed class LeadTests
 			new { A = "qux", B = (string?)null });
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestLagWithNonNullableReferences()
 	{
 		await using var words = TestingSequence.Of("foo", "bar", "baz", "qux");

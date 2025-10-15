@@ -8,7 +8,7 @@ public sealed class RandomSubsetTest
 	/// <summary>
 	/// Verify that RandomSubset() behaves in a lazy manner.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetIsLazy()
 	{
 		_ = new BreakingSequence<int>().RandomSubset(10);
@@ -18,7 +18,7 @@ public sealed class RandomSubsetTest
 	/// <summary>
 	/// Verify that involving RandomSubsets with a subset size less than 0 results in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetNegativeSubsetSize()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -28,7 +28,7 @@ public sealed class RandomSubsetTest
 	/// <summary>
 	/// Verify that involving RandomSubsets with a subset size less than 0 results in an exception.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetNegativeSubsetSize2()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -38,7 +38,7 @@ public sealed class RandomSubsetTest
 	/// <summary>
 	/// Verify that the 0-size random subset of the empty set is the empty set.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetOfEmptySequence()
 	{
 		using var sequence = TestingSequence.Of<int>();
@@ -50,7 +50,7 @@ public sealed class RandomSubsetTest
 	/// <summary>
 	/// Verify that RandomSubset can produce a random subset of equal length to the original sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetSameLengthAsSequence()
 	{
 		using var sequence = Enumerable.Range(1, 100).AsTestingSequence(maxEnumerations: 2);
@@ -65,7 +65,7 @@ public sealed class RandomSubsetTest
 	/// <summary>
 	/// Verify that RandomSubset can produce a random subset shorter than the original sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetShorterThanSequence()
 	{
 		using var sequence = Enumerable.Range(1, 100).AsTestingSequence(maxEnumerations: 2);
@@ -81,7 +81,7 @@ public sealed class RandomSubsetTest
 	/// Verify that attempting to fetch a random subset longer than the original sequence
 	/// results in an exception. Only thrown when the resulting random sequence is enumerated.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetLongerThanSequence()
 	{
 		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -94,7 +94,7 @@ public sealed class RandomSubsetTest
 	/// Verify that attempting to fetch a random subset longer than the original sequence
 	/// results in an exception. Only thrown when the resulting random sequence is enumerated.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetLongerThanSequence2()
 	{
 		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();
@@ -125,12 +125,12 @@ public sealed class RandomSubsetTest
 	///   approaching unity (1.0). Which, given that the original sequence was monotonic, implies
 	///   there cannot be a selection bias in the returned subsets - quod erat demonstrandum (QED).
 	/// </remarks>
-	[Test]
+	[Fact(Skip = "Explicit")]
 	public void TestRandomSubsetIsUnbiased()
 	{
-		var sequence = Enumerable.Range(1, 20).ToArray();
+		using var sequence = Enumerable.Range(1, 20).AsTestingSequence();
 
-		var rsdTrials = new[] { 1000, 10000, 100000, 1000000 };
+		var rsdTrials = new[] { 1000, 10000, 100000, 500000, 10000000 };
 		var rsdResults = new[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 
 		var trialIndex = 0;
@@ -158,8 +158,8 @@ public sealed class RandomSubsetTest
 
 		// for sanity, we output the RSD% values as a cross-check, the expected result should be
 		// that the RSD% rapidly decreases and eventually drops below 1.0
-		Console.WriteLine("RSD% = {0:0.00000}, {1:0.00000}, {2:0.00000}, {3:0.00000}",
-						  rsdResults[0], rsdResults[1], rsdResults[2], rsdResults[3]);
+		Console.WriteLine("RSD% = {0:0.00000}, {1:0.00000}, {2:0.00000}, {3:0.00000}, {4:0.00000}",
+						  rsdResults[0], rsdResults[1], rsdResults[2], rsdResults[3], rsdResults[4]);
 	}
 
 	/// <summary>
@@ -170,7 +170,7 @@ public sealed class RandomSubsetTest
 	/// This attempts to verify that the original sequence remains unaltered after a random
 	/// subset is returned and enumerated.
 	/// </remarks>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetIsIdempotent()
 	{
 		var sequence = Enumerable.Range(1, 100).ToArray();
@@ -186,7 +186,7 @@ public sealed class RandomSubsetTest
 	/// <summary>
 	/// Verify that RandomSubset produces subset where all elements belongs to original sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestRandomSubsetReturnsOriginalSequenceElements()
 	{
 		using var sequence = Enumerable.Range(1, 100).AsTestingSequence();

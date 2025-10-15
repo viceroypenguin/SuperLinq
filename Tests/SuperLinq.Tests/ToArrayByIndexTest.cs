@@ -4,21 +4,21 @@ namespace SuperLinq.Tests;
 
 public sealed class ToArrayByIndexTest
 {
-	[Test]
-	[Arguments(false, new int[0])]
-	[Arguments(false, new[] { 5 })]
-	[Arguments(false, new[] { 1, 5 })]
-	[Arguments(false, new[] { 0, 9 })]
-	[Arguments(false, new[] { 0, 5, 9 })]
-	[Arguments(false, new[] { 2, 3, 5, 9 })]
-	[Arguments(false, new[] { 5, 2, 9, 3 })]
-	[Arguments(true, new int[0])]
-	[Arguments(true, new[] { 5 })]
-	[Arguments(true, new[] { 1, 5 })]
-	[Arguments(true, new[] { 0, 9 })]
-	[Arguments(true, new[] { 0, 5, 9 })]
-	[Arguments(true, new[] { 2, 3, 5, 9 })]
-	[Arguments(true, new[] { 5, 2, 9, 3 })]
+	[Theory]
+	[InlineData(false, new int[0])]
+	[InlineData(false, new[] { 5 })]
+	[InlineData(false, new[] { 1, 5 })]
+	[InlineData(false, new[] { 0, 9 })]
+	[InlineData(false, new[] { 0, 5, 9 })]
+	[InlineData(false, new[] { 2, 3, 5, 9 })]
+	[InlineData(false, new[] { 5, 2, 9, 3 })]
+	[InlineData(true, new int[0])]
+	[InlineData(true, new[] { 5 })]
+	[InlineData(true, new[] { 1, 5 })]
+	[InlineData(true, new[] { 0, 9 })]
+	[InlineData(true, new[] { 0, 5, 9 })]
+	[InlineData(true, new[] { 2, 3, 5, 9 })]
+	[InlineData(true, new[] { 5, 2, 9, 3 })]
 	[SuppressMessage("Style", "IDE0305:Simplify collection initialization")]
 	public void ToArrayByIndex(bool withLength, int[] indices)
 	{
@@ -39,7 +39,7 @@ public sealed class ToArrayByIndexTest
 			expected.Select(x => x is null ? null : new { Index = x.Value }));
 	}
 
-	[Test]
+	[Fact]
 	public void ToArrayByIndexWithBadIndexSelectorThrows()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -49,9 +49,9 @@ public sealed class ToArrayByIndexTest
 			Seq(42).ToArrayByIndex(_ => -1, BreakingFunc.Of<int, object>()));
 	}
 
-	[Test]
-	[Arguments(10, -1)]
-	[Arguments(10, 10)]
+	[Theory]
+	[InlineData(10, -1)]
+	[InlineData(10, 10)]
 	public void ToArrayByIndexWithLengthWithBadIndexSelectorThrows(int length, int badIndex)
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -61,7 +61,7 @@ public sealed class ToArrayByIndexTest
 			Seq(42).ToArrayByIndex(length, _ => badIndex, BreakingFunc.Of<int, object>()));
 	}
 
-	[Test]
+	[Fact]
 	public void ToArrayByIndexOverwritesAtSameIndex()
 	{
 		var a = new { Index = 2 };

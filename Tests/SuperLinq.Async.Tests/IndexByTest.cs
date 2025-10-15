@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class IndexByTest
 {
-	[Test]
+	[Fact]
 	public async Task IndexBySimpleTest()
 	{
 		using var source = TestingSequence.Of("ana", "beatriz", "carla", "bob", "davi", "adriano", "angelo", "carlos");
@@ -19,7 +19,7 @@ public sealed class IndexByTest
 			(1, "carlos"));
 	}
 
-	[Test]
+	[Fact]
 	public async Task IndexByWithSecondOccurenceImmediatelyAfterFirst()
 	{
 		using var source = "jaffer".AsTestingSequence();
@@ -28,7 +28,7 @@ public sealed class IndexByTest
 		await result.AssertSequenceEqual((0, 'j'), (0, 'a'), (0, 'f'), (1, 'f'), (0, 'e'), (0, 'r'));
 	}
 
-	[Test]
+	[Fact]
 	public async Task IndexByWithEqualityComparer()
 	{
 		using var source = TestingSequence.Of("a", "B", "c", "A", "b", "A");
@@ -37,13 +37,13 @@ public sealed class IndexByTest
 		await result.AssertSequenceEqual((0, "a"), (0, "B"), (0, "c"), (1, "A"), (1, "b"), (2, "A"));
 	}
 
-	[Test]
+	[Fact]
 	public void IndexByIsLazy()
 	{
 		_ = new AsyncBreakingSequence<string>().IndexBy(BreakingFunc.Of<string, char>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task IndexByWithSomeNullKeys()
 	{
 		using var source = TestingSequence.Of("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
@@ -52,7 +52,7 @@ public sealed class IndexByTest
 		await result.AssertSequenceEqual((0, "foo"), (0, null), (0, "bar"), (0, "baz"), (1, null), (2, null), (1, "baz"), (1, "bar"), (3, null), (1, "foo"));
 	}
 
-	[Test]
+	[Fact]
 	public async Task IndexByDoesNotIterateUnnecessaryElements()
 	{
 		using var source = AsyncSuperEnumerable

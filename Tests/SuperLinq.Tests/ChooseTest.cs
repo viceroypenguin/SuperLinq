@@ -1,31 +1,31 @@
-﻿using System.Globalization;
+using System.Globalization;
 
 namespace SuperLinq.Tests;
 
 public sealed class ChooseTest
 {
-	[Test]
+	[Fact]
 	public void IsLazy()
 	{
 		_ = new BreakingSequence<object>()
 			.Choose(BreakingFunc.Of<object, (bool, object)>());
 	}
 
-	[Test]
+	[Fact]
 	public void WithEmptySource()
 	{
 		using var xs = TestingSequence.Of<int>();
 		Assert.Empty(xs.Choose(BreakingFunc.Of<int, (bool, int)>()));
 	}
 
-	[Test]
+	[Fact]
 	public void None()
 	{
 		using var xs = Enumerable.Range(1, 10).AsTestingSequence();
 		Assert.Empty(xs.Choose(_ => (false, 0)));
 	}
 
-	[Test]
+	[Fact]
 	public void ThoseParsable()
 	{
 		using var xs =
@@ -40,7 +40,7 @@ public sealed class ChooseTest
 			.AssertSequenceEqual(2, 3, 4, 6, 7, 9);
 	}
 
-	[Test]
+	[Fact]
 	public void ThoseThatAreIntegers()
 	{
 		using var xs = TestingSequence.Of<int?>(4, 1, 2, null, 4, null, 6, null, null, 9);
@@ -49,7 +49,7 @@ public sealed class ChooseTest
 			.AssertSequenceEqual(4, 1, 2, 4, 6, 9);
 	}
 
-	[Test]
+	[Fact]
 	public void ThoseEven()
 	{
 		using var xs = Enumerable.Range(1, 10)

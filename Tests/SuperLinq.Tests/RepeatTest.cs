@@ -2,10 +2,10 @@ namespace SuperLinq.Tests;
 
 public sealed class RepeatTest
 {
-	[Test]
-	[Arguments(1)]
-	[Arguments(10)]
-	[Arguments(50)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(10)]
+	[InlineData(50)]
 	public void RepeatItemForeverBehavior(int repeats)
 	{
 		var result = SuperEnumerable.Repeat(42);
@@ -16,20 +16,20 @@ public sealed class RepeatTest
 			.All(x => x == 42));
 	}
 
-	[Test]
+	[Fact]
 	public void RepeatIsLazy()
 	{
 		_ = new BreakingSequence<int>().Repeat(4);
 	}
 
-	[Test]
+	[Fact]
 	public void RepeatValidatesArguments()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>("count", () =>
 			new BreakingSequence<int>().Repeat(0));
 	}
 
-	[Test]
+	[Fact]
 	public void RepeatBehavior()
 	{
 		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
@@ -43,16 +43,16 @@ public sealed class RepeatTest
 		result.AssertSequenceEqual(expected);
 	}
 
-	[Test]
+	[Fact]
 	public void RepeatForeverIsLazy()
 	{
 		_ = new BreakingSequence<int>().Repeat();
 	}
 
-	[Test]
-	[Arguments(1)]
-	[Arguments(10)]
-	[Arguments(50)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(10)]
+	[InlineData(50)]
 	public void RepeatForeverBehavior(int repeats)
 	{
 		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();

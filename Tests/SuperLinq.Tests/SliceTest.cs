@@ -8,18 +8,19 @@ public sealed class SliceTests
 	/// <summary>
 	/// Verify that Slice evaluates in a lazy manner.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestSliceIsLazy()
 	{
 		_ = new BreakingSequence<int>().Slice(10, 10);
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetSequences() =>
+	public static IEnumerable<object[]> GetSequences() =>
 		Enumerable.Range(1, 5)
-			.GetCollectionSequences();
+			.GetCollectionSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void TestSliceIdentity(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -29,8 +30,8 @@ public sealed class SliceTests
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void TestSliceFirstItem(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -40,8 +41,8 @@ public sealed class SliceTests
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void TestSliceLastItem(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -51,8 +52,8 @@ public sealed class SliceTests
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void TestSliceSmallerThanSequence(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -62,8 +63,8 @@ public sealed class SliceTests
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void TestSliceLongerThanSequence(IDisposableEnumerable<int> seq)
 	{
 		using (seq)

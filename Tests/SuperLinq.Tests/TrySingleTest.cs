@@ -4,57 +4,14 @@ namespace SuperLinq.Tests;
 
 public sealed class TrySingleTest
 {
-	public static IEnumerable<IDisposableEnumerable<int?>> GetAllSequences(int numElements) =>
-		Enumerable.Range(1, numElements).Cast<int?>().GetAllSequences();
+	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
+		seq.Select(x => (int?)x)
+			.GetBreakingCollectionSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetAllSequences), Arguments = [0])]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { })]
 	public void TrySingleWithEmptySource(IDisposableEnumerable<int?> seq)
-	{
-		using (seq)
-		{
-			var value = seq.TrySingle();
-
-			Assert.Null(value);
-		}
-	}
-
-	[Test]
-	[MethodDataSource(nameof(GetAllSequences), Arguments = [1])]
-	public void TrySingleWithSingleton(IDisposableEnumerable<int?> seq)
-	{
-		using (seq)
-		{
-			var value = seq.TrySingle();
-
-			Assert.Equal(1, value);
-		}
-	}
-
-	[Test]
-	public void TrySingleWithSingletonCollection()
-	{
-		var source = new BreakingSingleElementCollection<int>(10);
-		var value = source.TrySingle();
-
-		Assert.Equal(10, value);
-	}
-
-	[Test]
-	[MethodDataSource(nameof(GetAllSequences), Arguments = [2])]
-	public void TrySingleWithMoreThanOne(IDisposableEnumerable<int?> seq)
-	{
-		using (seq)
-		{
-			var value = seq.TrySingle();
-
-			Assert.Null(value);
-		}
-	}
-
-	[Test]
-	[MethodDataSource(nameof(GetAllSequences), Arguments = [0])]
-	public void TrySingleCardinalityWithEmptySource(IDisposableEnumerable<int?> seq)
 	{
 		using (seq)
 		{
@@ -65,21 +22,26 @@ public sealed class TrySingleTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetAllSequences), Arguments = [1])]
-	public void TrySingleCardinalityWithSingleton(IDisposableEnumerable<int?> seq)
+	public static IEnumerable<object[]> GetSingletonSequences(IEnumerable<int> seq) =>
+		seq.Select(x => (int?)x)
+			.GetCollectionSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetSingletonSequences), new int[] { 10 })]
+	public void TrySingleWithSingleton(IDisposableEnumerable<int?> seq)
 	{
 		using (seq)
 		{
 			var (cardinality, value) = seq.TrySingle("zero", "one", "many");
 
 			Assert.Equal("one", cardinality);
-			Assert.Equal(1, value);
+			Assert.Equal(10, value);
 		}
 	}
 
-	[Test]
-	public void TrySingleCardinalityWithSingletonCollection()
+	[Fact]
+	public void TrySingleWithSingletonCollection()
 	{
 		var source = new BreakingSingleElementCollection<int>(10);
 		var (cardinality, value) = source.TrySingle("zero", "one", "many");
@@ -88,9 +50,31 @@ public sealed class TrySingleTest
 		Assert.Equal(10, value);
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetAllSequences), Arguments = [2])]
-	public void TrySingleCardinalityWithMoreThanOne(IDisposableEnumerable<int?> seq)
+	private sealed class BreakingSingleElementCollection<T>(
+		T element
+	) : ICollection<T>
+	{
+		public int Count { get; } = 1;
+
+		public IEnumerator<T> GetEnumerator()
+		{
+			yield return element;
+			throw new InvalidOperationException($"{nameof(SuperEnumerable.TrySingle)} should not have attempted to consume a second element.");
+		}
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		public void Add(T item) => throw new NotSupportedException();
+		public void Clear() => throw new NotSupportedException();
+		public bool Contains(T item) => throw new NotSupportedException();
+		public void CopyTo(T[] array, int arrayIndex) => throw new NotSupportedException();
+		public bool Remove(T item) => throw new NotSupportedException();
+		public bool IsReadOnly => true;
+	}
+
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 10, 20 })]
+	public void TrySingleWithMoreThanOne(IDisposableEnumerable<int?> seq)
 	{
 		using (seq)
 		{
@@ -100,26 +84,79 @@ public sealed class TrySingleTest
 			Assert.Null(value);
 		}
 	}
-}
 
-file sealed class BreakingSingleElementCollection<T>(
-	T element
-) : ICollection<T>
-{
-	public int Count { get; } = 1;
-
-	public IEnumerator<T> GetEnumerator()
+	[Fact]
+	public void TrySingleDoesNotConsumeMoreThanTwoElementsFromTheSequence()
 	{
-		yield return element;
-		throw new InvalidOperationException($"{nameof(SuperEnumerable.TrySingle)} should not have attempted to consume a second element.");
+		using var xs = SuperEnumerable
+			.From(
+				() => 1,
+				() => 2,
+				BreakingFunc.Of<int>())
+			.AsTestingSequence();
+		var (cardinality, value) = xs.TrySingle("zero", "one", "many");
+
+		Assert.Equal("many", cardinality);
+		Assert.Equal(0, value);
 	}
 
-	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	[Theory]
+	[InlineData(0, "zero")]
+	[InlineData(1, "one")]
+	[InlineData(2, "many")]
+	public void TrySingleEnumeratesOnceOnlyAndDisposes(int numberOfElements, string expectedCardinality)
+	{
+		using var seq = Enumerable.Range(1, numberOfElements).AsTestingSequence();
+		var (cardinality, _) = seq.TrySingle("zero", "one", "many");
+		Assert.Equal(expectedCardinality, cardinality);
+	}
 
-	public void Add(T item) => throw new NotSupportedException();
-	public void Clear() => throw new NotSupportedException();
-	public bool Contains(T item) => throw new NotSupportedException();
-	public void CopyTo(T[] array, int arrayIndex) => throw new NotSupportedException();
-	public bool Remove(T item) => throw new NotSupportedException();
-	public bool IsReadOnly => true;
+	[Theory]
+	[InlineData(0, 0)]
+	[InlineData(1, 1)]
+	[InlineData(2, 0)]
+	public void TrySingleShouldReturnDefaultOrSingleValue(int numberOfElements, int expectedResult)
+	{
+		using var seq = Enumerable.Range(1, numberOfElements).AsTestingSequence();
+		var result = seq.TrySingle();
+		Assert.Equal(expectedResult, result);
+	}
+
+	public static IEnumerable<object[]> GetListOfSequences(IEnumerable<int> seq) =>
+		seq.Select(x => (int?)x)
+			.GetListSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetListOfSequences), new int[] { })]
+	public void TrySingleShouldReturnWhenProvidedEmptyList(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
+			var value = seq.TrySingle();
+			Assert.Null(value);
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetListOfSequences), new int[] { 1, 2 })]
+	public void TrySingleShouldReturnWhenProvidedLongerList(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
+			var value = seq.TrySingle();
+			Assert.Null(value);
+		}
+	}
+
+	[Theory]
+	[MemberData(nameof(GetListOfSequences), new int[] { 1 })]
+	public void TrySingleShouldReturnWhenProvidedListWithSingleItem(IDisposableEnumerable<int?> seq)
+	{
+		using (seq)
+		{
+			var value = seq.TrySingle();
+			Assert.Equal(1, value);
+		}
+	}
 }

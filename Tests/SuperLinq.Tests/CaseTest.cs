@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class CaseTest
 {
-	[Test]
+	[Fact]
 	public void CaseIsLazy()
 	{
 		_ = SuperEnumerable.Case(BreakingFunc.Of<int>(), new Dictionary<int, IEnumerable<int>>());
 	}
 
-	[Test]
+	[Fact]
 	public void CaseBehavior()
 	{
 		var starts = 0;
@@ -34,13 +34,13 @@ public sealed class CaseTest
 		seq.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void CaseSourceIsLazy()
 	{
 		_ = SuperEnumerable.Case(BreakingFunc.Of<int>(), new Dictionary<int, IEnumerable<int>>(), new BreakingSequence<int>());
 	}
 
-	[Test]
+	[Fact]
 	public void CaseSourceBehavior()
 	{
 		var starts = 0;

@@ -2,7 +2,7 @@ namespace SuperLinq.Tests;
 
 public sealed class ZipShortestTest
 {
-	[Test]
+	[Fact]
 	public void ZipShortestIsLazy()
 	{
 		var bs = new BreakingSequence<int>();
@@ -11,7 +11,7 @@ public sealed class ZipShortestTest
 		_ = bs.ZipShortest(bs, bs, bs, BreakingFunc.Of<int, int, int, int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void MoveNextIsNotCalledUnnecessarily3()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -22,7 +22,7 @@ public sealed class ZipShortestTest
 		s1.ZipShortest(s2, s3).Consume();
 	}
 
-	[Test]
+	[Fact]
 	public void MoveNextIsNotCalledUnnecessarily4()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -39,7 +39,7 @@ public sealed class ZipShortestTest
 		s1.ZipShortest(s2, s3, s4).Consume();
 	}
 
-	[Test]
+	[Fact]
 	public void TwoParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -48,34 +48,32 @@ public sealed class ZipShortestTest
 			s1.ZipShortest(new BreakingSequence<int>()).Consume());
 	}
 
-	public static IEnumerable<(IEnumerable<int> seq1, IEnumerable<int> seq2, bool oneShort)> GetTwoParamSequences()
+	public static IEnumerable<object[]> GetTwoParamSequences()
 	{
-		var parameters = new List<(IEnumerable<int> seq1, IEnumerable<int> seq2, bool oneShort)>
+		var parameters = new List<object[]>
 		{
-			(Enumerable.Range(1, 3).AsTestingSequence(), Enumerable.Range(1, 3).AsTestingSequence(), false),
-			(Enumerable.Range(1, 3).ToList(), Enumerable.Range(1, 3).AsTestingSequence(), false),
-			(Enumerable.Range(1, 3).AsBreakingList(), Enumerable.Range(1, 3).AsBreakingList(), false),
+			new object[] { Enumerable.Range(1, 3).AsTestingSequence(), Enumerable.Range(1, 3).AsTestingSequence(), false },
+			new object[] { Enumerable.Range(1, 3).ToList(), Enumerable.Range(1, 3).AsTestingSequence(), false },
+			new object[] { Enumerable.Range(1, 3).AsBreakingList(), Enumerable.Range(1, 3).AsBreakingList(), false },
 		};
 
 		for (var i = 0; i < 2; i++)
 		{
 			var first = Enumerable.Range(1, 3 - (i == 0 ? 1 : 0));
 			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
-
+#pragma warning disable CA2000 // Dispose objects before losing scope
 			parameters.Add(
-				(first.AsBreakingList(), second.AsBreakingList(), true)
-			);
-
+				[first.AsBreakingList(), second.AsBreakingList(), true,]);
 			parameters.Add(
-				(first.AsTestingSequence(), second.AsTestingSequence(), true)
-			);
+				[first.AsTestingSequence(), second.AsTestingSequence(), true,]);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
 		return parameters;
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetTwoParamSequences))]
+	[Theory]
+	[MemberData(nameof(GetTwoParamSequences))]
 	public void TwoParamsWorksProperly(IEnumerable<int> seq1, IEnumerable<int> seq2, bool oneShort)
 	{
 		using (seq1 as IDisposableEnumerable<int>)
@@ -88,7 +86,7 @@ public sealed class ZipShortestTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void TwoParamsListBehavior()
 	{
 		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -113,7 +111,7 @@ public sealed class ZipShortestTest
 #endif
 	}
 
-	[Test]
+	[Fact]
 	public void ThreeParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -123,34 +121,38 @@ public sealed class ZipShortestTest
 			s1.ZipShortest(s2, new BreakingSequence<int>()).Consume());
 	}
 
-	public static IEnumerable<(IEnumerable<int> seq1, IEnumerable<int> seq2, IEnumerable<int> seq3, bool oneShort)> GetThreeParamSequences()
+	public static IEnumerable<object[]> GetThreeParamSequences()
 	{
-		var parameters = new List<(IEnumerable<int> seq1, IEnumerable<int> seq2, IEnumerable<int> seq3, bool oneShort)>
+		var parameters = new List<object[]>
 		{
-			(
+			new object[]
+			{
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-				false
-			),
-			(
+				false,
+			},
+			new object[]
+			{
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-				false
-			),
-			(
+				false,
+			},
+			new object[]
+			{
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-				false
-			),
-			(
+				false,
+			},
+			new object[]
+			{
 				Enumerable.Range(1, 3).AsBreakingList(),
 				Enumerable.Range(1, 3).AsBreakingList(),
 				Enumerable.Range(1, 3).AsBreakingList(),
-				false
-			),
+				false,
+			},
 		};
 
 		for (var i = 0; i < 3; i++)
@@ -158,31 +160,29 @@ public sealed class ZipShortestTest
 			var first = Enumerable.Range(1, 3 - (i == 0 ? 1 : 0));
 			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
 			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 0));
-
+#pragma warning disable CA2000 // Dispose objects before losing scope
 			parameters.Add(
-				(
+				[
 					first.AsBreakingList(),
 					second.AsBreakingList(),
 					third.AsBreakingList(),
-					true
-				)
-			);
-
+					true,
+				]);
 			parameters.Add(
-				(
+				[
 					first.AsTestingSequence(),
 					second.AsTestingSequence(),
 					third.AsTestingSequence(),
-					true
-				)
-			);
+					true,
+				]);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
 		return parameters;
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetThreeParamSequences))]
+	[Theory]
+	[MemberData(nameof(GetThreeParamSequences))]
 	public void ThreeParamsWorksProperly(IEnumerable<int> seq1, IEnumerable<int> seq2, IEnumerable<int> seq3, bool oneShort)
 	{
 		using (seq1 as IDisposableEnumerable<int>)
@@ -196,7 +196,7 @@ public sealed class ZipShortestTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void ThreeParamsListBehavior()
 	{
 		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -222,7 +222,7 @@ public sealed class ZipShortestTest
 #endif
 	}
 
-	[Test]
+	[Fact]
 	public void FourParamsDisposesInnerSequencesCaseGetEnumeratorThrows()
 	{
 		using var s1 = TestingSequence.Of(1, 2);
@@ -233,57 +233,50 @@ public sealed class ZipShortestTest
 			s1.ZipShortest(s2, s3, new BreakingSequence<int>()).Consume());
 	}
 
-	public static IEnumerable<(
-		IEnumerable<int> seq1,
-		IEnumerable<int> seq2,
-		IEnumerable<int> seq3,
-		IEnumerable<int> seq4,
-		bool oneShort
-	)> GetFourParamSequences()
+	public static IEnumerable<object[]> GetFourParamSequences()
 	{
-		var parameters = new List<(
-			IEnumerable<int> seq1,
-			IEnumerable<int> seq2,
-			IEnumerable<int> seq3,
-			IEnumerable<int> seq4,
-			bool oneShort
-		)>
+		var parameters = new List<object[]>
 		{
-			(
+			new object[]
+			{
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-				false
-			),
-			(
+				false,
+			},
+			new object[]
+			{
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-				false
-			),
-			(
+				false,
+			},
+			new object[]
+			{
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-				false
-			),
-			(
+				false,
+			},
+			new object[]
+			{
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).ToList(),
 				Enumerable.Range(1, 3).AsTestingSequence(),
-				false
-			),
-			(
+				false,
+			},
+			new object[]
+			{
 				Enumerable.Range(1, 3).AsBreakingList(),
 				Enumerable.Range(1, 3).AsBreakingList(),
 				Enumerable.Range(1, 3).AsBreakingList(),
 				Enumerable.Range(1, 3).AsBreakingList(),
-				false
-			),
+				false,
+			},
 		};
 
 		for (var i = 0; i < 4; i++)
@@ -292,40 +285,32 @@ public sealed class ZipShortestTest
 			var second = Enumerable.Range(1, 3 - (i == 1 ? 1 : 0));
 			var third = Enumerable.Range(1, 3 - (i == 2 ? 1 : 0));
 			var fourth = Enumerable.Range(1, 3 - (i == 3 ? 1 : 0));
-
+#pragma warning disable CA2000 // Dispose objects before losing scope
 			parameters.Add(
-				(
+				[
 					first.AsBreakingList(),
 					second.AsBreakingList(),
 					third.AsBreakingList(),
 					fourth.AsBreakingList(),
-					true
-				)
-			);
-
+					true,
+				]);
 			parameters.Add(
-				(
+				[
 					first.AsTestingSequence(),
 					second.AsTestingSequence(),
 					third.AsTestingSequence(),
 					fourth.AsTestingSequence(),
-					true
-				)
-			);
+					true,
+				]);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 		}
 
 		return parameters;
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetFourParamSequences))]
-	public void FourParamsWorksProperly(
-		IEnumerable<int> seq1,
-		IEnumerable<int> seq2,
-		IEnumerable<int> seq3,
-		IEnumerable<int> seq4,
-		bool oneShort
-	)
+	[Theory]
+	[MemberData(nameof(GetFourParamSequences))]
+	public void FourParamsWorksProperly(IEnumerable<int> seq1, IEnumerable<int> seq2, IEnumerable<int> seq3, IEnumerable<int> seq4, bool oneShort)
 	{
 		using (seq1 as IDisposableEnumerable<int>)
 		using (seq2 as IDisposableEnumerable<int>)
@@ -339,7 +324,7 @@ public sealed class ZipShortestTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void FourParamsListBehavior()
 	{
 		using var seq1 = Enumerable.Range(0, 10_000).AsBreakingList();

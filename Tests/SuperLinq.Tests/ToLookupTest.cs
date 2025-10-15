@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class ToLookupTest
 {
-	[Test]
+	[Fact]
 	public void ToLookupWithKeyValuePairs()
 	{
 		var pairs = new[]
@@ -23,7 +23,7 @@ public sealed class ToLookupTest
 		Assert.Equal([4, 5, 6], dict["baz"]);
 	}
 
-	[Test]
+	[Fact]
 	public void ToLookupWithCouples()
 	{
 		var pairs = new[]
@@ -44,7 +44,7 @@ public sealed class ToLookupTest
 		Assert.Equal([4, 5, 6], dict["baz"]);
 	}
 
-	[Test]
+	[Fact]
 	public void ToLookupWithKeyValuePairsWithComparer()
 	{
 		var pairs = new[]
@@ -65,7 +65,7 @@ public sealed class ToLookupTest
 		Assert.Equal([4, 5, 6], dict["BAZ"]);
 	}
 
-	[Test]
+	[Fact]
 	public void ToLookupWithCouplesWithComparer()
 	{
 		var pairs = new[]

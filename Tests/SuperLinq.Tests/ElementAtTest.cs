@@ -9,7 +9,7 @@ public sealed class ElementAtTest
 {
 	// simplified tests - already tested by fx, only need to prove that we don't step on fx toes
 
-	[Test]
+	[Fact]
 	public void SameResultsRepeatCallsIntQuery()
 	{
 		var q = Enumerable.Repeat(from x in new[] { 9999, 0, 888, -1, 66, -777, 1, 2, -12345 }
@@ -20,7 +20,7 @@ public sealed class ElementAtTest
 		Assert.Equal(q[2].ElementAt(^6), q[2].ElementAtOrDefault(^6));
 	}
 
-	[Test]
+	[Fact]
 	public void SameResultsRepeatCallsStringQuery()
 	{
 		var q = Enumerable.Repeat(from x in new[] { "!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", "" }

@@ -4,21 +4,21 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class FindIndexTest
 {
-	[Test]
+	[Fact]
 	public async Task FindIndexWithNegativeCount()
 	{
 		_ = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
 			await new AsyncBreakingSequence<int>().FindIndex(BreakingFunc.Of<int, bool>(), 1, -1));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FindIndexWorksWithEmptySequence()
 	{
 		await using var sequence = TestingSequence.Of<int>();
 		Assert.Equal(-1, await sequence.FindIndex(BreakingFunc.Of<int, bool>()));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FindIndexFromStart()
 	{
 		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
@@ -27,7 +27,7 @@ public sealed class FindIndexTest
 			await sequence.FindIndex(i => i == 102));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FindIndexFromStartCount()
 	{
 		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
@@ -36,7 +36,7 @@ public sealed class FindIndexTest
 			await sequence.FindIndex(i => i == 102, 0, 3));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FindIndexFromStartIndex()
 	{
 		await using var sequence = AsyncEnumerable.Range(100, 5)
@@ -47,7 +47,7 @@ public sealed class FindIndexTest
 			await sequence.FindIndex(i => i == 102, 5));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FindIndexFromEndIndex()
 	{
 		await using var sequence = AsyncEnumerable.Range(100, 5)
@@ -58,7 +58,7 @@ public sealed class FindIndexTest
 			await sequence.FindIndex(i => i == 102, ^5));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FindIndexMissingValueFromStart()
 	{
 		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
@@ -67,7 +67,7 @@ public sealed class FindIndexTest
 			await sequence.FindIndex(i => i == 95));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FindIndexMissingValueFromEnd()
 	{
 		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
@@ -76,7 +76,7 @@ public sealed class FindIndexTest
 			await sequence.FindIndex(i => i == 95, ^5));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FindIndexMissingValueFromStartCount()
 	{
 		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
@@ -85,7 +85,7 @@ public sealed class FindIndexTest
 			await sequence.FindIndex(i => i == 104, 0, 4));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FindIndexMissingValueFromEndCount()
 	{
 		await using var sequence = AsyncEnumerable.Range(100, 5).AsTestingSequence();
@@ -94,7 +94,7 @@ public sealed class FindIndexTest
 			await sequence.FindIndex(i => i == 104, ^5, 4));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FindIndexDoesNotIterateUnnecessaryElements()
 	{
 		using var source = AsyncSuperEnumerable
@@ -112,7 +112,7 @@ public sealed class FindIndexTest
 		Assert.Equal(4, await source.FindIndex(i => i == "davi"));
 	}
 
-	[Test]
+	[Fact]
 	public async Task FindIndexDoesNotIterateUnnecessaryElementsCount()
 	{
 		using var source = AsyncSuperEnumerable

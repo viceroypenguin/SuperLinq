@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class GenerateTest
 {
-	[Test]
+	[Fact]
 	public Task GenerateTerminatesWhenCheckReturnsFalse()
 	{
 		var result = AsyncSuperEnumerable.Generate(1, n => new ValueTask<int>(n + 2)).TakeWhile(n => n < 10);
@@ -10,7 +10,7 @@ public sealed class GenerateTest
 		return result.AssertSequenceEqual(1, 3, 5, 7, 9);
 	}
 
-	[Test]
+	[Fact]
 	public Task GenerateProcessesNonNumerics()
 	{
 		var result = AsyncSuperEnumerable.Generate("", s => new ValueTask<string>(s + 'a')).TakeWhile(s => s.Length < 5);
@@ -18,13 +18,13 @@ public sealed class GenerateTest
 		return result.AssertSequenceEqual("", "a", "aa", "aaa", "aaaa");
 	}
 
-	[Test]
+	[Fact]
 	public void GenerateIsLazy()
 	{
 		_ = AsyncSuperEnumerable.Generate(0, async i => await AsyncBreakingFunc.Of<int, int>()(i));
 	}
 
-	[Test]
+	[Fact]
 	public async Task GenerateFuncIsNotInvokedUnnecessarily()
 	{
 		await AsyncSuperEnumerable.Generate(0, async i => await AsyncBreakingFunc.Of<int, int>()(i))

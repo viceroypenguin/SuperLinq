@@ -8,8 +8,7 @@ public sealed class LeftOuterJoinTest
 		IEnumerable<(string, string)> left,
 		IEnumerable<(string, string)> right,
 		JoinOperation op,
-		bool passProjectors
-	) =>
+		bool passProjectors) =>
 		(op, passProjectors) switch
 		{
 			(Loop, false) => left.LeftOuterLoopJoin(right, l => l.Item1, r => r.Item1, StringComparer.OrdinalIgnoreCase),
@@ -22,11 +21,10 @@ public sealed class LeftOuterJoinTest
 			_ => throw new NotSupportedException(),
 		};
 
-	public static IEnumerable<(JoinOperation op, bool passProjectors)> GetLeftOuterJoins() =>
-		new[] { Loop, Hash, Merge }.Cartesian([false, true]);
+	public static IEnumerable<object[]> GetLeftOuterJoins() =>
+		new[] { Loop, Hash, Merge }.Cartesian([false, true], (x, y) => new object[] { x, y });
 
-	[Test]
-	[MethodDataSource(nameof(GetLeftOuterJoins))]
+	[Theory, MemberData(nameof(GetLeftOuterJoins))]
 	public void LeftOuterJoinIsLazy(JoinOperation op, bool passProjectors)
 	{
 		var xs = new BreakingSequence<(string, string)>();
@@ -35,8 +33,7 @@ public sealed class LeftOuterJoinTest
 		_ = ExecuteJoin(xs, ys, op, passProjectors);
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetLeftOuterJoins))]
+	[Theory, MemberData(nameof(GetLeftOuterJoins))]
 	public void LeftOuterJoinResults(JoinOperation op, bool passProjectors)
 	{
 		var foo = ("one", "foo");
@@ -59,8 +56,7 @@ public sealed class LeftOuterJoinTest
 			(qux, default));
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetLeftOuterJoins))]
+	[Theory, MemberData(nameof(GetLeftOuterJoins))]
 	public void LeftOuterJoinEmptyLeft(JoinOperation op, bool passProjectors)
 	{
 		var foo = ("one", "foo");
@@ -74,8 +70,7 @@ public sealed class LeftOuterJoinTest
 		result.AssertCollectionEqual();
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetLeftOuterJoins))]
+	[Theory, MemberData(nameof(GetLeftOuterJoins))]
 	public void LeftOuterJoinEmptyRight(JoinOperation op, bool passProjectors)
 	{
 		var foo = ("one", "foo");

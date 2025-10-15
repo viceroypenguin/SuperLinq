@@ -4,7 +4,7 @@ namespace SuperLinq.Tests;
 
 public sealed class ReplaceTest
 {
-	[Test]
+	[Fact]
 	public void ReplaceIsLazy()
 	{
 		_ = new BreakingSequence<int>().Replace(0, 10);
@@ -12,7 +12,7 @@ public sealed class ReplaceTest
 		_ = new BreakingSequence<int>().Replace(^0, 10);
 	}
 
-	[Test]
+	[Fact]
 	public void ReplaceEmptySequence()
 	{
 		using var seq = Enumerable.Empty<int>().AsTestingSequence(maxEnumerations: 6);
@@ -24,14 +24,13 @@ public sealed class ReplaceTest
 		seq.Replace(^10, 10).AssertSequenceEqual();
 	}
 
-	public static IEnumerable<(int index, IDisposableEnumerable<int> seq)> Indices() =>
+	public static IEnumerable<object[]> Indices() =>
 		Enumerable.Range(0, 10)
 			.SelectMany(
 				_ => Enumerable.Range(1, 10).GetAllSequences(),
-				(i, s) => (i, s));
+				(i, s) => new object[] { i, s });
 
-	[Test]
-	[MethodDataSource(nameof(Indices))]
+	[Theory, MemberData(nameof(Indices))]
 	public void ReplaceIntIndex(int index, IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -45,8 +44,7 @@ public sealed class ReplaceTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(Indices))]
+	[Theory, MemberData(nameof(Indices))]
 	public void ReplaceStartIndex(int index, IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -60,8 +58,7 @@ public sealed class ReplaceTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(Indices))]
+	[Theory, MemberData(nameof(Indices))]
 	public void ReplaceEndIndex(int index, IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -76,12 +73,13 @@ public sealed class ReplaceTest
 		}
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetSequences() =>
+	public static IEnumerable<object[]> GetSequences() =>
 		Enumerable.Range(1, 10)
-			.GetListSequences();
+			.GetListSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void ReplaceIntIndexPastSequenceLength(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -93,8 +91,8 @@ public sealed class ReplaceTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void ReplaceStartIndexPastSequenceLength(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -106,8 +104,8 @@ public sealed class ReplaceTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void ReplaceEndIndexPastSequenceLength(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -119,7 +117,7 @@ public sealed class ReplaceTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void ReplaceListBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();

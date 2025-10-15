@@ -2,7 +2,7 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class TrySingleTest
 {
-	[Test]
+	[Fact]
 	public async Task TrySingleWithEmptySource()
 	{
 		await using var source = AsyncEnumerable.Empty<int?>().AsTestingSequence();
@@ -13,7 +13,7 @@ public sealed class TrySingleTest
 		Assert.Null(value);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TrySingleWithSingleton()
 	{
 		await using var source = AsyncSeq<int?>(10).AsTestingSequence();
@@ -24,7 +24,7 @@ public sealed class TrySingleTest
 		Assert.Equal(10, value);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TrySingleWithMoreThanOne()
 	{
 		await using var source = AsyncSeq<int?>(10, 20).AsTestingSequence();
@@ -35,7 +35,7 @@ public sealed class TrySingleTest
 		Assert.Null(value);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TrySingleDoesNotConsumeMoreThanTwoElementsFromTheSequence()
 	{
 		await using var seq = AsyncSuperEnumerable
@@ -51,10 +51,10 @@ public sealed class TrySingleTest
 		Assert.Equal(0, value);
 	}
 
-	[Test]
-	[Arguments(0, "zero")]
-	[Arguments(1, "one")]
-	[Arguments(2, "many")]
+	[Theory]
+	[InlineData(0, "zero")]
+	[InlineData(1, "one")]
+	[InlineData(2, "many")]
 	public async Task TrySingleEnumeratesOnceOnlyAndDisposes(int numberOfElements, string expectedCardinality)
 	{
 		await using var seq = AsyncEnumerable.Range(1, numberOfElements).AsTestingSequence();
@@ -62,10 +62,10 @@ public sealed class TrySingleTest
 		Assert.Equal(expectedCardinality, cardinality);
 	}
 
-	[Test]
-	[Arguments(0, 0)]
-	[Arguments(1, 1)]
-	[Arguments(2, 0)]
+	[Theory]
+	[InlineData(0, 0)]
+	[InlineData(1, 1)]
+	[InlineData(2, 0)]
 	public async Task TrySingleShouldReturnDefaultOrSingleValue(int numberOfElements, int expectedResult)
 	{
 		await using var seq = AsyncEnumerable.Range(1, numberOfElements).AsTestingSequence();

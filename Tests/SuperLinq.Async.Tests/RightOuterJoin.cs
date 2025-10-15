@@ -8,8 +8,7 @@ public sealed class RightOuterJoinTest
 		IAsyncEnumerable<(string, string)> left,
 		IAsyncEnumerable<(string, string)> right,
 		JoinOperation op,
-		bool passProjectors
-	) =>
+		bool passProjectors) =>
 		(op, passProjectors) switch
 		{
 			(Hash, false) => left.RightOuterHashJoin(right, l => l.Item1, r => r.Item1, StringComparer.OrdinalIgnoreCase),
@@ -20,11 +19,10 @@ public sealed class RightOuterJoinTest
 			_ => throw new NotSupportedException(),
 		};
 
-	public static IEnumerable<(JoinOperation op, bool passProjectors)> GetRightOuterJoins() =>
-		new[] { Hash, Merge }.Cartesian([false, true]);
+	public static IEnumerable<object[]> GetRightOuterJoins() =>
+		new[] { Hash, Merge }.Cartesian([false, true], (x, y) => new object[] { x, y });
 
-	[Test]
-	[MethodDataSource(nameof(GetRightOuterJoins))]
+	[Theory, MemberData(nameof(GetRightOuterJoins))]
 	public void RightOuterJoinIsLazy(JoinOperation op, bool passProjectors)
 	{
 		var xs = new AsyncBreakingSequence<(string, string)>();
@@ -33,8 +31,7 @@ public sealed class RightOuterJoinTest
 		_ = ExecuteJoin(xs, ys, op, passProjectors);
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetRightOuterJoins))]
+	[Theory, MemberData(nameof(GetRightOuterJoins))]
 	public async Task RightOuterJoinResults(JoinOperation op, bool passProjectors)
 	{
 		var foo = ("one", "foo");
@@ -58,8 +55,7 @@ public sealed class RightOuterJoinTest
 			(default, quux));
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetRightOuterJoins))]
+	[Theory, MemberData(nameof(GetRightOuterJoins))]
 	public async Task RightOuterJoinEmptyLeft(JoinOperation op, bool passProjectors)
 	{
 		var foo = ("one", "foo");
@@ -76,8 +72,7 @@ public sealed class RightOuterJoinTest
 			(default, baz));
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetRightOuterJoins))]
+	[Theory, MemberData(nameof(GetRightOuterJoins))]
 	public async Task RightOuterJoinEmptyRight(JoinOperation op, bool passProjectors)
 	{
 		var foo = ("one", "foo");

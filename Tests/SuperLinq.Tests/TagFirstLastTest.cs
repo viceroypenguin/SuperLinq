@@ -2,22 +2,22 @@ namespace SuperLinq.Tests;
 
 public sealed class TagFirstLastTest
 {
-	[Test]
+	[Fact]
 	public void TagFirstLastIsLazy()
 	{
 		_ = new BreakingSequence<object>().TagFirstLast();
 		_ = new BreakingSequence<object>().TagFirstLast(BreakingFunc.Of<object, bool, bool, object>());
 	}
 
-	public static IEnumerable<(IDisposableEnumerable<int> seq, int n)> GetSourceSequences() =>
+	public static IEnumerable<object[]> GetSourceSequences() =>
 		Enumerable.Range(0, 4)
 			.SelectMany(n =>
 				Enumerable.Range(0, n)
 					.GetListSequences()
-					.Select(x => (x, n)));
+					.Select(x => new object[] { x, n }));
 
-	[Test]
-	[MethodDataSource(nameof(GetSourceSequences))]
+	[Theory]
+	[MemberData(nameof(GetSourceSequences))]
 	public void TagFirstLastVaryingLengths(IDisposableEnumerable<int> seq, int n)
 	{
 		using (seq)
@@ -29,7 +29,7 @@ public sealed class TagFirstLastTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void TagFirstLastListBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();

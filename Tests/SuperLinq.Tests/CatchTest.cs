@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class CatchTest
 {
-	[Test]
+	[Fact]
 	public void CatchIsLazy()
 	{
 		_ = new BreakingSequence<int>().Catch(BreakingFunc.Of<Exception, IEnumerable<int>>());
@@ -11,14 +11,14 @@ public sealed class CatchTest
 		_ = new[] { new BreakingSequence<int>(), new BreakingSequence<int>() }.Catch();
 	}
 
-	[Test]
+	[Fact]
 	public void CatchThrowsDelayedExceptionOnNullSource()
 	{
 		var seq = SuperEnumerable.Catch(new IEnumerable<int>[] { null! });
 		_ = Assert.Throws<ArgumentNullException>(seq.Consume);
 	}
 
-	[Test]
+	[Fact]
 	public void CatchHandlerWithNoExceptions()
 	{
 		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -27,7 +27,7 @@ public sealed class CatchTest
 		result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	[Test]
+	[Fact]
 	public void CatchHandlerWithException()
 	{
 		using var seq = SeqExceptionAt(5).AsTestingSequence();
@@ -45,7 +45,7 @@ public sealed class CatchTest
 		Assert.True(ran);
 	}
 
-	[Test]
+	[Fact]
 	public void CatchWithEmptySequenceList()
 	{
 		using var seq = Enumerable.Empty<IEnumerable<int>>().AsTestingSequence();
@@ -54,10 +54,10 @@ public sealed class CatchTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
-	[Arguments(1)]
-	[Arguments(2)]
-	[Arguments(3)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(2)]
+	[InlineData(3)]
 	public void CatchMultipleSequencesNoExceptions(int count)
 	{
 		using var ts1 = Enumerable.Range(1, 10).AsTestingSequence();
@@ -74,10 +74,10 @@ public sealed class CatchTest
 		result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	[Test]
-	[Arguments(2)]
-	[Arguments(3)]
-	[Arguments(4)]
+	[Theory]
+	[InlineData(2)]
+	[InlineData(3)]
+	[InlineData(4)]
 	public void CatchMultipleSequencesWithNoExceptionOnSequence(int sequenceNumber)
 	{
 		var cnt = 1;
@@ -97,7 +97,7 @@ public sealed class CatchTest
 				.Concat(Enumerable.Range(1, 10)));
 	}
 
-	[Test]
+	[Fact]
 	public void CatchMultipleSequencesThrowsIfNoFollowingSequence()
 	{
 		using var ts1 = SeqExceptionAt(5).AsTestingSequence();

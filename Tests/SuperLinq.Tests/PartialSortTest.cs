@@ -2,7 +2,7 @@ namespace SuperLinq.Tests;
 
 public sealed class PartialSortTests
 {
-	[Test]
+	[Fact]
 	public void PartialSort()
 	{
 		using var sequence = Enumerable.Range(1, 10)
@@ -15,7 +15,7 @@ public sealed class PartialSortTests
 			.AssertSequenceEqual(Enumerable.Range(0, 5));
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortWithOrder()
 	{
 		using var sequence = Enumerable.Range(1, 10)
@@ -31,7 +31,7 @@ public sealed class PartialSortTests
 			.AssertSequenceEqual(Enumerable.Range(6, 5).Reverse());
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortWithDuplicates()
 	{
 		using var sequence = Enumerable.Range(1, 10)
@@ -44,7 +44,7 @@ public sealed class PartialSortTests
 			.AssertSequenceEqual(1, 2, 3, 3, 3);
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortWithComparer()
 	{
 		using var sequence = Enumerable.Range(0, 26)
@@ -57,13 +57,13 @@ public sealed class PartialSortTests
 			.AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortIsLazy()
 	{
 		_ = new BreakingSequence<object>().PartialSort(1);
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortIsStable()
 	{
 		using var list = new[]

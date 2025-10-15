@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class UsingTest
 {
-	[Test]
+	[Fact]
 	public void UsingIsLazy()
 	{
 		_ = SuperEnumerable.Using(
@@ -10,7 +10,7 @@ public sealed class UsingTest
 			BreakingFunc.Of<IDisposable, IEnumerable<int>>());
 	}
 
-	[Test]
+	[Fact]
 	public void UsingDisposesCorrectly()
 	{
 		var starts = 0;
@@ -36,7 +36,7 @@ public sealed class UsingTest
 		Assert.Equal(1, starts);
 	}
 
-	[Test]
+	[Fact]
 	public void UsingDisposesOnIterationError()
 	{
 		var starts = 0;
@@ -62,7 +62,7 @@ public sealed class UsingTest
 		Assert.Equal(1, starts);
 	}
 
-	[Test]
+	[Fact]
 	public void UsingDisposesOnFunctionError()
 	{
 		TestDisposable? dis = null;

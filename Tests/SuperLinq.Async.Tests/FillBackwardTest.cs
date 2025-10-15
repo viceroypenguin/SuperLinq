@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class FillBackwardTest
 {
-	[Test]
+	[Fact]
 	public void FillBackwardIsLazy()
 	{
 		_ = new AsyncBreakingSequence<object>().FillBackward();
 	}
 
-	[Test]
+	[Fact]
 	public async Task FillBackward()
 	{
 		await using var input = TestingSequence.Of<int?>(null, null, 1, 2, null, null, null, 3, 4, null, null);
@@ -18,7 +18,7 @@ public sealed class FillBackwardTest
 			.AssertSequenceEqual(1, 1, 1, 2, 3, 3, 3, 3, 4, null, null);
 	}
 
-	[Test]
+	[Fact]
 	public async Task FillBackwardWithFillSelector()
 	{
 		await using var xs = AsyncSeq(0, 0, 1, 2, 0, 0, 0, 3, 4, 0, 0)

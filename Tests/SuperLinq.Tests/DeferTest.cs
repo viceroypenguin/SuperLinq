@@ -1,17 +1,17 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT License.
 
 namespace SuperLinq.Tests;
 
 public sealed class DeferTest
 {
-	[Test]
+	[Fact]
 	public void DeferIsLazy()
 	{
 		_ = SuperEnumerable.Defer(BreakingFunc.Of<IEnumerable<int>>());
 	}
 
-	[Test]
+	[Fact]
 	public void DeferBehavior()
 	{
 		var starts = 0;

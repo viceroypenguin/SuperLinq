@@ -2,7 +2,7 @@ namespace SuperLinq.Tests;
 
 public sealed class HasDuplicatesTest
 {
-	[Test]
+	[Fact]
 	public void DuplicatesDoesNotEnumerateUnnecessarily()
 	{
 		using var ts = Seq(1, 2, 3).Concat(SeqExceptionAt(2)).AsTestingSequence();
@@ -11,10 +11,10 @@ public sealed class HasDuplicatesTest
 		Assert.True(result);
 	}
 
-	[Test]
-	[Arguments(new int[] { 1, 2, 3 }, false)]
-	[Arguments(new int[] { 1, 2, 1, 3, 1, 2, 1 }, true)]
-	[Arguments(new int[] { 3, 3, 2, 2, 1, 1 }, true)]
+	[Theory]
+	[InlineData(new int[] { 1, 2, 3 }, false)]
+	[InlineData(new int[] { 1, 2, 1, 3, 1, 2, 1 }, true)]
+	[InlineData(new int[] { 3, 3, 2, 2, 1, 1 }, true)]
 	public void DuplicatesBehavior(IEnumerable<int> source, bool expected)
 	{
 		using var ts = source.AsTestingSequence();
@@ -23,16 +23,36 @@ public sealed class HasDuplicatesTest
 		Assert.Equal(expected, result);
 	}
 
-	public static IEnumerable<(IEnumerable<string> source, StringComparer comparer, bool expected)> GetStringParameters() =>
-		[
-			(["foo", "bar", "qux"], StringComparer.Ordinal, false),
-			(["foo", "FOO", "bar", "qux"], StringComparer.Ordinal, false),
-			(["foo", "FOO", "bar", "qux"], StringComparer.OrdinalIgnoreCase, true),
-			(["Bar", "foo", "FOO", "bar", "qux"], StringComparer.OrdinalIgnoreCase, true),
-		];
+	public static IEnumerable<object[]> GetStringParameters()
+	{
+		yield return new object[]
+		{
+			new string[] { "foo", "bar", "qux" },
+			StringComparer.Ordinal,
+			false,
+		};
+		yield return new object[]
+		{
+			new string[] { "foo", "FOO", "bar", "qux" },
+			StringComparer.Ordinal,
+			false,
+		};
+		yield return new object[]
+		{
+			new string[] { "foo", "FOO", "bar", "qux" },
+			StringComparer.OrdinalIgnoreCase,
+			true,
+		};
+		yield return new object[]
+		{
+			new string[] { "Bar", "foo", "FOO", "bar", "qux" },
+			StringComparer.OrdinalIgnoreCase,
+			true,
+		};
+	}
 
-	[Test]
-	[MethodDataSource(nameof(GetStringParameters))]
+	[Theory]
+	[MemberData(nameof(GetStringParameters))]
 	public void DuplicatesComparerBehavior(IEnumerable<string> source, StringComparer comparer, bool expected)
 	{
 		using var ts = source.AsTestingSequence();

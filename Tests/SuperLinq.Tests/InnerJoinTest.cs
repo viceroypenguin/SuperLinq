@@ -8,8 +8,7 @@ public sealed class InnerJoinTest
 		IEnumerable<(string, string)> left,
 		IEnumerable<(string, string)> right,
 		JoinOperation op,
-		bool passProjectors
-	) =>
+		bool passProjectors) =>
 		(op, passProjectors) switch
 		{
 			(Loop, false) => left.InnerLoopJoin(right, l => l.Item1, r => r.Item1, StringComparer.OrdinalIgnoreCase),
@@ -22,11 +21,10 @@ public sealed class InnerJoinTest
 			_ => throw new NotSupportedException(),
 		};
 
-	public static IEnumerable<(JoinOperation op, bool passProjectors)> GetInnerJoins() =>
-		new[] { Loop, Hash, Merge }.Cartesian([false, true]);
+	public static IEnumerable<object[]> GetInnerJoins() =>
+		new[] { Loop, Hash, Merge }.Cartesian([false, true], (x, y) => new object[] { x, y });
 
-	[Test]
-	[MethodDataSource(nameof(GetInnerJoins))]
+	[Theory, MemberData(nameof(GetInnerJoins))]
 	public void InnerJoinIsLazy(JoinOperation op, bool passProjectors)
 	{
 		var xs = new BreakingSequence<(string, string)>();
@@ -35,8 +33,7 @@ public sealed class InnerJoinTest
 		_ = ExecuteJoin(xs, ys, op, passProjectors);
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetInnerJoins))]
+	[Theory, MemberData(nameof(GetInnerJoins))]
 	public void InnerJoinResults(JoinOperation op, bool passProjectors)
 	{
 		var foo = ("one", "foo");
@@ -57,8 +54,7 @@ public sealed class InnerJoinTest
 			(bar1, bar3));
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetInnerJoins))]
+	[Theory, MemberData(nameof(GetInnerJoins))]
 	public void InnerJoinEmptyLeft(JoinOperation op, bool passProjectors)
 	{
 		var foo = ("one", "foo");
@@ -72,8 +68,7 @@ public sealed class InnerJoinTest
 		result.AssertCollectionEqual();
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetInnerJoins))]
+	[Theory, MemberData(nameof(GetInnerJoins))]
 	public void InnerJoinEmptyRight(JoinOperation op, bool passProjectors)
 	{
 		var foo = ("one", "foo");

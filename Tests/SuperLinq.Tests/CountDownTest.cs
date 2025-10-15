@@ -2,38 +2,37 @@ namespace SuperLinq.Tests;
 
 public sealed class CountDownTest
 {
-	[Test]
+	[Fact]
 	public void IsLazy()
 	{
 		_ = new BreakingSequence<object>()
 			.CountDown(42, BreakingFunc.Of<object, int?, object>());
 	}
 
-	[Test]
-	[Arguments(0), Arguments(-1)]
+	[Theory]
+	[InlineData(0), InlineData(-1)]
 	public void ExceptionOnNegativeCount(int param)
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>("count", () =>
 			new BreakingSequence<int>().CountDown(param));
 	}
 
-	public static IEnumerable<(IDisposableEnumerable<int> seq, int count, IEnumerable<(int, int?)> expected)> GetTestCases()
+	public static IEnumerable<object[]> GetTheoryData()
 	{
 		var xs = Enumerable.Range(0, 5).ToList();
 
 		for (var i = 1; i <= 7; i++)
 		{
 			var countdown = i < 5
-				? Enumerable.Repeat<int?>(null, 5 - i).Concat(Enumerable.Range(0, i).Cast<int?>().Reverse())
+				? Enumerable.Repeat<int?>(null, 5 - i).Concat(Enumerable.Range(0, i).Select(x => (int?)x).Reverse())
 				: Enumerable.Range(0, 5).Cast<int?>().Reverse();
 
 			foreach (var seq in xs.GetAllSequences())
-				yield return (seq, i, xs.EquiZip(countdown));
+				yield return new object[] { seq, i, xs.EquiZip(countdown) };
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetTestCases))]
+	[Theory, MemberData(nameof(GetTheoryData))]
 	public void WithSequence(IDisposableEnumerable<int> seq, int count, IEnumerable<(int, int?)> expected)
 	{
 		using (seq)
@@ -43,7 +42,7 @@ public sealed class CountDownTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void UsesCollectionCountAtIterationTime()
 	{
 		var stack = new Stack<int>(Enumerable.Range(1, 3));
@@ -53,7 +52,7 @@ public sealed class CountDownTest
 		result.AssertSequenceEqual(default(int?), null, 1, 0);
 	}
 
-	[Test]
+	[Fact]
 	public void CountDownCollectionBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingCollection();
@@ -62,7 +61,7 @@ public sealed class CountDownTest
 		result.AssertCollectionErrorChecking(10_000);
 	}
 
-	[Test]
+	[Fact]
 	public void CountDownListBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();

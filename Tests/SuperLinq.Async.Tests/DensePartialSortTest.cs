@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class DensePartialSortTests
 {
-	[Test]
+	[Fact]
 	public void DensePartialSortIsLazy()
 	{
 		_ = new AsyncBreakingSequence<object>().DensePartialSort(1);
 	}
 
-	[Test]
+	[Fact]
 	public async Task DensePartialSort()
 	{
 		await using var xs = AsyncEnumerable.Range(1, 10)
@@ -22,9 +22,9 @@ public sealed class DensePartialSortTests
 			.AssertSequenceEqual(0, 1, 1, 2, 2);
 	}
 
-	[Test]
-	[Arguments(OrderByDirection.Ascending)]
-	[Arguments(OrderByDirection.Descending)]
+	[Theory]
+	[InlineData(OrderByDirection.Ascending)]
+	[InlineData(OrderByDirection.Descending)]
 	public async Task DensePartialSortWithOrder(OrderByDirection direction)
 	{
 		await using var xs = AsyncEnumerable.Range(1, 10)
@@ -40,7 +40,7 @@ public sealed class DensePartialSortTests
 			await sorted.AssertSequenceEqual(0, 1, 1, 2, 2);
 	}
 
-	[Test]
+	[Fact]
 	public async Task DensePartialSortWithComparer()
 	{
 		var alphabet = Enumerable.Range(0, 26)
@@ -57,7 +57,7 @@ public sealed class DensePartialSortTests
 			.AssertSequenceEqual('A', 'A', 'C', 'C', 'E', 'E');
 	}
 
-	[Test]
+	[Fact]
 	public async Task DensePartialSortIsStable()
 	{
 		await using var list = new[]

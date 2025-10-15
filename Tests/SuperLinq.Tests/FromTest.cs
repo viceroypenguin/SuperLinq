@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class FromTest
 {
-	[Test]
+	[Fact]
 	public void TestFromIsLazy()
 	{
 		var breakingFunc = BreakingFunc.Of<int>();
@@ -12,11 +12,11 @@ public sealed class FromTest
 		_ = SuperEnumerable.From(breakingFunc, breakingFunc, breakingFunc, breakingFunc);
 	}
 
-	[Test]
-	[Arguments(1)]
-	[Arguments(2)]
-	[Arguments(3)]
-	[Arguments(4)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(2)]
+	[InlineData(3)]
+	[InlineData(4)]
 	public void TestFromInvokesMethods(int numArgs)
 	{
 		int F1() => -2;
@@ -34,11 +34,11 @@ public sealed class FromTest
 		}
 	}
 
-	[Test]
-	[Arguments(1)]
-	[Arguments(2)]
-	[Arguments(3)]
-	[Arguments(4)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(2)]
+	[InlineData(3)]
+	[InlineData(4)]
 	public void TestFromInvokesMethodsMultipleTimes(int numArgs)
 	{
 		var evals = new[] { 0, 0, 0, 0 };

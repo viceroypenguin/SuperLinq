@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class CollectionEqualTest
 {
-	[Test]
+	[Fact]
 	public void CollectionEqualIntSequenceInOrder()
 	{
 		using var xs = TestingSequence.Of(1, 2, 3);
@@ -10,7 +10,7 @@ public sealed class CollectionEqualTest
 		Assert.True(xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualIntSequenceOutOfOrder()
 	{
 		using var xs = TestingSequence.Of(1, 2, 3);
@@ -18,7 +18,7 @@ public sealed class CollectionEqualTest
 		Assert.True(xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualIntSequenceDuplicate()
 	{
 		using var xs = TestingSequence.Of(1, 1, 2, 2, 3, 3);
@@ -26,7 +26,7 @@ public sealed class CollectionEqualTest
 		Assert.True(xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualIntDifferentSequence()
 	{
 		using var xs = TestingSequence.Of(1, 2, 3);
@@ -34,7 +34,7 @@ public sealed class CollectionEqualTest
 		Assert.False(xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualIntDifferentDuplicate()
 	{
 		using var xs = TestingSequence.Of(1, 1, 2, 2, 3, 3);
@@ -42,7 +42,7 @@ public sealed class CollectionEqualTest
 		Assert.False(xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualStringSequenceInOrder()
 	{
 		using var xs = TestingSequence.Of("foo", "bar", "qux");
@@ -50,7 +50,7 @@ public sealed class CollectionEqualTest
 		Assert.True(xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualStringSequenceOutOfOrder()
 	{
 		using var xs = TestingSequence.Of("foo", "bar", "qux");
@@ -58,7 +58,7 @@ public sealed class CollectionEqualTest
 		Assert.True(xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualStringSequenceDuplicate()
 	{
 		using var xs = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");
@@ -66,7 +66,7 @@ public sealed class CollectionEqualTest
 		Assert.True(xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualStringDifferentSequence()
 	{
 		using var xs = TestingSequence.Of("foo", "bar", "qux");
@@ -74,7 +74,7 @@ public sealed class CollectionEqualTest
 		Assert.False(xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualStringDifferentDuplicate()
 	{
 		using var xs = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");
@@ -82,7 +82,7 @@ public sealed class CollectionEqualTest
 		Assert.False(xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualIntSequenceInOrderComparer()
 	{
 		using var xs = TestingSequence.Of(1, 2, 3);
@@ -91,7 +91,7 @@ public sealed class CollectionEqualTest
 			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualIntSequenceOutOfOrderComparer()
 	{
 		using var xs = TestingSequence.Of(1, 2, 3);
@@ -100,7 +100,7 @@ public sealed class CollectionEqualTest
 			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualIntSequenceDuplicateComparer()
 	{
 		using var xs = TestingSequence.Of(1, 1, 2, 2, 3, 3);
@@ -109,7 +109,7 @@ public sealed class CollectionEqualTest
 			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualIntDifferentSequenceComparer()
 	{
 		using var xs = TestingSequence.Of(1, 2, 3);
@@ -118,7 +118,7 @@ public sealed class CollectionEqualTest
 			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualIntDifferentDuplicateComparer()
 	{
 		using var xs = TestingSequence.Of(1, 1, 2, 2, 3, 3);
@@ -127,7 +127,7 @@ public sealed class CollectionEqualTest
 			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualStringSequenceInOrderComparer()
 	{
 		using var xs = TestingSequence.Of("foo", "bar", "qux");
@@ -135,7 +135,7 @@ public sealed class CollectionEqualTest
 		Assert.True(xs.CollectionEqual(ys, StringComparer.OrdinalIgnoreCase));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualStringSequenceOutOfOrderComparer()
 	{
 		using var xs = TestingSequence.Of("foo", "bar", "qux");
@@ -143,7 +143,7 @@ public sealed class CollectionEqualTest
 		Assert.True(xs.CollectionEqual(ys, StringComparer.OrdinalIgnoreCase));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualStringSequenceDuplicateComparer()
 	{
 		using var xs = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");
@@ -151,7 +151,7 @@ public sealed class CollectionEqualTest
 		Assert.True(xs.CollectionEqual(ys, StringComparer.OrdinalIgnoreCase));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualStringDifferentSequenceComparer()
 	{
 		using var xs = TestingSequence.Of("foo", "bar", "qux");
@@ -159,7 +159,7 @@ public sealed class CollectionEqualTest
 		Assert.False(xs.CollectionEqual(ys, StringComparer.OrdinalIgnoreCase));
 	}
 
-	[Test]
+	[Fact]
 	public void CollectionEqualStringDifferentDuplicateComparer()
 	{
 		using var xs = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");

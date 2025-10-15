@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 // This type is designed to be imported statically.
 //

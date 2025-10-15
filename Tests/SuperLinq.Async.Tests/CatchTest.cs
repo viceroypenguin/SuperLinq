@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class CatchTest
 {
-	[Test]
+	[Fact]
 	public void CatchIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Catch(BreakingFunc.Of<Exception, IAsyncEnumerable<int>>());
@@ -11,7 +11,7 @@ public sealed class CatchTest
 		_ = new[] { new AsyncBreakingSequence<int>(), new AsyncBreakingSequence<int>() }.Catch();
 	}
 
-	[Test]
+	[Fact]
 	public async Task CatchThrowsDelayedExceptionOnNullSource()
 	{
 		var seq = AsyncSuperEnumerable.Catch(new IAsyncEnumerable<int>[] { null! });
@@ -19,7 +19,7 @@ public sealed class CatchTest
 			await seq.Consume());
 	}
 
-	[Test]
+	[Fact]
 	public async Task CatchHandlerWithNoExceptions()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -28,7 +28,7 @@ public sealed class CatchTest
 		await result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CatchHandlerWithException()
 	{
 		await using var seq = AsyncSeqExceptionAt(5).AsTestingSequence();
@@ -46,7 +46,7 @@ public sealed class CatchTest
 		Assert.True(ran);
 	}
 
-	[Test]
+	[Fact]
 	public async Task CatchWithEmptySequenceList()
 	{
 		await using var seq = Enumerable.Empty<IAsyncEnumerable<int>>().AsTestingSequence();
@@ -55,10 +55,10 @@ public sealed class CatchTest
 		await result.AssertSequenceEqual();
 	}
 
-	[Test]
-	[Arguments(1)]
-	[Arguments(2)]
-	[Arguments(3)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(2)]
+	[InlineData(3)]
 	public async Task CatchMultipleSequencesNoExceptions(int count)
 	{
 		await using var ts1 = Enumerable.Range(1, 10).AsTestingSequence();
@@ -75,10 +75,10 @@ public sealed class CatchTest
 		await result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	[Test]
-	[Arguments(2)]
-	[Arguments(3)]
-	[Arguments(4)]
+	[Theory]
+	[InlineData(2)]
+	[InlineData(3)]
+	[InlineData(4)]
 	public async Task CatchMultipleSequencesWithNoExceptionOnSequence(int sequenceNumber)
 	{
 		var cnt = 1;
@@ -98,7 +98,7 @@ public sealed class CatchTest
 				.Concat(Enumerable.Range(1, 10)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CatchMultipleSequencesThrowsIfNoFollowingSequence()
 	{
 		await using var ts1 = AsyncSeqExceptionAt(5).AsTestingSequence();

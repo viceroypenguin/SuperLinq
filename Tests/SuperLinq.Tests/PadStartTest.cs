@@ -2,14 +2,14 @@ namespace SuperLinq.Tests;
 
 public sealed class PadStartTest
 {
-	[Test]
+	[Fact]
 	public void PadStartNegativeWidth()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<object>().PadStart(-1));
 	}
 
-	[Test]
+	[Fact]
 	public void PadStartIsLazy()
 	{
 		_ = new BreakingSequence<object>().PadStart(0);
@@ -17,12 +17,13 @@ public sealed class PadStartTest
 		_ = new BreakingSequence<object>().PadStart(0, BreakingFunc.Of<int, object>());
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetIntSequences() =>
+	public static IEnumerable<object[]> GetIntSequences() =>
 		Seq(123, 456, 789)
-			.GetAllSequences();
+			.GetAllSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void PadStartWideSourceSequence(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -34,7 +35,7 @@ public sealed class PadStartTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void PadStartWideCollectionBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingCollection();
@@ -43,7 +44,7 @@ public sealed class PadStartTest
 		result.AssertCollectionErrorChecking(10_000);
 	}
 
-	[Test]
+	[Fact]
 	public void PadStartWideListBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -58,8 +59,8 @@ public sealed class PadStartTest
 #endif
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void PadStartEqualSourceSequence(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -71,8 +72,8 @@ public sealed class PadStartTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void PadStartNarrowSourceSequenceWithDefaultPadding(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -84,8 +85,8 @@ public sealed class PadStartTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void PadStartNarrowSourceSequenceWithNonDefaultPadding(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -97,7 +98,7 @@ public sealed class PadStartTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void PadStartNarrowCollectionBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingCollection();
@@ -106,7 +107,7 @@ public sealed class PadStartTest
 		result.AssertCollectionErrorChecking(40_000);
 	}
 
-	[Test]
+	[Fact]
 	public void PadStartNarrowListBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -122,12 +123,13 @@ public sealed class PadStartTest
 #endif
 	}
 
-	public static IEnumerable<IDisposableEnumerable<char>> GetCharSequences() =>
+	public static IEnumerable<object[]> GetCharSequences() =>
 		"hello".AsEnumerable()
-			.GetAllSequences();
+			.GetAllSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetCharSequences))]
+	[Theory]
+	[MemberData(nameof(GetCharSequences))]
 	public void PadStartNarrowSourceSequenceWithDynamicPadding(IDisposableEnumerable<char> seq)
 	{
 		using (seq)
@@ -139,7 +141,7 @@ public sealed class PadStartTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void PadStartUsesCollectionCountAtIterationTime()
 	{
 		var queue = new Queue<int>(Enumerable.Range(1, 3));

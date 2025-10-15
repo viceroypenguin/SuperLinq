@@ -6,7 +6,7 @@ namespace SuperLinq.Tests;
 
 public sealed class AggregateTest
 {
-	public static IEnumerable<(MethodInfo method, object[] args, object expected)> AccumulatorsTestSource() =>
+	public static IEnumerable<object[]> AccumulatorsTestSource() =>
 
 		/* Generates an invocation as follows for 2 accumulators:
 
@@ -69,21 +69,20 @@ public sealed class AggregateTest
 								  select pair)
 						  .Concat([resultSelector])
 						  .ToArray(),
-			Expectation = (object)
+			Expectation =
 				Enumerable.Repeat(m.Expectation, m.AccumulatorCount)
 						  .ToArray(),
 		}
 		into t
-		select (t.Method, t.Args, t.Expectation);
+		select new object[] { t.Method, t.Args, t.Expectation };
 
-	[Test]
-	[MethodDataSource(nameof(AccumulatorsTestSource))]
+	[Theory, MemberData(nameof(AccumulatorsTestSource))]
 	public void Accumulators(MethodInfo method, object[] args, object expected)
 	{
 		Assert.Equal(expected, method.Invoke(null, args));
 	}
 
-	[Test]
+	[Fact]
 	public void SevenUniqueAccumulators()
 	{
 		var result =

@@ -2,7 +2,7 @@ namespace SuperLinq.Tests;
 
 public sealed class FillBackwardTest
 {
-	[Test]
+	[Fact]
 	public void FillBackwardIsLazy()
 	{
 		_ = new BreakingSequence<object>().FillBackward();
@@ -10,12 +10,13 @@ public sealed class FillBackwardTest
 		_ = new BreakingSequence<object>().FillBackward(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, object, object>());
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int?>> GetIntNullSequences() =>
+	public static IEnumerable<object[]> GetIntNullSequences() =>
 		Seq<int?>(null, null, 1, 2, null, null, null, 3, 4, null, null)
-			.GetBreakingCollectionSequences();
+			.GetBreakingCollectionSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetIntNullSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntNullSequences))]
 	public void FillBackwardBlank(IDisposableEnumerable<int?> seq)
 	{
 		using (seq)
@@ -26,8 +27,8 @@ public sealed class FillBackwardTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetIntNullSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntNullSequences))]
 	public void FillBackward(IDisposableEnumerable<int?> seq)
 	{
 		using (seq)
@@ -38,12 +39,13 @@ public sealed class FillBackwardTest
 		}
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetIntSequences() =>
+	public static IEnumerable<object[]> GetIntSequences() =>
 		Enumerable.Range(1, 13)
-			.GetBreakingCollectionSequences();
+			.GetBreakingCollectionSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void FillBackwardWithFillSelector(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -54,7 +56,7 @@ public sealed class FillBackwardTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void FillBackwardCollectionCount()
 	{
 		using var sequence = Enumerable.Range(1, 10_000)

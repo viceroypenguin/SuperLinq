@@ -4,14 +4,14 @@ namespace SuperLinq.Tests;
 
 public sealed class SplitTest
 {
-	[Test]
+	[Fact]
 	public void SplitIsLazy()
 	{
 		_ = new BreakingSequence<int>().Split(1);
 		_ = new BreakingSequence<int>().Split(1, 2);
 	}
 
-	[Test]
+	[Fact]
 	public void SplitWithComparer()
 	{
 		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
@@ -19,7 +19,7 @@ public sealed class SplitTest
 		result.AssertSequenceEqual(Enumerable.Range(1, 5).Select(x => new[] { (x * 2) - 1 }));
 	}
 
-	[Test]
+	[Fact]
 	public void SplitWithComparerUptoMaxCount()
 	{
 		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
@@ -27,7 +27,7 @@ public sealed class SplitTest
 		result.AssertSequenceEqual([1], [3], Enumerable.Range(5, 6));
 	}
 
-	[Test]
+	[Fact]
 	[SuppressMessage("Style", "IDE0305:Simplify collection initialization")]
 	public void SplitWithSeparatorAndResultTransformation()
 	{
@@ -36,7 +36,7 @@ public sealed class SplitTest
 		result.AssertSequenceEqual("the", "quick", "brown", "fox");
 	}
 
-	[Test]
+	[Fact]
 	[SuppressMessage("Style", "IDE0305:Simplify collection initialization")]
 	public void SplitUptoMaxCount()
 	{
@@ -45,7 +45,7 @@ public sealed class SplitTest
 		result.AssertSequenceEqual("the", "quick", "brown fox");
 	}
 
-	[Test]
+	[Fact]
 	public void SplitWithSeparatorSelector()
 	{
 		using var sequence = TestingSequence.Of<int?>(1, 2, null, 3, null, 4, 5, 6);
@@ -58,7 +58,7 @@ public sealed class SplitTest
 		reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public void SplitWithSeparatorSelectorUptoMaxCount()
 	{
 		using var sequence = TestingSequence.Of<int?>(1, 2, null, 3, null, 4, 5, 6);

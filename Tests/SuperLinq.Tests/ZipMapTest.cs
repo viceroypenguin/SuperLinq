@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -6,12 +5,13 @@ namespace SuperLinq.Tests;
 
 public sealed class ZipMapTest
 {
-	public static IEnumerable<IDisposableEnumerable<int>> GetIntSequences() =>
+	public static IEnumerable<object[]> GetIntSequences() =>
 		Enumerable.Range(1, 10)
-			.GetListSequences();
+			.GetListSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetIntSequences))]
+	[Theory]
+	[MemberData(nameof(GetIntSequences))]
 	public void ZipMapIntTransformation(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -22,16 +22,16 @@ public sealed class ZipMapTest
 		}
 	}
 
-	public static IEnumerable<(IDisposableEnumerable<string> seq, IEnumerable<string> src)> GetStringSequences1()
+	public static IEnumerable<object[]> GetStringSequences1()
 	{
 		var seq = Seq("foo", "bar", "FOO", "Bar", "baz", "QUx", "bAz", "QuX");
 		return seq
 			.GetListSequences()
-			.Select(x => (x, seq));
+			.Select(x => new object[] { x, seq });
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetStringSequences1))]
+	[Theory]
+	[MemberData(nameof(GetStringSequences1))]
 	public void ZipMapStringTransformation(IDisposableEnumerable<string> seq, IEnumerable<string> src)
 	{
 		using (seq)
@@ -42,13 +42,13 @@ public sealed class ZipMapTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(
-		typeof(TestExtensions),
-		nameof(TestExtensions.GetListSequences),
-		Arguments = [new[] { "foo", "hello", "world", "Bar", "QuX", "ay", "az" }]
-	)]
-	[SuppressMessage("Usage", "TUnit0001:Invalid Data for Tests")]
+	public static IEnumerable<object[]> GetStringSequences2() =>
+		Seq("foo", "hello", "world", "Bar", "QuX", "ay", "az")
+			.GetListSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetStringSequences2))]
 	public void ZipMapRegexChoose(IDisposableEnumerable<string> seq)
 	{
 		using (seq)
@@ -61,7 +61,7 @@ public sealed class ZipMapTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void ZipMapListBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -76,7 +76,7 @@ public sealed class ZipMapTest
 #endif
 	}
 
-	[Test]
+	[Fact]
 	public void ZipMapIsLazy()
 	{
 		var bs = new BreakingSequence<int>();

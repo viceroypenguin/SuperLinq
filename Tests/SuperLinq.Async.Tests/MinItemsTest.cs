@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class MinItemsTest
 {
-	[Test]
+	[Fact]
 	public void MinItemsIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().MinItems();
 	}
 
-	[Test]
+	[Fact]
 	public async Task MinItemsEmptyList()
 	{
 		await using var seq = TestingSequence.Of<int>();
@@ -16,7 +16,7 @@ public sealed class MinItemsTest
 		await result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public async Task MinItemsBehavior()
 	{
 		await using var seq = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 4, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);
@@ -24,13 +24,13 @@ public sealed class MinItemsTest
 		await result.AssertSequenceEqual(0, 0, 0, 0);
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsComparerIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().MinItems(comparer: null);
 	}
 
-	[Test]
+	[Fact]
 	public async Task MinItemsComparerEmptyList()
 	{
 		await using var seq = TestingSequence.Of<int>();
@@ -38,7 +38,7 @@ public sealed class MinItemsTest
 		await result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public async Task MinItemsComparerBehavior()
 	{
 		await using var seq = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 4, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);
@@ -46,14 +46,14 @@ public sealed class MinItemsTest
 		await result.AssertSequenceEqual(0, 0, 3, 3, 0, 3, 3, 0);
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsByIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().MinItemsBy(BreakingFunc.Of<int, int>());
 		_ = new AsyncBreakingSequence<int>().MinByWithTies(BreakingFunc.Of<int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task MinItemsByEmptyList()
 	{
 		await using var seq = TestingSequence.Of<int>();
@@ -61,7 +61,7 @@ public sealed class MinItemsTest
 		await result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public async Task MinItemsByBehavior()
 	{
 		await using var seq = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 4, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);
@@ -69,7 +69,7 @@ public sealed class MinItemsTest
 		await result.AssertSequenceEqual(5, 5);
 	}
 
-	[Test]
+	[Fact]
 	public void MinItemsByComparerIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().MinItemsBy(BreakingFunc.Of<int, int>(), comparer: null);
@@ -77,7 +77,7 @@ public sealed class MinItemsTest
 			(BreakingFunc.Of<int, int>(), comparer: null);
 	}
 
-	[Test]
+	[Fact]
 	public async Task MinItemsByComparerEmptyList()
 	{
 		await using var seq = TestingSequence.Of<int>();
@@ -85,7 +85,7 @@ public sealed class MinItemsTest
 		await result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public async Task MinItemsByComparerBehavior()
 	{
 		await using var seq = TestingSequence.Of(2, 2, 0, 5, 5, 1, 1, 0, 3, 4, 2, 3, 1, 4, 0, 2, 4, 3, 3, 0);

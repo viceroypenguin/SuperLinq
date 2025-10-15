@@ -5,151 +5,141 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class AggregateByTest
 {
-	[Test]
-	public async Task AggregateBy()
-	{
-		static async Task DoTest<TSource, TKey, TAccumulate>(
+	[Theory]
+	[MemberData(nameof(AggregateBy_TestData))]
+	public static async Task AggregateBy_HasExpectedOutput<TSource, TKey, TAccumulate>(
 			IEnumerable<TSource> source,
 			Func<TSource, TKey> keySelector,
 			Func<TKey, TAccumulate> seedSelector,
 			Func<TAccumulate, TSource, TAccumulate> func,
 			IEqualityComparer<TKey>? comparer,
-			IEnumerable<KeyValuePair<TKey, TAccumulate>> expected) where TKey : notnull
-		{
-			await using var ts = source.AsTestingSequence();
-			await ts.AggregateBy(keySelector, seedSelector, func, comparer)
-				.AssertCollectionEqual(expected);
-		}
+			IEnumerable<KeyValuePair<TKey, TAccumulate>> expected
+	) where TKey : notnull
+	{
+		await using var ts = source.AsTestingSequence();
+		await ts.AggregateBy(keySelector, seedSelector, func, comparer)
+			.AssertCollectionEqual(expected);
+	}
 
-		await DoTest(
+	public static IEnumerable<object?[]> AggregateBy_TestData()
+	{
+		yield return WrapArgs(
 			source: Enumerable.Empty<int>(),
 			keySelector: x => x,
 			seedSelector: x => 0,
 			func: (x, y) => x + y,
 			comparer: null,
-			expected: []
-		);
+			expected: []);
 
-		await DoTest(
+		yield return WrapArgs(
 			source: Enumerable.Range(0, 10),
 			keySelector: x => x,
 			seedSelector: x => 0,
 			func: (x, y) => x + y,
 			comparer: null,
-			expected: Enumerable.Range(0, 10).Select(x => KeyValuePair.Create(x, x))
-		);
+			expected: Enumerable.Range(0, 10).ToDictionary(x => x, x => x));
 
-		await DoTest(
+		yield return WrapArgs(
 			source: Enumerable.Range(5, 10),
 			keySelector: x => true,
 			seedSelector: x => 0,
 			func: (x, y) => x + y,
 			comparer: null,
-			expected: [KeyValuePair.Create(key: true, 95)]
-		);
+			expected: Enumerable.Repeat(true, 1).ToDictionary(x => x, x => 95));
 
-		await DoTest(
+		yield return WrapArgs(
 			source: Enumerable.Range(0, 20),
 			keySelector: x => x % 5,
 			seedSelector: x => 0,
 			func: (x, y) => x + y,
 			comparer: null,
-			expected: Enumerable.Range(0, 5).Select(x => KeyValuePair.Create(x, 30 + (4 * x)))
-		);
+			expected: Enumerable.Range(0, 5).ToDictionary(x => x, x => 30 + (4 * x)));
 
-		await DoTest(
+		yield return WrapArgs(
 			source: Enumerable.Repeat(5, 20),
 			keySelector: x => x,
 			seedSelector: x => 0,
 			func: (x, y) => x + y,
 			comparer: null,
-			expected: Enumerable.Repeat(5, 1).Select(x => KeyValuePair.Create(x, 100))
-		);
+			expected: Enumerable.Repeat(5, 1).ToDictionary(x => x, x => 100));
 
-		await DoTest(
+		yield return WrapArgs(
 			source: ["Bob", "bob", "tim", "Bob", "Tim"],
 			keySelector: x => x,
 			seedSelector: x => "",
 			func: (x, y) => x + y,
 			comparer: null,
-			expected:
-			[
-				KeyValuePair.Create("Bob", "BobBob"),
-				KeyValuePair.Create("bob", "bob"),
-				KeyValuePair.Create("tim", "tim"),
-				KeyValuePair.Create("Tim", "Tim"),
-			]
-		);
+			expected: new Dictionary<string, string>(StringComparer.Ordinal)
+			{
+				{ "Bob", "BobBob" },
+				{ "bob", "bob" },
+				{ "tim", "tim" },
+				{ "Tim", "Tim" },
+			});
 
-		await DoTest(
+		yield return WrapArgs(
 			source: ["Bob", "bob", "tim", "Bob", "Tim"],
 			keySelector: x => x,
 			seedSelector: x => "",
 			func: (x, y) => x + y,
 			StringComparer.OrdinalIgnoreCase,
-			expected:
-			[
-				KeyValuePair.Create("Bob", "BobbobBob"),
-				KeyValuePair.Create("tim", "timTim"),
-			]
-		);
+			expected: new Dictionary<string, string>(StringComparer.Ordinal)
+			{
+				{ "Bob", "BobbobBob" },
+				{ "tim", "timTim" },
+			});
 
-		await DoTest(
+		yield return WrapArgs(
 			source: new (string Name, int Age)[] { ("Tom", 20), ("Dick", 30), ("Harry", 40) },
 			keySelector: x => x.Age,
 			seedSelector: x => $"I am {x} and my name is ",
 			func: (x, y) => x + y.Name,
 			comparer: null,
-			expected:
-			[
-				KeyValuePair.Create(20, "I am 20 and my name is Tom"),
-				KeyValuePair.Create(30, "I am 30 and my name is Dick"),
-				KeyValuePair.Create(40, "I am 40 and my name is Harry"),
-			]
-		);
+			expected: new Dictionary<int, string>
+			{
+				{ 20, "I am 20 and my name is Tom" },
+				{ 30, "I am 30 and my name is Dick" },
+				{ 40, "I am 40 and my name is Harry" },
+			});
 
-		await DoTest(
+		yield return WrapArgs(
 			source: new (string Name, int Age)[] { ("Tom", 20), ("Dick", 20), ("Harry", 40) },
 			keySelector: x => x.Age,
 			seedSelector: x => $"I am {x} and my name is",
 			func: (x, y) => $"{x} maybe {y.Name}",
 			comparer: null,
-			expected:
-			[
-				KeyValuePair.Create(20, "I am 20 and my name is maybe Tom maybe Dick"),
-				KeyValuePair.Create(40, "I am 40 and my name is maybe Harry"),
-			]
-		);
+			expected: new Dictionary<int, string>
+			{
+				{ 20, "I am 20 and my name is maybe Tom maybe Dick" },
+				{ 40, "I am 40 and my name is maybe Harry" },
+			});
 
-		await DoTest(
+		yield return WrapArgs(
 			source: new (string Name, int Age)[] { ("Bob", 20), ("bob", 20), ("Harry", 20) },
 			keySelector: x => x.Name,
 			seedSelector: x => 0,
 			func: (x, y) => x + y.Age,
 			comparer: null,
-			expected:
-			[
-				KeyValuePair.Create("Bob", 20),
-				KeyValuePair.Create("bob", 20),
-				KeyValuePair.Create("Harry", 20),
-			]
-		);
+			expected: new string[] { "Bob", "bob", "Harry" }
+				.ToDictionary(x => x, x => 20, StringComparer.Ordinal));
 
-		await DoTest(
+		yield return WrapArgs(
 			source: new (string Name, int Age)[] { ("Bob", 20), ("bob", 30), ("Harry", 40) },
 			keySelector: x => x.Name,
 			seedSelector: x => 0,
 			func: (x, y) => x + y.Age,
 			comparer: StringComparer.OrdinalIgnoreCase,
-			expected:
-			[
-				KeyValuePair.Create("Bob", 50),
-				KeyValuePair.Create("Harry", 40),
-			]
-		);
+			expected: new Dictionary<string, int>(StringComparer.Ordinal)
+			{
+				{ "Bob", 50 },
+				{ "Harry", 40 },
+			});
+
+		static object?[] WrapArgs<TSource, TKey, TAccumulate>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, TAccumulate> seedSelector, Func<TAccumulate, TSource, TAccumulate> func, IEqualityComparer<TKey>? comparer, IEnumerable<KeyValuePair<TKey, TAccumulate>> expected)
+			=> [source, keySelector, seedSelector, func, comparer, expected];
 	}
 
-	[Test]
+	[Fact]
 	public async Task GroupBy()
 	{
 		static IAsyncEnumerable<KeyValuePair<TKey, List<TSource>>> GroupBy<TSource, TKey>(IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector)
@@ -170,7 +160,7 @@ public sealed class AggregateByTest
 		Assert.True(oddsEvens[false].CollectionEqual([1, 3,]));
 	}
 
-	[Test]
+	[Fact]
 	public async Task LongCountBy()
 	{
 		static IAsyncEnumerable<KeyValuePair<TKey, long>> LongCountBy<TSource, TKey>(IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector)
@@ -193,7 +183,7 @@ public sealed class AggregateByTest
 			});
 	}
 
-	[Test]
+	[Fact]
 	public async Task Score()
 	{
 		await using var data = TestingSequence.Of<(string id, int score)>(
@@ -201,8 +191,7 @@ public sealed class AggregateByTest
 			("1", 5),
 			("2", 4),
 			("1", 10),
-			("0", 25)
-		);
+			("0", 25));
 
 		var scores = await data
 			.AggregateBy(
@@ -215,19 +204,4 @@ public sealed class AggregateByTest
 		Assert.Equal(15, scores["1"]);
 		Assert.Equal(4, scores["2"]);
 	}
-}
-
-file static class KeyValuePair
-{
-	/// <summary>
-	/// Creates a new key/value pair instance using provided values.
-	/// </summary>
-	/// <param name="key">The key of the new <see cref="KeyValuePair{TKey,TValue}"/> to be created.</param>
-	/// <param name="value">The value of the new <see cref="KeyValuePair{TKey,TValue}"/> to be created.</param>
-	/// <typeparam name="TKey">The type of the key.</typeparam>
-	/// <typeparam name="TValue">The type of the value.</typeparam>
-	/// <returns>A key/value pair containing the provided arguments as values.</returns>
-	//Link: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.keyvaluepair.create
-	public static KeyValuePair<TKey, TValue> Create<TKey, TValue>(TKey key, TValue value) =>
-		new(key, value);
 }

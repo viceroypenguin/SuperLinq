@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 internal sealed class WatchableEnumerator<T> : IAsyncEnumerator<T>
 {

@@ -1,29 +1,29 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class FoldTest
 {
-	[Test]
+	[Fact]
 	public void FoldWithTooFewItems()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int, int, int>()));
 	}
 
-	[Test]
+	[Fact]
 	public void FoldWithEmptySequence()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Enumerable.Empty<int>().Fold(BreakingFunc.Of<int, int>()));
 	}
 
-	[Test]
+	[Fact]
 	public void FoldWithTooManyItems()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int>()));
 	}
 
-	[Test]
+	[Fact]
 	public void Fold()
 	{
 		const string Alphabet = "abcdefghijklmnopqrstuvwxyz";

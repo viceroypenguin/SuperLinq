@@ -143,7 +143,7 @@ internal sealed class TestingSequence<T> : IAsyncEnumerable<T>, IAsyncDisposable
 
 public sealed class TestingSequenceTest
 {
-	[Test]
+	[Fact]
 	public async Task TestingSequencePublicPropertiesTest()
 	{
 		await using var sequence = Of(1, 2, 3, 4);
@@ -165,7 +165,7 @@ public sealed class TestingSequenceTest
 		Assert.True(sequence.IsDisposed);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestingSequenceShouldValidateDisposal()
 	{
 		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
@@ -185,7 +185,7 @@ public sealed class TestingSequenceTest
 		await AssertSequenceBehavior(Act, ExpectedDisposal);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestingSequenceShouldValidateNumberOfUsages()
 	{
 		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
@@ -212,7 +212,7 @@ public sealed class TestingSequenceTest
 		await AssertSequenceBehavior(Act, TooManyEnumerations);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestingSequenceShouldValidateDisposeOnDisposedSequence()
 	{
 		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
@@ -234,7 +234,7 @@ public sealed class TestingSequenceTest
 		await AssertSequenceBehavior(Act, TooManyDisposals);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestingSequenceShouldValidateMoveNextOnDisposedSequence()
 	{
 		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
@@ -256,7 +256,7 @@ public sealed class TestingSequenceTest
 		await AssertSequenceBehavior(Act, MoveNextPostDisposal);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestingSequenceShouldValidateMoveNextOnCompletedSequence()
 	{
 		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
@@ -280,7 +280,7 @@ public sealed class TestingSequenceTest
 		await AssertSequenceBehavior(Act, MoveNextPostEnumeration);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestingSequenceShouldValidateCurrentOnDisposedSequence()
 	{
 		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
@@ -302,7 +302,7 @@ public sealed class TestingSequenceTest
 		await AssertSequenceBehavior(Act, CurrentPostDisposal);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestingSequenceShouldValidateCurrentOnEndedSequence()
 	{
 		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)
@@ -326,7 +326,7 @@ public sealed class TestingSequenceTest
 		await AssertSequenceBehavior(Act, CurrentPostEnumeration);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TestingSequenceShouldValidateSimultaneousEnumeration()
 	{
 		static async IAsyncEnumerable<int> InvalidUsage(IAsyncEnumerable<int> enumerable)

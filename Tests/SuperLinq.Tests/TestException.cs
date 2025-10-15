@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 /// <summary>
 /// Reserved for use within tests.

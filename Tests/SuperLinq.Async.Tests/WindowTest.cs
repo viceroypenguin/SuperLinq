@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 /// <summary>
 /// Verify the behavior of the Window operator
@@ -8,13 +8,13 @@ public sealed class WindowTests
 	/// <summary>
 	/// Verify that Window behaves in a lazy manner
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestWindowIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Window(1);
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowModifiedBeforeMoveNextDoesNotAffectNextWindow()
 	{
 		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
@@ -29,7 +29,7 @@ public sealed class WindowTests
 		Assert.Equal(1, window2[0]);
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
 	{
 		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
@@ -44,7 +44,7 @@ public sealed class WindowTests
 		Assert.Equal(1, window2[0]);
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowModifiedDoesNotAffectPreviousWindow()
 	{
 		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
@@ -62,7 +62,7 @@ public sealed class WindowTests
 	/// <summary>
 	/// Verify that a negative window size results in an exception
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestWindowNegativeWindowSizeException()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -73,7 +73,7 @@ public sealed class WindowTests
 	/// Verify that a sliding window of an any size over an empty sequence
 	/// is an empty sequence
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestWindowEmptySequence()
 	{
 		await using var sequence = TestingSequence.Of<int>();
@@ -86,7 +86,7 @@ public sealed class WindowTests
 	/// Verify that decomposing a sequence into windows of a single item
 	/// degenerates to the original sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestWindowOfSingleElement()
 	{
 		await using var sequence = Enumerable.Range(0, 100).AsTestingSequence();
@@ -105,7 +105,7 @@ public sealed class WindowTests
 	/// Verify that asking for a window large than the source sequence results
 	/// in a empty sequence.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestWindowLargerThanSequence()
 	{
 		await using var sequence = Enumerable.Range(0, 100).AsTestingSequence();
@@ -121,7 +121,7 @@ public sealed class WindowTests
 	/// Verify that asking for a window smaller than the source sequence results
 	/// in N sequences, where N = (source.Count() - windowSize) + 1.
 	/// </summary>
-	[Test]
+	[Fact]
 	public async Task TestWindowSmallerThanSequence()
 	{
 		await using var sequence = Enumerable.Range(0, 100).AsTestingSequence();
@@ -140,7 +140,7 @@ public sealed class WindowTests
 	/// Verify that later windows do not modify any of the previous ones.
 	/// </summary>
 
-	[Test]
+	[Fact]
 	public async Task TestWindowWindowsImmutability()
 	{
 		await using var windows = AsyncEnumerable.Range(1, 5).Window(2).AsTestingSequence();

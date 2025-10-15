@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class CollectionEqualTest
 {
-	[Test]
+	[Fact]
 	public async Task CollectionEqualIntSequenceInOrder()
 	{
 		await using var xs = TestingSequence.Of(1, 2, 3);
@@ -10,7 +10,7 @@ public sealed class CollectionEqualTest
 		Assert.True(await xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualIntSequenceOutOfOrder()
 	{
 		await using var xs = TestingSequence.Of(1, 2, 3);
@@ -18,7 +18,7 @@ public sealed class CollectionEqualTest
 		Assert.True(await xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualIntSequenceDuplicate()
 	{
 		await using var xs = TestingSequence.Of(1, 1, 2, 2, 3, 3);
@@ -26,7 +26,7 @@ public sealed class CollectionEqualTest
 		Assert.True(await xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualIntDifferentSequence()
 	{
 		await using var xs = TestingSequence.Of(1, 2, 3);
@@ -34,7 +34,7 @@ public sealed class CollectionEqualTest
 		Assert.False(await xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualIntDifferentDuplicate()
 	{
 		await using var xs = TestingSequence.Of(1, 1, 2, 2, 3, 3);
@@ -42,7 +42,7 @@ public sealed class CollectionEqualTest
 		Assert.False(await xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualStringSequenceInOrder()
 	{
 		await using var xs = TestingSequence.Of("foo", "bar", "qux");
@@ -50,7 +50,7 @@ public sealed class CollectionEqualTest
 		Assert.True(await xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualStringSequenceOutOfOrder()
 	{
 		await using var xs = TestingSequence.Of("foo", "bar", "qux");
@@ -58,7 +58,7 @@ public sealed class CollectionEqualTest
 		Assert.True(await xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualStringSequenceDuplicate()
 	{
 		await using var xs = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");
@@ -66,7 +66,7 @@ public sealed class CollectionEqualTest
 		Assert.True(await xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualStringDifferentSequence()
 	{
 		await using var xs = TestingSequence.Of("foo", "bar", "qux");
@@ -74,7 +74,7 @@ public sealed class CollectionEqualTest
 		Assert.False(await xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualStringDifferentDuplicate()
 	{
 		await using var xs = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");
@@ -82,7 +82,7 @@ public sealed class CollectionEqualTest
 		Assert.False(await xs.CollectionEqual(ys));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualIntSequenceInOrderComparer()
 	{
 		await using var xs = TestingSequence.Of(1, 2, 3);
@@ -91,7 +91,7 @@ public sealed class CollectionEqualTest
 			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualIntSequenceOutOfOrderComparer()
 	{
 		await using var xs = TestingSequence.Of(1, 2, 3);
@@ -100,7 +100,7 @@ public sealed class CollectionEqualTest
 			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualIntSequenceDuplicateComparer()
 	{
 		await using var xs = TestingSequence.Of(1, 1, 2, 2, 3, 3);
@@ -109,7 +109,7 @@ public sealed class CollectionEqualTest
 			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualIntDifferentSequenceComparer()
 	{
 		await using var xs = TestingSequence.Of(1, 2, 3);
@@ -118,7 +118,7 @@ public sealed class CollectionEqualTest
 			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualIntDifferentDuplicateComparer()
 	{
 		await using var xs = TestingSequence.Of(1, 1, 2, 2, 3, 3);
@@ -127,7 +127,7 @@ public sealed class CollectionEqualTest
 			ys, EqualityComparer.Create<int>((a, b) => Math.Abs(a) == Math.Abs(b), x => Math.Abs(x).GetHashCode())));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualStringSequenceInOrderComparer()
 	{
 		await using var xs = TestingSequence.Of("foo", "bar", "qux");
@@ -135,7 +135,7 @@ public sealed class CollectionEqualTest
 		Assert.True(await xs.CollectionEqual(ys, StringComparer.OrdinalIgnoreCase));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualStringSequenceOutOfOrderComparer()
 	{
 		await using var xs = TestingSequence.Of("foo", "bar", "qux");
@@ -143,7 +143,7 @@ public sealed class CollectionEqualTest
 		Assert.True(await xs.CollectionEqual(ys, StringComparer.OrdinalIgnoreCase));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualStringSequenceDuplicateComparer()
 	{
 		await using var xs = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");
@@ -151,7 +151,7 @@ public sealed class CollectionEqualTest
 		Assert.True(await xs.CollectionEqual(ys, StringComparer.OrdinalIgnoreCase));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualStringDifferentSequenceComparer()
 	{
 		await using var xs = TestingSequence.Of("foo", "bar", "qux");
@@ -159,7 +159,7 @@ public sealed class CollectionEqualTest
 		Assert.False(await xs.CollectionEqual(ys, StringComparer.OrdinalIgnoreCase));
 	}
 
-	[Test]
+	[Fact]
 	public async Task CollectionEqualStringDifferentDuplicateComparer()
 	{
 		await using var xs = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");

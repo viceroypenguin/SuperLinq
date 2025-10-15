@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class ScanTest
 {
-	[Test]
+	[Fact]
 	public void ScanEmpty()
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -11,7 +11,7 @@ public sealed class ScanTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void ScanSum()
 	{
 		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -20,13 +20,13 @@ public sealed class ScanTest
 		result.AssertSequenceEqual(1, 3, 6, 10, 15, 21, 28, 36, 45, 55);
 	}
 
-	[Test]
+	[Fact]
 	public void ScanIsLazy()
 	{
 		_ = new BreakingSequence<object>().Scan(BreakingFunc.Of<object, object, object>());
 	}
 
-	[Test]
+	[Fact]
 	public void ScanDoesNotIterateExtra()
 	{
 		using var seq = SeqExceptionAt(4).AsTestingSequence(maxEnumerations: 2);
@@ -37,7 +37,7 @@ public sealed class ScanTest
 		result.Take(3).AssertSequenceEqual(1, 3, 6);
 	}
 
-	[Test]
+	[Fact]
 	public void SeededScanEmpty()
 	{
 		using var seq = TestingSequence.Of<int>();
@@ -46,7 +46,7 @@ public sealed class ScanTest
 		Assert.Equal(-1, result.Single());
 	}
 
-	[Test]
+	[Fact]
 	public void SeededScanSum()
 	{
 		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -55,14 +55,14 @@ public sealed class ScanTest
 		result.AssertSequenceEqual(0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55);
 	}
 
-	[Test]
+	[Fact]
 	public void SeededScanIsLazy()
 	{
 		_ = new BreakingSequence<object>().Scan(seed: null,
 			BreakingFunc.Of<object?, object, object>());
 	}
 
-	[Test]
+	[Fact]
 	public void SeededScanDoesNotIterateExtra()
 	{
 		using var seq = SeqExceptionAt(4).AsTestingSequence(maxEnumerations: 2);

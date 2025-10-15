@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class TransposeTest
 {
-	[Test]
+	[Fact]
 	public void TransposeIsLazy()
 	{
 		_ = new BreakingSequence<BreakingSequence<int>>().Transpose();
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeWithOneNullRow()
 	{
 		using var seq1 = TestingSequence.Of(10, 11);
@@ -20,7 +20,7 @@ public sealed class TransposeTest
 			matrix!.Transpose().FirstOrDefault());
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeWithRowsOfSameLength()
 	{
 		var expectations = new int[][]
@@ -39,7 +39,7 @@ public sealed class TransposeTest
 		AssertMatrix(expectations, matrix.Transpose());
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeWithRowsOfDifferentLengths()
 	{
 		var expectations = new int[][]
@@ -58,7 +58,7 @@ public sealed class TransposeTest
 		AssertMatrix(expectations, matrix.Transpose());
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeMaintainsCornerElements()
 	{
 		var sequences = new List<TestingSequence<int>>()
@@ -77,7 +77,7 @@ public sealed class TransposeTest
 		sequences.VerifySequences();
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeWithAllRowsAsInfiniteSequences()
 	{
 		var sequences = new List<TestingSequence<int>>();
@@ -103,7 +103,7 @@ public sealed class TransposeTest
 		sequences.VerifySequences();
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeWithSomeRowsAsInfiniteSequences()
 	{
 		var sequences = new List<TestingSequence<int>>();
@@ -130,7 +130,7 @@ public sealed class TransposeTest
 		sequences.VerifySequences();
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeColumnTraversalOrderIsIrrelevant()
 	{
 		var sequences = new List<TestingSequence<int>>()
@@ -150,7 +150,7 @@ public sealed class TransposeTest
 		sequences.VerifySequences();
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeConsumesRowsLazily()
 	{
 		var sequences = new List<TestingSequence<int>>()
@@ -170,7 +170,7 @@ public sealed class TransposeTest
 		sequences.VerifySequences();
 	}
 
-	[Test]
+	[Fact]
 	public void TransposeWithErroneousRowDisposesRowIterators()
 	{
 		using var row1 = TestingSequence.Of(10, 11);

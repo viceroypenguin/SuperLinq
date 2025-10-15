@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class IfTest
 {
-	[Test]
+	[Fact]
 	public void IfIsLazy()
 	{
 		_ = SuperEnumerable.If(BreakingFunc.Of<bool>(), new BreakingSequence<int>());
 	}
 
-	[Test]
+	[Fact]
 	public void IfBehavior()
 	{
 		var starts = 0;
@@ -25,7 +25,7 @@ public sealed class IfTest
 		seq.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void IfElseIsLazy()
 	{
 		_ = SuperEnumerable.If(
@@ -34,7 +34,7 @@ public sealed class IfTest
 			new BreakingSequence<int>());
 	}
 
-	[Test]
+	[Fact]
 	public void CaseSourceBehavior()
 	{
 		var starts = 0;

@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class IndexTest
 {
-	[Test]
+	[Fact]
 	public void IndexIsLazy()
 	{
 		var bs = new AsyncBreakingSequence<object>();
@@ -14,7 +14,7 @@ public sealed class IndexTest
 	private const string Two = "two";
 	private const string Three = "three";
 
-	[Test]
+	[Fact]
 	public async Task IndexSequence()
 	{
 		await using var seq = TestingSequence.Of(One, Two, Three);
@@ -25,7 +25,7 @@ public sealed class IndexTest
 			(2, Three));
 	}
 
-	[Test]
+	[Fact]
 	public async Task IndexSequenceStartIndex()
 	{
 		await using var seq = TestingSequence.Of(One, Two, Three);

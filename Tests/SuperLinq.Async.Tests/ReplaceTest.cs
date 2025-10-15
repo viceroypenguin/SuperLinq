@@ -4,7 +4,7 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class ReplaceTest
 {
-	[Test]
+	[Fact]
 	public void ReplaceIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Replace(0, 10);
@@ -12,7 +12,7 @@ public sealed class ReplaceTest
 		_ = new AsyncBreakingSequence<int>().Replace(^0, 10);
 	}
 
-	[Test]
+	[Fact]
 	public async Task ReplaceEmptySequence()
 	{
 		await using var seq = Enumerable.Empty<int>().AsTestingSequence(maxEnumerations: 6);
@@ -24,11 +24,10 @@ public sealed class ReplaceTest
 		await seq.Replace(^10, 10).AssertSequenceEqual();
 	}
 
-	public static IEnumerable<int> Indices() =>
-		Enumerable.Range(0, 10);
+	public static IEnumerable<object[]> Indices() =>
+		Enumerable.Range(0, 10).Select(i => new object[] { i });
 
-	[Test]
-	[MethodDataSource(nameof(Indices))]
+	[Theory, MemberData(nameof(Indices))]
 	public async Task ReplaceIntIndex(int index)
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -40,8 +39,7 @@ public sealed class ReplaceTest
 				.Concat(Enumerable.Range(index + 2, 9 - index)));
 	}
 
-	[Test]
-	[MethodDataSource(nameof(Indices))]
+	[Theory, MemberData(nameof(Indices))]
 	public async Task ReplaceStartIndex(int index)
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -53,8 +51,7 @@ public sealed class ReplaceTest
 				.Concat(Enumerable.Range(index + 2, 9 - index)));
 	}
 
-	[Test]
-	[MethodDataSource(nameof(Indices))]
+	[Theory, MemberData(nameof(Indices))]
 	public async Task ReplaceEndIndex(int index)
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -66,7 +63,7 @@ public sealed class ReplaceTest
 				.Concat(Enumerable.Range(11 - index, index)));
 	}
 
-	[Test]
+	[Fact]
 	public async Task ReplaceIntIndexPastSequenceLength()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -75,7 +72,7 @@ public sealed class ReplaceTest
 		await result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	[Test]
+	[Fact]
 	public async Task ReplaceStartIndexPastSequenceLength()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -84,7 +81,7 @@ public sealed class ReplaceTest
 		await result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	[Test]
+	[Fact]
 	public async Task ReplaceEndIndexPastSequenceLength()
 	{
 		await using var seq = Enumerable.Range(1, 10).AsTestingSequence();

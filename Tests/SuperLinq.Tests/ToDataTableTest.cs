@@ -30,7 +30,7 @@ public sealed class ToDataTableTest
 			.Select(i => new TestObject(i)),
 	];
 
-	[Test]
+	[Fact]
 	public void ToDataTableTableWithWrongColumnNames()
 	{
 		using var dt = new DataTable();
@@ -41,7 +41,7 @@ public sealed class ToDataTableTest
 			xs.ToDataTable(dt));
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableTableWithWrongColumnDataType()
 	{
 		using var dt = new DataTable();
@@ -52,7 +52,7 @@ public sealed class ToDataTableTest
 			xs.ToDataTable(dt, t => t.AString));
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableMemberExpressionMethod()
 	{
 		using var xs = _testObjects.AsTestingSequence();
@@ -60,7 +60,7 @@ public sealed class ToDataTableTest
 			xs.ToDataTable(t => t.ToString()!));
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableMemberExpressionNonMember()
 	{
 		using var xs = _testObjects.AsTestingSequence();
@@ -68,7 +68,7 @@ public sealed class ToDataTableTest
 			xs.ToDataTable(t => t.ToString()!.Length));
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableMemberExpressionIndexer()
 	{
 		using var xs = _testObjects.AsTestingSequence();
@@ -76,7 +76,7 @@ public sealed class ToDataTableTest
 			xs.ToDataTable(t => t[0]));
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableSchemaInDeclarationOrder()
 	{
 		using var xs = _testObjects.AsTestingSequence();
@@ -100,7 +100,7 @@ public sealed class ToDataTableTest
 		Assert.Equal(4, dt.Columns.Count);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableContainsAllElements()
 	{
 		using var xs = _testObjects.AsTestingSequence();
@@ -108,7 +108,7 @@ public sealed class ToDataTableTest
 		Assert.Equal(_testObjects.Length, dt.Rows.Count);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableWithExpression()
 	{
 		using var xs = _testObjects.AsTestingSequence();
@@ -120,7 +120,7 @@ public sealed class ToDataTableTest
 		_ = Assert.Single(dt.Columns);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableWithSchema()
 	{
 		using var dt = new DataTable();
@@ -153,7 +153,7 @@ public sealed class ToDataTableTest
 		public Point(int x, int y) : this() => (X, Y) = (x, y);
 	}
 
-	[Test]
+	[Fact]
 	public void ToDataTableIgnoresStaticMembers()
 	{
 		using var xs = new[] { new Point(12, 34) }.AsTestingSequence();

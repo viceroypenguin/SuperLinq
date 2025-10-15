@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class PreScanTest
 {
-	[Test]
+	[Fact]
 	public void PreScanIsLazy()
 	{
 		_ = new BreakingSequence<int>().PreScan(BreakingFunc.Of<int, int, int>(), 0);
 	}
 
-	[Test]
+	[Fact]
 	public void PreScanWithEmptySequence()
 	{
 		using var source = TestingSequence.Of<int>();
@@ -17,7 +17,7 @@ public sealed class PreScanTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void PreScanWithSingleElement()
 	{
 		using var source = TestingSequence.Of(111);
@@ -26,7 +26,7 @@ public sealed class PreScanTest
 		result.AssertSequenceEqual(999);
 	}
 
-	[Test]
+	[Fact]
 	public void PreScanSum()
 	{
 		using var source = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
@@ -35,7 +35,7 @@ public sealed class PreScanTest
 		result.AssertSequenceEqual(0, 1, 3, 6, 10, 15, 21, 28, 36, 45);
 	}
 
-	[Test]
+	[Fact]
 	public void PreScanMul()
 	{
 		using var source = TestingSequence.Of(1, 2, 3);
@@ -44,7 +44,7 @@ public sealed class PreScanTest
 		result.AssertSequenceEqual(1, 1, 2);
 	}
 
-	[Test]
+	[Fact]
 	public void PreScanFuncIsNotInvokedUnnecessarily()
 	{
 		using var source = Enumerable.Range(1, 3).AsTestingSequence();

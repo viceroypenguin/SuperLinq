@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class WindowRightTest
 {
-	[Test]
+	[Fact]
 	public void WindowRightIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().WindowRight(1);
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowModifiedBeforeMoveNextDoesNotAffectNextWindow()
 	{
 		var sequence = AsyncEnumerable.Range(0, 3);
@@ -23,7 +23,7 @@ public sealed class WindowRightTest
 		Assert.Equal(0, window2[0]);
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
 	{
 		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
@@ -38,7 +38,7 @@ public sealed class WindowRightTest
 		Assert.Equal(0, window2[0]);
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowModifiedDoesNotAffectPreviousWindow()
 	{
 		await using var sequence = AsyncEnumerable.Range(0, 3).AsTestingSequence();
@@ -53,14 +53,14 @@ public sealed class WindowRightTest
 		Assert.Equal(0, window1[0]);
 	}
 
-	[Test]
+	[Fact]
 	public void WindowRightWithNegativeWindowSize()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			AsyncEnumerable.Repeat(1, 10).WindowRight(-5));
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowRightWithEmptySequence()
 	{
 		await using var xs = Enumerable.Empty<int>().AsTestingSequence();
@@ -70,7 +70,7 @@ public sealed class WindowRightTest
 		await result.AssertEmpty();
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowRightWithSingleElement()
 	{
 		IList<int>[] result;
@@ -85,7 +85,7 @@ public sealed class WindowRightTest
 			Assert.Equal(item.Single(), index + 1);
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowRightWithWindowSizeLargerThanSequence()
 	{
 		await using var sequence = AsyncEnumerable.Range(1, 5).AsTestingSequence();
@@ -99,7 +99,7 @@ public sealed class WindowRightTest
 		await reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public async Task WindowRightWithWindowSizeSmallerThanSequence()
 	{
 		await using var sequence = AsyncEnumerable.Range(1, 5).AsTestingSequence();

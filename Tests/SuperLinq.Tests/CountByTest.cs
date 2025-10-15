@@ -1,9 +1,9 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 [Obsolete("References `CountBy` which is obsolete in net9+")]
 public sealed class CountByTest
 {
-	[Test]
+	[Fact]
 	public void CountBySimpleTest()
 	{
 		using var xs = TestingSequence.Of(1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2);
@@ -19,7 +19,7 @@ public sealed class CountByTest
 				CreatePair(6, 1));
 	}
 
-	[Test]
+	[Fact]
 	public void CountByWithSecondOccurenceImmediatelyAfterFirst()
 	{
 		using var xs = "jaffer".AsTestingSequence();
@@ -34,7 +34,7 @@ public sealed class CountByTest
 				CreatePair('r', 1));
 	}
 
-	[Test]
+	[Fact]
 	public void CountByEvenOddTest()
 	{
 		using var xs = Enumerable.Range(1, 100)
@@ -46,7 +46,7 @@ public sealed class CountByTest
 				CreatePair(0, 50));
 	}
 
-	[Test]
+	[Fact]
 	public void CountByWithEqualityComparer()
 	{
 		using var xs = TestingSequence.Of("a", "B", "c", "A", "b", "A");
@@ -59,7 +59,7 @@ public sealed class CountByTest
 				CreatePair("c", 1));
 	}
 
-	[Test]
+	[Fact]
 	public void CountByHasKeysOrderedLikeGroupBy()
 	{
 		var randomSequence = SuperEnumerable.Random(0, 100).Take(100).ToArray();
@@ -71,13 +71,13 @@ public sealed class CountByTest
 		countByKeys.AssertSequenceEqual(groupByKeys);
 	}
 
-	[Test]
+	[Fact]
 	public void CountByIsLazy()
 	{
 		_ = SuperEnumerable.CountBy(new BreakingSequence<string>(), BreakingFunc.Of<string, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void CountByWithSomeNullKeys()
 	{
 		using var xs = TestingSequence.Of("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");

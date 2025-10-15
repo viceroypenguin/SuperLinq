@@ -2,14 +2,14 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class BatchTest
 {
-	[Test]
+	[Fact]
 	public void BatchIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Batch(1);
 		_ = new AsyncBreakingSequence<int>().Buffer(1);
 	}
 
-	[Test]
+	[Fact]
 	public void BatchValidatesSize()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
@@ -17,7 +17,7 @@ public sealed class BatchTest
 				.Batch(0));
 	}
 
-	[Test]
+	[Fact]
 	public async Task BatchDoesNotReturnSameArrayInstance()
 	{
 		await using var seq = Enumerable.Range(1, 4).AsTestingSequence();
@@ -31,7 +31,7 @@ public sealed class BatchTest
 		Assert.NotEqual(batch1, batch2);
 	}
 
-	[Test]
+	[Fact]
 	public async Task BatchWithEmptySource()
 	{
 		await using var seq = Enumerable.Empty<int>().AsTestingSequence();
@@ -39,7 +39,7 @@ public sealed class BatchTest
 		await seq.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public async Task BatchEvenlyDivisibleSequence()
 	{
 		await using var seq = Enumerable.Range(1, 9).AsTestingSequence();
@@ -52,7 +52,7 @@ public sealed class BatchTest
 		await reader.ReadEnd();
 	}
 
-	[Test]
+	[Fact]
 	public async Task BatchUnevenlyDivisibleSequence()
 	{
 		await using var seq = Enumerable.Range(1, 9).AsTestingSequence();

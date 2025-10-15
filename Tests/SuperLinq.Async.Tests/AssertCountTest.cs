@@ -1,28 +1,28 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class AssertCountTest
 {
-	[Test]
+	[Fact]
 	public void AssertCountIsLazy()
 	{
 		_ = new AsyncBreakingSequence<object>().AssertCount(0);
 	}
 
-	[Test]
+	[Fact]
 	public void AssertCountNegativeCount()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>("count",
 			() => new AsyncBreakingSequence<int>().AssertCount(-1));
 	}
 
-	[Test]
+	[Fact]
 	public async Task AssertCountSequenceWithMatchingLength()
 	{
 		await using var data = TestingSequence.Of("foo", "bar", "baz");
 		await data.AssertCount(3).Consume();
 	}
 
-	[Test]
+	[Fact]
 	public async Task AssertCountShortSequence()
 	{
 		await using var data = TestingSequence.Of("foo", "bar", "baz");
@@ -30,7 +30,7 @@ public sealed class AssertCountTest
 			await data.AssertCount(4).Consume());
 	}
 
-	[Test]
+	[Fact]
 	public async Task AssertCountLongSequence()
 	{
 		await using var data = TestingSequence.Of("foo", "bar", "baz");

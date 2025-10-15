@@ -1,21 +1,21 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class EndsWithTest
 {
-	[Test]
-	[Arguments(new[] { 1, 2, 3 }, new[] { 2, 3 }, true)]
-	[Arguments(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, true)]
-	[Arguments(new[] { 1, 2, 3 }, new[] { 0, 1, 2, 3 }, false)]
+	[Theory]
+	[InlineData(new[] { 1, 2, 3 }, new[] { 2, 3 }, true)]
+	[InlineData(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, true)]
+	[InlineData(new[] { 1, 2, 3 }, new[] { 0, 1, 2, 3 }, false)]
 	public async Task EndsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second, bool expected)
 	{
 		await using var f = first.AsTestingSequence();
 		Assert.Equal(expected, await f.EndsWith(second));
 	}
 
-	[Test]
-	[Arguments(new[] { '1', '2', '3' }, new[] { '2', '3' }, true)]
-	[Arguments(new[] { '1', '2', '3' }, new[] { '1', '2', '3' }, true)]
-	[Arguments(new[] { '1', '2', '3' }, new[] { '0', '1', '2', '3' }, false)]
+	[Theory]
+	[InlineData(new[] { '1', '2', '3' }, new[] { '2', '3' }, true)]
+	[InlineData(new[] { '1', '2', '3' }, new[] { '1', '2', '3' }, true)]
+	[InlineData(new[] { '1', '2', '3' }, new[] { '0', '1', '2', '3' }, false)]
 	public async Task EndsWithWithChars(IEnumerable<char> first, IEnumerable<char> second, bool expected)
 	{
 		await using var f = first.AsTestingSequence();
@@ -23,10 +23,10 @@ public sealed class EndsWithTest
 		Assert.Equal(expected, await f.EndsWith(s));
 	}
 
-	[Test]
-	[Arguments("123", "23", true)]
-	[Arguments("123", "123", true)]
-	[Arguments("123", "0123", false)]
+	[Theory]
+	[InlineData("123", "23", true)]
+	[InlineData("123", "123", true)]
+	[InlineData("123", "0123", false)]
 	public async Task EndsWithWithStrings(string first, string second, bool expected)
 	{
 		await using var f = first.AsTestingSequence();
@@ -34,7 +34,7 @@ public sealed class EndsWithTest
 		Assert.Equal(expected, await f.EndsWith(s));
 	}
 
-	[Test]
+	[Fact]
 	public async Task EndsWithReturnsTrueIfBothEmpty()
 	{
 		await using var f = TestingSequence.Of<int>();
@@ -42,7 +42,7 @@ public sealed class EndsWithTest
 		Assert.True(await f.EndsWith(s));
 	}
 
-	[Test]
+	[Fact]
 	public async Task EndsWithReturnsFalseIfOnlyFirstIsEmpty()
 	{
 		await using var f = TestingSequence.Of<int>();
@@ -50,9 +50,9 @@ public sealed class EndsWithTest
 		Assert.False(await f.EndsWith(s));
 	}
 
-	[Test]
-	[Arguments("", "", true)]
-	[Arguments("1", "", true)]
+	[Theory]
+	[InlineData("", "", true)]
+	[InlineData("1", "", true)]
 	public async Task EndsWithReturnsTrueIfSecondIsEmpty(string first, string second, bool expected)
 	{
 		await using var f = first.AsTestingSequence();
@@ -60,7 +60,7 @@ public sealed class EndsWithTest
 		Assert.Equal(expected, await f.EndsWith(s));
 	}
 
-	[Test]
+	[Fact]
 	public async Task EndsWithUsesSpecifiedEqualityComparerOrDefault()
 	{
 		var first = AsyncSeq(1, 2, 3);

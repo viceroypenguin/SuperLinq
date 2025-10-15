@@ -2,7 +2,7 @@ namespace SuperLinq.Tests;
 
 public sealed class BatchTest
 {
-	[Test]
+	[Fact]
 	public void BatchIsLazy()
 	{
 		_ = new BreakingSequence<int>().Batch(1);
@@ -16,7 +16,7 @@ public sealed class BatchTest
 			.Batch(new int[2], 1, BreakingReadOnlySpanFunc.Of<int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void BatchValidatesSize()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>("size",
@@ -39,12 +39,13 @@ public sealed class BatchTest
 			.Batch(new int[5], 5, BreakingReadOnlySpanFunc.Of<int, int>());
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetFourElementSequences() =>
+	public static IEnumerable<object[]> GetFourElementSequences() =>
 		Enumerable.Range(0, 4)
-			.GetListSequences();
+			.GetListSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetFourElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetFourElementSequences))]
 	public void BatchDoesNotReturnSameArrayInstance(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -60,8 +61,8 @@ public sealed class BatchTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetFourElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetFourElementSequences))]
 	public void BatchModifiedBeforeMoveNextDoesNotAffectNextBatch(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -78,8 +79,8 @@ public sealed class BatchTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetFourElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetFourElementSequences))]
 	public void BatchModifiedAfterMoveNextDoesNotAffectNextBatch(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -96,8 +97,8 @@ public sealed class BatchTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetFourElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetFourElementSequences))]
 	public void BatchModifiedDoesNotAffectPreviousBatch(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -122,14 +123,14 @@ public sealed class BatchTest
 		BufferSizeArray,
 	}
 
-	private static IEnumerable<(IDisposableEnumerable<int> seq, BatchMethod bm)> GetBatchTestSequences(IEnumerable<int> source)
+	private static IEnumerable<object[]> GetBatchTestSequences(IEnumerable<int> source)
 	{
 		foreach (var seq in source.GetListSequences())
-			yield return (seq, BatchMethod.Traditional);
+			yield return new object[] { seq, BatchMethod.Traditional };
 
-		yield return (source.AsTestingSequence(), BatchMethod.BufferSize);
-		yield return (source.AsTestingSequence(), BatchMethod.BufferArray);
-		yield return (source.AsTestingSequence(), BatchMethod.BufferSizeArray);
+		yield return new object[] { source.AsTestingSequence(), BatchMethod.BufferSize };
+		yield return new object[] { source.AsTestingSequence(), BatchMethod.BufferArray };
+		yield return new object[] { source.AsTestingSequence(), BatchMethod.BufferSizeArray };
 	}
 
 	private static IEnumerable<IList<T>> GetBatches<T>(
@@ -145,30 +146,30 @@ public sealed class BatchTest
 			_ => throw new NotSupportedException(),
 		};
 
-	public static IEnumerable<(IDisposableEnumerable<int>, BatchMethod)> GetEmptySequences() =>
+	public static IEnumerable<object[]> GetEmptySequences() =>
 		GetBatchTestSequences([]);
 
-	[Test]
-	[MethodDataSource(nameof(GetEmptySequences))]
-	public void BatchWithEmptySource(IDisposableEnumerable<int> seq, BatchMethod batchMethod)
+	[Theory]
+	[MemberData(nameof(GetEmptySequences))]
+	public void BatchWithEmptySource(IDisposableEnumerable<int> seq, BatchMethod bm)
 	{
 		using (seq)
 		{
-			var result = GetBatches(seq, batchMethod, 5);
+			var result = GetBatches(seq, bm, 5);
 			result.AssertSequenceEqual();
 		}
 	}
 
-	public static IEnumerable<(IDisposableEnumerable<int>, BatchMethod)> GetSequences() =>
+	public static IEnumerable<object[]> GetSequences() =>
 		GetBatchTestSequences(Enumerable.Range(1, 9));
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
-	public void BatchEvenlyDivisibleSequence(IDisposableEnumerable<int> seq, BatchMethod batchMethod)
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void BatchEvenlyDivisibleSequence(IDisposableEnumerable<int> seq, BatchMethod bm)
 	{
 		using (seq)
 		{
-			var result = GetBatches(seq, batchMethod, 3);
+			var result = GetBatches(seq, bm, 3);
 			result.AssertSequenceEqual(
 				[1, 2, 3],
 				[4, 5, 6],
@@ -176,13 +177,13 @@ public sealed class BatchTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
-	public void BatchUnevenlyDivisibleSequence(IDisposableEnumerable<int> seq, BatchMethod batchMethod)
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void BatchUnevenlyDivisibleSequence(IDisposableEnumerable<int> seq, BatchMethod bm)
 	{
 		using (seq)
 		{
-			var result = GetBatches(seq, batchMethod, 4);
+			var result = GetBatches(seq, bm, 4);
 			result.AssertSequenceEqual(
 				[1, 2, 3, 4],
 				[5, 6, 7, 8],
@@ -190,60 +191,54 @@ public sealed class BatchTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
-	public void BatchSmallSequence(IDisposableEnumerable<int> seq, BatchMethod batchMethod)
+	[Theory]
+	[MemberData(nameof(GetSequences))]
+	public void BatchSmallSequence(IDisposableEnumerable<int> seq, BatchMethod bm)
 	{
 		using (seq)
 		{
-			var result = GetBatches(seq, batchMethod, 10);
+			var result = GetBatches(seq, bm, 10);
 			result.AssertSequenceEqual(
 				[1, 2, 3, 4, 5, 6, 7, 8, 9]);
 		}
 	}
 
-	private static IEnumerable<(IDisposableEnumerable<int>, BatchMethod)> GetBreakingCollections(IEnumerable<int> source)
+	public static IEnumerable<object[]> GetBreakingCollections(IEnumerable<int> source)
 	{
-		yield return (source.AsBreakingCollection(), BatchMethod.Traditional);
-		yield return (source.AsBreakingCollection(), BatchMethod.BufferSize);
-		yield return (source.AsBreakingCollection(), BatchMethod.BufferArray);
-		yield return (source.AsBreakingCollection(), BatchMethod.BufferSizeArray);
+		yield return new object[] { source.AsBreakingCollection(), BatchMethod.Traditional };
+		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferSize };
+		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferArray };
+		yield return new object[] { source.AsBreakingCollection(), BatchMethod.BufferSizeArray };
 	}
 
-	public static IEnumerable<(IDisposableEnumerable<int>, BatchMethod)> GetEmptyBreakingCollections() =>
-		GetBreakingCollections([]);
-
-	[Test]
-	[MethodDataSource(nameof(GetEmptyBreakingCollections))]
-	public void BatchWithEmptyCollection(IDisposableEnumerable<int> seq, BatchMethod batchMethod)
+	[Theory]
+	[MemberData(nameof(GetBreakingCollections), new int[] { })]
+	public void BatchWithEmptyCollection(IDisposableEnumerable<int> seq, BatchMethod bm)
 	{
 		using (seq)
 		{
-			var result = GetBatches(seq, batchMethod, 10);
+			var result = GetBatches(seq, bm, 10);
 			result.AssertSequenceEqual();
 		}
 	}
 
-	public static IEnumerable<(IDisposableEnumerable<int>, BatchMethod)> GetNonEmptyBreakingCollections() =>
-		GetBreakingCollections(Enumerable.Range(1, 9));
-
-	[Test]
-	[MethodDataSource(nameof(GetNonEmptyBreakingCollections))]
-	public void BatchWithCollectionSmallerThanBatchSize(IDisposableEnumerable<int> seq, BatchMethod batchMethod)
+	[Theory]
+	[MemberData(nameof(GetBreakingCollections), new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 })]
+	public void BatchWithCollectionSmallerThanBatchSize(IDisposableEnumerable<int> seq, BatchMethod bm)
 	{
 		using (seq)
 		{
-			var result = GetBatches(seq, batchMethod, 10);
+			var result = GetBatches(seq, bm, 10);
 			result.AssertSequenceEqual(
 				[1, 2, 3, 4, 5, 6, 7, 8, 9]);
 		}
 	}
 
-	[Test]
-	[Arguments(BatchMethod.Traditional)]
-	[Arguments(BatchMethod.BufferSize)]
-	[Arguments(BatchMethod.BufferArray)]
-	[Arguments(BatchMethod.BufferSizeArray)]
+	[Theory]
+	[InlineData(BatchMethod.Traditional)]
+	[InlineData(BatchMethod.BufferSize)]
+	[InlineData(BatchMethod.BufferArray)]
+	[InlineData(BatchMethod.BufferSizeArray)]
 	public void BatchCollectionSizeNotEvaluatedEarly(BatchMethod bm)
 	{
 		var list = new List<int>() { 1, 2, 3 };
@@ -252,11 +247,11 @@ public sealed class BatchTest
 		result.AssertCount(2).Consume();
 	}
 
-	[Test]
-	[Arguments(BatchMethod.Traditional)]
-	[Arguments(BatchMethod.BufferSize)]
-	[Arguments(BatchMethod.BufferArray)]
-	[Arguments(BatchMethod.BufferSizeArray)]
+	[Theory]
+	[InlineData(BatchMethod.Traditional)]
+	[InlineData(BatchMethod.BufferSize)]
+	[InlineData(BatchMethod.BufferArray)]
+	[InlineData(BatchMethod.BufferSizeArray)]
 	public void BatchUsesCollectionCountAtIterationTime(BatchMethod bm)
 	{
 		var list = new List<int>(Enumerable.Range(1, 3));
@@ -273,7 +268,7 @@ public sealed class BatchTest
 			() => result.AssertCount(2).Consume());
 	}
 
-	[Test]
+	[Fact]
 	public void BatchListEvenlyDivisibleBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -289,7 +284,7 @@ public sealed class BatchTest
 #endif
 	}
 
-	[Test]
+	[Fact]
 	public void BatchListUnevenlyDivisibleBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_002).AsBreakingList();

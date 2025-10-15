@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class ReturnTest
 {
-	[Test]
+	[Fact]
 	public async Task TestResultingSequenceContainsSingle()
 	{
 		var item = new object();

@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 internal static class EqualityComparer
 {

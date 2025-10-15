@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class ConsumeTest
 {
-	[Test]
+	[Fact]
 	public async Task ConsumeReallyConsumes()
 	{
 		var counter = 0;

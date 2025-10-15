@@ -10,7 +10,7 @@ public sealed class PermutationsTest
 	/// <summary>
 	/// Verify that the permutation of the empty set is the empty set.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCardinalityZeroPermutation()
 	{
 		using var emptySet = TestingSequence.Of<int>();
@@ -21,12 +21,13 @@ public sealed class PermutationsTest
 		permutations.Single().AssertSequenceEqual();
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetTooLongSequences() =>
+	public static IEnumerable<object[]> GetTooLongSequences() =>
 		Enumerable.Range(1, 22)
-			.GetBreakingCollectionSequences();
+			.GetBreakingCollectionSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetTooLongSequences))]
+	[Theory]
+	[MemberData(nameof(GetTooLongSequences))]
 	public void TestExceptionWhenTooLong(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -52,7 +53,7 @@ public sealed class PermutationsTest
 	/// <summary>
 	/// Verify that there is one permutation of a set of one item
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCardinalityOnePermutation()
 	{
 		using var set = TestingSequence.Of(42);
@@ -67,7 +68,7 @@ public sealed class PermutationsTest
 	/// Verify that there are two permutations of a set of two items
 	/// and confirm that the permutations are correct.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCardinalityTwoPermutation()
 	{
 		using var set = TestingSequence.Of(42, 37);
@@ -84,7 +85,7 @@ public sealed class PermutationsTest
 	/// Verify that there are six (3!) permutations of a set of three items
 	/// and confirm the permutations are correct.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCardinalityThreePermutation()
 	{
 		using var set = TestingSequence.Of(42, 11, 100);
@@ -112,7 +113,7 @@ public sealed class PermutationsTest
 	/// Verify there are 24 (4!) permutations of a set of four items
 	/// and confirm the permutations are correct.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestCardinalityFourPermutation()
 	{
 		using var set = TestingSequence.Of(42, 11, 100, 89);
@@ -157,7 +158,7 @@ public sealed class PermutationsTest
 	/// Verify that the number of expected permutations of sets of size 5 through 10
 	/// are equal to the factorial of the set size.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestHigherCardinalityPermutations()
 	{
 		// NOTE: Testing higher cardinality permutations by exhaustive comparison becomes tedious
@@ -186,7 +187,7 @@ public sealed class PermutationsTest
 	/// Verify that the Permutations() extension does not begin evaluation until the
 	/// resulting sequence is iterated.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestPermutationsIsLazy()
 	{
 		_ = new BreakingSequence<int>().Permutations();
@@ -196,7 +197,7 @@ public sealed class PermutationsTest
 	/// Verify that each permutation produced is a new object, this ensures that callers
 	/// can request permutations and cache or store them without them being overwritten.
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestPermutationsAreIndependent()
 	{
 		using var set = Enumerable.Range(1, 4).Select(i => i * 10).AsTestingSequence();

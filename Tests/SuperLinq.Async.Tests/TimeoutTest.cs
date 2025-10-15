@@ -2,13 +2,13 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class TimeoutTest
 {
-	[Test]
+	[Fact]
 	public void TimeoutIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Timeout(TimeSpan.FromSeconds(1));
 	}
 
-	[Test]
+	[Fact]
 	public async Task TimeoutNoException()
 	{
 		await using var ts = AsyncEnumerable.Range(1, 5)
@@ -20,7 +20,7 @@ public sealed class TimeoutTest
 		await result.AssertSequenceEqual(1, 2, 3, 4, 5);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TimeoutException()
 	{
 		await using var ts = AsyncEnumerable.Range(1, 5)
@@ -33,7 +33,7 @@ public sealed class TimeoutTest
 			async () => await result.Consume());
 	}
 
-	[Test]
+	[Fact]
 	public async Task TimeoutExceptionWithoutCancellation()
 	{
 		await using var ts = AsyncEnumerable.Range(1, 5)
@@ -46,7 +46,7 @@ public sealed class TimeoutTest
 			async () => await result.Consume());
 	}
 
-	[Test]
+	[Fact]
 	public async Task TimeoutExceptionWithoutOperationCanceledExceptionInnerException()
 	{
 		await using var ts = new SequenceWithoutThrowIfCancellationRequested()
@@ -60,7 +60,7 @@ public sealed class TimeoutTest
 		Assert.Null(timeoutException.InnerException);
 	}
 
-	[Test]
+	[Fact]
 	public async Task TimeoutExceptionWithOperationCanceledExceptionInnerException()
 	{
 		await using var ts = new SequenceWithThrowIfCancellationRequested()

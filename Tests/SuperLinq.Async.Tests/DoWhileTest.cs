@@ -1,15 +1,15 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class DoWhileTest
 {
-	[Test]
+	[Fact]
 	public void DoWhileIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().DoWhile(BreakingFunc.Of<bool>());
 		_ = new AsyncBreakingSequence<int>().DoWhile(BreakingFunc.Of<ValueTask<bool>>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task DoWhileBehavior()
 	{
 		await using var ts = Enumerable.Range(1, 10).AsTestingSequence();

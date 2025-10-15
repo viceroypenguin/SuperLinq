@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class DensePartialSortByTests
 {
-	[Test]
+	[Fact]
 	public void DensePartialSortByIsLazy()
 	{
 		_ = new AsyncBreakingSequence<object>().DensePartialSortBy(1, BreakingFunc.Of<object, object>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task DensePartialSortBy()
 	{
 		var ns = SuperEnumerable.RandomDouble().Take(10).ToArray();
@@ -24,9 +24,9 @@ public sealed class DensePartialSortByTests
 			ns.Take(3).SelectMany(x => new[] { x, x }));
 	}
 
-	[Test]
-	[Arguments(OrderByDirection.Ascending)]
-	[Arguments(OrderByDirection.Descending)]
+	[Theory]
+	[InlineData(OrderByDirection.Ascending)]
+	[InlineData(OrderByDirection.Descending)]
 	public async Task DensePartialSortWithOrder(OrderByDirection direction)
 	{
 		var ns = SuperEnumerable.RandomDouble()
@@ -48,7 +48,7 @@ public sealed class DensePartialSortByTests
 			ns.Take(3).SelectMany(x => new[] { x, x }));
 	}
 
-	[Test]
+	[Fact]
 	public async Task DensePartialSortWithComparer()
 	{
 		var alphabet = Enumerable.Range(0, 26)
@@ -65,7 +65,7 @@ public sealed class DensePartialSortByTests
 			.AssertSequenceEqual('A', 'A', 'C', 'C', 'E', 'E');
 	}
 
-	[Test]
+	[Fact]
 	public async Task DensePartialSortByIsStable()
 	{
 		await using var list = new[]

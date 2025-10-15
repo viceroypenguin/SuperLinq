@@ -2,25 +2,26 @@ namespace SuperLinq.Tests;
 
 public sealed class AssertCountTest
 {
-	[Test]
+	[Fact]
 	public void AssertCountIsLazy()
 	{
 		_ = new BreakingSequence<object>().AssertCount(0);
 	}
 
-	[Test]
+	[Fact]
 	public void AssertCountNegativeCount()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>("count",
 			() => new BreakingSequence<int>().AssertCount(-1));
 	}
 
-	public static IEnumerable<IDisposableEnumerable<int>> GetSequences() =>
+	public static IEnumerable<object[]> GetSequences() =>
 		Enumerable.Range(1, 10)
-			.GetAllSequences();
+			.GetAllSequences()
+			.Select(x => new object[] { x });
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void AssertCountShortSequence(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -31,8 +32,8 @@ public sealed class AssertCountTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void AssertCountEqualSequence(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -44,8 +45,8 @@ public sealed class AssertCountTest
 		}
 	}
 
-	[Test]
-	[MethodDataSource(nameof(GetSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences))]
 	public void AssertCountLongSequence(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
@@ -56,7 +57,7 @@ public sealed class AssertCountTest
 		}
 	}
 
-	[Test]
+	[Fact]
 	public void AssertCountCollectionBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingCollection();
@@ -66,7 +67,7 @@ public sealed class AssertCountTest
 		result.AssertSequenceEqual(Enumerable.Range(0, 10_000));
 	}
 
-	[Test]
+	[Fact]
 	public void AssertCountListBehavior()
 	{
 		using var seq = Enumerable.Range(0, 10_000).AsBreakingList();
@@ -82,7 +83,7 @@ public sealed class AssertCountTest
 #endif
 	}
 
-	[Test]
+	[Fact]
 	public void AssertCountUsesCollectionCountAtIterationTime()
 	{
 		var stack = new Stack<int>(Enumerable.Range(1, 3));

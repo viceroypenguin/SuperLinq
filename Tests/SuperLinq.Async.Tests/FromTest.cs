@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class FromTest
 {
-	[Test]
+	[Fact]
 	public void TestFromIsLazy()
 	{
 		var breakingFunc = AsyncBreakingFunc.Of<int>();
@@ -12,11 +12,11 @@ public sealed class FromTest
 		_ = AsyncSuperEnumerable.From(breakingFunc, breakingFunc, breakingFunc, breakingFunc);
 	}
 
-	[Test]
-	[Arguments(1)]
-	[Arguments(2)]
-	[Arguments(3)]
-	[Arguments(4)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(2)]
+	[InlineData(3)]
+	[InlineData(4)]
 	public async Task TestFromInvokesMethods(int numArgs)
 	{
 		static Task<int> F1() => Task.FromResult(-2);
@@ -47,11 +47,11 @@ public sealed class FromTest
 		}
 	}
 
-	[Test]
-	[Arguments(1)]
-	[Arguments(2)]
-	[Arguments(3)]
-	[Arguments(4)]
+	[Theory]
+	[InlineData(1)]
+	[InlineData(2)]
+	[InlineData(3)]
+	[InlineData(4)]
 	public async Task TestFromInvokesMethodsMultipleTimes(int numArgs)
 	{
 		var evals = new[] { 0, 0, 0, 0 };

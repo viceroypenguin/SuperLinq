@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class ScanByTest
 {
-	[Test]
+	[Fact]
 	public void ScanByIsLazy()
 	{
 		_ = new BreakingSequence<string>().ScanBy(
@@ -11,7 +11,7 @@ public sealed class ScanByTest
 			BreakingFunc.Of<char, int, string, char>());
 	}
 
-	[Test]
+	[Fact]
 	public void ScanBy()
 	{
 		using var source = TestingSequence.Of(
@@ -41,7 +41,7 @@ public sealed class ScanByTest
 			('c', ("carlos", 'C', 100)));
 	}
 
-	[Test]
+	[Fact]
 	public void ScanByWithSecondOccurenceImmediatelyAfterFirst()
 	{
 		using var source = "jaffer".AsTestingSequence();
@@ -51,7 +51,7 @@ public sealed class ScanByTest
 		result.AssertSequenceEqual(('j', 0), ('a', 0), ('f', 0), ('f', 1), ('e', 0), ('r', 0));
 	}
 
-	[Test]
+	[Fact]
 	public void ScanByWithEqualityComparer()
 	{
 		using var source = TestingSequence.Of("a", "B", "c", "A", "b", "A");
@@ -66,7 +66,7 @@ public sealed class ScanByTest
 		result.AssertSequenceEqual(("a", 0), ("B", 0), ("c", 0), ("A", 1), ("b", 1), ("A", 2));
 	}
 
-	[Test]
+	[Fact]
 	public void ScanByWithSomeNullKeys()
 	{
 		using var source = TestingSequence.Of("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
@@ -75,7 +75,7 @@ public sealed class ScanByTest
 		result.AssertSequenceEqual(("foo", 0), (null, 0), ("bar", 0), ("baz", 0), (null, 1), (null, 2), ("baz", 1), ("bar", 1), (null, 3), ("foo", 1));
 	}
 
-	[Test]
+	[Fact]
 	public void ScanByWithNullSeed()
 	{
 		using var source = TestingSequence.Of("foo", null, "bar", null, "baz");
@@ -86,7 +86,7 @@ public sealed class ScanByTest
 		result.AssertSequenceEqual(("foo", nil), (null, nil), ("bar", nil), (null, nil), ("baz", nil));
 	}
 
-	[Test]
+	[Fact]
 	public void ScanByDoesNotIterateUnnecessaryElements()
 	{
 		using var source = SuperEnumerable

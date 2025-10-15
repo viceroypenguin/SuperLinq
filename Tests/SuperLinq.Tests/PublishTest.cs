@@ -1,16 +1,16 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace SuperLinq.Tests;
 
 public sealed class PublishTest
 {
-	[Test]
+	[Fact]
 	public void PublishIsLazy()
 	{
 		_ = new BreakingSequence<int>().Publish();
 	}
 
-	[Test]
+	[Fact]
 	public void PublishWithSingleConsumer()
 	{
 		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -19,7 +19,7 @@ public sealed class PublishTest
 		result.AssertSequenceEqual(Enumerable.Range(1, 10));
 	}
 
-	[Test]
+	[Fact]
 	public void PublishWithMultipleConsumers()
 	{
 		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -69,7 +69,7 @@ public sealed class PublishTest
 		Assert.Equal(0, result.Count);
 	}
 
-	[Test]
+	[Fact]
 	public void PublishWithInnerConsumer()
 	{
 		using var seq = Enumerable.Range(1, 6).AsTestingSequence();
@@ -96,7 +96,7 @@ public sealed class PublishTest
 		Assert.Equal(0, result.Count);
 	}
 
-	[Test]
+	[Fact]
 	public void PublishWithSequentialPartialConsumers()
 	{
 		using var seq = Enumerable.Range(1, 10).AsTestingSequence();
@@ -129,7 +129,7 @@ public sealed class PublishTest
 		Assert.Equal(0, result.Count);
 	}
 
-	[Test]
+	[Fact]
 	public void PublishDisposesAfterSourceIsIteratedEntirely()
 	{
 		using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -140,7 +140,7 @@ public sealed class PublishTest
 		Assert.True(seq.IsDisposed);
 	}
 
-	[Test]
+	[Fact]
 	public void PublishDisposesWithPartialEnumeration()
 	{
 		using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -153,7 +153,7 @@ public sealed class PublishTest
 		Assert.True(seq.IsDisposed);
 	}
 
-	[Test]
+	[Fact]
 	public void PublishRestartsAfterReset()
 	{
 		var starts = 0;
@@ -176,7 +176,7 @@ public sealed class PublishTest
 		Assert.Equal(2, starts);
 	}
 
-	[Test]
+	[Fact]
 	public void PublishThrowsWhenCacheDisposedDuringIteration()
 	{
 		using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -191,7 +191,7 @@ public sealed class PublishTest
 			() => reader.Read());
 	}
 
-	[Test]
+	[Fact]
 	public void PublishThrowsWhenResetDuringIteration()
 	{
 		using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -207,7 +207,7 @@ public sealed class PublishTest
 		Assert.Equal("Buffer reset during iteration.", ex.Message);
 	}
 
-	[Test]
+	[Fact]
 	public void PublishThrowsWhenGettingIteratorAfterDispose()
 	{
 		using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -219,7 +219,7 @@ public sealed class PublishTest
 			buffer.Consume);
 	}
 
-	[Test]
+	[Fact]
 	public void PublishThrowsWhenResettingAfterDispose()
 	{
 		using var seq = Enumerable.Range(0, 10).AsTestingSequence();
@@ -231,7 +231,7 @@ public sealed class PublishTest
 			buffer.Reset);
 	}
 
-	[Test]
+	[Fact]
 	public void PublishRethrowsErrorDuringIterationToAllIteratorsUntilReset()
 	{
 		using var xs = SeqExceptionAt(2).AsTestingSequence(maxEnumerations: 2);
@@ -258,7 +258,7 @@ public sealed class PublishTest
 		Assert.Equal(1, r4.Read());
 	}
 
-	[Test]
+	[Fact]
 	public void PublishRethrowsErrorDuringFirstIterationStartToAllIterationsUntilReset()
 	{
 		using var seq = new FailingEnumerable().AsTestingSequence(maxEnumerations: 2);

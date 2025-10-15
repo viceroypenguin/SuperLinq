@@ -1,8 +1,8 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class GenerateTest
 {
-	[Test]
+	[Fact]
 	public void GenerateTerminatesWhenCheckReturnsFalse()
 	{
 		var result = SuperEnumerable.Generate(1, n => n + 2).TakeWhile(n => n < 10);
@@ -10,7 +10,7 @@ public sealed class GenerateTest
 		result.AssertSequenceEqual(1, 3, 5, 7, 9);
 	}
 
-	[Test]
+	[Fact]
 	public void GenerateProcessesNonNumerics()
 	{
 		var result = SuperEnumerable.Generate("", s => s + 'a').TakeWhile(s => s.Length < 5);
@@ -18,13 +18,13 @@ public sealed class GenerateTest
 		result.AssertSequenceEqual("", "a", "aa", "aaa", "aaaa");
 	}
 
-	[Test]
+	[Fact]
 	public void GenerateIsLazy()
 	{
 		_ = SuperEnumerable.Generate(0, BreakingFunc.Of<int, int>());
 	}
 
-	[Test]
+	[Fact]
 	public void GenerateFuncIsNotInvokedUnnecessarily()
 	{
 		SuperEnumerable.Generate(0, BreakingFunc.Of<int, int>())

@@ -10,7 +10,7 @@ public sealed class OrderByTests
 	/// <summary>
 	/// Verify that OrderBy preserves the selector
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestOrderBySelectorPreserved()
 	{
 		var sequenceAscending = Enumerable.Range(1, 100);
@@ -30,7 +30,7 @@ public sealed class OrderByTests
 	/// <summary>
 	/// Verify that OrderBy preserves the comparer
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestOrderByComparerPreserved()
 	{
 		var sequence = Enumerable.Range(1, 100);
@@ -60,7 +60,7 @@ public sealed class OrderByTests
 	/// <summary>
 	/// Verify that ThenBy preserves the selector
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestThenBySelectorPreserved()
 	{
 		var sequence = new[]
@@ -99,7 +99,7 @@ public sealed class OrderByTests
 	/// <summary>
 	/// Verify that ThenBy preserves the comparer
 	/// </summary>
-	[Test]
+	[Fact]
 	public void TestThenByComparerPreserved()
 	{
 		var sequence = new[]

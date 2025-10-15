@@ -1,14 +1,14 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class DeferTest
 {
-	[Test]
+	[Fact]
 	public void DeferIsLazy()
 	{
 		_ = AsyncSuperEnumerable.Defer(BreakingFunc.Of<IAsyncEnumerable<int>>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task DeferBehavior()
 	{
 		var starts = 0;

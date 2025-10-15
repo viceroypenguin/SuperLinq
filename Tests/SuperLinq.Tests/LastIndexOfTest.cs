@@ -4,7 +4,7 @@ namespace SuperLinq.Tests;
 
 public sealed class LastIndexOfTest
 {
-	[Test]
+	[Fact]
 	public void LastIndexOfWithNegativeCount()
 	{
 		using var sequence = TestingSequence.Of(1);
@@ -12,14 +12,14 @@ public sealed class LastIndexOfTest
 			sequence.LastIndexOf(1, 1, -1));
 	}
 
-	[Test]
+	[Fact]
 	public void LastIndexOfWorksWithEmptySequence()
 	{
 		using var sequence = Array.Empty<int>().AsTestingSequence();
 		Assert.Equal(-1, sequence.LastIndexOf(5));
 	}
 
-	[Test]
+	[Fact]
 	public void LastIndexOfFromStart()
 	{
 		using var sequence = Enumerable.Range(100, 5)
@@ -30,7 +30,7 @@ public sealed class LastIndexOfTest
 			sequence.LastIndexOf(102));
 	}
 
-	[Test]
+	[Fact]
 	public void LastIndexOfFromStartCount()
 	{
 		using var sequence = Enumerable.Range(100, 5)
@@ -41,7 +41,7 @@ public sealed class LastIndexOfTest
 			sequence.LastIndexOf(102, int.MaxValue, 8));
 	}
 
-	[Test]
+	[Fact]
 	public void LastIndexOfFromStartIndex()
 	{
 		using var sequence = Enumerable.Range(100, 5)
@@ -52,7 +52,7 @@ public sealed class LastIndexOfTest
 			sequence.LastIndexOf(102, 8));
 	}
 
-	[Test]
+	[Fact]
 	public void LastIndexOfFromEndIndex()
 	{
 		using var sequence = Enumerable.Range(100, 5)
@@ -63,7 +63,7 @@ public sealed class LastIndexOfTest
 			sequence.LastIndexOf(102, ^3));
 	}
 
-	[Test]
+	[Fact]
 	public void LastIndexOfFromEndOfArray()
 	{
 		var array = new int[20];
@@ -74,7 +74,7 @@ public sealed class LastIndexOfTest
 			array.LastIndexOf(3, ^5));
 	}
 
-	[Test]
+	[Fact]
 	public void LastIndexOfMissingValueFromStart()
 	{
 		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
@@ -83,7 +83,7 @@ public sealed class LastIndexOfTest
 			sequence.LastIndexOf(95));
 	}
 
-	[Test]
+	[Fact]
 	public void LastIndexOfMissingValueFromEnd()
 	{
 		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
@@ -92,7 +92,7 @@ public sealed class LastIndexOfTest
 			sequence.LastIndexOf(95, ^5));
 	}
 
-	[Test]
+	[Fact]
 	public void LastIndexOfMissingValueFromStartCount()
 	{
 		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();
@@ -101,7 +101,7 @@ public sealed class LastIndexOfTest
 			sequence.LastIndexOf(100, int.MaxValue, 4));
 	}
 
-	[Test]
+	[Fact]
 	public void LastIndexOfMissingValueFromEndCount()
 	{
 		using var sequence = Enumerable.Range(100, 5).AsTestingSequence();

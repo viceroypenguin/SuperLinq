@@ -2,7 +2,7 @@ namespace SuperLinq.Async.Tests;
 
 public sealed class PartialSortByTests
 {
-	[Test]
+	[Fact]
 	public async Task PartialSortBy()
 	{
 		var ns = SuperEnumerable.RandomDouble()
@@ -16,7 +16,7 @@ public sealed class PartialSortByTests
 			.AssertSequenceEqual(ns.Take(5));
 	}
 
-	[Test]
+	[Fact]
 	public async Task PartialSortWithOrder()
 	{
 		var ns = SuperEnumerable.RandomDouble()
@@ -35,7 +35,7 @@ public sealed class PartialSortByTests
 			.AssertSequenceEqual(ns.AsEnumerable().Reverse().Take(5));
 	}
 
-	[Test]
+	[Fact]
 	public async Task PartialSortWithComparer()
 	{
 		await using var alphabet = Enumerable.Range(0, 26)
@@ -49,13 +49,13 @@ public sealed class PartialSortByTests
 			.AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
 	}
 
-	[Test]
+	[Fact]
 	public void PartialSortByIsLazy()
 	{
 		_ = new AsyncBreakingSequence<object>().PartialSortBy(1, BreakingFunc.Of<object, object>());
 	}
 
-	[Test]
+	[Fact]
 	public async Task PartialSortByIsStable()
 	{
 		await using var list = new[]

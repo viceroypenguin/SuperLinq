@@ -4,21 +4,21 @@ namespace SuperLinq.Tests;
 
 public sealed class FindIndexTest
 {
-	[Test]
+	[Fact]
 	public void FindIndexWithNegativeCount()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().FindIndex(BreakingFunc.Of<int, bool>(), 1, -1));
 	}
 
-	[Test]
+	[Fact]
 	public void FindIndexWorksWithEmptySequence()
 	{
 		using var sequence = Array.Empty<int>().AsTestingSequence();
 		Assert.Equal(-1, sequence.FindIndex(BreakingFunc.Of<int, bool>()));
 	}
 
-	[Test]
+	[Fact]
 	public void FindIndexFromStart()
 	{
 		using var sequence = Enumerable.Range(100, 5)
@@ -28,7 +28,7 @@ public sealed class FindIndexTest
 			sequence.FindIndex(i => i == 102));
 	}
 
-	[Test]
+	[Fact]
 	public void FindIndexFromStartCount()
 	{
 		using var sequence = Enumerable.Range(100, 5)
@@ -38,7 +38,7 @@ public sealed class FindIndexTest
 			sequence.FindIndex(i => i == 102, 0, 3));
 	}
 
-	[Test]
+	[Fact]
 	public void FindIndexFromStartIndex()
 	{
 		using var sequence = Enumerable.Range(100, 5)
@@ -49,7 +49,7 @@ public sealed class FindIndexTest
 			sequence.FindIndex(i => i == 102, 5));
 	}
 
-	[Test]
+	[Fact]
 	public void FindIndexFromEndIndex()
 	{
 		using var sequence = Enumerable.Range(100, 5)
@@ -60,7 +60,7 @@ public sealed class FindIndexTest
 			sequence.FindIndex(i => i == 102, ^5));
 	}
 
-	[Test]
+	[Fact]
 	public void FindIndexUsesCollectionLengthCorrectly()
 	{
 		var array = new int[20];
@@ -70,7 +70,7 @@ public sealed class FindIndexTest
 			array.FindIndex(i => i == 3, ^5));
 	}
 
-	[Test]
+	[Fact]
 	public void FindIndexMissingValueFromStart()
 	{
 		using var sequence = Enumerable.Range(100, 5)
@@ -80,7 +80,7 @@ public sealed class FindIndexTest
 			sequence.FindIndex(i => i == 95));
 	}
 
-	[Test]
+	[Fact]
 	public void FindIndexMissingValueFromEnd()
 	{
 		using var sequence = Enumerable.Range(100, 5)
@@ -90,7 +90,7 @@ public sealed class FindIndexTest
 			sequence.FindIndex(i => i == 95, ^5));
 	}
 
-	[Test]
+	[Fact]
 	public void FindIndexMissingValueFromStartCount()
 	{
 		using var sequence = Enumerable.Range(100, 5)
@@ -100,7 +100,7 @@ public sealed class FindIndexTest
 			sequence.FindIndex(i => i == 104, 0, 4));
 	}
 
-	[Test]
+	[Fact]
 	public void FindIndexMissingValueFromEndCount()
 	{
 		using var sequence = Enumerable.Range(100, 5)
@@ -110,7 +110,7 @@ public sealed class FindIndexTest
 			sequence.FindIndex(i => i == 104, ^5, 4));
 	}
 
-	[Test]
+	[Fact]
 	public void FindIndexDoesNotIterateUnnecessaryElements()
 	{
 		using var source = SuperEnumerable
@@ -128,7 +128,7 @@ public sealed class FindIndexTest
 		Assert.Equal(4, source.FindIndex(i => i == "davi"));
 	}
 
-	[Test]
+	[Fact]
 	public void FindIndexDoesNotIterateUnnecessaryElementsCount()
 	{
 		using var source = SuperEnumerable

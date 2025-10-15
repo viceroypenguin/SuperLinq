@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 /// <summary>
 /// Functions which throw NotImplementedException if they're ever called.

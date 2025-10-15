@@ -1,28 +1,28 @@
-﻿namespace SuperLinq.Tests;
+namespace SuperLinq.Tests;
 
 public sealed class TakeEveryTest
 {
-	[Test]
+	[Fact]
 	public void TakeEveryIsLazy()
 	{
 		_ = new BreakingSequence<object>().TakeEvery(1);
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryNegativeSkip()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().TakeEvery(-1));
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryOutOfRangeZeroStep()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().TakeEvery(0));
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryEmptySequence()
 	{
 		using var sequence = TestingSequence.Of<object>();
@@ -31,7 +31,7 @@ public sealed class TakeEveryTest
 		result.AssertSequenceEqual();
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryNonEmptySequence()
 	{
 		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
@@ -40,7 +40,7 @@ public sealed class TakeEveryTest
 		result.AssertSequenceEqual(1, 2, 3, 4, 5);
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryOtherOnNonEmptySequence()
 	{
 		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
@@ -49,7 +49,7 @@ public sealed class TakeEveryTest
 		result.AssertSequenceEqual(1, 3, 5);
 	}
 
-	[Test]
+	[Fact]
 	public void TakeEveryThirdOnNonEmptySequence()
 	{
 		using var sequence = Enumerable.Range(1, 5).AsTestingSequence();

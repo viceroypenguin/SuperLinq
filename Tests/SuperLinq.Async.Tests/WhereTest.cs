@@ -1,23 +1,23 @@
-﻿namespace SuperLinq.Async.Tests;
+namespace SuperLinq.Async.Tests;
 
 public sealed class WhereTest
 {
-	[Test]
+	[Fact]
 	public void WhereIsLazy()
 	{
 		_ = new AsyncBreakingSequence<int>().Where(new AsyncBreakingSequence<bool>());
 	}
 
-	[Test]
-	[Arguments(2, 3)]
-	[Arguments(3, 2)]
+	[Theory]
+	[InlineData(2, 3)]
+	[InlineData(3, 2)]
 	public async Task WhereRequiresEqualLengths(int sLength, int fLength)
 	{
 		_ = await Assert.ThrowsAsync<ArgumentException>(async () =>
 			await AsyncEnumerable.Repeat(1, sLength).Where(AsyncEnumerable.Repeat(false, fLength)).Consume());
 	}
 
-	[Test]
+	[Fact]
 	public async Task WhereFiltersIntSequence()
 	{
 		var seq = AsyncEnumerable.Range(1, 10);
@@ -29,7 +29,7 @@ public sealed class WhereTest
 			seq.Where(x => x % 2 == 0));
 	}
 
-	[Test]
+	[Fact]
 	public async Task WhereFiltersStringSequence()
 	{
 		var words = Seq("foo", "hello", "world", "Bar", "QuX", "ay", "az");

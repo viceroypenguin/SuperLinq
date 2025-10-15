@@ -2,78 +2,83 @@ namespace SuperLinq.Tests;
 
 public sealed class AtLeastTest
 {
-	[Test]
+	[Fact]
 	public void AtLeastWithNegativeCount()
 	{
 		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new BreakingSequence<int>().AtLeast(-1));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetEmptySequences))]
+	public static IEnumerable<object[]> GetSequences(IEnumerable<int> seq) =>
+		seq
+			.GetBreakingCollectionSequences()
+			.Select(x => new object[] { x });
+
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { })]
 	public void AtLeastWithEmptySequenceHasAtLeastZeroElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.True(seq.AtLeast(0));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetEmptySequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { })]
 	public void AtLeastWithEmptySequenceHasAtLeastOneElement(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.False(seq.AtLeast(1));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetSingleElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void AtLeastWithSingleElementHasAtLeastZeroElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.True(seq.AtLeast(0));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetSingleElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void AtLeastWithSingleElementHasAtLeastOneElement(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.True(seq.AtLeast(1));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetSingleElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1 })]
 	public void AtLeastWithSingleElementHasAtLeastManyElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.False(seq.AtLeast(2));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetThreeElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3 })]
 	public void AtLeastWithManyElementsHasAtLeastZeroElements(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.True(seq.AtLeast(0));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetThreeElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3 })]
 	public void AtLeastWithManyElementsHasAtLeastOneElement(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.True(seq.AtLeast(1));
 	}
 
-	[Test]
-	[MethodDataSource(typeof(TestExtensions), nameof(GetThreeElementSequences))]
+	[Theory]
+	[MemberData(nameof(GetSequences), new int[] { 1, 2, 3 })]
 	public void AtLeastWithManyElementsHasAtLeastManyElement(IDisposableEnumerable<int> seq)
 	{
 		using (seq)
 			Assert.False(seq.AtLeast(4));
 	}
 
-	[Test]
+	[Fact]
 	public void AtLeastDoesNotIterateUnnecessaryElements()
 	{
 		using var source = SeqExceptionAt(3).AsTestingSequence();
