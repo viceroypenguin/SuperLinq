@@ -23,36 +23,32 @@ public sealed class HasDuplicatesTest
 		Assert.Equal(expected, result);
 	}
 
-	public static IEnumerable<object[]> GetStringParameters()
-	{
-		yield return new object[]
-		{
-			new string[] { "foo", "bar", "qux" },
-			StringComparer.Ordinal,
-			false,
-		};
-		yield return new object[]
-		{
-			new string[] { "foo", "FOO", "bar", "qux" },
-			StringComparer.Ordinal,
-			false,
-		};
-		yield return new object[]
-		{
-			new string[] { "foo", "FOO", "bar", "qux" },
-			StringComparer.OrdinalIgnoreCase,
-			true,
-		};
-		yield return new object[]
-		{
-			new string[] { "Bar", "foo", "FOO", "bar", "qux" },
-			StringComparer.OrdinalIgnoreCase,
-			true,
-		};
-	}
+	public static IEnumerable<object[]> StringParameters =>
+		[
+			[
+				new string[] { "foo", "bar", "qux" },
+				StringComparer.Ordinal,
+				false,
+			],
+			[
+				new string[] { "foo", "FOO", "bar", "qux" },
+				StringComparer.Ordinal,
+				false,
+			],
+			[
+				new string[] { "foo", "FOO", "bar", "qux" },
+				StringComparer.OrdinalIgnoreCase,
+				true,
+			],
+			[
+				new string[] { "Bar", "foo", "FOO", "bar", "qux" },
+				StringComparer.OrdinalIgnoreCase,
+				true,
+			],
+		];
 
 	[Theory]
-	[MemberData(nameof(GetStringParameters))]
+	[MemberData(nameof(StringParameters))]
 	public void DuplicatesComparerBehavior(IEnumerable<string> source, StringComparer comparer, bool expected)
 	{
 		using var ts = source.AsTestingSequence();

@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Diagnostics;
-#if NETCOREAPP
 using System.Diagnostics.CodeAnalysis;
-#endif
 using System.Linq.Expressions;
 using System.Reflection;
 using Debug = System.Diagnostics.Debug;
@@ -28,7 +26,7 @@ public sealed class NullArgumentTest
 			var e = tie.InnerException;
 			Assert.NotNull(e);
 
-			var ane = Assert.IsAssignableFrom<ArgumentNullException>(e);
+			var ane = Assert.IsType<ArgumentNullException>(e, exactMatch: false);
 			Assert.Equal(paramName, ane.ParamName);
 		});
 
@@ -41,8 +39,9 @@ public sealed class NullArgumentTest
 			}
 			catch (TargetInvocationException tie)
 			{
-				Assert.False(tie.InnerException is not null && tie.InnerException is ArgumentNullException ane
-					&& ane.ParamName != paramName);
+				Assert.False(
+					tie.InnerException is ArgumentNullException ane
+					&& !string.Equals(ane.ParamName, paramName, StringComparison.Ordinal));
 			}
 		});
 
@@ -203,6 +202,7 @@ public sealed class NullArgumentTest
 		}
 	}
 
+	[SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "Used via reflection")]
 	private static class GenericArgs
 	{
 		private sealed class Enumerator<T> : IEnumerator<T>

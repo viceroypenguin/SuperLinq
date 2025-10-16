@@ -24,6 +24,7 @@ namespace SuperLinq.Collections;
 /// </remarks>
 [DebuggerDisplay("Count = {Count}")]
 [DebuggerTypeProxy(typeof(PriorityQueueDebugView<,>))]
+[SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "PQ is the proper name")]
 public sealed class UpdatablePriorityQueue<TElement, TPriority>
 {
 	/// <summary>

@@ -41,6 +41,7 @@ internal static class TestingSequence
 	}
 }
 
+[SuppressMessage("Design", "CA1032:Implement standard exception constructors")]
 public sealed class TestingSequenceException(string message) : Exception(message);
 
 /// <summary>
@@ -101,13 +102,13 @@ internal class TestingSequence<T> : IDisposableEnumerable<T>
 		};
 
 		var ended = false;
-		enumerator.MoveNextCalled += (_, moved) =>
+		enumerator.MoveNextCalled += (_, args) =>
 		{
 			AssertTestingSequence(disposed is false, MoveNextPostDisposal);
 			if (!_options.HasFlag(Options.AllowRepeatedMoveNexts))
 				AssertTestingSequence(ended is false, MoveNextPostEnumeration);
 
-			ended = !moved;
+			ended = !args.Moved;
 			MoveNextCallCount++;
 		};
 
