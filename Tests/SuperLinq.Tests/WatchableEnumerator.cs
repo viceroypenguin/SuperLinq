@@ -9,11 +9,16 @@ public partial class TestExtensions
 
 public sealed class WatchableEnumerator<T> : IEnumerator<T>
 {
+	public sealed class MoveNextEventArgs : EventArgs
+	{
+		public required bool Moved { get; init; }
+	}
+
 	private readonly IEnumerator<T> _source;
 
 	public event EventHandler? Disposed;
 	public event EventHandler? GetCurrentCalled;
-	public event EventHandler<bool>? MoveNextCalled;
+	public event EventHandler<MoveNextEventArgs>? MoveNextCalled;
 
 	public WatchableEnumerator(IEnumerator<T> source)
 	{
@@ -36,7 +41,7 @@ public sealed class WatchableEnumerator<T> : IEnumerator<T>
 	public bool MoveNext()
 	{
 		var moved = _source.MoveNext();
-		MoveNextCalled?.Invoke(this, moved);
+		MoveNextCalled?.Invoke(this, new() { Moved = moved });
 		return moved;
 	}
 

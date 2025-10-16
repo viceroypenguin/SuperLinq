@@ -39,10 +39,10 @@ public sealed class RunLengthEncodeTests
 			.RunLengthEncode(StringComparer.InvariantCultureIgnoreCase);
 
 		result
-			.Select(kvp => (kvp.value.ToLowerInvariant(), kvp.count))
+			.Select(kvp => (kvp.value.ToUpperInvariant(), kvp.count))
 			.AssertSequenceEqual(
-				("a", 3),
-				("b", 4));
+				("A", 3),
+				("B", 4));
 	}
 
 	/// <summary>

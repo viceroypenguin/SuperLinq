@@ -218,6 +218,7 @@ public sealed class NullArgumentTest
 		}
 	}
 
+	[SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "Used via reflection")]
 	private static class GenericArgs
 	{
 		private sealed class Enumerator<T> : IEnumerator<T>

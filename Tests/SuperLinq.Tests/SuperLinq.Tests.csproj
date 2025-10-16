@@ -6,9 +6,7 @@
     <OutputType>Exe</OutputType>
 
 	<IsPackable>false</IsPackable>
-    <AnalysisLevel>latest-recommended</AnalysisLevel>
-
-	<PolySharpExcludeGeneratedTypes>System.Runtime.CompilerServices.ModuleInitializerAttribute</PolySharpExcludeGeneratedTypes>
+    <AnalysisLevel>latest-all</AnalysisLevel>
   </PropertyGroup>
 
   <PropertyGroup Condition="$([System.OperatingSystem]::IsWindows())">

@@ -158,8 +158,10 @@ public sealed class RandomSubsetTest
 
 		// for sanity, we output the RSD% values as a cross-check, the expected result should be
 		// that the RSD% rapidly decreases and eventually drops below 1.0
-		Console.WriteLine("RSD% = {0:0.00000}, {1:0.00000}, {2:0.00000}, {3:0.00000}, {4:0.00000}",
-						  rsdResults[0], rsdResults[1], rsdResults[2], rsdResults[3], rsdResults[4]);
+		Console.WriteLine(
+			"RSD% = {0:0.00000}, {1:0.00000}, {2:0.00000}, {3:0.00000}, {4:0.00000}",
+			rsdResults[0], rsdResults[1], rsdResults[2], rsdResults[3], rsdResults[4]
+		);
 	}
 
 	/// <summary>

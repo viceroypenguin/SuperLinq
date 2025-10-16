@@ -53,6 +53,7 @@ internal static class TestingSequence
 	}
 }
 
+[SuppressMessage("Design", "CA1032:Implement standard exception constructors")]
 public sealed class TestingSequenceException(string message) : Exception(message);
 
 /// <summary>

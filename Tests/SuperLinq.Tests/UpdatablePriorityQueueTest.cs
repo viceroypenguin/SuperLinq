@@ -36,7 +36,7 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 		protected virtual IEqualityComparer<TElement>? GetElementComparer() => EqualityComparer<TElement>.Default;
 		private IEqualityComparer<(TElement, TPriority)> GetNodeComparer() => ValueTupleEqualityComparer.Create(GetElementComparer(), EqualityComparer<TPriority>.Default);
 
-		protected IEnumerable<(TElement, TPriority)> CreateItems(int count)
+		private IEnumerable<(TElement, TPriority)> CreateItems(int count)
 		{
 			const int MagicValue = 34;
 			var seed = count * MagicValue;
@@ -44,10 +44,10 @@ public sealed class UpdatableUpdatablePriorityQueueTest
 				yield return CreateT(seed++);
 		}
 
-		protected UpdatablePriorityQueue<TElement, TPriority> CreateEmptyUpdatablePriorityQueue(int initialCapacity = 0)
+		private UpdatablePriorityQueue<TElement, TPriority> CreateEmptyUpdatablePriorityQueue(int initialCapacity = 0)
 			=> new(initialCapacity, GetPriorityComparer(), GetElementComparer());
 
-		protected UpdatablePriorityQueue<TElement, TPriority> CreateUpdatablePriorityQueue(
+		private UpdatablePriorityQueue<TElement, TPriority> CreateUpdatablePriorityQueue(
 			int initialCapacity, int countOfItemsToGenerate, out List<(TElement element, TPriority priority)> generatedItems)
 		{
 			generatedItems = [.. CreateItems(countOfItemsToGenerate)];
