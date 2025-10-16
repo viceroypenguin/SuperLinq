@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace SuperLinq.Tests;
 
 public sealed class SplitTest
@@ -9,6 +7,21 @@ public sealed class SplitTest
 	{
 		_ = new BreakingSequence<int>().Split(1);
 		_ = new BreakingSequence<int>().Split(1, 2);
+	}
+
+	[Fact]
+	public void Split()
+	{
+		using var sequence = Enumerable.Range(1, 10).AsTestingSequence();
+		var result = sequence.Split(5);
+
+		result
+			.AssertSequenceEqual(
+				[
+					Enumerable.Range(1, 4),
+					Enumerable.Range(6, 5),
+				]
+			);
 	}
 
 	[Fact]
@@ -28,20 +41,18 @@ public sealed class SplitTest
 	}
 
 	[Fact]
-	[SuppressMessage("Style", "IDE0305:Simplify collection initialization")]
 	public void SplitWithSeparatorAndResultTransformation()
 	{
 		using var sequence = "the quick brown fox".AsTestingSequence();
-		var result = sequence.Split(' ', chars => new string(chars.ToArray()));
+		var result = sequence.Split(' ', chars => new string([.. chars]));
 		result.AssertSequenceEqual("the", "quick", "brown", "fox");
 	}
 
 	[Fact]
-	[SuppressMessage("Style", "IDE0305:Simplify collection initialization")]
 	public void SplitUptoMaxCount()
 	{
 		using var sequence = "the quick brown fox".AsTestingSequence();
-		var result = sequence.Split(' ', 2, chars => new string(chars.ToArray()));
+		var result = sequence.Split(' ', 2, chars => new string([.. chars]));
 		result.AssertSequenceEqual("the", "quick", "brown fox");
 	}
 

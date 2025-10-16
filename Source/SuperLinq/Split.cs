@@ -36,6 +36,40 @@ public static partial class SuperEnumerable
 	}
 
 	/// <summary>
+	///	    Splits the source sequence by a separator.
+	/// </summary>
+	/// <typeparam name="TSource">
+	///	    Type of element in the source sequence.
+	/// </typeparam>
+	/// <param name="source">
+	///	    The source sequence.
+	/// </param>
+	/// <param name="separator">
+	///	    Separator element.
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null"/>.
+	/// </exception>
+	/// <returns>
+	///	    A sequence of splits of elements.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	///	    This method is implemented by using deferred execution and streams the groupings. The grouping elements,
+	///     however, are buffered. Each grouping is therefore yielded as soon as it is complete and before the next
+	///     grouping occurs.
+	/// </para>
+	/// </remarks>
+	// Exists because in C# 14, `MemoryExtensions.Split()` binds tighter
+	public static IEnumerable<IReadOnlyList<TSource>> Split<TSource>(
+		this TSource[] source,
+		TSource separator
+	)
+	{
+		return Split(source, separator, count: int.MaxValue);
+	}
+
+	/// <summary>
 	///	    Splits the source sequence by a separator given a maximum count of splits.
 	/// </summary>
 	/// <typeparam name="TSource">
