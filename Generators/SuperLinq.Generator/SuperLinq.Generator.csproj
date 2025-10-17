@@ -1,37 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFrameworks>netstandard2.0</TargetFrameworks>
-	<IncludeBuildOutput>false</IncludeBuildOutput>
-	<IsPackable>false</IsPackable>
-	<IsRoslynComponent>true</IsRoslynComponent>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IsPackable>false</IsPackable>
+    <IsRoslynComponent>true</IsRoslynComponent>
 
-	<!-- Analyzer checks-->
-	<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <!-- Analyzer checks-->
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 
-	<!-- Other things to turn off -->
-	<NoWarn>$(NoWarn);RS1035</NoWarn>
+    <!-- Other things to turn off -->
+    <NoWarn>$(NoWarn);RS1035</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
-	<PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
-	<PackageReference Include="Scriban" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+    <PackageReference Include="Scriban" PrivateAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
 
   <PropertyGroup>
-	<GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
+    <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
   </PropertyGroup>
 
   <Target Name="GetDependencyTargetPaths">
-	<ItemGroup>
-	  <TargetPathWithTargetPlatformMoniker Include="$(PkgScriban)/lib/netstandard2.0/Scriban.dll" IncludeRuntimeDependency="false" />
-	</ItemGroup>
+    <ItemGroup>
+      <TargetPathWithTargetPlatformMoniker Include="$(PkgScriban)/lib/netstandard2.0/Scriban.dll" IncludeRuntimeDependency="false" />
+    </ItemGroup>
   </Target>
 
   <ItemGroup>
-	<None Remove="*.sbntxt" />
-	<EmbeddedResource Include="*.sbntxt" Kind="Text" />
+    <None Remove="*.sbntxt" />
+    <EmbeddedResource Include="*.sbntxt" Kind="Text" />
   </ItemGroup>
 
 </Project>
