@@ -1,17 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
-	<TargetFrameworks Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '10.0'))">net9.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <OutputType>Exe</OutputType>
 
     <IsPackable>false</IsPackable>
-	<AnalysisLevel>latest-all</AnalysisLevel>
+    <AnalysisLevel>latest-all</AnalysisLevel>
   </PropertyGroup>
 
   <PropertyGroup Condition="$([System.OperatingSystem]::IsWindows())">
-	<TargetFrameworks>net472;$(TargetFrameworks)</TargetFrameworks>
-	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
+    <TargetFrameworks>net472;$(TargetFrameworks)</TargetFrameworks>
+    <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
@@ -43,7 +42,6 @@
   <ItemGroup>
     <PackageReference Include="coverlet.collector" PrivateAssets="All" />
     <PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
-    <PackageReference Include="GitHubActionsTestLogger" PrivateAssets="All" />
     <PackageReference Include="xunit.v3" />
   </ItemGroup>
 

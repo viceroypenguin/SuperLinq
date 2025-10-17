@@ -1,28 +1,29 @@
 <Project>
   <PropertyGroup>
-	<LangVersion>preview</LangVersion>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net6.0;net8.0;net9.0;net10.0</TargetFrameworks>
+    <LangVersion>preview</LangVersion>
 
-	<Nullable>enable</Nullable>
-	<WarningsAsErrors>$(WarningsAsErrors);nullable;</WarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>$(WarningsAsErrors);nullable;</WarningsAsErrors>
     <Features>strict</Features>
 
-	<ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>enable</ImplicitUsings>
 
-	<CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
 
-	<AnalysisLevel>latest-all</AnalysisLevel>
-	<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-	<!-- Don't block development work; but block CI if dev work isn't complete. -->
-	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Don't block development work; but block CI if dev work isn't complete. -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
-	<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-	<EmbedUntrackedSources>true</EmbedUntrackedSources>
-	<CollectCoverage>true</CollectCoverage>
-	<CoverletOutputFormat>opencover</CoverletOutputFormat>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <CollectCoverage>true</CollectCoverage>
+    <CoverletOutputFormat>opencover</CoverletOutputFormat>
   </PropertyGroup>
 </Project>

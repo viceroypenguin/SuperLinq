@@ -1,7 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../TargetFrameworks.props" />
-
   <PropertyGroup>
     <AssemblyName>SuperLinq</AssemblyName>
     <RootNamespace>SuperLinq</RootNamespace>
@@ -10,8 +8,8 @@
 
     <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
 
-	<EnablePackageValidation>true</EnablePackageValidation>
-	<PackageValidationBaselineVersion>6.0.0</PackageValidationBaselineVersion>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <PackageValidationBaselineVersion>6.0.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <PropertyGroup Label="Nuget">
@@ -149,21 +147,21 @@
 
   <ItemGroup>
     <Using Include="SuperLinq.Exceptions" />
-	<Using Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))" Alias="Lock" Include="System.Object" />
+    <Using Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))" Alias="Lock" Include="System.Object" />
   </ItemGroup>
 
   <ItemGroup>
-	<PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />
-	<PackageReference Include="MinVer" PrivateAssets="All" />
+    <PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />
+    <PackageReference Include="MinVer" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-	<PackageReference Include="Microsoft.Bcl.HashCode" />
-	<PackageReference Include="System.Memory" />
+    <PackageReference Include="Microsoft.Bcl.HashCode" />
+    <PackageReference Include="System.Memory" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-	<DefineConstants>$(DefineConstants);NO_INDEX</DefineConstants>
+    <DefineConstants>$(DefineConstants);NO_INDEX</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Label="SourceGenerator">
