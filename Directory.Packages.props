@@ -7,7 +7,7 @@
   <ItemGroup>
 	<PackageVersion Include="coverlet.collector" Version="6.0.4" />
 	<PackageVersion Include="coverlet.msbuild" Version="6.0.4" />
-	<PackageVersion Include="DocFx.App" Version="2.78.3" />
+	<PackageVersion Include="DocFx.App" Version="2.78.4" />
 	<PackageVersion Include="DotNet.ReproducibleBuilds" Version="1.2.39" />
 	<PackageVersion Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
 	<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0" />
