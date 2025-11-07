@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SuperLinq.Exceptions;
@@ -16,19 +16,19 @@ internal static class ThrowHelper
 
 	[DoesNotReturn]
 	public static void ThrowArgumentOutOfRangeException(string param) =>
-		throw new System.ArgumentOutOfRangeException(param);
+		throw new ArgumentOutOfRangeException(param);
 
 	[DoesNotReturn]
 	public static T ThrowArgumentOutOfRangeException<T>(string param) =>
-		throw new System.ArgumentOutOfRangeException(param);
+		throw new ArgumentOutOfRangeException(param);
 
 	[DoesNotReturn]
 	public static void ThrowArgumentOutOfRangeException(string param, string message) =>
-		throw new System.ArgumentOutOfRangeException(param, message);
+		throw new ArgumentOutOfRangeException(param, message);
 
 	[DoesNotReturn]
 	public static T ThrowArgumentOutOfRangeException<T>(string param, string message) =>
-		throw new System.ArgumentOutOfRangeException(param, message);
+		throw new ArgumentOutOfRangeException(param, message);
 
 	[DoesNotReturn]
 	public static void ThrowInvalidOperationException(string message) =>
