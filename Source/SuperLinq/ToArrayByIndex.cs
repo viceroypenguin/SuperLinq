@@ -22,8 +22,8 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> or <paramref name="indexSelector"/> is <see langword="null"/>.
 	/// </exception>
-	/// <exception cref="ArgumentOutOfRangeException">
-	///	    An index returned by <paramref name="indexSelector"/> is less than <c>0</c>.
+	/// <exception cref="IndexOutOfRangeException">
+	///	    An index returned by <paramref name="indexSelector"/> is invalid.
 	/// </exception>
 	/// <remarks>
 	/// <para>
@@ -66,8 +66,8 @@ public static partial class SuperEnumerable
 	///	    <paramref name="source"/>, <paramref name="indexSelector"/>, or <paramref name="resultSelector"/> is <see
 	///     langword="null"/>.
 	/// </exception>
-	/// <exception cref="ArgumentOutOfRangeException">
-	///	    An index returned by <paramref name="indexSelector"/> is less than <c>0</c>.
+	/// <exception cref="IndexOutOfRangeException">
+	///	    An index returned by <paramref name="indexSelector"/> is invalid.
 	/// </exception>
 	/// <remarks>
 	/// <para>
@@ -112,8 +112,8 @@ public static partial class SuperEnumerable
 	///	    <paramref name="source"/>, <paramref name="indexSelector"/>, or <paramref name="resultSelector"/> is <see
 	///     langword="null"/>.
 	/// </exception>
-	/// <exception cref="ArgumentOutOfRangeException">
-	///	    An index returned by <paramref name="indexSelector"/> is less than <c>0</c>.
+	/// <exception cref="IndexOutOfRangeException">
+	///	    An index returned by <paramref name="indexSelector"/> is invalid.
 	/// </exception>
 	/// <remarks>
 	/// <para>
@@ -180,8 +180,10 @@ public static partial class SuperEnumerable
 	///	    <paramref name="source"/> or <paramref name="indexSelector"/> is <see langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
-	///	    <paramref name="length"/> is less than <c>0</c>. -or- An index returned by <paramref name="indexSelector"/>
-	///     is invalid for an array of size <paramref name="length"/>.
+	///	    <paramref name="length"/> is less than <c>0</c>.
+	///	</exception>
+	/// <exception cref="IndexOutOfRangeException">
+	///		An index returned by <paramref name="indexSelector"/> is invalid for an array of size <paramref name="length"/>.
 	/// </exception>
 	/// <remarks>
 	/// <para>
@@ -229,8 +231,10 @@ public static partial class SuperEnumerable
 	///     langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
-	///	    <paramref name="length"/> is less than <c>0</c>. -or- An index returned by <paramref name="indexSelector"/>
-	///     is invalid for an array of size <paramref name="length"/>.
+	///	    <paramref name="length"/> is less than <c>0</c>.
+	///	</exception>
+	/// <exception cref="IndexOutOfRangeException">
+	///		An index returned by <paramref name="indexSelector"/> is invalid for an array of size <paramref name="length"/>.
 	/// </exception>
 	/// <remarks>
 	/// <para>
@@ -279,8 +283,10 @@ public static partial class SuperEnumerable
 	///     langword="null"/>.
 	/// </exception>
 	/// <exception cref="ArgumentOutOfRangeException">
-	///	    <paramref name="length"/> is less than <c>0</c>. -or- An index returned by <paramref name="indexSelector"/>
-	///     is invalid for an array of size <paramref name="length"/>.
+	///	    <paramref name="length"/> is less than <c>0</c>.
+	///	</exception>
+	/// <exception cref="IndexOutOfRangeException">
+	///		An index returned by <paramref name="indexSelector"/> is invalid for an array of size <paramref name="length"/>.
 	/// </exception>
 	/// <remarks>
 	/// <para>

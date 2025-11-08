@@ -20,10 +20,6 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="enumerableFactory"/> is <see langword="null"/>.
 	/// </exception>
-	/// <exception cref="ArgumentNullException">
-	///	    (Thrown lazily) The sequence <c>source</c> returned by <paramref name="enumerableFactory"/> is <see
-	///     langword="null"/>.
-	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    <paramref name="enumerableFactory"/> is not run until the sequence returned by <see

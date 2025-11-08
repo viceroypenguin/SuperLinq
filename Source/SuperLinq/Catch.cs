@@ -24,16 +24,13 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> or <paramref name="handler"/> is <see langword="null"/>.
 	/// </exception>
-	/// <exception cref="ArgumentNullException">
-	///	    (Thrown lazily) The sequence <c>errSource</c> returned by <paramref name="handler"/> is <see
-	///     langword="null"/>.
-	/// </exception>
 	/// <remarks>
 	///	    This method uses deferred execution and streams its results.
 	/// </remarks>
 	public static IEnumerable<TSource> Catch<TSource, TException>(
 		this IEnumerable<TSource> source,
-		Func<TException, IEnumerable<TSource>> handler)
+		Func<TException, IEnumerable<TSource>> handler
+	)
 		where TException : Exception
 	{
 		ArgumentNullException.ThrowIfNull(source);
@@ -115,9 +112,6 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="sources"/> is <see langword="null"/>.
 	/// </exception>
-	/// <exception cref="ArgumentNullException">
-	///	    (Thrown lazily) Any sequence <c>source</c> returned by <paramref name="sources"/> is <see langword="null"/>.
-	/// </exception>
 	/// <remarks>
 	///	    This method uses deferred execution and streams its results.
 	/// </remarks>
@@ -142,9 +136,6 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="sources"/> is <see langword="null"/>.
-	/// </exception>
-	/// <exception cref="ArgumentNullException">
-	///	    (Thrown lazily) Any sequence <c>source</c> returned by <paramref name="sources"/> is <see langword="null"/>.
 	/// </exception>
 	/// <remarks>
 	///	    This method uses deferred execution and streams its results.

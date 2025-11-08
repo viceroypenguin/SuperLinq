@@ -24,11 +24,16 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="count"/> is less than <c>0</c>.
 	///	</exception>
-	/// <exception cref="ArgumentException">
+	/// <exception cref="InvalidOperationException">
 	///	    Thrown lazily <paramref name="source"/> has a length different than <paramref name="count"/>.
 	///	</exception>
 	/// <remarks>
+	/// <para>
+	///		This operator uses deferred execution and streams its results.
+	/// </para>
+	/// <para>
 	///	    The sequence length is evaluated lazily during the enumeration of the sequence.
+	/// </para>
 	/// </remarks>
 	public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, int count)
 	{
