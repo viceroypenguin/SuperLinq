@@ -15,7 +15,7 @@ public sealed class CatchTest
 	public void CatchThrowsDelayedExceptionOnNullSource()
 	{
 		var seq = SuperEnumerable.Catch(new IEnumerable<int>[] { null! });
-		_ = Assert.Throws<ArgumentNullException>(seq.Consume);
+		_ = Assert.Throws<NullReferenceException>(seq.Consume);
 	}
 
 	[Fact]

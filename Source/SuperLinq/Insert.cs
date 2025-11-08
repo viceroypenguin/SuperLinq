@@ -164,8 +164,8 @@ public static partial class SuperEnumerable
 			{
 				var fCount = first.GetCollectionCount();
 				var idx = index.GetOffset(fCount);
-				ArgumentOutOfRangeException.ThrowIfNegative(idx);
-				ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, fCount);
+				ArgumentOutOfRangeException.ThrowIfNegative(idx, nameof(index));
+				ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, fCount, nameof(index));
 
 				return fCount + second.GetCollectionCount();
 			}
@@ -175,8 +175,8 @@ public static partial class SuperEnumerable
 		{
 			var fCount = first.GetCollectionCount();
 			var idx = index.GetOffset(fCount);
-			ArgumentOutOfRangeException.ThrowIfNegative(idx);
-			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, fCount);
+			ArgumentOutOfRangeException.ThrowIfNegative(idx, nameof(index));
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, fCount, nameof(index));
 
 			return InsertCore(first, second, idx);
 		}
@@ -213,8 +213,8 @@ public static partial class SuperEnumerable
 			get
 			{
 				var idx = _index.GetOffset(_first.Count);
-				ArgumentOutOfRangeException.ThrowIfNegative(idx);
-				ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, _first.Count);
+				ArgumentOutOfRangeException.ThrowIfNegative(idx, nameof(index));
+				ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, _first.Count, nameof(index));
 
 				return _first.Count + _second.Count;
 			}
@@ -223,8 +223,8 @@ public static partial class SuperEnumerable
 		protected override IEnumerable<T> GetEnumerable()
 		{
 			var idx = _index.GetOffset(_first.Count);
-			ArgumentOutOfRangeException.ThrowIfNegative(idx);
-			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, _first.Count);
+			ArgumentOutOfRangeException.ThrowIfNegative(idx, nameof(index));
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, _first.Count, nameof(index));
 
 			for (var i = 0; i < (uint)idx; i++)
 				yield return _first[i];
@@ -260,8 +260,8 @@ public static partial class SuperEnumerable
 			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
 			var idx = _index.GetOffset(_first.Count);
-			ArgumentOutOfRangeException.ThrowIfNegative(idx);
-			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, _first.Count);
+			ArgumentOutOfRangeException.ThrowIfNegative(idx, nameof(index));
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(idx, _first.Count, nameof(index));
 
 			if (index < idx)
 				return _first[index];

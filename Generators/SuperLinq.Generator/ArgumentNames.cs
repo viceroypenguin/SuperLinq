@@ -3,7 +3,7 @@ namespace SuperLinq.Generator;
 /// <summary>
 /// int->string translations of different types.
 /// </summary>
-public record ArgumentNames(IReadOnlyList<string> Arity, IReadOnlyList<string> Ordinals, IReadOnlyList<string> Cardinals)
+public sealed record ArgumentNames(IReadOnlyList<string> Arity, IReadOnlyList<string> Ordinals, IReadOnlyList<string> Cardinals)
 {
 	/// <summary>
 	/// int->string translations of different types.
@@ -44,6 +44,7 @@ public record ArgumentNames(IReadOnlyList<string> Arity, IReadOnlyList<string> O
 			"Sixth",
 			"Seventh",
 			"Eighth",
-		]);
+		]
+	);
 }
 

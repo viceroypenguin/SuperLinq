@@ -1,4 +1,4 @@
-﻿using SuperLinq.Collections;
+using SuperLinq.Collections;
 
 namespace SuperLinq;
 
@@ -335,7 +335,6 @@ public partial class SuperEnumerable
 					break;
 
 				var newStates = getNeighbors(current, costs.traversed);
-				ArgumentNullException.ThrowIfNull(newStates, $"{nameof(getNeighbors)}()");
 
 				foreach (var (s, p, h) in newStates)
 					queue.EnqueueMinimum(s, (h, p));

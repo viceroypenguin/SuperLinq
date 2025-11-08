@@ -16,7 +16,7 @@ public static partial class SuperEnumerable
 	///	</param>
 	/// <returns>
 	///	    Returns the original sequence as long it is contains the number of elements specified by <paramref
-	///     name="count"/>. Otherwise it throws <see cref="ArgumentException" />.
+	///     name="count"/>. Otherwise it throws <see cref="InvalidOperationException" />.
 	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null" />.
@@ -24,11 +24,16 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentOutOfRangeException">
 	///	    <paramref name="count"/> is less than <c>0</c>.
 	///	</exception>
-	/// <exception cref="ArgumentException">
+	/// <exception cref="InvalidOperationException">
 	///	    Thrown lazily <paramref name="source"/> has a length different than <paramref name="count"/>.
 	///	</exception>
 	/// <remarks>
+	/// <para>
+	///		This operator uses deferred execution and streams its results.
+	/// </para>
+	/// <para>
 	///	    The sequence length is evaluated lazily during the enumeration of the sequence.
+	/// </para>
 	/// </remarks>
 	public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, int count)
 	{
@@ -54,8 +59,14 @@ public static partial class SuperEnumerable
 				yield return item;
 			}
 
-			ArgumentOutOfRangeException.ThrowIfNotEqual(c, count, $"{nameof(source)}.Count()");
+			AssertSequenceCount(count, c);
 		}
+	}
+
+	private static void AssertSequenceCount(int expected, int actual)
+	{
+		if (expected != actual)
+			ThrowHelper.ThrowInvalidOperationException($"Sequence contains too {(actual < expected ? "few" : "many")} elements when exactly '{expected:N0}' {(expected == 1 ? "was" : "were")} expected.");
 	}
 
 	private sealed class AssertCountCollectionIterator<T>(
@@ -67,14 +78,14 @@ public static partial class SuperEnumerable
 		{
 			get
 			{
-				ArgumentOutOfRangeException.ThrowIfNotEqual(source.GetCollectionCount(), count, "source.Count()");
+				AssertSequenceCount(count, source.GetCollectionCount());
 				return count;
 			}
 		}
 
 		protected override IEnumerable<T> GetEnumerable()
 		{
-			ArgumentOutOfRangeException.ThrowIfNotEqual(source.GetCollectionCount(), count, "source.Count()");
+			AssertSequenceCount(count, source.GetCollectionCount());
 
 			foreach (var item in source)
 				yield return item;
@@ -99,15 +110,16 @@ public static partial class SuperEnumerable
 		{
 			get
 			{
-				ArgumentOutOfRangeException.ThrowIfNotEqual(source.Count, count, "source.Count()");
+				AssertSequenceCount(count, source.Count);
 				return count;
 			}
 		}
 
 		protected override IEnumerable<T> GetEnumerable()
 		{
-			var cnt = (uint)Count;
-			for (var i = 0; i < cnt; i++)
+			AssertSequenceCount(count, source.Count);
+
+			for (var i = 0; i < (uint)source.Count; i++)
 				yield return source[i];
 		}
 

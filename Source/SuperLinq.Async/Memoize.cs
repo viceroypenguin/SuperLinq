@@ -98,7 +98,7 @@ public static partial class AsyncSuperEnumerable
 
 				if (_exceptionIndex == -1)
 				{
-					ArgumentNullException.ThrowIfNull(_exception);
+					Debug.Assert(_exception is not null);
 					_exception.Throw();
 				}
 

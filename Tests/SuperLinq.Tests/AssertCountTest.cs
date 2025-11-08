@@ -11,8 +11,10 @@ public sealed class AssertCountTest
 	[Fact]
 	public void AssertCountNegativeCount()
 	{
-		_ = Assert.Throws<ArgumentOutOfRangeException>("count",
-			() => new BreakingSequence<int>().AssertCount(-1));
+		_ = Assert.Throws<ArgumentOutOfRangeException>(
+			"count",
+			() => new BreakingSequence<int>().AssertCount(-1)
+		);
 	}
 
 	public static IEnumerable<object[]> GetSequences() =>
@@ -27,8 +29,9 @@ public sealed class AssertCountTest
 		using (seq)
 		{
 			var result = seq.AssertCount(11);
-			_ = Assert.Throws<ArgumentOutOfRangeException>("source.Count()",
-				() => result.Consume());
+			_ = Assert.Throws<InvalidOperationException>(
+				() => result.Consume()
+			);
 		}
 	}
 
@@ -41,7 +44,8 @@ public sealed class AssertCountTest
 			var result = seq.AssertCount(10);
 			result.AssertSequenceEqual(
 				Enumerable.Range(1, 10),
-				testCollectionEnumerable: true);
+				testCollectionEnumerable: true
+			);
 		}
 	}
 
@@ -52,8 +56,9 @@ public sealed class AssertCountTest
 		using (seq)
 		{
 			var result = seq.AssertCount(9);
-			_ = Assert.Throws<ArgumentOutOfRangeException>("source.Count()",
-				() => result.Consume());
+			_ = Assert.Throws<InvalidOperationException>(
+				() => result.Consume()
+			);
 		}
 	}
 
@@ -88,8 +93,11 @@ public sealed class AssertCountTest
 	{
 		var stack = new Stack<int>(Enumerable.Range(1, 3));
 		var result = stack.AssertCount(4);
-		_ = Assert.Throws<ArgumentOutOfRangeException>("source.Count()",
-			() => result.Consume());
+
+		_ = Assert.Throws<InvalidOperationException>(
+			() => result.Consume()
+		);
+
 		stack.Push(4);
 		result.Consume();
 	}

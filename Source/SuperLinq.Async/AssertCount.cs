@@ -1,23 +1,39 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
-	/// Asserts that a source sequence contains a given count of elements.
+	///	    Asserts that a source sequence contains a given count of elements.
 	/// </summary>
-	/// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
-	/// <param name="source">Source sequence.</param>
-	/// <param name="count">Count to assert.</param>
+	/// <typeparam name="TSource">
+	///	    Type of elements in <paramref name="source"/> sequence.
+	///	</typeparam>
+	/// <param name="source">
+	///	    Source sequence.
+	///	</param>
+	/// <param name="count">
+	///	    Count to assert.
+	///	</param>
 	/// <returns>
-	/// Returns the original sequence as long it is contains the number of elements specified by <paramref
-	/// name="count"/>. Otherwise it throws <see cref="ArgumentException" />.
+	///	    Returns the original sequence as long it is contains the number of elements specified by <paramref
+	///     name="count"/>. Otherwise it throws <see cref="InvalidOperationException" />.
 	/// </returns>
-	/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-	/// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is less than <c>0</c>.</exception>
-	/// <exception cref="ArgumentException"><paramref name="source"/> has a length different than <paramref
-	/// name="count"/>.</exception>
+	/// <exception cref="ArgumentNullException">
+	///	    <paramref name="source"/> is <see langword="null" />.
+	///	</exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///	    <paramref name="count"/> is less than <c>0</c>.
+	///	</exception>
+	/// <exception cref="InvalidOperationException">
+	///	    Thrown lazily <paramref name="source"/> has a length different than <paramref name="count"/>.
+	///	</exception>
 	/// <remarks>
-	/// This operator uses deferred execution and streams its results.
+	/// <para>
+	///		This operator uses deferred execution and streams its results.
+	/// </para>
+	/// <para>
+	///	    The sequence length is evaluated lazily during the enumeration of the sequence.
+	/// </para>
 	/// </remarks>
 	public static IAsyncEnumerable<TSource> AssertCount<TSource>(this IAsyncEnumerable<TSource> source, int count)
 	{
@@ -40,7 +56,13 @@ public static partial class AsyncSuperEnumerable
 				yield return item;
 			}
 
-			ArgumentOutOfRangeException.ThrowIfNotEqual(c, count, $"{nameof(source)}.Count()");
+			AssertSequenceCount(count, c);
 		}
+	}
+
+	private static void AssertSequenceCount(int expected, int actual)
+	{
+		if (expected != actual)
+			ThrowHelper.ThrowInvalidOperationException($"Sequence contains too {(actual < expected ? "few" : "many")} elements when exactly '{expected:N0}' {(expected == 1 ? "was" : "were")} expected.");
 	}
 }

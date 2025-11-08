@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -22,10 +22,6 @@ public static partial class SuperEnumerable
 	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="selector"/> or <paramref name="sources"/> is <see langword="null"/>.
-	/// </exception>
-	/// <exception cref="ArgumentNullException">
-	///	    (Thrown lazily) The sequence in <paramref name="sources"/> selected by the result of <paramref
-	///     name="selector"/> is <see langword="null"/>.
 	/// </exception>
 	/// <remarks>
 	/// <para>
@@ -71,10 +67,6 @@ public static partial class SuperEnumerable
 	///	    <paramref name="selector"/>, <paramref name="sources"/> or <paramref name="defaultSource"/> is <see
 	///     langword="null"/>.
 	/// </exception>
-	/// <exception cref="ArgumentNullException">
-	///	    (Thrown lazily) The sequence in <paramref name="sources"/> selected by the result of <paramref
-	///     name="selector"/> is <see langword="null"/>.
-	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    <paramref name="selector"/> is not evaluated until enumeration. The value returned will be used to select a
@@ -101,7 +93,6 @@ public static partial class SuperEnumerable
 			if (!sources.TryGetValue(selector(), out var source))
 				source = defaultSource;
 
-			ArgumentNullException.ThrowIfNull(source);
 			foreach (var el in source)
 				yield return el;
 		}

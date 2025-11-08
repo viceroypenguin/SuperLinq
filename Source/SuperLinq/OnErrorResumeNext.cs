@@ -104,7 +104,6 @@ public static partial class SuperEnumerable
 		{
 			foreach (var source in sources)
 			{
-				ArgumentNullException.ThrowIfNull(source);
 				using var e = source.GetEnumerator();
 
 				while (true)

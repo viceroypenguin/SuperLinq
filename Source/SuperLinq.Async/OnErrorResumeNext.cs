@@ -69,7 +69,6 @@ public static partial class AsyncSuperEnumerable
 		{
 			await foreach (var source in sources.WithCancellation(cancellationToken).ConfigureAwait(false))
 			{
-				ArgumentNullException.ThrowIfNull(source);
 				await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
 
 				while (true)

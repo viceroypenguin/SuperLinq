@@ -1,4 +1,4 @@
-﻿using SuperLinq.Collections;
+using SuperLinq.Collections;
 
 namespace SuperLinq;
 
@@ -329,7 +329,6 @@ public partial class SuperEnumerable
 
 			var cost = from.cost;
 			var newStates = getNeighbors(current, cost);
-			ArgumentNullException.ThrowIfNull(newStates, $"{nameof(getNeighbors)}()");
 
 			foreach (var (s, p) in newStates)
 			{

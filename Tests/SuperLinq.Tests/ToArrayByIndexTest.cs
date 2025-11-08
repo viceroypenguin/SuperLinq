@@ -42,11 +42,13 @@ public sealed class ToArrayByIndexTest
 	[Fact]
 	public void ToArrayByIndexWithBadIndexSelectorThrows()
 	{
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			Seq(42).ToArrayByIndex(_ => -1));
+		_ = Assert.Throws<IndexOutOfRangeException>(() =>
+			Seq(42).ToArrayByIndex(_ => -1)
+		);
 
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			Seq(42).ToArrayByIndex(_ => -1, BreakingFunc.Of<int, object>()));
+		_ = Assert.Throws<IndexOutOfRangeException>(() =>
+			Seq(42).ToArrayByIndex(_ => -1, SuperEnumerable.Identity)
+		);
 	}
 
 	[Theory]
@@ -54,11 +56,13 @@ public sealed class ToArrayByIndexTest
 	[InlineData(10, 10)]
 	public void ToArrayByIndexWithLengthWithBadIndexSelectorThrows(int length, int badIndex)
 	{
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			Seq(42).ToArrayByIndex(length, _ => badIndex));
+		_ = Assert.Throws<IndexOutOfRangeException>(() =>
+			Seq(42).ToArrayByIndex(length, _ => badIndex)
+		);
 
-		_ = Assert.Throws<ArgumentOutOfRangeException>(() =>
-			Seq(42).ToArrayByIndex(length, _ => badIndex, BreakingFunc.Of<int, object>()));
+		_ = Assert.Throws<IndexOutOfRangeException>(() =>
+			Seq(42).ToArrayByIndex(length, _ => badIndex, SuperEnumerable.Identity)
+		);
 	}
 
 	[Fact]

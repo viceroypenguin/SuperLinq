@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 namespace SuperLinq;
@@ -20,10 +20,6 @@ public static partial class SuperEnumerable
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="enumerableFactory"/> is <see langword="null"/>.
 	/// </exception>
-	/// <exception cref="ArgumentNullException">
-	///	    (Thrown lazily) The sequence <c>source</c> returned by <paramref name="enumerableFactory"/> is <see
-	///     langword="null"/>.
-	/// </exception>
 	/// <remarks>
 	/// <para>
 	///	    <paramref name="enumerableFactory"/> is not run until the sequence returned by <see
@@ -44,10 +40,7 @@ public static partial class SuperEnumerable
 
 		static IEnumerable<TResult> Core(Func<IEnumerable<TResult>> enumerableFactory)
 		{
-			var source = enumerableFactory();
-			ArgumentNullException.ThrowIfNull(source);
-
-			foreach (var el in source)
+			foreach (var el in enumerableFactory())
 				yield return el;
 		}
 	}
