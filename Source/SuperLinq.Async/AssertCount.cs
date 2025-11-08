@@ -1,4 +1,4 @@
-﻿namespace SuperLinq.Async;
+namespace SuperLinq.Async;
 
 public static partial class AsyncSuperEnumerable
 {
@@ -40,7 +40,13 @@ public static partial class AsyncSuperEnumerable
 				yield return item;
 			}
 
-			ArgumentOutOfRangeException.ThrowIfNotEqual(c, count, $"{nameof(source)}.Count()");
+			AssertSequenceCount(count, c);
 		}
+	}
+
+	private static void AssertSequenceCount(int expected, int actual)
+	{
+		if (expected != actual)
+			ThrowHelper.ThrowInvalidOperationException($"Sequence contains too {(actual < expected ? "few" : "many")} elements when exactly '{expected:N0}' {(expected == 1 ? "was" : "were")} expected.");
 	}
 }

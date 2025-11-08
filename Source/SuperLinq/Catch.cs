@@ -172,7 +172,6 @@ public static partial class SuperEnumerable
 			// make it outside of the inner `while (true)`
 			while (true)
 			{
-				ArgumentNullException.ThrowIfNull(source);
 				using var e = source.GetEnumerator();
 
 				while (true)

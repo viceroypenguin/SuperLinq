@@ -192,7 +192,7 @@ public sealed class RankTests
 		Assert.Equal(expected, (await resultRankWithSortDirection.OrderBy(SuperEnumerable.Identity).FirstAsync()).rank);
 	}
 
-	public record Person(string Name, int Age, int ExpectedRank);
+	public sealed record Person(string Name, int Age, int ExpectedRank);
 
 	/// <summary>
 	/// Verify that we can rank items by an arbitrary key produced from the item.

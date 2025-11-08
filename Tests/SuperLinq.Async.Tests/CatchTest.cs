@@ -15,8 +15,7 @@ public sealed class CatchTest
 	public async Task CatchThrowsDelayedExceptionOnNullSource()
 	{
 		var seq = AsyncSuperEnumerable.Catch(new IAsyncEnumerable<int>[] { null! });
-		_ = await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-			await seq.Consume());
+		_ = await Assert.ThrowsAsync<NullReferenceException>(async () => await seq.Consume());
 	}
 
 	[Fact]

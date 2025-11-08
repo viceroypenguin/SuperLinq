@@ -146,7 +146,6 @@ public static partial class AsyncSuperEnumerable
 			// make it outside of the inner `while (true)`
 			while (true)
 			{
-				ArgumentNullException.ThrowIfNull(source);
 				await using var e = source.GetConfiguredAsyncEnumerator(cancellationToken);
 
 				while (true)

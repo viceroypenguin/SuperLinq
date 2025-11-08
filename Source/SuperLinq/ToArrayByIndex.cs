@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -133,17 +133,20 @@ public static partial class SuperEnumerable
 		var lastIndex = -1;
 		var indexed = new List<(int, T)>();
 
-		foreach (var e in source)
+		using (var enumerator = source.GetEnumerator())
 		{
-			var i = indexSelector(e);
-			ArgumentOutOfRangeException.ThrowIfNegative(i, "indexSelector(e)");
+			if (!enumerator.MoveNext())
+				return [];
 
-			lastIndex = Math.Max(i, lastIndex);
-			indexed.Add((i, e));
+			do
+			{
+				var e = enumerator.Current;
+				var i = indexSelector(e);
+
+				lastIndex = Math.Max(i, lastIndex);
+				indexed.Add((i, e));
+			} while (enumerator.MoveNext());
 		}
-
-		if (lastIndex == -1)
-			return [];
 
 		var length = lastIndex + 1;
 		var array = new TResult?[length];
@@ -300,9 +303,6 @@ public static partial class SuperEnumerable
 		foreach (var e in source)
 		{
 			var i = indexSelector(e);
-			ArgumentOutOfRangeException.ThrowIfNegative(i, "indexSelector(e)");
-			ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(i, array.Length, "indexSelector(e)");
-
 			array[i] = resultSelector(e, i);
 		}
 

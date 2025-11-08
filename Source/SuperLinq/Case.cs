@@ -1,4 +1,4 @@
-﻿namespace SuperLinq;
+namespace SuperLinq;
 
 public static partial class SuperEnumerable
 {
@@ -101,7 +101,6 @@ public static partial class SuperEnumerable
 			if (!sources.TryGetValue(selector(), out var source))
 				source = defaultSource;
 
-			ArgumentNullException.ThrowIfNull(source);
 			foreach (var el in source)
 				yield return el;
 		}
