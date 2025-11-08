@@ -54,7 +54,7 @@ public static partial class AsyncSuperEnumerable
 	public static IAsyncEnumerable<TSource> Timeout<TSource>(this IAsyncEnumerable<TSource> source, TimeSpan timeout)
 	{
 		ArgumentNullException.ThrowIfNull(source);
-		ArgumentOutOfRangeException.ThrowIfNegative(timeout.Milliseconds, nameof(timeout));
+		ArgumentOutOfRangeException.ThrowIfNegative(timeout.Ticks, nameof(timeout));
 
 		return Core(source, timeout);
 

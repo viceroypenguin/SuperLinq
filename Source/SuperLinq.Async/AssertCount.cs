@@ -16,7 +16,7 @@ public static partial class AsyncSuperEnumerable
 	///	</param>
 	/// <returns>
 	///	    Returns the original sequence as long it is contains the number of elements specified by <paramref
-	///     name="count"/>. Otherwise it throws <see cref="ArgumentException" />.
+	///     name="count"/>. Otherwise it throws <see cref="InvalidOperationException" />.
 	/// </returns>
 	/// <exception cref="ArgumentNullException">
 	///	    <paramref name="source"/> is <see langword="null" />.
