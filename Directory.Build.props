@@ -17,6 +17,39 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Label="Polyfill">
+    <!--https://github.com/meziantou/Meziantou.Polyfill?tab=readme-ov-file#supported-polyfills-->
+    <Polyfill></Polyfill>
+    <Polyfill>$(Polyfill)|M:System.Threading.CancellationTokenSource.CancelAsync</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.AllowNullAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.DisallowNullAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.ExperimentalAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.MaybeNullAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.MemberNotNullAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.NotNullAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.NotNullWhenAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.RequiresAssemblyFilesAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.RequiresDynamicCodeAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.UnscopedRefAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Runtime.CompilerServices.IsExternalInit</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.Runtime.CompilerServices.RequiredMemberAttribute</Polyfill>
+    <MeziantouPolyfill_IncludedPolyfills>$(Polyfill)</MeziantouPolyfill_IncludedPolyfills>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <!-- Don't block development work; but block CI if dev work isn't complete. -->
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

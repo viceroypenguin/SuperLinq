@@ -27,4 +27,4 @@ obj/
 !**/packages/build/
 
 # Generated files
-PolySharp.SourceGenerators
+Meziantou.Polyfill
