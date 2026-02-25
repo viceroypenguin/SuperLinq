@@ -263,11 +263,13 @@ dotnet_analyzer_diagnostic.category-Globalization.severity = error
 # IDE Diagnostics
 dotnet_diagnostic.IDE0005.severity = error              # IDE0005: Using directive is unnecessary
 dotnet_diagnostic.IDE0011.severity = silent             # IDE0011: Add braces
+dotnet_diagnostic.IDE0028.severity = none               # IDE0028: Simplify collection initialization
 dotnet_diagnostic.IDE0046.severity = silent             # IDE0046: Convert to conditional expression
 dotnet_diagnostic.IDE0043.severity = error              # IDE0043: Format string contains invalid placeholder
 dotnet_diagnostic.IDE0051.severity = warning            # IDE0051: Remove unused private member
 dotnet_diagnostic.IDE0052.severity = warning            # IDE0052: Remove unread private member
 dotnet_diagnostic.IDE0076.severity = warning            # IDE0076: Remove invalid global 'SuppressMessageAttribute'
+dotnet_diagnostic.IDE0370.severity = none               # IDE0370: Remove unnecessary suppression
 
 # XML Documentation
 dotnet_diagnostic.CS0105.severity = error               # CS0105: Using directive is unnecessary.
@@ -276,8 +278,10 @@ dotnet_diagnostic.CS1591.severity = error               # CS1591: Missing XML co
 dotnet_diagnostic.CS1712.severity = error               # CS1712: Type parameter has no matching typeparam tag in the XML comment (but other type parameters do)
 
 # Async
-dotnet_diagnostic.CS1998.severity = error               # CS1998: Async method lacks 'await' operators and will run synchronously
+dotnet_diagnostic.CA2007.severity = error               # CA2007: Consider calling ConfigureAwait on the awaited task
+dotnet_diagnostic.CS1998.severity = none                # CS1998: Async method lacks 'await' operators and will run synchronously
 dotnet_diagnostic.CS4014.severity = error               # CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
+dotnet_diagnostic.IDE0390.severity = none               # IDE0390: Make method synchronous
 
 # Dispose things need disposing
 dotnet_diagnostic.CA2000.severity = error               # CA2000: Dispose objects before losing scope

@@ -4,8 +4,6 @@
     <AssemblyName>SuperLinq</AssemblyName>
     <RootNamespace>SuperLinq</RootNamespace>
 
-    <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
-
     <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
 
     <EnablePackageValidation>true</EnablePackageValidation>
@@ -157,6 +155,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.Bcl.HashCode" />
+    <PackageReference Include="Microsoft.Bcl.Memory" />
     <PackageReference Include="System.Memory" />
   </ItemGroup>
 

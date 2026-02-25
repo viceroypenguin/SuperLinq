@@ -215,7 +215,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(leftKeySelector);
 		ArgumentNullException.ThrowIfNull(rightKeySelector);
 
-		return JoinMerge<TLeft, TRight, TKey, (TLeft, TRight?)>(
+		return JoinMerge(
 			left, right,
 			leftKeySelector, rightKeySelector,
 			static left => (left, default),
@@ -373,7 +373,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(leftKeySelector);
 		ArgumentNullException.ThrowIfNull(rightKeySelector);
 
-		return JoinMerge<TLeft, TRight, TKey, (TLeft?, TRight)>(
+		return JoinMerge(
 			left, right,
 			leftKeySelector, rightKeySelector,
 			leftResultSelector: default,
@@ -531,7 +531,7 @@ public static partial class SuperEnumerable
 		ArgumentNullException.ThrowIfNull(leftKeySelector);
 		ArgumentNullException.ThrowIfNull(rightKeySelector);
 
-		return JoinMerge<TLeft, TRight, TKey, (TLeft?, TRight?)>(
+		return JoinMerge(
 			left, right,
 			leftKeySelector, rightKeySelector,
 			static left => (left, default),

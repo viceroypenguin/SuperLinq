@@ -1,4 +1,4 @@
-﻿using System.Runtime.ExceptionServices;
+using System.Runtime.ExceptionServices;
 
 namespace SuperLinq.Async;
 
@@ -136,13 +136,7 @@ public static partial class AsyncSuperEnumerable
 			{
 				// give each still-running task a chance to bail early
 				foreach (var cts in cancellationSources)
-				{
-#if NET8_0_OR_GREATER
 					await cts.CancelAsync();
-#else
-					cts.Cancel();
-#endif
-				}
 
 #pragma warning disable CA1031 // Do not catch general exception types
 				ExceptionDispatchInfo? edi = null;
