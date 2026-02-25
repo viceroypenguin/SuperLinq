@@ -17,6 +17,7 @@ internal static class ToDelimitedString
 			.Where(t =>
 				!t.IsGenericType // e.g. ReadOnlySpan<>
 				&& (t.IsValueType || t == typeof(string))
+				&& t.Name is not "Rune"
 			)
 			.OrderBy(t => t.Name, StringComparer.Ordinal)
 			.Select(t => $"global::{t.FullName}");

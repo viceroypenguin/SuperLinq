@@ -184,7 +184,6 @@ public static partial class AsyncSuperEnumerable
 	/// <param name="nextValue">Generator function that actually produces the next value - specific to T</param>
 	/// <param name="cancellationToken"></param>
 	/// <returns>An infinite sequence of random numbers of type T</returns>
-#pragma warning disable CS1998
 	private static async IAsyncEnumerable<T> RandomImpl<T>(
 		Random rand,
 		Func<Random, T> nextValue,
@@ -197,7 +196,6 @@ public static partial class AsyncSuperEnumerable
 			yield return nextValue(rand);
 		}
 	}
-#pragma warning restore CS1998
 
 	private static readonly Random s_randomInstance =
 #if NET6_0_OR_GREATER
