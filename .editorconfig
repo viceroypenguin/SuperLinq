@@ -333,6 +333,8 @@ dotnet_diagnostic.CA1868.severity = warning             # CA1868: Unnecessary ca
 dotnet_diagnostic.CA2014.severity = error               # CA2014: Do not use stackalloc in loops
 dotnet_diagnostic.CA2016.severity = error               # CA2016: Forward the CancellationToken parameter to methods that take one
 
+dotnet_code_quality.CA1062.null_check_validation_methods = ThrowIfNull
+
 dotnet_diagnostic.RS2008.severity = none                # RS2008: Enable analyzer release tracking
 
 MA0053.public_class_should_be_sealed = true
