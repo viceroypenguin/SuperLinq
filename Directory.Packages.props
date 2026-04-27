@@ -24,6 +24,6 @@
   <ItemGroup>
     <GlobalPackageReference Include="Meziantou.Analyzer" Version="3.0.48" PrivateAssets="All" />
     <GlobalPackageReference Include="Meziantou.Polyfill" Version="1.0.110" PrivateAssets="All" />
-    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.202" PrivateAssets="All" />
+    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
   </ItemGroup>
 </Project>
