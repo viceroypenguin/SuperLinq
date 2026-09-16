@@ -60,4 +60,4 @@ jobs:
     - name: Coveralls
       uses: coverallsapp/github-action@v2
       with:
-        files: 'TestResults/*.cobertura.xml'
+        files: 'TestResults/merged/*.cobertura.xml'
