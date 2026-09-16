@@ -145,12 +145,6 @@
 
   <ItemGroup>
     <Using Include="SuperLinq.Exceptions" />
-    <Using Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))" Alias="Lock" Include="System.Object" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />
-    <PackageReference Include="MinVer" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
@@ -169,16 +163,13 @@
   </PropertyGroup>
 
   <ItemGroup Label="SourceGenerator">
-    <ProjectReference Include="..\..\Generators\SuperLinq.Generator\SuperLinq.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	<ProjectReference Include="..\..\Generators\SuperLinq.Generator\SuperLinq.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
+	  <SetTargetFramework>TargetFramework=net10.0</SetTargetFramework>
+	</ProjectReference>
+	
     <Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
     <None Include="$(CompilerGeneratedFilesOutputPath)/SuperLinq.Generator/**/*.cs" />
   </ItemGroup>
-
-  <PropertyGroup Label="MinVer">
-    <MinVerAutoIncrement>minor</MinVerAutoIncrement>
-    <MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
-    <MinVerTagPrefix>v</MinVerTagPrefix>
-  </PropertyGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="SuperLinq.Async" />

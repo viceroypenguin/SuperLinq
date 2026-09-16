@@ -21,7 +21,7 @@
     <!--https://github.com/meziantou/Meziantou.Polyfill?tab=readme-ov-file#supported-polyfills-->
     <Polyfill></Polyfill>
     <Polyfill>$(Polyfill)|M:System.Threading.CancellationTokenSource.CancelAsync</Polyfill>
-    <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.AllowNullAttribute</Polyfill>
+	<Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.AllowNullAttribute</Polyfill>
     <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.DisallowNullAttribute</Polyfill>
     <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute</Polyfill>
     <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute</Polyfill>
@@ -47,16 +47,18 @@
     <Polyfill>$(Polyfill)|T:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute</Polyfill>
     <Polyfill>$(Polyfill)|T:System.Runtime.CompilerServices.IsExternalInit</Polyfill>
     <Polyfill>$(Polyfill)|T:System.Runtime.CompilerServices.RequiredMemberAttribute</Polyfill>
+	<Polyfill>$(Polyfill)|T:System.Threading.Lock</Polyfill>
     <MeziantouPolyfill_IncludedPolyfills>$(Polyfill)</MeziantouPolyfill_IncludedPolyfills>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-    <!-- Don't block development work; but block CI if dev work isn't complete. -->
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  <PropertyGroup Label="MinVer">
+	<MinVerAutoIncrement>minor</MinVerAutoIncrement>
+	<MinVerDefaultPreReleaseIdentifiers>preview</MinVerDefaultPreReleaseIdentifiers>
+	<MinVerTagPrefix>v</MinVerTagPrefix>
+  </PropertyGroup>
 
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <CollectCoverage>true</CollectCoverage>
-    <CoverletOutputFormat>opencover</CoverletOutputFormat>
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 </Project>
