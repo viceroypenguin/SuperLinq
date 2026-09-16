@@ -43,7 +43,10 @@ jobs:
     - name: Package 
       run: dotnet pack -c Release --no-build --property:PackageOutputPath=../../nupkgs
     - name: Validate Package 
-      run: dotnet tool run dotnet-validate -- package local ./nupkgs/*.nupkg
+      run: |
+        for package in ./nupkgs/*.nupkg; do
+          dotnet tool run dotnet-validate -- package local "$package"
+        done
 
     - name: NuGet login (OIDC → temp API key)
       uses: NuGet/login@v1

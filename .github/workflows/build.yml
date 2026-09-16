@@ -12,8 +12,11 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v7
@@ -48,7 +51,10 @@ jobs:
     - name: Package 
       run: dotnet pack -c Release --no-build --property:PackageOutputPath=../../nupkgs
     - name: Validate Package 
-      run: dotnet tool run dotnet-validate -- package local ./nupkgs/*.nupkg
+      run: |
+        for package in ./nupkgs/*.nupkg; do
+          dotnet tool run dotnet-validate -- package local "$package"
+        done
 
     - name: Coveralls
       uses: coverallsapp/github-action@v2
