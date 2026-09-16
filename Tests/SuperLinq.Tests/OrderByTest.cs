@@ -47,14 +47,14 @@ public sealed class OrderByTests
 		// ensure both order by operations produce identical results
 		Assert.Equal(resultAsc2, resultAsc1);
 		// ensure comparer was applied in the order by evaluation
-		Assert.Equal(sequenceDescending, resultAsc1);
+		Assert.Equal(sequenceDescending, resultAsc1, StringComparer.Ordinal);
 
 		var resultDes1 = sequenceDescending.OrderBy(SuperEnumerable.Identity, comparer, OrderByDirection.Ascending);
 		var resultDes2 = sequenceDescending.OrderBy(SuperEnumerable.Identity, comparer);
 		// ensure both order by operations produce identical results
 		Assert.Equal(resultDes2, resultDes1);
 		// ensure comparer was applied in the order by evaluation
-		Assert.Equal(sequenceAscending, resultDes1);
+		Assert.Equal(sequenceAscending, resultDes1, StringComparer.Ordinal);
 	}
 
 	/// <summary>

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: 
-      - 'master'
+      - 'main'
     paths-ignore:
       - '**/readme.md'
   pull_request:
@@ -12,17 +12,16 @@ on:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
+      with:
+        fetch-depth: '0'
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v5
+      uses: actions/setup-dotnet@v6
       with:
         dotnet-version: |
           8.0.x
@@ -30,20 +29,28 @@ jobs:
           10.0.x
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v5
+      uses: actions/setup-dotnet@v6
       with:
         dotnet-quality: 'preview'
         dotnet-version: |
           11.0.x
+
+    - name: Restore tools
+      run: dotnet tool restore
 
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build -c Release --no-restore
     - name: Test
-      run: dotnet test -c Release --no-build -- --coverage --coverage-output-format cobertura --coverage-output coverage.cobertura.xml
+      run: dotnet test -c Release --no-build -- --coverage --coverage-output-format cobertura --coverage-settings ./coverage-settings.xml
 
-    - name: Upload coverage reports to Codecov with GitHub Action
-      uses: codecov/codecov-action@v6
+    - name: Package 
+      run: dotnet pack -c Release --no-build --property:PackageOutputPath=../../nupkgs
+    - name: Validate Package 
+      run: dotnet tool run dotnet-validate -- package local ./nupkgs/*.nupkg
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@v2
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+        files: 'TestResults/*.cobertura.xml'

@@ -10,6 +10,10 @@
     <PackageValidationBaselineVersion>6.0.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net11.0'">
+	<Features>runtime-async=on</Features>
+  </PropertyGroup>
+
   <PropertyGroup Label="Nuget">
     <Title>SuperLinq.Async</Title>
 
@@ -113,8 +117,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />
-    <PackageReference Include="MinVer" PrivateAssets="All" />
     <ProjectReference Include="..\SuperLinq\SuperLinq.csproj" />
   </ItemGroup>
 
@@ -138,15 +140,12 @@
   </PropertyGroup>
 
   <ItemGroup Label="SourceGenerator">
-    <ProjectReference Include="..\..\Generators\SuperLinq.Async.Generator\SuperLinq.Async.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\Generators\SuperLinq.Async.Generator\SuperLinq.Async.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
+	  <SetTargetFramework>TargetFramework=net10.0</SetTargetFramework>
+	</ProjectReference>
+	
     <Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
     <None Include="$(CompilerGeneratedFilesOutputPath)/SuperLinq.Async.Generator/**/*.cs" />
   </ItemGroup>
-
-  <PropertyGroup Label="MinVer">
-    <MinVerAutoIncrement>minor</MinVerAutoIncrement>
-    <MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
-    <MinVerTagPrefix>v</MinVerTagPrefix>
-  </PropertyGroup>
 
 </Project>

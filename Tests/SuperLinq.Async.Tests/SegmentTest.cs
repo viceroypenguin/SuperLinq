@@ -51,7 +51,7 @@ public sealed class SegmentTests
 		var result = sequence.Segment(x => true);
 		foreach (var segment in await result.ToListAsync())
 		{
-			Assert.True(segment.Any());
+			Assert.NotEmpty(segment);
 			Assert.Equal(-1, segment.Single());
 		}
 	}

@@ -1,16 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <TargetFrameworks>net10.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <IsRoslynComponent>true</IsRoslynComponent>
 
     <!-- Analyzer checks-->
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-
-    <!-- Other things to turn off -->
-    <NoWarn>$(NoWarn);RS1035</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +21,7 @@
 
   <Target Name="GetDependencyTargetPaths">
     <ItemGroup>
-      <TargetPathWithTargetPlatformMoniker Include="$(PkgScriban)/lib/netstandard2.0/Scriban.dll" IncludeRuntimeDependency="false" />
+      <TargetPathWithTargetPlatformMoniker Include="$(PkgScriban)/lib/net8.0/Scriban.dll" IncludeRuntimeDependency="false" />
     </ItemGroup>
   </Target>
 

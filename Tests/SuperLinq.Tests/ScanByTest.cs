@@ -71,7 +71,7 @@ public sealed class ScanByTest
 	{
 		using var source = TestingSequence.Of("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
 
-		var result = source.ScanBy(SuperEnumerable.Identity, k => -1, (i, k, e) => i + 1);
+		var result = source.ScanBy(SuperEnumerable.Identity, k => -1, (i, k, e) => i + 1, StringComparer.Ordinal);
 		result.AssertSequenceEqual(("foo", 0), (null, 0), ("bar", 0), ("baz", 0), (null, 1), (null, 2), ("baz", 1), ("bar", 1), (null, 3), ("foo", 1));
 	}
 
@@ -81,7 +81,7 @@ public sealed class ScanByTest
 		using var source = TestingSequence.Of("foo", null, "bar", null, "baz");
 
 		var nil = (object?)null;
-		var result = source.ScanBy(SuperEnumerable.Identity, k => nil, (i, k, e) => nil);
+		var result = source.ScanBy(SuperEnumerable.Identity, k => nil, (i, k, e) => nil, StringComparer.Ordinal);
 
 		result.AssertSequenceEqual(("foo", nil), (null, nil), ("bar", nil), (null, nil), ("baz", nil));
 	}
