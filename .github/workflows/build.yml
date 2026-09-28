@@ -62,7 +62,7 @@ jobs:
       shell: bash
       run: |
         # Capture find output into a variable
-        FIND_RESULTS=$(find ./TestResults -type f -name "*.cobertura.xml" -printf '%p ')
+        FIND_RESULTS=$(find ./TestResults -type f -name "*.cobertura.xml" | paste -sd " " -)
 
         # Write to $GITHUB_OUTPUT so other steps can read it
         echo "paths=$FIND_RESULTS" >> "$GITHUB_OUTPUT"
