@@ -62,7 +62,7 @@ jobs:
       uses: tj-actions/glob@v22
       with:
         files: |
-          TestResults/merged/*.cobertura.xml
+          ./TestResults/merged/*.cobertura.xml
         files-separator: ' '
     - name: Coveralls
       uses: coverallsapp/github-action@v2
