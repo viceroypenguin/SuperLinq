@@ -57,7 +57,14 @@ jobs:
           dotnet tool run dotnet-validate -- package local "$package"
         done
 
+    - name: Glob
+      id: glob
+      uses: tj-actions/glob@v22
+      with:
+        files: |
+          TestResults/merged/*.cobertura.xml
+        files-separator: ' '
     - name: Coveralls
       uses: coverallsapp/github-action@v2
       with:
-        files: 'TestResults/merged/*.cobertura.xml'
+        files: ${{ steps.glob.outputs.paths }}
