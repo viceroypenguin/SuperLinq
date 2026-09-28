@@ -57,13 +57,16 @@ jobs:
           dotnet tool run dotnet-validate -- package local "$package"
         done
 
-    - name: Glob
+    - name: Run find command and set output
       id: glob
-      uses: tj-actions/glob@v22
-      with:
-        files: |
-          ./TestResults/*.cobertura.xml
-        files-separator: ' '
+      shell: bash
+      run: |
+        # Capture find output into a variable
+        FIND_RESULTS=$(find ./TestResults -type f -name "*.cobertura.xml" -printf '%p ')
+
+        # Write to $GITHUB_OUTPUT so other steps can read it
+        echo "paths=$FIND_RESULTS" >> "$GITHUB_OUTPUT"
+
     - name: Coveralls
       uses: coverallsapp/github-action@v2
       with:
