@@ -279,7 +279,6 @@ dotnet_diagnostic.CS1712.severity = error               # CS1712: Type parameter
 
 # Async
 dotnet_diagnostic.CA2007.severity = error               # CA2007: Consider calling ConfigureAwait on the awaited task
-dotnet_diagnostic.CS1998.severity = none                # CS1998: Async method lacks 'await' operators and will run synchronously
 dotnet_diagnostic.CS4014.severity = error               # CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
 dotnet_diagnostic.IDE0390.severity = none               # IDE0390: Make method synchronous
 
@@ -393,6 +392,8 @@ dotnet_diagnostic.MA0148.severity = none
 dotnet_diagnostic.MA0149.severity = none
 dotnet_diagnostic.MA0154.severity = warning
 dotnet_diagnostic.MA0158.severity = none
+
+dotnet_diagnostic.RS1041.severity = none                # RS1041: Compiler extensions should be implemented in assemblies targeting netstandard2.0
 
 [Tests/**/*.cs]
 dotnet_diagnostic.CA1034.severity = none                # CA1034: Nested types should not be visible

@@ -50,7 +50,7 @@ public sealed class SegmentTests
 		var result = sequence.Segment(x => true);
 		foreach (var segment in result)
 		{
-			Assert.True(segment.Any());
+			Assert.NotEmpty(segment);
 			Assert.Equal(-1, segment.Single());
 		}
 	}
@@ -63,13 +63,13 @@ public sealed class SegmentTests
 	public void TestFirstSegmentNeverEmpty()
 	{
 		using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
-			Assert.True(sequence.Segment(x => true).First().Any());
+			Assert.NotEmpty(sequence.Segment(x => true).First());
 
 		using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
-			Assert.True(sequence.Segment((x, index) => true).First().Any());
+			Assert.NotEmpty(sequence.Segment((x, index) => true).First());
 
 		using (var sequence = Enumerable.Repeat(-1, 10).AsTestingSequence())
-			Assert.True(sequence.Segment((x, prevX, index) => true).First().Any());
+			Assert.NotEmpty(sequence.Segment((x, prevX, index) => true).First());
 	}
 
 	/// <summary>
@@ -124,16 +124,16 @@ public sealed class SegmentTests
 	public static IEnumerable<object[]> TestData { get; } =
 		from e in new[]
 		{
-            // input sequence is empty
-            new { Source = Seq<int>(),            Expected = Seq<IEnumerable<int>>()         },
-            // input sequence contains only new segment start
-            new { Source = Seq(0, 3, 6),          Expected = Seq(Seq(0), Seq(3), Seq(6))     },
-            // input sequence do not contains new segment start
-            new { Source = Seq(1, 2, 4, 5),       Expected = Seq(Seq(1, 2, 4, 5))            },
-            // input sequence start with a segment start
-            new { Source = Seq(0, 1, 2, 3, 4, 5), Expected = Seq(Seq(0, 1, 2), Seq(3, 4, 5)) },
-            // input sequence do not start with a segment start
-            new { Source = Seq(1, 2, 3, 4, 5),    Expected = Seq(Seq(1, 2), Seq(3, 4, 5))    },
+			// input sequence is empty
+			new { Source = Seq<int>(),            Expected = Seq<IEnumerable<int>>()         },
+			// input sequence contains only new segment start
+			new { Source = Seq(0, 3, 6),          Expected = Seq(Seq(0), Seq(3), Seq(6))     },
+			// input sequence do not contains new segment start
+			new { Source = Seq(1, 2, 4, 5),       Expected = Seq(Seq(1, 2, 4, 5))            },
+			// input sequence start with a segment start
+			new { Source = Seq(0, 1, 2, 3, 4, 5), Expected = Seq(Seq(0, 1, 2), Seq(3, 4, 5)) },
+			// input sequence do not start with a segment start
+			new { Source = Seq(1, 2, 3, 4, 5),    Expected = Seq(Seq(1, 2), Seq(3, 4, 5))    },
 		}
 		select new object[] { e.Source, e.Expected };
 

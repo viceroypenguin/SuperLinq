@@ -47,7 +47,7 @@ public sealed class CollectionEqualTest
 	{
 		await using var xs = TestingSequence.Of("foo", "bar", "qux");
 		await using var ys = TestingSequence.Of("foo", "bar", "qux");
-		Assert.True(await xs.CollectionEqual(ys));
+		Assert.True(await xs.CollectionEqual(ys, StringComparer.Ordinal));
 	}
 
 	[Fact]
@@ -55,7 +55,7 @@ public sealed class CollectionEqualTest
 	{
 		await using var xs = TestingSequence.Of("foo", "bar", "qux");
 		await using var ys = TestingSequence.Of("qux", "bar", "foo");
-		Assert.True(await xs.CollectionEqual(ys));
+		Assert.True(await xs.CollectionEqual(ys, StringComparer.Ordinal));
 	}
 
 	[Fact]
@@ -63,7 +63,7 @@ public sealed class CollectionEqualTest
 	{
 		await using var xs = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");
 		await using var ys = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");
-		Assert.True(await xs.CollectionEqual(ys));
+		Assert.True(await xs.CollectionEqual(ys, StringComparer.Ordinal));
 	}
 
 	[Fact]
@@ -71,7 +71,7 @@ public sealed class CollectionEqualTest
 	{
 		await using var xs = TestingSequence.Of("foo", "bar", "qux");
 		await using var ys = TestingSequence.Of("foo", "bar", "baz");
-		Assert.False(await xs.CollectionEqual(ys));
+		Assert.False(await xs.CollectionEqual(ys, StringComparer.Ordinal));
 	}
 
 	[Fact]
@@ -79,7 +79,7 @@ public sealed class CollectionEqualTest
 	{
 		await using var xs = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");
 		await using var ys = TestingSequence.Of("foo", "bar", "qux");
-		Assert.False(await xs.CollectionEqual(ys));
+		Assert.False(await xs.CollectionEqual(ys, StringComparer.Ordinal));
 	}
 
 	[Fact]

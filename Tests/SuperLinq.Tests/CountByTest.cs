@@ -82,7 +82,7 @@ public sealed class CountByTest
 	{
 		using var xs = TestingSequence.Of("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
 		SuperEnumerable
-			.CountBy(xs, SuperEnumerable.Identity)
+			.CountBy(xs, SuperEnumerable.Identity, StringComparer.Ordinal)
 			.AssertSequenceEqual(
 				CreatePair((string?)"foo", 2),
 				CreatePair((string?)null, 4),

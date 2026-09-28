@@ -81,7 +81,7 @@ public sealed class CountByTest
 	{
 		await using var ss = TestingSequence.Of("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
 
-		await ss.CountBy(SuperEnumerable.Identity)
+		await ss.CountBy(SuperEnumerable.Identity, StringComparer.Ordinal)
 			.AssertSequenceEqual(
 				CreatePair((string?)"foo", 2),
 				CreatePair((string?)null, 4),

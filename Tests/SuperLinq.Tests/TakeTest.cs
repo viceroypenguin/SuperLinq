@@ -44,12 +44,12 @@ public sealed class TakeTest
 				where !string.IsNullOrEmpty(x)
 				select x;
 
-		Assert.Equal(q.Take(7), q.Take(7));
+		Assert.Equal(q.Take(7), q.Take(7), StringComparer.Ordinal);
 
-		Assert.Equal(q.Take(0..7), q.Take(0..7));
-		Assert.Equal(q.Take(^7..7), q.Take(^7..7));
-		Assert.Equal(q.Take(0..^0), q.Take(0..^0));
-		Assert.Equal(q.Take(^7..^0), q.Take(^7..^0));
+		Assert.Equal(q.Take(0..7), q.Take(0..7), StringComparer.Ordinal);
+		Assert.Equal(q.Take(^7..7), q.Take(^7..7), StringComparer.Ordinal);
+		Assert.Equal(q.Take(0..^0), q.Take(0..^0), StringComparer.Ordinal);
+		Assert.Equal(q.Take(^7..^0), q.Take(^7..^0), StringComparer.Ordinal);
 	}
 
 	[Fact]
@@ -59,12 +59,12 @@ public sealed class TakeTest
 				 where !string.IsNullOrEmpty(x)
 				 select x).ToList();
 
-		Assert.Equal(q.Take(7), q.Take(7));
+		Assert.Equal(q.Take(7), q.Take(7), StringComparer.Ordinal);
 
-		Assert.Equal(q.Take(0..7), q.Take(0..7));
-		Assert.Equal(q.Take(^7..7), q.Take(^7..7));
-		Assert.Equal(q.Take(0..^0), q.Take(0..^0));
-		Assert.Equal(q.Take(^7..^0), q.Take(^7..^0));
+		Assert.Equal(q.Take(0..7), q.Take(0..7), StringComparer.Ordinal);
+		Assert.Equal(q.Take(^7..7), q.Take(^7..7), StringComparer.Ordinal);
+		Assert.Equal(q.Take(0..^0), q.Take(0..^0), StringComparer.Ordinal);
+		Assert.Equal(q.Take(^7..^0), q.Take(^7..^0), StringComparer.Ordinal);
 	}
 
 	[Fact]

@@ -48,7 +48,7 @@ public sealed class IndexByTest
 	{
 		using var source = TestingSequence.Of("foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo");
 
-		var result = source.IndexBy(SuperEnumerable.Identity);
+		var result = source.IndexBy(SuperEnumerable.Identity, StringComparer.Ordinal);
 		result.AssertSequenceEqual((0, "foo"), (0, null), (0, "bar"), (0, "baz"), (1, null), (2, null), (1, "baz"), (1, "bar"), (3, null), (1, "foo"));
 	}
 

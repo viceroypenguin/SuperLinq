@@ -198,7 +198,7 @@ public sealed class AggregateByTest
 				keySelector: entry => entry.id,
 				seed: 0,
 				(totalScore, curr) => totalScore + curr.score)
-			.ToDictionaryAsync(x => x.Key, x => x.Value);
+			.ToDictionaryAsync(x => x.Key, x => x.Value, StringComparer.Ordinal);
 
 		Assert.Equal(67, scores["0"]);
 		Assert.Equal(15, scores["1"]);

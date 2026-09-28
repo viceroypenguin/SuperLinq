@@ -47,7 +47,7 @@ public sealed class CollectionEqualTest
 	{
 		using var xs = TestingSequence.Of("foo", "bar", "qux");
 		using var ys = TestingSequence.Of("foo", "bar", "qux");
-		Assert.True(xs.CollectionEqual(ys));
+		Assert.True(xs.CollectionEqual(ys, StringComparer.Ordinal));
 	}
 
 	[Fact]
@@ -55,7 +55,7 @@ public sealed class CollectionEqualTest
 	{
 		using var xs = TestingSequence.Of("foo", "bar", "qux");
 		using var ys = TestingSequence.Of("qux", "bar", "foo");
-		Assert.True(xs.CollectionEqual(ys));
+		Assert.True(xs.CollectionEqual(ys, StringComparer.Ordinal));
 	}
 
 	[Fact]
@@ -63,7 +63,7 @@ public sealed class CollectionEqualTest
 	{
 		using var xs = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");
 		using var ys = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");
-		Assert.True(xs.CollectionEqual(ys));
+		Assert.True(xs.CollectionEqual(ys, StringComparer.Ordinal));
 	}
 
 	[Fact]
@@ -71,7 +71,7 @@ public sealed class CollectionEqualTest
 	{
 		using var xs = TestingSequence.Of("foo", "bar", "qux");
 		using var ys = TestingSequence.Of("foo", "bar", "baz");
-		Assert.False(xs.CollectionEqual(ys));
+		Assert.False(xs.CollectionEqual(ys, StringComparer.Ordinal));
 	}
 
 	[Fact]
@@ -79,7 +79,7 @@ public sealed class CollectionEqualTest
 	{
 		using var xs = TestingSequence.Of("foo", "foo", "bar", "bar", "qux", "qux");
 		using var ys = TestingSequence.Of("foo", "bar", "qux");
-		Assert.False(xs.CollectionEqual(ys));
+		Assert.False(xs.CollectionEqual(ys, StringComparer.Ordinal));
 	}
 
 	[Fact]
