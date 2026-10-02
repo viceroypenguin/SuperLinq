@@ -3,7 +3,7 @@ namespace SuperLinq.Async;
 public static partial class AsyncSuperEnumerable
 {
 	/// <summary>
-	///	    Returns all duplicate elements of the given source.
+	///	    Returns the sequence of elements that are in the source sequence more than once.
 	/// </summary>
 	/// <typeparam name="TSource">
 	///	    The type of the elements in the source sequence.
