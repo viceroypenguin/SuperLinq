@@ -12,6 +12,9 @@ on:
 
 jobs:
   build:
+    permissions:
+      id-token: write # enable GitHub OIDC token issuance for this job
+
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -46,7 +49,7 @@ jobs:
     - name: Build
       run: dotnet build -c Release --no-restore
     - name: Test
-      run: dotnet test -c Release --no-build -- --coverage --coverage-output-format cobertura --coverage-settings ./coverage-settings.xml
+      run: dotnet test -c Release --no-build -- --coverage --coverage-settings ./coverage-settings.xml
 
     - name: Package 
       run: dotnet pack -c Release --no-build --property:PackageOutputPath=../../nupkgs
@@ -58,6 +61,8 @@ jobs:
         done
 
     - name: Upload coverage reports to Codecov with GitHub Action
-      uses: codecov/codecov-action@v5
+      uses: codecov/codecov-action@v7
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+        use_oidc: true
+        directory: ./TestResults
+
