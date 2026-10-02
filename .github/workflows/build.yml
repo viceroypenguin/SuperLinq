@@ -57,17 +57,7 @@ jobs:
           dotnet tool run dotnet-validate -- package local "$package"
         done
 
-    - name: Run find command and set output
-      id: glob
-      shell: bash
-      run: |
-        # Capture find output into a variable
-        FIND_RESULTS=$(find ./TestResults -type f -name "*.cobertura.xml" | paste -sd " " -)
-
-        # Write to $GITHUB_OUTPUT so other steps can read it
-        echo "paths=$FIND_RESULTS" >> "$GITHUB_OUTPUT"
-
-    - name: Coveralls
-      uses: coverallsapp/github-action@v2
+    - name: Upload coverage reports to Codecov with GitHub Action
+      uses: codecov/codecov-action@v5
       with:
-        files: ${{ steps.glob.outputs.paths }}
+        token: ${{ secrets.CODECOV_TOKEN }}
