@@ -43,6 +43,7 @@
     <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute</Polyfill>
     <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute</Polyfill>
     <Polyfill>$(Polyfill)|T:System.Diagnostics.CodeAnalysis.UnscopedRefAttribute</Polyfill>
+    <Polyfill>$(Polyfill)|T:System.HashCode</Polyfill>
     <Polyfill>$(Polyfill)|T:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute</Polyfill>
     <Polyfill>$(Polyfill)|T:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute</Polyfill>
     <Polyfill>$(Polyfill)|T:System.Runtime.CompilerServices.IsExternalInit</Polyfill>

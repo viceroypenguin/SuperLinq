@@ -203,7 +203,7 @@ public sealed class AggregateByTest
 				keySelector: entry => entry.id,
 				seed: 0,
 				(totalScore, curr) => totalScore + curr.score)
-			.ToDictionary();
+			.ToDictionary(StringComparer.Ordinal);
 
 		Assert.Equal(67, scores["0"]);
 		Assert.Equal(15, scores["1"]);
